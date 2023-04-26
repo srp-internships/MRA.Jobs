@@ -1,9 +1,4 @@
 # MRA-Jobs
-MRA.Job - a centralized platform where the company will post new job positions/internships/courses/classes and candidates can apply.
-
-[[_TOC_]]
-
-# About system
 MRA.Job - a centralized platform where the company will post new job positions/internships/courses/classes and candidates can apply. 
 
 # Goal
