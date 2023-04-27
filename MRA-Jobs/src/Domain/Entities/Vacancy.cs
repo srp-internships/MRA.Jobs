@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MRA_Jobs.Domain.Entities;
+﻿namespace MRA_Jobs.Domain.Entities;
 public abstract class Vacancy : BaseEntity
 {
     public string Title { get; set; }
@@ -13,4 +7,5 @@ public abstract class Vacancy : BaseEntity
     public DateTime CreatedAt { get; set; }
     public DateTime PublishDate { get; set; }
     public DateTime EndDate { get; set; }
+
 }
