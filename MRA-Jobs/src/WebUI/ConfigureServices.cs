@@ -1,9 +1,5 @@
-﻿using MRA_Jobs.Application.Common.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
 using MRA_Jobs.Infrastructure.Persistence;
-using MRA_Jobs.WebUI.Filters;
-using MRA_Jobs.WebUI.Services;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Mvc;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 
@@ -15,22 +11,14 @@ public static class ConfigureServices
     {
         services.AddDatabaseDeveloperPageExceptionFilter();
 
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
-
         services.AddHttpContextAccessor();
 
         services.AddHealthChecks()
             .AddDbContextCheck<ApplicationDbContext>();
 
-        services.AddControllersWithViews(options =>
-                options.Filters.Add<ApiExceptionFilterAttribute>())
-            .AddFluentValidation(x => x.AutomaticValidationEnabled = false);
-
-        services.AddRazorPages();
-
-        // Customise default API behaviour
         services.Configure<ApiBehaviorOptions>(options =>
-            options.SuppressModelStateInvalidFilter = true);
+        services.Configure<ApiBehaviorOptions>(options =>
+            options.SuppressModelStateInvalidFilter = true));
 
         services.AddOpenApiDocument(configure =>
         {

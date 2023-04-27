@@ -1,5 +1,4 @@
-﻿using MRA_Jobs.Application.Common.Exceptions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MRA_Jobs.WebUI.Filters;
@@ -13,10 +12,10 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         // Register known exception types and handlers.
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
         {
-            { typeof(ValidationException), HandleValidationException },
-            { typeof(NotFoundException), HandleNotFoundException },
-            { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
-            { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
+            //{ typeof(ValidationException), HandleValidationException },
+            //{ typeof(NotFoundException), HandleNotFoundException },
+            { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException }
+            //{ typeof(ForbiddenAccessException), HandleForbiddenAccessException },
         };
     }
 
@@ -45,44 +44,44 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     private void HandleValidationException(ExceptionContext context)
     {
-        var exception = (ValidationException)context.Exception;
+        //var exception = (ValidationException)context.Exception;
 
-        var details = new ValidationProblemDetails(exception.Errors)
-        {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-        };
+        //var details = new ValidationProblemDetails(exception.Errors)
+        //{
+        //    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+        //};
 
-        context.Result = new BadRequestObjectResult(details);
+        //context.Result = new BadRequestObjectResult(details);
 
-        context.ExceptionHandled = true;
+        //context.ExceptionHandled = true;
     }
 
     private void HandleInvalidModelStateException(ExceptionContext context)
     {
-        var details = new ValidationProblemDetails(context.ModelState)
-        {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-        };
+        //var details = new ValidationProblemDetails(context.ModelState)
+        //{
+        //    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+        //};
 
-        context.Result = new BadRequestObjectResult(details);
+        //context.Result = new BadRequestObjectResult(details);
 
-        context.ExceptionHandled = true;
+        //context.ExceptionHandled = true;
     }
 
     private void HandleNotFoundException(ExceptionContext context)
     {
-        var exception = (NotFoundException)context.Exception;
+        //var exception = (NotFoundException)context.Exception;
 
-        var details = new ProblemDetails()
-        {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-            Title = "The specified resource was not found.",
-            Detail = exception.Message
-        };
+        //var details = new ProblemDetails()
+        //{
+        //    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+        //    Title = "The specified resource was not found.",
+        //    Detail = exception.Message
+        //};
 
-        context.Result = new NotFoundObjectResult(details);
+        //context.Result = new NotFoundObjectResult(details);
 
-        context.ExceptionHandled = true;
+        //context.ExceptionHandled = true;
     }
 
     private void HandleUnauthorizedAccessException(ExceptionContext context)
