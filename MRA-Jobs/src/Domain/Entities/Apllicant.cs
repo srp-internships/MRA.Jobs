@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA_Jobs.Domain.Entities;
-public class Apllicant
+
+public class Applicant
 {
     public int Id { get; set; }
-    public User  { get; set; }
+    public int UserId  { get; set; }
 }
