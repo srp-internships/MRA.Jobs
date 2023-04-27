@@ -7,8 +7,3 @@ public class JobVacancy : Vacancy
     public WorkSchedule WorkSchedule { get; set; }
 
 }
-public enum WorkSchedule
-{
-    FullTime = 1,
-    Flexible
-}
