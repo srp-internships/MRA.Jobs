@@ -12,6 +12,6 @@ public interface IEntityService<TEntity>
     Task<ServiceResponse<List<TGetEntity>>> GetAll<TGetEntity>();
     Task<ServiceResponse<TGetEntity>> GetById<TGetEntity>(long id);
     Task<ServiceResponse<bool>> Delete(long id);
-    Task<ServiceResponse<TUpdateEntity>> Update<TUpdateEntity>(TEntity entity);
+    Task<ServiceResponse<TUpdateEntity>> Update<TUpdateEntity, TGetEntity>(TUpdateEntity entity);
     Task<ServiceResponse<TGetEntity>> Add<TAddEntity,TGetEntity>(TAddEntity entity);
 }
