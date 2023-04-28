@@ -5,7 +5,6 @@
         <RootNamespace>MRA_Jobs.Application</RootNamespace>
         <AssemblyName>MRA_Jobs.Application</AssemblyName>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
