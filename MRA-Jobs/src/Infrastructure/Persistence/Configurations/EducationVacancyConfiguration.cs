@@ -14,6 +14,12 @@ public class EducationVacancyConfiguration : IEntityTypeConfiguration<EducationV
 
 
 
-        builder.HasData(new EducationVacancy() { Id = 5, Title = "Training class", Description = "tersd", ShortDescription = "sad" });
+        builder.HasData(new EducationVacancy
+        {
+            Id = 5,
+            Title = "Training class",
+            Description = "tersd",
+            ShortDescription = "sad"
+        });
     }
 }
