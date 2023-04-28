@@ -9,6 +9,10 @@ public class RolesConfiguration : IEntityTypeConfiguration<Roles>
     public void Configure(EntityTypeBuilder<Roles> builder)
     {
         builder.ToTable(nameof(Roles));
-        builder.HasData(new Roles() { Id = 1, Name = "Role 1" });
+        builder.HasData(new Roles()
+        {
+            Id = 1, 
+            Name = "Role 1"
+        });
     }
 }

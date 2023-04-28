@@ -1,5 +1,5 @@
 ﻿namespace MRA_Jobs.Domain.Entities;
-public class Application
+public class Application: BaseEntity
 {
     public Applicant Applicant { get; set; }
     public int ApplicantId { get; set; }
