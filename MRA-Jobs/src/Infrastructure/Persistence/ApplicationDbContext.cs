@@ -16,6 +16,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<JobVacancy> JobVacancies { get; private set; }
     public DbSet<EducationVacancy> EducationVacancies { get; private set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Roles> Roles { get; set; }
+    public DbSet<Note> Notes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
