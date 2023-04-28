@@ -12,7 +12,9 @@ public class EducationVacancyConfiguration : IEntityTypeConfiguration<EducationV
 
         builder.HasKey(x => x.Id);
 
-
+        builder.HasOne(e => e.Category)
+            .WithMany(c => c.EducationVacancies)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasData(new EducationVacancy
         {

@@ -9,6 +9,13 @@ public class JobVacancyConfiguration : IEntityTypeConfiguration<JobVacancy>
     public void Configure(EntityTypeBuilder<JobVacancy> builder)
     {
         builder.ToTable(nameof(Vacancy));
+
+        builder.HasKey(j => j.Id);
+
+        builder.HasOne(j => j.Category)
+            .WithMany(c => c.JobVacancies)
+            .OnDelete(DeleteBehavior.NoAction);
+
         builder.HasData(new JobVacancy()
         {
             Id = 3,
