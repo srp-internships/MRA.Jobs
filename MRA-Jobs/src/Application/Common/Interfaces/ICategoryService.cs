@@ -7,7 +7,7 @@ using MRA_Jobs.Domain.Entities;
 
 namespace MRA_Jobs.Application.Common.Interfaces
 {
-    public interface ICategoryService
+    public interface ICategoryService   
     {
         public Task<ServiceResponse<List<Category>>> Get();
         public Task<ServiceResponse<Category>> GetById(int id);
