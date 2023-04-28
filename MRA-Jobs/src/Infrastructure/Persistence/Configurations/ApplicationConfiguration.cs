@@ -19,5 +19,9 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Domain.Entities
         builder.HasOne(a => a.Applicant)
             .WithMany(at => at.Applications)
             .HasForeignKey(a => a.ApplicantId);
+
+        builder.HasOne(a => a.Status)
+            .WithMany(s => s.Applications)
+            .HasForeignKey(a => a.StatusId);
     }
 }
