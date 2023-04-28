@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using MRA_Jobs.Infrastructure;
 using MRA_Jobs.Infrastructure.Persistence;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -14,7 +16,8 @@ public static class ConfigureServices
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
         services.AddScoped<ApplicationDbContextInitialiser>();
-
+        services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>(),
+                                AppDomain.CurrentDomain.GetAssemblies());
         //services
         //    .AddDefaultIdentity<ApplicationUser>()
         //    .AddRoles<IdentityRole>()

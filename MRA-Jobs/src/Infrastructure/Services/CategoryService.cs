@@ -121,6 +121,7 @@ public class CategoryService : ICategoryService
             var updatedCategory = _context.Categories
                 .Attach(category)
                 .State = EntityState.Modified;
+
             response.Data = category;
         }
         catch (Exception ex)
