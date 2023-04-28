@@ -114,7 +114,7 @@ public class EntityService<TEntity> : IEntityService<TEntity>
         return response;
     }
 
-    public async Task<ServiceResponse<TUpdateEntity>> Update<TUpdateEntity, TGetEntity>(TUpdateEntity entity)
+    public async Task<ServiceResponse<TGetEntity>> Update<TUpdateEntity, TGetEntity>(TUpdateEntity entity)
     {
         var response = new ServiceResponse<TGetEntity>();
         try
