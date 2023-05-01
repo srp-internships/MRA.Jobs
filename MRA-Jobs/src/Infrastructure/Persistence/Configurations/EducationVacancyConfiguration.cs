@@ -14,6 +14,7 @@ public class EducationVacancyConfiguration : IEntityTypeConfiguration<EducationV
 
         builder.HasOne(e => e.Category)
             .WithMany(c => c.EducationVacancies)
+            .HasForeignKey(e => e.CategoryId)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasData(new EducationVacancy
