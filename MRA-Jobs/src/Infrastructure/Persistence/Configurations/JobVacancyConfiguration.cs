@@ -10,10 +10,9 @@ public class JobVacancyConfiguration : IEntityTypeConfiguration<JobVacancy>
     {
         builder.ToTable(nameof(Vacancy));
 
-        builder.HasKey(j => j.Id);
-
         builder.HasOne(j => j.Category)
             .WithMany(c => c.JobVacancies)
+            .HasForeignKey(j => j.CategoryId)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasData(new JobVacancy()

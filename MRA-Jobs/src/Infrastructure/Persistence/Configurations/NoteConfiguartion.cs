@@ -9,7 +9,8 @@ public class NoteConfiguration : IEntityTypeConfiguration<Note>
     public void Configure(EntityTypeBuilder<Note> builder)
     {
         builder.ToTable(nameof(Note));
-        builder.HasData(new Note()
+        builder.HasKey(n => n.Id);
+        builder.HasData(new Note()       
         {
             User = new User
             {
