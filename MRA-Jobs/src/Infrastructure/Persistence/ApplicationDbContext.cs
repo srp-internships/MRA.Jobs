@@ -1,4 +1,6 @@
-﻿namespace MRA_Jobs.Infrastructure.Persistence;
+﻿using System.Reflection;
+
+namespace MRA_Jobs.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext
 {
