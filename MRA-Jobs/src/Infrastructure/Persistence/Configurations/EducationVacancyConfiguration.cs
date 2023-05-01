@@ -10,8 +10,6 @@ public class EducationVacancyConfiguration : IEntityTypeConfiguration<EducationV
     {
         builder.ToTable(nameof(Vacancy));
 
-        //builder.HasKey(x => x.Id);
-
         builder.HasOne(e => e.Category)
             .WithMany(c => c.EducationVacancies)
             .HasForeignKey(e => e.CategoryId)
