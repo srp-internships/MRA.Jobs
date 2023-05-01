@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace MRA_Jobs.Application.Abstractions;
 public interface IEntityService<TEntity>
          where TEntity : class
