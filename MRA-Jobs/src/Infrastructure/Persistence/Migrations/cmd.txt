@@ -1,3 +1,0 @@
-﻿﻿dotnet ef migrations add {Name} --context ApplicationDbContext -o Persistence/Migrations
-
-dotnet ef database update
