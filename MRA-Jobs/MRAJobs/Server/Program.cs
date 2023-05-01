@@ -1,4 +1,6 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using MRA_Jobs.Application.Common.Interfaces;
+using MRA_Jobs.Infrastructure.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +8,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IJobVacancyService, JobVacancyService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
