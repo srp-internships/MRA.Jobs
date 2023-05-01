@@ -6,4 +6,5 @@ namespace WebUI.Controllers;
 [ApiController]
 public class GenericController : ControllerBase
 {
+
 }
