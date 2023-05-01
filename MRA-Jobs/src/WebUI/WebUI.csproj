@@ -42,7 +42,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
+      <Compile Remove="Controllers\GenericController.cs" />
     </ItemGroup>
 
 </Project>
