@@ -15,12 +15,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.HasKey(x => x.Id);
         builder.Property(s => s.Id)
             .ValueGeneratedOnAdd();
-        builder
-            .HasMany(s => s.JobVacancies)
-            .WithOne(s => s.Category);
-        builder.
-            HasMany(s => s.EducationVacancies)
-            .WithOne(s => s.Category);
+       
 
     }
 }

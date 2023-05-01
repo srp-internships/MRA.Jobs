@@ -1,4 +1,6 @@
-﻿namespace MRA_Jobs.Domain.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace MRA_Jobs.Domain.Entities;
 
 public class JobVacancy : Vacancy
 {

@@ -14,7 +14,7 @@ public class JobVacancyConfiguration : IEntityTypeConfiguration<JobVacancy>
             .WithMany(c => c.JobVacancies)
             .HasForeignKey(j => j.CategoryId)
             .OnDelete(DeleteBehavior.NoAction);
-
+       
         builder.HasData(new JobVacancy()
         {
             Id = 3,
