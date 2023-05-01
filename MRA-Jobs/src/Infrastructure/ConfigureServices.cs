@@ -18,6 +18,11 @@ public static class ConfigureServices
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>(),
                                 AppDomain.CurrentDomain.GetAssemblies());
+
+
+        
+
+
         //services
         //    .AddDefaultIdentity<ApplicationUser>()
         //    .AddRoles<IdentityRole>()

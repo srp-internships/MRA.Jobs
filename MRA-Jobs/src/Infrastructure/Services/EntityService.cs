@@ -120,6 +120,7 @@ public class EntityService<TEntity> : IEntityService<TEntity>
                 .Attach(updatedEntity)
                 .State = EntityState.Modified;
                 response.Data =  _mapper.Map<TGetEntity>(entity);
+            await _context.SaveChangesAsync();
          
         }
         catch (Exception ex)
