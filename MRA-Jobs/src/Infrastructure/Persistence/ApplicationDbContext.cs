@@ -31,7 +31,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
     public ApplicationDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseSqlServer("data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("Server=SQL8005.site4now.net; Database=mrajobs; User Id=db_a987fd_mrajobs_admin; Password=Lodkaspring2023; Encrypt=False;");
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }
