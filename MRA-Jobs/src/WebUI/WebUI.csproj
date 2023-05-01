@@ -42,7 +42,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Controllers\GenericController.cs" />
+      <Compile Remove="Controllers\JobVacancyController.cs" />
     </ItemGroup>
 
 </Project>
