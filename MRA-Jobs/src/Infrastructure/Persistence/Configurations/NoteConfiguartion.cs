@@ -10,20 +10,15 @@ public class NoteConfiguration : IEntityTypeConfiguration<Note>
     {
         builder.ToTable(nameof(Note));
         builder.HasKey(n => n.Id);
-        builder.HasData(new Note()       
+
+        builder.HasOne(n => n.User)
+            .WithMany(u => u.Notes)
+            .HasForeignKey(n => n.UserId);
+
+        builder.HasData(new Note()
         {
-            User = new User
-            {
-                Age = 30,
-                Email = "",
-                Password = "",
-                Patronymic = "",
-                BirthDay = DateTime.UtcNow,
-                FirstName = "",
-                LastName = "",
-                PhoneNumber = "",
-                RoleId = 1
-            },
+            Id = 1,
+            UserId = 1,
             Date = DateTime.UtcNow,
             Description = "",
             AplicationId = 1

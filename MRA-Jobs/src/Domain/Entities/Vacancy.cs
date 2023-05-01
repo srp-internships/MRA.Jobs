@@ -7,6 +7,6 @@ public abstract class Vacancy : BaseEntity
     public DateTime CreatedAt { get; set; }
     public DateTime PublishDate { get; set; }
     public DateTime EndDate { get; set; }
-    public int CategoryId { get; set; }
+    public long CategoryId { get; set; }
     public Category Category { get; set; }
 }

@@ -14,6 +14,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         {
             new User()
             {
+                Id = 1,
                 RoleId = 1,
                 FirstName = "TestName",
                 LastName = "TestLastName",

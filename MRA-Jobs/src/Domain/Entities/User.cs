@@ -9,5 +9,6 @@ public class User : BaseEntity
     public string Email { get; set; }
     public string Password { get; set; }
     public DateTime BirthDay { get; set; }
-    public int RoleId { get; set; }
+    public long RoleId { get; set; }
+    public ICollection<Note> Notes { get; set; }
 }
