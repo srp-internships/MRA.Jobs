@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebUI.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class GenericController : ControllerBase
+public class GenericController : BaseController
 {
 
 }
