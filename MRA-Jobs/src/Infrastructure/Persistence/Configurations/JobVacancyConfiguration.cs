@@ -10,7 +10,7 @@ public class JobVacancyConfiguration : IEntityTypeConfiguration<JobVacancy>
     {
         builder.ToTable(nameof(Vacancy));
 
-        builder.HasKey(j => j.Id);
+        //builder.HasKey(j => j.Id);
 
         builder.HasOne(j => j.Category)
             .WithMany(c => c.JobVacancies)

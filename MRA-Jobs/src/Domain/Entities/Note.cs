@@ -1,6 +1,6 @@
 namespace MRA_Jobs.Domain.Entities;
 
-public class Note 
+public class Note : BaseEntity
 {
     public int AplicationId  { get; set; }
     public string Description { get; set; }
