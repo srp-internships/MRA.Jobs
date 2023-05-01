@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using MRA_Jobs.Application.Abstractions;
 using MRA_Jobs.Infrastructure;
 using MRA_Jobs.Infrastructure.Persistence;
+using MRA_Jobs.Infrastructure.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +20,8 @@ public static class ConfigureServices
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>(),
                                 AppDomain.CurrentDomain.GetAssemblies());
-
+        services.AddScoped(typeof(IEntityService<>),typeof(EntityService<>));
+        services.AddScoped<ICategoryService, CategoryService>();
 
         
 
