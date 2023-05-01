@@ -1,4 +1,5 @@
 ﻿namespace MRA_Jobs.Application.Common.Interfaces;
-internal interface IEducationVacancyService :
+public interface IEducationVacancyService : IEntityService<EducationVacancy>
 {
+
 }

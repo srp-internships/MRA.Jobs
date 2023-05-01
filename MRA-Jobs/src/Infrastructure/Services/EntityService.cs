@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using MRA_Jobs.Application.Abstractions;
 using MRA_Jobs.Application.Common.Models;
@@ -13,8 +8,8 @@ namespace MRA_Jobs.Infrastructure.Services;
 public class EntityService<TEntity> : IEntityService<TEntity>
     where TEntity : class
 {
-    private ApplicationDbContext _context;
-    private IMapper _mapper;
+    private readonly ApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
     public EntityService(ApplicationDbContext context, IMapper mapper)
     {
@@ -49,18 +44,18 @@ public class EntityService<TEntity> : IEntityService<TEntity>
             var entity = await _context.Set<TEntity>().FindAsync(id);
             if (entity == null)
             {
-                response.Success=false;
+                response.Success = false;
                 response.Message = $"{nameof(TEntity)} not found";
             }
-            else 
+            else
             {
                 _context.Set<TEntity>().Remove(entity);
-               await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
         }
         catch (Exception ex)
         {
-            response.Success =false;
+            response.Success = false;
             response.Message = ex.Message;
         }
         return response;
@@ -119,13 +114,13 @@ public class EntityService<TEntity> : IEntityService<TEntity>
         var response = new ServiceResponse<TGetEntity>();
         try
         {
-           
-            var updatedEntity =_mapper.Map<TEntity>(entity);
+
+            var updatedEntity = _mapper.Map<TEntity>(entity);
             var newEntity = _context.Set<TEntity>()
                 .Attach(updatedEntity)
                 .State = EntityState.Modified;
-                response.Data =  _mapper.Map<TGetEntity>(entity);
-         
+            response.Data = _mapper.Map<TGetEntity>(entity);
+
         }
         catch (Exception ex)
         {
