@@ -1,7 +1,6 @@
 ﻿namespace MRA_Jobs.Domain.Entities;
-public class Status
+public class Status:BaseEntity
 {
-    public int Id { get; set; }
     public string Name { get; set; }
     public ICollection<Application> Applications { get; set; }
 }

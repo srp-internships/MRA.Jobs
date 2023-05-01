@@ -13,5 +13,6 @@ public class ApplicantConfiguration : IEntityTypeConfiguration<Applicant>
     public void Configure(EntityTypeBuilder<Applicant> builder)
     {
         builder.HasKey(a => a.Id);
+        builder.Property(s=>s.Id).ValueGeneratedOnAdd();
     }
 }
