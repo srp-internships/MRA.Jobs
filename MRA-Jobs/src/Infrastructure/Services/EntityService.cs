@@ -121,10 +121,11 @@ public class EntityService<TEntity> : IEntityService<TEntity>
         {
            
             var updatedEntity =_mapper.Map<TEntity>(entity);
-            var newEntity = _context.Set<TEntity>()
+            _context.Set<TEntity>()
                 .Attach(updatedEntity)
                 .State = EntityState.Modified;
                 response.Data =  _mapper.Map<TGetEntity>(entity);
+          await  _context.SaveChangesAsync();
          
         }
         catch (Exception ex)
