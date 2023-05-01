@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 using MRA_Jobs.Domain.Entities;
 
 namespace MRA_Jobs.Infrastructure.Persistence;
