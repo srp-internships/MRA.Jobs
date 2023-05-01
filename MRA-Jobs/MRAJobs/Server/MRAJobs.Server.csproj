@@ -12,7 +12,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Client\MRAJobs.Client.csproj" />
-    <ProjectReference Include="..\Shared\MRAJobs.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 
