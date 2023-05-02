@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MRA_Jobs.Application.Common.Interfaces;
+
 
 
 namespace MRA_Jobs.Server.Controllers
@@ -20,6 +20,7 @@ namespace MRA_Jobs.Server.Controllers
         {
             var categories = await _service.GetAll<GetCategoryDto>();
             return Ok(categories);
+         
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(long id)
