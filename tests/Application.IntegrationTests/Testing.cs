@@ -33,6 +33,7 @@ public partial class Testing
         }).GetAwaiter().GetResult();
     }
 
+
     public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
     {
         using var scope = _scopeFactory.CreateScope();
