@@ -15,12 +15,12 @@ public class EducationVacancyConfiguration : IEntityTypeConfiguration<EducationV
             .HasForeignKey(e => e.CategoryId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        //builder.HasData(new EducationVacancy
-        //{
-        //    Id = 5,
-        //    Title = "Training class",
-        //    Description = "tersd",
-        //    ShortDescription = "sad"
-        //});
+        builder.HasData(new EducationVacancy
+        {
+            Id = 5,
+            Title = "Training class",
+            Description = "tersd",
+            ShortDescription = "sad"
+        });
     }
 }

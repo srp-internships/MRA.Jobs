@@ -20,6 +20,8 @@ public static class ConfigureServices
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>(),
                                 AppDomain.CurrentDomain.GetAssemblies());
+
+
         services.AddScoped(typeof(IEntityService<>),typeof(EntityService<>));
         services.AddScoped<ICategoryService, CategoryService>();
 
