@@ -5,6 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA.Jobs.Application.Contracts.AplicationNote.Commands;
-internal class UpdateAplicationNoteCommand
+public class UpdateAplicationNoteCommand
 {
+    public long Id { get; set; }
+    public long AplicationId { get; set; }
+    public string Description { get; set; }
+    public DateTime Date { get; set; }
+    public long? UserId { get; set; }
 }
