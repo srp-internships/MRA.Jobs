@@ -1,6 +1,4 @@
-﻿using MRA_Jobs.Application.Common.Models;
-
-namespace MRA_Jobs.Infrastructure.Services;
+﻿namespace MRA_Jobs.Infrastructure.Services;
 public class JobVacancyService : IJobVacancyService
 {
     public Task<ServiceResponse<TGetEntity>> Add<TAddEntity, TGetEntity>(TAddEntity entity)

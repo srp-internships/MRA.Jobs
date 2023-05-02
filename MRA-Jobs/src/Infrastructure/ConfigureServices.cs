@@ -24,6 +24,7 @@ public static class ConfigureServices
 
         services.AddScoped(typeof(IEntityService<>),typeof(EntityService<>));
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<INoteService, NoteService>();
 
         
 
