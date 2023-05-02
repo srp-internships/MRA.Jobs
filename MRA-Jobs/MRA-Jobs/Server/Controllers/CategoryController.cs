@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MRA-Jobs.Server.Controllers
+namespace MRA_Jobs.Server.Controllers
 {
     [Route("api/[controller]")]
 [ApiController]
