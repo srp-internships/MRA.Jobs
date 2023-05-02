@@ -11,6 +11,8 @@ using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Command;
 
+using Domain.Entities;
+
 public class CreateJobVacancyCommandHadler : IRequestHandler<CreateJobVacancyCommand, long>
 {
     private readonly IApplicationDbContext _context;
