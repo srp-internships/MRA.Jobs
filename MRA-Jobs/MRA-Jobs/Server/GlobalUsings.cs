@@ -1,0 +1,1 @@
+﻿global using MRA_Jobs.Application.Common.Models.Dtos.CategoryDtos;
