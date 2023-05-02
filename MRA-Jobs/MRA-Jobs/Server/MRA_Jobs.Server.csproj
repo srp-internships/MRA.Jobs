@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>MRA-Jobs.Server</RootNamespace>
+    <RootNamespace>MRA_Jobs.Server</RootNamespace>
     <AssemblyName>$(AssemblyName.Replace(' ', '_'))</AssemblyName>
   </PropertyGroup>
 
@@ -20,8 +20,7 @@
     <ProjectReference Include="..\..\src\Application\Application.csproj" />
     <ProjectReference Include="..\..\src\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\Client\MRA-Jobs.Client.csproj" />
-    <ProjectReference Include="..\Shared\MRA-Jobs.Shared.csproj" />
+    <ProjectReference Include="..\Client\MRA_Jobs.Client.csproj" />
   </ItemGroup>
 
 

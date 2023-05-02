@@ -21,7 +21,7 @@ namespace MRA_Jobs.Server.Controllers
             var categories = await _service.GetAll<GetCategoryDto>();
             return Ok(categories);
         }
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(long id)
         {
             var category = await _service.GetById<GetCategoryDto>(id);
@@ -39,7 +39,7 @@ namespace MRA_Jobs.Server.Controllers
             var category = await _service.Add<AddCategoryDto, GetCategoryDto>(add_category);
             return Ok(category);
         }
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete( long id)
         {
             var result = await _service.Delete(id);
