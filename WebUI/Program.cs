@@ -4,7 +4,7 @@ using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Web;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Configuration.AddJsonFile("dbsettings.json", optional: true);
 // Add services to the container.
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -45,7 +45,7 @@ app.UseSwaggerUi3(settings =>
 app.UseRouting();
 
 app.UseAuthentication();
-//app.UseIdentityServer();
+app.UseIdentityServer();
 app.UseAuthorization();
 
 app.MapControllerRoute(

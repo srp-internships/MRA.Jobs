@@ -21,8 +21,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Application\MRA.Jobs.Application.csproj" />
-        <ProjectReference Include="..\..\src\Infrastructure\MRA.Jobs.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\Application\MRA.Jobs.Application.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\MRA.Jobs.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
