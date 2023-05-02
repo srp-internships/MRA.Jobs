@@ -1,0 +1,20 @@
+name: Delete Branch
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  delete-branch:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Delete Branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git branch -d ${{ github.head_ref }}
+          git push origin --delete ${{ github.head_ref }}
