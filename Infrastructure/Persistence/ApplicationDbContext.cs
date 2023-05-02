@@ -1,24 +1,25 @@
 ﻿using System.Reflection;
-using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Domain.Entities;
-using MRA.Jobs.Infrastructure.Identity;
-using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using Duende.IdentityServer.EntityFramework.Options;
 using MediatR;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using MRA.Jobs.Application.Common.Interfaces;
+using MRA.Jobs.Domain.Entities;
+using MRA.Jobs.Infrastructure.Identity;
+using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 
 namespace MRA.Jobs.Infrastructure.Persistence;
 
-public class ApplicationDbContext : DbContext, IApplicationDbContext
+public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
 {
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
-    internal ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
-        base(options)
+    internal ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions) :
+        base(options, operationalStoreOptions)
     {
 
     }
@@ -28,7 +29,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         IOptions<OperationalStoreOptions> operationalStoreOptions,
         IMediator mediator,
         AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
-        : base(options)
+        : base(options, operationalStoreOptions)
     {
         _mediator = mediator;
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
@@ -62,10 +63,19 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
 {
     public ApplicationDbContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        //optionsBuilder.UseSqlServer("Server=SQL8005.site4now.net; Database=mrajobs; User Id=db_a987fd_mrajobs_admin; Password=Lodkaspring2023; Encrypt=False;");
-        optionsBuilder.UseSqlServer("data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True");
+        var basePath = Directory.GetCurrentDirectory();
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(basePath)
+            .AddJsonFile("dbsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"dbsettings.Development.json", optional: true, reloadOnChange: true)
+            .Build();
 
-        return new ApplicationDbContext(optionsBuilder.Options);
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+        optionsBuilder.UseSqlServer(connectionString);
+        var operationalStoreOptions = new OperationalStoreOptions();
+        var operationalStoreOptionsAccessor = Options.Create(operationalStoreOptions);
+
+        return new ApplicationDbContext(optionsBuilder.Options, operationalStoreOptionsAccessor);
     }
 }

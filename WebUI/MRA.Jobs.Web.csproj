@@ -35,7 +35,11 @@
         </PackageReference>
     </ItemGroup>
 
-    <!-- Auto-generated Open API specification and Angular TypeScript clients -->
+    <ItemGroup>
+      <Folder Include="wwwroot\api\" />
+    </ItemGroup>
+
+    <!-- Auto-generated Open API specification -->
     <PropertyGroup>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     </PropertyGroup>

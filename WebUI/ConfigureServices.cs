@@ -28,7 +28,6 @@ public static class ConfigureServices
 
         services.AddRazorPages();
 
-        // Customise default API behaviour
         services.Configure<ApiBehaviorOptions>(options =>
             options.SuppressModelStateInvalidFilter = true);
 
