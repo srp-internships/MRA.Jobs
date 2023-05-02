@@ -12,8 +12,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.5" PrivateAssets="all" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\MRA-Jobs.Shared.csproj" />
-  </ItemGroup>
-
 </Project>
