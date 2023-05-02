@@ -26,9 +26,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRAJobs.Server", "MRA-Jobs\Server\MRAJobs.Server.csproj", "{3CE4E4E7-5B15-4143-A30F-616192E966A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRAJobs.Client", "MRA-Jobs\Client\MRAJobs.Client.csproj", "{CE337CDD-B91D-45BF-B3D5-2861BDF9FA90}"
+=======
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA_Jobs.Server", "MRA-Jobs\Server\MRA_Jobs.Server.csproj", "{3CE4E4E7-5B15-4143-A30F-616192E966A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA_Jobs.Client", "MRA-Jobs\Client\MRA_Jobs.Client.csproj", "{CE337CDD-B91D-45BF-B3D5-2861BDF9FA90}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA-Jobs.Shared", "MRA-Jobs\Shared\MRA-Jobs.Shared.csproj", "{8A8CF012-7D5C-4D09-B643-17ED257499DD}"
+>>>>>>> 1eceeeb1bcdc4422b5153bb2452c95612f09cc09
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
