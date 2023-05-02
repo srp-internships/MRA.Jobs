@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MRA_Jobs.Application.Common.Models.Dtos.NoteDtos;
 
 namespace MRA_Jobs.Server.Controllers
 {
@@ -7,6 +8,10 @@ namespace MRA_Jobs.Server.Controllers
     [ApiController]
     public class NoteController : ControllerBase
     {
-        
+        [HttpGet] public IActionResult Get(GetNoteDto getNoteDto)
+        {
+
+            return Ok();
+        }
     }
 }
