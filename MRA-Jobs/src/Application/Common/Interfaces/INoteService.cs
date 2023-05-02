@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA_Jobs.Application.Common.Interfaces;
-internal interface INoteService
+public interface INoteService:IEntityService<Note>
 {
 }
