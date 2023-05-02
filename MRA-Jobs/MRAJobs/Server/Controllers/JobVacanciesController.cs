@@ -17,6 +17,7 @@ namespace MRAJobs.Server.Controllers
 
 
         // GET: api/JobVacancies
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JobVacancy>>> GetJobVacancies()
         {
