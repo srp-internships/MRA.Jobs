@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MRA_Jobs.Application.Common.Interfaces;
 
 namespace MRAJobs.Server.Controllers
 {
@@ -6,5 +7,13 @@ namespace MRAJobs.Server.Controllers
     [ApiController]
     public class JobVacanciesController : ControllerBase
     {
+        private readonly IJobVacancyService _jobVacancyService;
+
+        public JobVacanciesController(IJobVacancyService jobVacancyService)
+        {
+            _jobVacancyService = jobVacancyService;
+        }
+
+
     }
 }
