@@ -3,10 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
 
 namespace MRA.Jobs.Web.Controllers;
-[Route("api/[controller]")]
-[ApiController]
 public class CategoryController : ApiControllerBase
 {
     private readonly ILogger<OidcConfigurationController> _logger;
