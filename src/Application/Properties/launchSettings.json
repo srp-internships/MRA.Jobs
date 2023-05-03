@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MRA.Jobs.Application": {
+      "commandName": "Project"
+    },
+    "Профиль 1": {
+      "commandName": "Project"
+    }
+  }
+}

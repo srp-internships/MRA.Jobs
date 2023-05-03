@@ -6,6 +6,39 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/api/ApplicationNote": {
+      "post": {
+        "tags": [
+          "ApplicationNote"
+        ],
+        "operationId": "ApplicationNote_Add",
+        "requestBody": {
+          "x-name": "noteCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatAplicationNoteCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/JobVacancies": {
       "post": {
         "tags": [
@@ -87,6 +120,29 @@
   },
   "components": {
     "schemas": {
+      "CreatAplicationNoteCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "aplicationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        }
+      },
       "CreateJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
