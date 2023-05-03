@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MRA.Jobs.Infrastructure.Persistence.Configurations;
-public class ApplicationConfiguration : IEntityTypeConfiguration<Domain.Entities.Application>
+using Domain.Entities;
+
+public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
 {
-    public void Configure(EntityTypeBuilder<Domain.Entities.Application> builder)
+    public void Configure(EntityTypeBuilder<Application> builder)
     {
         builder.HasKey(a => a.Id);
 
@@ -16,8 +18,8 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Domain.Entities
             .HasMaxLength(3000)
             .IsRequired();
 
-        builder.HasOne(a => a.Applicant)
+        /*builder.HasOne(a => a.Applicant)
             .WithMany(at => at.Applications)
-            .HasForeignKey(a => a.ApplicantId);
+            .HasForeignKey(a => a.ApplicantId);*/
     }
 }
