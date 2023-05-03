@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Domain", "Domain\MRA.Jobs.Domain.csproj", "{C7E89A3E-A631-4760-8D61-BD1EAB1C4E69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Domain", "src\Domain\MRA.Jobs.Domain.csproj", "{C7E89A3E-A631-4760-8D61-BD1EAB1C4E69}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Application", "Application\MRA.Jobs.Application.csproj", "{34C0FACD-F3D9-400C-8945-554DD6B0819A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Application", "src\Application\MRA.Jobs.Application.csproj", "{34C0FACD-F3D9-400C-8945-554DD6B0819A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Infrastructure", "Infrastructure\MRA.Jobs.Infrastructure.csproj", "{117DA02F-5274-4565-ACC6-DA9B6E568B09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Infrastructure", "src\Infrastructure\MRA.Jobs.Infrastructure.csproj", "{117DA02F-5274-4565-ACC6-DA9B6E568B09}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{664D406C-2F83-48F0-BFC3-408D5CB53C65}"
 EndProject
@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.UnitTests", "tests\D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.IntegrationTests", "tests\Application.IntegrationTests\Application.IntegrationTests.csproj", "{277029AF-D9E1-4B75-9F11-48FEA7345AD7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Web", "WebUI\MRA.Jobs.Web.csproj", "{22454EE9-16B3-4B7A-8352-37E59B858155}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Web", "src\WebUI\MRA.Jobs.Web.csproj", "{22454EE9-16B3-4B7A-8352-37E59B858155}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E2DA20AA-28D1-455C-BF50-C49A8F831633}"
 	ProjectSection(SolutionItems) = preProject
@@ -26,7 +26,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRA.Jobs.Application.Contracts", "Application.Contracts\MRA.Jobs.Application.Contracts.csproj", "{1C3CAC1D-61BB-4146-90FA-9A07B1889AA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Application.Contracts", "src\Application.Contracts\MRA.Jobs.Application.Contracts.csproj", "{C8D144EB-C2C2-49EB-BFD2-F322F5148300}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{384F34D2-454F-4878-A40D-69B36E9DC43B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,18 +64,23 @@ Global
 		{22454EE9-16B3-4B7A-8352-37E59B858155}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22454EE9-16B3-4B7A-8352-37E59B858155}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22454EE9-16B3-4B7A-8352-37E59B858155}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C3CAC1D-61BB-4146-90FA-9A07B1889AA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C3CAC1D-61BB-4146-90FA-9A07B1889AA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C3CAC1D-61BB-4146-90FA-9A07B1889AA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C3CAC1D-61BB-4146-90FA-9A07B1889AA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8D144EB-C2C2-49EB-BFD2-F322F5148300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8D144EB-C2C2-49EB-BFD2-F322F5148300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8D144EB-C2C2-49EB-BFD2-F322F5148300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8D144EB-C2C2-49EB-BFD2-F322F5148300}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{C7E89A3E-A631-4760-8D61-BD1EAB1C4E69} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
+		{34C0FACD-F3D9-400C-8945-554DD6B0819A} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
+		{117DA02F-5274-4565-ACC6-DA9B6E568B09} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
 		{DEFF4009-1FAB-4392-80B6-707E2DC5C00B} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
 		{DC37FD87-552C-4613-9F16-1537CA522898} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
 		{277029AF-D9E1-4B75-9F11-48FEA7345AD7} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
+		{22454EE9-16B3-4B7A-8352-37E59B858155} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
+		{C8D144EB-C2C2-49EB-BFD2-F322F5148300} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3CB609D9-5D54-4C11-A371-DAAC8B74E430}

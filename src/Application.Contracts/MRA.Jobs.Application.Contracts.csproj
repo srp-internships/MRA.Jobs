@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="11.1.0" />
+    <PackageReference Include="Sieve" Version="2.5.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Applications\Queries\" />
+    <Folder Include="Common\" />
+    <Folder Include="JobVacancies\Queries\" />
+    <Folder Include="VacancyCategories\Queries\" />
+  </ItemGroup>
+
+</Project>

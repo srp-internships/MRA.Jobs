@@ -20,6 +20,9 @@ public partial class Testing
     private static Respawner _checkpoint = null!;
     private static string _currentUserId;
 
+
+
+
     [OneTimeSetUp]
     public void RunBeforeAnyTests()
     {
@@ -32,6 +35,7 @@ public partial class Testing
             TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" }
         }).GetAwaiter().GetResult();
     }
+
 
     public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
     {
