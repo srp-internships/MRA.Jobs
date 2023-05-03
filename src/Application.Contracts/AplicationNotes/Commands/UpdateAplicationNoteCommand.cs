@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MRA.Jobs.Application.Contracts.AplicationNote.Commands;
+namespace MRA.Jobs.Application.Contracts.AplicationNotes.Commands;
 public class UpdateAplicationNoteCommand
 {
     public long Id { get; set; }

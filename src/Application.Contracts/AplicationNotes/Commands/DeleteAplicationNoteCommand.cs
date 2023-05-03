@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MRA.Jobs.Application.Contracts.AplicationNote.Commands;
+namespace MRA.Jobs.Application.Contracts.AplicationNotses.Commands;
 public class DeleteAplicationNoteCommand
 {
     public long id { get; set; }
