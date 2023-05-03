@@ -12,6 +12,7 @@
   <ItemGroup>
     <Folder Include="Applications\Queries\" />
     <Folder Include="JobVacancies\Queries\" />
+    <Folder Include="VacancyCategories\Queries\" />
   </ItemGroup>
 
 </Project>
