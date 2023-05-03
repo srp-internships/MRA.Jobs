@@ -1,8 +1,5 @@
-﻿using MRA.Jobs.Application.Common.Mappings;
-using MRA.Jobs.Domain.Entities;
-
-namespace MRA.Jobs.Application.Contracts.JobVacancies.Queries;
-public class GetJobVacancyDto : IMapFrom<JobVacancy>
+﻿namespace MRA.Jobs.Application.Contracts.JobVacancies.Queries;
+public class GetJobVacancyDto
 {
     public long Id { get; set; }
     public string Title { get; set; }
