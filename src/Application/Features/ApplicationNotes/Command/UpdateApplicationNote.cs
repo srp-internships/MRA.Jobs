@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MRA.Jobs.Application.Features.ApplicationNote.Command;
+namespace MRA.Jobs.Application.Features.ApplicationNotes.Command;
 internal class UpdateApplicationNote
 {
 }
