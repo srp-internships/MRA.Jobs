@@ -24,7 +24,6 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     public override void OnException(ExceptionContext context)
     {
         HandleException(context);
-
         base.OnException(context);
     }
 
