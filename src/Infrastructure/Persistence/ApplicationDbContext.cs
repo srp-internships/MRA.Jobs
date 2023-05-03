@@ -38,6 +38,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<JobVacancy> JobVacancies { get; set; }
     public DbSet<VacancyCategory> Categories { get; set; }
 
+    public DbSet<ApplicationNote> Notes { get; set; }
+
+
+
 
     #region override
     protected override void OnModelCreating(ModelBuilder builder)
