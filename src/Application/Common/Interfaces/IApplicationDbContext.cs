@@ -7,6 +7,7 @@ public interface IApplicationDbContext
 {
     DbSet<JobVacancy> JobVacancies { get; }
     DbSet<VacancyCategory> Categories { get; }
+    DbSet<Applicant> Applicants { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
