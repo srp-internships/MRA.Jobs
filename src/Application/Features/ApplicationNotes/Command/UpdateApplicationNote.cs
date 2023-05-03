@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA.Jobs.Application.Features.ApplicationNotes.Command;
-internal class UpdateApplicationNote
+public class UpdateApplicationNote
 {
 }
