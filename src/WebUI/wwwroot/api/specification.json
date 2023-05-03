@@ -12,6 +12,24 @@
           "Category"
         ],
         "operationId": "Category_Get",
+    "/api/Applicant": {
+      "post": {
+        "tags": [
+          "Applicant"
+        ],
+        "operationId": "Applicant_CreateNewApplicant",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApplicantCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -53,6 +71,10 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -141,6 +163,36 @@
   },
   "components": {
     "schemas": {
+      "CreateApplicantCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "patronymic": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthDay": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "CreateJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,

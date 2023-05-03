@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Applicant\Queries" />
     <Folder Include="Applications\Queries\" />
     <Folder Include="Common\" />
     <Folder Include="JobVacancies\Queries\" />
