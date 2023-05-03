@@ -14,7 +14,7 @@
     <Folder Include="Applicant\Queries" />
     <Folder Include="Applications\Queries\" />
     <Folder Include="Common\" />
-    <Folder Include="VacancyCategories\Queries\" />
+    <Folder Include="JobVacancies\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
