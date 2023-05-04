@@ -7,6 +7,7 @@ using MRA.Jobs.Application.Contracts.Applicant.Commands;
 namespace MRA.Jobs.Application.Features.Applicant.Command;
 using MRA.Jobs.Domain.Entities;
 
+/*
 public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantCommand, long>
 {
     private readonly IApplicationDbContext _context;
@@ -64,3 +65,4 @@ public class ApplicantCommandValidator : AbstractValidator<CreateApplicantComman
 
     }
 }
+*/
