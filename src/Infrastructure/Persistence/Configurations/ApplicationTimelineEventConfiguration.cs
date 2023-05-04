@@ -17,7 +17,7 @@ public class ApplicationTimelineEventConfiguration : IEntityTypeConfiguration<Ap
         builder.Property(t => t.Id)
             .ValueGeneratedOnAdd();
         builder.HasOne(t => t.Application)
-            .WithOne()
-            .HasForeignKey<ApplicationTimelineEvent>(t => t.ApplicationId);
+            .WithMany(t => t.applicationTimelineEvents)
+            .HasForeignKey(t => t.Id);
     }
 }

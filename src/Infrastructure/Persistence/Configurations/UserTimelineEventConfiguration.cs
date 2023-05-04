@@ -13,7 +13,7 @@ public class UserTimelineEventConfiguration : IEntityTypeConfiguration<UserTimel
         builder.Property(t => t.Id)
             .ValueGeneratedOnAdd();
         builder.HasOne(t => t.User)
-            .WithOne()
-            .HasForeignKey<UserTimelineEvent>(t => t.UserId);
+            .WithMany(t => t.userTimelineEvents)
+            .HasForeignKey(t => t.UserId);
     }
 }

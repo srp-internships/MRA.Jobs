@@ -17,7 +17,7 @@ public class VacancyTimelineEventConfiguration : IEntityTypeConfiguration<Vacanc
         builder.Property(t => t.Id)
             .ValueGeneratedOnAdd();
         builder.HasOne(t => t.Vacancy)
-            .WithOne()
-            .HasForeignKey<VacancyTimelineEvent>(t => t.VacancyId);
+            .WithMany(t=>t.VacancyTimelineEvents)
+            .HasForeignKey(t => t.VacancyId);
     }
 }
