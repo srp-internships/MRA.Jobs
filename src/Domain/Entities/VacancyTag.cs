@@ -9,7 +9,6 @@ public class VacancyTag: BaseEntity
 {
     public Tag Tag { get; set; }
     public int TagId { get; set; }
-
     public Vacancy Vacancy { get; set; }
     public int VacancyId { get; set; }   
 }
