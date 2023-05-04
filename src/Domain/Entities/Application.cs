@@ -16,4 +16,6 @@ public class Application : BaseAuditableEntity
     public string ResumeUrl { get; set; }
 
     public ApplicationStatus StatusId { get; set; }
+
+    public ICollection<ApplicationTimelineEvent> applicationTimelineEvents { get; set; }
 }
