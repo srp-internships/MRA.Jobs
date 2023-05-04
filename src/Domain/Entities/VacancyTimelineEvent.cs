@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA.Jobs.Domain.Entities;
-public class UserTimelineEvent : TimelineEvent
+internal class VacancyTimelineEvent
 {
-    public long UserId { get; set; }
-    public User User { get; set; }
 }

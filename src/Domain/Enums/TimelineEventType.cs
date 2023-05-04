@@ -7,5 +7,10 @@ using System.Threading.Tasks;
 namespace MRA.Jobs.Domain.Entities;
 public enum TimelineEventType
 {
-    None,
+    Created,
+    Updated,
+    Deleted,
+    StatusChanged,
+    Note,
+    Error
 }
