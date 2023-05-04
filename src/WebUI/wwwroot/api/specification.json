@@ -5,22 +5,7 @@
     "title": "MRA.Jobs API",
     "version": "1.0.0"
   },
-  "paths": { 
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
+  "paths": {
     "/api/Category": {
       "get": {
         "tags": [
