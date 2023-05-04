@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA.Jobs.Domain.Entities;
-internal class TimelineEventType
+public enum TimelineEventType
 {
+    None,
 }

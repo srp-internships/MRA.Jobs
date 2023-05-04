@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA.Jobs.Domain.Entities;
-internal class TimelineEvent
+public class TimelineEvent:BaseEntity
 {
+    public int CreateByUserId { get; set; }
+    public string Note { get; set; }
+    public DateTime Time { get; set; }
 }
