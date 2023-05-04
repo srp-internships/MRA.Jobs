@@ -5,12 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA.Jobs.Domain.Entities;
-public enum TimelineEventType 
+public class VacancyTimelineEvent : TimelineEvent
 {
-    Created,
-    Updated,
-    Deleted,
-    StatusChanged,
-    Note,
-    Error
+    public long VacancyId { get; set; }
+    public Vacancy Vacancy { get; set; }
 }

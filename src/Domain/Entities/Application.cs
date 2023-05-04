@@ -11,4 +11,5 @@ public class Application : BaseEntity
     public string ApplicantAbout { get; set; }
     public DateTime ApplicationDate { get; set; }
     public long StatusId { get; set; }
+    public ICollection<ApplicationTimelineEvent> applicationTimelineEvents { get; set; }
 }
