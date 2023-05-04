@@ -3,8 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Infrastructure.Persistence.Configurations;
-internal class VacancyTimelineEventConfiguration
+public class VacancyTimelineEventConfiguration : IEntityTypeConfiguration<VacancyTimelineEvent>
 {
+    public void Configure(EntityTypeBuilder<VacancyTimelineEvent> builder)
+    {
+        builder.ToTable(nameof(TimelineEvent));
+        builder.HasKey(t => t.Id);
+        builder.Property(t => t.Id)
+            .ValueGeneratedOnAdd();
+        builder.HasOne(t => t.Vacancy)
+            .WithOne()
+            .HasForeignKey<VacancyTimelineEvent>(t => t.VacancyId);
+    }
 }

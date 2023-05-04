@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MRA.Jobs.Domain.Entities;
@@ -13,6 +9,11 @@ public class UserTimelineEventConfiguration : IEntityTypeConfiguration<UserTimel
     public void Configure(EntityTypeBuilder<UserTimelineEvent> builder)
     {
         builder.ToTable(nameof(TimelineEvent));
-
+        builder.HasKey(t => t.Id);
+        builder.Property(t => t.Id)
+            .ValueGeneratedOnAdd();
+        builder.HasOne(t => t.User)
+            .WithOne()
+            .HasForeignKey<UserTimelineEvent>(t => t.UserId);
     }
 }
