@@ -39,6 +39,11 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<VacancyCategory> Categories { get; set; }
     public DbSet<User> Users { get; }
 
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<VacancyTag> VacancyTags { get; set; }
+
+    public DbSet<UserTag> UserTags { get; set; }
+
     public DbSet<Applicant> Applicants { get; set; }
 
     #region override

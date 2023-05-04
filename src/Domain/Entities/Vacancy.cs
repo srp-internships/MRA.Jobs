@@ -13,4 +13,5 @@ public abstract class Vacancy : BaseEntity
     public ICollection<Application> Applications { get; set; }
     public ICollection<VacancyTimelineEvent> VacancyTimelineEvents { get; set; }
 
+    public ICollection<VacancyTag> VacancyTags { get; set; }
 }
