@@ -21,39 +21,6 @@
         }
       }
     },
-    "/api/ApplicationNote": {
-      "post": {
-        "tags": [
-          "ApplicationNote"
-        ],
-        "operationId": "ApplicationNote_Add",
-        "requestBody": {
-          "x-name": "noteCommand",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatAplicationNoteCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Category": {
       "get": {
         "tags": [
