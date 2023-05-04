@@ -11,4 +11,5 @@ public abstract class Vacancy : BaseEntity
     public VacancyCategory Category { get; set; }
 
     public ICollection<Application> Applications { get; set; }
+    public ICollection<VacancyTag> VacancyTags { get; set; }
 }
