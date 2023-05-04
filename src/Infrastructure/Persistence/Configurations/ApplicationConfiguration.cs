@@ -8,13 +8,16 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Domain.Entities
     {
         builder.HasKey(a => a.Id);
 
-        builder.Property(a => a.ApplicantCvPath)
-            .HasMaxLength(255)
-            .IsRequired();
+        builder.Property(a => a.ResumeUrl)
+            .IsRequired()
+            .HasMaxLength(255);
 
-        builder.Property(a => a.ApplicantAbout)
-            .HasMaxLength(3000)
-            .IsRequired();
+        builder.Property(a => a.CoverLetter)
+            .IsRequired()
+            .HasMaxLength(255);
+
+        builder.Property(a => a.History)
+            .HasMaxLength(255);
 
         builder.HasOne(a => a.Applicant)
             .WithMany(at => at.Applications)
