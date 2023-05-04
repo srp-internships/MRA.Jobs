@@ -30,7 +30,7 @@ public class JobVacanciesController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<JobVacancyResponse>>> GetJobVacanies(GetJobVacanciesQuery request, CancellationToken cancellationToken)
+    public async Task<ActionResult<List<JobVacancyResponse>>> GetJobVacancies(GetJobVacanciesQuery request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.Interfaces;
@@ -16,16 +11,16 @@ public class GetVacancyCategoriesQueryHandler : IRequestHandler<GetVacancyCatego
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetVacancyCategoriesQueryHandler(IApplicationDbContext context,IMapper mapper)
+    public GetVacancyCategoriesQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
     public async Task<List<VacancyCategoryResponce>> Handle(GetVacancyCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var categories  =await _context.Categories.
-            Include(s=>s.EducationVacancies)
-            .Include(s=>s.JobVacancies)
+        var categories = await _context.Categories
+            //Include(s=>s.)
+            .Include(s => s.JobVacancies)
             .ToListAsync();
 
         return _mapper.
