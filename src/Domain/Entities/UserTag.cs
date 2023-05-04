@@ -9,5 +9,7 @@ public class UserTag :BaseEntity
 {
     public Tag Tag { get; set; }
     public int TagId { get; set; }
+
+    public User User { get; set; }
     public int UserId { get; set; }
 }
