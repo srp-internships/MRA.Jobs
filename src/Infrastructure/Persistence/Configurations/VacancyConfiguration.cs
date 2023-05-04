@@ -15,6 +15,10 @@ public class VacancyConfiguration : IEntityTypeConfiguration<Vacancy>
         builder.Property(p => p.Id)
             .ValueGeneratedOnAdd();
 
+        builder.HasOne(v => v.Category)
+            .WithMany(c => c.Vacancies)
+            .HasForeignKey(v => v.CategoryId);
+
         builder.Property(t => t.Title)
             .HasMaxLength(300)
             .IsRequired();
