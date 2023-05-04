@@ -14,5 +14,6 @@ public class ApplicantConfiguration : IEntityTypeConfiguration<Applicant>
     {
         builder.HasKey(a => a.Id);
         builder.Property(s => s.Id).ValueGeneratedOnAdd();
+        builder.HasMany(x => x.UserTags).WithOne(x => x.Tag);
     }
 }
