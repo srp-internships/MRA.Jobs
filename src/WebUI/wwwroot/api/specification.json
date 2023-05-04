@@ -6,6 +6,39 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/api/Application": {
+      "post": {
+        "tags": [
+          "Application"
+        ],
+        "operationId": "Application_CreateApplication",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApplicationCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/JobVacancies": {
       "post": {
         "tags": [
@@ -87,6 +120,36 @@
   },
   "components": {
     "schemas": {
+      "CreateApplicationCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "applicantId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "vacancyId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "applicantCvPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "applicantAbout": {
+            "type": "string",
+            "nullable": true
+          },
+          "applicationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "statusId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "CreateJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
