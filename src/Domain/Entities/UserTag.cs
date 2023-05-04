@@ -8,8 +8,8 @@ namespace MRA.Jobs.Domain.Entities;
 public class UserTag :BaseEntity
 {
     public Tag Tag { get; set; }
-    public int TagId { get; set; }
+    public long TagId { get; set; }
 
     public User User { get; set; }
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 }
