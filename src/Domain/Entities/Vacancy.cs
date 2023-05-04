@@ -7,8 +7,9 @@ public abstract class Vacancy : BaseEntity
     public DateTime CreatedAt { get; set; }
     public DateTime PublishDate { get; set; }
     public DateTime EndDate { get; set; }
+    public string Location { get; set; }
+    public string RequiredSkills { get; set; }
     public long? CategoryId { get; set; }
     public VacancyCategory Category { get; set; }
-
     public ICollection<Application> Applications { get; set; }
 }

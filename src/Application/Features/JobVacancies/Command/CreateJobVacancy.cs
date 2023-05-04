@@ -1,45 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
-using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Command;
 
+using AutoMapper;
 using Domain.Entities;
 
 public class CreateJobVacancyCommandHadler : IRequestHandler<CreateJobVacancyCommand, long>
 {
     private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
-    public CreateJobVacancyCommandHadler(IApplicationDbContext context)
+    public CreateJobVacancyCommandHadler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task<long> Handle(CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var entity = new JobVacancy()
-        {
-            Title = request.Title,
-            Category = _context.Categories.Find(request.CategoryId),
-            Description = request.Description,
-            EndDate = request.EndDate,
-            PublishDate = request.PublishDate,
-            ShortDescription = request.ShortDescription,
-            RequiredYearOfExperience = request.RequiredYearOfExperience,
-            WorkSchedule = (WorkSchedule)request.WorkSchedule
-        };
-
-        _context.JobVacancies.Add(entity);
+        var entity = _mapper.Map<JobVacancy>(request);
+        var result = _context.JobVacancies.Add(entity);
         await _context.SaveChangesAsync(cancellationToken);
-        return entity.Id;
 
+        return result.Entity.Id;
     }
 }
 
@@ -54,7 +40,7 @@ public class CreateJobVacancyCommandValidator : AbstractValidator<CreateJobVacan
             .MinimumLength(15)
             .MaximumLength(50);
 
-        RuleFor(v => v.Salary)
+        RuleFor(v => v.SalaryRange)
             .GreaterThan(0);
 
         RuleFor(e => e.Description)

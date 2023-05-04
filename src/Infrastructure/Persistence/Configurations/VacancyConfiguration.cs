@@ -9,8 +9,11 @@ public class VacancyConfiguration : IEntityTypeConfiguration<Vacancy>
     public void Configure(EntityTypeBuilder<Vacancy> builder)
     {
         builder.ToTable(nameof(Vacancy));
+
         builder.HasKey(x => x.Id);
-        builder.Property(p => p.Id).ValueGeneratedOnAdd();
+
+        builder.Property(p => p.Id)
+            .ValueGeneratedOnAdd();
 
         builder.Property(t => t.Title)
             .HasMaxLength(300)

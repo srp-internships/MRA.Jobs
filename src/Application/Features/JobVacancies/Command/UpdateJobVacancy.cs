@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
 using MRA.Jobs.Application.Common.Exceptions;
@@ -15,32 +11,23 @@ namespace MRA.Jobs.Application.Features.JobVacancies.Command;
 public class UpdateJobVacancyCommandHadler : IRequestHandler<UpdateJobVacancyCommand, long>
 {
     private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
-    public UpdateJobVacancyCommandHadler(IApplicationDbContext context)
+    public UpdateJobVacancyCommandHadler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task<long> Handle(UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.JobVacancies.FindAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException(nameof(JobVacancy), request.Id);
-
-        var category = await _context.Categories.FindAsync(request.CategoryId, cancellationToken);
-        entity.Title = request.Title;
-        entity.Category = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
-        entity.Description = request.Description;
-        entity.EndDate = request.EndDate;
-        entity.PublishDate = request.PublishDate;
-        entity.ShortDescription = request.ShortDescription;
-        entity.RequiredYearOfExperience = request.RequiredYearOfExperience;
-        entity.WorkSchedule = (WorkSchedule)request.WorkSchedule;
-
-        _context.JobVacancies.Update(entity);
-
+        entity = _mapper.Map<JobVacancy>(request);
+        var result = _context.JobVacancies.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
-        return entity.Id;
 
+        return result.Entity.Id;
     }
 }
 
@@ -56,7 +43,7 @@ public class UpdateJobVacancyCommandValidator : AbstractValidator<UpdateJobVacan
             .MinimumLength(15)
             .MaximumLength(50);
 
-        RuleFor(v => v.Salary)
+        RuleFor(v => v.SalaryRange)
             .GreaterThan(0);
 
         RuleFor(e => e.Description)

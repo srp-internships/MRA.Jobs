@@ -1,6 +1,7 @@
 ﻿namespace MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 
-using MRA.Jobs.Domain.Entities;
+using MRA.Jobs.Domain.Enums;
+
 public class JobVacancyFullResponse
 {
     public long Id { get; set; }
@@ -11,8 +12,8 @@ public class JobVacancyFullResponse
     public DateTime PublishDate { get; set; }
     public DateTime EndDate { get; set; }
     public long? CategoryId { get; set; }
-    public VacancyCategory Category { get; set; }
-    public ICollection<Application> Applications { get; set; }
-    public int RequiredYearOfExperience { get; set; }
-    public WorkSchedule WorkSchedule { get; set; }
+    public DateTime ApplicationDeadline { get; set; }
+    public ExperienceLevel ExperienceLevel { get; set; }
+    public JobType JobType { get; set; }
+    public int SalaryRange { get; set; }
 }
