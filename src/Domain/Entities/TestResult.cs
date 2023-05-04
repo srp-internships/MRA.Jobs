@@ -10,9 +10,8 @@ namespace MRA.Jobs.Domain.Entities
     {
         public long ApplicationId { get; set; }
         public DateTime CompletedAt { get; set; }
-        public long Id { get; set; }
         public bool Passed { get; set; }
-        public long Score { get; set; }
+        public int Score { get; set; }
         public long TestId { get; set; }
         public DateTime UpdatedAt { get; set; }
         public Test Test { get; set; }
