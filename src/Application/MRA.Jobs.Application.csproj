@@ -18,8 +18,4 @@
         <ProjectReference Include="..\Domain\MRA.Jobs.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\JobVacancies\Query\" />
-    </ItemGroup>
-
 </Project>
