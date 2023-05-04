@@ -19,4 +19,18 @@ public class ApplicationController : ApiControllerBase
     {
         return await Mediator.Send(request, cancellationToken);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<long>> UpdateApplication([FromQuery] int id, UpdateApplicationCommand request, CancellationToken cancellationToken)
+    {
+        request.Id = id;
+        return await Mediator.Send<long>(request, cancellationToken);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<bool>> DeleteApplication([FromQuery] int id, CancellationToken cancellationToken)
+    {
+        var request = new DeleteApplicationCommand { Id = id };
+        return await Mediator.Send<bool>(request, cancellationToken);
+    }
 }
