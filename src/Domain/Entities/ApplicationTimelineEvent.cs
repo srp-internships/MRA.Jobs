@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace MRA.Jobs.Domain.Entities
 {
-    internal class ApplicationTimelineEvent
+    public class ApplicationTimelineEvent : TimelineEvent
     {
+        public long ApplicationId { get; set; }
+        public Application Application { get; set; }
     }
 }
