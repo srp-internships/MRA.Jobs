@@ -44,6 +44,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     public DbSet<UserTag> UserTags { get; set; }
 
+    public DbSet<Applicant> Applicants { get; set; }
 
     #region override
     protected override void OnModelCreating(ModelBuilder builder)
