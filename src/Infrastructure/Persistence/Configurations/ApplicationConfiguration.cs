@@ -21,10 +21,6 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
         builder.Property(a => a.History)
             .HasMaxLength(255);
 
-        builder.HasOne(a => a.Applicant)
-            .WithMany(at => at.Applications)
-            .HasForeignKey(a => a.ApplicantId);
-
         builder.HasOne(a => a.Vacancy)
             .WithMany(v => v.Applications)
             .HasForeignKey(a => a.VacancyId);

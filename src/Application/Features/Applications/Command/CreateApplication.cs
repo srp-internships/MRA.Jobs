@@ -23,10 +23,10 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         {
            Applicant = applicant ?? throw new NotFoundException(nameof(Applicant), request.ApplicantId),
            Vacancy = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId),
-           ApplicantCvPath = request.ApplicantCvPath,
-           ApplicantAbout = request.ApplicantAbout,
-           ApplicationDate = request.ApplicationDate,
-           StatusId = request.StatusId,
+           CoverLetter = request.CoverLetter,
+           History = request.History,
+           ResumeUrl = request.ResumeUrl,
+           StatusId = (Domain.Enums.ApplicationStatus)request.StatusId,
         };
 
         _context.Applications.Add(entity);
@@ -39,8 +39,10 @@ public class CreateApplicationCommandValidator: AbstractValidator<CreateApplicat
 {
     public CreateApplicationCommandValidator()
     {
-        RuleFor(v => v.ApplicantAbout)
+        RuleFor(v => v.CoverLetter)
             .NotEmpty()
             .MinimumLength(150);
+        RuleFor(v => v.ResumeUrl)
+            .NotEmpty();
     }
 }
