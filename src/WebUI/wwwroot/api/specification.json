@@ -5,25 +5,7 @@
     "title": "MRA.Jobs API",
     "version": "1.0.0"
   },
-  "paths": {
-    "/api/Applicant": {
-      "post": {
-        "tags": [
-          "Applicant"
-        ],
-        "operationId": "Applicant_CreateNewApplicant",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateApplicantCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
+  "paths": { 
         "responses": {
           "200": {
             "description": "",
@@ -203,63 +185,43 @@
           }
         }
       }
+    },
+    "/api/User": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_CreateNewUser",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "CreateApplicantCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "patronymic": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "birthDay": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "CreatAplicationNoteCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "aplicationId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "date": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true
-          }
-        }
-      },
       "CreateJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -345,6 +307,44 @@
           "workSchedule": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "CreateUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateOfBrith": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }
