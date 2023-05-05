@@ -1,5 +1,5 @@
-﻿using MRA.Jobs.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.Common.Interfaces;
 
@@ -9,7 +9,7 @@ public interface IApplicationDbContext
     DbSet<VacancyCategory> Categories { get; }
     DbSet<Applicant> Applicants { get; }
     DbSet<User> Users { get; }
-
-
+    DbSet<Internship> Internships { get; }
+    DbSet<TrainingModel> TrainingModels { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

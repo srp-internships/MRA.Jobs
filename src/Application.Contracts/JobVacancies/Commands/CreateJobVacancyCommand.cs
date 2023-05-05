@@ -11,6 +11,8 @@ public class CreateJobVacancyCommand : IRequest<long>
     public DateTime CreatedAt { get; set; }
     public DateTime PublishDate { get; set; }
     public DateTime EndDate { get; set; }
+    public string Location { get; set; }
+    public string RequiredSkills { get; set; }
     public long? CategoryId { get; set; }
     public DateTime ApplicationDeadline { get; set; }
     public ExperienceLevel ExperienceLevel { get; set; }

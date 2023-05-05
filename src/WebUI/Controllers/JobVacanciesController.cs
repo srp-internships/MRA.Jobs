@@ -21,7 +21,7 @@ public class JobVacanciesController : ApiControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<long>> Update([FromRoute] long id, [FromBody] UpdateJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<long>> UpdateJobVacancy([FromRoute] long id, [FromBody] UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         if (id != request.Id)
             return BadRequest();
