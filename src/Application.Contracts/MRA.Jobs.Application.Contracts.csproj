@@ -16,6 +16,8 @@
     <Folder Include="EducationVacancies\Commands\" />
     <Folder Include="EducationVacancies\Queries\" />
     <Folder Include="EducationVacancies\Responses\" />
+    <Folder Include="Common\" />
+    <Folder Include="JobVacancies\Queries\" />
     <Folder Include="Tag\Queries\" />
   </ItemGroup>
 

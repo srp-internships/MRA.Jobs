@@ -19,8 +19,10 @@ public class TimelineEventConfiguration : IEntityTypeConfiguration<TimelineEvent
     public void Configure(EntityTypeBuilder<TimelineEvent> builder)
     {
         builder.ToTable(nameof(TimelineEvent));
-        builder.HasKey(t => t.Id);
         builder.Property(t => t.Id)
             .ValueGeneratedOnAdd();
+        builder.HasOne(t => t.User)
+            .WithMany(t => t.userTimelineEvents)
+            .HasForeignKey(t => t.UserId);
     }
 }
