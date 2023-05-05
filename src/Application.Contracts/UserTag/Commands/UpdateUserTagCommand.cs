@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace MRA.Jobs.Application.Contracts.VacancyTag.Commands;
-public class UpdateUserTagCommand: IRequest<long>
+namespace MRA.Jobs.Application.Contracts.UserTag.Commands;
+public class UpdateUserTagCommand : IRequest<long>
 {
     public long Id { get; set; }
     public long UserId { get; set; }

@@ -16,7 +16,7 @@ public class VacancyConfiguration : IEntityTypeConfiguration<Vacancy>
             .HasMaxLength(300)
             .IsRequired();
 
-        builder.HasMany(v => v.VacancyTags)
+        builder.HasMany(v => v.Tags)
           .WithOne(vt => vt.Vacancy);
     }
 }

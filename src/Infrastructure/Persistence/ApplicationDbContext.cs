@@ -37,14 +37,15 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     public DbSet<JobVacancy> JobVacancies { get; set; }
     public DbSet<VacancyCategory> Categories { get; set; }
-    public DbSet<User> Users { get; }
-
     public DbSet<Tag> Tags { get; set; }
+    public DbSet<User> DomainUsers { get; set; }
     public DbSet<VacancyTag> VacancyTags { get; set; }
 
     public DbSet<UserTag> UserTags { get; set; }
 
     public DbSet<Applicant> Applicants { get; set; }
+
+    public DbSet<VacancyTimelineEvent> VacancyTimelineEvents { get; set; }
 
     #region override
     protected override void OnModelCreating(ModelBuilder builder)

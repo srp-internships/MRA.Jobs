@@ -22,7 +22,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Application\MRA.Jobs.Application.csproj" />
-      <ProjectReference Include="..\..\src\Domain\MRA.Jobs.Domain.csproj" />
       <ProjectReference Include="..\..\src\Infrastructure\MRA.Jobs.Infrastructure.csproj" />
     </ItemGroup>
 

@@ -10,5 +10,5 @@ public class Application : BaseEntity
     public DateTime ApplicationDate { get; set; }
     public long StatusId { get; set; }
     public string TestResult { get; set; }
-    public ICollection<ApplicationTimelineEvent> applicationTimelineEvents { get; set; }
+    public ICollection<ApplicationTimelineEvent> TimelineEvents { get; set; }
 }

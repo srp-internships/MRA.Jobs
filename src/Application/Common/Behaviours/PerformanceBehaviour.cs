@@ -37,12 +37,12 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         if (elapsedMilliseconds > 500)
         {
             var requestName = typeof(TRequest).Name;
-            var userId = _currentUserService.UserId ?? string.Empty;
+            var userId = _currentUserService.UserId ?? null;
             var userName = string.Empty;
 
-            if (!string.IsNullOrEmpty(userId))
+            if (userId.HasValue)
             {
-                userName = await _identityService.GetUserNameAsync(userId);
+                userName = await _identityService.GetUserNameAsync(userId?.ToString());
             }
 
             _logger.LogWarning("MRA.Jobs Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",

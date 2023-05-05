@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace MRA.Jobs.Application.Contracts.VacancyTag.Commands;
+namespace MRA.Jobs.Application.Contracts.UserTag.Commands;
 public class CreateUserTagCommand : IRequest<long>
 {
     public long UserId { get; set; }

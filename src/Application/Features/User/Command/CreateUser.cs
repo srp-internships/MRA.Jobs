@@ -29,7 +29,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, long>
             DateOfBrith = request.DateOfBrith
         };
 
-        _context.Users.Add(entity);
+        _context.DomainUsers.Add(entity);
         await _context.SaveChangesAsync(cancellationToken);
         return entity.Id;
     }

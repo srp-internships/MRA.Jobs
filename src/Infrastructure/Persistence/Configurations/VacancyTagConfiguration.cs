@@ -16,7 +16,7 @@ public class VacancyTagConfiguration : IEntityTypeConfiguration<VacancyTag>
         builder.HasKey(vt => new { vt.VacancyId, vt.TagId });
 
         builder.HasOne(vt => vt.Vacancy)
-            .WithMany(v => v.VacancyTags)
+            .WithMany(v => v.Tags)
             .HasForeignKey(vt => vt.VacancyId);
 
         builder.HasOne(vt => vt.Tag)

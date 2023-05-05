@@ -12,12 +12,8 @@ public class ApplicationTimelineEventConfiguration : IEntityTypeConfiguration<Ap
 {
     public void Configure(EntityTypeBuilder<ApplicationTimelineEvent> builder)
     {
-        builder.ToTable(nameof(TimelineEvent));
-        builder.HasKey(t => t.Id);
-        builder.Property(t => t.Id)
-            .ValueGeneratedOnAdd();
         builder.HasOne(t => t.Application)
-            .WithMany(t => t.applicationTimelineEvents)
-            .HasForeignKey(t => t.Id);
+            .WithMany(t => t.TimelineEvents)
+            .HasForeignKey(t => t.ApplicationId);
     }
 }

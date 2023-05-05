@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
@@ -11,6 +12,7 @@ public class CreateJobVacancyCommand : IRequest<long>
     public DateTime EndDate { get; set; }
     public long CategoryId { get; set; }
     public int RequiredYearOfExperience { get; set; }
-    public decimal Salary { get; set; }
-    public int WorkSchedule { get; set; }
+    public WorkSchedule WorkSchedule { get; set; }
 }
+
+

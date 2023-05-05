@@ -20,7 +20,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Features\JobVacancies\Query\" />
+      <Folder Include="Features\JobVacancies\Queries\GetJobVacancyById\" />
+      <Folder Include="Features\JobVacancies\Queries\GetJobVacancyWithPagination\" />
     </ItemGroup>
 
 </Project>

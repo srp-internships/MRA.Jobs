@@ -276,15 +276,22 @@
             "type": "integer",
             "format": "int32"
           },
-          "salary": {
-            "type": "number",
-            "format": "decimal"
-          },
           "workSchedule": {
-            "type": "integer",
-            "format": "int32"
+            "$ref": "#/components/schemas/WorkSchedule"
           }
         }
+      },
+      "WorkSchedule": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "FullTime",
+          "Flexible"
+        ],
+        "enum": [
+          1,
+          2
+        ]
       },
       "UpdateJobVacancyCommand": {
         "type": "object",
@@ -316,19 +323,15 @@
           },
           "categoryId": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "nullable": true
           },
           "requiredYearOfExperience": {
             "type": "integer",
             "format": "int32"
           },
-          "salary": {
-            "type": "number",
-            "format": "decimal"
-          },
           "workSchedule": {
-            "type": "integer",
-            "format": "int32"
+            "$ref": "#/components/schemas/WorkSchedule"
           }
         }
       },

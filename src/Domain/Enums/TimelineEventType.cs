@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MRA.Jobs.Domain.Entities;
-public enum TimelineEventType 
+namespace MRA.Jobs.Domain.Enums;
+public enum TimelineEventType
 {
     Created,
     Updated,
