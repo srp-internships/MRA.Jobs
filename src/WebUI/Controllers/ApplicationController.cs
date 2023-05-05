@@ -30,20 +30,20 @@ public class ApplicationController : ApiControllerBase
 
 
     [HttpPost]
-    public async Task<ActionResult<long>> CreateApplication(CreateApplicationCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> CreateApplication(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpPut("{Id}")]
-    public async Task<ActionResult<long>> UpdateApplication(int Id, UpdateApplicationCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> UpdateApplication(Guid Id, UpdateApplicationCommand request, CancellationToken cancellationToken)
     {
         request.Id = Id;
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpDelete("{Id}")]
-    public async Task<ActionResult<bool>> DeleteApplication(int Id, CancellationToken cancellationToken)
+    public async Task<ActionResult<bool>> DeleteApplication(Guid Id, CancellationToken cancellationToken)
     {
         var request = new DeleteApplicationCommand { Id = Id };
         return await Mediator.Send(request, cancellationToken);

@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using MediatR;
-using ValidationException = MRA.Jobs.Application.Common.Exceptions.ValidationException;
+﻿using ValidationException = MRA.Jobs.Application.Common.Exceptions.ValidationException;
 
 namespace MRA.Jobs.Application.Common.Behaviours;
 

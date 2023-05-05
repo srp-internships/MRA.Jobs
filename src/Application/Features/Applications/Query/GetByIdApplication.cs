@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 

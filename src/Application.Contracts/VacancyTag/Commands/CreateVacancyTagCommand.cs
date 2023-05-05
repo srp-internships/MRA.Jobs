@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using MediatR;
 
 namespace MRA.Jobs.Application.Contracts.VacancyTag.Commands;
-public class CreateVacancyTagCommand : IRequest<long>
+public class CreateVacancyTagCommand : IRequest<Guid>
 {
-    public long VacancyId { get; set; }
-    public long TagId { get; set; }
+    public Guid VacancyId { get; set; }
+    public Guid TagId { get; set; }
 }

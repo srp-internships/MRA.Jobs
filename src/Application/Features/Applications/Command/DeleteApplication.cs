@@ -1,7 +1,4 @@
-﻿using MediatR;
-using MRA.Jobs.Application.Common.Exceptions;
-using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
 namespace MRA.Jobs.Application.Features.Applications.Command;
 using MRA.Jobs.Domain.Entities;

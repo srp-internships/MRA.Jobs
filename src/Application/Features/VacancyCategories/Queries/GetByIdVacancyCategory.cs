@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Queries;
+
 public class GetByIdVacancyCategoriesQueryHandler : IRequestHandler<GetByIdVacancyCategoryQuery, VacancyCategoryResponce>
 {
     private readonly IApplicationDbContext _context;

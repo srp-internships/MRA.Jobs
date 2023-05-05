@@ -1,14 +1,9 @@
-﻿using MediatR;
-using AutoMapper;
-using FluentValidation;
-using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Application.Common.Exceptions;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
 namespace MRA.Jobs.Application.Features.Applications.Command;
 using MRA.Jobs.Domain.Entities;
 
-public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, long>
+public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -18,7 +13,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         _context = context;
         _mapper = mapper;
     }
-    public async Task<long> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
         var applicant = await _context.Applicants.FindAsync(request.ApplicantId, cancellationToken) 
              ?? throw new NotFoundException(nameof(Applicant), request.ApplicantId);
