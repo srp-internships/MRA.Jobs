@@ -5,11 +5,11 @@ using MRA.Jobs.Application.Common.Interfaces;
 namespace MRA.Jobs.Application.Features.Applications.Query;
 
 using AutoMapper;
+using MRA.Jobs.Application.Contracts.Applications.Queries;
+using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Domain.Entities;
 
-
-public record GetApplicationsQuery : IRequest<IEnumerable<Application>>;
-public class GetApplicationsQueryHandler : IRequestHandler<GetApplicationsQuery, IEnumerable<Application>>
+public class GetApplicationsQueryHandler : IRequestHandler<GetApplicationsQuery, IEnumerable<ApplicationResponse>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -19,9 +19,12 @@ public class GetApplicationsQueryHandler : IRequestHandler<GetApplicationsQuery,
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<Application>> Handle(GetApplicationsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<ApplicationResponse>> Handle(GetApplicationsQuery request, CancellationToken cancellationToken)
     {
-        var applications = await _context.Applications.ToListAsync();
-        return _mapper.Map<List<Application>>(applications);
+        var applications = await _context.Applications
+            .Include(a => a.Vacancy)
+            .Include(a => a.Applicant)
+            .ToListAsync();
+        return _mapper.Map<List<ApplicationResponse>>(applications);
     }
 }

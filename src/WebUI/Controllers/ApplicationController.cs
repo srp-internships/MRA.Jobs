@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Applications.Commands;
+using MRA.Jobs.Application.Contracts.Applications.Queries;
+using MRA.Jobs.Application.Contracts.Applications.Responses;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
@@ -14,23 +16,36 @@ public class ApplicationController : ApiControllerBase
         _logger = logger;
     }
 
+    [HttpGet]
+    public async Task<ActionResult<List<ApplicationResponse>>> GetAllApplications(GetApplicationsQuery request, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpGet("{Id}")]
+    public async Task<ActionResult<ApplicationResponse>> GetApplicationById(GetByIdApplicationQuery request, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+
     [HttpPost]
     public async Task<ActionResult<long>> CreateApplication(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<long>> UpdateApplication([FromQuery] int id, UpdateApplicationCommand request, CancellationToken cancellationToken)
+    [HttpPut("{Id}")]
+    public async Task<ActionResult<long>> UpdateApplication(int Id, UpdateApplicationCommand request, CancellationToken cancellationToken)
     {
-        request.Id = id;
-        return await Mediator.Send<long>(request, cancellationToken);
+        request.Id = Id;
+        return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteApplication([FromQuery] int id, CancellationToken cancellationToken)
+    [HttpDelete("{Id}")]
+    public async Task<ActionResult<bool>> DeleteApplication(int Id, CancellationToken cancellationToken)
     {
-        var request = new DeleteApplicationCommand { Id = id };
-        return await Mediator.Send<bool>(request, cancellationToken);
+        var request = new DeleteApplicationCommand { Id = Id };
+        return await Mediator.Send(request, cancellationToken);
     }
 }

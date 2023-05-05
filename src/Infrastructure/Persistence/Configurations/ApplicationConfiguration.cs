@@ -24,5 +24,9 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
         builder.HasOne(a => a.Vacancy)
             .WithMany(v => v.Applications)
             .HasForeignKey(a => a.VacancyId);
+
+        builder.HasOne(a => a.Applicant)
+            .WithMany(at => at.Applications)
+            .HasForeignKey(a => a.ApplicantId);
     }
 }
