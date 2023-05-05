@@ -60,6 +60,84 @@
         }
       }
     },
+    "/api/Internships": {
+      "post": {
+        "tags": [
+          "Internships"
+        ],
+        "operationId": "Internships_CreateNewInternship",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInternshipCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Internships/{id}": {
+      "put": {
+        "tags": [
+          "Internships"
+        ],
+        "operationId": "Internships_UpdateInternship",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInternshipCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/JobVacancies": {
       "post": {
         "tags": [
@@ -91,6 +169,39 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "JobVacancies"
+        ],
+        "operationId": "JobVacancies_GetJobVacancies",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetJobVacanciesQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobVacancyResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/JobVacancies/{id}": {
@@ -98,7 +209,7 @@
         "tags": [
           "JobVacancies"
         ],
-        "operationId": "JobVacancies_Update",
+        "operationId": "JobVacancies_UpdateJobVacancy",
         "parameters": [
           {
             "name": "id",
@@ -131,6 +242,48 @@
                 "schema": {
                   "type": "integer",
                   "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "JobVacancies"
+        ],
+        "operationId": "JobVacancies_GetJobVacancyById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetJobVacancyByIdQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobVacancyFullResponse"
                 }
               }
             }
@@ -174,6 +327,120 @@
   },
   "components": {
     "schemas": {
+      "CreateInternshipCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publishDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "requiredSkills": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "applicationDeadline": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stipend": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "UpdateInternshipCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publishDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "requiredSkills": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "applicationDeadline": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stipend": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "CreateJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -190,6 +457,10 @@
             "type": "string",
             "nullable": true
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
           "publishDate": {
             "type": "string",
             "format": "date-time"
@@ -198,23 +469,56 @@
             "type": "string",
             "format": "date-time"
           },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "requiredSkills": {
+            "type": "string",
+            "nullable": true
+          },
           "categoryId": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "nullable": true
           },
-          "requiredYearOfExperience": {
-            "type": "integer",
-            "format": "int32"
+          "applicationDeadline": {
+            "type": "string",
+            "format": "date-time"
           },
-          "salary": {
-            "type": "number",
-            "format": "decimal"
+          "experienceLevel": {
+            "$ref": "#/components/schemas/ExperienceLevel"
           },
-          "workSchedule": {
+          "jobType": {
+            "$ref": "#/components/schemas/JobType"
+          },
+          "salaryRange": {
             "type": "integer",
             "format": "int32"
           }
         }
+      },
+      "ExperienceLevel": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Trainee",
+          "Junior",
+          "Middle",
+          "Senior",
+          "Teamlead"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "JobType": {
+        "type": "integer",
+        "description": ""
       },
       "UpdateJobVacancyCommand": {
         "type": "object",
@@ -236,6 +540,97 @@
             "type": "string",
             "nullable": true
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publishDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "requiredSkills": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "applicationDeadline": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "experienceLevel": {
+            "$ref": "#/components/schemas/ExperienceLevel"
+          },
+          "jobType": {
+            "$ref": "#/components/schemas/JobType"
+          },
+          "salaryRange": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "JobVacancyResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GetJobVacanciesQuery": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "JobVacancyFullResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
           "publishDate": {
             "type": "string",
             "format": "date-time"
@@ -246,19 +641,32 @@
           },
           "categoryId": {
             "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "applicationDeadline": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "experienceLevel": {
+            "$ref": "#/components/schemas/ExperienceLevel"
+          },
+          "jobType": {
+            "$ref": "#/components/schemas/JobType"
+          },
+          "salaryRange": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "GetJobVacancyByIdQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
             "format": "int64"
-          },
-          "requiredYearOfExperience": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "salary": {
-            "type": "number",
-            "format": "decimal"
-          },
-          "workSchedule": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },

@@ -20,7 +20,7 @@ public class GetVacancyCategoriesQueryHandler : IRequestHandler<GetVacancyCatego
     {
         var categories = await _context.Categories
             //Include(s=>s.)
-            .Include(s => s.JobVacancies)
+            .Include(s => s.Vacancies)
             .ToListAsync();
 
         return _mapper.
