@@ -2,7 +2,7 @@
 
 namespace MRA.Jobs.Application.Contracts.Applicant.Commands;
 
-public class CreateApplicantCommand : IRequest<long>
+public class CreateApplicantCommand : IRequest<Guid>
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

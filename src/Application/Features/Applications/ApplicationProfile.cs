@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 
 namespace MRA.Jobs.Application.Features.Applications;

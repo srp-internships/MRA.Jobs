@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using MediatR;
 
 namespace MRA.Jobs.Application.Contracts.UserTag.Commands;
-public class CreateUserTagCommand : IRequest<long>
+public class CreateUserTagCommand : IRequest<Guid>
 {
-    public long UserId { get; set; }
-    public long TagId { get; set; }
+    public Guid UserId { get; set; }
+    public Guid TagId { get; set; }
 }

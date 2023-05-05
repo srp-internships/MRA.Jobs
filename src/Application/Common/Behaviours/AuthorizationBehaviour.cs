@@ -1,8 +1,5 @@
 ﻿using System.Reflection;
-using MRA.Jobs.Application.Common.Exceptions;
-using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Application.Common.Security;
-using MediatR;
 
 namespace MRA.Jobs.Application.Common.Behaviours;
 
@@ -42,7 +39,7 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
                 {
                     foreach (var role in roles)
                     {
-                        var isInRole = await _identityService.IsInRoleAsync(_currentUserService.UserId?.ToString(), role.Trim());
+                        var isInRole = await _identityService.IsInRoleAsync(_currentUserService.UserId.ToString(), role.Trim());
                         if (isInRole)
                         {
                             authorized = true;
@@ -64,7 +61,7 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
             {
                 foreach (var policy in authorizeAttributesWithPolicies.Select(a => a.Policy))
                 {
-                    var authorized = await _identityService.AuthorizeAsync(_currentUserService.UserId?.ToString(), policy);
+                    var authorized = await _identityService.AuthorizeAsync(_currentUserService.UserId.ToString(), policy);
 
                     if (!authorized)
                     {

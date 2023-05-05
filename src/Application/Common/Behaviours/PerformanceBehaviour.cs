@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics;
-using MRA.Jobs.Application.Common.Interfaces;
-using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace MRA.Jobs.Application.Common.Behaviours;
@@ -37,12 +35,12 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         if (elapsedMilliseconds > 500)
         {
             var requestName = typeof(TRequest).Name;
-            var userId = _currentUserService.UserId ?? null;
+            var userId = _currentUserService.UserId;
             var userName = string.Empty;
 
-            if (userId.HasValue)
+            if (userId != Guid.Empty)
             {
-                userName = await _identityService.GetUserNameAsync(userId?.ToString());
+                userName = await _identityService.GetUserNameAsync(userId.ToString());
             }
 
             _logger.LogWarning("MRA.Jobs Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",

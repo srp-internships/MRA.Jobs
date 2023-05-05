@@ -1,10 +1,11 @@
 ﻿using MRA.Jobs.Domain.Entities;
+using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 
 public class JobVacancyListDTO
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
     public string Category { get; set; }
     public string Title { get; set; }
     public string ShortDescription { get; set; }
@@ -15,8 +16,8 @@ public class JobVacancyListDTO
 
 public class JobVacancyDetailsDTO
 {
-    public long Id { get; set; }
-    public long? CategoryId { get; set; }
+    public Guid Id { get; set; }
+    public Guid? CategoryId { get; set; }
     public string Category { get; set; }
     public string Title { get; set; }
     public string ShortDescription { get; set; }
@@ -27,8 +28,8 @@ public class JobVacancyDetailsDTO
     public int RequiredYearOfExperience { get; set; }
 
     public DateTime CreatedAt { get; set; }
-    public long? CreatedBy { get; set; }
+    public Guid? CreatedBy { get; set; }
     public DateTime? LastModifiedAt { get; set; }
-    public long? LastModifiedBy { get; set; }
+    public Guid? LastModifiedBy { get; set; }
 }
 

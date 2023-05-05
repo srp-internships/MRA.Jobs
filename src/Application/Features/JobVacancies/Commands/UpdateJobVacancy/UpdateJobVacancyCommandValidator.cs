@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.UpdateJobVacancy;
 

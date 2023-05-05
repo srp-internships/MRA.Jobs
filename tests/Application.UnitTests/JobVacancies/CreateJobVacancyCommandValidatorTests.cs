@@ -97,7 +97,7 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_CategoryIdEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand { CategoryId = 0 };
+        var request = new CreateJobVacancyCommand { CategoryId = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(request);
@@ -156,7 +156,7 @@ public class CreateJobVacancyCommandValidatorTests
             Description = "Test Job Vacancy Description",
             PublishDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(30),
-            CategoryId = 1,
+            CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 0,
             WorkSchedule = WorkSchedule.FullTime
         };

@@ -1,13 +1,9 @@
-﻿using MediatR;
-using AutoMapper;
-using MRA.Jobs.Application.Common.Exceptions;
-using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
 namespace MRA.Jobs.Application.Features.Applications.Command;
 using MRA.Jobs.Domain.Entities;
 
-public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationCommand, long>
+public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -18,7 +14,7 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
         _mapper = mapper;
     }
 
-    public async Task<long> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Applications.FindAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException(nameof(Application), request.Id);

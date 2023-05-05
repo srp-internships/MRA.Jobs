@@ -17,7 +17,7 @@ public class GetJobVacancyByIdQueryHandlerTests : BaseTestFixture
     [Test]
     public async Task Handle_GivenValidQuery_ShouldReturnJobVacancyDetailsDTO()
     {
-        var query = new GetJobVacancyByIdQuery { Id = 1 };
+        var query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
 
         var jobVacancy = new JobVacancy
         {
@@ -27,7 +27,7 @@ public class GetJobVacancyByIdQueryHandlerTests : BaseTestFixture
             Description = "Job Description",
             PublishDate = new DateTime(2023, 05, 05),
             EndDate = new DateTime(2023, 05, 06),
-            CategoryId = 2,
+            CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 1,
             WorkSchedule = WorkSchedule.FullTime
         };
@@ -52,7 +52,7 @@ public class GetJobVacancyByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetJobVacancyByIdQuery { Id = 1 };
+        var query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.JobVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((JobVacancy)null);

@@ -2,5 +2,5 @@
 
 public interface ICurrentUserService
 {
-    long? UserId { get; }
+    Guid UserId { get; }
 }

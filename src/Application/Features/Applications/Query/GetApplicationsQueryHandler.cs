@@ -1,13 +1,10 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace MRA.Jobs.Application.Features.Applications.Query;
 
 using AutoMapper;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
-using MRA.Jobs.Domain.Entities;
 
 public class GetApplicationsQueryHandler : IRequestHandler<GetApplicationsQuery, IEnumerable<ApplicationResponse>>
 {

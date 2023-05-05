@@ -1,7 +1,4 @@
-﻿using MRA.Jobs.Domain.Common;
-using Microsoft.EntityFrameworkCore;
-using MediatR;
-using MRA.Jobs.Domain.Entities;
+﻿using MediatR;
 
 namespace MRA.Jobs.Infrastructure.Common;
 

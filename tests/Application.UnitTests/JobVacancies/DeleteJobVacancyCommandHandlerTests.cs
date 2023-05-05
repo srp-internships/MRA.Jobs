@@ -18,7 +18,7 @@ public class DeleteJobVacancyCommandHandlerTests : BaseTestFixture
     public async Task Handle_JobVacancyExists_ShouldRemoveJobVacancy()
     {
         // Arrange
-        var jobVacancy = new JobVacancy { Id = 1 };
+        var jobVacancy = new JobVacancy { Id = Guid.NewGuid() };
         _dbContextMock.Setup(x => x.JobVacancies.FindAsync(new object[] { jobVacancy.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(jobVacancy);
 
         var command = new DeleteJobVacancyCommand { Id = jobVacancy.Id };
@@ -36,7 +36,7 @@ public class DeleteJobVacancyCommandHandlerTests : BaseTestFixture
     public void Handle_JobVacancyNotFound_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new DeleteJobVacancyCommand { Id = 1 };
+        var command = new DeleteJobVacancyCommand { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.JobVacancies.FindAsync(new object[] { command.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(null as JobVacancy);

@@ -3,8 +3,8 @@
 public class VacancyTag : BaseEntity
 {
     public Tag Tag { get; set; }
-    public long TagId { get; set; }
+    public Guid TagId { get; set; }
 
     public Vacancy Vacancy { get; set; }
-    public long VacancyId { get; set; }
+    public Guid VacancyId { get; set; }
 }

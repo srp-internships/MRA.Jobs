@@ -2,6 +2,6 @@
 
 public class VacancyTimelineEvent : TimelineEvent
 {
-    public long VacancyId { get; set; }
+    public Guid VacancyId { get; set; }
     public Vacancy Vacancy { get; set; }
 }

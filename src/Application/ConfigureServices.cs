@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
 using MRA.Jobs.Application.Common.Behaviours;
-using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using MRA.Jobs.Infrastructure;
 

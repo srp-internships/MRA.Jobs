@@ -30,29 +30,30 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
             Description = "We're looking for a software developer to help us build amazing products",
             PublishDate = DateTime.UtcNow.AddDays(1),
             EndDate = DateTime.UtcNow.AddDays(30),
-            CategoryId = 1,
+            CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 2,
             WorkSchedule = WorkSchedule.FullTime
         };
 
-        var category = new VacancyCategory { Id = 1 };
+        var category = new VacancyCategory { Id = request.CategoryId };
         _dbContextMock.Setup(x => x.Categories.FindAsync(request.CategoryId)).ReturnsAsync(category);
 
         var timelineEventSetMock = new Mock<DbSet<VacancyTimelineEvent>>();
         _dbContextMock.Setup(x => x.VacancyTimelineEvents).Returns(timelineEventSetMock.Object);
 
         var jobVacancySetMock = new Mock<DbSet<JobVacancy>>();
-        jobVacancySetMock.Setup(d => d.AddAsync(It.IsAny<JobVacancy>(), It.IsAny<CancellationToken>())).Callback<JobVacancy, CancellationToken>((v, ct) => v.Id = 2);
+        var newEntityGuid = Guid.NewGuid();
+        jobVacancySetMock.Setup(d => d.AddAsync(It.IsAny<JobVacancy>(), It.IsAny<CancellationToken>())).Callback<JobVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.JobVacancies).Returns(jobVacancySetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
-        _currentUserServiceMock.Setup(x => x.UserId).Returns(1);
+        _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().Be(2);
+        result.Should().Be(newEntityGuid);
 
         jobVacancySetMock.Verify(x => x.AddAsync(It.Is<JobVacancy>(jv =>
             jv.Title == request.Title &&
@@ -66,7 +67,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
         ), It.IsAny<CancellationToken>()), Times.Once);
 
         timelineEventSetMock.Verify(x => x.AddAsync(It.Is<VacancyTimelineEvent>(te =>
-            te.VacancyId == category.Id + 1 &&
+            te.VacancyId == newEntityGuid &&
             te.EventType == TimelineEventType.Created &&
             te.Note == "Job vacancy created" &&
             te.Time == _dateTimeMock.Object.Now &&
@@ -86,7 +87,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
             Description = "We're looking for a software developer to help us build amazing products",
             PublishDate = DateTime.UtcNow.AddDays(1),
             EndDate = DateTime.UtcNow.AddDays(30),
-            CategoryId = 1,
+            CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 2,
             WorkSchedule = WorkSchedule.FullTime
         };

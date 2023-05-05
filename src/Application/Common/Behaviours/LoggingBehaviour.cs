@@ -1,5 +1,4 @@
-﻿using MRA.Jobs.Application.Common.Interfaces;
-using MediatR.Pipeline;
+﻿using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 
 namespace MRA.Jobs.Application.Common.Behaviours;

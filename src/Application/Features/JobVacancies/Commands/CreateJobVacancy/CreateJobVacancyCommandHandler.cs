@@ -3,7 +3,7 @@ using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 
-public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCommand, long>
+public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCommand, Guid>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         _currentUserService = currentUserService;
     }
 
-    public async Task<long> Handle(CreateJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);

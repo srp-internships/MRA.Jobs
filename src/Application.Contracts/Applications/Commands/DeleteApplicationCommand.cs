@@ -8,5 +8,5 @@ using MediatR;
 namespace MRA.Jobs.Application.Contracts.Applications.Commands;
 public class DeleteApplicationCommand : IRequest<bool>
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
 }

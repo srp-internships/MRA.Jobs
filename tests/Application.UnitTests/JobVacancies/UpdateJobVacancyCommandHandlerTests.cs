@@ -18,7 +18,7 @@ public class UpdateJobVacancyCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentJobVacancyId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { Id = 1 };
+        var command = new UpdateJobVacancyCommand { Id = Guid.NewGuid() };
         _dbContextMock.Setup(x => x.JobVacancies.FindAsync(command.Id)).ReturnsAsync(null as JobVacancy);
 
         // Act
@@ -34,7 +34,7 @@ public class UpdateJobVacancyCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentCategoryId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { Id = 1, CategoryId = 2 };
+        var command = new UpdateJobVacancyCommand { Id = Guid.NewGuid(), CategoryId = Guid.NewGuid() };
         _dbContextMock.Setup(x => x.JobVacancies.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new JobVacancy());
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { command.CategoryId }, CancellationToken.None)).ReturnsAsync(null as VacancyCategory);
 
@@ -50,18 +50,18 @@ public class UpdateJobVacancyCommandHandlerTests : BaseTestFixture
         // Arrange
         var command = new UpdateJobVacancyCommand
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Title = "New Job Title",
             ShortDescription = "New Short Description",
             Description = "New Job Description",
             PublishDate = new DateTime(2023, 05, 05),
             EndDate = new DateTime(2023, 05, 06),
-            CategoryId = 2,
+            CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 1,
             WorkSchedule = WorkSchedule.FullTime
         };
 
-        var existingJobVacancy = new JobVacancy { Id = 1 };
+        var existingJobVacancy = new JobVacancy { Id = command.Id };
         _dbContextMock.Setup(x => x.JobVacancies.FindAsync(command.Id))
             .ReturnsAsync(existingJobVacancy);
 

@@ -1,10 +1,9 @@
-﻿using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.UpdateJobVacancy;
 
-public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCommand, long>
+public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCommand, Guid>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -19,7 +18,7 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
         _currentUserService = currentUserService;
     }
 
-    public async Task<long> Handle(UpdateJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Id);

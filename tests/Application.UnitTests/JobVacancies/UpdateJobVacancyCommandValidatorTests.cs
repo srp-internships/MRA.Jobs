@@ -17,7 +17,7 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_IdIsRequired()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { Id = 0 };
+        var command = new UpdateJobVacancyCommand { Id = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -95,7 +95,7 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_CategoryIdIsRequired()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { CategoryId = 0 };
+        var command = new UpdateJobVacancyCommand { CategoryId = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -136,13 +136,13 @@ public class UpdateJobVacancyCommandValidatorTests
         // Arrange
         var command = new UpdateJobVacancyCommand
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Title = "Job Title",
             ShortDescription = "Short Description",
             Description = "Job Description",
             PublishDate = new DateTime(2023, 05, 05),
             EndDate = new DateTime(2023, 05, 06),
-            CategoryId = 2,
+            CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 0,
             WorkSchedule = WorkSchedule.FullTime
         };

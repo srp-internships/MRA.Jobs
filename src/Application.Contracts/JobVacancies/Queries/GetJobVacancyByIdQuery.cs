@@ -5,7 +5,7 @@ namespace MRA.Jobs.Application.Contracts.JobVacancies.Queries;
 
 public class GetJobVacancyByIdQuery : IRequest<JobVacancyDetailsDTO>
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
 }
 
 

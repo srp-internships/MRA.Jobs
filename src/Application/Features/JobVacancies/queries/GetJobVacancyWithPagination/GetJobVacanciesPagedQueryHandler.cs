@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Models;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Infrastructure;
-using Sieve.Services;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyWithPagination;
 

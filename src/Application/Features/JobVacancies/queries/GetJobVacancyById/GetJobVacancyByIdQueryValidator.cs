@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
+﻿using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
 

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using MediatR;
 
 namespace MRA.Jobs.Application.Contracts.VacancyTag.Commands;
-public class UpdateVacancyTagCommand: IRequest<long>
+public class UpdateVacancyTagCommand: IRequest<Guid>
 {
-    public long Id { get; set; }
-    public long VacancyId { get; set; }
-    public long TagId { get; set; }
+    public Guid Id { get; set; }
+    public Guid VacancyId { get; set; }
+    public Guid TagId { get; set; }
 }

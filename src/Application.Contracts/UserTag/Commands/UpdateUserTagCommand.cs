@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using MediatR;
 
 namespace MRA.Jobs.Application.Contracts.UserTag.Commands;
-public class UpdateUserTagCommand : IRequest<long>
+public class UpdateUserTagCommand : IRequest<Guid>
 {
-    public long Id { get; set; }
-    public long UserId { get; set; }
-    public long TagId { get; set; }
+    public Guid Id { get; set; }
+    public Guid UserId { get; set; }
+    public Guid TagId { get; set; }
 }

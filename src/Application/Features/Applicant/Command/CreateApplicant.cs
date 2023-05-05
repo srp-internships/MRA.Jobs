@@ -1,14 +1,7 @@
-﻿using FluentValidation;
-using FluentValidation.Validators;
-using MediatR;
-using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Application.Contracts.Applicant.Commands;
-
-namespace MRA.Jobs.Application.Features.Applicant.Command;
-using MRA.Jobs.Domain.Entities;
+﻿namespace MRA.Jobs.Application.Features.Applicant.Command;
 
 /*
-public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantCommand, long>
+public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
 
@@ -17,7 +10,7 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         _context = context;
     }
     
-    public async Task<long> Handle(CreateApplicantCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateApplicantCommand request, CancellationToken cancellationToken)
     {
         var entity = new Applicant()
         {
