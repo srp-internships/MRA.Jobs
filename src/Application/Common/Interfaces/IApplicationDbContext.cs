@@ -14,6 +14,7 @@ public interface IApplicationDbContext
     DbSet<Tag> Tags { get; }
     DbSet<VacancyTag> VacancyTags { get; }
     DbSet<UserTag> UserTags { get; }
+    DbSet<TimelineEvent> TimelineEvents { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

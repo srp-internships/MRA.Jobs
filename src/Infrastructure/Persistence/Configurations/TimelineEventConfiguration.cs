@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Infrastructure.Persistence.Configurations;
-public class ApplicantConfiguration : IEntityTypeConfiguration<Applicant>
+public class TimelineEventConfiguration : IEntityTypeConfiguration<TimelineEvent>
 {
-    public void Configure(EntityTypeBuilder<Applicant> builder)
+    public void Configure(EntityTypeBuilder<TimelineEvent> builder)
     {
-      
+        builder.ToTable(nameof(TimelineEvent));
+        builder.HasDiscriminator<string>(nameof(TimelineEvent));
+        builder.HasKey(t => t.Id);
     }
 }

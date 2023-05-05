@@ -13,7 +13,6 @@ public class VacancyTimelineEventConfiguration : IEntityTypeConfiguration<Vacanc
     public void Configure(EntityTypeBuilder<VacancyTimelineEvent> builder)
     {
         builder.ToTable(nameof(TimelineEvent));
-        builder.HasKey(t => t.Id);
         builder.Property(t => t.Id)
             .ValueGeneratedOnAdd();
         builder.HasOne(t => t.Vacancy)
