@@ -50,6 +50,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     public DbSet<Applicant> Applicants { get; set; }
 
+    public DbSet<TimelineEvent> TimelineEvents { get; set; }
+
     #region override
     protected override void OnModelCreating(ModelBuilder builder)
     {
