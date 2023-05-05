@@ -26,4 +26,8 @@
       <ProjectReference Include="..\..\src\Infrastructure\MRA.Jobs.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Applicants\" />
+    </ItemGroup>
+
 </Project>
