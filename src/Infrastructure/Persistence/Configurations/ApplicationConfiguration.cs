@@ -10,16 +10,23 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
     {
         builder.HasKey(a => a.Id);
 
-        builder.Property(a => a.ApplicantCvPath)
-            .HasMaxLength(255)
-            .IsRequired();
+        builder.Property(a => a.ResumeUrl)
+            .IsRequired()
+            .HasMaxLength(255);
 
-        builder.Property(a => a.ApplicantAbout)
-            .HasMaxLength(3000)
-            .IsRequired();
+        builder.Property(a => a.CoverLetter)
+            .IsRequired()
+            .HasMaxLength(255);
 
-        /*builder.HasOne(a => a.Applicant)
+        builder.Property(a => a.History)
+            .HasMaxLength(255);
+
+        builder.HasOne(a => a.Vacancy)
+            .WithMany(v => v.Applications)
+            .HasForeignKey(a => a.VacancyId);
+
+        builder.HasOne(a => a.Applicant)
             .WithMany(at => at.Applications)
-            .HasForeignKey(a => a.ApplicantId);*/
+            .HasForeignKey(a => a.ApplicantId);
     }
 }

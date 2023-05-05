@@ -6,123 +6,32 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/Category": {
-      "get": {
-        "tags": [
-          "Category"
-        ],
-        "operationId": "Category_Get",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Category/{id}": {
-      "get": {
-        "tags": [
-          "Category"
-        ],
-        "operationId": "Category_Get2",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/File/upload": {
+    "/api/Application": {
       "post": {
         "tags": [
-          "File"
+          "Application"
         ],
-        "operationId": "File_Upload",
+        "operationId": "Application_CreateApplication",
         "requestBody": {
+          "x-name": "request",
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary",
-                    "nullable": true
-                  }
-                }
+                "$ref": "#/components/schemas/CreateApplicationCommand"
               }
             }
-          }
+          },
+          "required": true,
+          "x-position": 1
         },
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/File/download/{key}": {
-      "get": {
-        "tags": [
-          "File"
-        ],
-        "operationId": "File_Download",
-        "parameters": [
-          {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -244,6 +153,36 @@
   },
   "components": {
     "schemas": {
+      "CreateApplicationCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "applicantId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "vacancyId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "applicantCvPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "applicantAbout": {
+            "type": "string",
+            "nullable": true
+          },
+          "applicationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "statusId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "CreateJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,

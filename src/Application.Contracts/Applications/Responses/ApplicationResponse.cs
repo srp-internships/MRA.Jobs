@@ -1,7 +1,11 @@
-﻿using MediatR;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace MRA.Jobs.Application.Contracts.Applications.Commands;
-public class CreateApplicationCommand:IRequest<long>
+namespace MRA.Jobs.Application.Contracts.Applications.Responses;
+public class ApplicationResponse
 {
     public long ApplicantId { get; set; }
     public string CoverLetter { get; set; }

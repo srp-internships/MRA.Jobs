@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Domain.Entities;
 using MRA.Jobs.Infrastructure.Identity;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 
 namespace MRA.Jobs.Infrastructure.Persistence;
+using MRA.Jobs.Domain.Entities;
 
 public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
 {
@@ -37,6 +37,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     public DbSet<JobVacancy> JobVacancies { get; set; }
     public DbSet<VacancyCategory> Categories { get; set; }
+    public DbSet<Application> Applications { get; set; }
+
+    public DbSet<Vacancy> Vacancies { get; set; }
+
     public DbSet<User> Users { get; }
 
     public DbSet<Tag> Tags { get; set; }
@@ -77,7 +81,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
             .AddJsonFile($"dbsettings.Development.json", optional: true, reloadOnChange: true)
             .Build();
 
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = "data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True";
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         optionsBuilder.UseSqlServer(connectionString);
         var operationalStoreOptions = new OperationalStoreOptions();
