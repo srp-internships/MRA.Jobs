@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
 using MediatR;
 using MRA.Jobs.Application.Common.Exceptions;
 using MRA.Jobs.Application.Common.Interfaces;
@@ -28,5 +29,18 @@ public class UpdateTagCommandHandler : IRequestHandler<UpdateTagCommand, long>
         _context.Tags.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
         return entity.Id;
+    }
+}
+
+public class UpdateTagCommandValidating : AbstractValidator<UpdateTagCommand>
+{
+    public UpdateTagCommandValidating()
+    {
+        RuleFor(t => t.Id)
+            .NotEmpty();
+        RuleFor(t => t.Name)
+            .NotEmpty()
+            .MinimumLength(5)
+            .MinimumLength(200);
     }
 }

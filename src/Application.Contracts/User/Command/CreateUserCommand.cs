@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.Contracts.User.Command;
 
@@ -12,4 +13,6 @@ public class CreateUserCommand : IRequest<long>
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
     public DateTime UpdatedAt { get; set; }
+    
+    public ICollection<UserTag> UserTags { get; set; }
 }

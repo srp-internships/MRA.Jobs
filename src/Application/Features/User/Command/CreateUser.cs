@@ -26,7 +26,9 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, long>
             PhoneNumber = request.PhoneNumber,
             CreatedAt = request.CreatedAt,
             UpdatedAt = request.UpdatedAt,
-            DateOfBrith = request.DateOfBrith
+            DateOfBrith = request.DateOfBrith,
+            UserTags=request.UserTags,
+            
         };
 
         _context.Users.Add(entity);
