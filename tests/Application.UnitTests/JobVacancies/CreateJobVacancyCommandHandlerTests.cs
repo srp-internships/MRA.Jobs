@@ -60,7 +60,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
             jv.ShortDescription == request.ShortDescription &&
             jv.Description == request.Description &&
             jv.PublishDate == request.PublishDate &&
-            jv.EndDate == request.EndDate.AddDays(5) &&
+            jv.EndDate == request.EndDate &&
             jv.CategoryId == request.CategoryId &&
             jv.RequiredYearOfExperience == request.RequiredYearOfExperience &&
             jv.WorkSchedule == request.WorkSchedule
