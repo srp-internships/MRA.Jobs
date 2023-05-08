@@ -8,6 +8,7 @@ builder.Configuration.AddJsonFile("dbsettings.json", optional: true);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebUIServices();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 

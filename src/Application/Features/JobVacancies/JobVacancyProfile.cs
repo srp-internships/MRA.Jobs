@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.Features.JobVacancies;
-internal class JobVacancyProfile : Profile
+public class JobVacancyProfile : Profile
 {
     public JobVacancyProfile()
     {
