@@ -1,10 +1,12 @@
 ﻿namespace MRA.Jobs.Application.Contracts.Internships.Responses;
-public class GetInternshipsResponse
+public class InternshipListDTO
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
+    public string Category { get; set; }
     public string Title { get; set; }
     public string ShortDescription { get; set; }
-    public string Description { get; set; }
+    public DateTime PublishDate { get; set; }
+    public DateTime EndDate { get; set; }
     public DateTime ApplicationDeadline { get; set; }
     public int Duration { get; set; }
     public int Stipend { get; set; }

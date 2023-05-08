@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
 namespace MRA.Jobs.Application.Contracts.Internships.Commands;
-public class CreateInternshipCommand : IRequest<long>
+public class CreateInternshipCommand : IRequest<Guid>
 {
     public string Title { get; set; }
     public string ShortDescription { get; set; }
@@ -11,7 +11,7 @@ public class CreateInternshipCommand : IRequest<long>
     public DateTime EndDate { get; set; }
     public string Location { get; set; }
     public string RequiredSkills { get; set; }
-    public long? CategoryId { get; set; }
+    public Guid CategoryId { get; set; }
     public DateTime ApplicationDeadline { get; set; }
     public int Duration { get; set; }
     public int Stipend { get; set; }

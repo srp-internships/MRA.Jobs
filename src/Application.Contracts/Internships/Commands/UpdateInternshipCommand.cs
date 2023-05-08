@@ -1,9 +1,9 @@
 ﻿using MediatR;
 
 namespace MRA.Jobs.Application.Contracts.Internships.Commands;
-public class UpdateInternshipCommand : IRequest<long>
+public class UpdateInternshipCommand : IRequest<Guid>
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
     public string Title { get; set; }
     public string ShortDescription { get; set; }
     public string Description { get; set; }

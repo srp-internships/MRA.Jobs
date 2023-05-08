@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Contracts.Internships.Responses;
 
 namespace MRA.Jobs.Application.Contracts.Internships.Queries;
-public class GetInternshipByIdQuery : IRequest<GetInternshipByIdResponse>
+public class GetInternshipByIdQuery : IRequest<InternshipDetailsDTO>
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
 }

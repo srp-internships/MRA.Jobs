@@ -23,6 +23,7 @@ public interface IApplicationDbContext
     public DbSet<Tag> Tags { get; }
     public DbSet<Domain.Entities.Application> Applications { get; }
     public DbSet<ApplicationTimelineEvent> ApplicationTimelineEvents { get; }
+    public DbSet<Internship> Internships { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
