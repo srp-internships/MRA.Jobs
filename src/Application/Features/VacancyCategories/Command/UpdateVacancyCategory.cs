@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using FluentValidation;
-using MediatR;
-using MRA.Jobs.Application.Common.Exceptions;
-using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
-using MRA.Jobs.Domain.Entities;
+﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Command;
-public class UpdateVacancyCategoriesCommandHandler : IRequestHandler<UpdateVacancyCategoryCommand, long>
+public class UpdateVacancyCategoriesCommandHandler : IRequestHandler<UpdateVacancyCategoryCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -22,7 +11,7 @@ public class UpdateVacancyCategoriesCommandHandler : IRequestHandler<UpdateVacan
         _context = context;
         _mapper = mapper;
     }
-    public async Task<long> Handle(UpdateVacancyCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(UpdateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.JobVacancies.FindAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException(nameof(JobVacancy), request.Id);

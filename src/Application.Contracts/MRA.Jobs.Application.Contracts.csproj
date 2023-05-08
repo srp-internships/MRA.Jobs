@@ -11,12 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Applicant\Queries" />
-    <Folder Include="Applications\Queries\" />
-    <Folder Include="Common\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Domain\MRA.Jobs.Domain.csproj" />
   </ItemGroup>
 

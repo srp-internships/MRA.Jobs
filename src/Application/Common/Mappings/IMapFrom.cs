@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace MRA.Jobs.Application.Common.Mappings;
+﻿namespace MRA.Jobs.Application.Common.Mappings;
 
 public interface IMapFrom<T>
 {

@@ -2,4 +2,5 @@
 global using MRA.Jobs.Domain.Entities;
 global using MRA.Jobs.Domain.Events;
 global using MRA.Jobs.Domain.Exceptions;
+global using MRA.Jobs.Domain.Enums;
 global using MRA.Jobs.Domain.ValueObjects;

@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
 
@@ -18,9 +15,8 @@ public class GetVacancyCategoriesQueryHandler : IRequestHandler<GetVacancyCatego
     }
     public async Task<List<VacancyCategoryResponce>> Handle(GetVacancyCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var categories = await _context.Categories
-            //Include(s=>s.)
-            .Include(s => s.Vacancies)
+        var categories = await _context.Categories.
+            Include(s => s.Vacancies)
             .ToListAsync();
 
         return _mapper.

@@ -1,0 +1,10 @@
+﻿global using AutoMapper;
+global using FluentAssertions;
+global using Microsoft.EntityFrameworkCore;
+global using Moq;
+global using MRA.Jobs.Domain.Entities;
+global using MRA.Jobs.Domain.Enums;
+global using NUnit.Framework;
+global using MRA.Jobs.Application.Common.Exceptions;
+global using MRA.Jobs.Application.Common.Interfaces;
+global using FluentValidation.TestHelper;
