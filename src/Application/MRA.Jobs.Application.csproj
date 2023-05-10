@@ -19,9 +19,5 @@
       <ProjectReference Include="..\Domain\MRA.Jobs.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\Internships\Command\Tags\" />
-    </ItemGroup>
-
 
 </Project>
