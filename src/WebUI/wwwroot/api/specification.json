@@ -37,7 +37,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/Applicant/{id}": {
       "put": {
         "tags": [
           "Applicant"
@@ -75,6 +77,48 @@
                 "schema": {
                   "type": "string",
                   "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Applicant"
+        ],
+        "operationId": "Applicant_DeleteApplicant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteApplicantCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -473,10 +517,6 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "applicantId": {
-            "type": "string",
-            "format": "guid"
-          },
           "firstName": {
             "type": "string",
             "nullable": true
@@ -504,6 +544,16 @@
         }
       },
       "UpdateApplicantCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "DeleteApplicantCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
