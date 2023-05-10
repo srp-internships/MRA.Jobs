@@ -4,7 +4,6 @@ namespace MRA.Jobs.Application.Contracts.Applicant.Commands;
 
 public class CreateApplicantCommand : IRequest<Guid>
 {
-    public Guid ApplicantId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Patronymic { get; set; }

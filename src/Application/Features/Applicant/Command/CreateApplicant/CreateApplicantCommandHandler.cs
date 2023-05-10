@@ -1,6 +1,7 @@
 ﻿using MRA.Jobs.Application.Contracts.Applicant.Commands;
 
 namespace MRA.Jobs.Application.Features.Applicant.Command.CreateApplicant;
+using MRA.Jobs.Domain.Entities;
 
 public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantCommand, Guid>
 {
@@ -20,15 +21,13 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         _dataTime = dateTime;
         _currentUserService = currentUserService;
     }
+    
     public async Task<Guid> Handle(CreateApplicantCommand request, CancellationToken cancellationToken)
     {
-        var applicant = await _context.Applicants.FindAsync(request.ApplicantId);
-        _ = applicant ?? throw new NotFoundException(nameof(Domain.Entities.Applicant), request);
-
-        var user = _mapper.Map<Domain.Entities.Applicant>(request);
-        await _context.Applicants.AddAsync(user, cancellationToken);
+        var applicant = _mapper.Map<Applicant>(request);
+        await _context.Applicants.AddAsync(applicant, cancellationToken);
 
         await _context.SaveChangesAsync(cancellationToken);
-        return user.Id;
+        return applicant.Id;
     }
 }
