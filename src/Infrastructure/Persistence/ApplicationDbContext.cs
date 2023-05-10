@@ -21,9 +21,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     internal ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions) :
         base(options, operationalStoreOptions)
     {
-
     }
-
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options,
         IOptions<OperationalStoreOptions> operationalStoreOptions,
@@ -38,13 +36,11 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<JobVacancy> JobVacancies { get; set; }
     public DbSet<VacancyCategory> Categories { get; set; }
     public DbSet<User> Users { get; }
-
     public DbSet<Tag> Tags { get; set; }
     public DbSet<VacancyTag> VacancyTags { get; set; }
-
     public DbSet<UserTag> UserTags { get; set; }
-
     public DbSet<Applicant> Applicants { get; set; }
+    public DbSet<TimelineEvent> TimelineEvents { get; set; }
 
     #region override
     protected override void OnModelCreating(ModelBuilder builder)
