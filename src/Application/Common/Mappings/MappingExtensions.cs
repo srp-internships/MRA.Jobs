@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using MRA.Jobs.Application.Common.Models;
 using Microsoft.EntityFrameworkCore;
 

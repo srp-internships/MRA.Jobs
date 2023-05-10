@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
 using MRA.Jobs.Application.Common.Behaviours;
-using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using MRA.Jobs.Infrastructure;
 
 namespace MRA.Jobs.Application;
 
@@ -10,8 +9,9 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        //services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddScoped<IApplicationSieveProcessor, ApplicationSieveProcessor>();
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));

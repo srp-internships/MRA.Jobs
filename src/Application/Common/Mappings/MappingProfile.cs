@@ -1,5 +1,4 @@
 using System.Reflection;
-using AutoMapper;
 
 namespace MRA.Jobs.Application.Common.Mappings;
 
