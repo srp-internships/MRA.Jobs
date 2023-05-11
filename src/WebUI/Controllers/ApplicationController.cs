@@ -17,13 +17,13 @@ public class ApplicationController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ApplicationResponse>>> GetAllApplications(GetApplicationsQuery request, CancellationToken cancellationToken)
+    public async Task<ActionResult<List<ApplicationListDTO>>> GetAllApplications(GetApplicationsQuery request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpGet("{Id}")]
-    public async Task<ActionResult<ApplicationResponse>> GetApplicationById(GetByIdApplicationQuery request, CancellationToken cancellationToken)
+    public async Task<ActionResult<ApplicationListDTO>> GetApplicationById(GetByIdApplicationQuery request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
