@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Applicant.Commands;
+using MRA.Jobs.Application.Contracts.Applicant.Queries;
+using MRA.Jobs.Application.Contracts.Applicant.Responses;
+using MRA.Jobs.Application.Contracts.Applications.Queries;
+using MRA.Jobs.Application.Features.Applicant.Query.GetAllApplicant;
 
 namespace MRA.Jobs.Web.Controllers;
 
@@ -11,7 +15,20 @@ public class ApplicantController : ApiControllerBase
     {
         _logger = logger;
     }
-    
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ApplicantDetailsDto>> GetApplicantById(GetApplicantByIdQuery request, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<ApplicantDetailsDto>> GetAllApplicant(GetAllApplicantQuery request,
+        CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(request, cancellationToken);
+    }
+
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateNewApplicant(
         CreateApplicantCommand request, CancellationToken cancellationToken
