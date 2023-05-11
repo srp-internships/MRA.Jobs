@@ -7,13 +7,22 @@ namespace MRA.Jobs.Web.Controllers;
 public class InternshipsController : ApiControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<long>> CreateNewInternship(CreateInternshipCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> CreateNewInternship(CreateInternshipCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<long>> UpdateInternship([FromRoute] long id, [FromBody] UpdateInternshipCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> UpdateInternship([FromRoute] Guid id, [FromBody] UpdateInternshipCommand request, CancellationToken cancellationToken)
+    {
+        if (id != request.Id)
+            return BadRequest();
+
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<bool>> DeleteInternship([FromRoute] Guid id, [FromBody] DeleteInternshipCommand request, CancellationToken cancellationToken)
     {
         if (id != request.Id)
             return BadRequest();
