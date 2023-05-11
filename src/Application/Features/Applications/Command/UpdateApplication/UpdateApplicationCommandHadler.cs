@@ -1,10 +1,11 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
-namespace MRA.Jobs.Application.Features.Applications.Command;
-
+namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplication;
 using Microsoft.EntityFrameworkCore;
+
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Domain.Entities;
+using MRA.Jobs.Domain.Enums;
 
 public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationCommand, Guid>
 {
@@ -13,7 +14,7 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
 
-    public UpdateApplicationCommandHadler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,  ICurrentUserService currentUserService)
+    public UpdateApplicationCommandHadler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _context = context;
         _mapper = mapper;
@@ -23,7 +24,7 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
 
     public async Task<Guid> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Applications.FindAsync(request.Id, cancellationToken)
+        var application = await _context.Applications.FindAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException(nameof(Application), request.Id);
 
         var applicant = await _context.Applicants.FindAsync(request.ApplicantId, cancellationToken)
@@ -31,19 +32,20 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
         var vacancy = await _context.Vacancies.FindAsync(request.VacancyId, cancellationToken)
             ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
 
-        var application = _mapper.Map<Application>(request);
-        var timelineEvent = new ApplicationTimelineEvent
+        _mapper.Map(request, application);
+
+        var timelineEvent = new VacancyTimelineEvent
         {
-            ApplicationId = application.Id,
+            VacancyId = application.Id,
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
-            Note = "Job vacancy updated",
+            Note = "Application updated",
             CreateBy = _currentUserService.UserId
         };
-        _context.Applications.Update(application);
+        await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
 
-        return entity.Id;
+        return application.Id;
     }
 }

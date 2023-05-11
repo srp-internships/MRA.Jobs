@@ -1,11 +1,10 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
-namespace MRA.Jobs.Application.Features.Applications.Command;
+namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
-using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Domain.Entities;
-using System;
+using MRA.Jobs.Domain.Enums;
 
 public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, Guid>
 {
@@ -23,39 +22,27 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     }
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
-        var applicant = await _context.Applicants.FindAsync(request.ApplicantId, cancellationToken) 
+        var applicant = await _context.Applicants.FindAsync(request.ApplicantId, cancellationToken)
              ?? throw new NotFoundException(nameof(Applicant), request.ApplicantId);
         var vacancy = await _context.Vacancies.FindAsync(request.VacancyId, cancellationToken)
             ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
-        
+
         var application = _mapper.Map<Application>(request);
+
+        await _context.Applications.AddAsync(application, cancellationToken);
 
         var timelineEvent = new ApplicationTimelineEvent
         {
             ApplicationId = application.Id,
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
-            Note = "Application created",
+            Note = "Job vacancy created",
             CreateBy = _currentUserService.UserId
         };
-       
-        _context.Applications.Add(application);
+
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-
         return application.Id;
 
-    }
-}
-
-public class CreateApplicationCommandValidator: AbstractValidator<CreateApplicationCommand>
-{
-    public CreateApplicationCommandValidator()
-    {
-        RuleFor(v => v.CoverLetter)
-            .NotEmpty()
-            .MinimumLength(150);
-        RuleFor(v => v.ResumeUrl)
-            .NotEmpty();
     }
 }
