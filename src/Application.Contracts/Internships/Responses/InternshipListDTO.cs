@@ -1,8 +1,5 @@
-﻿using MRA.Jobs.Domain.Enums;
-
-namespace MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-
-public class JobVacancyListDTO
+﻿namespace MRA.Jobs.Application.Contracts.Internships.Responses;
+public class InternshipListDTO
 {
     public Guid Id { get; set; }
     public string Category { get; set; }
@@ -10,5 +7,7 @@ public class JobVacancyListDTO
     public string ShortDescription { get; set; }
     public DateTime PublishDate { get; set; }
     public DateTime EndDate { get; set; }
-    public WorkSchedule WorkSchedule { get; set; }
+    public DateTime ApplicationDeadline { get; set; }
+    public int Duration { get; set; }
+    public int Stipend { get; set; }
 }

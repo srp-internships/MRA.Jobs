@@ -13,7 +13,7 @@ public class JobVacanciesController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreaeNewJobVacancy(CreateJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> CreateNewJobVacancy(CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }

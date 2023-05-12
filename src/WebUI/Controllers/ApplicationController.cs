@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Applications.Commands;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
@@ -16,14 +15,8 @@ public class ApplicationController : ApiControllerBase
         _logger = logger;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<List<ApplicationListDTO>>> GetAllApplications(GetApplicationsQuery request, CancellationToken cancellationToken)
-    {
-        return await Mediator.Send(request, cancellationToken);
-    }
-
     [HttpGet("{Id}")]
-    public async Task<ActionResult<ApplicationListDTO>> GetApplicationById(GetByIdApplicationQuery request, CancellationToken cancellationToken)
+    public async Task<ActionResult<ApplicationDetailsDTO>> GetApplicationById(GetByIdApplicationQuery request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
