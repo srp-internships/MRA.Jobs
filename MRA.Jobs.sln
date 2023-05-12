@@ -30,6 +30,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Application.Contra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{384F34D2-454F-4878-A40D-69B36E9DC43B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRA.Jobs.Front.Client", "MRA.Jobs.Front\Client\MRA.Jobs.Front.Client.csproj", "{500B9A7C-94A5-4DAA-98EB-9F5DA74101E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{C8D144EB-C2C2-49EB-BFD2-F322F5148300}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8D144EB-C2C2-49EB-BFD2-F322F5148300}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8D144EB-C2C2-49EB-BFD2-F322F5148300}.Release|Any CPU.Build.0 = Release|Any CPU
+		{500B9A7C-94A5-4DAA-98EB-9F5DA74101E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{500B9A7C-94A5-4DAA-98EB-9F5DA74101E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{500B9A7C-94A5-4DAA-98EB-9F5DA74101E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{500B9A7C-94A5-4DAA-98EB-9F5DA74101E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{277029AF-D9E1-4B75-9F11-48FEA7345AD7} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
 		{22454EE9-16B3-4B7A-8352-37E59B858155} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
 		{C8D144EB-C2C2-49EB-BFD2-F322F5148300} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
+		{500B9A7C-94A5-4DAA-98EB-9F5DA74101E8} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3CB609D9-5D54-4C11-A371-DAAC8B74E430}

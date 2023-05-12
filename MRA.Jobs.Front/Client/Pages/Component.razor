@@ -1,0 +1,17 @@
+﻿
+@page "/page"
+@using MRA.Jobs.Front.Client.Shared
+<h3>Component</h3>
+<PageTitle>Salom</PageTitle>
+@*<button class="btn-primary" onclick="@Plus">meni boss</button>*@
+<Button event=""></Button>
+<Yangic></Yangic>
+<p>@count</p>
+    
+@code {
+    private int count = 0;
+    public void  Plus()
+    {
+        count += 2;
+    }
+}

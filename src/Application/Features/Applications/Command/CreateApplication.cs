@@ -1,17 +1,25 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
 namespace MRA.Jobs.Application.Features.Applications.Command;
+
+using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Domain.Entities;
+using System;
 
 public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IDateTime _dateTime;
+    private readonly ICurrentUserService _currentUserService;
 
-    public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper)
+    public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _context = context;
         _mapper = mapper;
+        _dateTime = dateTime;
+        _currentUserService = currentUserService;
     }
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
@@ -22,7 +30,17 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         
         var application = _mapper.Map<Application>(request);
 
+        var timelineEvent = new ApplicationTimelineEvent
+        {
+            ApplicationId = application.Id,
+            EventType = TimelineEventType.Created,
+            Time = _dateTime.Now,
+            Note = "Application created",
+            CreateBy = _currentUserService.UserId
+        };
+       
         _context.Applications.Add(application);
+        await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
         return application.Id;

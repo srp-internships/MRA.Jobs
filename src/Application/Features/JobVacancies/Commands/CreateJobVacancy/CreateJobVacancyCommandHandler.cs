@@ -17,7 +17,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         _dateTime = dateTime;
         _currentUserService = currentUserService;
     }
-
+        
     public async Task<Guid> Handle(CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories.FindAsync(request.CategoryId);
