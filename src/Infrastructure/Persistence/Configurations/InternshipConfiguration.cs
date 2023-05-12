@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MRA.Jobs.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MRA.Jobs.Infrastructure.Persistence.Configurations;
 public class InternshipConfiguration : IEntityTypeConfiguration<Internship>
