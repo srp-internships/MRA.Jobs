@@ -1,12 +1,12 @@
 ﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 
-namespace MRA.Jobs.Application.Features.VacancyCategories.Command;
-public class UpdateVacancyCategoriesCommandHandler : IRequestHandler<UpdateVacancyCategoryCommand, Guid>
+namespace MRA.Jobs.Application.Features.VacancyCategories.Command.UpdateVacancyCategory;
+public class UpdateVacancyCategoryCommandHandler : IRequestHandler<UpdateVacancyCategoryCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public UpdateVacancyCategoriesCommandHandler(IApplicationDbContext context, IMapper mapper)
+    public UpdateVacancyCategoryCommandHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
@@ -19,14 +19,5 @@ public class UpdateVacancyCategoriesCommandHandler : IRequestHandler<UpdateVacan
         var result = _context.Categories.Update(vacancyCategory);
         await _context.SaveChangesAsync(cancellationToken);
         return result.Entity.Id;
-    }
-}
-
-public class UpdateVacancyCategoriesCommandValidator : AbstractValidator<UpdateVacancyCategoryCommand>
-{
-    public UpdateVacancyCategoriesCommandValidator()
-    {
-        RuleFor(s => s.Name).NotEmpty();
-
     }
 }

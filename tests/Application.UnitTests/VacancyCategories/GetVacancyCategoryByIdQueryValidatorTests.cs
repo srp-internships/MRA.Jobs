@@ -1,23 +1,23 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
-using MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
+﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+using MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryById;
 
-namespace MRA.Jobs.Application.UnitTests.JobVacancies;
+namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
 
 public class GetVacancyCategoryByIdQueryValidatorTests
 {
-    private GetJobVacancyByIdQueryValidator _validator;
+    private GetVacancyCategoryByIdQueryValidator _validator;
 
     [SetUp]
     public void Setup()
     {
-        _validator = new GetJobVacancyByIdQueryValidator();
+        _validator = new GetVacancyCategoryByIdQueryValidator();
     }
 
     [Test]
     public void Validate_IdIsZero()
     {
         // Arrange
-        var query = new GetJobVacancyByIdQuery { Id = Guid.Empty };
+        var query = new GetVacancyCategoryByIdQuery { Id = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(query);
@@ -30,7 +30,7 @@ public class GetVacancyCategoryByIdQueryValidatorTests
     public void Validate_IdIsNotZero()
     {
         // Arrange
-        var query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetVacancyCategoryByIdQuery { Id = Guid.NewGuid() };
 
         // Act
         var result = _validator.TestValidate(query);

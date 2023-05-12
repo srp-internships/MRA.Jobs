@@ -9,22 +9,22 @@ namespace MRA.Jobs.Web.Controllers;
 [ApiController]
 public class CategoryController : ApiControllerBase
 {
-    private readonly ILogger<OidcConfigurationController> _logger;
+    //private readonly ILogger<OidcConfigurationController> _logger;
 
-    public CategoryController(ILogger<OidcConfigurationController> logger)
-    {
-        _logger = logger;
-    }
-    [HttpGet]
-    public async Task<IActionResult> Get()
-    {
-        var categories =await Mediator.Send(new GetVacancyCategoriesQuery());
-        return Ok(categories);
-    }
-    [HttpGet("{id}")]
-    public IActionResult Get(int id)
-    {
-        var category = Mediator.Send(new GetByIdVacancyCategoryQuery { Id = id });
-        return Ok(category);
-    }
+    //public CategoryController(ILogger<OidcConfigurationController> logger)
+    //{
+    //    _logger = logger;
+    //}
+    //[HttpGet]
+    //public async Task<IActionResult> Get()
+    //{
+    //    var categories =await Mediator.Send(new GetVacancyCategoryQuery());
+    //    return Ok(categories);
+    //}
+    //[HttpGet("{id}")]
+    //public IActionResult Get(int id)
+    //{
+    //    var category = Mediator.Send(new GetVacancyCategoryByIdQuery { Id = id });
+    //    return Ok(category);
+    //}
 }
