@@ -12,7 +12,8 @@ public class ApplicantSocialMediaConfiguration : IEntityTypeConfiguration<Applic
         // Navigation properties
         builder.HasOne(sm => sm.Applicant)
             .WithMany(a => a.SocialMedias)
-            .HasForeignKey(sm => sm.ApplicantId);
+            .HasForeignKey(sm => sm.ApplicantId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
 

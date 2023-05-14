@@ -11,7 +11,8 @@ public class VacancyTimelineEventConfiguration : IEntityTypeConfiguration<Vacanc
         // Navigation properties
         builder.HasOne(vte => vte.Vacancy)
             .WithMany(v => v.History)
-            .HasForeignKey(vte => vte.VacancyId);
+            .HasForeignKey(vte => vte.VacancyId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

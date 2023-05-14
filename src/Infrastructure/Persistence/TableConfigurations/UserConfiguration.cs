@@ -17,11 +17,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         // Navigation properties
         builder.HasMany(u => u.History)
             .WithOne(ute => ute.User)
-            .HasForeignKey(ute => ute.UserId);
+            .HasForeignKey(ute => ute.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(u => u.Tags)
             .WithOne(ut => ut.User)
-            .HasForeignKey(ut => ut.UserId);
+            .HasForeignKey(ut => ut.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

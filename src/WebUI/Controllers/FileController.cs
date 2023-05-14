@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Common.Interfaces;
 
 namespace MRA.Jobs.Web.Controllers;

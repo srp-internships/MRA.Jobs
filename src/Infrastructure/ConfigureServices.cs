@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Infrastructure.Identity;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;
@@ -28,17 +25,14 @@ public static class ConfigureServices
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-        services.AddIdentityServer()
-            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService>();
 
-        services.AddAuthentication()
-            .AddIdentityServerJwt();
+        //services.AddAuthentication()
+        //    .AddIdentityServerJwt();
 
-        services.AddAuthorization(options =>
-            options.AddPolicy("CanPurge", policy => policy.RequireRole("Administrator")));
+        //services.AddAuthorization(options =>
+        //    options.AddPolicy("CanPurge", policy => policy.RequireRole("Administrator")));
 
         return services;
     }
