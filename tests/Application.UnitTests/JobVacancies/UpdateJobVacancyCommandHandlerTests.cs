@@ -8,7 +8,7 @@ public class UpdateJobVacancyCommandHandlerTests : BaseTestFixture
     private UpdateJobVacancyCommandHandler _handler;
 
     [SetUp]
-    public void Setup()
+    public void SetUp()
     {
         _handler = new UpdateJobVacancyCommandHandler(
             _dbContextMock.Object, Mapper, _dateTimeMock.Object, _currentUserServiceMock.Object);
@@ -45,6 +45,7 @@ public class UpdateJobVacancyCommandHandlerTests : BaseTestFixture
         Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, CancellationToken.None));
     }
 
+    [Test]
     public async Task Handle_GivenValidCommand_ShouldUpdateJobVacancyAndAddTimelineEvent()
     {
         // Arrange
