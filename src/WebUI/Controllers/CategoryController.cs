@@ -9,16 +9,6 @@ namespace MRA.Jobs.Web.Controllers;
 public class CategoryController : ApiControllerBase
 {
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<VacancyCategoryListDTO>>> GetAllVacancyCategories()
-    {
-        var query = new GetAllVacancyCategoryQuery();
-        var result = await Mediator.Send(query);
-        return Ok(result);
-    }
-
-
-
     [HttpGet("{id}")]
     public async Task<ActionResult<VacancyCategoryListDTO>> GetVacancyCategory(Guid id)
     {

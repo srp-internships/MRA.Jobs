@@ -10,7 +10,6 @@ public class CreateVacancyCategoryCommandHandler : IRequestHandler<CreateVacancy
     {
         _context = context;
         _mapper = mapper;
-
     }
     public async Task<Guid> Handle(CreateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
