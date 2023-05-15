@@ -1,8 +1,4 @@
-﻿using AutoMapper.Internal;
-using MRA.Jobs.Application.Features.Internships;
-using MRA.Jobs.Application.Features.JobVacancies;
-
-namespace MRA.Jobs.Application.UnitTests;
+﻿namespace MRA.Jobs.Application.UnitTests;
 
 [SetUpFixture]
 public partial class Testing
@@ -15,8 +11,11 @@ public partial class Testing
             cfg.Internal().MethodMappingEnabled = false;
             cfg.AddProfile<JobVacancyProfile>();
             cfg.AddProfile<InternshipProfile>();
+            cfg.AddProfile<VacancyCategoryProfile>();
         });
         BaseTestFixture.Mapper = configurationProvider.CreateMapper();
+
+
     }
 
 

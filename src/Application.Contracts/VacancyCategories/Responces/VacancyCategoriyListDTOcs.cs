@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
-public class VacancyCategoryResponce 
+public class VacancyCategoryListDTO
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string Name { get; set; }
 }
