@@ -1,6 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
-namespace MRA.Jobs.Application.Features.Applications.Command;
+namespace MRA.Jobs.Application.Features.Applications.Command.DeleteApplication;
 using MRA.Jobs.Domain.Entities;
 public class DeleteApplicationCommandHandler : IRequestHandler<DeleteApplicationCommand, bool>
 {
@@ -13,12 +13,11 @@ public class DeleteApplicationCommandHandler : IRequestHandler<DeleteApplication
 
     public async Task<bool> Handle(DeleteApplicationCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Applications.FindAsync(request.Id, cancellationToken)
+        var entity = await _context.Applications.FindAsync(new object[] { request.Id }, cancellationToken)
             ?? throw new NotFoundException(nameof(Application), request.Id);
 
         _context.Applications.Remove(entity);
-
         await _context.SaveChangesAsync(cancellationToken);
-        return true;    
+        return true;
     }
 }

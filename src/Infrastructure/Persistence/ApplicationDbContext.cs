@@ -47,6 +47,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Domain.Entities.Application> Applications { get; set; }
     public DbSet<ApplicationTimelineEvent> ApplicationTimelineEvents { get; set; }
+    public DbSet<Internship> Internships { get; set; }
+    public DbSet<TrainingModel> TrainingModels { get; set; }
 
     #region override
     protected override void OnModelCreating(ModelBuilder builder)

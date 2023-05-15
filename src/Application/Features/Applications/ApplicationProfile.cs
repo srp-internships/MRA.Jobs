@@ -8,9 +8,9 @@ public class ApplicationProfile: Profile
 {
     public ApplicationProfile()
     {
+        CreateMap<Application, ApplicationListDTO>();
+        CreateMap<Application, ApplicationDetailsDTO>();
         CreateMap<CreateApplicationCommand, Application>();
         CreateMap<UpdateApplicationCommand, Application>();
-        CreateMap<List<Application>, List<ApplicationResponse>>();
-        CreateMap<Application,  ApplicationResponse>();
     }
 }
