@@ -14,11 +14,13 @@ public class TestConfiguration : IEntityTypeConfiguration<Test>
 
         builder.HasOne(t => t.Vacancy)
             .WithMany(v => v.Tests)
-            .HasForeignKey(t => t.VacancyId);
+            .HasForeignKey(t => t.VacancyId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(t => t.Results)
             .WithOne(tr => tr.Test)
-            .HasForeignKey(tr => tr.TestId);
+            .HasForeignKey(tr => tr.TestId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

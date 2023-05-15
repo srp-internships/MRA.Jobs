@@ -1,14 +1,19 @@
+using System.Net.Mime;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
 using MRA.Jobs.Infrastructure;
+using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Web;
+using Newtonsoft.Json;
+using Sieve.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("dbsettings.json", optional: true);
-// Add services to the container.
-builder.Services.AddApplicationServices();
+
+builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebUIServices();
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("Sieve"));
 
 var app = builder.Build();
 
@@ -18,12 +23,11 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 
-    // Initialise and seed database
     using (var scope = app.Services.CreateScope())
     {
-        //var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
-        //await initialiser.InitialiseAsync();
-        //await initialiser.SeedAsync();
+        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+        await initialiser.InitialiseAsync();
+        await initialiser.SeedAsync();
     }
 }
 else
@@ -32,7 +36,25 @@ else
     app.UseHsts();
 }
 
-app.UseHealthChecks("/health");
+app.UseHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        var result = new
+        {
+            Status = report.Status.ToString(),
+            Checks = report.Entries.Select(entry => new
+            {
+                Name = entry.Key,
+                Status = entry.Value.Status.ToString(),
+                Description = entry.Value.Description
+            })
+        };
+
+        context.Response.ContentType = MediaTypeNames.Application.Json;
+        await context.Response.WriteAsync(JsonConvert.SerializeObject(result));
+    }
+});
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -43,17 +65,13 @@ app.UseSwaggerUi3(settings =>
 });
 
 app.UseRouting();
-
 app.UseAuthentication();
-app.UseIdentityServer();
 app.UseAuthorization();
+app.MapControllers();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
-
-app.MapRazorPages();
-
-app.MapFallbackToFile("index.html");
+app.MapGet("/", () =>
+{
+    return Results.Redirect("/api");
+});
 
 app.Run();

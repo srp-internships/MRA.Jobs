@@ -6,6 +6,7 @@ using NSwag;
 using NSwag.Generation.Processors.Security;
 using MRA.Jobs.Web.Services;
 using MRA.Jobs.Web.Filters;
+using System.Text.Json.Serialization;
 
 namespace MRA.Jobs.Web;
 
@@ -22,12 +23,18 @@ public static class ConfigureServices
         services.AddHealthChecks()
             .AddDbContextCheck<ApplicationDbContext>();
 
-        services.AddControllersWithViews(options =>
-            options.Filters.Add<ApiExceptionFilterAttribute>())
-                .AddFluentValidation(x => x.AutomaticValidationEnabled = false);
+        services.AddControllers(options =>
+            {
+                options.Filters.Add<ApiExceptionFilterAttribute>();
+            })
+        .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
-        services.AddRazorPages();
+        services.AddFluentValidationAutoValidation()
+            .AddFluentValidationClientsideAdapters();
 
+        services.AddRouting(options => options.LowercaseUrls = true);
+        services.AddEndpointsApiExplorer();
+        services.AddCors();
         services.Configure<ApiBehaviorOptions>(options =>
             options.SuppressModelStateInvalidFilter = true);
 
@@ -41,7 +48,7 @@ public static class ConfigureServices
                 In = OpenApiSecurityApiKeyLocation.Header,
                 Description = "Type into the textbox: Bearer {your JWT token}."
             });
-            
+
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
 

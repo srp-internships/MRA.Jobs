@@ -10,7 +10,8 @@ public class VacancyCategoryConfiguration : IEntityTypeConfiguration<VacancyCate
 
         builder.HasMany(vc => vc.Vacancies)
             .WithOne(v => v.Category)
-            .HasForeignKey(v => v.CategoryId);
+            .HasForeignKey(v => v.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

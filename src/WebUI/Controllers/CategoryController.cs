@@ -1,16 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
-
-namespace MRA.Jobs.Web.Controllers;
+﻿namespace MRA.Jobs.Web.Controllers;
 
 public class CategoryController : ApiControllerBase
 {
+    private readonly ILogger<CategoryController> _logger;
 
     [HttpGet("{id}")]
     public async Task<ActionResult<VacancyCategoryListDTO>> GetVacancyCategory(Guid id)
+    public CategoryController(ILogger<CategoryController> logger)
     {
         var query = new GetVacancyCategoryByIdQuery { Id = id };
         var result = await Mediator.Send(query);

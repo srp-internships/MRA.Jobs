@@ -11,7 +11,8 @@ public class UserTimelineEventConfiguration : IEntityTypeConfiguration<UserTimel
         // Navigation properties
         builder.HasOne(ute => ute.User)
             .WithMany(u => u.History)
-            .HasForeignKey(ute => ute.UserId);
+            .HasForeignKey(ute => ute.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 
