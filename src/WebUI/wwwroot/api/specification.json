@@ -32,7 +32,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ApplicationResponse"
+                    "$ref": "#/components/schemas/ApplicationListDTO"
                   }
                 }
               }
@@ -107,7 +107,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationListDTO"
                 }
               }
             }
@@ -393,7 +393,7 @@
   },
   "components": {
     "schemas": {
-      "ApplicationResponse": {
+      "ApplicationListDTO": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

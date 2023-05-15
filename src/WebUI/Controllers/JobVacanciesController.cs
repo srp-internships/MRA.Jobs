@@ -16,7 +16,7 @@ public class JobVacanciesController : ApiControllerBase
     public async Task<ActionResult<Guid>> CreaeNewJobVacancy(CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
-    }
+    } 
 
     [HttpPut("{id}")]
     public async Task<ActionResult<Guid>> Update([FromRoute] Guid id, [FromBody] UpdateJobVacancyCommand request, CancellationToken cancellationToken)

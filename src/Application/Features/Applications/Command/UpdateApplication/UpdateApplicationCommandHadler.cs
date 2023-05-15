@@ -44,7 +44,6 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
 
         return application.Id;
     }
