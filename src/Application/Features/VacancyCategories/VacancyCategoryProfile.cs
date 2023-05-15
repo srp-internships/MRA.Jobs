@@ -1,4 +1,7 @@
-﻿namespace MRA.Jobs.Application.Features.VacancyCategories;
+﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
+
+namespace MRA.Jobs.Application.Features.VacancyCategories;
 public class VacancyCategoryProfile : Profile
 {
     public VacancyCategoryProfile()

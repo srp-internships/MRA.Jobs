@@ -1,4 +1,11 @@
-﻿namespace MRA.Jobs.Application;
+﻿using System.Reflection;
+using AutoMapper.Internal;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using MRA.Jobs.Application.Common.Behaviours;
+using MRA.Jobs.Infrastructure;
+
+namespace MRA.Jobs.Application;
 
 public static class ConfigureServices
 {
