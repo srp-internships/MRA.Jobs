@@ -792,6 +792,28 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.HasDiscriminator().HasValue("EducationVacancy");
                 });
 
+            modelBuilder.Entity("MRA.Jobs.Domain.Entities.Internship", b =>
+                {
+                    b.HasBaseType("MRA.Jobs.Domain.Entities.Vacancy");
+
+                    b.Property<DateTime>("ApplicationDeadline")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stipend")
+                        .HasColumnType("int");
+
+                    b.ToTable("Vacancies", t =>
+                        {
+                            t.Property("Duration")
+                                .HasColumnName("Internship_Duration");
+                        });
+
+                    b.HasDiscriminator().HasValue("Internship");
+                });
+
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.JobVacancy", b =>
                 {
                     b.HasBaseType("MRA.Jobs.Domain.Entities.Vacancy");
@@ -803,6 +825,19 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("JobVacancy");
+                });
+
+            modelBuilder.Entity("MRA.Jobs.Domain.Entities.TrainingModel", b =>
+                {
+                    b.HasBaseType("MRA.Jobs.Domain.Entities.Vacancy");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Fees")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("TrainingModel");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.ApplicantSocialMedia", b =>
