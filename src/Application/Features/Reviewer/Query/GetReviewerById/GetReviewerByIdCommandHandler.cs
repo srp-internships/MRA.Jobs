@@ -5,7 +5,7 @@ using MRA.Jobs.Application.Contracts.Reviewer.Response;
 namespace MRA.Jobs.Application.Features.Reviewer.Query.GetReviewerById;
 using Domain.Entities;
 
-public class GetReviewerByIdCommandHandler : IRequestHandler<GetReviewerByIdQuery, ReviewerListDTO>
+public class GetReviewerByIdCommandHandler : IRequestHandler<GetReviewerByIdQuery, ReviewerDetailsDTO>
 {
     private readonly IMapper _mapper;
     private readonly IApplicationDbContext _context;
@@ -16,11 +16,11 @@ public class GetReviewerByIdCommandHandler : IRequestHandler<GetReviewerByIdQuer
         _context = context;
     }
     
-    public async Task<ReviewerListDTO> Handle(GetReviewerByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ReviewerDetailsDTO> Handle(GetReviewerByIdQuery request, CancellationToken cancellationToken)
     {
         var reviewer = await _context.Reviewers.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         _ = reviewer ?? throw new NotFoundException(nameof(Reviewer), cancellationToken);
-        return _mapper.Map<ReviewerListDTO>(reviewer);
+        return _mapper.Map<ReviewerDetailsDTO>(reviewer);
 
     }
 }
