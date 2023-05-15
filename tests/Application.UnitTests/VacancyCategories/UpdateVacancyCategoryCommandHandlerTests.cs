@@ -19,7 +19,7 @@ public class UpdateVacancyCategoryCommandHandlerTests : BaseTestFixture
     {
         // Arrange
         var command = new UpdateVacancyCategoryCommand { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x =>x.Categories.FindAsync(command.Id)).ReturnsAsync(null as VacancyCategory);
+        _dbContextMock.Setup(x => x.Categories.FindAsync(command.Id)).ReturnsAsync(null as VacancyCategory);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -29,6 +29,8 @@ public class UpdateVacancyCategoryCommandHandlerTests : BaseTestFixture
         act.Should().ThrowAsync<NotFoundException>()
             .WithMessage($"*{nameof(VacancyCategory)}*{command.Id}*");
     }
+
+    [Test]
     public async Task Handle_GivenValidCommand_ShouldUpdateVacancyCategory()
     {
         // Arrange
@@ -38,8 +40,13 @@ public class UpdateVacancyCategoryCommandHandlerTests : BaseTestFixture
             Name = "New Category Title",
         };
 
-        var existingVacancyCategory = new VacancyCategory { Id = command.Id };
-        _dbContextMock.Setup(x =>x.Categories.FindAsync(command.Id))
+        var categoryDbSetMock = new Mock<DbSet<VacancyCategory>>();
+
+        _dbContextMock.Setup(x => x.Categories).Returns(categoryDbSetMock.Object);
+
+        var existingVacancyCategory = new VacancyCategory { Id = command.Id, Name = command.Name };
+
+        categoryDbSetMock.Setup(x => x.FindAsync(new object[] { command.Id }, CancellationToken.None))
             .ReturnsAsync(existingVacancyCategory);
 
         // Act

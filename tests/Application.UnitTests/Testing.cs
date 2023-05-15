@@ -19,9 +19,5 @@ public partial class Testing
             cfg.AddProfile<VacancyCategoryProfile>();
         });
         BaseTestFixture.Mapper = configurationProvider.CreateMapper();
-
-
     }
-
-
 }
