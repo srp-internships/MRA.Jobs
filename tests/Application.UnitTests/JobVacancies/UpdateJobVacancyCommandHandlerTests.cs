@@ -45,6 +45,7 @@ public class UpdateJobVacancyCommandHandlerTests : BaseTestFixture
         Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, CancellationToken.None));
     }
 
+    [Test]
     public async Task Handle_GivenValidCommand_ShouldUpdateJobVacancyAndAddTimelineEvent()
     {
         // Arrange
@@ -61,12 +62,18 @@ public class UpdateJobVacancyCommandHandlerTests : BaseTestFixture
             WorkSchedule = WorkSchedule.FullTime
         };
 
+        var jobVacancyDbSetMock = new Mock<DbSet<JobVacancy>>();
+        var categoriesDbSetMock = new Mock<DbSet<VacancyCategory>>();
+
+        _dbContextMock.Setup(x => x.JobVacancies).Returns(jobVacancyDbSetMock.Object);
+        _dbContextMock.Setup(x => x.Categories).Returns(categoriesDbSetMock.Object);
+
         var existingJobVacancy = new JobVacancy { Id = command.Id };
-        _dbContextMock.Setup(x => x.JobVacancies.FindAsync(command.Id))
+        jobVacancyDbSetMock.Setup(x => x.FindAsync(new object[] { command.Id }, CancellationToken.None))
             .ReturnsAsync(existingJobVacancy);
 
         var category = new VacancyCategory { Id = command.CategoryId };
-        _dbContextMock.Setup(x => x.Categories.FindAsync(command.CategoryId))
+        categoriesDbSetMock.Setup(x => x.FindAsync(new object[] { command.CategoryId }, CancellationToken.None))
             .ReturnsAsync(category);
 
         var timelineEvent = new VacancyTimelineEvent();
