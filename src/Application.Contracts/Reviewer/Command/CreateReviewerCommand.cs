@@ -4,6 +4,7 @@ namespace MRA.Jobs.Application.Contracts.Reviewer.Command;
 
 public class CreateReviewerCommand : IRequest<Guid>
 {
+    public Guid Id { get; set; }
     public string Avatar { get; set; }
     public DateTime DateOfBrith { get; set; }
     public string Email { get; set; }

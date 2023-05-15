@@ -21,7 +21,7 @@ public class GetApplicantQueryHandler : IRequestHandler<GetApplicantByIdQuery, A
     {
         var applicant =
             await _context.Applicants.FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken: cancellationToken);
-        _ = applicant ?? throw new NotFoundException(nameof(Domain.Entities.Applicant), request.Id);
+   
         return _mapper.Map<ApplicantDetailsDto>(applicant);
     }
 }

@@ -6,6 +6,8 @@ public class CreateReviewerCommandValidator : AbstractValidator<CreateReviewerCo
 {
     public CreateReviewerCommandValidator()
     {
+        RuleFor(r => r.Id)
+            .NotEmpty();
         RuleFor(r => r.FirstName)
             .MaximumLength(100)
             .NotEmpty();
