@@ -9,9 +9,9 @@ namespace MRA.Jobs.Web.Controllers;
 
 public class ApplicantController : ApiControllerBase
 {
-    private readonly ILogger<OidcConfigurationController> _logger;
+    private readonly ILogger<ApplicantController> _logger;
 
-    public ApplicantController(ILogger<OidcConfigurationController> logger)
+    public ApplicantController(ILogger<ApplicantController> logger)
     {
         _logger = logger;
     }
