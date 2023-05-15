@@ -1,4 +1,9 @@
-﻿namespace MRA.Jobs.Application.UnitTests;
+﻿using AutoMapper.Internal;
+using MRA.Jobs.Application.Features.Internships;
+using MRA.Jobs.Application.Features.JobVacancies;
+using MRA.Jobs.Application.Features.VacancyCategories;
+
+namespace MRA.Jobs.Application.UnitTests;
 
 [SetUpFixture]
 public partial class Testing
