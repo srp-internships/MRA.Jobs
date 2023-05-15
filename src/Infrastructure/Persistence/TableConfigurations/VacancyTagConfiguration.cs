@@ -8,11 +8,13 @@ public class VacancyTagConfiguration : IEntityTypeConfiguration<VacancyTag>
     {
         builder.HasOne(vt => vt.Tag)
             .WithMany(t => t.VacancyTags)
-            .HasForeignKey(vt => vt.TagId);
+            .HasForeignKey(vt => vt.TagId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(vt => vt.Vacancy)
             .WithMany(v => v.Tags)
-            .HasForeignKey(vt => vt.VacancyId);
+            .HasForeignKey(vt => vt.VacancyId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace MRA.Jobs.Infrastructure.Common;
+﻿namespace MRA.Jobs.Infrastructure.Common;
 
 public static class MediatorExtensions
 {

@@ -9,11 +9,13 @@ public class ApplicantConfiguration : IEntityTypeConfiguration<Applicant>
         // Navigation properties
         builder.HasMany(a => a.Applications)
             .WithOne(ap => ap.Applicant)
-            .HasForeignKey(ap => ap.ApplicantId);
+            .HasForeignKey(ap => ap.ApplicantId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(a => a.SocialMedias)
             .WithOne(sm => sm.Applicant)
-            .HasForeignKey(sm => sm.ApplicantId);
+            .HasForeignKey(sm => sm.ApplicantId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

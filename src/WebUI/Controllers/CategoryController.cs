@@ -1,7 +1,5 @@
-﻿
-using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 
 namespace MRA.Jobs.Web.Controllers;
@@ -9,22 +7,39 @@ namespace MRA.Jobs.Web.Controllers;
 [ApiController]
 public class CategoryController : ApiControllerBase
 {
-    private readonly ILogger<OidcConfigurationController> _logger;
+    private readonly ILogger<CategoryController> _logger;
 
-    public CategoryController(ILogger<OidcConfigurationController> logger)
+    public CategoryController(ILogger<CategoryController> logger)
     {
         _logger = logger;
     }
+
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var categories =await Mediator.Send(new GetVacancyCategoriesQuery());
+        var categories = await Mediator.Send(new GetVacancyCategoriesQuery());
         return Ok(categories);
     }
+
     [HttpGet("{id}")]
-    public IActionResult Get(int id)
+    public IActionResult Get(Guid id)
     {
         var category = Mediator.Send(new GetByIdVacancyCategoryQuery { Id = id });
         return Ok(category);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Guid>> CreateNewJobVacancy(CreateVacancyCategoryCommand request, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Guid>> Update([FromRoute] Guid id, [FromBody] UpdateVacancyCategoryCommand request, CancellationToken cancellationToken)
+    {
+        if (id != request.Id)
+            return BadRequest();
+
+        return await Mediator.Send(request, cancellationToken);
     }
 }

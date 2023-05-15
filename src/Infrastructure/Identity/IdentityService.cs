@@ -1,7 +1,6 @@
-﻿using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Application.Common.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using MRA.Jobs.Application.Common.Models;
 
 namespace MRA.Jobs.Infrastructure.Identity;
 
@@ -23,9 +22,9 @@ public class IdentityService : IIdentityService
 
     public async Task<string> GetUserNameAsync(string userId)
     {
-        var user = await _userManager.Users.FirstAsync(u => u.Id == userId);
-
-        return user.UserName;
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        user = user ?? (await _userManager.Users.FirstOrDefaultAsync());
+        return user?.UserName;
     }
 
     public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
@@ -43,6 +42,9 @@ public class IdentityService : IIdentityService
 
     public async Task<bool> IsInRoleAsync(string userId, string role)
     {
+        //Remove after implementing auth
+        return await Task.FromResult(true);
+
         var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
 
         return user != null && await _userManager.IsInRoleAsync(user, role);
@@ -50,6 +52,9 @@ public class IdentityService : IIdentityService
 
     public async Task<bool> AuthorizeAsync(string userId, string policyName)
     {
+        //Remove after implementing auth
+        return await Task.FromResult(true);
+
         var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
 
         if (user == null)

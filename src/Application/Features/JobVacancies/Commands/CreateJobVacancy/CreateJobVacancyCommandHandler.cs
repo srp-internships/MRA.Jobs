@@ -24,6 +24,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
         var jobVacancy = _mapper.Map<JobVacancy>(request);
+        jobVacancy.Category = category;
         await _dbContext.JobVacancies.AddAsync(jobVacancy, cancellationToken);
 
         var timelineEvent = new VacancyTimelineEvent

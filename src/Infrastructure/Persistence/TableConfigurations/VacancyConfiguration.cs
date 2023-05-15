@@ -16,19 +16,23 @@ public class VacancyConfiguration : IEntityTypeConfiguration<Vacancy>
         // Navigation properties
         builder.HasOne(v => v.Category)
             .WithMany(vc => vc.Vacancies)
-            .HasForeignKey(v => v.CategoryId);
+            .HasForeignKey(v => v.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(v => v.Applications)
             .WithOne(a => a.Vacancy)
-            .HasForeignKey(a => a.VacancyId);
+            .HasForeignKey(a => a.VacancyId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(v => v.History)
             .WithOne(vte => vte.Vacancy)
-            .HasForeignKey(vte => vte.VacancyId);
+            .HasForeignKey(vte => vte.VacancyId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(v => v.Tags)
             .WithOne(vt => vt.Vacancy)
-            .HasForeignKey(vt => vt.VacancyId);
+            .HasForeignKey(vt => vt.VacancyId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

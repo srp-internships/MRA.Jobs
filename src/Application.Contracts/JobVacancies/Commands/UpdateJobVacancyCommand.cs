@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using MRA.Jobs.Domain.Entities;
 using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Contracts.JobVacancies.Commands;

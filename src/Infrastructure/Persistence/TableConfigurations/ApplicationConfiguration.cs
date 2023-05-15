@@ -13,19 +13,23 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Domain.Entities
 
         builder.HasOne(a => a.Vacancy)
             .WithMany(v => v.Applications)
-            .HasForeignKey(a => a.VacancyId);
+            .HasForeignKey(a => a.VacancyId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(a => a.Applicant)
             .WithMany(ap => ap.Applications)
-            .HasForeignKey(a => a.ApplicantId);
+            .HasForeignKey(a => a.ApplicantId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(a => a.TestResult)
             .WithOne(tr => tr.Application)
-            .HasForeignKey<Domain.Entities.TestResult>(a => a.ApplicationId);
+            .HasForeignKey<Domain.Entities.TestResult>(a => a.ApplicationId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(a => a.History)
             .WithOne(ate => ate.Application)
-            .HasForeignKey(ate => ate.ApplicationId);
+            .HasForeignKey(ate => ate.ApplicationId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

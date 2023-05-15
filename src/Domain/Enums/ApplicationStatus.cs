@@ -1,4 +1,8 @@
-﻿namespace MRA.Jobs.Domain.Enums;
+﻿using System.Text.Json.Serialization;
+
+namespace MRA.Jobs.Domain.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ApplicationStatus
 {
     Submitted,
@@ -16,12 +20,14 @@ public enum ApplicationStatus
 }
 
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Gender
 {
     Male = 0,
     Female = 1,
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum LanguageCourse
 {
     Russian,
@@ -29,6 +35,7 @@ public enum LanguageCourse
     Tajik
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum SocialMediaType
 {
     LinkedIn,
@@ -38,6 +45,7 @@ public enum SocialMediaType
     Instagram,
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum TimelineEventType
 {
     Created = 0,
@@ -48,6 +56,7 @@ public enum TimelineEventType
     Error = 5
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum TrainingFormat
 {
     Online,
@@ -55,8 +64,9 @@ public enum TrainingFormat
     OnlineAndOffline
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum WorkSchedule
 {
     FullTime = 1,
-    Flexible
+    Flexible = 2
 }

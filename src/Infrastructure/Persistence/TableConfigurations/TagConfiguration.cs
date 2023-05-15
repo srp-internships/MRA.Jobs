@@ -10,11 +10,13 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
 
         builder.HasMany(t => t.VacancyTags)
             .WithOne(vt => vt.Tag)
-            .HasForeignKey(vt => vt.TagId);
+            .HasForeignKey(vt => vt.TagId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(t => t.UserTags)
             .WithOne(ut => ut.Tag)
-            .HasForeignKey(ut => ut.TagId);
+            .HasForeignKey(ut => ut.TagId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

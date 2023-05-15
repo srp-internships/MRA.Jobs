@@ -11,7 +11,8 @@ public class ApplicationTimelineEventConfiguration : IEntityTypeConfiguration<Ap
         // Navigation properties
         builder.HasOne(ate => ate.Application)
             .WithMany(a => a.History)
-            .HasForeignKey(ate => ate.ApplicationId);
+            .HasForeignKey(ate => ate.ApplicationId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

@@ -1,6 +1,4 @@
-﻿using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Domain.Common;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace MRA.Jobs.Infrastructure.Persistence.Interceptors;

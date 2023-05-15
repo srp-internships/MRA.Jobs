@@ -12,11 +12,13 @@ public class TestResultConfiguration : IEntityTypeConfiguration<TestResult>
 
         builder.HasOne(tr => tr.Test)
             .WithMany(t => t.Results)
-            .HasForeignKey(tr => tr.TestId);
+            .HasForeignKey(tr => tr.TestId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(tr => tr.Application)
             .WithOne(a => a.TestResult)
-            .HasForeignKey<TestResult>(tr => tr.ApplicationId);
+            .HasForeignKey<TestResult>(tr => tr.ApplicationId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

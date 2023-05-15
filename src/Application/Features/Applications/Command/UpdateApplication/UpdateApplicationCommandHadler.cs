@@ -1,8 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplication;
-using Microsoft.EntityFrameworkCore;
-
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Domain.Entities;
 using MRA.Jobs.Domain.Enums;

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using Microsoft.AspNetCore.Http;
-using MRA.Jobs.Application.Common.Interfaces;
 
 namespace MRA.Jobs.Infrastructure.Services;
 public class FileService : IFileService
