@@ -1,46 +1,45 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
 
 namespace MRA.Jobs.Web.Controllers;
-
+[Route("api/[controller]")]
+[ApiController]
 public class CategoryController : ApiControllerBase
 {
+    private readonly ILogger<CategoryController> _logger;
+
+    public CategoryController(ILogger<CategoryController> logger)
+    {
+        _logger = logger;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var categories = await Mediator.Send(new GetVacancyCategoriesQuery());
+        return Ok(categories);
+    }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<VacancyCategoryListDTO>> GetVacancyCategory(Guid id)
+    public IActionResult Get(Guid id)
     {
-        var query = new GetVacancyCategoryByIdQuery { Id = id };
-        var result = await Mediator.Send(query);
-        return Ok(result);
+        var category = Mediator.Send(new GetByIdVacancyCategoryQuery { Id = id });
+        return Ok(category);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateVacancyCategory(CreateVacancyCategoryCommand command)
+    public async Task<ActionResult<Guid>> CreateNewJobVacancy(CreateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
-        var result = await Mediator.Send(command);
-        return Ok(result);
+        return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Guid>> UpdateVacancyCategory(Guid id, UpdateVacancyCategoryCommand command)
+    public async Task<ActionResult<Guid>> Update([FromRoute] Guid id, [FromBody] UpdateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
-        if (id != command.Id)
-        {
+        if (id != request.Id)
             return BadRequest();
-        }
 
-        var result = await Mediator.Send(command);
-        return Ok(result);
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteVacancyCategory(Guid id)
-    {
-        var command = new DeleteVacancyCategoryCommand { Id = id };
-        var result = await Mediator.Send(command);
-        return Ok(result);
+        return await Mediator.Send(request, cancellationToken);
     }
 }

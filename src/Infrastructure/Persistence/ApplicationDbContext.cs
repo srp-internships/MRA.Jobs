@@ -1,29 +1,26 @@
-﻿using Duende.IdentityServer.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 
 namespace MRA.Jobs.Infrastructure.Persistence;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
 {
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
-    internal ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions) :
-        base(options, operationalStoreOptions)
+    internal ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
+        base(options)
     {
 
     }
 
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options,
-        IOptions<OperationalStoreOptions> operationalStoreOptions,
         IMediator mediator,
         AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
-        : base(options, operationalStoreOptions)
+        : base(options)
     {
         _mediator = mediator;
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
@@ -86,9 +83,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         var connectionString = "data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True";
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         optionsBuilder.UseSqlServer(connectionString);
-        var operationalStoreOptions = new OperationalStoreOptions();
-        var operationalStoreOptionsAccessor = Options.Create(operationalStoreOptions);
 
-        return new ApplicationDbContext(optionsBuilder.Options, operationalStoreOptionsAccessor);
+        return new ApplicationDbContext(optionsBuilder.Options);
     }
 }
