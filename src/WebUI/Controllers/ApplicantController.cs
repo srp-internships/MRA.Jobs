@@ -3,15 +3,15 @@ using MRA.Jobs.Application.Contracts.Applicant.Commands;
 using MRA.Jobs.Application.Contracts.Applicant.Queries;
 using MRA.Jobs.Application.Contracts.Applicant.Responses;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
-using MRA.Jobs.Application.Features.Applicant.Query.GetAllApplicant;
+using MRA.Jobs.Application.Contracts.Common;
 
 namespace MRA.Jobs.Web.Controllers;
 
 public class ApplicantController : ApiControllerBase
 {
-    private readonly ILogger<OidcConfigurationController> _logger;
+    private readonly ILogger<ApplicantController> _logger;
 
-    public ApplicantController(ILogger<OidcConfigurationController> logger)
+    public ApplicantController(ILogger<ApplicantController> logger)
     {
         _logger = logger;
     }
@@ -23,10 +23,10 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<ApplicantDetailsDto>> GetAllApplicant(GetAllApplicantQuery request,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllApplicant([FromQuery] PaggedListQuery<ApplicantListDto> request)
     {
-        return await Mediator.Send(request, cancellationToken);
+        var applicants = await Mediator.Send(request);
+        return Ok(applicants);
     }
 
     [HttpPost]

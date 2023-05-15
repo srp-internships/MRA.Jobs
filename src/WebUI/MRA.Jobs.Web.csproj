@@ -39,6 +39,12 @@
       <Folder Include="wwwroot\api\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="wwwroot\api\specification.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
     <!-- Auto-generated Open API specification -->
     <PropertyGroup>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
