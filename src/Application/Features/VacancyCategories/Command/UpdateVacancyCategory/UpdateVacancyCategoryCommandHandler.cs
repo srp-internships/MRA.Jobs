@@ -16,7 +16,7 @@ public class UpdateVacancyCategoryCommandHandler : IRequestHandler<UpdateVacancy
         var entity = await _context.Categories.FindAsync(new object[] { request.Id }, cancellationToken)
             ?? throw new NotFoundException(nameof(VacancyCategory), request.Id);
         var vacancyCategory = _mapper.Map<VacancyCategory>(request);
-        var result = _context.Categories.Update(vacancyCategory);
+        _context.Categories.Update(vacancyCategory);
         await _context.SaveChangesAsync(cancellationToken);
         return entity.Id;
     }
