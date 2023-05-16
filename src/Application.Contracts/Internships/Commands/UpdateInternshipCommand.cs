@@ -12,7 +12,7 @@ public class UpdateInternshipCommand : IRequest<Guid>
     public DateTime EndDate { get; set; }
     public string Location { get; set; }
     public string RequiredSkills { get; set; }
-    public Guid CategoryId { get; set; }
+    public long? CategoryId { get; set; }
     public DateTime ApplicationDeadline { get; set; }
     public int Duration { get; set; }
     public int Stipend { get; set; }

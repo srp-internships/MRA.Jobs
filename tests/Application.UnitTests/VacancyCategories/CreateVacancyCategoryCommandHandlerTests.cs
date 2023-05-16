@@ -28,6 +28,7 @@ public class CreateVacancyCategoryCommandHandlerTests : BaseTestFixture
 
         var categorySetMock = new Mock<DbSet<VacancyCategory>>();
         var newEntityGuid = Guid.NewGuid();
+
         categorySetMock.Setup(d => d.AddAsync(
             It.IsAny<VacancyCategory>(), 
             It.IsAny<CancellationToken>())

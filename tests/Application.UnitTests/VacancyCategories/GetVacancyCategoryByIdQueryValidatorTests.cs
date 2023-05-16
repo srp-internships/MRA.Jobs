@@ -17,7 +17,7 @@ public class GetVacancyCategoryByIdQueryValidatorTests
     public void Validate_IdIsZero()
     {
         // Arrange
-        var query = new GetVacancyCategoryByIdQuery { Id = Guid.Empty };
+        var query = new GetByIdVacancyCategoryQuery { Id = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(query);
@@ -30,7 +30,7 @@ public class GetVacancyCategoryByIdQueryValidatorTests
     public void Validate_IdIsNotZero()
     {
         // Arrange
-        var query = new GetVacancyCategoryByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetByIdVacancyCategoryQuery { Id = Guid.NewGuid() };
 
         // Act
         var result = _validator.TestValidate(query);

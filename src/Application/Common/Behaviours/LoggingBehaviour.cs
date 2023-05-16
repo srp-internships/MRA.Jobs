@@ -22,12 +22,12 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
         var userId = _currentUserService?.UserId ?? null;
         string userName = string.Empty;
 
-        //if (userId.HasValue)
-        //{
-        //    userName = await _identityService.GetUserNameAsync(userId?.ToString());
-        //}
+        if (userId.HasValue)
+        {
+            userName = await _identityService.GetUserNameAsync(userId?.ToString());
+        }
 
-        //_logger.LogInformation("MRA.Jobs Request: {Name} {@UserId} {@UserName} {@Request}",
-        //    requestName, userId, userName, request);
+        _logger.LogInformation("MRA.Jobs Request: {Name} {@UserId} {@UserName} {@Request}",
+            requestName, userId, userName, request);
     }
 }

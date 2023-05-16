@@ -8,7 +8,7 @@ public class UpdateVacancyCategoryCommandHandlerTests : BaseTestFixture
     private UpdateVacancyCategoryCommandHandler _handler;
 
     [SetUp]
-    public void Setup()
+    public void SetUp()
     {
         _handler = new UpdateVacancyCategoryCommandHandler(
             _dbContextMock.Object, Mapper);
@@ -33,6 +33,7 @@ public class UpdateVacancyCategoryCommandHandlerTests : BaseTestFixture
     [Test]
     public async Task Handle_GivenValidCommand_ShouldUpdateVacancyCategory()
     {
+
         // Arrange
         var command = new UpdateVacancyCategoryCommand
         {
@@ -40,12 +41,11 @@ public class UpdateVacancyCategoryCommandHandlerTests : BaseTestFixture
             Name = "New Category Title",
         };
 
-        var categoryDbSetMock = new Mock<DbSet<VacancyCategory>>();
+       var categoryDbSetMock = new Mock<DbSet<VacancyCategory>>();
 
         _dbContextMock.Setup(x => x.Categories).Returns(categoryDbSetMock.Object);
 
-        var existingVacancyCategory = new VacancyCategory { Id = command.Id, Name = command.Name };
-
+        var existingVacancyCategory = new VacancyCategory { Id = command.Id };
         categoryDbSetMock.Setup(x => x.FindAsync(new object[] { command.Id }, CancellationToken.None))
             .ReturnsAsync(existingVacancyCategory);
 

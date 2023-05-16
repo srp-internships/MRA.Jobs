@@ -1,11 +1,11 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
 
 namespace MRA.Jobs.Application.Features.TraningModels.Commands.DeleteTraningModel;
-public class DeleteTrainingModelCommandHadler : IRequestHandler<DeleteTrainingModelCommand, bool>
+public class DeleteTraningModelCommandHadler : IRequestHandler<DeleteTrainingModelCommand, bool>
 {
     private readonly IApplicationDbContext _context;
 
-    public DeleteTrainingModelCommandHadler(IApplicationDbContext context)
+    public DeleteTraningModelCommandHadler(IApplicationDbContext context)
     {
         _context = context;
     }

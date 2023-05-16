@@ -6,9 +6,9 @@ public class InternshipProfile : Profile
 {
     public InternshipProfile()
     {
-        CreateMap<Internship, InternshipListDTO>();
-        CreateMap<Internship, InternshipDetailsDTO>();
         CreateMap<CreateInternshipCommand, Internship>();
         CreateMap<UpdateInternshipCommand, Internship>();
+        CreateMap<Internship, InternshipDetailsDTO>();
+        CreateMap<Internship, InternshipListDTO>();
     }
 }

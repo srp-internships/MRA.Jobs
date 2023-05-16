@@ -22,9 +22,9 @@ public class CategoryController : ApiControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get(Guid id)
+    public async Task<IActionResult> Get(Guid id)
     {
-        var category = Mediator.Send(new GetVacancyCategoryByIdQuery { Id = id });
+        var category = await Mediator.Send(new GetByIdVacancyCategoryQuery { Id = id });
         return Ok(category);
     }
 

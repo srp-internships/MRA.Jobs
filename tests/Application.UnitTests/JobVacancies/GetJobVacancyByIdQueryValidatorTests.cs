@@ -3,7 +3,7 @@ using MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 
-public class GetVacancyCategoryByIdQueryValidatorTests
+public class GetJobVacancyByIdQueryValidatorTests
 {
     private GetJobVacancyByIdQueryValidator _validator;
 

@@ -31,7 +31,7 @@ public class UpdateTrainingModelCommandHandler : IRequestHandler<UpdateTrainingM
             VacancyId = trainingModel.Id,
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
-            Note = "Training Model updated",
+            Note = "Traning Model updated",
             CreateBy = _currentUserService.UserId
         };
         await _context.VacancyTimelineEvents.AddAsync(timeLineEvent, cancellationToken);
