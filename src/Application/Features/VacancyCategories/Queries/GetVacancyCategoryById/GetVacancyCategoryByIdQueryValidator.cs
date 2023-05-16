@@ -2,7 +2,7 @@
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryById;
 
-public class GetVacancyCategoryByIdQueryValidator : AbstractValidator<GetByIdVacancyCategoryQuery>
+public class GetVacancyCategoryByIdQueryValidator : AbstractValidator<GetVacancyCategoryByIdQuery>
 {
     public GetVacancyCategoryByIdQueryValidator()
     {
