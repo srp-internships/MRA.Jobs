@@ -2,12 +2,12 @@
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories;
-public class VacancyCategoryProfile:Profile
+public class VacancyCategoryProfile : Profile
 {
     public VacancyCategoryProfile()
     {
         CreateMap<CreateVacancyCategoryCommand, VacancyCategory>();
-        CreateMap<UpdateVacancyCategoryCommand,VacancyCategory>();
+        CreateMap<UpdateVacancyCategoryCommand, VacancyCategory>();
         CreateMap<VacancyCategory, VacancyCategoryResponce>();
     }
 }

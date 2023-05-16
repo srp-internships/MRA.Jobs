@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
 
-namespace MRA.Jobs.Application.Features.VacancyCategories.Queries;
+namespace MRA.Jobs.Application.Features.VacancyCategories.Queries.GetAllCategories;
 public class GetVacancyCategoriesQueryHandler : IRequestHandler<GetVacancyCategoriesQuery, List<VacancyCategoryResponce>>
 {
     private readonly IApplicationDbContext _context;

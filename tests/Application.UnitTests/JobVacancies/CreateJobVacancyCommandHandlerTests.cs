@@ -43,7 +43,11 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
 
         var jobVacancySetMock = new Mock<DbSet<JobVacancy>>();
         var newEntityGuid = Guid.NewGuid();
-        jobVacancySetMock.Setup(d => d.AddAsync(It.IsAny<JobVacancy>(), It.IsAny<CancellationToken>())).Callback<JobVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
+        jobVacancySetMock.Setup(d => d.AddAsync(
+            It.IsAny<JobVacancy>(), 
+            It.IsAny<CancellationToken>())
+        ).Callback<JobVacancy, 
+        CancellationToken>((v, ct) => v.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.JobVacancies).Returns(jobVacancySetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
