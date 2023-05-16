@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
 namespace MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
-public class GetByIdVacancyCategoryQuery : IRequest<Responces.VacancyCategoryResponce>
+public class GetVacancyCategoryByIdQuery : IRequest<Responces.VacancyCategoryListDTO>
 {
     public Guid Id { get; set; }
 }

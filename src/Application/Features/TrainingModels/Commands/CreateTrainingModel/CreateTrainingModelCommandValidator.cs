@@ -1,9 +1,9 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
 
 namespace MRA.Jobs.Application.Features.TraningModels.Commands.CreateTraningModel;
-public class CreateTraningModelCommandValidator : AbstractValidator<CreateTrainingModelCommand>
+public class CreateTrainingModelCommandValidator : AbstractValidator<CreateTrainingModelCommand>
 {
-    public CreateTraningModelCommandValidator()
+    public CreateTrainingModelCommandValidator()
     {
         RuleFor(x => x.Title).NotEmpty();
         RuleFor(x => x.ShortDescription).NotEmpty();
@@ -11,7 +11,7 @@ public class CreateTraningModelCommandValidator : AbstractValidator<CreateTraini
         RuleFor(x => x.PublishDate).NotEmpty();
         RuleFor(x => x.EndDate).NotEmpty();
         RuleFor(x => x.CategoryId).NotEmpty();
-        RuleFor(x => x.Fees).GreaterThanOrEqualTo(0);
-        RuleFor(x => x.Duration).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.Fees).NotEmpty();
+        RuleFor(x => x.Duration).NotEmpty();
     }
 }
