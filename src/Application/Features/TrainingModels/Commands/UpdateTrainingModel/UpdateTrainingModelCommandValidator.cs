@@ -14,7 +14,7 @@ public class UpdateTrainingModelCommandValidator : AbstractValidator<UpdateTrain
         RuleFor(x => x.PublishDate).NotEmpty();
         RuleFor(x => x.EndDate).NotEmpty();
         RuleFor(x => x.CategoryId).NotEmpty();
-        RuleFor(x => x.Fees).GreaterThanOrEqualTo(0);
-        RuleFor(x => x.Duration).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.Fees).NotEmpty();
+        RuleFor(x => x.Duration).NotEmpty();
     }
 }
