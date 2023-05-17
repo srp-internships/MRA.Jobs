@@ -5,7 +5,6 @@ using Domain.Entities;
 
 public class DeleteReviewerCommandHandler : IRequestHandler<DeleteReviewerCommand, bool>
 {
-    private readonly IMapper _mapper;
     private readonly IApplicationDbContext _context;
 
     public DeleteReviewerCommandHandler(IApplicationDbContext context)

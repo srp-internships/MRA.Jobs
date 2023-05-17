@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -708,4 +708,3 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
         }
     }
 }
-*/

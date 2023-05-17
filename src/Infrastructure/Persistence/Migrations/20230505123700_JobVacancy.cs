@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -11,11 +11,9 @@ public partial class JobVacancy : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /*
         migrationBuilder.DropForeignKey(
             name: "FK_Application_Applicant_ApplicantId",
             table: "Application");
-            #1#
 
         migrationBuilder.DropTable(
             name: "ApplicationNote");
@@ -379,4 +377,3 @@ public partial class JobVacancy : Migration
             onDelete: ReferentialAction.Cascade);
     }
 }
-*/
