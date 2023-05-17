@@ -24,7 +24,7 @@ public class CategoryController : ApiControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(Guid id)
     {
-        var category = Mediator.Send(new GetByIdVacancyCategoryQuery { Id = id });
+        var category = Mediator.Send(new GetVacancyCategoryByIdQuery { Id = id });
         return Ok(category);
     }
 

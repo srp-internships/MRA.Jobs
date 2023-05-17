@@ -4,5 +4,5 @@ public class VacancyCategory : BaseEntity
 {
     public string Name { get; set; }
 
-    public ICollection<Vacancy> Vacancies { get; set; }
+    public ICollection<Vacancy>? Vacancies { get; set; }
 }

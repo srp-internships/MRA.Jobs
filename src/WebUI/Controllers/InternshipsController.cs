@@ -1,11 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Internships.Commands;
+using MRA.Jobs.Application.Contracts.Internships.Responses;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class InternshipsController : ApiControllerBase
 {
+    [HttpGet]
+    public async Task<IActionResult> GetWithPagination([FromQuery] PaggedListQuery<InternshipListDTO> query)
+    {
+        var internships = Mediator.Send(query);
+        return Ok(internships);
+    }
+
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateNewInternship(CreateInternshipCommand request, CancellationToken cancellationToken)
     {
@@ -28,5 +37,12 @@ public class InternshipsController : ApiControllerBase
             return BadRequest();
 
         return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetInternshipById(Guid id)
+    {
+        var internship = await Mediator.Send(new InternshipDetailsDTO { Id = id });
+        return Ok(internship);
     }
 }

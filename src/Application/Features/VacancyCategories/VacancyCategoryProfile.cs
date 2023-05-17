@@ -8,6 +8,6 @@ public class VacancyCategoryProfile:Profile
     {
         CreateMap<CreateVacancyCategoryCommand, VacancyCategory>();
         CreateMap<UpdateVacancyCategoryCommand,VacancyCategory>();
-        CreateMap<VacancyCategory, VacancyCategoryResponce>();
+        CreateMap<VacancyCategory, VacancyCategoryListDTO>();
     }
 }

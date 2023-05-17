@@ -23,5 +23,3 @@ public class DeleteJobVacancyCommandHandler : IRequestHandler<DeleteJobVacancyCo
         return true;
     }
 }
-
-
