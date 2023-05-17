@@ -28,6 +28,8 @@ public static class ConfigureServices
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService>();
 
+        services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
+        services.AddTransient<IEmailService, SmtpEmailService>();
         //services.AddAuthentication()
         //    .AddIdentityServerJwt();
 
