@@ -1,18 +1,17 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
-using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
+﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
+using MRA.Jobs.Application.Features.TraningModels.Commands.CreateTraningModel;
 
-namespace MRA.Jobs.Application.UnitTests.JobVacancies;
-
-public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
+namespace MRA.Jobs.Application.UnitTests.TrainingModels;
+public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
 {
-    private CreateJobVacancyCommandHandler _handler;
+    private CreateTrainingModelCommandHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
 
-        _handler = new CreateJobVacancyCommandHandler(
+        _handler = new CreateTrainingModelCommandHandler(
             _dbContextMock.Object,
             Mapper,
             _dateTimeMock.Object,
@@ -20,10 +19,10 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
     }
 
     [Test]
-    public async Task Handle_ValidRequest_ShouldCreateJobVacancyAndTimelineEvent()
+    public async Task Handle_ValidRequest_ShouldCreateTrainingModelAndTimelineEvent()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand
+        var request = new CreateTrainingModelCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",
@@ -31,8 +30,8 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
             PublishDate = DateTime.UtcNow.AddDays(1),
             EndDate = DateTime.UtcNow.AddDays(30),
             CategoryId = Guid.NewGuid(),
-            RequiredYearOfExperience = 2,
-            WorkSchedule = WorkSchedule.FullTime
+            Duration = 2,
+            Fees = 2
         };
 
         var category = new VacancyCategory { Id = request.CategoryId };
@@ -41,10 +40,10 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
         var timelineEventSetMock = new Mock<DbSet<VacancyTimelineEvent>>();
         _dbContextMock.Setup(x => x.VacancyTimelineEvents).Returns(timelineEventSetMock.Object);
 
-        var jobVacancySetMock = new Mock<DbSet<JobVacancy>>();
+        var trainingModelSetMock = new Mock<DbSet<TrainingModel>>();
         var newEntityGuid = Guid.NewGuid();
-        jobVacancySetMock.Setup(d => d.AddAsync(It.IsAny<JobVacancy>(), It.IsAny<CancellationToken>())).Callback<JobVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
-        _dbContextMock.Setup(x => x.JobVacancies).Returns(jobVacancySetMock.Object);
+        trainingModelSetMock.Setup(d => d.AddAsync(It.IsAny<TrainingModel>(), It.IsAny<CancellationToken>())).Callback<TrainingModel, CancellationToken>((v, ct) => v.Id = newEntityGuid);
+        _dbContextMock.Setup(x => x.TrainingModels).Returns(trainingModelSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
@@ -55,21 +54,21 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
         // Assert
         result.Should().Be(newEntityGuid);
 
-        jobVacancySetMock.Verify(x => x.AddAsync(It.Is<JobVacancy>(jv =>
+        trainingModelSetMock.Verify(x => x.AddAsync(It.Is<TrainingModel>(jv =>
             jv.Title == request.Title &&
             jv.ShortDescription == request.ShortDescription &&
             jv.Description == request.Description &&
             jv.PublishDate == request.PublishDate &&
             jv.EndDate == request.EndDate &&
             jv.CategoryId == request.CategoryId &&
-            jv.RequiredYearOfExperience == request.RequiredYearOfExperience &&
-            jv.WorkSchedule == request.WorkSchedule
+            jv.Duration == request.Duration &&
+            jv.Fees == request.Fees
         ), It.IsAny<CancellationToken>()), Times.Once);
 
         timelineEventSetMock.Verify(x => x.AddAsync(It.Is<VacancyTimelineEvent>(te =>
             te.VacancyId == newEntityGuid &&
             te.EventType == TimelineEventType.Created &&
-            te.Note == "Job vacancy created" &&
+            te.Note == "Training Model created" &&
             te.Time == _dateTimeMock.Object.Now &&
             te.CreateBy == _currentUserServiceMock.Object.UserId
         ), It.IsAny<CancellationToken>()), Times.Once);
@@ -80,7 +79,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
     [Test]
     public void Handle_CategoryNotFound_ShouldThrowNotFoundException()
     {
-        var request = new CreateJobVacancyCommand
+        var request = new CreateTrainingModelCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",
@@ -88,8 +87,8 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
             PublishDate = DateTime.UtcNow.AddDays(1),
             EndDate = DateTime.UtcNow.AddDays(30),
             CategoryId = Guid.NewGuid(),
-            RequiredYearOfExperience = 2,
-            WorkSchedule = WorkSchedule.FullTime
+            Duration = 2,
+            Fees = 2
         };
 
         _dbContextMock.Setup(x => x.Categories.FindAsync(request.CategoryId)).ReturnsAsync(() => null);

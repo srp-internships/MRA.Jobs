@@ -363,6 +363,69 @@
       }
     },
     "/api/internships": {
+      "get": {
+        "tags": [
+          "Internships"
+        ],
+        "operationId": "Internships_GetWithPagination",
+        "parameters": [
+          {
+            "name": "Filters",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Sorts",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 2147483647.0,
+              "minimum": 1.0,
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 2147483647.0,
+              "minimum": 1.0,
+              "nullable": true
+            },
+            "x-position": 4
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "Internships"
@@ -475,6 +538,37 @@
               "application/json": {
                 "schema": {
                   "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Internships"
+        ],
+        "operationId": "Internships_GetInternshipById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -654,40 +748,38 @@
         }
       }
     },
-    "/api/trainingmodel": {
-      "post": {
+    "/api/trainingmodel/{id}": {
+      "get": {
         "tags": [
           "TrainingModel"
         ],
-        "operationId": "TrainingModel_CreateNewTrainingModel",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTrainingModelCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
+        "operationId": "TrainingModel_GetTrainingModelById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
-                  "format": "guid"
+                  "format": "binary"
                 }
               }
             }
           }
         }
-      }
-    },
-    "/api/trainingmodel/{id}": {
+      },
       "put": {
         "tags": [
           "TrainingModel"
@@ -767,6 +859,169 @@
               "application/json": {
                 "schema": {
                   "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trainingmodel": {
+      "get": {
+        "tags": [
+          "TrainingModel"
+        ],
+        "operationId": "TrainingModel_GetTrainingModelsWithPagination",
+        "parameters": [
+          {
+            "name": "Filters",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Sorts",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 2147483647.0,
+              "minimum": 1.0,
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 2147483647.0,
+              "minimum": 1.0,
+              "nullable": true
+            },
+            "x-position": 4
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "TrainingModel"
+        ],
+        "operationId": "TrainingModel_CreateNewTrainingModel",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTrainingModelCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/vacancies": {
+      "get": {
+        "tags": [
+          "Vacancies"
+        ],
+        "operationId": "Vacancies_GetFilteredVacancies",
+        "parameters": [
+          {
+            "name": "requiredYearOfExperience",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "workSchedule",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/WorkSchedule"
+                }
+              ]
+            },
+            "x-position": 2
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid",
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 4
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Vacancy"
+                  }
                 }
               }
             }
@@ -940,10 +1195,6 @@
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
           "publishDate": {
             "type": "string",
             "format": "date-time"
@@ -951,14 +1202,6 @@
           "endDate": {
             "type": "string",
             "format": "date-time"
-          },
-          "location": {
-            "type": "string",
-            "nullable": true
-          },
-          "requiredSkills": {
-            "type": "string",
-            "nullable": true
           },
           "categoryId": {
             "type": "string",
@@ -1019,9 +1262,8 @@
             "nullable": true
           },
           "categoryId": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true
+            "type": "string",
+            "format": "guid"
           },
           "applicationDeadline": {
             "type": "string",
@@ -1226,6 +1468,703 @@
             "format": "guid"
           }
         }
+      },
+      "Vacancy": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "x-abstract": true,
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string",
+                "nullable": true
+              },
+              "shortDescription": {
+                "type": "string",
+                "nullable": true
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "publishDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "categoryId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "category": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/VacancyCategory"
+                  }
+                ]
+              },
+              "applications": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Application"
+                }
+              },
+              "history": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/VacancyTimelineEvent"
+                }
+              },
+              "tests": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Test"
+                }
+              },
+              "tags": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/VacancyTag"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "VacancyCategory": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "vacancies": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Vacancy"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BaseEntity": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "Application": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "coverLetter": {
+                "type": "string",
+                "nullable": true
+              },
+              "cv": {
+                "type": "string",
+                "nullable": true
+              },
+              "appliedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "status": {
+                "$ref": "#/components/schemas/ApplicationStatus"
+              },
+              "vacancy": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Vacancy"
+                  }
+                ]
+              },
+              "vacancyId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "applicant": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Applicant"
+                  }
+                ]
+              },
+              "applicantId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "testResult": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TestResult"
+                  }
+                ]
+              },
+              "history": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/ApplicationTimelineEvent"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ApplicationStatus": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Submitted",
+          "TestCompleted",
+          "Verified",
+          "InterviewPassed",
+          "Approved",
+          "Hired",
+          "Reserved",
+          "Expired",
+          "Refused",
+          "TestFailed",
+          "InterviewFailed",
+          "Rejected"
+        ],
+        "enum": [
+          "Submitted",
+          "TestCompleted",
+          "Verified",
+          "InterviewPassed",
+          "Approved",
+          "Hired",
+          "Reserved",
+          "Expired",
+          "Refused",
+          "TestFailed",
+          "InterviewFailed",
+          "Rejected"
+        ]
+      },
+      "Applicant": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/User"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "applications": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Application"
+                }
+              },
+              "socialMedias": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/ApplicantSocialMedia"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ApplicantSocialMedia": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "profileUrl": {
+                "type": "string",
+                "nullable": true
+              },
+              "type": {
+                "$ref": "#/components/schemas/SocialMediaType"
+              },
+              "applicantId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "applicant": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Applicant"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "SocialMediaType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "LinkedIn",
+          "GitHub",
+          "Twitter",
+          "Facebook",
+          "Instagram"
+        ],
+        "enum": [
+          "LinkedIn",
+          "GitHub",
+          "Twitter",
+          "Facebook",
+          "Instagram"
+        ]
+      },
+      "User": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "x-abstract": true,
+            "additionalProperties": false,
+            "properties": {
+              "avatar": {
+                "type": "string",
+                "nullable": true
+              },
+              "dateOfBrith": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "email": {
+                "type": "string",
+                "nullable": true
+              },
+              "firstName": {
+                "type": "string",
+                "nullable": true
+              },
+              "lastName": {
+                "type": "string",
+                "nullable": true
+              },
+              "phoneNumber": {
+                "type": "string",
+                "nullable": true
+              },
+              "history": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/UserTimelineEvent"
+                }
+              },
+              "tags": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/UserTag"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "UserTimelineEvent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TimelineEvent"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "userId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "user": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "TimelineEvent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "x-abstract": true,
+            "additionalProperties": false,
+            "properties": {
+              "createBy": {
+                "type": "string",
+                "format": "guid"
+              },
+              "note": {
+                "type": "string",
+                "nullable": true
+              },
+              "time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "eventType": {
+                "$ref": "#/components/schemas/TimelineEventType"
+              }
+            }
+          }
+        ]
+      },
+      "TimelineEventType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Created",
+          "Updated",
+          "Deleted",
+          "StatusChanged",
+          "Note",
+          "Error"
+        ],
+        "enum": [
+          "Created",
+          "Updated",
+          "Deleted",
+          "StatusChanged",
+          "Note",
+          "Error"
+        ]
+      },
+      "UserTag": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "tag": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Tag"
+                  }
+                ]
+              },
+              "tagId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "user": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
+              },
+              "userId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "Tag": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "vacancyTags": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/VacancyTag"
+                }
+              },
+              "userTags": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/UserTag"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "VacancyTag": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "tag": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Tag"
+                  }
+                ]
+              },
+              "tagId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "vacancy": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Vacancy"
+                  }
+                ]
+              },
+              "vacancyId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "BaseAuditableEntity": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "x-abstract": true,
+            "additionalProperties": false,
+            "properties": {
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "string",
+                "format": "guid"
+              },
+              "lastModifiedAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "lastModifiedBy": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "TestResult": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "completedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "passed": {
+                "type": "boolean"
+              },
+              "score": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "testId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "test": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Test"
+                  }
+                ]
+              },
+              "applicationId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "application": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Application"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Test": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string",
+                "nullable": true
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "duration": {
+                "type": "string",
+                "format": "duration"
+              },
+              "numberOfQuestion": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "passingScore": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "vacancyId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "vacancy": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Vacancy"
+                  }
+                ]
+              },
+              "results": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/TestResult"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ApplicationTimelineEvent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TimelineEvent"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "applicationId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "application": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Application"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "VacancyTimelineEvent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TimelineEvent"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "vacancyId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "vacancy": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Vacancy"
+                  }
+                ]
+              }
+            }
+          }
+        ]
       }
     },
     "securitySchemes": {
