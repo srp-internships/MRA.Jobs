@@ -1,5 +1,4 @@
 ﻿using MRA.Jobs.Application.Contracts.Applicant.Commands;
-
 namespace MRA.Jobs.Application.Features.Applicant.Command.CreateApplicant;
 using MRA.Jobs.Domain.Entities;
 
@@ -14,8 +13,6 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
     {
         _mapper = mapper;
         _context = context;
-        /*_dataTime = dateTime;
-        _currentUserService = currentUserService;*/
     }
     
     public async Task<Guid> Handle(CreateApplicantCommand request, CancellationToken cancellationToken)
