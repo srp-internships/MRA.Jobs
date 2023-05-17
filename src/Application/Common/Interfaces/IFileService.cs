@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿namespace MRA.Jobs.Application.Common.Interfaces;
 
-namespace MRA.Jobs.Application.Common.Interfaces;
 public interface IFileService
 {
-    Task<string> UploadAsync(IFormFile file);
-    byte[] Download(string key);
     bool FileExists(string key);
 }

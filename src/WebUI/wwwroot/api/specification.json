@@ -340,7 +340,51 @@
         "tags": [
           "Category"
         ],
-        "operationId": "Category_Get",
+        "operationId": "Category_GetAll",
+        "parameters": [
+          {
+            "name": "Filters",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Sorts",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 2147483647.0,
+              "minimum": 1.0,
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 2147483647.0,
+              "minimum": 1.0,
+              "nullable": true
+            },
+            "x-position": 4
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -392,7 +436,7 @@
         "tags": [
           "Category"
         ],
-        "operationId": "Category_Get2",
+        "operationId": "Category_GetbyId",
         "parameters": [
           {
             "name": "id",
@@ -463,12 +507,42 @@
         }
       }
     },
-    "/api/file/upload": {
+    "/api/file": {
+      "get": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "File_GetFile",
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "File"
         ],
-        "operationId": "File_Upload",
+        "operationId": "File_AddFile",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -485,38 +559,6 @@
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/file/download/{key}": {
-      "get": {
-        "tags": [
-          "File"
-        ],
-        "operationId": "File_Download",
-        "parameters": [
-          {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
         "responses": {
           "200": {
             "description": "",
