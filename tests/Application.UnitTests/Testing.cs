@@ -1,9 +1,12 @@
 using AutoMapper.Internal;
 using MRA.Jobs.Application.Features.Applications;
+using MRA.Jobs.Application.Features.Applicant;
+using MRA.Jobs.Application.Features.Reviewer;
 using MRA.Jobs.Application.Features.Internships;
 using MRA.Jobs.Application.Features.JobVacancies;
 using MRA.Jobs.Application.Features.TrainingModels;
 using MRA.Jobs.Application.Features.VacancyCategories;
+
 
 namespace MRA.Jobs.Application.UnitTests;
 
@@ -18,6 +21,8 @@ public partial class Testing
             cfg.Internal().MethodMappingEnabled = false;
             cfg.AddProfile<JobVacancyProfile>();
             cfg.AddProfile<ApplicationProfile>();
+            cfg.AddProfile<ApplicantProfile>();
+            cfg.AddProfile<ReviewerProfile>();
             cfg.AddProfile<InternshipProfile>();
             cfg.AddProfile<VacancyCategoryProfile>();
             cfg.AddProfile<TrainingModelProfile>();
