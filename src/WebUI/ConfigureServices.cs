@@ -7,6 +7,7 @@ using NSwag.Generation.Processors.Security;
 using MRA.Jobs.Web.Services;
 using MRA.Jobs.Web.Filters;
 using System.Text.Json.Serialization;
+using Sieve.Services;
 
 namespace MRA.Jobs.Web;
 
@@ -17,6 +18,9 @@ public static class ConfigureServices
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+        services.AddScoped<ISieveProcessor, SieveProcessor>();
+        services.AddScoped(typeof(SieveService<>));
 
         services.AddHttpContextAccessor();
 
