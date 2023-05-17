@@ -8,8 +8,9 @@ public class ReviewerProfile : Profile
 {
     public ReviewerProfile()
     {
-        CreateMap<Reviewer, ReviewerListDTO>();
-        CreateMap<Reviewer, ReviewerDetailsDTO>();
+        CreateMap<Reviewer, ReviewerListDto>();
+        CreateMap<Reviewer, ReviewerDetailsDto>();
         CreateMap<CreateReviewerCommand, Reviewer>();
+        CreateMap<UpdateReviewerCommand, Reviewer>();
     }
 }

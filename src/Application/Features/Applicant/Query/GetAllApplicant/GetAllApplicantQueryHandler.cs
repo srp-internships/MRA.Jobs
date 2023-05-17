@@ -1,9 +1,10 @@
-﻿using MRA.Jobs.Application.Contracts.Applicant.Queries;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.Applicant.Queries;
 using MRA.Jobs.Application.Contracts.Applicant.Responses;
 
 namespace MRA.Jobs.Application.Features.Applicant.Query.GetAllApplicant;
 
-public class GetAllApplicantQueryHandler : IRequestHandler<GetAllApplicantQuery, ApplicantDetailsDto>
+public class GetAllApplicantQueryHandler : IRequestHandler<GetAllApplicantQuery, List<ApplicantListDto>>
 {
     private readonly IMapper _mapper;
     private readonly IApplicationDbContext _context;
@@ -15,11 +16,11 @@ public class GetAllApplicantQueryHandler : IRequestHandler<GetAllApplicantQuery,
         _mapper = mapper;
     }
     
-    public async Task<ApplicantDetailsDto> Handle(GetAllApplicantQuery request, CancellationToken cancellationToken)
+    public async Task<List<ApplicantListDto>> Handle(GetAllApplicantQuery request, CancellationToken cancellationToken)
     {
         var applicants =
-            await _context.Applicants.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
-        _ = applicants ?? throw new NotFoundException(nameof(Domain.Entities.Applicant), request.Id);
-        return _mapper.Map<ApplicantDetailsDto>(applicants);
+            await _context.Applicants.ToListAsync();
+        
+        return _mapper.Map<List<ApplicantListDto>>(applicants);
     }
 }

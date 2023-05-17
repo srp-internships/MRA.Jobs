@@ -8,10 +8,10 @@ public class UpdateReviewerCommandHandler : IRequestHandler<UpdateReviewerComman
     private readonly IMapper _mapper;
     private readonly IApplicationDbContext _context;
 
-    public UpdateReviewerCommandHandler(IMapper mapper, IApplicationDbContext context)
+    public UpdateReviewerCommandHandler(IApplicationDbContext context, IMapper mapper)
     {
-        _mapper = mapper;
         _context = context;
+        _mapper = mapper;
     }
     
     public async Task<Guid> Handle(UpdateReviewerCommand request, CancellationToken cancellationToken)

@@ -8,12 +8,12 @@ public class DeleteReviewerCommandHandler : IRequestHandler<DeleteReviewerComman
     private readonly IMapper _mapper;
     private readonly IApplicationDbContext _context;
 
-    public DeleteReviewerCommandHandler(IMapper mapper, IApplicationDbContext context)
+    public DeleteReviewerCommandHandler(IApplicationDbContext context)
     {
-        _mapper = mapper;
         _context = context;
     }
-    
+
+
     public async Task<bool> Handle(DeleteReviewerCommand request, CancellationToken cancellationToken)
     {
         var reviewer =

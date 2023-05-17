@@ -10,5 +10,5 @@ public class CreateApplicantCommand : IRequest<Guid>
     public string Patronymic { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
-    public DateTime BirthDay { get; set; }
+    public DateTime DateOfBrith { get; set; }
 }
