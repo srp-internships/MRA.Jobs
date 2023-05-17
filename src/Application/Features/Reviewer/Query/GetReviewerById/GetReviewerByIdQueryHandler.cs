@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
-using MRA.Jobs.Application.Contracts.Reviewer.Queries;
+﻿using MRA.Jobs.Application.Contracts.Reviewer.Queries;
 using MRA.Jobs.Application.Contracts.Reviewer.Response;
 
 namespace MRA.Jobs.Application.Features.Reviewer.Query.GetReviewerById;
