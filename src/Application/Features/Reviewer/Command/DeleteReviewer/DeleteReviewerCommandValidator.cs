@@ -1,6 +1,11 @@
-﻿namespace MRA.Jobs.Application.Features.Reviewer.Command.DeleteReviewer;
+﻿using MRA.Jobs.Application.Contracts.Reviewer.Command;
 
-public class DeleteReviewerCommandValidator
+namespace MRA.Jobs.Application.Features.Reviewer.Command.DeleteReviewer;
+
+public class DeleteReviewerCommandValidator : AbstractValidator<DeleteReviewerCommand>
 {
-    
+    public DeleteReviewerCommandValidator()
+    {
+        RuleFor(a => a.Id).NotEmpty();
+    }
 }

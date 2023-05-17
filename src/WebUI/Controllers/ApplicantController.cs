@@ -9,24 +9,25 @@ namespace MRA.Jobs.Web.Controllers;
 
 public class ApplicantController : ApiControllerBase
 {
-    private readonly ILogger<OidcConfigurationController> _logger;
+    private readonly ILogger<ApplicantController> _logger;
 
-    public ApplicantController(ILogger<OidcConfigurationController> logger)
+    public ApplicantController(ILogger<ApplicantController> logger)
     {
         _logger = logger;
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ApplicantDetailsDto>> GetApplicantById(GetApplicantByIdQuery request, CancellationToken cancellationToken)
-    {
-        return await Mediator.Send(request, cancellationToken);
-    }
-
     [HttpGet]
-    public async Task<ActionResult<ApplicantDetailsDto>> GetAllApplicant(GetAllApplicantQuery request,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllApplicant()
     {
-        return await Mediator.Send(request, cancellationToken);
+        var applicants = await Mediator.Send(new GetAllApplicantQuery());
+        return Ok(applicants);
+    }
+    
+    [HttpGet("{id}")]
+    public IActionResult GetApplicantById(Guid id)
+    {
+        var applicant =  Mediator.Send(new GetApplicantByIdQuery { Id = id });
+        return Ok(applicant);
     }
 
     [HttpPost]

@@ -1,12 +1,74 @@
 {
-  "x-generator": "NSwag v13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "MRA.Jobs API",
     "version": "1.0.0"
   },
   "paths": {
-    "/api/Applicant/{id}": {
+    "/": {
+      "get": {
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/applicant": {
+      "get": {
+        "tags": [
+          "Applicant"
+        ],
+        "operationId": "Applicant_GetAllApplicant",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Applicant"
+        ],
+        "operationId": "Applicant_CreateNewApplicant",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApplicantCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applicant/{id}": {
       "get": {
         "tags": [
           "Applicant"
@@ -15,6 +77,124 @@
         "parameters": [
           {
             "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Applicant"
+        ],
+        "operationId": "Applicant_UpdateApplicant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateApplicantCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Applicant"
+        ],
+        "operationId": "Applicant_DeleteApplicant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteApplicantCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/application/{Id}": {
+      "get": {
+        "tags": [
+          "Application"
+        ],
+        "operationId": "Application_GetApplicationById",
+        "parameters": [
+          {
+            "name": "Id",
             "in": "path",
             "required": true,
             "schema": {
@@ -29,21 +209,6 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/GetByIdApplicationQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-            "x-position": 2
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetApplicantByIdQuery"
               }
             }
           },
@@ -168,118 +333,22 @@
             }
           }
         }
-      },
-      "put": {
-        "tags": [
-          "Applicant"
-        ],
-        "operationId": "Applicant_UpdateApplicant",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateApplicantCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "guid"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Applicant"
-        ],
-        "operationId": "Applicant_DeleteApplicant",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteApplicantCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
       }
     },
-    "/api/Applicant": {
+    "/api/category": {
       "get": {
         "tags": [
-          "Applicant"
+          "Category"
         ],
-        "operationId": "Applicant_GetAllApplicant",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetAllApplicantQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
+        "operationId": "Category_Get",
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicantDetailsDto"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -288,15 +357,15 @@
       },
       "post": {
         "tags": [
-          "Applicant"
+          "Category"
         ],
-        "operationId": "Applicant_CreateNewApplicant",
+        "operationId": "Category_CreateNewJobVacancy",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateApplicantCommand"
+                "$ref": "#/components/schemas/CreateVacancyCategoryCommand"
               }
             }
           },
@@ -318,29 +387,141 @@
         }
       }
     },
-    "/api/Application": {
+    "/api/category/{id}": {
       "get": {
         "tags": [
-          "Application"
+          "Category"
         ],
-        "operationId": "Application_GetAllApplications",
+        "operationId": "Category_Get2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Category"
+        ],
+        "operationId": "Category_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetApplicationsQuery"
+                "$ref": "#/components/schemas/UpdateVacancyCategoryCommand"
               }
             }
           },
           "required": true,
-          "x-position": 1
+          "x-position": 2
         },
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/file/upload": {
+      "post": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "File_Upload",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/file/download/{key}": {
+      "get": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "File_Download",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -417,15 +598,15 @@
       },
       "post": {
         "tags": [
-          "Application"
+          "Internships"
         ],
-        "operationId": "Application_CreateApplication",
+        "operationId": "Internships_CreateNewInternship",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateApplicationCommand"
+                "$ref": "#/components/schemas/CreateInternshipCommand"
               }
             }
           },
@@ -447,56 +628,15 @@
         }
       }
     },
-    "/api/Application/{Id}": {
-      "get": {
-        "tags": [
-          "Application"
-        ],
-        "operationId": "Application_GetApplicationById",
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetByIdApplicationQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/api/internships/{id}": {
       "put": {
         "tags": [
-          "Application"
+          "Internships"
         ],
-        "operationId": "Application_UpdateApplication",
+        "operationId": "Internships_UpdateInternship",
         "parameters": [
           {
-            "name": "Id",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -511,7 +651,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateApplicationCommand"
+                "$ref": "#/components/schemas/UpdateInternshipCommand"
               }
             }
           },
@@ -526,6 +666,48 @@
                 "schema": {
                   "type": "string",
                   "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Internships"
+        ],
+        "operationId": "Internships_DeleteInternship",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteInternshipCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -567,142 +749,51 @@
     "/api/jobvacancies": {
       "get": {
         "tags": [
-          "Application"
+          "JobVacancies"
         ],
-        "operationId": "Application_DeleteApplication",
+        "operationId": "JobVacancies_Get",
         "parameters": [
           {
-            "name": "Id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Category": {
-      "get": {
-        "tags": [
-          "Category"
-        ],
-        "operationId": "Category_Get",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Category/{id}": {
-      "get": {
-        "tags": [
-          "Category"
-        ],
-        "operationId": "Category_Get2",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/File/upload": {
-      "post": {
-        "tags": [
-          "File"
-        ],
-        "operationId": "File_Upload",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary",
-                    "nullable": true
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/File/download/{key}": {
-      "get": {
-        "tags": [
-          "File"
-        ],
-        "operationId": "File_Download",
-        "parameters": [
-          {
-            "name": "key",
-            "in": "path",
-            "required": true,
+            "name": "Filters",
+            "in": "query",
             "schema": {
               "type": "string",
               "nullable": true
             },
             "x-position": 1
+          },
+          {
+            "name": "Sorts",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 2147483647.0,
+              "minimum": 1.0,
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 2147483647.0,
+              "minimum": 1.0,
+              "nullable": true
+            },
+            "x-position": 4
           }
         ],
         "responses": {
@@ -718,14 +809,12 @@
             }
           }
         }
-      }
-    },
-    "/api/JobVacancies": {
+      },
       "post": {
         "tags": [
           "JobVacancies"
         ],
-        "operationId": "JobVacancies_CreaeNewJobVacancy",
+        "operationId": "JobVacancies_CreateNewJobVacancy",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -753,7 +842,38 @@
         }
       }
     },
-    "/api/JobVacancies/{id}": {
+    "/api/jobvacancies/{id}": {
+      "get": {
+        "tags": [
+          "JobVacancies"
+        ],
+        "operationId": "JobVacancies_Get2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
         "tags": [
           "JobVacancies"
@@ -798,25 +918,29 @@
         }
       }
     },
-    "/api/trainingmodel/{id}": {
+    "/api/reviewer": {
       "get": {
-    "/api/Reviewer": {
-      "post": {
         "tags": [
           "Reviewer"
         ],
-        "operationId": "TrainingModel_GetTrainingModelById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
+        "operationId": "Reviewer_GetAllReviewer",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
           }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reviewer"
         ],
         "operationId": "Reviewer_CreateNewReviewer",
         "requestBody": {
@@ -835,6 +959,39 @@
           "200": {
             "description": "",
             "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviewer/{id}": {
+      "get": {
+        "tags": [
+          "Reviewer"
+        ],
+        "operationId": "Reviewer_GetReviewerById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
               "application/octet-stream": {
                 "schema": {
                   "type": "string",
@@ -845,9 +1002,6 @@
           }
         }
       },
-      }
-    },
-    "/api/Reviewer/{id}": {
       "put": {
         "tags": [
           "Reviewer"
@@ -885,6 +1039,166 @@
                 "schema": {
                   "type": "string",
                   "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reviewer"
+        ],
+        "operationId": "Reviewer_DeleteApplicant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReviewerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trainingmodel/{id}": {
+      "get": {
+        "tags": [
+          "TrainingModel"
+        ],
+        "operationId": "TrainingModel_GetTrainingModelById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "TrainingModel"
+        ],
+        "operationId": "TrainingModel_UpdateTrainingModel",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTrainingModelCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "TrainingModel"
+        ],
+        "operationId": "TrainingModel_DeleteTrainingModel",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteTrainingModelCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -1058,6 +1372,88 @@
   },
   "components": {
     "schemas": {
+      "CreateApplicantCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "patronymic": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfBrith": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UpdateApplicantCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "patronymic": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfBrith": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "DeleteApplicantCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
       "ApplicationDetailsDTO": {
         "type": "object",
         "additionalProperties": false,
@@ -1182,7 +1578,16 @@
         }
       },
       "CreateVacancyCategoryCommand": {
-      "ApplicantDetailsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateVacancyCategoryCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1190,159 +1595,91 @@
             "type": "string",
             "format": "guid"
           },
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "dateOfBrith": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
+          "name": {
             "type": "string",
             "nullable": true
           }
         }
       },
-      "GetApplicantByIdQuery": {
+      "CreateInternshipCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "GetAllApplicantQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "CreateApplicantCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "firstName": {
+          "title": {
             "type": "string",
             "nullable": true
           },
-          "lastName": {
+          "shortDescription": {
             "type": "string",
             "nullable": true
           },
-          "patronymic": {
+          "description": {
             "type": "string",
             "nullable": true
           },
           "publishDate": {
             "type": "string",
-            "nullable": true
+            "format": "date-time"
           },
-          "birthDay": {
+          "endDate": {
             "type": "string",
             "format": "date-time"
-          }
-        }
-      },
-      "UpdateApplicantCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
           },
           "categoryId": {
             "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "DeleteApplicantCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "ApplicationResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "applicantId": {
-            "type": "string",
             "format": "guid"
           },
-          "coverLetter": {
+          "applicationDeadline": {
             "type": "string",
-            "nullable": true
+            "format": "date-time"
           },
-          "history": {
-            "type": "string",
-            "nullable": true
+          "duration": {
+            "type": "integer",
+            "format": "int32"
           },
-          "vacancyId": {
-            "type": "string",
-            "format": "guid"
-          },
-          "resumeUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "statusId": {
+          "stipend": {
             "type": "integer",
             "format": "int32"
           }
         }
       },
-      "GetApplicationsQuery": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "GetByIdApplicationQuery": {
+      "UpdateInternshipCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string",
             "format": "guid"
-          }
-        }
-      },
-      "CreateApplicationCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "applicantId": {
-            "type": "string",
-            "format": "guid"
           },
-          "coverLetter": {
+          "title": {
             "type": "string",
             "nullable": true
           },
-          "history": {
+          "shortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publishDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "requiredSkills": {
             "type": "string",
             "nullable": true
           },
@@ -1352,49 +1689,25 @@
           },
           "applicationDeadline": {
             "type": "string",
-            "format": "guid"
+            "format": "date-time"
           },
-          "resumeUrl": {
-            "type": "string",
-            "nullable": true
+          "duration": {
+            "type": "integer",
+            "format": "int32"
           },
-          "statusId": {
+          "stipend": {
             "type": "integer",
             "format": "int32"
           }
         }
       },
-      "UpdateApplicationCommand": {
+      "DeleteInternshipCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string",
             "format": "guid"
-          },
-          "applicantId": {
-            "type": "string",
-            "format": "guid"
-          },
-          "coverLetter": {
-            "type": "string",
-            "nullable": true
-          },
-          "history": {
-            "type": "string",
-            "nullable": true
-          },
-          "vacancyId": {
-            "type": "string",
-            "format": "guid"
-          },
-          "resumeUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "statusId": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
@@ -1436,15 +1749,15 @@
         }
       },
       "WorkSchedule": {
-        "type": "integer",
+        "type": "string",
         "description": "",
         "x-enumNames": [
           "FullTime",
           "Flexible"
         ],
         "enum": [
-          1,
-          2
+          "FullTime",
+          "Flexible"
         ]
       },
       "UpdateJobVacancyCommand": {
@@ -1492,10 +1805,6 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
           "avatar": {
             "type": "string",
             "nullable": true
@@ -1523,6 +1832,134 @@
         }
       },
       "UpdateReviewerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "patronymic": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfBrith": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "DeleteReviewerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "CreateTrainingModelCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "publishDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fees": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "UpdateTrainingModelCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "publishDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fees": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "DeleteTrainingModelCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

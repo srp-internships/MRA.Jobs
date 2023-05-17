@@ -2,9 +2,9 @@
 
 namespace MRA.Jobs.Application.Features.Reviewer.Query.GetReviewerById;
 
-public class GetReviewerByIdCommandValidator : AbstractValidator<GetReviewerByIdQuery>
+public class GetReviewerByIdQueryValidator : AbstractValidator<GetReviewerByIdQuery>
 {
-    public GetReviewerByIdCommandValidator()
+    public GetReviewerByIdQueryValidator()
     {
         RuleFor(r => r.Id).NotEmpty();
     }

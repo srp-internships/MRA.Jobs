@@ -7,18 +7,12 @@ public class UpdateApplicantCommandHandler : IRequestHandler<UpdateApplicantComm
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
-    private readonly IDateTime _dateTime;
-    private readonly ICurrentUserService _currentUserService;
 
     public UpdateApplicantCommandHandler(IApplicationDbContext context,
-        IMapper mapper,
-        IDateTime dateTime, 
-        ICurrentUserService currentUserService)
+        IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        _dateTime = dateTime;
-        _currentUserService = currentUserService;
     }
     
     public async Task<Guid> Handle(UpdateApplicantCommand request, CancellationToken cancellationToken)
