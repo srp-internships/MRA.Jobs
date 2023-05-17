@@ -17,14 +17,14 @@ public class CategoryController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] PaggedListQuery<VacancyCategoryListDTO> query)
+    public async Task<IActionResult> GetAll([FromQuery] PaggedListQuery<VacancyCategoryListDTO> query)
     {
         var categories = await Mediator.Send(query);
         return Ok(categories);
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get(Guid id)
+    public IActionResult GetbyId(Guid id)
     {
         var category = Mediator.Send(new GetVacancyCategoryByIdQuery { Id = id });
         return Ok(category);
