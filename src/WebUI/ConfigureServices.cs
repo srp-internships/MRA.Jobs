@@ -18,6 +18,7 @@ public static class ConfigureServices
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IFileService, FileService>();
 
         services.AddScoped<ISieveProcessor, SieveProcessor>();
         services.AddScoped(typeof(SieveService<>));
