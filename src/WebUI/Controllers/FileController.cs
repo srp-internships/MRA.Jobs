@@ -1,36 +1,47 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MRA.Jobs.Application.Common.Interfaces;
 
 namespace MRA.Jobs.Web.Controllers;
-[Route("api/[controller]")]
+
 [ApiController]
+[Route("api/[controller]")]
 public class FileController : ControllerBase
 {
-    private readonly IFileService _fileService;
+    private readonly IWebHostEnvironment _environment;
 
-    public FileController(IFileService fileService)
+    public FileController(IWebHostEnvironment environment)
     {
-        _fileService = fileService;
+        _environment = environment;
     }
 
-    [HttpPost("upload")]
-    public async Task<IActionResult> Upload(IFormFile file)
+    [HttpGet]
+    public ActionResult GetFile([FromQuery] string fileName)
     {
-        if (file == null || file.Length == 0)
-            return BadRequest("File not selected.");
+        string path = Path.Combine(_environment.WebRootPath, "Images", fileName ?? "");
+        if (System.IO.File.Exists(path))
+        {
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+            return File(bytes, "application/octet-stream", fileName);
+        }
 
-        var key = await _fileService.UploadAsync(file);
-
-        return Ok(new { key });
+        return NotFound();
     }
 
-    [HttpGet("download/{key}")]
-    public IActionResult Download(string key)
+    [HttpPost]
+    public ActionResult AddFile(IFormFile file)
     {
-        if (!_fileService.FileExists(key))
-            return NotFound("File not found.");
+        if (file == null)
+            return BadRequest();
 
-        var fileBytes = _fileService.Download(key);
-        return File(fileBytes, "application/octet-stream", key);
+        string uploadsFolder = Path.Combine(_environment.WebRootPath, "Images");
+        if (!Directory.Exists(uploadsFolder))
+            Directory.CreateDirectory(uploadsFolder);
+
+        var uniqueFileName = Guid.NewGuid().ToString() + "." + file.FileName.Split(".").Last();
+        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
+            file.CopyTo(fileStream);
+
+        return Ok(uniqueFileName);
     }
 }
