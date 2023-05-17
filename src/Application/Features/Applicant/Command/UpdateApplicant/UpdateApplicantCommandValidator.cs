@@ -7,10 +7,24 @@ public class UpdateApplicantCommandValidator : AbstractValidator<UpdateApplicant
     public UpdateApplicantCommandValidator()
     {
         RuleFor(a => a.Id).NotEmpty();
-        RuleFor(a => a.LastName).NotEmpty();
-        RuleFor(a => a.FirstName).NotEmpty();
-        RuleFor(a => a.DateOfBrith).NotEmpty();
-        RuleFor(a => a.Email).NotEmpty();
-        RuleFor(a => a.PhoneNumber).NotEmpty();
+        RuleFor(a => a.Avatar)
+            .MaximumLength(100)
+            .NotEmpty();
+        RuleFor(a => a.LastName)
+            .MaximumLength(100)
+            .NotEmpty();
+        RuleFor(a => a.FirstName)
+            .MaximumLength(100)
+            .NotEmpty();
+        RuleFor(a => a.Patronymic)
+            .MaximumLength(100)
+            .NotEmpty();
+        RuleFor(a => a.DateOfBrith)
+            .NotEmpty();
+        RuleFor(a => a.Email)
+            .EmailAddress()
+            .NotEmpty();
+        RuleFor(a => a.PhoneNumber)
+            .NotEmpty();
     }
 }

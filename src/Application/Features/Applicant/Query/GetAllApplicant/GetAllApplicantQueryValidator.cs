@@ -6,6 +6,6 @@ public class GetAllApplicantQueryValidator : AbstractValidator<GetAllApplicantQu
 {
     public GetAllApplicantQueryValidator()
     {
-        RuleFor(a => a.Id).NotEmpty();
+      
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace MRA.Jobs.Application.Contracts.Reviewer.Response;
+﻿using MediatR;
 
-public class ReviewerListDTO
+namespace MRA.Jobs.Application.Contracts.Reviewer.Response;
+
+public class ReviewerListDto
 {
     public Guid Id { get; set; }
     public string Avatar { get; set; }
@@ -12,7 +14,7 @@ public class ReviewerListDTO
     public string JobTitle { get; set; }
 }
 
-public class ReviewerDetailsDTO
+public class ReviewerDetailsDto 
 {
     public Guid Id { get; set; }
     public string Avatar { get; set; }

@@ -1,15 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.Applicant.Queries;
+﻿using MRA.Jobs.Application.Contracts.Applicant.Queries;
 using MRA.Jobs.Application.Contracts.Applicant.Responses;
 
 namespace MRA.Jobs.Application.Features.Applicant.Query.GetApplicantById;
-
-public class GetApplicantQueryHandler : IRequestHandler<GetApplicantByIdQuery, ApplicantDetailsDto>
+using Domain.Entities;
+public class GetApplicantByIdQueryHandler : IRequestHandler<GetApplicantByIdQuery, ApplicantDetailsDto>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetApplicantQueryHandler(
+    public GetApplicantByIdQueryHandler(
         IApplicationDbContext context, 
         IMapper mapper)
     {
@@ -19,9 +18,8 @@ public class GetApplicantQueryHandler : IRequestHandler<GetApplicantByIdQuery, A
 
     public async Task<ApplicantDetailsDto> Handle(GetApplicantByIdQuery request, CancellationToken cancellationToken)
     {
-        var applicant =
-            await _context.Applicants.FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken: cancellationToken);
-   
+        var applicant = await _context.Applicants.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+        _ = applicant ?? throw new NotFoundException(nameof(Applicant), request.Id);
         return _mapper.Map<ApplicantDetailsDto>(applicant);
     }
 }

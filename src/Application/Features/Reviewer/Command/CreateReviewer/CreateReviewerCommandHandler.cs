@@ -8,10 +8,10 @@ public class CreateReviewerCommandHandler : IRequestHandler<CreateReviewerComman
     private readonly IMapper _mapper;
     private readonly IApplicationDbContext _context;
 
-    public CreateReviewerCommandHandler(IMapper mapper, IApplicationDbContext context)
+    public CreateReviewerCommandHandler(IApplicationDbContext context, IMapper mapper)
     {
-        _mapper = mapper;
         _context = context;
+        _mapper = mapper;
     }
     public async Task<Guid> Handle(CreateReviewerCommand request, CancellationToken cancellationToken)
     {

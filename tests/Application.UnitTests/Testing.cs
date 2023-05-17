@@ -1,5 +1,7 @@
 ﻿using AutoMapper.Internal;
+using MRA.Jobs.Application.Features.Applicant;
 using MRA.Jobs.Application.Features.JobVacancies;
+using MRA.Jobs.Application.Features.Reviewer;
 
 namespace MRA.Jobs.Application.UnitTests;
 
@@ -13,6 +15,8 @@ public partial class Testing
         {
             cfg.Internal().MethodMappingEnabled = false;
             cfg.AddProfile<JobVacancyProfile>();
+            cfg.AddProfile<ApplicantProfile>();
+            cfg.AddProfile<ReviewerProfile>();
         });
         BaseTestFixture.Mapper = configurationProvider.CreateMapper();
     }

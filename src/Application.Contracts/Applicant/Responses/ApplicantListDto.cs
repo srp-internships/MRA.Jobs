@@ -3,6 +3,7 @@
 public class ApplicantListDto
 {
     public Guid Id { get; set; }
+    public string Avatar { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public DateTime DateOfBrith { get; set; }
@@ -13,6 +14,7 @@ public class ApplicantListDto
 public class ApplicantDetailsDto
 {
     public Guid Id { get; set; }
+    public string Avatar { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public DateTime DateOfBrith { get; set; }
