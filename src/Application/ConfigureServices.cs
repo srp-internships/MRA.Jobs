@@ -12,7 +12,6 @@ public static class ConfigureServices
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         //services.AddAutoMapper(Assembly.GetExecutingAssembly());
-       
         services.AddAutoMapper(config =>
         {
             config.Internal().MethodMappingEnabled = false;

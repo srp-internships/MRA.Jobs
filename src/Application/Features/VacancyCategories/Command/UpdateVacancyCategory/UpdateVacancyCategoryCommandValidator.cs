@@ -6,8 +6,8 @@ public class UpdateVacancyCategoryCommandValidator : AbstractValidator<UpdateVac
 {
     public UpdateVacancyCategoryCommandValidator()
     {
-        RuleFor(s => s.Id).NotEmpty();
-        RuleFor(s => s.Name).NotEmpty();
+        RuleFor(s => s.Id).NotEmpty()
+;        RuleFor(s => s.Name).NotEmpty();
 
     }
 }
