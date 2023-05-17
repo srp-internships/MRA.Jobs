@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
@@ -15,9 +17,9 @@ public class CategoryController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery] PaggedListQuery<VacancyCategoryListDTO> query)
     {
-        var categories = await Mediator.Send(new GetVacancyCategoriesQuery());
+        var categories = await Mediator.Send(query);
         return Ok(categories);
     }
 

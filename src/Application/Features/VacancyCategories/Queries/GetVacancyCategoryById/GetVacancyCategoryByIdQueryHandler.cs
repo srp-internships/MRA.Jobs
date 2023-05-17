@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryById;
-public class GetVacancyCategoryByIdQueryHandler : IRequestHandler<GetVacancyCategoryByIdQuery, VacancyCategoryListDTO>
+public class GetVacancyCategoryByIdQueryHandler : IRequestHandler<GetVacancyCategoryByIdQuery, CategoryResponce>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -12,10 +12,10 @@ public class GetVacancyCategoryByIdQueryHandler : IRequestHandler<GetVacancyCate
         _dbContext = dbContext;
         _mapper = mapper;
     }
-    public async Task<VacancyCategoryListDTO> Handle(GetVacancyCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<CategoryResponce> Handle(GetVacancyCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         var vacancyCategory = await _dbContext.Categories.FindAsync(new object[] { request.Id }, cancellationToken);
         _ = vacancyCategory ?? throw new NotFoundException(nameof(vacancyCategory), request.Id);
-        return _mapper.Map<VacancyCategoryListDTO>(vacancyCategory);
+        return _mapper.Map<CategoryResponce>(vacancyCategory);
     }
 }
