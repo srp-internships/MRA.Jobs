@@ -13,8 +13,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230514163004_Init")]
-    partial class Init
+    [Migration("20230505123700_JobVacancy")]
+    partial class JobVacancy
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,65 +26,179 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.ApplicantSocialMedia", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.DeviceFlowCodes", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserCode")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<Guid>("ApplicantId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("ProfileUrl")
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasMaxLength(50000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("DeviceCode")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("Expiration")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SessionId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SubjectId")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("UserCode");
+
+                    b.HasIndex("DeviceCode")
+                        .IsUnique();
+
+                    b.HasIndex("Expiration");
+
+                    b.ToTable("DeviceCodes", (string)null);
+                });
+
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.Key", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Algorithm")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Data")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
+                    b.Property<bool>("DataProtected")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsX509Certificate")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Use")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Version")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantId");
+                    b.HasIndex("Use");
 
-                    b.ToTable("ApplicantSocialMedias");
+                    b.ToTable("Keys", (string)null);
+                });
+
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.PersistedGrant", b =>
+                {
+                    b.Property<string>("Key")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("ConsumedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasMaxLength(50000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("Expiration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SessionId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SubjectId")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Key");
+
+                    b.HasIndex("ConsumedTime");
+
+                    b.HasIndex("Expiration");
+
+                    b.HasIndex("SubjectId", "ClientId", "Type");
+
+                    b.HasIndex("SubjectId", "SessionId", "Type");
+
+                    b.ToTable("PersistedGrants", (string)null);
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.Application", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("ApplicantId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("AppliedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CV")
+                    b.Property<string>("ApplicantAbout")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
 
-                    b.Property<string>("CoverLetter")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ApplicantCvPath")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<long>("ApplicantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("ApplicationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("StatusId")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("TestResult")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("VacancyId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("VacancyId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -92,119 +206,37 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("VacancyId");
 
-                    b.ToTable("Applications");
+                    b.ToTable("Application");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.Tag", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.Test", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<long>("NumberOfQuestion")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("PassingScore")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<Guid>("VacancyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VacancyId");
-
-                    b.ToTable("Tests");
-                });
-
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.TestResult", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CompletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Passed")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Score")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId")
-                        .IsUnique();
-
-                    b.HasIndex("TestId");
-
-                    b.ToTable("TestResults");
-                });
-
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.TimelineEvent", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("CreateBy")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("CreateBy")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -221,7 +253,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimelineEvents");
+                    b.ToTable("TimelineEvent", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("TimelineEvent");
 
@@ -230,9 +262,11 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
@@ -240,40 +274,31 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("DateOfBrith")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("DomainUsers");
+                    b.ToTable("User", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
 
@@ -282,43 +307,40 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.UserTag", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("TagId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "TagId");
 
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("TagId", "UserId")
-                        .IsUnique();
+                    b.HasIndex("TagId");
 
                     b.ToTable("UserTags");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.Vacancy", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Discriminator")
@@ -331,8 +353,8 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long?>("LastModifiedBy")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
@@ -342,13 +364,12 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Vacancies");
+                    b.ToTable("Vacancy", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Vacancy");
 
@@ -357,13 +378,14 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyCategory", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -372,21 +394,18 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyTag", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("VacancyId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("TagId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("VacancyId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
-                    b.HasKey("Id");
+                    b.HasKey("VacancyId", "TagId");
 
                     b.HasIndex("TagId");
-
-                    b.HasIndex("VacancyId");
 
                     b.ToTable("VacancyTags");
                 });
@@ -593,8 +612,8 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("MRA.Jobs.Domain.Entities.TimelineEvent");
 
-                    b.Property<Guid>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("ApplicationId")
+                        .HasColumnType("bigint");
 
                     b.HasIndex("ApplicationId");
 
@@ -605,8 +624,8 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("MRA.Jobs.Domain.Entities.TimelineEvent");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasIndex("UserId");
 
@@ -617,8 +636,8 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("MRA.Jobs.Domain.Entities.TimelineEvent");
 
-                    b.Property<Guid>("VacancyId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("VacancyId")
+                        .HasColumnType("bigint");
 
                     b.HasIndex("VacancyId");
 
@@ -629,17 +648,12 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("MRA.Jobs.Domain.Entities.User");
 
+                    b.Property<string>("SocialMediaHandles")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("User", (string)null);
+
                     b.HasDiscriminator().HasValue("Applicant");
-                });
-
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.Reviewer", b =>
-                {
-                    b.HasBaseType("MRA.Jobs.Domain.Entities.User");
-
-                    b.Property<string>("JobTitle")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasDiscriminator().HasValue("Reviewer");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.EducationVacancy", b =>
@@ -652,29 +666,26 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("ClassStartDate")
                         .HasColumnType("datetime2");
 
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Vacancy", (string)null);
+
                     b.HasDiscriminator().HasValue("EducationVacancy");
-                });
 
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.Internship", b =>
-                {
-                    b.HasBaseType("MRA.Jobs.Domain.Entities.Vacancy");
-
-                    b.Property<DateTime>("ApplicationDeadline")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Stipend")
-                        .HasColumnType("int");
-
-                    b.ToTable("Vacancies", t =>
+                    b.HasData(
+                        new
                         {
-                            t.Property("Duration")
-                                .HasColumnName("Internship_Duration");
+                            Id = 5L,
+                            CategoryId = 0L,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "tersd",
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PublishDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ShortDescription = "sad",
+                            Title = "Training class",
+                            ClassEndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ClassStartDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
-
-                    b.HasDiscriminator().HasValue("Internship");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.JobVacancy", b =>
@@ -687,80 +698,45 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.Property<int>("WorkSchedule")
                         .HasColumnType("int");
 
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Vacancy", (string)null);
+
                     b.HasDiscriminator().HasValue("JobVacancy");
-                });
 
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.TrainingModel", b =>
-                {
-                    b.HasBaseType("MRA.Jobs.Domain.Entities.Vacancy");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Fees")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("TrainingModel");
-                });
-
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.ApplicantSocialMedia", b =>
-                {
-                    b.HasOne("MRA.Jobs.Domain.Entities.Applicant", "Applicant")
-                        .WithMany("SocialMedias")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Applicant");
+                    b.HasData(
+                        new
+                        {
+                            Id = 3L,
+                            CategoryId = 0L,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "tersd",
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PublishDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ShortDescription = "sad",
+                            Title = "Senior C# backend developer",
+                            RequiredYearOfExperience = 0,
+                            WorkSchedule = 0
+                        });
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.Application", b =>
                 {
                     b.HasOne("MRA.Jobs.Domain.Entities.Applicant", "Applicant")
-                        .WithMany("Applications")
+                        .WithMany()
                         .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", "Vacancy")
                         .WithMany("Applications")
                         .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Applicant");
 
                     b.Navigation("Vacancy");
-                });
-
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.Test", b =>
-                {
-                    b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", "Vacancy")
-                        .WithMany("Tests")
-                        .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Vacancy");
-                });
-
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.TestResult", b =>
-                {
-                    b.HasOne("MRA.Jobs.Domain.Entities.Application", "Application")
-                        .WithOne("TestResult")
-                        .HasForeignKey("MRA.Jobs.Domain.Entities.TestResult", "ApplicationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("MRA.Jobs.Domain.Entities.Test", "Test")
-                        .WithMany("Results")
-                        .HasForeignKey("TestId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Application");
-
-                    b.Navigation("Test");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.UserTag", b =>
@@ -768,13 +744,13 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.HasOne("MRA.Jobs.Domain.Entities.Tag", "Tag")
                         .WithMany("UserTags")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MRA.Jobs.Domain.Entities.User", "User")
-                        .WithMany("Tags")
+                        .WithMany("UserTags")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Tag");
@@ -782,29 +758,18 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.Vacancy", b =>
-                {
-                    b.HasOne("MRA.Jobs.Domain.Entities.VacancyCategory", "Category")
-                        .WithMany("Vacancies")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyTag", b =>
                 {
                     b.HasOne("MRA.Jobs.Domain.Entities.Tag", "Tag")
                         .WithMany("VacancyTags")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", "Vacancy")
                         .WithMany("Tags")
                         .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Tag");
@@ -866,9 +831,9 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.ApplicationTimelineEvent", b =>
                 {
                     b.HasOne("MRA.Jobs.Domain.Entities.Application", "Application")
-                        .WithMany("History")
+                        .WithMany("TimelineEvents")
                         .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Application");
@@ -877,9 +842,9 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.UserTimelineEvent", b =>
                 {
                     b.HasOne("MRA.Jobs.Domain.Entities.User", "User")
-                        .WithMany("History")
+                        .WithMany("userTimelineEvents")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -888,19 +853,39 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyTimelineEvent", b =>
                 {
                     b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", "Vacancy")
-                        .WithMany("History")
+                        .WithMany("VacancyTimelineEvents")
                         .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Vacancy");
                 });
 
+            modelBuilder.Entity("MRA.Jobs.Domain.Entities.EducationVacancy", b =>
+                {
+                    b.HasOne("MRA.Jobs.Domain.Entities.VacancyCategory", "Category")
+                        .WithMany("EducationVacancies")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("MRA.Jobs.Domain.Entities.JobVacancy", b =>
+                {
+                    b.HasOne("MRA.Jobs.Domain.Entities.VacancyCategory", "Category")
+                        .WithMany("JobVacancies")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.Application", b =>
                 {
-                    b.Navigation("History");
-
-                    b.Navigation("TestResult");
+                    b.Navigation("TimelineEvents");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.Tag", b =>
@@ -910,39 +895,27 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.Navigation("VacancyTags");
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.Test", b =>
-                {
-                    b.Navigation("Results");
-                });
-
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.User", b =>
                 {
-                    b.Navigation("History");
+                    b.Navigation("UserTags");
 
-                    b.Navigation("Tags");
+                    b.Navigation("userTimelineEvents");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.Vacancy", b =>
                 {
                     b.Navigation("Applications");
 
-                    b.Navigation("History");
-
                     b.Navigation("Tags");
 
-                    b.Navigation("Tests");
+                    b.Navigation("VacancyTimelineEvents");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyCategory", b =>
                 {
-                    b.Navigation("Vacancies");
-                });
+                    b.Navigation("EducationVacancies");
 
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.Applicant", b =>
-                {
-                    b.Navigation("Applications");
-
-                    b.Navigation("SocialMedias");
+                    b.Navigation("JobVacancies");
                 });
 #pragma warning restore 612, 618
         }

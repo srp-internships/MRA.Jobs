@@ -39,9 +39,25 @@
       <Folder Include="wwwroot\api\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="wwwroot\api\specification.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
     <!-- Auto-generated Open API specification -->
     <PropertyGroup>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     </PropertyGroup>
+
+<!--    <Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
+        <Exec ConsoleToMSBuild="true" ContinueOnError="true" WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run /variables:Configuration=$(Configuration)">
+            <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode" />
+            <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput" />
+        </Exec>
+
+        <Message Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' == '0'" Importance="low" />
+        <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'" />
+    </Target>-->
   
 </Project>
