@@ -1,0 +1,15 @@
+﻿@page "/category"
+@page "/category/1"
+@page "/category/2"
+@inject ICategoryService CategoryService
+
+<Category></Category>
+<h3>Category</h3>
+
+@code {
+   
+    protected override async Task OnInitializedAsync()
+    {
+    //  var result=  await CategoryService.GetAllCategory();
+    }
+}
