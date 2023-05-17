@@ -6,22 +6,26 @@ public class UpdateReviewerCommandValidator : AbstractValidator<UpdateReviewerCo
 {
     public UpdateReviewerCommandValidator()
     {
-        RuleFor(r => r.Id)
+        RuleFor(a => a.Id)
             .NotEmpty();
-        RuleFor(r => r.FirstName)
+        RuleFor(a => a.Avatar)
             .MaximumLength(100)
             .NotEmpty();
-        RuleFor(r => r.LastName)
+        RuleFor(a => a.LastName)
             .MaximumLength(100)
             .NotEmpty();
-        RuleFor(r => r.PhoneNumber)
+        RuleFor(a => a.FirstName)
+            .MaximumLength(100)
             .NotEmpty();
-        RuleFor(r => r.Avatar)
+        RuleFor(a => a.Patronymic)
+            .MaximumLength(100)
             .NotEmpty();
-        RuleFor(r => r.Email)
+        RuleFor(a => a.DateOfBrith)
+            .NotEmpty();
+        RuleFor(a => a.Email)
             .EmailAddress()
             .NotEmpty();
-        RuleFor(r => r.DateOfBrith)
+        RuleFor(a => a.PhoneNumber)
             .NotEmpty();
     }
 }

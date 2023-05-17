@@ -6,7 +6,6 @@ public class CreateApplicantCommandValidator : AbstractValidator<CreateApplicant
 {
     public CreateApplicantCommandValidator()
     {
-        RuleFor(a => a.Avatar).NotEmpty();
         RuleFor(a => a.FirstName)
             .MaximumLength(100)
             .NotEmpty();
@@ -19,7 +18,7 @@ public class CreateApplicantCommandValidator : AbstractValidator<CreateApplicant
         RuleFor(a => a.Patronymic)
             .MaximumLength(100)
             .NotEmpty();
-        RuleFor(a => a.BirthDay)
+        RuleFor(a => a.DateOfBrith)
             .NotEmpty();
         RuleFor(a => a.PhoneNumber)
             .NotEmpty();

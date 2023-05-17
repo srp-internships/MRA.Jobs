@@ -3,7 +3,7 @@ using MRA.Jobs.Application.Contracts.Applicant.Commands;
 using MRA.Jobs.Application.Contracts.Applicant.Queries;
 using MRA.Jobs.Application.Contracts.Applicant.Responses;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
-using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Features.Applicant.Query.GetAllApplicant;
 
 namespace MRA.Jobs.Web.Controllers;
 
@@ -16,17 +16,18 @@ public class ApplicantController : ApiControllerBase
         _logger = logger;
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ApplicantDetailsDto>> GetApplicantById(GetApplicantByIdQuery request, CancellationToken cancellationToken)
-    {
-        return await Mediator.Send(request, cancellationToken);
-    }
-
     [HttpGet]
-    public async Task<IActionResult> GetAllApplicant([FromQuery] PaggedListQuery<ApplicantListDto> request)
+    public async Task<IActionResult> GetAllApplicant()
     {
-        var applicants = await Mediator.Send(request);
+        var applicants = await Mediator.Send(new GetAllApplicantQuery());
         return Ok(applicants);
+    }
+    
+    [HttpGet("{id}")]
+    public IActionResult GetApplicantById(Guid id)
+    {
+        var applicant =  Mediator.Send(new GetApplicantByIdQuery { Id = id });
+        return Ok(applicant);
     }
 
     [HttpPost]
