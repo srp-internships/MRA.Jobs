@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MRA.Jobs.Application.Features.VacancyCategories.Queries.Responce;
+namespace MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
+
 public class CategoryResponce
 {
     public Guid Id { get; set; }
