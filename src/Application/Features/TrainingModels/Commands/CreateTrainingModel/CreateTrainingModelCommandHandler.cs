@@ -2,14 +2,14 @@
 using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.TraningModels.Commands.CreateTraningModel;
-public class CreateTraningModelCommandHandler : IRequestHandler<CreateTrainingModelCommand, Guid>
+public class CreateTrainingModelCommandHandler : IRequestHandler<CreateTrainingModelCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
 
-    public CreateTraningModelCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
+    public CreateTrainingModelCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _context = context;
         _mapper = mapper;
@@ -22,6 +22,7 @@ public class CreateTraningModelCommandHandler : IRequestHandler<CreateTrainingMo
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
         var traningModel = _mapper.Map<TrainingModel>(request);
+        traningModel.Category = category;
         await _context.TrainingModels.AddAsync(traningModel, cancellationToken);
 
         var timelineEvent = new VacancyTimelineEvent
@@ -29,7 +30,7 @@ public class CreateTraningModelCommandHandler : IRequestHandler<CreateTrainingMo
             VacancyId = traningModel.Id,
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
-            Note = "Traning Model created",
+            Note = "Training Model created",
             CreateBy = _currentUserService.UserId
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
