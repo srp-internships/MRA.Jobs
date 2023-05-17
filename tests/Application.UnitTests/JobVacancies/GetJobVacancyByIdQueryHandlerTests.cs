@@ -3,7 +3,7 @@ using MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 
-public class GetJobVacancyByIdQueryHandlerTests : BaseTestFixture
+public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
 {
     private GetJobVacancyByIdQueryHandler _handler;
 
