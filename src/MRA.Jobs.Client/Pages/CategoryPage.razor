@@ -1,20 +1,35 @@
 ﻿@page "/category"
 @page "/category/1"
 @page "/category/2"
-@inject ICategoryService CService
-<h3>@CService.Category.Count</h3>
+@inject HttpClient _http
+@using MRA.Jobs.Application.Contracts.Common;
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
+
+@if (_category == null)
+{
+    <div>Loading</div>
+}
+else
+{
+    <ul>
+        @foreach (var item in _category)
+        {
+            <li>@item.Name</li>
+        }
+    </ul>
+}
 
 
 
 
 
 @code {
-    [Parameter]
-    public int count { get; set; }
+    private List<VacancyCategoryListDTO>? _category;
 
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-      CService.ProductChanged += StateHasChanged;
-        await CService.GetAllCategory();
+        var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>("category");
+        _category = result.Items;
     }
+
 }
