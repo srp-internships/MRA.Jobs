@@ -1,9 +1,9 @@
 {
   "SmtpSettings": {
-    "Server": "smtp.example.com",
+    "Server": "smtp.ethereal.email",
     "Port": 587,
-    "Username": "username",
-    "Password": "password",
+    "Username": "vernice77@ethereal.email",
+    "Password": "Jr2VSHPbDEjEgwZmcF",
     "EnableSsl": true
   },
   "ConnectionStrings": {

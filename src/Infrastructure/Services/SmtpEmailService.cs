@@ -1,25 +1,18 @@
-﻿using System.Net;
-using System.Net.Mail;
+﻿using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MimeKit;
 using MRA.Jobs.Application.Common.Models;
 
 namespace MRA.Jobs.Infrastructure.Services;
 public class SmtpEmailService : IEmailService
 {
     private readonly SmtpSettings _smtpSettings;
-    private readonly SmtpClient _smtpClient;
     private readonly ILogger<SmtpEmailService> _logger;
 
     public SmtpEmailService(IOptions<SmtpSettings> smtpSettings, ILogger<SmtpEmailService> logger)
     {
         _smtpSettings = smtpSettings.Value;
-
-        _smtpClient = new SmtpClient(_smtpSettings.Server, _smtpSettings.Port)
-        {
-            Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password),
-            EnableSsl = _smtpSettings.EnableSsl
-        };
         _logger = logger;
     }
 
@@ -27,30 +20,30 @@ public class SmtpEmailService : IEmailService
     {
         try
         {
-            var mailMessage = new MailMessage(message.From, message.To, message.Subject, message.Body)
-            {
-                IsBodyHtml = message.IsHtml
-            };
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(message.From));
+            email.To.Add(MailboxAddress.Parse(message.To));
+            email.Subject = message.Subject;
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = message.Body };
 
-            await _smtpClient.SendMailAsync(mailMessage);
+            using var smtp = new SmtpClient();
+            smtp.Connect(_smtpSettings.Server, _smtpSettings.Port, MailKit.Security.SecureSocketOptions.StartTls);
+            smtp.Authenticate(_smtpSettings.Username, _smtpSettings.Password);
+            await smtp.SendAsync(email);
+            smtp.Disconnect(true);
         }
         catch (ArgumentNullException ex)
         {
-            _logger.LogError($"ArgumentNull Exception: {ex.Message}");
+            _logger.LogError($"Argument Null Exception: {ex.Message}");
         }
-        catch (SmtpException ex)
+        catch (InvalidOperationException ex)
         {
-            _logger.LogError($"SMTP Exception: {ex.Message}");
+            _logger.LogError($"Invalid Operation Exception: {ex.Message}");
         }
         catch (Exception ex)
         {
             _logger.LogError($"Exception: {ex.Message}");
         }
-        finally
-        {
-            _smtpClient.Dispose();
-        }
-
     }
 
 }
