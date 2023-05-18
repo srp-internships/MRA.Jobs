@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
+﻿namespace MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 public class VacancyCategoryListDTO
 {
     public Guid Id { get; set; }

@@ -55,4 +55,18 @@ public class ApplicantController : ApiControllerBase
     {
         return await Mediator.Send(request, cancellationToken);
     }
+
+    [HttpPost("{applicantId}/tags/{tagId}")]
+    public async Task<ActionResult<bool>> AddTagToApplicant(Guid applicantId, Guid tagId, CancellationToken cancellationToken)
+    {
+        var request = new AddTagToApplicantCommand { ApplicantId = applicantId, TagId = tagId };
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpDelete("{applicantId}/tags/{tagId}")]
+    public async Task<ActionResult<bool>> RemoveTagFromApplicant(Guid applicantId, Guid tagId, CancellationToken cancellationToken)
+    {
+        var request = new RemoveTagFromApplicantCommand { ApplicantId = applicantId, TagId = tagId };
+        return await Mediator.Send(request, cancellationToken);
+    }
 }
