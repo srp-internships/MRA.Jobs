@@ -1,11 +1,20 @@
 ﻿@page "/category"
 @page "/category/1"
 @page "/category/2"
-@inject ICategoryService CategoryService
+@inject ICategoryService CService
+<h3>@CService.Category.Count</h3>
 
-<h3>Category</h3>
+
+
+
 
 @code {
-   
- 
+    [Parameter]
+    public int count { get; set; }
+
+    protected override async void OnInitialized()
+    {
+      CService.ProductChanged += StateHasChanged;
+        await CService.GetAllCategory();
+    }
 }

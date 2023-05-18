@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+﻿using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
 
 namespace MRA.Jobs.Client.Services.CategoryServices;
 
@@ -10,11 +11,17 @@ public class CategoryService : ICategoryService
     {
         _http = http;
     }
-    public List<GetVacancyCategoriesQuery> Category { get; set; } = new List<GetVacancyCategoriesQuery>();
+    public List<VacancyCategoryListDTO> Category { get; set; } = new List<VacancyCategoryListDTO>();
 
-    public async Task<List<GetVacancyCategoriesQuery>> GetAllCategory()
+    public event Action ProductChanged;
+
+    public async Task<PaggedList<VacancyCategoryListDTO>> GetAllCategory()
     {
-        var result = await _http.GetFromJsonAsync<List<GetVacancyCategoriesQuery?>>("api/category");
+        var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>("category");
+        Category = result.Items;
+        ProductChanged.Invoke();
         return result;
     }
+
+
 }
