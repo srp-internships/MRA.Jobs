@@ -4,6 +4,7 @@
 @inject HttpClient _http
 @using MRA.Jobs.Application.Contracts.Common;
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Commands
 
 @if (_category == null)
 {
@@ -11,25 +12,102 @@
 }
 else
 {
-    <ul>
-        @foreach (var item in _category)
-        {
-            <li>@item.Name</li>
-        }
-    </ul>
+    <MatAccordion>
+        <MatExpansionPanel @bind-Expanded="@panelOpenState">
+            <MatExpansionPanelSummary>
+                <MatExpansionPanelHeader>Self aware panel</MatExpansionPanelHeader>
+                <MatExpansionPanelSubHeader>
+                    Currently I am @(panelOpenState ? "open" : "closed")
+                </MatExpansionPanelSubHeader>
+            </MatExpansionPanelSummary>
+            <MatExpansionPanelDetails>
+
+                <MatTextField @bind-Value="@creatingEntity.Name"></MatTextField>
+                <MatButton @onclick="@OnSaveCreateClick">Insert</MatButton>
+
+            </MatExpansionPanelDetails>
+        </MatExpansionPanel>
+    </MatAccordion>
+    <MatTable Items="@_category" ShowPaging="false" RequestApiOnlyOnce="true" RowClass="tester" class="mat-elevation-z5" PageSize="100">
+        <MatTableHeader>
+            <th>Name</th>
+            <th>Actions</th>
+        </MatTableHeader>
+
+        <MatTableRow>
+            <td>
+                @if (updatingEntity?.Id == context.Id)
+                {
+                    <MatTextField @bind-Value="@updatingEntity.Name"></MatTextField>
+                }
+                else
+                {
+                    @context.Name
+                }
+            </td>
+            <td>
+                @if (updatingEntity?.Id == context.Id)
+                {
+                    <MatButton OnClick="@OnSaveClick" Style="color:#2094CC" Icon="edit">Save</MatButton>
+                }
+                else
+                {
+                    <MatButton @onclick="() => OnUpdateClick(context)" Style="color:#2094CC" Icon="edit">Update</MatButton>
+                }
+                <MatButton Style="color:#2094CC" Icon="delete">Delete</MatButton>
+            </td>
+        </MatTableRow>
+    </MatTable>
+
+
+
 }
 
-
-
-
-
 @code {
-    private List<VacancyCategoryListDTO>? _category;
+    private UpdateVacancyCategoryCommand? updatingEntity;
+    private CreateVacancyCategoryCommand? creatingEntity;
+
+    private List<VacancyCategoryListDTO> _category;
+    bool panelOpenState;
 
     protected override async Task OnInitializedAsync()
     {
         var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>("category");
         _category = result.Items;
+        creatingEntity = new() { Name = "" };
     }
+
+    private void OnUpdateClick(VacancyCategoryListDTO updateEntity)
+    {
+        updatingEntity = new()
+            {
+                Id = updateEntity.Id,
+                Name = updateEntity.Name
+            };
+    }
+
+    private async Task OnSaveClick()
+    {
+        var result = await _http.PutAsJsonAsync($"category/{updatingEntity.Id}", updatingEntity);
+        result.EnsureSuccessStatusCode();
+        updatingEntity = null;
+        var result2 = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category/Page:{3}");
+            _category = result2.Items;
+    }
+
+    private async Task OnSaveCreateClick()
+    {
+        var ss = creatingEntity;
+        if (creatingEntity is not null)
+            await _http.PostAsJsonAsync("category", creatingEntity);
+
+        creatingEntity.Name=string.Empty;
+
+
+
+
+    }
+
+
 
 }

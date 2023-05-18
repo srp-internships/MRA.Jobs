@@ -104,3 +104,13 @@ a, .btn-link {
     content: "*";
     margin-left: 1em;
 }
+
+
+
+/*meniki*/
+
+
+.mdc-table td:first-child {
+    border-left: none;
+    width: 100%;
+}
