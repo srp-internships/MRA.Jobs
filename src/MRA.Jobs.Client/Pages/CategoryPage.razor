@@ -15,10 +15,10 @@ else
     <MatAccordion>
         <MatExpansionPanel @bind-Expanded="@panelOpenState">
             <MatExpansionPanelSummary>
-                <MatExpansionPanelHeader>Self aware panel</MatExpansionPanelHeader>
-                <MatExpansionPanelSubHeader>
+                <MatExpansionPanelHeader>Inserting a new Category Data</MatExpansionPanelHeader>
+            @*    <MatExpansionPanelSubHeader>
                     Currently I am @(panelOpenState ? "open" : "closed")
-                </MatExpansionPanelSubHeader>
+                </MatExpansionPanelSubHeader>*@
             </MatExpansionPanelSummary>
             <MatExpansionPanelDetails>
 
@@ -91,7 +91,7 @@ else
         var result = await _http.PutAsJsonAsync($"category/{updatingEntity.Id}", updatingEntity);
         result.EnsureSuccessStatusCode();
         updatingEntity = null;
-        var result2 = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category/Page:{3}");
+        var result2 = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category/Page:{2}");
             _category = result2.Items;
     }
 
