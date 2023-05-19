@@ -27,7 +27,7 @@ public class SmtpEmailService : IEmailService
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = message.Body };
 
             using var smtp = new SmtpClient();
-            smtp.Connect(_smtpSettings.Server, _smtpSettings.Port, MailKit.Security.SecureSocketOptions.StartTls);
+            smtp.Connect(_smtpSettings.Server, _smtpSettings.Port, false);
             smtp.Authenticate(_smtpSettings.Username, _smtpSettings.Password);
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
