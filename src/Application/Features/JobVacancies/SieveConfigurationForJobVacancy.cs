@@ -9,9 +9,6 @@ public class SieveConfigurationForJobVacancy : ISieveConfiguration
             .CanFilter()
             .CanSort();
 
-        mapper.Property<JobVacancy>(p => p.Tags)
-           .CanFilter();
-
         mapper.Property<JobVacancy>(p => p.Category.Name)
             .CanFilter()
             .HasName(nameof(JobVacancy.Category));
@@ -19,9 +16,20 @@ public class SieveConfigurationForJobVacancy : ISieveConfiguration
         mapper.Property<JobVacancy>(p => p.CategoryId)
             .CanFilter();
 
-        //mapper.Property<JobVacancy>(p => p.DateCreated)
-        //    .CanSort()
-        //    .CanFilter()
-        //    .HasName("created_on");
+        mapper.Property<JobVacancy>(p => p.ShortDescription)
+            .CanFilter()
+            .CanSort();
+
+        mapper.Property<JobVacancy>(p => p.PublishDate)
+            .CanFilter()
+            .CanSort();
+
+        mapper.Property<JobVacancy>(p => p.EndDate)
+            .CanFilter()
+            .CanSort();
+
+        mapper.Property<JobVacancy>(p => p.WorkSchedule)
+            .CanFilter()
+            .CanSort();
     }
 }
