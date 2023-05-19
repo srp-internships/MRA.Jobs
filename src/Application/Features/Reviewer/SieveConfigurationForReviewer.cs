@@ -1,24 +1,24 @@
 ﻿using Sieve.Services;
 
-namespace MRA.Jobs.Application.Features.Applicant;
+namespace MRA.Jobs.Application.Features.Reviewer;
 using MRA.Jobs.Domain.Entities;
-public class SieveConfigurationForApplicant : ISieveConfiguration
+public class SieveConfigurationForReviewer : ISieveConfiguration
 {
     public void Configure(SievePropertyMapper mapper)
     {
-        mapper.Property<Applicant>(p => p.FirstName)
+        mapper.Property<Reviewer>(p => p.FirstName)
             .CanFilter()
             .CanSort();
 
-        mapper.Property<Applicant>(p => p.LastName)
+        mapper.Property<Reviewer>(p => p.LastName)
             .CanFilter()
             .CanSort();
 
-        mapper.Property<Applicant>(p => p.Email)
+        mapper.Property<Reviewer>(p => p.Email)
             .CanFilter()
             .CanSort();
 
-        mapper.Property<Applicant>(p => p.PhoneNumber)
+        mapper.Property<Reviewer>(p => p.PhoneNumber)
             .CanFilter()
             .CanSort();
     }
