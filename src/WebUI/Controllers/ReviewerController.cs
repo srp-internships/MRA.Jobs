@@ -45,7 +45,7 @@ public class ReviewerController : ApiControllerBase
     }
     
     [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteApplicant(Guid id, [FromBody] DeleteReviewerCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<bool>> DeleteReviewer(Guid id, [FromBody] DeleteReviewerCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
