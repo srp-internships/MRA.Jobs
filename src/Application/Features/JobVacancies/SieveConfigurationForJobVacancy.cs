@@ -7,14 +7,17 @@ public class SieveConfigurationForJobVacancy : ISieveConfiguration
     {
         mapper.Property<JobVacancy>(p => p.Title)
             .CanFilter()
-
             .CanSort();
 
         mapper.Property<JobVacancy>(p => p.Tags)
            .CanFilter();
 
-        //mapper.Property<JobVacancy>(p => p.)
-        //    .CanSort();
+        mapper.Property<JobVacancy>(p => p.Category.Name)
+            .CanFilter()
+            .HasName(nameof(JobVacancy.Category));
+
+        mapper.Property<JobVacancy>(p => p.CategoryId)
+            .CanFilter();
 
         //mapper.Property<JobVacancy>(p => p.DateCreated)
         //    .CanSort()
