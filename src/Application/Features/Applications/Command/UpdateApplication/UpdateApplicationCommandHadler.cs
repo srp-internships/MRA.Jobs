@@ -22,25 +22,26 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
 
     public async Task<Guid> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
     {
-        var application = await _context.Applications.FindAsync(request.Id, cancellationToken)
-            ?? throw new NotFoundException(nameof(Application), request.Id);
+        var application = await _context.Applications.FindAsync(request.Id);
+        _ = application ?? throw new NotFoundException(nameof(Application), request.Id);
 
-        var applicant = await _context.Applicants.FindAsync(request.ApplicantId, cancellationToken)
+        var applicant = await _context.Applicants.FindAsync(request.ApplicantId)
              ?? throw new NotFoundException(nameof(Applicant), request.ApplicantId);
-        var vacancy = await _context.Vacancies.FindAsync(request.VacancyId, cancellationToken)
+        var vacancy = await _context.Vacancies.FindAsync(request.VacancyId)
             ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
 
         _mapper.Map(request, application);
 
-        var timelineEvent = new VacancyTimelineEvent
+        var timelineEvent = new ApplicationTimelineEvent
         {
-            VacancyId = application.Id,
+            ApplicationId = application.Id,
+            Application = application,
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Application updated",
             CreateBy = _currentUserService.UserId
         };
-        await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
+        await _context.ApplicationTimelineEvents.AddAsync(timelineEvent);
         await _context.SaveChangesAsync(cancellationToken);
 
         return application.Id;

@@ -17,7 +17,7 @@ public class CategoryController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] PaggedListQuery<VacancyCategoryListDTO> query)
+    public async Task<ActionResult<PaggedList<VacancyCategoryListDTO>>> GetAll([FromQuery] PaggedListQuery<VacancyCategoryListDTO> query)
     {
         var categories = await Mediator.Send(query);
         return Ok(categories);
@@ -43,5 +43,12 @@ public class CategoryController : ApiControllerBase
             return BadRequest();
 
         return await Mediator.Send(request, cancellationToken);
+    }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var command = new DeleteVacancyCategoryCommand { Id = id };
+        await Mediator.Send(command);
+        return NoContent();
     }
 }

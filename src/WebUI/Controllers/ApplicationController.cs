@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MRA.Jobs.Application.Contracts.Applicant.Responses;
 using MRA.Jobs.Application.Contracts.Applications.Commands;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
+using MRA.Jobs.Application.Contracts.Common;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
@@ -13,6 +15,13 @@ public class ApplicationController : ApiControllerBase
     public ApplicationController(ILogger<ApplicationController> logger)
     {
         _logger = logger;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<PaggedList<ApplicationListDTO>>> GetAll([FromQuery] PaggedListQuery<ApplicationListDTO> query)
+    {
+        var applications = await Mediator.Send(query);
+        return Ok(applications);
     }
 
     [HttpGet("{Id}")]
