@@ -10,7 +10,7 @@ public interface ICategoryService
     List<VacancyCategoryListDTO> Category { get; set; }
     UpdateVacancyCategoryCommand updatingEntity { get; set; }
     DeleteVacancyCategoryCommand deletingEntity { get; set; }
-     CreateVacancyCategoryCommand creatingEntity { get; set; }
+    CreateVacancyCategoryCommand creatingEntity { get; set; }
     Task<List<VacancyCategoryListDTO>> GetAllCategory();
     Task OnSaveUpdateClick();
     Task OnDeleteClick(Guid id);

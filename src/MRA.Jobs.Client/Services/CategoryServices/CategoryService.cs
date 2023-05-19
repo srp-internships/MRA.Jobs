@@ -44,8 +44,8 @@ public class CategoryService : ICategoryService
     public async Task OnDeleteClick(Guid id)
     {
         await _http.DeleteAsync($"category/{id}");
-        var result2 = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category");
-        Category = result2.Items;
+        var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category");
+        Category = result.Items;
     }
     public async Task OnSaveCreateClick()
     {
@@ -53,8 +53,8 @@ public class CategoryService : ICategoryService
         if (creatingEntity is not null)
             await _http.PostAsJsonAsync("category", creatingEntity);
         creatingEntity.Name = string.Empty;
-        var result2 = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category");
-        Category = result2.Items;
+        var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category");
+        Category = result.Items;
     }
 
 
