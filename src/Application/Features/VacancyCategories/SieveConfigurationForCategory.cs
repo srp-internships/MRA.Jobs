@@ -8,14 +8,5 @@ public class SieveConfigurationForCategory : ISieveConfiguration
         mapper.Property<VacancyCategory>(p => p.Name)
             .CanFilter()
             .CanSort();
-
-
-        //mapper.Property<JobVacancy>(p => p.)
-        //    .CanSort();
-
-        //mapper.Property<JobVacancy>(p => p.DateCreated)
-        //    .CanSort()
-        //    .CanFilter()
-        //    .HasName("created_on");
     }
 }
