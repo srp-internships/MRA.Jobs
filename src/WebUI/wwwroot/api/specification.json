@@ -1500,6 +1500,10 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
           "applicantId": {
             "type": "string",
             "format": "guid"
@@ -1508,15 +1512,11 @@
             "type": "string",
             "nullable": true
           },
-          "history": {
-            "type": "string",
-            "nullable": true
-          },
           "vacancyId": {
             "type": "string",
             "format": "guid"
           },
-          "resumeUrl": {
+          "cv": {
             "type": "string",
             "nullable": true
           },
@@ -1567,15 +1567,11 @@
             "type": "string",
             "nullable": true
           },
-          "history": {
-            "type": "string",
-            "nullable": true
-          },
           "vacancyId": {
             "type": "string",
             "format": "guid"
           },
-          "resumeUrl": {
+          "cv": {
             "type": "string",
             "nullable": true
           },
@@ -1601,15 +1597,11 @@
             "type": "string",
             "nullable": true
           },
-          "history": {
-            "type": "string",
-            "nullable": true
-          },
           "vacancyId": {
             "type": "string",
             "format": "guid"
           },
-          "resumeUrl": {
+          "cv": {
             "type": "string",
             "nullable": true
           },
