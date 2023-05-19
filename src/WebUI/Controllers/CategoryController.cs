@@ -44,4 +44,11 @@ public class CategoryController : ApiControllerBase
 
         return await Mediator.Send(request, cancellationToken);
     }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var command = new DeleteVacancyCategoryCommand { Id = id };
+        await Mediator.Send(command);
+        return NoContent();
+    }
 }
