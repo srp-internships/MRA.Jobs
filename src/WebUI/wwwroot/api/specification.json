@@ -1160,6 +1160,38 @@
         }
       }
     },
+    "/api/sms": {
+      "post": {
+        "tags": [
+          "Sms"
+        ],
+        "operationId": "Sms_Create",
+        "requestBody": {
+          "x-name": "message",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SmsMessage"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/trainingmodel/{id}": {
       "get": {
         "tags": [
@@ -1989,6 +2021,20 @@
           "id": {
             "type": "string",
             "format": "guid"
+          }
+        }
+      },
+      "SmsMessage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
