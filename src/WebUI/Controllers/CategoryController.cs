@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
@@ -24,9 +24,9 @@ public class CategoryController : ApiControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetbyId(Guid id)
+    public async Task<IActionResult> GetById(Guid id)
     {
-        var category = Mediator.Send(new GetVacancyCategoryByIdQuery { Id = id });
+        var category = await Mediator.Send(new GetVacancyCategoryByIdQuery { Id = id });
         return Ok(category);
     }
 
@@ -44,6 +44,7 @@ public class CategoryController : ApiControllerBase
 
         return await Mediator.Send(request, cancellationToken);
     }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {

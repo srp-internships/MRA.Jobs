@@ -11,7 +11,7 @@ public class InternshipsController : ApiControllerBase
     [HttpGet]
     public async Task<IActionResult> GetWithPagination([FromQuery] PaggedListQuery<InternshipListDTO> query)
     {
-        var internships = Mediator.Send(query);
+        var internships = await Mediator.Send(query);
         return Ok(internships);
     }
 

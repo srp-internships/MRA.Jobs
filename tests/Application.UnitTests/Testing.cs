@@ -7,7 +7,6 @@ using MRA.Jobs.Application.Features.JobVacancies;
 using MRA.Jobs.Application.Features.TrainingModels;
 using MRA.Jobs.Application.Features.VacancyCategories;
 
-
 namespace MRA.Jobs.Application.UnitTests;
 
 [SetUpFixture]
@@ -25,7 +24,7 @@ public partial class Testing
             cfg.AddProfile<ReviewerProfile>();
             cfg.AddProfile<InternshipProfile>();
             cfg.AddProfile<VacancyCategoryProfile>();
-            cfg.AddProfile<TrainingModelProfile>();
+            cfg.AddProfile<TrainingModelProfile>();         
         });
         BaseTestFixture.Mapper = configurationProvider.CreateMapper();
     }

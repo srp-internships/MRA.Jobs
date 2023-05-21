@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories;
 public class VacancyCategoryProfile:Profile
@@ -9,6 +9,6 @@ public class VacancyCategoryProfile:Profile
         CreateMap<CreateVacancyCategoryCommand, VacancyCategory>();
         CreateMap<UpdateVacancyCategoryCommand,VacancyCategory>();
         CreateMap<VacancyCategory, VacancyCategoryListDTO>();
-        CreateMap<VacancyCategory, CategoryResponce>();
+        CreateMap<VacancyCategory, CategoryResponse>();
     }
 }

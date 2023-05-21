@@ -4,7 +4,7 @@
 @inject HttpClient _http
 @inject ICategoryService CService
 @using MRA.Jobs.Application.Contracts.Common;
-@using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Commands
 
 @if (_category == null)
@@ -40,10 +40,11 @@ else
                 }
                 else
                     @context.Name
-                }
-            </td>
-            <td>
-                @if (CService.updatingEntity?.Id == context.Id)
+
+                    }
+                </td>
+                <td>
+                    @if (CService.updatingEntity?.Id == context.Id)
                 {
                     <MatButton OnClick="@CService.OnSaveUpdateClick" Style="color:#2094CC" Icon="edit">Save</MatButton>
                 }
