@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Common.Seive;
+using MRA.Jobs.Infrastructure.Identity.Models;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;

@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
+﻿using MRA.Jobs.Application.Common.Security;
+using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.UpdateTrainingModel;
 public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainingVacancyCommand, Guid>

@@ -1,11 +1,11 @@
-﻿using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Infrastructure.Persistence;
+﻿using MRA.Jobs.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using MRA.Jobs.Application.Common.Security;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 

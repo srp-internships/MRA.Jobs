@@ -8,6 +8,7 @@ using MRA.Jobs.Web.Services;
 using MRA.Jobs.Web.Filters;
 using System.Text.Json.Serialization;
 using MRA.Jobs.Infrastructure.Services;
+using MRA.Jobs.Application.Common.Security;
 
 namespace MRA.Jobs.Web;
 

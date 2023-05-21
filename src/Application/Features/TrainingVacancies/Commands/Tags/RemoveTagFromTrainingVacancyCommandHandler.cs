@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Tags;

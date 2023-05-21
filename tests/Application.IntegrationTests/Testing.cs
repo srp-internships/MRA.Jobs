@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Respawn;
+using MRA.Jobs.Infrastructure.Identity.Models;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 

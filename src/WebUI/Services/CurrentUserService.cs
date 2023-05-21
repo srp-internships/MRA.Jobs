@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
-
-using MRA.Jobs.Application.Common.Interfaces;
+using MRA.Jobs.Application.Common.Security;
 
 namespace MRA.Jobs.Web.Services;
 
@@ -20,6 +19,14 @@ public class CurrentUserService : ICurrentUserService
             var id = Guid.Empty;
             Guid.TryParse(_httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier), out id);
             return id;
+        }
+    }
+
+    public string UserName
+    {
+        get
+        {
+            return _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
         }
     }
 }

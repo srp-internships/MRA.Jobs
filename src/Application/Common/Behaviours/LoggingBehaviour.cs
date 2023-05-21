@@ -1,5 +1,6 @@
 ﻿using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
+using MRA.Jobs.Application.Common.Security;
 
 namespace MRA.Jobs.Application.Common.Behaviours;
 

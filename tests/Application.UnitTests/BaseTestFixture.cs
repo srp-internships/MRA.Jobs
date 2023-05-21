@@ -1,4 +1,6 @@
-﻿namespace MRA.Jobs.Application.UnitTests;
+﻿using MRA.Jobs.Application.Common.Security;
+
+namespace MRA.Jobs.Application.UnitTests;
 
 [TestFixture]
 public abstract class BaseTestFixture

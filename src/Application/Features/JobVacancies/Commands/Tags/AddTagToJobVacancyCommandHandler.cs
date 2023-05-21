@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+﻿using MRA.Jobs.Application.Common.Security;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.Tags;
 

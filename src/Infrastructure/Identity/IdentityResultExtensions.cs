@@ -1,14 +1,14 @@
-﻿using MRA.Jobs.Application.Common.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using MRA.Jobs.Application.Common.Security;
 
 namespace MRA.Jobs.Infrastructure.Identity;
 
 public static class IdentityResultExtensions
 {
-    public static Result ToApplicationResult(this IdentityResult result)
+    public static AuthResult ToApplicationResult(this IdentityResult result)
     {
         return result.Succeeded
-            ? Result.Success()
-            : Result.Failure(result.Errors.Select(e => e.Description));
+            ? AuthResult.Success()
+            : AuthResult.Failure(result.Errors.Select(e => e.Description));
     }
 }

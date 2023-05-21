@@ -2,6 +2,7 @@
 
 namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplication;
 using MRA.Jobs.Application.Common.Interfaces;
+using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Domain.Entities;
 using MRA.Jobs.Domain.Enums;
 

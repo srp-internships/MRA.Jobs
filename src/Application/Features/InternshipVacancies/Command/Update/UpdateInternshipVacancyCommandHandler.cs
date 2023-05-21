@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
+﻿using MRA.Jobs.Application.Common.Security;
+using MRA.Jobs.Application.Contracts.Internships.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Update;
 public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInternshipVacancyCommand, Guid>
