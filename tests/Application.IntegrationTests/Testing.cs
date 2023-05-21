@@ -19,7 +19,7 @@ public partial class Testing
     private static IConfiguration _configuration = null!;
     private static IServiceScopeFactory _scopeFactory = null!;
     private static Respawner _checkpoint = null!;
-    private static string _currentUserId;
+    private static Guid _currentUserId;
 
 
 
@@ -47,22 +47,22 @@ public partial class Testing
         return await mediator.Send(request);
     }
 
-    public static string GetCurrentUserId()
+    public static Guid GetCurrentUserId()
     {
         return _currentUserId;
     }
 
-    public static async Task<string> RunAsDefaultUserAsync()
+    public static async Task<Guid> RunAsDefaultUserAsync()
     {
         return await RunAsUserAsync("test@local", "Testing1234!", Array.Empty<string>());
     }
 
-    public static async Task<string> RunAsAdministratorAsync()
+    public static async Task<Guid> RunAsAdministratorAsync()
     {
         return await RunAsUserAsync("administrator@local", "Administrator1234!", new[] { "Administrator" });
     }
 
-    public static async Task<string> RunAsUserAsync(string userName, string password, string[] roles)
+    public static async Task<Guid> RunAsUserAsync(string userName, string password, string[] roles)
     {
         using var scope = _scopeFactory.CreateScope();
 
@@ -103,7 +103,7 @@ public partial class Testing
             await _checkpoint.ResetAsync(_configuration.GetConnectionString("DefaultConnection"));
         }
         catch (Exception) { }
-        _currentUserId = null;
+        _currentUserId = Guid.Empty;
     }
 
     public static async Task<TEntity> FindAsync<TEntity>(params object[] keyValues)

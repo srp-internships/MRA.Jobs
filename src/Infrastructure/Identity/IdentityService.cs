@@ -20,7 +20,7 @@ public class IdentityService : IIdentityService
         _authorizationService = authorizationService;
     }
 
-    public async Task<(AuthResult Result, string UserId)> CreateUserAsync(Guid userName, string password)
+    public async Task<(AuthResult Result, Guid UserId)> CreateUserAsync(Guid userName, string password)
     {
         var user = new ApplicationUser
         {
@@ -64,7 +64,7 @@ public class IdentityService : IIdentityService
 
     public async Task<AuthResult> DeleteUserAsync(Guid userId)
     {
-        var user = _userManager.Users.SingleOrDefault(u => u.Id == userId.ToString());
+        var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
 
         return user != null ? await DeleteUserAsync(user) : AuthResult.Success();
     }
