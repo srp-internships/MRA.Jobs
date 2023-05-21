@@ -3,6 +3,8 @@ using MRA.Jobs.Application.Contracts.Applicant.Commands;
 using MRA.Jobs.Application.Contracts.Applicant.Queries;
 using MRA.Jobs.Application.Contracts.Applicant.Responses;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
+using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Features.Applicant.Query.GetAllApplicant;
 
 namespace MRA.Jobs.Web.Controllers;
@@ -17,9 +19,9 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllApplicant()
+    public async Task<IActionResult> GetAllApplicant([FromQuery] PaggedListQuery<ApplicantListDto> query)
     {
-        var applicants = await Mediator.Send(new GetAllApplicantQuery());
+        var applicants = await Mediator.Send(query);
         return Ok(applicants);
     }
     
