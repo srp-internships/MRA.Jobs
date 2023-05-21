@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.JsonWebTokens;
-using MRA.Jobs.Infrastructure.Identity.Services;
 
 namespace MRA.Jobs.Infrastructure.Identity.Authorization;
 

@@ -10,4 +10,8 @@
     <ProjectReference Include="..\src\Application.Contracts\MRA.Jobs.Application.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Users\Responses\" />
+  </ItemGroup>
+
 </Project>

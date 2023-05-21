@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using System.Reflection;
 using MRA.Jobs.Application.Contracts.Common;
 using Sieve.Models;
 using Sieve.Services;

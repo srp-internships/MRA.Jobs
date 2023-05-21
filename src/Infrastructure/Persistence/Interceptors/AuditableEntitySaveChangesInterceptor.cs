@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using MRA.Jobs.Application.Common.Security;
 
 namespace MRA.Jobs.Infrastructure.Persistence.Interceptors;
 

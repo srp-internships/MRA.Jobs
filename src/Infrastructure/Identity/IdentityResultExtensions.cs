@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using MRA.Jobs.Application.Common.Security;
 
 namespace MRA.Jobs.Infrastructure.Identity;
 

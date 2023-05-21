@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using MRA.Jobs.Infrastructure.Identity.Entities;
 
 namespace MRA.Jobs.Infrastructure.Identity.Services;
 

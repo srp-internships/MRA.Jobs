@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MRA.Jobs.Application.Common.Seive;
-using MRA.Jobs.Infrastructure.Identity.Authorization;
-using MRA.Jobs.Infrastructure.Identity.Entities;
-using MRA.Jobs.Infrastructure.Identity.Services;
-using MRA.Jobs.Infrastructure.Identity.Settings;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;
@@ -16,17 +16,17 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+        services.AddAppIdentity(configuration);
 
+        services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         var dbConectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ApplicationDbContextInitialiser>();
+
         services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
         services.AddTransient<IDateTime, DateTimeService>();
-        services.AddTransient<IIdentityService, IdentityService>();
         services.AddTransient<ISmsService, GenericSmsService>();
 
         return services;
@@ -34,10 +34,15 @@ public static class ConfigureServices
 
     public static IServiceCollection AddAppIdentity(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+        services.AddOptions();
+
         services.AddScoped<CurrentUserService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<Microsoft.AspNetCore.Authentication.IClaimsTransformation, ClaimsTransformation>();
         services.AddScoped<IAuthorizationHandler, CheckCurrentUserAuthHandler>();
+        services.AddScoped<TokenService>();
+        services.AddTransient<IIdentityService, IdentityService>();
 
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
         {
@@ -53,8 +58,36 @@ public static class ConfigureServices
 
         }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
-        services.AddOptions();
+        var settings = services.BuildServiceProvider().GetService<IOptions<JwtSettings>>().Value;
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = settings.SigningCredentials.Key,
+            ValidateIssuer = true,
+            ValidIssuer = settings.Issuer,
+            ValidateAudience = true,
+            ValidAudience = settings.Audience,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+
+        services.AddAuthentication(o =>
+        {
+            o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = tokenValidationParameters;
+        });
+
+        services.AddAuthorization(auth =>
+        {
+            auth.DefaultPolicy = new AuthorizationPolicyBuilder(new string[] { JwtBearerDefaults.AuthenticationScheme })
+                    .RequireAuthenticatedUser()
+                    .AddRequirements(new CheckCurrentUserRequirement())
+                    .Build();
+        });
 
         return services;
     }

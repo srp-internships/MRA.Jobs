@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using MRA.Jobs.Infrastructure.Identity.Entities;
 
 namespace MRA.Jobs.Infrastructure.Persistence;
 

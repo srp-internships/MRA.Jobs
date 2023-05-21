@@ -42,12 +42,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\MRA.Jobs.Infrastructure.Shared\MRA.Jobs.Infrastructure.Shared.csproj" />
         <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Identity\Authentication\" />
-      <Folder Include="Identity\Features\" />
       <Folder Include="Persistence\Migrations\" />
     </ItemGroup>
 
