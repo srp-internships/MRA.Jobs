@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common;
+using MRA.Jobs.Application.Common.Seive;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Internships.Responses;
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MRA.Jobs.Application.Common.Seive;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;
@@ -19,6 +20,7 @@ public static class ConfigureServices
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitialiser>();
+        services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
 
         services
             .AddDefaultIdentity<ApplicationUser>()
@@ -37,3 +39,6 @@ public static class ConfigureServices
         return services;
     }
 }
+
+public class InfrastructureSieveConfigurationsAssemblyMarker : ISieveConfigurationsAssemblyMarker { };
+

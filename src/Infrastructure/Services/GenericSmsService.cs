@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using MRA.Jobs.Application.SMSService;
+using MRA.Jobs.Application.Common.Models;
 
 namespace MRA.Jobs.Infrastructure.Services;
 

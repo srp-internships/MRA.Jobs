@@ -1,6 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
 
-namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.UpdateInternship;
+namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Update;
 public class UpdateInternshipVacancyCommandValidator : AbstractValidator<UpdateInternshipVacancyCommand>
 {
     public UpdateInternshipVacancyCommandValidator()

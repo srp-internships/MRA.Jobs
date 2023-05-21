@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Application.SMSService;
+﻿namespace MRA.Jobs.Application.Common.Models;
 
 public class SmsMessage
 {

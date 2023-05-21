@@ -7,7 +7,6 @@ using NSwag.Generation.Processors.Security;
 using MRA.Jobs.Web.Services;
 using MRA.Jobs.Web.Filters;
 using System.Text.Json.Serialization;
-using MRA.Jobs.Application.SMSService;
 using MRA.Jobs.Infrastructure.Services;
 
 namespace MRA.Jobs.Web;

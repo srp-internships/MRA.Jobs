@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Application.Features.InternshipVacancies.Command.CreateInternship;
+using MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
 

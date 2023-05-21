@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Application.Features.InternshipVacancies.Command.DeleteInternship;
+using MRA.Jobs.Application.Features.InternshipVacancies.Command.Delete;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
 public class DeleteInternshipCommandHandlerTests : BaseTestFixture

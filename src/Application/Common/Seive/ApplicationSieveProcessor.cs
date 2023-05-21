@@ -3,13 +3,17 @@ using System.Reflection;
 using MRA.Jobs.Application.Contracts.Common;
 using Sieve.Models;
 using Sieve.Services;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace MRA.Jobs.Application.Common;
+namespace MRA.Jobs.Application.Common.Seive;
 
 public class ApplicationSieveProcessor : SieveProcessor, IApplicationSieveProcessor
 {
-    public ApplicationSieveProcessor(IOptions<SieveOptions> options) : base(options) { }
-    public ApplicationSieveProcessor(IOptions<SieveOptions> options, ISieveCustomFilterMethods sieveCustomFilter) : base(options, sieveCustomFilter) { }
+    private readonly IServiceProvider _services;
+    public ApplicationSieveProcessor(IOptions<SieveOptions> options, ISieveCustomFilterMethods sieveCustomFilter, IServiceProvider services) : base(options, sieveCustomFilter)
+    {
+        _services = services;
+    }
 
     public PaggedList<TResult> ApplyAdnGetPaggedList<TSource, TResult>(SieveModel model, IQueryable<TSource> source, Func<TSource, TResult> converter)
     {
@@ -25,12 +29,10 @@ public class ApplicationSieveProcessor : SieveProcessor, IApplicationSieveProces
 
     protected override SievePropertyMapper MapProperties(SievePropertyMapper mapper)
     {
-        mapper.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        var markers = _services.GetServices<ISieveConfigurationsAssemblyMarker>();
+        foreach (var marker in markers)
+            mapper.ApplyConfigurationsFromAssembly(marker.GetType().Assembly);
+
         return mapper;
     }
-}
-
-public class SieveCustomFilterMethods : ISieveCustomFilterMethods
-{
-
 }

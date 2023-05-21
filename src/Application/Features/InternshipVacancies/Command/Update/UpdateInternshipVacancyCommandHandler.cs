@@ -1,6 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
 
-namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.UpdateInternship;
+namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Update;
 public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInternshipVacancyCommand, Guid>
 {
     private readonly IApplicationDbContext _context;

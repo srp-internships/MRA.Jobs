@@ -1,6 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
 
-namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.CreateInternship;
+namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
 public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInternshipVacancyCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
