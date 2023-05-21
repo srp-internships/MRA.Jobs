@@ -32,7 +32,7 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Training Model updated",
-            CreateBy = _currentUserService.UserId
+            CreateBy = _currentUserService.GetId()
         };
         await _context.VacancyTimelineEvents.AddAsync(timeLineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

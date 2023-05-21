@@ -46,7 +46,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
         _dbContextMock.Setup(x => x.TrainingModels).Returns(trainingModelSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
-        _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
+        _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -70,7 +70,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
             te.EventType == TimelineEventType.Created &&
             te.Note == "Training Model created" &&
             te.Time == _dateTimeMock.Object.Now &&
-            te.CreateBy == _currentUserServiceMock.Object.UserId
+            te.CreateBy == _currentUserServiceMock.Object.GetId()
         ), It.IsAny<CancellationToken>()), Times.Once);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);

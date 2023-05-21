@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 
-namespace MRA.Jobs.Infrastructure.Identity.Common.Permission;
+namespace MRA.Jobs.Infrastructure.Identity.Authorization;
 
 public class PermissionGroupDefinition : IPermissionGroupDefinition
 {

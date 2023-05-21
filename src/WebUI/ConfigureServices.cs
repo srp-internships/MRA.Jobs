@@ -18,7 +18,6 @@ public static class ConfigureServices
     {
         services.AddDatabaseDeveloperPageExceptionFilter();
 
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IFileService, FileService>();
 
         services.AddHttpContextAccessor();
@@ -54,9 +53,6 @@ public static class ConfigureServices
 
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
-
-        services.AddTransient<ISmsService, GenericSmsService>();
-
         return services;
     }
 }

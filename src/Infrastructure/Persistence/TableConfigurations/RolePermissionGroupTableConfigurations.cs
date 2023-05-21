@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MRA.Jobs.Infrastructure.Identity.Models;
+using MRA.Jobs.Infrastructure.Identity.Entities;
 
 namespace MRA.Jobs.Infrastructure.Persistence.TableConfigurations;
 

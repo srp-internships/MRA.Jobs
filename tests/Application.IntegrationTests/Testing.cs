@@ -1,14 +1,14 @@
-﻿using MRA.Jobs.Infrastructure.Identity;
-using MRA.Jobs.Infrastructure.Persistence;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MRA.Jobs.Infrastructure.Identity;
+using MRA.Jobs.Infrastructure.Identity.Entities;
+using MRA.Jobs.Infrastructure.Persistence;
 using NUnit.Framework;
 using Respawn;
-using MRA.Jobs.Infrastructure.Identity.Models;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 

@@ -23,7 +23,7 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
         if (authorizeAttributes.Any())
         {
             // Must be authenticated user
-            if (_currentUserService.UserId == Guid.Empty)
+            if (_currentUserService.GetId() == Guid.Empty)
                 throw new UnauthorizedAccessException();
 
             // Role-based authorization
@@ -37,7 +37,7 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
                 {
                     foreach (var role in roles)
                     {
-                        var isInRole = await _identityService.HasPermissionAsync(_currentUserService.UserId, role.Trim());
+                        var isInRole = await _identityService.HasPermissionAsync(_currentUserService.GetId(), role.Trim());
                         if (isInRole)
                         {
                             authorized = true;

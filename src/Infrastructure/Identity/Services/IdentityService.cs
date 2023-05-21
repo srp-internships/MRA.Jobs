@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using MRA.Jobs.Infrastructure.Identity.Models;
+using MRA.Jobs.Infrastructure.Identity.Entities;
 
-namespace MRA.Jobs.Infrastructure.Identity;
+namespace MRA.Jobs.Infrastructure.Identity.Services;
 
 public class IdentityService : IIdentityService
 {

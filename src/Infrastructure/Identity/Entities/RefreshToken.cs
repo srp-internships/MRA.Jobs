@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Infrastructure.Identity.Models;
+﻿namespace MRA.Jobs.Infrastructure.Identity.Entities;
 
 public class RefreshToken
 {

@@ -30,7 +30,7 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
             services
                 .Remove<ICurrentUserService>()
                 .AddTransient(provider => Mock.Of<ICurrentUserService>(s =>
-                    s.UserId == GetCurrentUserId()));
+                    s.GetId() == GetCurrentUserId()));
 
             services
                 .Remove<DbContextOptions<ApplicationDbContext>>()

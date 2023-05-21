@@ -96,7 +96,7 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
         timelineEvent.EventType.Should().Be(TimelineEventType.Updated);
         timelineEvent.Time.Should().Be(_dateTimeMock.Object.Now);
         timelineEvent.Note.Should().Be("Training Model updated");
-        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.UserId);
+        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.GetId());
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
 
