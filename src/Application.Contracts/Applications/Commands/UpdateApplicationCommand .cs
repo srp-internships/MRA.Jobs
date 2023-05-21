@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿namespace MRA.Jobs.Application.Contracts.Applications.Commands;
 public class UpdateApplicationCommand:IRequest<Guid>
 {
     public Guid Id { get; set; }

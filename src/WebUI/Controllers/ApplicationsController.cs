@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MRA.Jobs.Application.Contracts.Applicant.Responses;
 using MRA.Jobs.Application.Contracts.Applications.Commands;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
@@ -8,11 +7,11 @@ using MRA.Jobs.Application.Contracts.Common;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class ApplicationController : ApiControllerBase
+public class ApplicationsController : ApiControllerBase
 {
-    private readonly ILogger<ApplicationController> _logger;
+    private readonly ILogger<ApplicationsController> _logger;
 
-    public ApplicationController(ILogger<ApplicationController> logger)
+    public ApplicationsController(ILogger<ApplicationsController> logger)
     {
         _logger = logger;
     }

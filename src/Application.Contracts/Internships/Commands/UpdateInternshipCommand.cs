@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace MRA.Jobs.Application.Contracts.Internships.Commands;
+﻿namespace MRA.Jobs.Application.Contracts.Internships.Commands;
 public class UpdateInternshipCommand : IRequest<Guid>
 {
     public Guid Id { get; set; }

@@ -2,18 +2,15 @@
 using MRA.Jobs.Application.Contracts.Applicant.Commands;
 using MRA.Jobs.Application.Contracts.Applicant.Queries;
 using MRA.Jobs.Application.Contracts.Applicant.Responses;
-using MRA.Jobs.Application.Contracts.Applications.Queries;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Application.Features.Applicant.Query.GetAllApplicant;
 
 namespace MRA.Jobs.Web.Controllers;
 
-public class ApplicantController : ApiControllerBase
+public class ApplicantsController : ApiControllerBase
 {
-    private readonly ILogger<ApplicantController> _logger;
+    private readonly ILogger<ApplicantsController> _logger;
 
-    public ApplicantController(ILogger<ApplicantController> logger)
+    public ApplicantsController(ILogger<ApplicantsController> logger)
     {
         _logger = logger;
     }

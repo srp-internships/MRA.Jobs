@@ -6,7 +6,7 @@ using MRA.Jobs.Application.Contracts.TrainingModels.Responses;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class TrainingModelController : ApiControllerBase
+public class TrainingsController : ApiControllerBase
 {
     [HttpGet("{id}")]
     public async Task<IActionResult> GetTrainingModelById(Guid id)

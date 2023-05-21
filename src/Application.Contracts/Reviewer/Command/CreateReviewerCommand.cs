@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace MRA.Jobs.Application.Contracts.Reviewer.Command;
+﻿namespace MRA.Jobs.Application.Contracts.Reviewer.Command;
 
 public class CreateReviewerCommand : IRequest<Guid>
 {

@@ -1,9 +1,8 @@
-﻿using MRA.Jobs.Application.Contracts.Applicant.Queries;
-using MRA.Jobs.Application.Contracts.Reviewer.Queries;
+﻿using MRA.Jobs.Application.Contracts.Reviewer.Queries;
 using MRA.Jobs.Application.Features.Reviewer.Query.GetReviewerById;
 
 namespace MRA.Jobs.Application.UnitTests.Reviewer;
-using  Domain.Entities;
+using Domain.Entities;
 
 public class GetReviewerByIdQueryHandlerTests  : BaseTestFixture
 {

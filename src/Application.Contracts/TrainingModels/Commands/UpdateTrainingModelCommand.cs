@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace MRA.Jobs.Application.Contracts.TrainingModels.Commands;
+﻿namespace MRA.Jobs.Application.Contracts.TrainingModels.Commands;
 public class UpdateTrainingModelCommand : IRequest<Guid>
 {
     public Guid Id { get; set; }

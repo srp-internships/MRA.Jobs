@@ -1,5 +1,4 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.Internships.Command.UpdateInternship;
 public class UpdateInternshipCommandHandler : IRequestHandler<UpdateInternshipCommand, Guid>

@@ -1,8 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.Applicant.Commands;
-using MRA.Jobs.Application.Contracts.Reviewer.Command;
-using MRA.Jobs.Application.Features.Applicant.Command.CreateApplicant;
+﻿using MRA.Jobs.Application.Contracts.Reviewer.Command;
 using MRA.Jobs.Application.Features.Reviewer.Command.CreateReviewer;
-using NUnit.Framework.Internal;
 
 namespace MRA.Jobs.Application.UnitTests.Reviewer;
 using Domain.Entities;

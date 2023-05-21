@@ -2,7 +2,6 @@ using System.Net.Mime;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
 using MRA.Jobs.Infrastructure;
-using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Web;
 using Newtonsoft.Json;
 using Sieve.Models;

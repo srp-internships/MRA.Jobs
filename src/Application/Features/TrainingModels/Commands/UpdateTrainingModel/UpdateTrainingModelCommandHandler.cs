@@ -1,5 +1,4 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.TraningModels.Commands.UpdateTraningModel;
 public class UpdateTrainingModelCommandHandler : IRequestHandler<UpdateTrainingModelCommand, Guid>

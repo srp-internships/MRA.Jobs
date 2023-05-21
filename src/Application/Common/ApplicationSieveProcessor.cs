@@ -3,7 +3,6 @@ using System.Reflection;
 using MRA.Jobs.Application.Contracts.Common;
 using Sieve.Models;
 using Sieve.Services;
-using MRA.Jobs.Domain.Common;
 
 namespace MRA.Jobs.Infrastructure;
 

@@ -1,5 +1,4 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.Internships.Command.Tags;
 public class AddTagToInternshipCommandHandler : IRequestHandler<AddTagToInternshipCommand, bool>

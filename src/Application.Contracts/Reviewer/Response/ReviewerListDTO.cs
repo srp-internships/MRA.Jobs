@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace MRA.Jobs.Application.Contracts.Reviewer.Response;
+﻿namespace MRA.Jobs.Application.Contracts.Reviewer.Response;
 
 public class ReviewerListDto
 {

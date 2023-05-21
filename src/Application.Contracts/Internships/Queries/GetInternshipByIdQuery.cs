@@ -1,5 +1,4 @@
-﻿using MediatR;
-using MRA.Jobs.Application.Contracts.Internships.Responses;
+﻿using MRA.Jobs.Application.Contracts.Internships.Responses;
 
 namespace MRA.Jobs.Application.Contracts.Internships.Queries;
 public class GetInternshipByIdQuery : IRequest<InternshipDetailsDTO>

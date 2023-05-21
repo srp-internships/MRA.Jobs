@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.TrainingModels.Commands.Tags;
 public class RemoveTagFromTrainingModelCommandHandler : IRequestHandler<RemoveTagFromTrainingModelCommand, bool>

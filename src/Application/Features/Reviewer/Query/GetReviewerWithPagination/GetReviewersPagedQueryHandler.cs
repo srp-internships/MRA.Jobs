@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Application.Contracts.Reviewer.Queries;
 using MRA.Jobs.Application.Contracts.Reviewer.Response;
 using MRA.Jobs.Infrastructure;
 

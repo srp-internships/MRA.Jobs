@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Applicant.Commands;
 
 namespace MRA.Jobs.Application.Features.Applicant.Command.Tags;

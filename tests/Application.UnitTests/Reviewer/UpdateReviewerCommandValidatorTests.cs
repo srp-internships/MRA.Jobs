@@ -1,5 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Applicant.Commands;
-using MRA.Jobs.Application.Contracts.Reviewer.Command;
+﻿using MRA.Jobs.Application.Contracts.Reviewer.Command;
 using MRA.Jobs.Application.Features.Reviewer.Command.UpdateReviewer;
 
 namespace MRA.Jobs.Application.UnitTests.Reviewer;

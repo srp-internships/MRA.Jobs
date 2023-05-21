@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.SMSService;
-using MRA.Jobs.Infrastructure.Services;
 
 namespace MRA.Jobs.Web.Controllers;
 
