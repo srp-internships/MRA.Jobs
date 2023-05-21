@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MRA.Jobs.Infrastructure.Persistence.TableConfigurations;
-public class TrainingConfiguration : IEntityTypeConfiguration<TrainingModel>
+public class TrainingConfiguration : IEntityTypeConfiguration<TrainingVacancy>
 {
-    public void Configure(EntityTypeBuilder<TrainingModel> builder)
+    public void Configure(EntityTypeBuilder<TrainingVacancy> builder)
     {
     }
 }

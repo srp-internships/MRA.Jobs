@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Application.Features.Internships.Command.CreateInternship;
+using MRA.Jobs.Application.Features.InternshipVacancies.Command.CreateInternship;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
 public class CreateInternshipCommandHandlerTests : BaseTestFixture
@@ -41,9 +41,9 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
         var timelineEventSetMock = new Mock<DbSet<VacancyTimelineEvent>>();
         _dbContextMock.Setup(x => x.VacancyTimelineEvents).Returns(timelineEventSetMock.Object);
 
-        var InternshipSetMock = new Mock<DbSet<Internship>>();
+        var InternshipSetMock = new Mock<DbSet<InternshipVacancy>>();
         var newEntityGuid = Guid.NewGuid();
-        InternshipSetMock.Setup(d => d.AddAsync(It.IsAny<Internship>(), It.IsAny<CancellationToken>())).Callback<Internship, CancellationToken>((v, ct) => v.Id = newEntityGuid);
+        InternshipSetMock.Setup(d => d.AddAsync(It.IsAny<InternshipVacancy>(), It.IsAny<CancellationToken>())).Callback<InternshipVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.Internships).Returns(InternshipSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
@@ -55,7 +55,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
         // Assert
         result.Should().Be(newEntityGuid);
 
-        InternshipSetMock.Verify(x => x.AddAsync(It.Is<Internship>(i =>
+        InternshipSetMock.Verify(x => x.AddAsync(It.Is<InternshipVacancy>(i =>
             i.Title == request.Title &&
             i.ShortDescription == request.ShortDescription &&
             i.Description == request.Description &&

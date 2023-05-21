@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Contracts.Common;
 using Sieve.Models;
 using Sieve.Services;
 
-namespace MRA.Jobs.Infrastructure;
+namespace MRA.Jobs.Application.Common;
 
 public class ApplicationSieveProcessor : SieveProcessor, IApplicationSieveProcessor
 {

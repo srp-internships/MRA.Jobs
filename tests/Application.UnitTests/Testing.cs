@@ -2,10 +2,10 @@ using AutoMapper.Internal;
 using MRA.Jobs.Application.Features.Applications;
 using MRA.Jobs.Application.Features.Applicant;
 using MRA.Jobs.Application.Features.Reviewer;
-using MRA.Jobs.Application.Features.Internships;
 using MRA.Jobs.Application.Features.JobVacancies;
-using MRA.Jobs.Application.Features.TrainingModels;
 using MRA.Jobs.Application.Features.VacancyCategories;
+using MRA.Jobs.Application.Features.TrainingVacancies;
+using MRA.Jobs.Application.Features.InternshipVacancies;
 
 namespace MRA.Jobs.Application.UnitTests;
 
@@ -24,7 +24,7 @@ public partial class Testing
             cfg.AddProfile<ReviewerProfile>();
             cfg.AddProfile<InternshipProfile>();
             cfg.AddProfile<VacancyCategoryProfile>();
-            cfg.AddProfile<TrainingModelProfile>();         
+            cfg.AddProfile<TrainingVacancyProfile>();
         });
         BaseTestFixture.Mapper = configurationProvider.CreateMapper();
     }

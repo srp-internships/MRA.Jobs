@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Application.Features.Internships.Command.DeleteInternship;
+using MRA.Jobs.Application.Features.InternshipVacancies.Command.DeleteInternship;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
 public class DeleteInternshipCommandHandlerTests : BaseTestFixture
@@ -16,7 +16,7 @@ public class DeleteInternshipCommandHandlerTests : BaseTestFixture
     public async Task Handle_InternshipExists_ShouldRemoveInternship()
     {
         // Arrange
-        var internship = new Internship { Id = Guid.NewGuid() };
+        var internship = new InternshipVacancy { Id = Guid.NewGuid() };
         _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { internship.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(internship);
 
         var command = new DeleteInternshipCommand { Id = internship.Id };
@@ -37,11 +37,11 @@ public class DeleteInternshipCommandHandlerTests : BaseTestFixture
         var command = new DeleteInternshipCommand { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Id }, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(null as Internship);
+            .ReturnsAsync(null as InternshipVacancy);
 
         // Act + Assert
         Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, default));
-        _dbContextMock.Verify(x => x.Internships.Remove(It.IsAny<Internship>()), Times.Never);
+        _dbContextMock.Verify(x => x.Internships.Remove(It.IsAny<InternshipVacancy>()), Times.Never);
         _dbContextMock.Verify(x => x.SaveChangesAsync(default), Times.Never);
     }
 }

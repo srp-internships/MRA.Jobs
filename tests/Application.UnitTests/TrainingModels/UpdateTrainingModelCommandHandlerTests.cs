@@ -1,17 +1,17 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Application.Features.TraningModels.Commands.UpdateTraningModel;
+using MRA.Jobs.Application.Features.TrainingVacancies.Commands.UpdateTrainingModel;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
 {
-    private UpdateTrainingModelCommandHandler _handler;
+    private UpdateTrainingVacancyCommandHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
 
-        _handler = new UpdateTrainingModelCommandHandler(
+        _handler = new UpdateTrainingVacancyCommandHandler(
             _dbContextMock.Object,
             Mapper,
             _currentUserServiceMock.Object,
@@ -22,8 +22,8 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentTrainingModelId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.TrainingModels.FindAsync(command.Id)).ReturnsAsync(null as TrainingModel);
+        var command = new UpdateTrainingVacancyCommand { Id = Guid.NewGuid() };
+        _dbContextMock.Setup(x => x.TrainingModels.FindAsync(command.Id)).ReturnsAsync(null as TrainingVacancy);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -31,15 +31,15 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
 
         // Assert
         act.Should().ThrowAsync<NotFoundException>()
-            .WithMessage($"*{nameof(TrainingModel)}*{command.CategoryId}*");
+            .WithMessage($"*{nameof(TrainingVacancy)}*{command.CategoryId}*");
     }
 
     [Test]
     public void Handle_GivenNonExistentCategoryId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand { Id = Guid.NewGuid(), CategoryId = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.TrainingModels.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new TrainingModel());
+        var command = new UpdateTrainingVacancyCommand { Id = Guid.NewGuid(), CategoryId = Guid.NewGuid() };
+        _dbContextMock.Setup(x => x.TrainingModels.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new TrainingVacancy());
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { command.CategoryId }, CancellationToken.None)).ReturnsAsync(null as VacancyCategory);
 
         // Act
@@ -53,7 +53,7 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
     public async Task Handle_GivenValidCommand_ShouldUpdateInternshipAndAddTimelineEvent()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand
+        var command = new UpdateTrainingVacancyCommand
         {
             Id = Guid.NewGuid(),
             Title = "Training Model Title",
@@ -66,13 +66,13 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
             Fees = 100
         };
 
-        var trainingModelsDbSetMock = new Mock<DbSet<TrainingModel>>();
+        var trainingModelsDbSetMock = new Mock<DbSet<TrainingVacancy>>();
         var categoryDbSetMock = new Mock<DbSet<VacancyCategory>>();
 
         _dbContextMock.Setup(c => c.TrainingModels).Returns(trainingModelsDbSetMock.Object);
         _dbContextMock.Setup(c => c.Categories).Returns(categoryDbSetMock.Object);
 
-        var trainingModel = new TrainingModel { Id = command.Id };
+        var trainingModel = new TrainingVacancy { Id = command.Id };
         trainingModelsDbSetMock.Setup(x => x.FindAsync(new object[] { command.Id }, CancellationToken.None))
             .ReturnsAsync(trainingModel);
 

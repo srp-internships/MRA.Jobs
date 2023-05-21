@@ -16,20 +16,20 @@ public class TrainingsController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PaggedList<TrainingModelListDTO>>> GetTrainingModelsWithPagination([FromQuery] PaggedListQuery<TrainingModelListDTO> query)
+    public async Task<ActionResult<PaggedList<TrainingVacancyListDTO>>> GetTrainingModelsWithPagination([FromQuery] PaggedListQuery<TrainingVacancyListDTO> query)
     {
         var trainingModels = await Mediator.Send(query);
         return Ok(trainingModels);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateNewTrainingModel(CreateTrainingModelCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> CreateNewTrainingModel(CreateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Guid>> UpdateTrainingModel([FromRoute] Guid id, [FromBody] UpdateTrainingModelCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> UpdateTrainingModel([FromRoute] Guid id, [FromBody] UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
         if (id != request.Id)
             return BadRequest();
@@ -38,7 +38,7 @@ public class TrainingsController : ApiControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteTrainingModel([FromRoute] Guid id, [FromBody] DeleteTrainingModelCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<bool>> DeleteTrainingModel([FromRoute] Guid id, [FromBody] DeleteTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
         if (id != request.Id)
             return BadRequest();

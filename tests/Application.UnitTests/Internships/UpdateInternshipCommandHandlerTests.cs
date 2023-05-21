@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Application.Features.Internships.Command.UpdateInternship;
+using MRA.Jobs.Application.Features.InternshipVacancies.Command.UpdateInternship;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
 public class UpdateInternshipCommandHandlerTests : BaseTestFixture
@@ -18,7 +18,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
     {
         // Arrange
         var command = new UpdateInternshipCommand { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.Internships.FindAsync(command.Id)).ReturnsAsync(null as Internship);
+        _dbContextMock.Setup(x => x.Internships.FindAsync(command.Id)).ReturnsAsync(null as InternshipVacancy);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -26,7 +26,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
 
         // Assert
         act.Should().ThrowAsync<NotFoundException>()
-            .WithMessage($"*{nameof(Internship)}*{command.CategoryId}*");
+            .WithMessage($"*{nameof(InternshipVacancy)}*{command.CategoryId}*");
     }
 
     [Test]
@@ -34,7 +34,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
     {
         // Arrange
         var command = new UpdateInternshipCommand { Id = Guid.NewGuid(), CategoryId = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new Internship());
+        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new InternshipVacancy());
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { command.CategoryId }, CancellationToken.None)).ReturnsAsync(null as VacancyCategory);
 
         // Act
@@ -62,13 +62,13 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
             Stipend = 100
         };
 
-        var internshipsDbSetMock = new Mock<DbSet<Internship>>();
+        var internshipsDbSetMock = new Mock<DbSet<InternshipVacancy>>();
         var categoryDbSetMock = new Mock<DbSet<VacancyCategory>>();
 
         _dbContextMock.Setup(c => c.Internships).Returns(internshipsDbSetMock.Object);
         _dbContextMock.Setup(c => c.Categories).Returns(categoryDbSetMock.Object);
 
-        var existingInternship = new Internship { Id = command.Id };
+        var existingInternship = new InternshipVacancy { Id = command.Id };
         internshipsDbSetMock.Setup(x => x.FindAsync(new object[] { command.Id }, CancellationToken.None))
             .ReturnsAsync(existingInternship);
 

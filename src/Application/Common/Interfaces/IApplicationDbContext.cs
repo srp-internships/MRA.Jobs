@@ -5,7 +5,7 @@ using MRA.Jobs.Domain.Entities;
 
 public interface IApplicationDbContext
 {
-    public DbSet<Applicant> Applicants { get; }  
+    public DbSet<Applicant> Applicants { get; }
     public DbSet<ApplicantSocialMedia> ApplicantSocialMedias { get; }
     public DbSet<VacancyTimelineEvent> VacancyTimelineEvents { get; }
     public DbSet<User> DomainUsers { get; }
@@ -23,7 +23,7 @@ public interface IApplicationDbContext
     public DbSet<Tag> Tags { get; }
     public DbSet<Domain.Entities.Application> Applications { get; }
     public DbSet<ApplicationTimelineEvent> ApplicationTimelineEvents { get; }
-    public DbSet<Internship> Internships { get; }
-    public DbSet<TrainingModel> TrainingModels { get; }
+    public DbSet<InternshipVacancy> Internships { get; }
+    public DbSet<TrainingVacancy> TrainingModels { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

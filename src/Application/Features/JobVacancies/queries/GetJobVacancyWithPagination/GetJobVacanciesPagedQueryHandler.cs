@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Infrastructure;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyWithPagination;
 

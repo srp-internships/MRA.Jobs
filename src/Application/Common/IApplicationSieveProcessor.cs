@@ -2,7 +2,7 @@
 using Sieve.Models;
 using Sieve.Services;
 
-namespace MRA.Jobs.Infrastructure;
+namespace MRA.Jobs.Application.Common;
 
 public interface IApplicationSieveProcessor : ISieveProcessor
 {

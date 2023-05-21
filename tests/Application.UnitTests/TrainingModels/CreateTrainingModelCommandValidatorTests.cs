@@ -1,24 +1,24 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Application.Features.TraningModels.Commands.CreateTraningModel;
+using MRA.Jobs.Application.Features.TrainingVacancies.Commands.CreateTrainingModel;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 
 [TestFixture]
 public class CreateTrainingModelCommandValidatorTests
 {
-    private CreateTrainingModelCommandValidator _validator;
+    private CreateTrainingVacancyCommandValidator _validator;
 
     [SetUp]
     public void SetUp()
     {
-        _validator = new CreateTrainingModelCommandValidator();
+        _validator = new CreateTrainingVacancyCommandValidator();
     }
 
     [Test]
     public void Validate_InvalidCommand_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateTrainingModelCommand();
+        var request = new CreateTrainingVacancyCommand();
 
         // Act
         var result = _validator.TestValidate(request);
@@ -32,7 +32,7 @@ public class CreateTrainingModelCommandValidatorTests
     public void Validate_TitleEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateTrainingModelCommand { Title = "" };
+        var request = new CreateTrainingVacancyCommand { Title = "" };
 
         // Act
         var result = _validator.TestValidate(request);
@@ -45,7 +45,7 @@ public class CreateTrainingModelCommandValidatorTests
     public void Validate_ShortDescriptionEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateTrainingModelCommand { ShortDescription = "" };
+        var request = new CreateTrainingVacancyCommand { ShortDescription = "" };
 
         // Act
         var result = _validator.TestValidate(request);
@@ -58,7 +58,7 @@ public class CreateTrainingModelCommandValidatorTests
     public void Validate_DescriptionEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateTrainingModelCommand { Description = "" };
+        var request = new CreateTrainingVacancyCommand { Description = "" };
 
         // Act
         var result = _validator.TestValidate(request);
@@ -71,7 +71,7 @@ public class CreateTrainingModelCommandValidatorTests
     public void Validate_PublishDateEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateTrainingModelCommand { PublishDate = DateTime.MinValue };
+        var request = new CreateTrainingVacancyCommand { PublishDate = DateTime.MinValue };
 
         // Act
         var result = _validator.TestValidate(request);
@@ -84,7 +84,7 @@ public class CreateTrainingModelCommandValidatorTests
     public void Validate_EndDateEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateTrainingModelCommand { EndDate = DateTime.MinValue };
+        var request = new CreateTrainingVacancyCommand { EndDate = DateTime.MinValue };
 
         // Act
         var result = _validator.TestValidate(request);
@@ -97,7 +97,7 @@ public class CreateTrainingModelCommandValidatorTests
     public void Validate_CategoryIdEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateTrainingModelCommand { CategoryId = Guid.Empty };
+        var request = new CreateTrainingVacancyCommand { CategoryId = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(request);
@@ -110,7 +110,7 @@ public class CreateTrainingModelCommandValidatorTests
     public void Validate_DurationEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateTrainingModelCommand { Duration = 0 };
+        var request = new CreateTrainingVacancyCommand { Duration = 0 };
 
         // Act
         var result = _validator.TestValidate(request);
@@ -123,7 +123,7 @@ public class CreateTrainingModelCommandValidatorTests
     public void Validate_FeesEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateTrainingModelCommand { Fees = 1 };
+        var request = new CreateTrainingVacancyCommand { Fees = 1 };
 
         // Act
         var result = _validator.TestValidate(request);
@@ -136,7 +136,7 @@ public class CreateTrainingModelCommandValidatorTests
     public void Validate_AllFieldsValid_ShouldPassValidation()
     {
         // Arrange
-        var request = new CreateTrainingModelCommand
+        var request = new CreateTrainingVacancyCommand
         {
             Title = "Test Job Vacancy",
             ShortDescription = "Test Job Vacancy Short Description",

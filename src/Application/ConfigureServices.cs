@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using MRA.Jobs.Application.Common.Behaviours;
 using Microsoft.Extensions.DependencyInjection;
-using MRA.Jobs.Infrastructure;
 using AutoMapper.Internal;
 using Microsoft.Extensions.Configuration;
 using Sieve.Services;
+using MRA.Jobs.Application.Common;
 
 namespace MRA.Jobs.Application;
 

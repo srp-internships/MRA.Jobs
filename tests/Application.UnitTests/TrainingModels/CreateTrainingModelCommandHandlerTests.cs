@@ -1,17 +1,17 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Application.Features.TraningModels.Commands.CreateTraningModel;
+using MRA.Jobs.Application.Features.TrainingVacancies.Commands.CreateTrainingModel;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
 {
-    private CreateTrainingModelCommandHandler _handler;
+    private CreateTrainingVacancyCommandHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
 
-        _handler = new CreateTrainingModelCommandHandler(
+        _handler = new CreateTrainingVacancyCommandHandler(
             _dbContextMock.Object,
             Mapper,
             _dateTimeMock.Object,
@@ -22,7 +22,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
     public async Task Handle_ValidRequest_ShouldCreateTrainingModelAndTimelineEvent()
     {
         // Arrange
-        var request = new CreateTrainingModelCommand
+        var request = new CreateTrainingVacancyCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",
@@ -40,9 +40,9 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
         var timelineEventSetMock = new Mock<DbSet<VacancyTimelineEvent>>();
         _dbContextMock.Setup(x => x.VacancyTimelineEvents).Returns(timelineEventSetMock.Object);
 
-        var trainingModelSetMock = new Mock<DbSet<TrainingModel>>();
+        var trainingModelSetMock = new Mock<DbSet<TrainingVacancy>>();
         var newEntityGuid = Guid.NewGuid();
-        trainingModelSetMock.Setup(d => d.AddAsync(It.IsAny<TrainingModel>(), It.IsAny<CancellationToken>())).Callback<TrainingModel, CancellationToken>((v, ct) => v.Id = newEntityGuid);
+        trainingModelSetMock.Setup(d => d.AddAsync(It.IsAny<TrainingVacancy>(), It.IsAny<CancellationToken>())).Callback<TrainingVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.TrainingModels).Returns(trainingModelSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
@@ -54,7 +54,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
         // Assert
         result.Should().Be(newEntityGuid);
 
-        trainingModelSetMock.Verify(x => x.AddAsync(It.Is<TrainingModel>(jv =>
+        trainingModelSetMock.Verify(x => x.AddAsync(It.Is<TrainingVacancy>(jv =>
             jv.Title == request.Title &&
             jv.ShortDescription == request.ShortDescription &&
             jv.Description == request.Description &&
@@ -79,7 +79,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
     [Test]
     public void Handle_CategoryNotFound_ShouldThrowNotFoundException()
     {
-        var request = new CreateTrainingModelCommand
+        var request = new CreateTrainingVacancyCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",

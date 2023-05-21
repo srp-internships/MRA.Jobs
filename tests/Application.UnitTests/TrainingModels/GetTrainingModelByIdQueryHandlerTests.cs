@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingModels.Queries;
-using MRA.Jobs.Application.Features.TrainingModels.Queries.GetTrainingModelById;
+using MRA.Jobs.Application.Features.TrainingVacancies.Queries.GetTrainingModelById;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
@@ -17,9 +17,9 @@ public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
     [Test]
     public async Task Handle_GivenValidQuery_ShouldReturnJobVacancyDetailsDTO()
     {
-        var query = new GetTrainingModelByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetTrainingVacancyByIdQuery { Id = Guid.NewGuid() };
 
-        var trainingModel = new TrainingModel
+        var trainingModel = new TrainingVacancy
         {
             Id = query.Id,
             Title = "Job Title",
@@ -52,10 +52,10 @@ public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetTrainingModelByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetTrainingVacancyByIdQuery { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.TrainingModels.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((TrainingModel)null);
+            .ReturnsAsync((TrainingVacancy)null);
 
         // Act + Assert
         Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(query, CancellationToken.None));

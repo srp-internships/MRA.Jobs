@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Application.Features.TraningModels.Commands.DeleteTraningModel;
+using MRA.Jobs.Application.Features.TrainingVacancies.Commands.DeleteTrainingModel;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 
@@ -18,7 +18,7 @@ public class DeleteTrainingModelCommandValidatorTests
     public void Validate_IdIsEmpty_ShouldReturnValidationError()
     {
         // Arrange
-        var command = new DeleteTrainingModelCommand { Id = Guid.Empty };
+        var command = new DeleteTrainingVacancyCommand { Id = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -31,7 +31,7 @@ public class DeleteTrainingModelCommandValidatorTests
     public void Validate_IdIsNotEmpty_ShouldNotReturnValidationError()
     {
         // Arrange
-        var command = new DeleteTrainingModelCommand { Id = Guid.NewGuid() };
+        var command = new DeleteTrainingVacancyCommand { Id = Guid.NewGuid() };
 
         // Act
         var result = _validator.TestValidate(command);
