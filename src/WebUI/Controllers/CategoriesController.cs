@@ -7,11 +7,11 @@ using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class CategoryController : ApiControllerBase
+public class CategoriesController : ApiControllerBase
 {
-    private readonly ILogger<CategoryController> _logger;
+    private readonly ILogger<CategoriesController> _logger;
 
-    public CategoryController(ILogger<CategoryController> logger)
+    public CategoriesController(ILogger<CategoriesController> logger)
     {
         _logger = logger;
     }

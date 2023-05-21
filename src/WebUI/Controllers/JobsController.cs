@@ -9,11 +9,11 @@ namespace MRA.Jobs.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class JobVacanciesController : ApiControllerBase
+public class JobsController : ApiControllerBase
 {
-    private readonly ILogger<JobVacanciesController> _logger;
+    private readonly ILogger<JobsController> _logger;
 
-    public JobVacanciesController(ILogger<JobVacanciesController> logger)
+    public JobsController(ILogger<JobsController> logger)
     {
         _logger = logger;
     }

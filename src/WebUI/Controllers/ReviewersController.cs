@@ -6,7 +6,7 @@ using MRA.Jobs.Application.Contracts.Reviewer.Response;
 
 namespace MRA.Jobs.Web.Controllers;
 
-public class ReviewerController : ApiControllerBase
+public class ReviewersController : ApiControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<PaggedList<ReviewerListDto>>> GetAllReviewer([FromQuery] PaggedListQuery<ReviewerListDto> query)
