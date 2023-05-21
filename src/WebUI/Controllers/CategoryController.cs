@@ -17,7 +17,7 @@ public class CategoryController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PaggedList<VacancyCategoryListDTO>>> GetAll([FromQuery] PaggedListQuery<VacancyCategoryListDTO> query)
+    public async Task<ActionResult<PaggedList<CategoryResponse>>> GetAll([FromQuery] PaggedListQuery<CategoryResponse> query)
     {
         var categories = await Mediator.Send(query);
         return Ok(categories);

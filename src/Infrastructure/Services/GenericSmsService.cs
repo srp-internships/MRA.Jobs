@@ -15,7 +15,7 @@ public class GenericSmsService : ISmsService
     public async Task<string> SendSmsAsync(SmsMessage message)
     {
         const string smsSendingNumber = "+992123456789";
-        return Create(smsSendingNumber, message.Message, message.PhoneNumber);
+        return await Task.FromResult(Create(smsSendingNumber, message.Message, message.PhoneNumber));
     }
 
     private string Create(string from, string body, string to)
