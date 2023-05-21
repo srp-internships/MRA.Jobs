@@ -8,6 +8,7 @@ public abstract class User : BaseAuditableEntity
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
+    public Guid IdentityId { get; set; }
 
     public ICollection<UserTimelineEvent> History { get; set; }
     public ICollection<UserTag> Tags { get; set; }

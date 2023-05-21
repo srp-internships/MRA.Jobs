@@ -1,9 +1,9 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Responses;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
-public class GetInternshipByIdQueryValidator : AbstractValidator<InternshipDetailsDTO>
+public class GetInternshipVacancyByIdQueryValidator : AbstractValidator<InternshipVacancyResponce>
 {
-    public GetInternshipByIdQueryValidator()
+    public GetInternshipVacancyByIdQueryValidator()
     {
         RuleFor(x => x.Id).NotEmpty();
     }

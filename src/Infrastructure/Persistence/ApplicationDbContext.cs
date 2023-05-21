@@ -30,7 +30,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     public DbSet<User> DomainUsers { get; set; }
     public DbSet<Reviewer> Reviewers { get; set; }
     public DbSet<JobVacancy> JobVacancies { get; set; }
-    public DbSet<EducationVacancy> EducationVacancies { get; set; }
     public DbSet<Vacancy> Vacancies { get; set; }
     public DbSet<VacancyCategory> Categories { get; set; }
     public DbSet<VacancyTag> VacancyTags { get; set; }

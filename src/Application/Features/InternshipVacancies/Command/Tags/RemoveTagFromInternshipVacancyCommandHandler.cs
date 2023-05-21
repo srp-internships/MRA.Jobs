@@ -2,19 +2,19 @@
 using MRA.Jobs.Application.Contracts.Internships.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Tags;
-public class RemoveTagFromInternshipCommandHandler : IRequestHandler<RemoveTagFromInternshipCommand, bool>
+public class RemoveTagFromInternshipVacancyCommandHandler : IRequestHandler<RemoveTagFromInternshipVacancyCommand, bool>
 {
     private readonly IApplicationDbContext _context;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
 
-    public RemoveTagFromInternshipCommandHandler(IApplicationDbContext context, IDateTime dateTime, ICurrentUserService currentUserService)
+    public RemoveTagFromInternshipVacancyCommandHandler(IApplicationDbContext context, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _context = context;
         _dateTime = dateTime;
         _currentUserService = currentUserService;
     }
-    public async Task<bool> Handle(RemoveTagFromInternshipCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(RemoveTagFromInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         var vacancyTag = await _context.VacancyTags
             .FirstOrDefaultAsync(vt => vt.VacancyId == request.InternshipId && vt.TagId == request.TagId, cancellationToken);

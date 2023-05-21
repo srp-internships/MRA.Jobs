@@ -45,9 +45,9 @@ public class IdentityService : IIdentityService
         //Remove after implementing auth
         return await Task.FromResult(true);
 
-        var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+        //var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
 
-        return user != null && await _userManager.IsInRoleAsync(user, role);
+        //return user != null && await _userManager.IsInRoleAsync(user, role);
     }
 
     public async Task<bool> AuthorizeAsync(string userId, string policyName)
@@ -55,18 +55,18 @@ public class IdentityService : IIdentityService
         //Remove after implementing auth
         return await Task.FromResult(true);
 
-        var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+        //var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
 
-        if (user == null)
-        {
-            return false;
-        }
+        //if (user == null)
+        //{
+        //    return false;
+        //}
 
-        var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
+        //var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
 
-        var result = await _authorizationService.AuthorizeAsync(principal, policyName);
+        //var result = await _authorizationService.AuthorizeAsync(principal, policyName);
 
-        return result.Succeeded;
+        //return result.Succeeded;
     }
 
     public async Task<Result> DeleteUserAsync(string userId)

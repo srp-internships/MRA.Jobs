@@ -16,12 +16,12 @@
         }
       }
     },
-    "/api/applicant": {
+    "/api/applicants": {
       "get": {
         "tags": [
-          "Applicant"
+          "Applicants"
         ],
-        "operationId": "Applicant_GetAllApplicant",
+        "operationId": "Applicants_GetAllApplicant",
         "parameters": [
           {
             "name": "Filters",
@@ -82,9 +82,9 @@
       },
       "post": {
         "tags": [
-          "Applicant"
+          "Applicants"
         ],
-        "operationId": "Applicant_CreateNewApplicant",
+        "operationId": "Applicants_CreateNewApplicant",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -112,12 +112,12 @@
         }
       }
     },
-    "/api/applicant/{id}": {
+    "/api/applicants/{id}": {
       "get": {
         "tags": [
-          "Applicant"
+          "Applicants"
         ],
-        "operationId": "Applicant_GetApplicantById",
+        "operationId": "Applicants_GetApplicantById",
         "parameters": [
           {
             "name": "id",
@@ -146,9 +146,9 @@
       },
       "put": {
         "tags": [
-          "Applicant"
+          "Applicants"
         ],
-        "operationId": "Applicant_UpdateApplicant",
+        "operationId": "Applicants_UpdateApplicant",
         "parameters": [
           {
             "name": "id",
@@ -189,9 +189,9 @@
       },
       "delete": {
         "tags": [
-          "Applicant"
+          "Applicants"
         ],
-        "operationId": "Applicant_DeleteApplicant",
+        "operationId": "Applicants_DeleteApplicant",
         "parameters": [
           {
             "name": "id",
@@ -230,12 +230,12 @@
         }
       }
     },
-    "/api/applicant/{applicantId}/tags/{tagId}": {
+    "/api/applicants/{applicantId}/tags/{tagId}": {
       "post": {
         "tags": [
-          "Applicant"
+          "Applicants"
         ],
-        "operationId": "Applicant_AddTagToApplicant",
+        "operationId": "Applicants_AddTagToApplicant",
         "parameters": [
           {
             "name": "applicantId",
@@ -273,9 +273,9 @@
       },
       "delete": {
         "tags": [
-          "Applicant"
+          "Applicants"
         ],
-        "operationId": "Applicant_RemoveTagFromApplicant",
+        "operationId": "Applicants_RemoveTagFromApplicant",
         "parameters": [
           {
             "name": "applicantId",
@@ -312,12 +312,12 @@
         }
       }
     },
-    "/api/application": {
+    "/api/applications": {
       "get": {
         "tags": [
-          "Application"
+          "Applications"
         ],
-        "operationId": "Application_GetAll",
+        "operationId": "Applications_GetAll",
         "parameters": [
           {
             "name": "Filters",
@@ -377,9 +377,9 @@
       },
       "post": {
         "tags": [
-          "Application"
+          "Applications"
         ],
-        "operationId": "Application_CreateApplication",
+        "operationId": "Applications_CreateApplication",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -407,12 +407,12 @@
         }
       }
     },
-    "/api/application/{Id}": {
+    "/api/applications/{Id}": {
       "get": {
         "tags": [
-          "Application"
+          "Applications"
         ],
-        "operationId": "Application_GetApplicationById",
+        "operationId": "Applications_GetApplicationById",
         "parameters": [
           {
             "name": "Id",
@@ -451,9 +451,9 @@
       },
       "put": {
         "tags": [
-          "Application"
+          "Applications"
         ],
-        "operationId": "Application_UpdateApplication",
+        "operationId": "Applications_UpdateApplication",
         "parameters": [
           {
             "name": "Id",
@@ -494,9 +494,9 @@
       },
       "delete": {
         "tags": [
-          "Application"
+          "Applications"
         ],
-        "operationId": "Application_DeleteApplication",
+        "operationId": "Applications_DeleteApplication",
         "parameters": [
           {
             "name": "Id",
@@ -523,12 +523,12 @@
         }
       }
     },
-    "/api/category": {
+    "/api/categories": {
       "get": {
         "tags": [
-          "Category"
+          "Categories"
         ],
-        "operationId": "Category_GetAll",
+        "operationId": "Categories_GetAll",
         "parameters": [
           {
             "name": "Filters",
@@ -588,9 +588,9 @@
       },
       "post": {
         "tags": [
-          "Category"
+          "Categories"
         ],
-        "operationId": "Category_CreateNewJobVacancy",
+        "operationId": "Categories_CreateNewJobVacancy",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -618,12 +618,12 @@
         }
       }
     },
-    "/api/category/{id}": {
+    "/api/categories/{id}": {
       "get": {
         "tags": [
-          "Category"
+          "Categories"
         ],
-        "operationId": "Category_GetById",
+        "operationId": "Categories_GetById",
         "parameters": [
           {
             "name": "id",
@@ -652,9 +652,9 @@
       },
       "put": {
         "tags": [
-          "Category"
+          "Categories"
         ],
-        "operationId": "Category_Update",
+        "operationId": "Categories_Update",
         "parameters": [
           {
             "name": "id",
@@ -695,9 +695,9 @@
       },
       "delete": {
         "tags": [
-          "Category"
+          "Categories"
         ],
-        "operationId": "Category_Delete",
+        "operationId": "Categories_Delete",
         "parameters": [
           {
             "name": "id",
@@ -866,7 +866,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateInternshipCommand"
+                "$ref": "#/components/schemas/CreateInternshipVacancyCommand"
               }
             }
           },
@@ -911,7 +911,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateInternshipCommand"
+                "$ref": "#/components/schemas/UpdateInternshipVacancyCommand"
               }
             }
           },
@@ -954,7 +954,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DeleteInternshipCommand"
+                "$ref": "#/components/schemas/DeleteInternshipVacancyCommand"
               }
             }
           },
@@ -1006,12 +1006,12 @@
         }
       }
     },
-    "/api/jobvacancies": {
+    "/api/jobs": {
       "get": {
         "tags": [
-          "JobVacancies"
+          "Jobs"
         ],
-        "operationId": "JobVacancies_Get",
+        "operationId": "Jobs_Get",
         "parameters": [
           {
             "name": "Filters",
@@ -1072,9 +1072,9 @@
       },
       "post": {
         "tags": [
-          "JobVacancies"
+          "Jobs"
         ],
-        "operationId": "JobVacancies_CreateNewJobVacancy",
+        "operationId": "Jobs_CreateNewJobVacancy",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -1102,12 +1102,12 @@
         }
       }
     },
-    "/api/jobvacancies/{id}": {
+    "/api/jobs/{id}": {
       "get": {
         "tags": [
-          "JobVacancies"
+          "Jobs"
         ],
-        "operationId": "JobVacancies_Get2",
+        "operationId": "Jobs_Get2",
         "parameters": [
           {
             "name": "id",
@@ -1136,9 +1136,9 @@
       },
       "put": {
         "tags": [
-          "JobVacancies"
+          "Jobs"
         ],
-        "operationId": "JobVacancies_Update",
+        "operationId": "Jobs_Update",
         "parameters": [
           {
             "name": "id",
@@ -1178,12 +1178,12 @@
         }
       }
     },
-    "/api/reviewer": {
+    "/api/reviewers": {
       "get": {
         "tags": [
-          "Reviewer"
+          "Reviewers"
         ],
-        "operationId": "Reviewer_GetAllReviewer",
+        "operationId": "Reviewers_GetAllReviewer",
         "parameters": [
           {
             "name": "Filters",
@@ -1243,9 +1243,9 @@
       },
       "post": {
         "tags": [
-          "Reviewer"
+          "Reviewers"
         ],
-        "operationId": "Reviewer_CreateNewReviewer",
+        "operationId": "Reviewers_CreateNewReviewer",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -1273,12 +1273,12 @@
         }
       }
     },
-    "/api/reviewer/{id}": {
+    "/api/reviewers/{id}": {
       "get": {
         "tags": [
-          "Reviewer"
+          "Reviewers"
         ],
-        "operationId": "Reviewer_GetReviewerById",
+        "operationId": "Reviewers_GetReviewerById",
         "parameters": [
           {
             "name": "id",
@@ -1307,9 +1307,9 @@
       },
       "put": {
         "tags": [
-          "Reviewer"
+          "Reviewers"
         ],
-        "operationId": "Reviewer_UpdateReviewer",
+        "operationId": "Reviewers_UpdateReviewer",
         "parameters": [
           {
             "name": "id",
@@ -1350,9 +1350,9 @@
       },
       "delete": {
         "tags": [
-          "Reviewer"
+          "Reviewers"
         ],
-        "operationId": "Reviewer_DeleteReviewer",
+        "operationId": "Reviewers_DeleteReviewer",
         "parameters": [
           {
             "name": "id",
@@ -1423,12 +1423,12 @@
         }
       }
     },
-    "/api/trainingmodel/{id}": {
+    "/api/trainings/{id}": {
       "get": {
         "tags": [
-          "TrainingModel"
+          "Trainings"
         ],
-        "operationId": "TrainingModel_GetTrainingModelById",
+        "operationId": "Trainings_GetTrainingModelById",
         "parameters": [
           {
             "name": "id",
@@ -1457,9 +1457,9 @@
       },
       "put": {
         "tags": [
-          "TrainingModel"
+          "Trainings"
         ],
-        "operationId": "TrainingModel_UpdateTrainingModel",
+        "operationId": "Trainings_UpdateTrainingModel",
         "parameters": [
           {
             "name": "id",
@@ -1477,7 +1477,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateTrainingModelCommand"
+                "$ref": "#/components/schemas/UpdateTrainingVacancyCommand"
               }
             }
           },
@@ -1500,9 +1500,9 @@
       },
       "delete": {
         "tags": [
-          "TrainingModel"
+          "Trainings"
         ],
-        "operationId": "TrainingModel_DeleteTrainingModel",
+        "operationId": "Trainings_DeleteTrainingModel",
         "parameters": [
           {
             "name": "id",
@@ -1520,7 +1520,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DeleteTrainingModelCommand"
+                "$ref": "#/components/schemas/DeleteTrainingVacancyCommand"
               }
             }
           },
@@ -1541,12 +1541,12 @@
         }
       }
     },
-    "/api/trainingmodel": {
+    "/api/trainings": {
       "get": {
         "tags": [
-          "TrainingModel"
+          "Trainings"
         ],
-        "operationId": "TrainingModel_GetTrainingModelsWithPagination",
+        "operationId": "Trainings_GetTrainingModelsWithPagination",
         "parameters": [
           {
             "name": "Filters",
@@ -1597,7 +1597,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaggedListOfTrainingModelListDTO"
+                  "$ref": "#/components/schemas/PaggedListOfTrainingVacancyListDTO"
                 }
               }
             }
@@ -1606,15 +1606,15 @@
       },
       "post": {
         "tags": [
-          "TrainingModel"
+          "Trainings"
         ],
-        "operationId": "TrainingModel_CreateNewTrainingModel",
+        "operationId": "Trainings_CreateNewTrainingModel",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTrainingModelCommand"
+                "$ref": "#/components/schemas/CreateTrainingVacancyCommand"
               }
             }
           },
@@ -1970,7 +1970,7 @@
           }
         }
       },
-      "CreateInternshipCommand": {
+      "CreateInternshipVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2012,7 +2012,7 @@
           }
         }
       },
-      "UpdateInternshipCommand": {
+      "UpdateInternshipVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2070,7 +2070,7 @@
           }
         }
       },
-      "DeleteInternshipCommand": {
+      "DeleteInternshipVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2327,7 +2327,7 @@
           }
         }
       },
-      "PaggedListOfTrainingModelListDTO": {
+      "PaggedListOfTrainingVacancyListDTO": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2351,7 +2351,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/TrainingModelListDTO"
+              "$ref": "#/components/schemas/TrainingVacancyListDTO"
             }
           },
           "hasPreviousPage": {
@@ -2362,7 +2362,7 @@
           }
         }
       },
-      "TrainingModelListDTO": {
+      "TrainingVacancyListDTO": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2408,7 +2408,7 @@
           }
         }
       },
-      "CreateTrainingModelCommand": {
+      "CreateTrainingVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2446,7 +2446,7 @@
           }
         }
       },
-      "UpdateTrainingModelCommand": {
+      "UpdateTrainingVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2488,7 +2488,7 @@
           }
         }
       },
-      "DeleteTrainingModelCommand": {
+      "DeleteTrainingVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

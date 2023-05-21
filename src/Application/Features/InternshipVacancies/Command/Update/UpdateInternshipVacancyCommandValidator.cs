@@ -1,12 +1,11 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
 
-namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.CreateInternship;
-public class CreateInternshipCommandValidator : AbstractValidator<CreateInternshipCommand>
+namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.UpdateInternship;
+public class UpdateInternshipVacancyCommandValidator : AbstractValidator<UpdateInternshipVacancyCommand>
 {
-    private readonly IApplicationDbContext _context;
-
-    public CreateInternshipCommandValidator()
+    public UpdateInternshipVacancyCommandValidator()
     {
+        RuleFor(x => x.Id).NotEmpty();
         RuleFor(x => x.Title).NotEmpty();
         RuleFor(x => x.ShortDescription).NotEmpty();
         RuleFor(x => x.Description).NotEmpty();

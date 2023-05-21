@@ -4,12 +4,12 @@ using MRA.Jobs.Application.Features.InternshipVacancies.Command.DeleteInternship
 namespace MRA.Jobs.Application.UnitTests.Internships;
 public class DeleteInternshipCommandHandlerTests : BaseTestFixture
 {
-    DeleteInternshipCommandHandler _handler;
+    DeleteInternshipVacancyCommandHandler _handler;
     [SetUp]
     public void SetUp()
     {
         _dbContextMock = new Mock<IApplicationDbContext>();
-        _handler = new DeleteInternshipCommandHandler(_dbContextMock.Object);
+        _handler = new DeleteInternshipVacancyCommandHandler(_dbContextMock.Object);
     }
 
     [Test]
@@ -19,7 +19,7 @@ public class DeleteInternshipCommandHandlerTests : BaseTestFixture
         var internship = new InternshipVacancy { Id = Guid.NewGuid() };
         _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { internship.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(internship);
 
-        var command = new DeleteInternshipCommand { Id = internship.Id };
+        var command = new DeleteInternshipVacancyCommand { Id = internship.Id };
 
         // Act
         var result = await _handler.Handle(command, default);
@@ -34,7 +34,7 @@ public class DeleteInternshipCommandHandlerTests : BaseTestFixture
     public void Handle_InternshipNotFound_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new DeleteInternshipCommand { Id = Guid.NewGuid() };
+        var command = new DeleteInternshipVacancyCommand { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(null as InternshipVacancy);

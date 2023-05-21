@@ -21,7 +21,7 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
         var requestName = typeof(TRequest).Name;
         var userId = _currentUserService?.UserId ?? null;
         string userName = string.Empty;
-
+        await Task.CompletedTask;
         //if (userId.HasValue)
         //{
         //    userName = await _identityService.GetUserNameAsync(userId?.ToString());

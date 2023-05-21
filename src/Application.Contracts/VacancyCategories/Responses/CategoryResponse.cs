@@ -1,4 +1,5 @@
 ﻿namespace MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+
 public class CategoryResponse
 {
     public Guid Id { get; set; }

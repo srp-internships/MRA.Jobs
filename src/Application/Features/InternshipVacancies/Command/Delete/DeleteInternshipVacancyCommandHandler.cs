@@ -1,16 +1,16 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.DeleteInternship;
-public class DeleteInternshipCommandHandler : IRequestHandler<DeleteInternshipCommand, bool>
+public class DeleteInternshipVacancyCommandHandler : IRequestHandler<DeleteInternshipVacancyCommand, bool>
 {
     private readonly IApplicationDbContext _context;
 
-    public DeleteInternshipCommandHandler(IApplicationDbContext context)
+    public DeleteInternshipVacancyCommandHandler(IApplicationDbContext context)
     {
         _context = context;
     }
 
-    public async Task<bool> Handle(DeleteInternshipCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(DeleteInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         var internship = await _context.Internships.FindAsync(new object[] { request.Id }, cancellationToken);
 

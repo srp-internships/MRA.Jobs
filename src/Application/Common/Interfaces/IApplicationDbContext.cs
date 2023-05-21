@@ -11,7 +11,6 @@ public interface IApplicationDbContext
     public DbSet<User> DomainUsers { get; }
     public DbSet<Reviewer> Reviewers { get; }
     public DbSet<JobVacancy> JobVacancies { get; }
-    public DbSet<EducationVacancy> EducationVacancies { get; }
     public DbSet<Vacancy> Vacancies { get; }
     public DbSet<VacancyCategory> Categories { get; }
     public DbSet<VacancyTag> VacancyTags { get; }

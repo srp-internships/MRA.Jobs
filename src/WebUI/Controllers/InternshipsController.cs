@@ -9,20 +9,20 @@ namespace MRA.Jobs.Web.Controllers;
 public class InternshipsController : ApiControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetWithPagination([FromQuery] PaggedListQuery<InternshipListDTO> query)
+    public async Task<IActionResult> GetWithPagination([FromQuery] PaggedListQuery<InternshipVacancyListResponce> query)
     {
         var internships = await Mediator.Send(query);
         return Ok(internships);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateNewInternship(CreateInternshipCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> CreateNewInternship(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Guid>> UpdateInternship([FromRoute] Guid id, [FromBody] UpdateInternshipCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> UpdateInternship([FromRoute] Guid id, [FromBody] UpdateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         if (id != request.Id)
             return BadRequest();
@@ -31,7 +31,7 @@ public class InternshipsController : ApiControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteInternship([FromRoute] Guid id, [FromBody] DeleteInternshipCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<bool>> DeleteInternship([FromRoute] Guid id, [FromBody] DeleteInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         if (id != request.Id)
             return BadRequest();
@@ -42,7 +42,7 @@ public class InternshipsController : ApiControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetInternshipById(Guid id)
     {
-        var internship = await Mediator.Send(new InternshipDetailsDTO { Id = id });
+        var internship = await Mediator.Send(new InternshipVacancyResponce { Id = id });
         return Ok(internship);
     }
 }

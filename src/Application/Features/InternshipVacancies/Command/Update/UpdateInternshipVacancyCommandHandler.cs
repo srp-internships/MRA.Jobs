@@ -1,14 +1,14 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.UpdateInternship;
-public class UpdateInternshipCommandHandler : IRequestHandler<UpdateInternshipCommand, Guid>
+public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInternshipVacancyCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
 
-    public UpdateInternshipCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
+    public UpdateInternshipVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _context = context;
         _mapper = mapper;
@@ -16,7 +16,7 @@ public class UpdateInternshipCommandHandler : IRequestHandler<UpdateInternshipCo
         _currentUserService = currentUserService;
     }
 
-    public async Task<Guid> Handle(UpdateInternshipCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(UpdateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         var internship = await _context.Internships.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Id);

@@ -4,12 +4,12 @@ using MRA.Jobs.Application.Features.InternshipVacancies.Command.UpdateInternship
 namespace MRA.Jobs.Application.UnitTests.Internships;
 public class UpdateInternshipCommandHandlerTests : BaseTestFixture
 {
-    private UpdateInternshipCommandHandler _handler;
+    private UpdateInternshipVacancyCommandHandler _handler;
 
     [SetUp]
     public void SetUp()
     {
-        _handler = new UpdateInternshipCommandHandler(
+        _handler = new UpdateInternshipVacancyCommandHandler(
             _dbContextMock.Object, Mapper, _dateTimeMock.Object, _currentUserServiceMock.Object);
     }
 
@@ -17,7 +17,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentInternshipId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { Id = Guid.NewGuid() };
+        var command = new UpdateInternshipVacancyCommand { Id = Guid.NewGuid() };
         _dbContextMock.Setup(x => x.Internships.FindAsync(command.Id)).ReturnsAsync(null as InternshipVacancy);
 
         // Act
@@ -33,7 +33,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentCategoryId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { Id = Guid.NewGuid(), CategoryId = Guid.NewGuid() };
+        var command = new UpdateInternshipVacancyCommand { Id = Guid.NewGuid(), CategoryId = Guid.NewGuid() };
         _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new InternshipVacancy());
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { command.CategoryId }, CancellationToken.None)).ReturnsAsync(null as VacancyCategory);
 
@@ -48,7 +48,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
     public async Task Handle_GivenValidCommand_ShouldUpdateInternshipAndAddTimelineEvent()
     {
         // Arrange
-        var command = new UpdateInternshipCommand
+        var command = new UpdateInternshipVacancyCommand
         {
             Id = Guid.NewGuid(),
             Title = "Internship Title",

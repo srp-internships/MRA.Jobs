@@ -1,7 +1,7 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Responses;
 
 namespace MRA.Jobs.Application.Contracts.Internships.Queries;
-public class GetInternshipByIdQuery : IRequest<InternshipDetailsDTO>
+public class GetInternshipVacancyByIdQuery : IRequest<InternshipVacancyResponce>
 {
     public Guid Id { get; set; }
 }

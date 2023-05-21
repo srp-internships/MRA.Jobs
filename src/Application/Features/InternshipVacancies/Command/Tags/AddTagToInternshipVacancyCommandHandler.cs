@@ -1,19 +1,19 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Tags;
-public class AddTagToInternshipCommandHandler : IRequestHandler<AddTagToInternshipCommand, bool>
+public class AddTagToInternshipVacancyCommandHandler : IRequestHandler<AddTagToInternshipVacancyCommand, bool>
 {
     private readonly IApplicationDbContext _context;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
 
-    public AddTagToInternshipCommandHandler(IApplicationDbContext context, IDateTime dateTime, ICurrentUserService currentUserService)
+    public AddTagToInternshipVacancyCommandHandler(IApplicationDbContext context, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _context = context;
         _dateTime = dateTime;
         _currentUserService = currentUserService;
     }
-    public async Task<bool> Handle(AddTagToInternshipCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(AddTagToInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         var internship = await _context.Internships.FindAsync(new object[] { request.InternshipId }, cancellationToken);
         var tag = await _context.Tags.FindAsync(new object[] { request.TagId }, cancellationToken);

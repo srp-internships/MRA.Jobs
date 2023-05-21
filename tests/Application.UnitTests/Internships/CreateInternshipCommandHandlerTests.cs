@@ -4,14 +4,14 @@ using MRA.Jobs.Application.Features.InternshipVacancies.Command.CreateInternship
 namespace MRA.Jobs.Application.UnitTests.Internships;
 public class CreateInternshipCommandHandlerTests : BaseTestFixture
 {
-    private CreateInternshipCommandHandler _handler;
+    private CreateInternshipVacancyCommandHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
 
-        _handler = new CreateInternshipCommandHandler(
+        _handler = new CreateInternshipVacancyCommandHandler(
             _dbContextMock.Object,
             Mapper,
             _dateTimeMock.Object,
@@ -22,7 +22,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
     public async Task Handle_ValidRequest_ShouldCreateInternshipAndTimelineEvent()
     {
         // Arrange
-        var request = new CreateInternshipCommand
+        var request = new CreateInternshipVacancyCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",
@@ -81,7 +81,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
     [Test]
     public void Handle_CategoryNotFound_ShouldThrowNotFoundException()
     {
-        var request = new CreateInternshipCommand
+        var request = new CreateInternshipVacancyCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",

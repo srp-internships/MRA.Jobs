@@ -8,8 +8,9 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
     private UpdateApplicationCommandHadler _handler;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
+        base.Setup();
         _handler = new UpdateApplicationCommandHadler(
             _dbContextMock.Object, Mapper, _dateTimeMock.Object, _currentUserServiceMock.Object);
     }

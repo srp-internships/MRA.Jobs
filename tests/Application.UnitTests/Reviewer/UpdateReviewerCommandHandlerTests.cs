@@ -9,8 +9,9 @@ public class UpdateReviewerCommandHandlerTests : BaseTestFixture
     private UpdateReviewerCommandHandler _handler;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
+        base.Setup();
         _handler = new UpdateReviewerCommandHandler(_dbContextMock.Object, Mapper);
     }
 

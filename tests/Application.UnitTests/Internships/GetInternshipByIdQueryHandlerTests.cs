@@ -4,19 +4,19 @@ using MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipByI
 namespace MRA.Jobs.Application.UnitTests.Internships;
 public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
 {
-    private GetInternshipByIdQueryHandler _handler;
+    private GetInternshipVacancyByIdQueryHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
-        _handler = new GetInternshipByIdQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetInternshipVacancyByIdQueryHandler(_dbContextMock.Object, Mapper);
     }
 
     [Test]
     public async Task Handle_GivenValidQuery_ShouldReturnInternshipDetailsDTO()
     {
-        var query = new GetInternshipByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
 
         var internship = new InternshipVacancy
         {
@@ -53,7 +53,7 @@ public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetInternshipByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((InternshipVacancy)null);

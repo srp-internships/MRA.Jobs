@@ -1,14 +1,14 @@
 ﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.CreateInternship;
-public class CreateInternshipCommandHandler : IRequestHandler<CreateInternshipCommand, Guid>
+public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInternshipVacancyCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
 
-    public CreateInternshipCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
+    public CreateInternshipVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _context = context;
         _mapper = mapper;
@@ -16,7 +16,7 @@ public class CreateInternshipCommandHandler : IRequestHandler<CreateInternshipCo
         _currentUserService = currentUserService;
     }
 
-    public async Task<Guid> Handle(CreateInternshipCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         var category = await _context.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
