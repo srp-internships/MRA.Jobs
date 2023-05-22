@@ -25,7 +25,7 @@ public class ConfirmPhoneNumberChangeCommandHandler : IRequestHandler<ConfirmPho
         if (_userManager.Users.Any(u => u.NormalizedEmail == request.NewPhoneNumber && u.Id != u.Id))
             throw new ValidationException(new[] { new ValidationFailure() { PropertyName = nameof(request.NewPhoneNumber), ErrorMessage = $"Account with {request.NewPhoneNumber} phone number already exist!" } });
 
-        var result = await _userManager.ChangePhoneNumberAsync(user, request.NewPhoneNumber, request.Token);
+        var result = await _userManager.ChangePhoneNumberAsync(user, request.NewPhoneNumber, request.Code);
         if (!result.Succeeded)
         {
             throw new ValidationException(new[] { new ValidationFailure() {

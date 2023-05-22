@@ -1,7 +1,5 @@
 ﻿using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Infrastructure.Shared.Users.Commands.Verifications;
 
 namespace MRA.Jobs.Infrastructure.Identity.Features.User.Commands.Verifications;
@@ -32,6 +30,7 @@ public class ChangeEmailCommandHandler : IRequestHandler<ChangeEmailCommand, Uni
         //TODO: Send email to confirm email
         //var confirmationLink = Path.Combine(.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, token, newEmail }, Request.Scheme);
         //await _emailSender.SendEmailAsync(newEmail, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(confirmationLink)}'>clicking here</a>.");
+        Console.WriteLine($"Confirmation link: {token}");
 
         return Unit.Value;
     }

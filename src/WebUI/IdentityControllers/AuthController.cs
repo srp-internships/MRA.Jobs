@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Infrastructure.Shared.Auth.Commands;
 using MRA.Jobs.Infrastructure.Shared.Auth.Responses;
+using MRA.Jobs.Web.Controllers;
 
 namespace MRA.Jobs.API.ControllersAuth;
 
 [ApiController]
-[Route("api/[controller]")]
-public class AuthController : ControllerBase
+public class AuthController : ApiControllerBase
 {
     private readonly IMediator _mediator;
 

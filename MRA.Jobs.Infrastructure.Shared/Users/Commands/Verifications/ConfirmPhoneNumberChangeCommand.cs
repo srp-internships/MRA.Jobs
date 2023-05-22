@@ -6,5 +6,5 @@ public class ConfirmPhoneNumberChangeCommand : IRequest<Unit>
 {
     public Guid UserId { get; set; }
     public string NewPhoneNumber { get; set; }
-    public string Token { get; set; }
+    public string Code { get; set; }
 }

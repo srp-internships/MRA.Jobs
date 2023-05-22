@@ -6,9 +6,7 @@
 //using MRA.Jobs.Shared.Contracts.PaggedList;
 
 //namespace MRA.Jobs.API.ControllersAuth;
-//[Route("[controller]")]
-//[ApiController]
-//public class RolesController : ControllerBase
+//public class RolesController : ApiControllerBase
 //{
 //    private readonly IMediator _mediator;
 

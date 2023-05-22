@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Infrastructure.Shared.Pemission.Responces;
+using MRA.Jobs.Web.Controllers;
 
 namespace MRA.Jobs.API.ControllersAuth;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PermissionsController : ControllerBase
+public class PermissionsController : ApiControllerBase
 {
     private readonly IMediator _mediator;
 

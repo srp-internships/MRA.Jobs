@@ -16,12 +16,12 @@
         }
       }
     },
-    "/api/identity/register": {
+    "/api/accounts/register": {
       "post": {
         "tags": [
-          "Account"
+          "Accounts"
         ],
-        "operationId": "Account_Register",
+        "operationId": "Accounts_Register",
         "requestBody": {
           "x-name": "command",
           "content": {
@@ -49,12 +49,12 @@
         }
       }
     },
-    "/api/identity/{id}/roles": {
+    "/api/accounts/{id}/roles": {
       "get": {
         "tags": [
-          "Account"
+          "Accounts"
         ],
-        "operationId": "Account_UpdateRole",
+        "operationId": "Accounts_UpdateRole",
         "parameters": [
           {
             "name": "id",
@@ -90,9 +90,9 @@
       },
       "post": {
         "tags": [
-          "Account"
+          "Accounts"
         ],
-        "operationId": "Account_GrantRole",
+        "operationId": "Accounts_GrantRole",
         "parameters": [
           {
             "name": "id",
@@ -140,9 +140,9 @@
       },
       "delete": {
         "tags": [
-          "Account"
+          "Accounts"
         ],
-        "operationId": "Account_RevokeRole",
+        "operationId": "Accounts_RevokeRole",
         "parameters": [
           {
             "name": "id",
@@ -189,12 +189,12 @@
         ]
       }
     },
-    "/api/me": {
+    "/api/accounts/me": {
       "get": {
         "tags": [
-          "Account"
+          "Accounts"
         ],
-        "operationId": "Account_MyProfile",
+        "operationId": "Accounts_MyProfile",
         "responses": {
           "200": {
             "description": "",
@@ -215,9 +215,9 @@
       },
       "put": {
         "tags": [
-          "Account"
+          "Accounts"
         ],
-        "operationId": "Account_UpdateMyProfile",
+        "operationId": "Accounts_UpdateMyProfile",
         "requestBody": {
           "x-name": "command",
           "content": {
@@ -237,6 +237,127 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MyProfileResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/accounts/me/identity/change-password": {
+      "put": {
+        "tags": [
+          "Accounts"
+        ],
+        "operationId": "Accounts_ChangeMyPassword",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/accounts/me/identity/verify/phone/send": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "operationId": "Accounts_ChangeMyEmail",
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/accounts/me/identity/verify/phone": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "operationId": "Accounts_ChangeMyEmail2",
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -409,18 +530,49 @@
         }
       }
     },
-    "/register": {
-      "post": {
+    "/api/verify/email/exist": {
+      "get": {
         "tags": [
           "Verify"
         ],
-        "operationId": "Verify_Register",
+        "operationId": "Verify_GetById",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/verify/email/send": {
+      "put": {
+        "tags": [
+          "Verify"
+        ],
+        "operationId": "Verify_ChangeMyEmail",
         "requestBody": {
           "x-name": "command",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterUserCommand"
+                "$ref": "#/components/schemas/UpdateMyProfileCommand"
               }
             }
           },
@@ -2256,6 +2408,24 @@
           },
           "gender": {
             "$ref": "#/components/schemas/Gender"
+          }
+        }
+      },
+      "ChangePasswordCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "oldPassword": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

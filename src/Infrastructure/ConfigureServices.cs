@@ -56,7 +56,9 @@ public static class ConfigureServices
             options.Password.RequireDigit = true;
             options.Password.RequiredLength = 8;
 
-        }).AddEntityFrameworkStores<ApplicationDbContext>();
+        })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
         var settings = services.BuildServiceProvider().GetService<IOptions<JwtSettings>>().Value;
         var tokenValidationParameters = new TokenValidationParameters

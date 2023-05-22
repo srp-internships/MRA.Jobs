@@ -25,7 +25,8 @@ public class ChangePhoneNumberCommandHandler : IRequestHandler<ChangePhoneNumber
         var token = await _userManager.GenerateChangePhoneNumberTokenAsync(user, request.NewPhoneNumber);
 
         //TODO: send sms
-        // await smsSender.SendSmsAsync(newPhoneNumber, $"Your verification code is: {token}");
+        // await smsSender.SendSmsAsync(newPhoneNumber, $"Your verification code is: {token}");.
+        Console.WriteLine($"Confirmation link: {token}");
         return Unit.Value;
     }
 }

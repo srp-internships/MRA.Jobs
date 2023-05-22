@@ -63,17 +63,18 @@ public class ApplicationDbContextInitialiser
         }
 
         // Default users
-        var administrator = new ApplicationUser
-        {
-            UserName = "Admin",
-            Email = "administrator@localhost.com",
-            PhoneNumber = "1234567890",
-            EmailConfirmed = true,
-            PhoneNumberConfirmed = true,
-        };
 
-        if (_userManager.Users.All(u => u.UserName != administrator.UserName))
+        if (!_userManager.Users.Any(u => u.UserName == "Admin"))
         {
+            var administrator = new ApplicationUser
+            {
+                UserName = "Admin",
+                Email = "administrator@localhost.com",
+                PhoneNumber = "1234567890",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+            };
+
             await _userManager.CreateAsync(administrator, "Test.12324");
             if (!string.IsNullOrWhiteSpace(administratorRole.Name))
             {
@@ -87,11 +88,12 @@ public class ApplicationDbContextInitialiser
                 Email = administrator.Email,
                 PhoneNumber = administrator.PhoneNumber,
                 Avatar = "https://i.pravatar.cc/300",
-                Gender  =Domain.Enums.Gender.Male,
+                Gender = Domain.Enums.Gender.Male,
                 FirstName = "Admin",
                 LastName = "Admin",
                 JobTitle = "Administrator"
             });
+            await _context.SaveChangesAsync();
         }
 
     }
