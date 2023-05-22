@@ -5,7 +5,7 @@ using MRA.Jobs.Domain.Entities;
 
 public interface IApplicationDbContext
 {
-    public DbSet<Applicant> Applicants { get; }
+    public DbSet<Applicant> Applicants { get; }  
     public DbSet<ApplicantSocialMedia> ApplicantSocialMedias { get; }
     public DbSet<VacancyTimelineEvent> VacancyTimelineEvents { get; }
     public DbSet<User> DomainUsers { get; }

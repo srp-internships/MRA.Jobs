@@ -3,6 +3,8 @@ using MRA.Jobs.Application.Contracts.Applicant.Commands;
 using MRA.Jobs.Application.Contracts.Applicant.Queries;
 using MRA.Jobs.Application.Contracts.Applicant.Responses;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
+using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Features.Applicant.Query.GetAllApplicant;
 
 namespace MRA.Jobs.Web.Controllers;
@@ -17,9 +19,9 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllApplicant()
+    public async Task<IActionResult> GetAllApplicant([FromQuery] PaggedListQuery<ApplicantListDto> query)
     {
-        var applicants = await Mediator.Send(new GetAllApplicantQuery());
+        var applicants = await Mediator.Send(query);
         return Ok(applicants);
     }
     
@@ -53,6 +55,20 @@ public class ApplicantController : ApiControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult<bool>> DeleteApplicant(Guid id, [FromBody] DeleteApplicantCommand request, CancellationToken cancellationToken)
     {
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpPost("{applicantId}/tags/{tagId}")]
+    public async Task<ActionResult<bool>> AddTagToApplicant(Guid applicantId, Guid tagId, CancellationToken cancellationToken)
+    {
+        var request = new AddTagToApplicantCommand { ApplicantId = applicantId, TagId = tagId };
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpDelete("{applicantId}/tags/{tagId}")]
+    public async Task<ActionResult<bool>> RemoveTagFromApplicant(Guid applicantId, Guid tagId, CancellationToken cancellationToken)
+    {
+        var request = new RemoveTagFromApplicantCommand { ApplicantId = applicantId, TagId = tagId };
         return await Mediator.Send(request, cancellationToken);
     }
 }
