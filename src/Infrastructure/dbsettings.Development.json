@@ -1,4 +1,11 @@
 {
+  "SmtpSettings": {
+    "Server": "smtp.ethereal.email",
+    "Port": 587,
+    "Username": "vernice77@ethereal.email",
+    "Password": "Jr2VSHPbDEjEgwZmcF",
+    "EnableSsl": true
+  },
   "ConnectionStrings": {
     "DefaultConnection": "data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True",
     "SqlServer": "data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True"

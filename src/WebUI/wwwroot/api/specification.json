@@ -725,6 +725,39 @@
         }
       }
     },
+    "/api/emailtest": {
+      "post": {
+        "tags": [
+          "EmailTest"
+        ],
+        "operationId": "EmailTest_SendEmail",
+        "requestBody": {
+          "x-name": "emailMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailMessage"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/file": {
       "get": {
         "tags": [
@@ -2034,6 +2067,31 @@
           "name": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "EmailMessage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "to": {
+            "type": "string",
+            "nullable": true
+          },
+          "from": {
+            "type": "string",
+            "nullable": true
+          },
+          "subject": {
+            "type": "string",
+            "nullable": true
+          },
+          "body": {
+            "type": "string",
+            "nullable": true
+          },
+          "isHtml": {
+            "type": "boolean"
           }
         }
       },
