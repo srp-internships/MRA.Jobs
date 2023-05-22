@@ -19,7 +19,7 @@ public class CreateReviewerCommandValidator : AbstractValidator<CreateReviewerCo
         RuleFor(r => r.Email)
             .EmailAddress()
             .NotEmpty();
-        RuleFor(r => r.DateOfBrith)
+        RuleFor(r => r.DateOfBirth)
             .NotEmpty();
     }
 }

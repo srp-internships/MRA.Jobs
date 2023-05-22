@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Application.Contracts.Reviewer.Commands;
+﻿namespace MRA.Jobs.Application.Contracts.Reviewer.Command;
 public class AddTagToReviewerCommand : IRequest<bool>
 {
     public Guid ReviewerId { get; set; }

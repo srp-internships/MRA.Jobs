@@ -29,7 +29,7 @@ public class CreateReviewerCommandHandlerTests : BaseTestFixture
             LastName = "userLastName",
             FirstName = "userFirstName",
             Email = "user@gmail.com",
-            DateOfBrith = DateTime.UtcNow,
+            DateOfBirth = DateTime.UtcNow,
             PhoneNumber = "123456789",
         };
 
@@ -54,7 +54,7 @@ public class CreateReviewerCommandHandlerTests : BaseTestFixture
                     a.FirstName == request.FirstName &&
                     a.LastName == request.LastName &&
                     a.Email == request.Email &&
-                    a.DateOfBrith == request.DateOfBrith && 
+                    a.DateOfBirth == request.DateOfBirth && 
                     a.PhoneNumber == request.PhoneNumber
                 ), It.IsAny<CancellationToken>()), Times.Once);
         

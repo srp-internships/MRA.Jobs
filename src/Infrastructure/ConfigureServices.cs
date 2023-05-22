@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -17,9 +18,10 @@ public static class ConfigureServices
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAppIdentity(configuration);
+        services.AddMediatR(typeof(ConfigureServices).Assembly);
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-        var dbConectionString = configuration.GetConnectionString("DefaultConnection");
+        var dbConectionString = configuration.GetConnectionString("SqlServer");
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
@@ -37,7 +39,6 @@ public static class ConfigureServices
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         services.AddOptions();
 
-        services.AddScoped<CurrentUserService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<Microsoft.AspNetCore.Authentication.IClaimsTransformation, ClaimsTransformation>();
         services.AddScoped<IAuthorizationHandler, CheckCurrentUserAuthHandler>();
@@ -48,7 +49,6 @@ public static class ConfigureServices
         {
             options.User.RequireUniqueEmail = true;
             options.SignIn.RequireConfirmedPhoneNumber = true;
-            options.SignIn.RequireConfirmedAccount = true;
             options.SignIn.RequireConfirmedEmail = true;
             options.Password.RequireNonAlphanumeric = true;
             options.Password.RequireLowercase = true;
@@ -71,6 +71,7 @@ public static class ConfigureServices
             ClockSkew = TimeSpan.Zero
         };
 
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication(o =>
         {
             o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

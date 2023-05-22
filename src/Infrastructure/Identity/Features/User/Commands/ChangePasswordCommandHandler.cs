@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MRA.Jobs.Infrastructure.Shared.Users.Commands;
 
 namespace MRA.Jobs.Infrastructure.Identity.Features.User.Commands;
 
@@ -15,11 +16,11 @@ public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordComman
     {
         var user = await _userManager.FindByIdAsync(request.Id.ToString());
         if (user == null)
-            throw new EntityNotFoundException(nameof(ApplicationUser), request.Id);
+            throw new NotFoundException(nameof(ApplicationUser), request.Id);
 
         var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
         if (!result.Succeeded)
-            throw new BusinessLogicException(string.Join('\n', result.Errors.Select(r => r.Description)));
+            throw new ValidationException(string.Join('\n', result.Errors.Select(r => r.Description)));
 
         return Unit.Value;
     }

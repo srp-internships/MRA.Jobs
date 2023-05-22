@@ -15,7 +15,7 @@ public class GetVacancyCategoryByIdQueryHandler : IRequestHandler<GetVacancyCate
     public async Task<CategoryResponse> Handle(GetVacancyCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         var vacancyCategory = await _dbContext.Categories.FindAsync(new object[] { request.Id }, cancellationToken);
-        _ = vacancyCategory ?? throw new NotFoundException(nameof(vacancyCategory), request.Id);
+        _ = vacancyCategory ?? throw new NotFoundException(nameof(VacancyCategory), request.Id);
         return _mapper.Map<CategoryResponse>(vacancyCategory);
     }
 }

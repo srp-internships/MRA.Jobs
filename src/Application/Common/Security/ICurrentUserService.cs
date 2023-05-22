@@ -2,10 +2,12 @@
 
 public interface ICurrentUserService
 {
-    Guid GetId();
-    Task<Guid> GetIdAsync();
-    Task<string> GetUserNameAsync();
+    Guid? GetId();
+    Task<Guid?> GetIdAsync(CancellationToken cancellationToken);
+
+    Task<string> GetUserNameAsync(CancellationToken cancellationToken);
     string GetUserName();
-    Task<bool> HasPermissionAsync(Guid userId, string role);
-    bool HasPermission(Guid userId, string permission);
+
+    Task<bool> HasPermissionAsync(string role, CancellationToken cancellationToken);
+    bool HasPermission(string permission);
 }

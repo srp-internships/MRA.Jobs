@@ -51,14 +51,26 @@ public class ApplicationDbContextInitialiser
     {
         // Default roles
         var administratorRole = new ApplicationRole("Administrator");
+        var applicantRole = new ApplicationRole("Applicant");
 
         if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
         {
             await _roleManager.CreateAsync(administratorRole);
         }
+        if (_roleManager.Roles.All(r => r.Name != applicantRole.Name))
+        {
+            await _roleManager.CreateAsync(applicantRole);
+        }
 
         // Default users
-        var administrator = new ApplicationUser { UserName = "Admin", Email = "administrator@localhost" };
+        var administrator = new ApplicationUser
+        {
+            UserName = "Admin",
+            Email = "administrator@localhost.com",
+            PhoneNumber = "1234567890",
+            EmailConfirmed = true,
+            PhoneNumberConfirmed = true,
+        };
 
         if (_userManager.Users.All(u => u.UserName != administrator.UserName))
         {
@@ -67,6 +79,20 @@ public class ApplicationDbContextInitialiser
             {
                 await _userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
             }
+
+            _context.Reviewers.Add(new Reviewer
+            {
+                Id = administrator.Id,
+                DateOfBirth = DateTime.Now.AddYears(-20),
+                Email = administrator.Email,
+                PhoneNumber = administrator.PhoneNumber,
+                Avatar = "https://i.pravatar.cc/300",
+                Gender  =Domain.Enums.Gender.Male,
+                FirstName = "Admin",
+                LastName = "Admin",
+                JobTitle = "Administrator"
+            });
         }
+
     }
 }

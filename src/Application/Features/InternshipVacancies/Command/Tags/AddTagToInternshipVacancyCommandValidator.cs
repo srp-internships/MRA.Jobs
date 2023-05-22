@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Tags;
 public class AddTagToInternshipVacancyCommandValidator : AbstractValidator<AddTagToInternshipVacancyCommand>

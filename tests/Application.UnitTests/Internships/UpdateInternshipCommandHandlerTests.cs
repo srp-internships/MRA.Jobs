@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 using MRA.Jobs.Application.Features.InternshipVacancies.Command.Update;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
@@ -92,7 +92,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
         timelineEvent.EventType.Should().Be(TimelineEventType.Updated);
         timelineEvent.Time.Should().Be(_dateTimeMock.Object.Now);
         timelineEvent.Note.Should().Be("Internship updated");
-        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.GetId());
+        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.GetId().Value);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
 

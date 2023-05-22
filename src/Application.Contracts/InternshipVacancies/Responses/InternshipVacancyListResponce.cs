@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Application.Contracts.Internships.Responses;
+﻿namespace MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 public class InternshipVacancyListResponce
 {
     public Guid Id { get; set; }

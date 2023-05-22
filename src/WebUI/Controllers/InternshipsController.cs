@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Application.Contracts.Internships.Responses;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]

@@ -1,11 +1,11 @@
 using AutoMapper.Internal;
 using MRA.Jobs.Application.Features.Applications;
-using MRA.Jobs.Application.Features.Applicant;
 using MRA.Jobs.Application.Features.Reviewer;
 using MRA.Jobs.Application.Features.JobVacancies;
 using MRA.Jobs.Application.Features.VacancyCategories;
 using MRA.Jobs.Application.Features.TrainingVacancies;
 using MRA.Jobs.Application.Features.InternshipVacancies;
+using MRA.Jobs.Application.Features.Applicants;
 
 namespace MRA.Jobs.Application.UnitTests;
 

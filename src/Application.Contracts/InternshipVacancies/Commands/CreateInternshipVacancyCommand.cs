@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Application.Contracts.Internships.Commands;
+﻿namespace MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 public class CreateInternshipVacancyCommand : IRequest<Guid>
 {
     public string Title { get; set; }

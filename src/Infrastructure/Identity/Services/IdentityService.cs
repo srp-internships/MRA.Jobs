@@ -1,77 +1,46 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using MRA.Jobs.Application.Contracts.Identity.Responces;
+using MRA.Jobs.Infrastructure.Persistence;
 
 namespace MRA.Jobs.Infrastructure.Identity.Services;
 
 public class IdentityService : IIdentityService
 {
+    private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory;
-    private readonly IAuthorizationService _authorizationService;
 
-    public IdentityService(
-        UserManager<ApplicationUser> userManager,
-        IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
-        IAuthorizationService authorizationService)
+    public IdentityService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
+        _context = context;
         _userManager = userManager;
-        _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
-        _authorizationService = authorizationService;
     }
 
-    public async Task<(AuthResult Result, Guid UserId)> CreateUserAsync(Guid userName, string password)
+    public async Task<bool> HasPermissionAsync(Guid userId, string permissionName, CancellationToken cancellationToken)
     {
-        var user = new ApplicationUser
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        _ = user ?? throw new NotFoundException(nameof(ApplicationUser), userId);
+
+        var roles = await _userManager.GetRolesAsync(user);
+        var hasPermission = await _context.RolePermissions.AnyAsync(p => roles.Contains(p.Role.Name) && p.Permission.Name == permissionName, cancellationToken);
+
+        return hasPermission;
+    }
+
+    public async Task<UserIdentityResponse> GetUserIdentityAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        _ = user ?? throw new NotFoundException(nameof(ApplicationUser), userId);
+        var roles = await _userManager.GetRolesAsync(user);
+        var permissions = await _context.RolePermissions.Where(p => roles.Contains(p.Role.Name)).Select(p => p.Permission.Name).ToArrayAsync(cancellationToken);
+
+        return new UserIdentityResponse
         {
-            UserName = userName.ToString(),
-            Email = userName.ToString(),
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
+            IsActive = true,
+            Roles = roles,
+            Permissions = permissions,
+            TwoFactorEnabled = user.TwoFactorEnabled
         };
-
-        var result = await _userManager.CreateAsync(user, password);
-
-        return (result.ToApplicationResult(), user.Id);
-    }
-
-    public async Task<bool> HasPermissionAsync(Guid userId, string role)
-    {
-        //Remove after implementing auth
-        return await Task.FromResult(true);
-
-        //var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
-
-        //return user != null && await _userManager.IsInRoleAsync(user, role);
-    }
-
-    public async Task<bool> AuthorizeAsync(Guid userId, string policyName)
-    {
-        //Remove after implementing auth
-        return await Task.FromResult(true);
-
-        //var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
-
-        //if (user == null)
-        //{
-        //    return false;
-        //}
-
-        //var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
-
-        //var result = await _authorizationService.AuthorizeAsync(principal, policyName);
-
-        //return result.Succeeded;
-    }
-
-    public async Task<AuthResult> DeleteUserAsync(Guid userId)
-    {
-        var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
-
-        return user != null ? await DeleteUserAsync(user) : AuthResult.Success();
-    }
-
-    public async Task<AuthResult> DeleteUserAsync(ApplicationUser user)
-    {
-        var result = await _userManager.DeleteAsync(user);
-
-        return result.ToApplicationResult();
     }
 }

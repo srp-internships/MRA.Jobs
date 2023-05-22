@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Common.Security;
-using MRA.Jobs.Application.Contracts.Internships.Commands;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Tags;
 public class AddTagToInternshipVacancyCommandHandler : IRequestHandler<AddTagToInternshipVacancyCommand, bool>
@@ -31,7 +31,7 @@ public class AddTagToInternshipVacancyCommandHandler : IRequestHandler<AddTagToI
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = $"Added '{tag.Name}' tag",
-            CreateBy = _currentUserService.GetId()
+            CreateBy = _currentUserService.GetId().Value
         };
 
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);

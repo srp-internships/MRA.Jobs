@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Reviewer.Commands;
+﻿using MRA.Jobs.Application.Contracts.Reviewer.Command;
 
 namespace MRA.Jobs.Application.Features.Reviewer.Command.Tags;
 public class AddTagToReviewerCommandHandler : IRequestHandler<AddTagToReviewerCommand, bool>

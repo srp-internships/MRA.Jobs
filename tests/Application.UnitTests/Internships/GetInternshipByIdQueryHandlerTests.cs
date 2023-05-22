@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Internships.Queries;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
 using MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;

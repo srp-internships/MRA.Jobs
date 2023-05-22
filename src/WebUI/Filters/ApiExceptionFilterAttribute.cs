@@ -7,44 +7,63 @@ namespace MRA.Jobs.Web.Filters;
 
 public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 {
-    private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
-
-    public ApiExceptionFilterAttribute()
-    {
-        // Register known exception types and handlers.
-        _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
-            {
-                { typeof(ValidationException), HandleValidationException },
-                { typeof(NotFoundException), HandleNotFoundException },
-                { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
-                { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
-            };
-    }
-
     public override void OnException(ExceptionContext context)
     {
-        HandleException(context);
+        context.ExceptionHandled = context switch
+        {
+            { Exception: ValidationException } => HandleValidationException(context),
+            { Exception: NotFoundException } => HandleNotFoundException(context),
+            { Exception: UnauthorizedAccessException } => HandleUnauthorizedAccessException(context),
+            { Exception: ForbiddenAccessException } => HandleForbiddenAccessException(context),
+            { Exception: TaskCanceledException } => HandleTaskCanceledException(context),
+            { ModelState: { IsValid: false } } => HandleInvalidModelStateException(context),
+            _ => HandleUnknownException(context)
+        };
 
         base.OnException(context);
     }
 
-    private void HandleException(ExceptionContext context)
+    public bool HandleTaskCanceledException(ExceptionContext context)
     {
-        Type type = context.Exception.GetType();
-        if (_exceptionHandlers.ContainsKey(type))
+        var details = new ProblemDetails
         {
-            _exceptionHandlers[type].Invoke(context);
-            return;
-        }
+            Status = StatusCodes.Status400BadRequest,
+            Title = "Request was canceled.",
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+        };
 
-        if (!context.ModelState.IsValid)
+        context.Result = new ObjectResult(details)
         {
-            HandleInvalidModelStateException(context);
-            return;
-        }
+            StatusCode = StatusCodes.Status400BadRequest
+        };
+
+        return true;
     }
 
-    private void HandleValidationException(ExceptionContext context)
+    public bool HandleUnknownException(ExceptionContext context)
+    {
+        var details = new ProblemDetails
+        {
+            Status = StatusCodes.Status500InternalServerError,
+            Title = "An error occurred while processing your request.",
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+            Detail = context.Exception.Message,
+            Extensions =
+            {
+                { "traceId", context.HttpContext.TraceIdentifier },
+                { "stackTrace", context.Exception.StackTrace },
+            }
+        };
+
+        context.Result = new ObjectResult(details)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError
+        };
+
+        return true;
+    }
+
+    private bool HandleValidationException(ExceptionContext context)
     {
         var exception = (ValidationException)context.Exception;
 
@@ -55,10 +74,10 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
         context.Result = new BadRequestObjectResult(details);
 
-        context.ExceptionHandled = true;
+        return true;
     }
 
-    private void HandleInvalidModelStateException(ExceptionContext context)
+    private bool HandleInvalidModelStateException(ExceptionContext context)
     {
         var details = new ValidationProblemDetails(context.ModelState)
         {
@@ -67,10 +86,10 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
         context.Result = new BadRequestObjectResult(details);
 
-        context.ExceptionHandled = true;
+        return true;
     }
 
-    private void HandleNotFoundException(ExceptionContext context)
+    private bool HandleNotFoundException(ExceptionContext context)
     {
         var exception = (NotFoundException)context.Exception;
 
@@ -83,10 +102,10 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
         context.Result = new NotFoundObjectResult(details);
 
-        context.ExceptionHandled = true;
+        return true;
     }
 
-    private void HandleUnauthorizedAccessException(ExceptionContext context)
+    private bool HandleUnauthorizedAccessException(ExceptionContext context)
     {
         var details = new ProblemDetails
         {
@@ -100,10 +119,10 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             StatusCode = StatusCodes.Status401Unauthorized
         };
 
-        context.ExceptionHandled = true;
+        return true;
     }
 
-    private void HandleForbiddenAccessException(ExceptionContext context)
+    private bool HandleForbiddenAccessException(ExceptionContext context)
     {
         var details = new ProblemDetails
         {
@@ -117,6 +136,6 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             StatusCode = StatusCodes.Status403Forbidden
         };
 
-        context.ExceptionHandled = true;
+        return true;
     }
 }

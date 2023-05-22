@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.Security;
-using MRA.Jobs.Application.Contracts.Internships.Commands;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Tags;
 public class RemoveTagFromInternshipVacancyCommandHandler : IRequestHandler<RemoveTagFromInternshipVacancyCommand, bool>
@@ -28,7 +28,7 @@ public class RemoveTagFromInternshipVacancyCommandHandler : IRequestHandler<Remo
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = $"Removed '{vacancyTag.Tag.Name}' tag",
-            CreateBy = _currentUserService.GetId()
+            CreateBy = _currentUserService.GetId().Value
         };
 
         _ = _context.VacancyTags.Remove(vacancyTag);

@@ -239,7 +239,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateOfBrith")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("date");
 
                     b.Property<string>("Discriminator")
@@ -254,8 +254,8 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<Guid>("IdentityId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("datetime2");
@@ -266,6 +266,9 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Patronymic")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(32)");
@@ -390,7 +393,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.ToTable("VacancyTags");
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Models.ApplicationRole", b =>
+            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Entities.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -418,7 +421,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Models.ApplicationUser", b =>
+            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Entities.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -484,7 +487,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Models.Permission", b =>
+            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Entities.Permission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -501,7 +504,30 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.ToTable("Permission", (string)null);
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Models.RefreshToken", b =>
+            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Entities.PhoneNumberVerificationCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpiredAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PhoneNumberVerificationCodes");
+                });
+
+            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -535,7 +561,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.ToTable("RefreshToken", (string)null);
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Models.RolePermission", b =>
+            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Entities.RolePermission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -869,9 +895,9 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.Navigation("Vacancy");
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Models.RefreshToken", b =>
+            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Models.ApplicationUser", "User")
+                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Entities.ApplicationUser", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -880,15 +906,15 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Models.RolePermission", b =>
+            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Entities.RolePermission", b =>
                 {
-                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Models.Permission", "Permission")
+                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Entities.Permission", "Permission")
                         .WithMany()
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Models.ApplicationRole", "Role")
+                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Entities.ApplicationRole", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -901,7 +927,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Models.ApplicationRole", null)
+                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Entities.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -910,7 +936,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Models.ApplicationUser", null)
+                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -919,7 +945,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Models.ApplicationUser", null)
+                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -928,13 +954,13 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Models.ApplicationRole", null)
+                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Entities.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Models.ApplicationUser", null)
+                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -943,7 +969,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Models.ApplicationUser", null)
+                    b.HasOne("MRA.Jobs.Infrastructure.Identity.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1025,7 +1051,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     b.Navigation("Vacancies");
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Models.ApplicationUser", b =>
+            modelBuilder.Entity("MRA.Jobs.Infrastructure.Identity.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("RefreshTokens");
                 });

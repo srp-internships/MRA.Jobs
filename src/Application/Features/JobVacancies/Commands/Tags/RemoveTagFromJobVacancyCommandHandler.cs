@@ -30,7 +30,7 @@ public class RemoveTagFromJobVacancyCommandHandler : IRequestHandler<RemoveTagFr
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = $"Removed '{vacancyTag.Tag.Name}' tag",
-            CreateBy = _currentUserService.GetId()
+            CreateBy = _currentUserService.GetId().Value
         };
 
         _ = _dbContext.VacancyTags.Remove(vacancyTag);

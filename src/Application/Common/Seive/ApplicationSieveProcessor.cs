@@ -3,6 +3,7 @@ using MRA.Jobs.Application.Contracts.Common;
 using Sieve.Models;
 using Sieve.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace MRA.Jobs.Application.Common.Seive;
 
@@ -28,9 +29,9 @@ public class ApplicationSieveProcessor : SieveProcessor, IApplicationSieveProces
 
     protected override SievePropertyMapper MapProperties(SievePropertyMapper mapper)
     {
-        var markers = _services.GetServices<ISieveConfigurationsAssemblyMarker>();
-        foreach (var marker in markers)
-            mapper.ApplyConfigurationsFromAssembly(marker.GetType().Assembly);
+        //var markers = _services.GetServices<ISieveConfigurationsAssemblyMarker>();
+        //foreach (var marker in markers)
+        mapper.ApplyConfigurationsFromAssembly(Assembly.GetEntryAssembly());
 
         return mapper;
     }

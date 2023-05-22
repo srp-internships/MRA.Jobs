@@ -28,7 +28,7 @@ public class GetReviewerByIdQueryHandlerTests  : BaseTestFixture
             LastName = "userLastname",
             Email = "user@gmail.com",
             PhoneNumber = "123456789",
-            DateOfBrith = DateTime.UtcNow,
+            DateOfBirth = DateTime.UtcNow,
         };
 
         _dbContextMock.Setup(x => x.Reviewers.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
@@ -43,7 +43,7 @@ public class GetReviewerByIdQueryHandlerTests  : BaseTestFixture
         result.FirstName.Should().Be(reviewer.FirstName);
         result.LastName.Should().Be(reviewer.LastName);
         result.PhoneNumber.Should().Be(reviewer.PhoneNumber);
-        result.DateOfBrith.Should().Be(reviewer.DateOfBrith);
+        result.DateOfBirth.Should().Be(reviewer.DateOfBirth);
     }
 
     [Test]

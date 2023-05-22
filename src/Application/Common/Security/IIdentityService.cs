@@ -1,10 +1,10 @@
-﻿namespace MRA.Jobs.Application.Common.Security;
+﻿using MRA.Jobs.Application.Contracts.Identity.Responces;
+
+namespace MRA.Jobs.Application.Common.Security;
 
 public interface IIdentityService
 {
-    Task<bool> HasPermissionAsync(Guid userId, string role);
+    Task<bool> HasPermissionAsync(Guid userId, string permission, CancellationToken cancellationToken);
 
-    Task<(AuthResult Result, Guid UserId)> CreateUserAsync(Guid userName, string password);
-
-    Task<AuthResult> DeleteUserAsync(Guid userId);
+    Task<UserIdentityResponse> GetUserIdentityAsync(Guid userId, CancellationToken cancellationToken);
 }

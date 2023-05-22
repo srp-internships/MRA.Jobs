@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 using MRA.Jobs.Application.Features.InternshipVacancies.Command.Update;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;

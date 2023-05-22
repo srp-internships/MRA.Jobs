@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.Seive;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.Internships.Responses;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipWithPagination;
 public class GetInternshipVacanciesPagedQueryHandler : IRequestHandler<PaggedListQuery<InternshipVacancyListResponce>, PaggedList<InternshipVacancyListResponce>>

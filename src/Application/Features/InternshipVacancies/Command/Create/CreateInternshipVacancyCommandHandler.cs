@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Common.Security;
-using MRA.Jobs.Application.Contracts.Internships.Commands;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
 public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInternshipVacancyCommand, Guid>
@@ -31,7 +31,7 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Internship created",
-            CreateBy = _currentUserService.GetId()
+            CreateBy = _currentUserService.GetId().Value
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

@@ -2,6 +2,7 @@ using System.Net.Mime;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
 using MRA.Jobs.Infrastructure;
+using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Web;
 using Newtonsoft.Json;
 using Sieve.Models;
@@ -24,9 +25,9 @@ if (app.Environment.IsDevelopment())
 
     using (var scope = app.Services.CreateScope())
     {
-        //var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
-        //await initialiser.InitialiseAsync();
-        //await initialiser.SeedAsync();
+        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+        await initialiser.InitialiseAsync();
+        await initialiser.SeedAsync();
     }
 }
 else

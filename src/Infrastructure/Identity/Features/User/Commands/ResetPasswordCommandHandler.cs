@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MRA.Jobs.Infrastructure.Identity.Utils;
 using MRA.Jobs.Infrastructure.Shared.Users.Commands;
 
 namespace MRA.Jobs.Infrastructure.Identity.Features.User.Commands;
@@ -19,7 +20,7 @@ public class ResetPasswordCommandHandler : IRequestHandler<ResetUserPasswordComm
             throw new NotFoundException(nameof(ApplicationUser), request.UserId);
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        var result = await _userManager.ResetPasswordAsync(user, token, CreateUserCommandHandler.RandomPassword());
+        var result = await _userManager.ResetPasswordAsync(user, token, PaswordHelper.RandomPassword());
         if (!result.Succeeded)
             throw new ValidationException(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
 

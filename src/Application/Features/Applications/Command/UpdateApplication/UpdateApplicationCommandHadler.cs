@@ -40,7 +40,7 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Application updated",
-            CreateBy = _currentUserService.GetId()
+            CreateBy = _currentUserService.GetId().Value
         };
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent);
         await _context.SaveChangesAsync(cancellationToken);
