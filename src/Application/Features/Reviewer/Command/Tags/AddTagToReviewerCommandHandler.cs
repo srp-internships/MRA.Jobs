@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.Reviewer.Commands;
 
 namespace MRA.Jobs.Application.Features.Reviewer.Command.Tags;
 
 using MRA.Jobs.Application.Common.Interfaces;
+using MRA.Jobs.Application.Contracts.Reviewer.Command;
 using MRA.Jobs.Domain.Entities;
 using MRA.Jobs.Domain.Enums;
 
@@ -55,7 +55,7 @@ public class AddTagToReviewerCommandHandler : IRequestHandler<AddTagsToReviewerC
                     EventType = TimelineEventType.Created,
                     Time = _dateTime.Now,
                     Note = $"Added '{tag.Name}' tag",
-                    CreateBy = _currentUserService.UserId
+                    CreateBy = _currentUserService.GetId() ?? Guid.Empty
                 };
                 await _context.UserTimelineEvents.AddAsync(timelineEvent, cancellationToken);
             }

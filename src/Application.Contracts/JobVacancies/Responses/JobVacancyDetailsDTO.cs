@@ -1,6 +1,4 @@
-﻿using MRA.Jobs.Domain.Enums;
-
-namespace MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+﻿namespace MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 public class JobVacancyDetailsDTO
 {
     public Guid Id { get; set; }

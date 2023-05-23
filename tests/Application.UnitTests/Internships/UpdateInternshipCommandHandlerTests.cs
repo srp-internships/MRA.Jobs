@@ -1,16 +1,16 @@
-﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Application.Features.Internships.Command.UpdateInternship;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+using MRA.Jobs.Application.Features.InternshipVacancies.Command.Update;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
 using MRA.Jobs.Domain.Entities;
 public class UpdateInternshipCommandHandlerTests : BaseTestFixture
 {
-    private UpdateInternshipCommandHandler _handler;
+    private UpdateInternshipVacancyCommandHandler _handler;
 
     [SetUp]
     public void SetUp()
     {
-        _handler = new UpdateInternshipCommandHandler(
+        _handler = new UpdateInternshipVacancyCommandHandler(
             _dbContextMock.Object, Mapper, _dateTimeMock.Object, _currentUserServiceMock.Object);
     }
 
@@ -18,8 +18,8 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentInternshipId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.Internships.FindAsync(command.Id)).ReturnsAsync(null as Internship);
+        var command = new UpdateInternshipVacancyCommand { Id = Guid.NewGuid() };
+        _dbContextMock.Setup(x => x.Internships.FindAsync(command.Id)).ReturnsAsync(null as InternshipVacancy);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -27,15 +27,15 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
 
         // Assert
         act.Should().ThrowAsync<NotFoundException>()
-            .WithMessage($"*{nameof(Internship)}*{command.CategoryId}*");
+            .WithMessage($"*{nameof(InternshipVacancy)}*{command.CategoryId}*");
     }
 
     [Test]
     public void Handle_GivenNonExistentCategoryId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { Id = Guid.NewGuid(), CategoryId = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new Internship());
+        var command = new UpdateInternshipVacancyCommand { Id = Guid.NewGuid(), CategoryId = Guid.NewGuid() };
+        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new InternshipVacancy());
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { command.CategoryId }, CancellationToken.None)).ReturnsAsync(null as VacancyCategory);
 
         // Act
@@ -49,7 +49,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
     public async Task Handle_GivenValidCommand_ShouldUpdateInternshipAndAddTimelineEvent()
     {
         // Arrange
-        var command = new UpdateInternshipCommand
+        var command = new UpdateInternshipVacancyCommand
         {
             Id = Guid.NewGuid(),
             Title = "Internship Title",
@@ -63,13 +63,13 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
             Stipend = 100
         };
 
-        var internshipsDbSetMock = new Mock<DbSet<Internship>>();
+        var internshipsDbSetMock = new Mock<DbSet<InternshipVacancy>>();
         var categoryDbSetMock = new Mock<DbSet<VacancyCategory>>();
 
         _dbContextMock.Setup(c => c.Internships).Returns(internshipsDbSetMock.Object);
         _dbContextMock.Setup(c => c.Categories).Returns(categoryDbSetMock.Object);
 
-        var existingInternship = new Internship { Id = command.Id };
+        var existingInternship = new InternshipVacancy { Id = command.Id };
         internshipsDbSetMock.Setup(x => x.FindAsync(new object[] { command.Id }, CancellationToken.None))
             .ReturnsAsync(existingInternship);
 
@@ -93,7 +93,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
         timelineEvent.EventType.Should().Be(TimelineEventType.Updated);
         timelineEvent.Time.Should().Be(_dateTimeMock.Object.Now);
         timelineEvent.Note.Should().Be("Internship updated");
-        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.UserId);
+        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.GetId().Value);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
 

@@ -8,8 +8,9 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
     private UpdateApplicationCommandHadler _handler;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
+        base.Setup();
         _handler = new UpdateApplicationCommandHadler(
             _dbContextMock.Object, Mapper, _dateTimeMock.Object, _currentUserServiceMock.Object);
     }
@@ -102,7 +103,7 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
         timelineEvent.EventType.Should().Be(TimelineEventType.Updated);
         timelineEvent.Time.Should().Be(_dateTimeMock.Object.Now);
         timelineEvent.Note.Should().Be("Application updated");
-        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.UserId);
+        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.GetId().Value);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
 

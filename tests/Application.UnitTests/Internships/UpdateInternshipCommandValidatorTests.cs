@@ -1,22 +1,22 @@
-﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Application.Features.Internships.Command.UpdateInternship;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+using MRA.Jobs.Application.Features.InternshipVacancies.Command.Update;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
 public class UpdateInternshipCommandValidatorTests
 {
-    private UpdateInternshipCommandValidator _validator;
+    private UpdateInternshipVacancyCommandValidator _validator;
 
     [SetUp]
     public void Setup()
     {
-        _validator = new UpdateInternshipCommandValidator();
+        _validator = new UpdateInternshipVacancyCommandValidator();
     }
 
     [Test]
     public void Validate_IdIsRequired()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { Id = Guid.Empty };
+        var command = new UpdateInternshipVacancyCommand { Id = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -29,7 +29,7 @@ public class UpdateInternshipCommandValidatorTests
     public void Validate_TitleIsRequired()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { Title = null };
+        var command = new UpdateInternshipVacancyCommand { Title = null };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -42,7 +42,7 @@ public class UpdateInternshipCommandValidatorTests
     public void Validate_ShortDescriptionIsRequired()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { ShortDescription = null };
+        var command = new UpdateInternshipVacancyCommand { ShortDescription = null };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -55,7 +55,7 @@ public class UpdateInternshipCommandValidatorTests
     public void Validate_DescriptionIsRequired()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { Description = null };
+        var command = new UpdateInternshipVacancyCommand { Description = null };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -68,7 +68,7 @@ public class UpdateInternshipCommandValidatorTests
     public void Validate_PublishDateIsRequired()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { PublishDate = DateTime.MinValue };
+        var command = new UpdateInternshipVacancyCommand { PublishDate = DateTime.MinValue };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -81,7 +81,7 @@ public class UpdateInternshipCommandValidatorTests
     public void Validate_EndDateIsRequired()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { EndDate = DateTime.MinValue };
+        var command = new UpdateInternshipVacancyCommand { EndDate = DateTime.MinValue };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -94,7 +94,7 @@ public class UpdateInternshipCommandValidatorTests
     public void Validate_CategoryIdIsRequired()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { CategoryId = Guid.Empty };
+        var command = new UpdateInternshipVacancyCommand { CategoryId = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -107,7 +107,7 @@ public class UpdateInternshipCommandValidatorTests
     public void Validate_ApplicationDeadlineIsRequired()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { ApplicationDeadline = DateTime.MinValue };
+        var command = new UpdateInternshipVacancyCommand { ApplicationDeadline = DateTime.MinValue };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -120,7 +120,7 @@ public class UpdateInternshipCommandValidatorTests
     public void Validate_DurationIsRequired()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { Duration = 0 };
+        var command = new UpdateInternshipVacancyCommand { Duration = 0 };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -133,7 +133,7 @@ public class UpdateInternshipCommandValidatorTests
     public void Validate_StipendIsRequired()
     {
         // Arrange
-        var command = new UpdateInternshipCommand { Stipend = 0 };
+        var command = new UpdateInternshipVacancyCommand { Stipend = 0 };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -146,7 +146,7 @@ public class UpdateInternshipCommandValidatorTests
     public void Validate_GivenValidCommand_ShouldNotHaveErrors()
     {
         // Arrange
-        var command = new UpdateInternshipCommand
+        var command = new UpdateInternshipVacancyCommand
         {
             Id = Guid.NewGuid(),
             Title = "Job Title",

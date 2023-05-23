@@ -47,7 +47,7 @@ public class CreateApplicationCommandHandlerTests : BaseTestFixture
         _dbContextMock.Setup(x => x.Applications).Returns(applicationSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
-        _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
+        _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

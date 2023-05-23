@@ -8,9 +8,9 @@ public class ApplicationDbContextInitialiser
     private readonly ILogger<ApplicationDbContextInitialiser> _logger;
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly RoleManager<ApplicationRole> _roleManager;
 
-    public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
     {
         _logger = logger;
         _context = context;
@@ -50,23 +50,51 @@ public class ApplicationDbContextInitialiser
     public async Task TrySeedAsync()
     {
         // Default roles
-        var administratorRole = new IdentityRole("Administrator");
+        var administratorRole = new ApplicationRole("Administrator");
+        var applicantRole = new ApplicationRole("Applicant");
 
         if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
         {
             await _roleManager.CreateAsync(administratorRole);
         }
+        if (_roleManager.Roles.All(r => r.Name != applicantRole.Name))
+        {
+            await _roleManager.CreateAsync(applicantRole);
+        }
 
         // Default users
-        var administrator = new ApplicationUser { UserName = "Admin", Email = "administrator@localhost" };
 
-        if (_userManager.Users.All(u => u.UserName != administrator.UserName))
+        if (!_userManager.Users.Any(u => u.UserName == "Admin"))
         {
+            var administrator = new ApplicationUser
+            {
+                UserName = "Admin",
+                Email = "administrator@localhost.com",
+                PhoneNumber = "1234567890",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+            };
+
             await _userManager.CreateAsync(administrator, "Test.12324");
             if (!string.IsNullOrWhiteSpace(administratorRole.Name))
             {
                 await _userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
             }
+
+            _context.Reviewers.Add(new Reviewer
+            {
+                Id = administrator.Id,
+                DateOfBirth = DateTime.Now.AddYears(-20),
+                Email = administrator.Email,
+                PhoneNumber = administrator.PhoneNumber,
+                Avatar = "https://i.pravatar.cc/300",
+                Gender = Domain.Enums.Gender.Male,
+                FirstName = "Admin",
+                LastName = "Admin",
+                JobTitle = "Administrator"
+            });
+            await _context.SaveChangesAsync();
         }
+
     }
 }

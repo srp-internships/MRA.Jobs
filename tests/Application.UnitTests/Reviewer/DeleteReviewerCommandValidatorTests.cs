@@ -1,5 +1,4 @@
 ﻿using MRA.Jobs.Application.Contracts.Reviewer.Command;
-using MRA.Jobs.Application.Features.Applicant.Command.DeleteApplicant;
 using MRA.Jobs.Application.Features.Reviewer.Command.DeleteReviewer;
 
 namespace MRA.Jobs.Application.UnitTests.Reviewer;

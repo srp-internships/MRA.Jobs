@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Applicant.Queries;
-using MRA.Jobs.Application.Features.Applicant.Query.GetApplicantById;
+using MRA.Jobs.Application.Features.Applicants.Query.GetApplicantById;
 
 namespace MRA.Jobs.Application.UnitTests.Applicant;
 

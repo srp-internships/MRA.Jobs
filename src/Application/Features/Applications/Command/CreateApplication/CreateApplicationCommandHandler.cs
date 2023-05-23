@@ -3,6 +3,7 @@
 namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
 using MRA.Jobs.Application.Common.Interfaces;
+using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Domain.Entities;
 using MRA.Jobs.Domain.Enums;
 
@@ -37,7 +38,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Job vacancy created",
-            CreateBy = _currentUserService.UserId
+            CreateBy = _currentUserService.GetId().Value
         };
 
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);

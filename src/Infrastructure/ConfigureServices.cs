@@ -1,6 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using MRA.Jobs.Application.Common.Seive;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;
@@ -11,30 +17,84 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddAppIdentity(configuration);
+        services.AddMediatR(typeof(ConfigureServices).Assembly);
+
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-
+        var dbConectionString = configuration.GetConnectionString("SqlServer");
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer("data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True",
-                builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-
-        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+            options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ApplicationDbContextInitialiser>();
 
-        services
-            .AddDefaultIdentity<ApplicationUser>()
-            .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
-
+        services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
         services.AddTransient<IDateTime, DateTimeService>();
+        services.AddTransient<ISmsService, GenericSmsService>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAppIdentity(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+        services.AddOptions();
+
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<Microsoft.AspNetCore.Authentication.IClaimsTransformation, ClaimsTransformation>();
+        services.AddScoped<IAuthorizationHandler, CheckCurrentUserAuthHandler>();
+        services.AddScoped<TokenService>();
         services.AddTransient<IIdentityService, IdentityService>();
 
+        services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+        {
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedPhoneNumber = true;
+            options.SignIn.RequireConfirmedEmail = true;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequireDigit = true;
+            options.Password.RequiredLength = 8;
 
-        //services.AddAuthentication()
-        //    .AddIdentityServerJwt();
+        })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
-        //services.AddAuthorization(options =>
-        //    options.AddPolicy("CanPurge", policy => policy.RequireRole("Administrator")));
+        var settings = services.BuildServiceProvider().GetService<IOptions<JwtSettings>>().Value;
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = settings.SigningCredentials.Key,
+            ValidateIssuer = true,
+            ValidIssuer = settings.Issuer,
+            ValidateAudience = true,
+            ValidAudience = settings.Audience,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+        services.AddAuthentication(o =>
+        {
+            o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = tokenValidationParameters;
+        });
+
+        services.AddAuthorization(auth =>
+        {
+            auth.DefaultPolicy = new AuthorizationPolicyBuilder(new string[] { JwtBearerDefaults.AuthenticationScheme })
+                    .RequireAuthenticatedUser()
+                    .AddRequirements(new CheckCurrentUserRequirement())
+                    .Build();
+        });
 
         return services;
     }
 }
+
+public class InfrastructureSieveConfigurationsAssemblyMarker : ISieveConfigurationsAssemblyMarker { };
+

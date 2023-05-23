@@ -23,10 +23,8 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
         if (authorizeAttributes.Any())
         {
             // Must be authenticated user
-            if (_currentUserService.UserId == null)
-            {
+            if (_currentUserService.GetId().Value == Guid.Empty)
                 throw new UnauthorizedAccessException();
-            }
 
             // Role-based authorization
             var authorizeAttributesWithRoles = authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Roles));
@@ -39,7 +37,7 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
                 {
                     foreach (var role in roles)
                     {
-                        var isInRole = await _identityService.IsInRoleAsync(_currentUserService.UserId.ToString(), role.Trim());
+                        var isInRole = await _currentUserService.HasPermissionAsync(role.Trim(), cancellationToken);
                         if (isInRole)
                         {
                             authorized = true;
@@ -52,21 +50,6 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
                 if (!authorized)
                 {
                     throw new ForbiddenAccessException();
-                }
-            }
-
-            // Policy-based authorization
-            var authorizeAttributesWithPolicies = authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Policy));
-            if (authorizeAttributesWithPolicies.Any())
-            {
-                foreach (var policy in authorizeAttributesWithPolicies.Select(a => a.Policy))
-                {
-                    var authorized = await _identityService.AuthorizeAsync(_currentUserService.UserId.ToString(), policy);
-
-                    if (!authorized)
-                    {
-                        throw new ForbiddenAccessException();
-                    }
                 }
             }
         }

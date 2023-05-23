@@ -20,7 +20,7 @@ public class UpdateReviewerCommandValidator : AbstractValidator<UpdateReviewerCo
         RuleFor(a => a.Patronymic)
             .MaximumLength(100)
             .NotEmpty();
-        RuleFor(a => a.DateOfBrith)
+        RuleFor(a => a.DateOfBirth)
             .NotEmpty();
         RuleFor(a => a.Email)
             .EmailAddress()

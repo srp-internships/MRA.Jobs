@@ -54,7 +54,7 @@ public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagsToJobVaca
                     EventType = TimelineEventType.Created,
                     Time = _dateTime.Now,
                     Note = $"Added '{tag.Name}' tag",
-                    CreateBy = _currentUserService.UserId
+                    CreateBy = _currentUserService.GetId() ?? Guid.Empty
                 };
                 await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
             }

@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 
 namespace MRA.Jobs.Infrastructure.Persistence;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IApplicationDbContext
 {
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
@@ -15,6 +14,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
         base(options)
     {
     }
+
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options,
         IMediator mediator,
@@ -25,18 +25,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
     }
 
-    public EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class
-    {
-        return base.Entry(entity);
-    }
-
+    public DbSet<PhoneNumberVerificationCode> PhoneNumberVerificationCodes { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<Permission> Permissions { get; set; }
+    public DbSet<RolePermission> RolePermissions { get; set; }
     public DbSet<Applicant> Applicants { get; set; }
     public DbSet<ApplicantSocialMedia> ApplicantSocialMedias { get; set; }
     public DbSet<VacancyTimelineEvent> VacancyTimelineEvents { get; set; }
     public DbSet<User> DomainUsers { get; set; }
     public DbSet<Reviewer> Reviewers { get; set; }
     public DbSet<JobVacancy> JobVacancies { get; set; }
-    public DbSet<EducationVacancy> EducationVacancies { get; set; }
     public DbSet<Vacancy> Vacancies { get; set; }
     public DbSet<VacancyCategory> Categories { get; set; }
     public DbSet<VacancyTag> VacancyTags { get; set; }
@@ -48,8 +46,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Domain.Entities.Application> Applications { get; set; }
     public DbSet<ApplicationTimelineEvent> ApplicationTimelineEvents { get; set; }
-    public DbSet<Internship> Internships { get; set; }
-    public DbSet<TrainingModel> TrainingModels { get; set; }
+    public DbSet<InternshipVacancy> Internships { get; set; }
+    public DbSet<TrainingVacancy> TrainingVacancies { get; set; }
 
     #region override
     protected override void OnModelCreating(ModelBuilder builder)
@@ -84,11 +82,10 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
             .AddJsonFile($"dbsettings.Development.json", optional: true, reloadOnChange: true)
             .Build();
 
-        var connectionString = "data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True";
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }
-  
+
 }

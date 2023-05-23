@@ -1,18 +1,18 @@
-﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Application.Features.Internships.Command.CreateInternship;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+using MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
 using MRA.Jobs.Domain.Entities;
 public class CreateInternshipCommandHandlerTests : BaseTestFixture
 {
-    private CreateInternshipCommandHandler _handler;
+    private CreateInternshipVacancyCommandHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
 
-        _handler = new CreateInternshipCommandHandler(
+        _handler = new CreateInternshipVacancyCommandHandler(
             _dbContextMock.Object,
             Mapper,
             _dateTimeMock.Object,
@@ -23,7 +23,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
     public async Task Handle_ValidRequest_ShouldCreateInternshipAndTimelineEvent()
     {
         // Arrange
-        var request = new CreateInternshipCommand
+        var request = new CreateInternshipVacancyCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",
@@ -42,13 +42,13 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
         var timelineEventSetMock = new Mock<DbSet<VacancyTimelineEvent>>();
         _dbContextMock.Setup(x => x.VacancyTimelineEvents).Returns(timelineEventSetMock.Object);
 
-        var InternshipSetMock = new Mock<DbSet<Internship>>();
+        var InternshipSetMock = new Mock<DbSet<InternshipVacancy>>();
         var newEntityGuid = Guid.NewGuid();
-        InternshipSetMock.Setup(d => d.AddAsync(It.IsAny<Internship>(), It.IsAny<CancellationToken>())).Callback<Internship, CancellationToken>((v, ct) => v.Id = newEntityGuid);
+        InternshipSetMock.Setup(d => d.AddAsync(It.IsAny<InternshipVacancy>(), It.IsAny<CancellationToken>())).Callback<InternshipVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.Internships).Returns(InternshipSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
-        _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
+        _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -56,7 +56,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
         // Assert
         result.Should().Be(newEntityGuid);
 
-        InternshipSetMock.Verify(x => x.AddAsync(It.Is<Internship>(i =>
+        InternshipSetMock.Verify(x => x.AddAsync(It.Is<InternshipVacancy>(i =>
             i.Title == request.Title &&
             i.ShortDescription == request.ShortDescription &&
             i.Description == request.Description &&
@@ -73,7 +73,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
             te.EventType == TimelineEventType.Created &&
             te.Note == "Internship created" &&
             te.Time == _dateTimeMock.Object.Now &&
-            te.CreateBy == _currentUserServiceMock.Object.UserId
+            te.CreateBy == _currentUserServiceMock.Object.GetId()
         ), It.IsAny<CancellationToken>()), Times.Once);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
@@ -82,7 +82,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
     [Test]
     public void Handle_CategoryNotFound_ShouldThrowNotFoundException()
     {
-        var request = new CreateInternshipCommand
+        var request = new CreateInternshipVacancyCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",

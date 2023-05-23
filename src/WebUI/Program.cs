@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Infrastructure;
+using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Services;
 using MRA.Jobs.Web;
 using Newtonsoft.Json;
@@ -38,7 +39,7 @@ else
     app.UseHsts();
 }
 
-app.UseHealthChecks("/health", new HealthCheckOptions
+app.UseHealthChecks("/status", new HealthCheckOptions
 {
     ResponseWriter = async (context, report) =>
     {
@@ -67,6 +68,8 @@ app.UseSwaggerUi3(settings =>
 {
     settings.Path = "/api";
     settings.DocumentPath = "/api/specification.json";
+    settings.EnableTryItOut = true;
+    settings.PersistAuthorization = true;
 });
 
 app.UseRouting();

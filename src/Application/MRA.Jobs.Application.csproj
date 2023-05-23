@@ -19,9 +19,5 @@
       <ProjectReference Include="..\Domain\MRA.Jobs.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\Vacancy\Command\" />
-    </ItemGroup>
-
 
 </Project>

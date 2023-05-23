@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using MRA.Jobs.Client;
 
-namespace MRA.Jobs.Client;
+namespace MRA.Jobs.Client.Client;
 public class Program
 {
     public static async Task Main(string[] args)

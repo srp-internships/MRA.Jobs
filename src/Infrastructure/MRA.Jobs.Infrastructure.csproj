@@ -14,12 +14,12 @@
 
     <ItemGroup>
       <Content Include="dbsettings.Development.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </Content>
       <Content Include="dbsettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </Content>
@@ -30,7 +30,6 @@
         <PackageReference Include="MailKit" Version="4.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="7.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -44,11 +43,17 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\MRA.Jobs.Infrastructure.Shared\MRA.Jobs.Infrastructure.Shared.csproj" />
         <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Identity\Features\User\Events\" />
+      <Folder Include="Identity\Features\Verification\Commands\" />
+      <Folder Include="Identity\Features\Verification\Queries\" />
       <Folder Include="Persistence\Migrations\" />
     </ItemGroup>
+
+    <ProjectExtensions><VisualStudio><UserProperties dbsettings_1json__JsonSchema="https://docs.renovatebot.com/renovate-schema.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

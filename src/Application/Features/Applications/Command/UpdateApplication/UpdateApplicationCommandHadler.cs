@@ -2,6 +2,7 @@
 
 namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplication;
 using MRA.Jobs.Application.Common.Interfaces;
+using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Domain.Entities;
 using MRA.Jobs.Domain.Enums;
 
@@ -39,7 +40,7 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Application updated",
-            CreateBy = _currentUserService.UserId
+            CreateBy = _currentUserService.GetId() ?? Guid.Empty
         };
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent);
         await _context.SaveChangesAsync(cancellationToken);

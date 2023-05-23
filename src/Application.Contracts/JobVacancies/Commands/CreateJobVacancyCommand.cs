@@ -1,7 +1,4 @@
-﻿using MediatR;
-using MRA.Jobs.Domain.Enums;
-
-namespace MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+﻿namespace MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
 public class CreateJobVacancyCommand : IRequest<Guid>
 {
