@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
+using MRA.Jobs.Domain.Entities;
 public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
 {
     private GetInternshipVacancyByIdQueryHandler _handler;

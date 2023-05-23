@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Features.InternshipVacancies.Command.Delete;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
+using MRA.Jobs.Domain.Entities;
 public class DeleteInternshipCommandHandlerTests : BaseTestFixture
 {
     DeleteInternshipVacancyCommandHandler _handler;

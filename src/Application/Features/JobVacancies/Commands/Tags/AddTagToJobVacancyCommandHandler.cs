@@ -1,44 +1,68 @@
-﻿using MRA.Jobs.Application.Common.Security;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.Tags;
 
-public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagToJobVacancyCommand, bool>
-{
-    private readonly IApplicationDbContext _dbContext;
-    private readonly IDateTime _dateTime;
-    private readonly ICurrentUserService _currentUserService;
 
-    public AddTagToJobVacancyCommandHandler(IApplicationDbContext dbContext, IDateTime dateTime, ICurrentUserService currentUserService)
+public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagsToJobVacancyCommand, bool>
+{
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTime _dateTime;
+
+    public AddTagToJobVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService, IDateTime dateTime)
     {
-        _dbContext = dbContext;
-        _dateTime = dateTime;
+        _context = context;
+        _mapper = mapper;
         _currentUserService = currentUserService;
+        _dateTime = dateTime;
     }
 
-    public async Task<bool> Handle(AddTagToJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(AddTagsToJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.JobVacancyId }, cancellationToken: cancellationToken);
-        var tag = await _dbContext.Tags.FindAsync(new object[] { request.TagId }, cancellationToken: cancellationToken);
+        var jobVacancy = await _context.Internships
+          .Include(x => x.Tags)
+          .ThenInclude(t => t.Tag)
+          .FirstOrDefaultAsync(x => x.Id == request.JobVacancyId, cancellationToken);
 
-        var vacancyTag = new VacancyTag
+        if (jobVacancy == null)
+            throw new NotFoundException(nameof(JobVacancy), request.JobVacancyId);
+
+        foreach (var tagName in request.Tags)
         {
-            VacancyId = jobVacancy?.Id ?? throw new NotFoundException(nameof(JobVacancy), request.JobVacancyId),
-            TagId = tag?.Id ?? throw new NotFoundException(nameof(Tag), request.TagId)
-        };
+            var tag = await _context.Tags.FirstOrDefaultAsync(t=>t.Name.Equals(tagName), cancellationToken);
 
-        var timelineEvent = new VacancyTimelineEvent
-        {
-            VacancyId = jobVacancy.Id,
-            EventType = TimelineEventType.Created,
-            Time = _dateTime.Now,
-            Note = $"Added '{tag.Name}' tag",
-            CreateBy = _currentUserService.GetId().Value
-        };
-        await _dbContext.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
+            if (tag == null)
+            {
+                tag = new Tag { Name = tagName };
+                _context.Tags.Add(tag);
+            }
 
-        await _dbContext.VacancyTags.AddAsync(vacancyTag, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+            var vacancyTag = jobVacancy.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
+
+            if (vacancyTag == null)
+            {
+                vacancyTag = new VacancyTag { VacancyId = request.JobVacancyId, TagId = tag.Id };
+                _context.VacancyTags.Add(vacancyTag);
+
+                var timelineEvent = new VacancyTimelineEvent
+                {
+                    VacancyId = jobVacancy.Id,
+                    EventType = TimelineEventType.Created,
+                    Time = _dateTime.Now,
+                    Note = $"Added '{tag.Name}' tag",
+                    CreateBy = _currentUserService.UserId
+                };
+                await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
+            }
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+
         return true;
     }
 }
+

@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Features.TrainingVacancies.Commands.CreateTrainingModel;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
+using MRA.Jobs.Domain.Entities;
 public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
 {
     private CreateTrainingVacancyCommandHandler _handler;

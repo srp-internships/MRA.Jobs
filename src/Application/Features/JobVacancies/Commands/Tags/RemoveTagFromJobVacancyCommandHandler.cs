@@ -1,40 +1,60 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Security;
+using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Domain.Entities;
+using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.Tags;
 
-public class RemoveTagFromJobVacancyCommandHandler : IRequestHandler<RemoveTagFromJobVacancyCommand, bool>
-{
-    private readonly IApplicationDbContext _dbContext;
-    private readonly IDateTime _dateTime;
-    private readonly ICurrentUserService _currentUserService;
 
-    public RemoveTagFromJobVacancyCommandHandler(IApplicationDbContext dbContext, IDateTime dateTime, ICurrentUserService currentUserService)
+public class RemoveTagsFromJobVacancyCommandHandler : IRequestHandler<RemoveTagsFromJobVacancyCommand, bool>
+{
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTime _dateTime;
+
+    public RemoveTagsFromJobVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService, IDateTime dateTime)
     {
-        _dbContext = dbContext;
-        _dateTime = dateTime;
+        _context = context;
+        _mapper = mapper;
         _currentUserService = currentUserService;
+        _dateTime = dateTime;
     }
 
-    public async Task<bool> Handle(RemoveTagFromJobVacancyCommand request, CancellationToken cancellationToken)
+
+    public async Task<bool> Handle(RemoveTagsFromJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var vacancyTag = await _dbContext.VacancyTags
-            .FirstOrDefaultAsync(vt => vt.VacancyId == request.JobVacancyId && vt.TagId == request.TagId, cancellationToken);
+        var jobVacancy = await _context.JobVacancies
+          .Include(x => x.Tags)
+          .ThenInclude(t => t.Tag)
+          .FirstOrDefaultAsync(x => x.Id == request.JobVacancyId, cancellationToken);
 
-        _ = vacancyTag ?? throw new NotFoundException(nameof(VacancyTag), request.TagId);
+        if (jobVacancy == null)
+            throw new NotFoundException(nameof(JobVacancy), request.JobVacancyId);
 
-        var timelineEvent = new VacancyTimelineEvent
+        foreach (var tagName in request.Tags)
         {
-            VacancyId = vacancyTag.VacancyId,
-            EventType = TimelineEventType.Created,
-            Time = _dateTime.Now,
-            Note = $"Removed '{vacancyTag.Tag.Name}' tag",
-            CreateBy = _currentUserService.GetId().Value
-        };
+            var vacancyTag = jobVacancy.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
 
-        _ = _dbContext.VacancyTags.Remove(vacancyTag);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+            if (vacancyTag == null)
+                continue;
+
+            _context.VacancyTags.Remove(vacancyTag);
+
+            var timelineEvent = new VacancyTimelineEvent
+            {
+                VacancyId = jobVacancy.Id,
+                EventType = TimelineEventType.Deleted,
+                Time = _dateTime.Now,
+                Note = $"Removed '{tagName}' tag",
+                CreateBy = _currentUserService.UserId
+            };
+            await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
+
+        }
+        await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
+   
 }

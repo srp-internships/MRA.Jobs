@@ -12,5 +12,5 @@ public abstract class User : BaseAuditableEntity
     public Gender Gender { get; set; }
 
     public ICollection<UserTimelineEvent> History { get; set; }
-    public ICollection<UserTag> Tags { get; set; }
+    public IList<UserTag> Tags { get; set; }
 }

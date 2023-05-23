@@ -1,28 +1,72 @@
-﻿using MRA.Jobs.Application.Contracts.Applicant.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.Interfaces;
+using MRA.Jobs.Application.Contracts.Applicant.Commands;
+using MRA.Jobs.Application.Features.Applicant.Command.CreateApplicant;
+using MRA.Jobs.Domain.Entities;
+using MRA.Jobs.Domain.Enums;
 
-namespace MRA.Jobs.Application.Features.Applicants.Command.Tags;
-public class AddTagToApplicantCommandHandler : IRequestHandler<AddTagToApplicantCommand, bool>
+namespace MRA.Jobs.Application.Features.Applicant.Command.Tags;
+public class AddTagToApplicantCommandHandler : IRequestHandler<AddTagsToApplicantCommand, bool>
 {
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly IDateTime _dateTime;
+    private readonly ICurrentUserService _currentUserService;
 
-    public AddTagToApplicantCommandHandler(IApplicationDbContext dbContext)
+    public AddTagToApplicantCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
-        _dbContext = dbContext;
+        _context = context;
+        _mapper = mapper;
+        _dateTime= dateTime;
+        _currentUserService = currentUserService;
     }
 
-    public async Task<bool> Handle(AddTagToApplicantCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(AddTagsToApplicantCommand request, CancellationToken cancellationToken)
     {
-        var applicant = await _dbContext.Applicants.FindAsync(new object[] { request.ApplicantId }, cancellationToken);
-        var tag = await _dbContext.Tags.FindAsync(new object[] { request.TagId }, cancellationToken: cancellationToken);
+        var applicant = await _context.Applicants
+         .Include(x => x.Tags)
+         .ThenInclude(t => t.Tag)
+         .FirstOrDefaultAsync(x => x.Id == request.ApplicantId, cancellationToken);
 
-        var userTag = new UserTag
+        if (applicant == null)
+            throw new NotFoundException(nameof(JobVacancy), request.ApplicantId);
+
+        foreach (var tagName in request.Tags)
         {
-            UserId = applicant?.Id ?? throw new NotFoundException(nameof(Applicant), request.ApplicantId),
-            TagId = tag?.Id ?? throw new NotFoundException(nameof(Tag), request.TagId)
-        };
+            var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name.Equals(tagName), cancellationToken);
 
-        await _dbContext.UserTags.AddAsync(userTag, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+            if (tag == null)
+            {
+                tag = new Tag { Name = tagName };
+                _context.Tags.Add(tag);
+            }
+
+            var applicantTag = applicant.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
+
+            if (applicantTag == null)
+            {
+                applicantTag = new UserTag { UserId = request.ApplicantId, TagId = tag.Id };
+                _context.UserTags.Add(applicantTag);
+
+                var timelineEvent = new UserTimelineEvent
+                {
+                    UserId = applicant.Id,
+                    EventType = TimelineEventType.Created,
+                    Time = _dateTime.Now,
+                    Note = $"Added '{tag.Name}' tag",
+                    CreateBy = _currentUserService.UserId
+                };
+                await _context.UserTimelineEvents.AddAsync(timelineEvent, cancellationToken);
+            }
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+
         return true;
+    }
+
+    public static implicit operator AddTagToApplicantCommandHandler(CreateApplicantCommandHandler v)
+    {
+        throw new NotImplementedException();
     }
 }

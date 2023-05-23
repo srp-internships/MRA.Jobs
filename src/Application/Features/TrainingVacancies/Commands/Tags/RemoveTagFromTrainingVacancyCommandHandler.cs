@@ -1,38 +1,51 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
+using MRA.Jobs.Domain.Enums;
 
-namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Tags;
-public class RemoveTagFromTrainingVacancyCommandHandler : IRequestHandler<RemoveTagFromTrainingVacancyCommand, bool>
+namespace MRA.Jobs.Application.Features.TrainingModels.Commands.Tags;
+public class RemoveTagFromTrainingModelCommandHandler : IRequestHandler<RemoveTagFromTrainingModelCommand, bool>
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
 
-    public RemoveTagFromTrainingVacancyCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService, IDateTime dateTime)
+    public RemoveTagFromTrainingModelCommandHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService, IDateTime dateTime)
     {
         _context = context;
         _currentUserService = currentUserService;
         _dateTime = dateTime;
     }
 
-    public async Task<bool> Handle(RemoveTagFromTrainingVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(RemoveTagFromTrainingModelCommand request, CancellationToken cancellationToken)
     {
-        var vacancyTag = await _context.VacancyTags
-            .FirstOrDefaultAsync(vt => vt.VacancyId == request.TrainingModelId && vt.TagId == request.TagId, cancellationToken);
+        var trainingModel = await _context.TrainingModels
+         .Include(x => x.Tags)
+         .ThenInclude(t => t.Tag)
+         .FirstOrDefaultAsync(x => x.Id == request.TrainingModelId, cancellationToken);
 
-        _ = vacancyTag ?? throw new NotFoundException(nameof(VacancyTag), request.TagId);
+        if (trainingModel == null)
+            throw new NotFoundException(nameof(trainingModel), request.TrainingModelId);
 
-        var timeLineEvent = new VacancyTimelineEvent
+        foreach (var tagName in request.Tags)
         {
-            VacancyId = vacancyTag.VacancyId,
-            EventType = TimelineEventType.Created,
-            Time = _dateTime.Now,
-            Note = $"Removed '{vacancyTag.Tag.Name}' tag",
-            CreateBy = _currentUserService.GetId().Value
-        };
+            var vacancyTag = trainingModel.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
 
-        _ = _context.VacancyTags.Remove(vacancyTag);
+            if (vacancyTag == null)
+                continue;
+
+            _context.VacancyTags.Remove(vacancyTag);
+
+            var timelineEvent = new VacancyTimelineEvent
+            {
+                VacancyId = trainingModel.Id,
+                EventType = TimelineEventType.Deleted,
+                Time = _dateTime.Now,
+                Note = $"Removed '{tagName}' tag",
+                CreateBy = _currentUserService.UserId
+            };
+            await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
+
+        }
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }

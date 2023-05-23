@@ -16,856 +16,12 @@
         }
       }
     },
-    "/api/accounts/register": {
-      "post": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_Register",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterUserCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/accounts/{id}/roles": {
+    "/api/applicant": {
       "get": {
         "tags": [
-          "Accounts"
+          "Applicant"
         ],
-        "operationId": "Accounts_UpdateRole",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      },
-      "post": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_GrantRole",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddUserToRolesCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_RevokeRole",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemoveUserFromRolesCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/accounts/me": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_MyProfile",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MyProfileResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      },
-      "put": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_UpdateMyProfile",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateMyProfileCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MyProfileResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/accounts/me/identity/change-password": {
-      "put": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_ChangeMyPassword",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangePasswordCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/accounts/me/identity/verify/phone/send": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_SendVerificationCodeForMyPhone",
-        "parameters": [
-          {
-            "name": "phone",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/accounts/me/identity/verify/phone": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_VerifyMyPhone",
-        "parameters": [
-          {
-            "name": "phone",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          },
-          {
-            "name": "code",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 2
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/accounts/me/identity/verify/email/sent": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_SendVerificationTokenForMyEmail",
-        "parameters": [
-          {
-            "name": "newEmail",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/accounts/me/identity/verify/email": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_VerifyMyEmail",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          },
-          {
-            "name": "newEmail",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 2
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 3
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/accounts/identity/verify/phone/send": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_SendPhoneVerificationCode",
-        "parameters": [
-          {
-            "name": "phone",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/accounts/identity/verify/phone": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_VerifyPhone",
-        "parameters": [
-          {
-            "name": "phone",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          },
-          {
-            "name": "code",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 2
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/accounts/identity/email/exist": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_GetById",
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/accounts/identity/verify/email/sent": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_SendEmailVerificationToken",
-        "parameters": [
-          {
-            "name": "newEmail",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/accounts/identity/verify/email": {
-      "put": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_VerifyEmail",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateMyProfileCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/auth/login": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "operationId": "Auth_Login",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BasicAuthenticationCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JwtTokenResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/auth/refresh-token": {
-      "put": {
-        "tags": [
-          "Auth"
-        ],
-        "operationId": "Auth_RefreshToken",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RefreshTokenCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JwtTokenResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/auth/revoke-refresh-token": {
-      "delete": {
-        "tags": [
-          "Auth"
-        ],
-        "operationId": "Auth_RevokeRefreshToken",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RevokeRefreshTokenCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JwtTokenResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/permissions": {
-      "get": {
-        "tags": [
-          "Permissions"
-        ],
-        "operationId": "Permissions_Get",
-        "parameters": [
-          {
-            "name": "Filters",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          },
-          {
-            "name": "Sorts",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "maximum": 2147483647.0,
-              "minimum": 1.0,
-              "nullable": true
-            },
-            "x-position": 3
-          },
-          {
-            "name": "PageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "maximum": 2147483647.0,
-              "minimum": 1.0,
-              "nullable": true
-            },
-            "x-position": 4
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaggedListOfPermissionResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/applicants": {
-      "get": {
-        "tags": [
-          "Applicants"
-        ],
-        "operationId": "Applicants_GetAllApplicant",
-        "parameters": [
-          {
-            "name": "Filters",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          },
-          {
-            "name": "Sorts",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "maximum": 2147483647.0,
-              "minimum": 1.0,
-              "nullable": true
-            },
-            "x-position": 3
-          },
-          {
-            "name": "PageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "maximum": 2147483647.0,
-              "minimum": 1.0,
-              "nullable": true
-            },
-            "x-position": 4
-          }
-        ],
+        "operationId": "Applicant_GetAllApplicant",
         "responses": {
           "200": {
             "description": "",
@@ -882,9 +38,9 @@
       },
       "post": {
         "tags": [
-          "Applicants"
+          "Applicant"
         ],
-        "operationId": "Applicants_CreateNewApplicant",
+        "operationId": "Applicant_CreateNewApplicant",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -912,12 +68,12 @@
         }
       }
     },
-    "/api/applicants/{id}": {
+    "/api/applicant/{id}": {
       "get": {
         "tags": [
-          "Applicants"
+          "Applicant"
         ],
-        "operationId": "Applicants_GetApplicantById",
+        "operationId": "Applicant_GetApplicantById",
         "parameters": [
           {
             "name": "id",
@@ -946,9 +102,9 @@
       },
       "put": {
         "tags": [
-          "Applicants"
+          "Applicant"
         ],
-        "operationId": "Applicants_UpdateApplicant",
+        "operationId": "Applicant_UpdateApplicant",
         "parameters": [
           {
             "name": "id",
@@ -989,9 +145,9 @@
       },
       "delete": {
         "tags": [
-          "Applicants"
+          "Applicant"
         ],
-        "operationId": "Applicants_DeleteApplicant",
+        "operationId": "Applicant_DeleteApplicant",
         "parameters": [
           {
             "name": "id",
@@ -1030,15 +186,15 @@
         }
       }
     },
-    "/api/applicants/{applicantId}/tags/{tagId}": {
+    "/api/applicant/{id}/tags": {
       "post": {
         "tags": [
-          "Applicants"
+          "Applicant"
         ],
-        "operationId": "Applicants_AddTagToApplicant",
+        "operationId": "Applicant_AddTag",
         "parameters": [
           {
-            "name": "applicantId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -1046,25 +202,28 @@
               "format": "guid"
             },
             "x-position": 1
-          },
-          {
-            "name": "tagId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 2
           }
         ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTagsToApplicantCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "boolean"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -1073,12 +232,12 @@
       },
       "delete": {
         "tags": [
-          "Applicants"
+          "Applicant"
         ],
-        "operationId": "Applicants_RemoveTagFromApplicant",
+        "operationId": "Applicant_RemoveTags",
         "parameters": [
           {
-            "name": "applicantId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -1086,25 +245,28 @@
               "format": "guid"
             },
             "x-position": 1
-          },
-          {
-            "name": "tagId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 2
           }
         ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveTagsFromApplicantCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "boolean"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -1112,12 +274,12 @@
         }
       }
     },
-    "/api/applications": {
+    "/api/application": {
       "get": {
         "tags": [
-          "Applications"
+          "Application"
         ],
-        "operationId": "Applications_GetAll",
+        "operationId": "Application_GetAll",
         "parameters": [
           {
             "name": "Filters",
@@ -1177,9 +339,9 @@
       },
       "post": {
         "tags": [
-          "Applications"
+          "Application"
         ],
-        "operationId": "Applications_CreateApplication",
+        "operationId": "Application_CreateApplication",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -1207,12 +369,12 @@
         }
       }
     },
-    "/api/applications/{Id}": {
+    "/api/application/{Id}": {
       "get": {
         "tags": [
-          "Applications"
+          "Application"
         ],
-        "operationId": "Applications_GetApplicationById",
+        "operationId": "Application_GetApplicationById",
         "parameters": [
           {
             "name": "Id",
@@ -1251,9 +413,9 @@
       },
       "put": {
         "tags": [
-          "Applications"
+          "Application"
         ],
-        "operationId": "Applications_UpdateApplication",
+        "operationId": "Application_UpdateApplication",
         "parameters": [
           {
             "name": "Id",
@@ -1294,9 +456,9 @@
       },
       "delete": {
         "tags": [
-          "Applications"
+          "Application"
         ],
-        "operationId": "Applications_DeleteApplication",
+        "operationId": "Application_DeleteApplication",
         "parameters": [
           {
             "name": "Id",
@@ -1323,12 +485,12 @@
         }
       }
     },
-    "/api/categories": {
+    "/api/category": {
       "get": {
         "tags": [
-          "Categories"
+          "Category"
         ],
-        "operationId": "Categories_GetAll",
+        "operationId": "Category_GetAll",
         "parameters": [
           {
             "name": "Filters",
@@ -1379,7 +541,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaggedListOfCategoryResponse"
+                  "$ref": "#/components/schemas/PaggedListOfVacancyCategoryListDTO"
                 }
               }
             }
@@ -1388,9 +550,9 @@
       },
       "post": {
         "tags": [
-          "Categories"
+          "Category"
         ],
-        "operationId": "Categories_CreateNewJobVacancy",
+        "operationId": "Category_CreateNewJobVacancy",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -1418,12 +580,12 @@
         }
       }
     },
-    "/api/categories/{id}": {
+    "/api/category/{id}": {
       "get": {
         "tags": [
-          "Categories"
+          "Category"
         ],
-        "operationId": "Categories_GetById",
+        "operationId": "Category_GetById",
         "parameters": [
           {
             "name": "id",
@@ -1452,9 +614,9 @@
       },
       "put": {
         "tags": [
-          "Categories"
+          "Category"
         ],
-        "operationId": "Categories_Update",
+        "operationId": "Category_Update",
         "parameters": [
           {
             "name": "id",
@@ -1495,9 +657,9 @@
       },
       "delete": {
         "tags": [
-          "Categories"
+          "Category"
         ],
-        "operationId": "Categories_Delete",
+        "operationId": "Category_Delete",
         "parameters": [
           {
             "name": "id",
@@ -1510,6 +672,39 @@
             "x-position": 1
           }
         ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/emailtest": {
+      "post": {
+        "tags": [
+          "EmailTest"
+        ],
+        "operationId": "EmailTest_SendEmail",
+        "requestBody": {
+          "x-name": "emailMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailMessage"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -1666,7 +861,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateInternshipVacancyCommand"
+                "$ref": "#/components/schemas/CreateInternshipCommand"
               }
             }
           },
@@ -1711,7 +906,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateInternshipVacancyCommand"
+                "$ref": "#/components/schemas/UpdateInternshipCommand"
               }
             }
           },
@@ -1754,7 +949,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DeleteInternshipVacancyCommand"
+                "$ref": "#/components/schemas/DeleteInternshipCommand"
               }
             }
           },
@@ -1806,12 +1001,100 @@
         }
       }
     },
-    "/api/jobs": {
+    "/api/internships/{id}/tags": {
+      "post": {
+        "tags": [
+          "Internships"
+        ],
+        "operationId": "Internships_AddTag",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTagToInternshipCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Internships"
+        ],
+        "operationId": "Internships_RemoveTags",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveTagFromInternshipCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobvacancies": {
       "get": {
         "tags": [
-          "Jobs"
+          "JobVacancies"
         ],
-        "operationId": "Jobs_Get",
+        "operationId": "JobVacancies_Get",
         "parameters": [
           {
             "name": "Filters",
@@ -1872,9 +1155,9 @@
       },
       "post": {
         "tags": [
-          "Jobs"
+          "JobVacancies"
         ],
-        "operationId": "Jobs_CreateNewJobVacancy",
+        "operationId": "JobVacancies_CreateNewJobVacancy",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -1902,12 +1185,12 @@
         }
       }
     },
-    "/api/jobs/{id}": {
+    "/api/jobvacancies/{id}": {
       "get": {
         "tags": [
-          "Jobs"
+          "JobVacancies"
         ],
-        "operationId": "Jobs_Get2",
+        "operationId": "JobVacancies_Get2",
         "parameters": [
           {
             "name": "id",
@@ -1936,9 +1219,9 @@
       },
       "put": {
         "tags": [
-          "Jobs"
+          "JobVacancies"
         ],
-        "operationId": "Jobs_Update",
+        "operationId": "JobVacancies_Update",
         "parameters": [
           {
             "name": "id",
@@ -1978,63 +1261,108 @@
         }
       }
     },
-    "/api/reviewers": {
-      "get": {
+    "/api/jobvacancies/{id}/tags": {
+      "post": {
         "tags": [
-          "Reviewers"
+          "JobVacancies"
         ],
-        "operationId": "Reviewers_GetAllReviewer",
+        "operationId": "JobVacancies_AddTag",
         "parameters": [
           {
-            "name": "Filters",
-            "in": "query",
+            "name": "id",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string",
-              "nullable": true
+              "format": "guid"
             },
             "x-position": 1
-          },
-          {
-            "name": "Sorts",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "maximum": 2147483647.0,
-              "minimum": 1.0,
-              "nullable": true
-            },
-            "x-position": 3
-          },
-          {
-            "name": "PageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "maximum": 2147483647.0,
-              "minimum": 1.0,
-              "nullable": true
-            },
-            "x-position": 4
           }
         ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTagsToJobVacancyCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaggedListOfReviewerListDto"
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "JobVacancies"
+        ],
+        "operationId": "JobVacancies_RemoveTags",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveTagsFromJobVacancyCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviewer": {
+      "get": {
+        "tags": [
+          "Reviewer"
+        ],
+        "operationId": "Reviewer_GetAllReviewer",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2043,9 +1371,9 @@
       },
       "post": {
         "tags": [
-          "Reviewers"
+          "Reviewer"
         ],
-        "operationId": "Reviewers_CreateNewReviewer",
+        "operationId": "Reviewer_CreateNewReviewer",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -2073,12 +1401,12 @@
         }
       }
     },
-    "/api/reviewers/{id}": {
+    "/api/reviewer/{id}": {
       "get": {
         "tags": [
-          "Reviewers"
+          "Reviewer"
         ],
-        "operationId": "Reviewers_GetReviewerById",
+        "operationId": "Reviewer_GetReviewerById",
         "parameters": [
           {
             "name": "id",
@@ -2107,9 +1435,9 @@
       },
       "put": {
         "tags": [
-          "Reviewers"
+          "Reviewer"
         ],
-        "operationId": "Reviewers_UpdateReviewer",
+        "operationId": "Reviewer_UpdateReviewer",
         "parameters": [
           {
             "name": "id",
@@ -2150,9 +1478,9 @@
       },
       "delete": {
         "tags": [
-          "Reviewers"
+          "Reviewer"
         ],
-        "operationId": "Reviewers_DeleteReviewer",
+        "operationId": "Reviewer_DeleteReviewer",
         "parameters": [
           {
             "name": "id",
@@ -2184,6 +1512,94 @@
               "application/json": {
                 "schema": {
                   "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviewer/{id}/tags": {
+      "post": {
+        "tags": [
+          "Reviewer"
+        ],
+        "operationId": "Reviewer_AddTag",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTagsToReviewerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reviewer"
+        ],
+        "operationId": "Reviewer_RemoveTags",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveTagsFromReviewerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2223,12 +1639,12 @@
         }
       }
     },
-    "/api/trainings/{id}": {
+    "/api/trainingmodel/{id}": {
       "get": {
         "tags": [
-          "Trainings"
+          "TrainingModel"
         ],
-        "operationId": "Trainings_GetTrainingModelById",
+        "operationId": "TrainingModel_GetTrainingModelById",
         "parameters": [
           {
             "name": "id",
@@ -2257,9 +1673,9 @@
       },
       "put": {
         "tags": [
-          "Trainings"
+          "TrainingModel"
         ],
-        "operationId": "Trainings_UpdateTrainingModel",
+        "operationId": "TrainingModel_UpdateTrainingModel",
         "parameters": [
           {
             "name": "id",
@@ -2277,7 +1693,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateTrainingVacancyCommand"
+                "$ref": "#/components/schemas/UpdateTrainingModelCommand"
               }
             }
           },
@@ -2300,9 +1716,9 @@
       },
       "delete": {
         "tags": [
-          "Trainings"
+          "TrainingModel"
         ],
-        "operationId": "Trainings_DeleteTrainingModel",
+        "operationId": "TrainingModel_DeleteTrainingModel",
         "parameters": [
           {
             "name": "id",
@@ -2320,7 +1736,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DeleteTrainingVacancyCommand"
+                "$ref": "#/components/schemas/DeleteTrainingModelCommand"
               }
             }
           },
@@ -2341,12 +1757,12 @@
         }
       }
     },
-    "/api/trainings": {
+    "/api/trainingmodel": {
       "get": {
         "tags": [
-          "Trainings"
+          "TrainingModel"
         ],
-        "operationId": "Trainings_GetTrainingModelsWithPagination",
+        "operationId": "TrainingModel_GetTrainingModelsWithPagination",
         "parameters": [
           {
             "name": "Filters",
@@ -2397,7 +1813,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaggedListOfTrainingVacancyListDTO"
+                  "$ref": "#/components/schemas/PaggedListOfTrainingModelListDTO"
                 }
               }
             }
@@ -2406,15 +1822,15 @@
       },
       "post": {
         "tags": [
-          "Trainings"
+          "TrainingModel"
         ],
-        "operationId": "Trainings_CreateNewTrainingModel",
+        "operationId": "TrainingModel_CreateNewTrainingModel",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTrainingVacancyCommand"
+                "$ref": "#/components/schemas/CreateTrainingModelCommand"
               }
             }
           },
@@ -2435,335 +1851,165 @@
           }
         }
       }
+    },
+    "/api/trainingmodel/{id}/tags": {
+      "post": {
+        "tags": [
+          "TrainingModel"
+        ],
+        "operationId": "TrainingModel_AddTag",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTagToTrainingModelCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "TrainingModel"
+        ],
+        "operationId": "TrainingModel_RemoveTags",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveTagFromTrainingModelCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/vacancies": {
+      "get": {
+        "tags": [
+          "Vacancies"
+        ],
+        "operationId": "Vacancies_GetFilteredVacancies",
+        "parameters": [
+          {
+            "name": "requiredYearOfExperience",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "workSchedule",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/WorkSchedule"
+                }
+              ]
+            },
+            "x-position": 2
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid",
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 4
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Vacancy"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "RegisterUserCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "patronymic": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "dateOfBirth": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "gender": {
-            "$ref": "#/components/schemas/Gender"
-          },
-          "phoneVerificationCode": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "termsAccepted": {
-            "type": "boolean"
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          },
-          "passwordConfirmation": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "Gender": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Male",
-          "Female"
-        ],
-        "enum": [
-          "Male",
-          "Female"
-        ]
-      },
-      "AddUserToRolesCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
-          "roles": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "RemoveUserFromRolesCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
-          "roles": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "MyProfileResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "avatar": {
-            "type": "string",
-            "nullable": true
-          },
-          "dateOfBirth": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "patronymic": {
-            "type": "string",
-            "nullable": true
-          },
-          "gender": {
-            "$ref": "#/components/schemas/Gender"
-          },
-          "identity": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/MyIdentityResponse"
-              }
-            ]
-          }
-        }
-      },
-      "MyIdentityResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "isActive": {
-            "type": "boolean"
-          },
-          "roles": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          },
-          "permissions": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          },
-          "twoFactorEnabled": {
-            "type": "boolean"
-          }
-        }
-      },
-      "UpdateMyProfileCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "patronymic": {
-            "type": "string",
-            "nullable": true
-          },
-          "dateOfBirth": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "avatar": {
-            "type": "string",
-            "nullable": true
-          },
-          "gender": {
-            "$ref": "#/components/schemas/Gender"
-          }
-        }
-      },
-      "ChangePasswordCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
-          "oldPassword": {
-            "type": "string",
-            "nullable": true
-          },
-          "newPassword": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "JwtTokenResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "accessToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "refreshToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "refreshTokenValidTo": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "BasicAuthenticationCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "RefreshTokenCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "token": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "RevokeRefreshTokenCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "token": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "PaggedListOfPermissionResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "totalCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "currentPageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "items": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/PermissionResponse"
-            }
-          },
-          "hasPreviousPage": {
-            "type": "boolean"
-          },
-          "hasNextPage": {
-            "type": "boolean"
-          }
-        }
-      },
-      "PermissionResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "group": {
-            "type": "string",
-            "nullable": true
-          },
-          "displayName": {
-            "type": "string",
-            "nullable": true
-          },
-          "groupDisplayName": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
       "CreateApplicantCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -2792,7 +2038,7 @@
             "type": "string",
             "nullable": true
           },
-          "dateOfBirth": {
+          "dateOfBrith": {
             "type": "string",
             "format": "date-time"
           }
@@ -2822,7 +2068,7 @@
             "type": "string",
             "nullable": true
           },
-          "dateOfBirth": {
+          "dateOfBrith": {
             "type": "string",
             "format": "date-time"
           },
@@ -2843,6 +2089,40 @@
           "id": {
             "type": "string",
             "format": "guid"
+          }
+        }
+      },
+      "AddTagsToApplicantCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "applicantId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RemoveTagsFromApplicantCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "applicantId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -3022,7 +2302,7 @@
           }
         }
       },
-      "PaggedListOfCategoryResponse": {
+      "PaggedListOfVacancyCategoryListDTO": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3046,7 +2326,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/CategoryResponse"
+              "$ref": "#/components/schemas/VacancyCategoryListDTO"
             }
           },
           "hasPreviousPage": {
@@ -3057,7 +2337,7 @@
           }
         }
       },
-      "CategoryResponse": {
+      "VacancyCategoryListDTO": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3095,7 +2375,32 @@
           }
         }
       },
-      "CreateInternshipVacancyCommand": {
+      "EmailMessage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "to": {
+            "type": "string",
+            "nullable": true
+          },
+          "from": {
+            "type": "string",
+            "nullable": true
+          },
+          "subject": {
+            "type": "string",
+            "nullable": true
+          },
+          "body": {
+            "type": "string",
+            "nullable": true
+          },
+          "isHtml": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateInternshipCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3137,7 +2442,7 @@
           }
         }
       },
-      "UpdateInternshipVacancyCommand": {
+      "UpdateInternshipCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3195,13 +2500,47 @@
           }
         }
       },
-      "DeleteInternshipVacancyCommand": {
+      "DeleteInternshipCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string",
             "format": "guid"
+          }
+        }
+      },
+      "AddTagToInternshipCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "internshipId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RemoveTagFromInternshipCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "internshipId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -3295,68 +2634,37 @@
           }
         }
       },
-      "PaggedListOfReviewerListDto": {
+      "AddTagsToJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "totalCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "currentPageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "items": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/ReviewerListDto"
-            }
-          },
-          "hasPreviousPage": {
-            "type": "boolean"
-          },
-          "hasNextPage": {
-            "type": "boolean"
-          }
-        }
-      },
-      "ReviewerListDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
+          "jobVacancyId": {
             "type": "string",
             "format": "guid"
           },
-          "avatar": {
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RemoveTagsFromJobVacancyCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "jobVacancyId": {
             "type": "string",
-            "nullable": true
+            "format": "guid"
           },
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -3368,7 +2676,7 @@
             "type": "string",
             "nullable": true
           },
-          "dateOfBirth": {
+          "dateOfBrith": {
             "type": "string",
             "format": "date-time"
           },
@@ -3414,7 +2722,7 @@
             "type": "string",
             "nullable": true
           },
-          "dateOfBirth": {
+          "dateOfBrith": {
             "type": "string",
             "format": "date-time"
           },
@@ -3438,6 +2746,40 @@
           }
         }
       },
+      "AddTagsToReviewerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reviewerId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RemoveTagsFromReviewerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reviewerId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "SmsMessage": {
         "type": "object",
         "additionalProperties": false,
@@ -3452,7 +2794,7 @@
           }
         }
       },
-      "PaggedListOfTrainingVacancyListDTO": {
+      "PaggedListOfTrainingModelListDTO": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3476,7 +2818,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/TrainingVacancyListDTO"
+              "$ref": "#/components/schemas/TrainingModelListDTO"
             }
           },
           "hasPreviousPage": {
@@ -3487,7 +2829,7 @@
           }
         }
       },
-      "TrainingVacancyListDTO": {
+      "TrainingModelListDTO": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3533,7 +2875,7 @@
           }
         }
       },
-      "CreateTrainingVacancyCommand": {
+      "CreateTrainingModelCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3571,7 +2913,7 @@
           }
         }
       },
-      "UpdateTrainingVacancyCommand": {
+      "UpdateTrainingModelCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3613,7 +2955,7 @@
           }
         }
       },
-      "DeleteTrainingVacancyCommand": {
+      "DeleteTrainingModelCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3622,6 +2964,737 @@
             "format": "guid"
           }
         }
+      },
+      "AddTagToTrainingModelCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trainingModelId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RemoveTagFromTrainingModelCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trainingModelId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Vacancy": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "x-abstract": true,
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string",
+                "nullable": true
+              },
+              "shortDescription": {
+                "type": "string",
+                "nullable": true
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "publishDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "categoryId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "category": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/VacancyCategory"
+                  }
+                ]
+              },
+              "applications": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Application"
+                }
+              },
+              "history": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/VacancyTimelineEvent"
+                }
+              },
+              "tests": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Test"
+                }
+              },
+              "tags": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/VacancyTag"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "VacancyCategory": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "vacancies": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Vacancy"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BaseEntity": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "Application": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "coverLetter": {
+                "type": "string",
+                "nullable": true
+              },
+              "cv": {
+                "type": "string",
+                "nullable": true
+              },
+              "appliedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "status": {
+                "$ref": "#/components/schemas/ApplicationStatus"
+              },
+              "vacancy": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Vacancy"
+                  }
+                ]
+              },
+              "vacancyId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "applicant": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Applicant"
+                  }
+                ]
+              },
+              "applicantId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "testResult": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TestResult"
+                  }
+                ]
+              },
+              "history": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/ApplicationTimelineEvent"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ApplicationStatus": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Submitted",
+          "TestCompleted",
+          "Verified",
+          "InterviewPassed",
+          "Approved",
+          "Hired",
+          "Reserved",
+          "Expired",
+          "Refused",
+          "TestFailed",
+          "InterviewFailed",
+          "Rejected"
+        ],
+        "enum": [
+          "Submitted",
+          "TestCompleted",
+          "Verified",
+          "InterviewPassed",
+          "Approved",
+          "Hired",
+          "Reserved",
+          "Expired",
+          "Refused",
+          "TestFailed",
+          "InterviewFailed",
+          "Rejected"
+        ]
+      },
+      "Applicant": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/User"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "applications": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Application"
+                }
+              },
+              "socialMedias": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/ApplicantSocialMedia"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ApplicantSocialMedia": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "profileUrl": {
+                "type": "string",
+                "nullable": true
+              },
+              "type": {
+                "$ref": "#/components/schemas/SocialMediaType"
+              },
+              "applicantId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "applicant": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Applicant"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "SocialMediaType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "LinkedIn",
+          "GitHub",
+          "Twitter",
+          "Facebook",
+          "Instagram"
+        ],
+        "enum": [
+          "LinkedIn",
+          "GitHub",
+          "Twitter",
+          "Facebook",
+          "Instagram"
+        ]
+      },
+      "User": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "x-abstract": true,
+            "additionalProperties": false,
+            "properties": {
+              "avatar": {
+                "type": "string",
+                "nullable": true
+              },
+              "dateOfBrith": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "email": {
+                "type": "string",
+                "nullable": true
+              },
+              "firstName": {
+                "type": "string",
+                "nullable": true
+              },
+              "lastName": {
+                "type": "string",
+                "nullable": true
+              },
+              "phoneNumber": {
+                "type": "string",
+                "nullable": true
+              },
+              "history": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/UserTimelineEvent"
+                }
+              },
+              "tags": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/UserTag"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "UserTimelineEvent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TimelineEvent"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "userId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "user": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "TimelineEvent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "x-abstract": true,
+            "additionalProperties": false,
+            "properties": {
+              "createBy": {
+                "type": "string",
+                "format": "guid"
+              },
+              "note": {
+                "type": "string",
+                "nullable": true
+              },
+              "time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "eventType": {
+                "$ref": "#/components/schemas/TimelineEventType"
+              }
+            }
+          }
+        ]
+      },
+      "TimelineEventType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Created",
+          "Updated",
+          "Deleted",
+          "StatusChanged",
+          "Note",
+          "Error"
+        ],
+        "enum": [
+          "Created",
+          "Updated",
+          "Deleted",
+          "StatusChanged",
+          "Note",
+          "Error"
+        ]
+      },
+      "UserTag": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "tag": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Tag"
+                  }
+                ]
+              },
+              "tagId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "user": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
+              },
+              "userId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "Tag": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "vacancyTags": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/VacancyTag"
+                }
+              },
+              "userTags": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/UserTag"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "VacancyTag": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "tag": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Tag"
+                  }
+                ]
+              },
+              "tagId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "vacancy": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Vacancy"
+                  }
+                ]
+              },
+              "vacancyId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "BaseAuditableEntity": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "x-abstract": true,
+            "additionalProperties": false,
+            "properties": {
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "string",
+                "format": "guid"
+              },
+              "lastModifiedAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "lastModifiedBy": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "TestResult": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "completedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "passed": {
+                "type": "boolean"
+              },
+              "score": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "testId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "test": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Test"
+                  }
+                ]
+              },
+              "applicationId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "application": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Application"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Test": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string",
+                "nullable": true
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "duration": {
+                "type": "string",
+                "format": "duration"
+              },
+              "numberOfQuestion": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "passingScore": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "vacancyId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "vacancy": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Vacancy"
+                  }
+                ]
+              },
+              "results": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/TestResult"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ApplicationTimelineEvent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TimelineEvent"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "applicationId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "application": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Application"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "VacancyTimelineEvent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TimelineEvent"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "vacancyId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "vacancy": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Vacancy"
+                  }
+                ]
+              }
+            }
+          }
+        ]
       }
     },
     "securitySchemes": {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.Reviewer.Commands;
 using MRA.Jobs.Application.Contracts.Reviewer.Command;
 using MRA.Jobs.Application.Contracts.Reviewer.Queries;
 using MRA.Jobs.Application.Contracts.Reviewer.Response;
@@ -8,10 +8,15 @@ namespace MRA.Jobs.Web.Controllers;
 
 public class ReviewersController : ApiControllerBase
 {
-    [HttpGet]
-    public async Task<ActionResult<PaggedList<ReviewerListDto>>> GetAllReviewer([FromQuery] PaggedListQuery<ReviewerListDto> query)
+    public ReviewerController()
     {
-        var reviewers = await Mediator.Send(query);
+        
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllReviewer()
+    {
+        var reviewers = await Mediator.Send(new GetAllReviewerQuery());
         return Ok(reviewers);
     }
 
@@ -45,5 +50,20 @@ public class ReviewersController : ApiControllerBase
     {
         return await Mediator.Send(request, cancellationToken);
     }
-    
+
+    [HttpPost("{id}/tags")]
+    public async Task<IActionResult> AddTag(Guid id, [FromBody] AddTagsToReviewerCommand request, CancellationToken cancellationToken)
+    {
+        request.ReviewerId = id;
+        await Mediator.Send(request, cancellationToken);
+        return Ok();
+    }
+
+    [HttpDelete("{id}/tags")]
+    public async Task<IActionResult> RemoveTags(Guid id, [FromBody] RemoveTagsFromReviewerCommand request, CancellationToken cancellationToken)
+    {
+        request.ReviewerId = id;
+        await Mediator.Send(request, cancellationToken);
+        return Ok();
+    }
 }
