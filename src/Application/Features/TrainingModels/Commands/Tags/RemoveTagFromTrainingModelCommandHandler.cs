@@ -18,30 +18,33 @@ public class RemoveTagFromTrainingModelCommandHandler : IRequestHandler<RemoveTa
 
     public async Task<bool> Handle(RemoveTagFromTrainingModelCommand request, CancellationToken cancellationToken)
     {
-        var trainingModel = await _context.TrainingModels.FindAsync(new object[] { request.TrainingModelId }, cancellationToken);
+        var trainingModel = await _context.TrainingModels
+         .Include(x => x.Tags)
+         .ThenInclude(t => t.Tag)
+         .FirstOrDefaultAsync(x => x.Id == request.TrainingModelId, cancellationToken);
 
         if (trainingModel == null)
             throw new NotFoundException(nameof(trainingModel), request.TrainingModelId);
 
-        foreach (var tag in request.Tags)
+        foreach (var tagName in request.Tags)
         {
-            var vacancyTag = await _context.VacancyTags.FindAsync(new object[] { request.TrainingModelId, tag }, cancellationToken);
+            var vacancyTag = trainingModel.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
 
-            if (vacancyTag != null)
+            if (vacancyTag == null)
+                continue;
+
+            _context.VacancyTags.Remove(vacancyTag);
+
+            var timelineEvent = new VacancyTimelineEvent
             {
-                _context.VacancyTags.Remove(vacancyTag);
+                VacancyId = trainingModel.Id,
+                EventType = TimelineEventType.Deleted,
+                Time = _dateTime.Now,
+                Note = $"Removed '{tagName}' tag",
+                CreateBy = _currentUserService.UserId
+            };
+            await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
 
-
-                var timelineEvent = new VacancyTimelineEvent
-                {
-                    VacancyId = trainingModel.Id,
-                    EventType = TimelineEventType.Deleted,
-                    Time = _dateTime.Now,
-                    Note = $"Removed '{tag}' tag",
-                    CreateBy = _currentUserService.UserId
-                };
-                await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
-            }
         }
         await _context.SaveChangesAsync(cancellationToken);
         return true;

@@ -51,7 +51,7 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpPost("{id}/tags")]
-    public async Task<IActionResult> AddTag(Guid id, [FromBody] AddTagsToApplicantCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddTag([FromRoute] Guid id, [FromBody] AddTagsToApplicantCommand request, CancellationToken cancellationToken)
     {
         request.ApplicantId = id;
         await Mediator.Send(request, cancellationToken);
@@ -59,7 +59,7 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpDelete("{id}/tags")]
-    public async Task<IActionResult> RemoveTags(Guid id, [FromBody] RemoveTagsFromApplicantCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveTags([FromRoute] Guid id, [FromBody] RemoveTagsFromApplicantCommand request, CancellationToken cancellationToken)
     {
         request.ApplicantId = id;
         await Mediator.Send(request, cancellationToken);

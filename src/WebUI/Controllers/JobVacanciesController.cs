@@ -28,7 +28,7 @@ public class JobVacanciesController : ApiControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id)
+    public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         var category = await Mediator.Send(new GetJobVacancyByIdQuery { Id = id });
         return Ok(category);
@@ -50,7 +50,7 @@ public class JobVacanciesController : ApiControllerBase
     }
 
     [HttpPost("{id}/tags")]
-    public async Task<IActionResult> AddTag(Guid id, [FromBody] AddTagsToJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddTag([FromRoute] Guid id, [FromBody] AddTagsToJobVacancyCommand request, CancellationToken cancellationToken)
     {
         request.JobVacancyId = id;
         await Mediator.Send(request, cancellationToken);
@@ -58,7 +58,7 @@ public class JobVacanciesController : ApiControllerBase
     }
 
     [HttpDelete("{id}/tags")]
-    public async Task<IActionResult> RemoveTags(Guid id, [FromBody] RemoveTagsFromJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveTags([FromRoute] Guid id, [FromBody] RemoveTagsFromJobVacancyCommand request, CancellationToken cancellationToken)
     {
         request.JobVacancyId = id;
         await Mediator.Send(request, cancellationToken);

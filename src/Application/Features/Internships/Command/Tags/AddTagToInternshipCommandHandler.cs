@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.Internships.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.Internships.Commands;
 using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.Internships.Command.Tags;
@@ -18,14 +19,17 @@ public class AddTagToInternshipCommandHandler : IRequestHandler<AddTagToInternsh
     }
     public async Task<bool> Handle(AddTagToInternshipCommand request, CancellationToken cancellationToken)
     {
-        var internship = await _context.Internships.FindAsync(new object[] { request.InternshipId }, cancellationToken);
+        var internship = await _context.Internships
+          .Include(x => x.Tags)
+          .ThenInclude(t => t.Tag)
+          .FirstOrDefaultAsync(x => x.Id == request.InternshipId, cancellationToken);
 
         if (internship == null)
-            throw new NotFoundException(nameof(JobVacancy), request.InternshipId);
+            throw new NotFoundException(nameof(internship), request.InternshipId);
 
         foreach (var tagName in request.Tags)
         {
-            var tag = await _context.Tags.FindAsync(new object[] { tagName }, cancellationToken);
+            var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name.Equals(tagName), cancellationToken);
 
             if (tag == null)
             {
@@ -33,7 +37,7 @@ public class AddTagToInternshipCommandHandler : IRequestHandler<AddTagToInternsh
                 _context.Tags.Add(tag);
             }
 
-            var vacancyTag = await _context.VacancyTags.FindAsync(new object[] { request.InternshipId, tag.Id }, cancellationToken);
+            var vacancyTag = internship.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
 
             if (vacancyTag == null)
             {

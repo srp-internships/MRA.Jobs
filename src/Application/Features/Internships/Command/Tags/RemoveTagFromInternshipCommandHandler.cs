@@ -19,21 +19,35 @@ public class RemoveTagFromInternshipCommandHandler : IRequestHandler<RemoveTagFr
     }
     public async Task<bool> Handle(RemoveTagFromInternshipCommand request, CancellationToken cancellationToken)
     {
-        var internship = await _context.Internships.FindAsync(new object[] { request.InternshipId }, cancellationToken);
+        var internship = await _context.Internships
+           .Include(x => x.Tags)
+           .ThenInclude(t => t.Tag)
+           .FirstOrDefaultAsync(x => x.Id == request.InternshipId, cancellationToken);
 
         if (internship == null)
             throw new NotFoundException(nameof(internship), request.InternshipId);
 
-        foreach (var tag in request.Tags)
+        foreach (var tagName in request.Tags)
         {
-            var internshipTag = internship.Tags.FirstOrDefault(t => t.Tag.Name == tag);
+            var vacancyTag = internship.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
 
-            if (internshipTag != null)
-                _context.VacancyTags.Remove(internshipTag);
+            if (vacancyTag == null)
+                continue;
+
+            _context.VacancyTags.Remove(vacancyTag);
+
+            var timelineEvent = new VacancyTimelineEvent
+            {
+                VacancyId = internship.Id,
+                EventType = TimelineEventType.Deleted,
+                Time = _dateTime.Now,
+                Note = $"Removed '{tagName}' tag",
+                CreateBy = _currentUserService.UserId
+            };
+            await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
+
         }
-
         await _context.SaveChangesAsync(cancellationToken);
-
         return true;
     }
 }

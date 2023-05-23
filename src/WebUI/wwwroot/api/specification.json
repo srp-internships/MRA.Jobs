@@ -907,6 +907,94 @@
         }
       }
     },
+    "/api/internships/{id}/tags": {
+      "post": {
+        "tags": [
+          "Internships"
+        ],
+        "operationId": "Internships_AddTag",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTagToInternshipCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Internships"
+        ],
+        "operationId": "Internships_RemoveTags",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveTagFromInternshipCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/jobvacancies": {
       "get": {
         "tags": [
@@ -1639,6 +1727,94 @@
         }
       }
     },
+    "/api/trainingmodel/{id}/tags": {
+      "post": {
+        "tags": [
+          "TrainingModel"
+        ],
+        "operationId": "TrainingModel_AddTag",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTagToTrainingModelCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "TrainingModel"
+        ],
+        "operationId": "TrainingModel_RemoveTags",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveTagFromTrainingModelCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/vacancies": {
       "get": {
         "tags": [
@@ -2082,6 +2258,40 @@
           }
         }
       },
+      "AddTagToInternshipCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "internshipId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RemoveTagFromInternshipCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "internshipId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "CreateJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -2405,6 +2615,40 @@
           "id": {
             "type": "string",
             "format": "guid"
+          }
+        }
+      },
+      "AddTagToTrainingModelCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trainingModelId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RemoveTagFromTrainingModelCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trainingModelId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },

@@ -23,14 +23,17 @@ public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagsToJobVaca
 
     public async Task<bool> Handle(AddTagsToJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var jobVacancy = await _context.JobVacancies.FindAsync(new object[] { request.JobVacancyId }, cancellationToken);
+        var jobVacancy = await _context.Internships
+          .Include(x => x.Tags)
+          .ThenInclude(t => t.Tag)
+          .FirstOrDefaultAsync(x => x.Id == request.JobVacancyId, cancellationToken);
 
         if (jobVacancy == null)
             throw new NotFoundException(nameof(JobVacancy), request.JobVacancyId);
 
         foreach (var tagName in request.Tags)
         {
-            var tag = await _context.Tags.FindAsync(new object[] { tagName }, cancellationToken);
+            var tag = await _context.Tags.FirstOrDefaultAsync(t=>t.Name.Equals(tagName), cancellationToken);
 
             if (tag == null)
             {

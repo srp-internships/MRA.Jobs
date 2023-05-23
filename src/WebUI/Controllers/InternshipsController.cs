@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Internships.Commands;
 using MRA.Jobs.Application.Contracts.Internships.Responses;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
@@ -44,5 +45,21 @@ public class InternshipsController : ApiControllerBase
     {
         var internship = await Mediator.Send(new InternshipDetailsDTO { Id = id });
         return Ok(internship);
+    }
+
+    [HttpPost("{id}/tags")]
+    public async Task<IActionResult> AddTag([FromRoute] Guid id, [FromBody] AddTagToInternshipCommand  request, CancellationToken cancellationToken)
+    {
+        request.InternshipId = id;
+        await Mediator.Send(request, cancellationToken);
+        return Ok();
+    }
+
+    [HttpDelete("{id}/tags")]
+    public async Task<IActionResult> RemoveTags([FromRoute] Guid id, [FromBody] RemoveTagFromInternshipCommand request, CancellationToken cancellationToken)
+    {
+        request.InternshipId = id;
+        await Mediator.Send(request, cancellationToken);
+        return Ok();
     }
 }
