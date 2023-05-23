@@ -11,6 +11,7 @@ using MRA.Jobs.Infrastructure.Shared.Users.Queries;
 using MRA.Jobs.Web.Controllers;
 
 namespace MRA.Jobs.API.ControllersAuth;
+
 using Microsoft.AspNetCore.Authorization
     ;
 [Authorize]
@@ -75,7 +76,7 @@ public class AccountsController : ApiControllerBase
     }
 
     [HttpGet("me/identity/verify/phone/send")]
-    public async Task<IActionResult> ChangeMyEmail([FromQuery] string phone)
+    public async Task<IActionResult> SendVerificationCodeForMyPhone([FromQuery] string phone)
     {
         return Ok(await _mediator.Send(new ChangePhoneNumberCommand()
         {
@@ -85,7 +86,7 @@ public class AccountsController : ApiControllerBase
     }
 
     [HttpGet("me/identity/verify/phone")]
-    public async Task<IActionResult> ChangeMyEmail([FromQuery] string phone, [FromQuery] string code)
+    public async Task<IActionResult> VerifyMyPhone([FromQuery] string phone, [FromQuery] string code)
     {
         return Ok(await _mediator.Send(new ConfirmPhoneNumberChangeCommand()
         {
@@ -95,18 +96,70 @@ public class AccountsController : ApiControllerBase
         }));
     }
 
+    [HttpGet("me/identity/verify/email/sent")]
+    public async Task<IActionResult> SendVerificationTokenForMyEmail([FromQuery] string newEmail)
+    {
+        return Ok(await _mediator.Send(new ChangeEmailCommand()
+        {
+            UserId = _currentUserService.GetId() ?? Guid.Empty,
+            NewEmail = newEmail,
+        }));
+    }
+
+    [HttpGet("me/identity/verify/email")]
+    public async Task<IActionResult> VerifyMyEmail([FromQuery] string token, [FromQuery] string newEmail, [FromQuery] Guid userId)
+    {
+        return Ok(await _mediator.Send(new ConfirmEmailChangeCommand()
+        {
+            UserId = _currentUserService.GetId() ?? Guid.Empty,
+            NewEmail = newEmail,
+            Token = token
+        }));
+    }
+
     #endregion
 
-    //[HttpGet("identity/email")]
-    //public async Task<IActionResult> VerifyMyEmailChange([FromQuery] string token, [FromQuery] string newEmail, [FromQuery] Guid userId)
-    //{
-    //    return Ok(await _mediator.Send(command));
-    //}
+    [HttpGet("identity/verify/phone/send")]
+    public async Task<IActionResult> SendPhoneVerificationCode([FromQuery] string phone)
+    {
+        
+        return Ok(await _mediator.Send(new ChangePhoneNumberCommand()
+        {
+            NewPhoneNumber = phone,
+            UserId = _currentUserService.GetId() ?? Guid.Empty
+        }));
+    }
 
-    //[HttpPut("me/identity/change-phone")]
-    //public async Task<IActionResult> ChangeMyPhone(UpdateMyProfileCommand command)
-    //{
-    //    return Ok(await _mediator.Send(command));
-    //}
+    [HttpGet("identity/verify/phone")]
+    public async Task<IActionResult> VerifyPhone([FromQuery] string phone, [FromQuery] string code)
+    {
+        return Ok(await _mediator.Send(new ConfirmPhoneNumberChangeCommand()
+        {
+            NewPhoneNumber = phone,
+            Code = code,
+            UserId = _currentUserService.GetId() ?? Guid.Empty
+        }));
+    }
 
+    [HttpGet("identity/email/exist")]
+    public async Task<ActionResult<bool>> GetById([FromQuery] string email)
+    {
+        return Ok(await _mediator.Send(new EmailExistQuery() { Email = email }));
+    }
+
+    [HttpGet("identity/verify/email/sent")]
+    public async Task<IActionResult> SendEmailVerificationToken([FromQuery] string newEmail)
+    {
+        return Ok(await _mediator.Send(new ChangeEmailCommand()
+        {
+            UserId = _currentUserService.GetId() ?? Guid.Empty,
+            NewEmail = newEmail,
+        }));
+    }
+
+    [HttpPut("identity/verify/email")]
+    public async Task<IActionResult> VerifyEmail(UpdateMyProfileCommand command)
+    {
+        return Ok(await _mediator.Send(command));
+    }
 }

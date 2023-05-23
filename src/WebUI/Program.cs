@@ -65,6 +65,8 @@ app.UseSwaggerUi3(settings =>
 {
     settings.Path = "/api";
     settings.DocumentPath = "/api/specification.json";
+    settings.EnableTryItOut = true;
+    settings.PersistAuthorization = true;
 });
 
 app.UseRouting();

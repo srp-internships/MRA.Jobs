@@ -50,6 +50,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
             PhoneNumber = request.PhoneNumber,
             UserName = $"{request.LastName} {request.FirstName} {request.Patronymic}",
             PhoneNumberConfirmed = true,
+            EmailConfirmed = true,
         };
 
         var result = await _userManager.CreateAsync(user, request.Password);
