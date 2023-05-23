@@ -20,7 +20,10 @@ public class RemoveTagsFromApplicantCommandHandler : IRequestHandler<RemoveTagsF
 
     public async Task<bool> Handle(RemoveTagsFromApplicantCommand request, CancellationToken cancellationToken)
     {
-        var applicant = await _context.Applicants.FindAsync(new object[] { request.ApplicantId }, cancellationToken);
+        var applicant = await _context.Applicants
+            .Include(x => x.Tags)
+            .ThenInclude(t => t.Tag)
+            .FirstOrDefaultAsync(x => x.Id == request.ApplicantId, cancellationToken);
 
         if (applicant == null)
             throw new NotFoundException(nameof(Applicant), request.ApplicantId);
