@@ -39,7 +39,7 @@ else
     app.UseHsts();
 }
 
-app.UseHealthChecks("/health", new HealthCheckOptions
+app.UseHealthChecks("/status", new HealthCheckOptions
 {
     ResponseWriter = async (context, report) =>
     {
