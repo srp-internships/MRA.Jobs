@@ -1,23 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.Internships.Commands;
-using MRA.Jobs.Domain.Enums;
+using MRA.Jobs.Application.Common.Security;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 
-namespace MRA.Jobs.Application.Features.Internships.Command.Tags;
-public class RemoveTagFromInternshipCommandHandler : IRequestHandler<RemoveTagFromInternshipCommand, bool>
+namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Tags;
+public class RemoveTagFromInternshipVacancyCommandHandler : IRequestHandler<RemoveTagFromInternshipVacancyCommand, bool>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
 
-    public RemoveTagFromInternshipCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
+    public RemoveTagFromInternshipVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _context = context;
         _mapper = mapper;
         _dateTime = dateTime;
         _currentUserService = currentUserService;
     }
-    public async Task<bool> Handle(RemoveTagFromInternshipCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(RemoveTagFromInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         var internship = await _context.Internships
            .Include(x => x.Tags)
@@ -42,7 +42,7 @@ public class RemoveTagFromInternshipCommandHandler : IRequestHandler<RemoveTagFr
                 EventType = TimelineEventType.Deleted,
                 Time = _dateTime.Now,
                 Note = $"Removed '{tagName}' tag",
-                CreateBy = _currentUserService.UserId
+                CreateBy = _currentUserService.GetId() ?? Guid.Empty
             };
             await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
 

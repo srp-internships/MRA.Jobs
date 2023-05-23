@@ -48,7 +48,7 @@ public class RemoveTagsFromJobVacancyCommandHandler : IRequestHandler<RemoveTags
                 EventType = TimelineEventType.Deleted,
                 Time = _dateTime.Now,
                 Note = $"Removed '{tagName}' tag",
-                CreateBy = _currentUserService.UserId
+                CreateBy = _currentUserService.GetId() ?? Guid.Empty
             };
             await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
 

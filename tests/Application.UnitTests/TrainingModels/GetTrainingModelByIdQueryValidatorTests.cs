@@ -1,5 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingModels.Queries;
-using MRA.Jobs.Application.Features.TrainingVacancies.Queries.GetTrainingModelById;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
+using MRA.Jobs.Application.Features.TrainingVacancies.Queries;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 

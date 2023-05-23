@@ -1,7 +1,7 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Application.Features.TrainingVacancies.Commands.CreateTrainingModel;
+﻿namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 
-namespace MRA.Jobs.Application.UnitTests.TrainingModels;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Domain.Entities;
 public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
 {
@@ -44,7 +44,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
         var trainingModelSetMock = new Mock<DbSet<TrainingVacancy>>();
         var newEntityGuid = Guid.NewGuid();
         trainingModelSetMock.Setup(d => d.AddAsync(It.IsAny<TrainingVacancy>(), It.IsAny<CancellationToken>())).Callback<TrainingVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
-        _dbContextMock.Setup(x => x.TrainingModels).Returns(trainingModelSetMock.Object);
+        _dbContextMock.Setup(x => x.TrainingVacancies).Returns(trainingModelSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
         _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());

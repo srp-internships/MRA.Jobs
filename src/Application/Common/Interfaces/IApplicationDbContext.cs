@@ -25,7 +25,7 @@ public interface IApplicationDbContext
     public DbSet<Domain.Entities.Application> Applications { get; }
     public DbSet<ApplicationTimelineEvent> ApplicationTimelineEvents { get; }
     public DbSet<InternshipVacancy> Internships { get; }
-    public DbSet<TrainingVacancy> TrainingModels { get; }
+    public DbSet<TrainingVacancy> TrainingVacancies { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

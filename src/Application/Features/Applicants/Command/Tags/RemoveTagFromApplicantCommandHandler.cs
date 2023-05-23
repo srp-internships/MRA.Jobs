@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Applicant.Commands;
-using MRA.Jobs.Domain.Entities;
-using MRA.Jobs.Domain.Enums;
 
-namespace MRA.Jobs.Application.Features.Applicant.Command.Tags;
+namespace MRA.Jobs.Application.Features.Applicants.Command.Tags;
 public class RemoveTagsFromApplicantCommandHandler : IRequestHandler<RemoveTagsFromApplicantCommand, bool>
 {
     private readonly IApplicationDbContext _context;
@@ -48,7 +40,7 @@ public class RemoveTagsFromApplicantCommandHandler : IRequestHandler<RemoveTagsF
                 EventType = TimelineEventType.Deleted,
                 Time = _dateTime.Now,
                 Note = $"Removed '{tag}' tag",
-                CreateBy = _currentUserService.UserId
+                CreateBy = _currentUserService.GetId() ?? Guid.Empty
             };
             await _context.UserTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         }

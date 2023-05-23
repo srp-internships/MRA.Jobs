@@ -1,7 +1,7 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Application.Features.TrainingVacancies.Commands.UpdateTrainingModel;
+﻿namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 
-namespace MRA.Jobs.Application.UnitTests.TrainingModels;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Update;
 using MRA.Jobs.Domain.Entities;
 public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
 {
@@ -24,7 +24,7 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
     {
         // Arrange
         var command = new UpdateTrainingVacancyCommand { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.TrainingModels.FindAsync(command.Id)).ReturnsAsync(null as TrainingVacancy);
+        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(command.Id)).ReturnsAsync(null as TrainingVacancy);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -40,7 +40,7 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
     {
         // Arrange
         var command = new UpdateTrainingVacancyCommand { Id = Guid.NewGuid(), CategoryId = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.TrainingModels.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new TrainingVacancy());
+        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new TrainingVacancy());
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { command.CategoryId }, CancellationToken.None)).ReturnsAsync(null as VacancyCategory);
 
         // Act
@@ -70,7 +70,7 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
         var trainingModelsDbSetMock = new Mock<DbSet<TrainingVacancy>>();
         var categoryDbSetMock = new Mock<DbSet<VacancyCategory>>();
 
-        _dbContextMock.Setup(c => c.TrainingModels).Returns(trainingModelsDbSetMock.Object);
+        _dbContextMock.Setup(c => c.TrainingVacancies).Returns(trainingModelsDbSetMock.Object);
         _dbContextMock.Setup(c => c.Categories).Returns(categoryDbSetMock.Object);
 
         var trainingModel = new TrainingVacancy { Id = command.Id };

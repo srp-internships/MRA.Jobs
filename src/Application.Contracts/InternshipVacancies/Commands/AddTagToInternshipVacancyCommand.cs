@@ -2,5 +2,5 @@
 public class AddTagToInternshipVacancyCommand : IRequest<bool>
 {
     public Guid InternshipId { get; set; }
-    public Guid TagId { get; set; }
+    public string[] Tags { get; set; }
 }

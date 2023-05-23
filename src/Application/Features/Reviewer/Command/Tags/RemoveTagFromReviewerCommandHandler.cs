@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Application.Contracts.Reviewer.Commands;
+using MRA.Jobs.Application.Contracts.Reviewer.Command;
 using MRA.Jobs.Domain.Entities;
 using MRA.Jobs.Domain.Enums;
 
@@ -48,7 +48,7 @@ public class RemoveTagsFromReviewerCommandHandler : IRequestHandler<RemoveTagsFr
                 EventType = TimelineEventType.Deleted,
                 Time = _dateTime.Now,
                 Note = $"Removed '{tag}' tag",
-                CreateBy = _currentUserService.UserId
+                CreateBy = _currentUserService.GetId() ?? Guid.Empty
             };
             await _context.UserTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         }

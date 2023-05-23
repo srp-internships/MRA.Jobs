@@ -2,18 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Contracts.MyProfile.Queries;
-using MRA.Jobs.Application.Contracts.Users.Commands;
-using MRA.Jobs.Application.Contracts.Users.Responses;
 using MRA.Jobs.Infrastructure.Shared.Users.Commands;
 using MRA.Jobs.Infrastructure.Shared.Users.Commands.Roles;
 using MRA.Jobs.Infrastructure.Shared.Users.Commands.Verifications;
 using MRA.Jobs.Infrastructure.Shared.Users.Queries;
 using MRA.Jobs.Web.Controllers;
 
-namespace MRA.Jobs.API.ControllersAuth;
+namespace MRA.Jobs.Web.IdentityControllers;
 
 using Microsoft.AspNetCore.Authorization
     ;
+using MRA.Jobs.Application.Contracts.MyProfile.Commands;
+using MRA.Jobs.Application.Contracts.MyProfile.Responses;
+
 [Authorize]
 [Route("api/[controller]")]
 public class AccountsController : ApiControllerBase
@@ -122,7 +123,7 @@ public class AccountsController : ApiControllerBase
     [HttpGet("identity/verify/phone/send")]
     public async Task<IActionResult> SendPhoneVerificationCode([FromQuery] string phone)
     {
-        
+
         return Ok(await _mediator.Send(new ChangePhoneNumberCommand()
         {
             NewPhoneNumber = phone,

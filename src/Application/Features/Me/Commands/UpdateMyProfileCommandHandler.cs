@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Application.Common.Security;
-using MRA.Jobs.Application.Contracts.Users.Commands;
-using MRA.Jobs.Application.Contracts.Users.Responses;
+using MRA.Jobs.Application.Contracts.MyProfile.Commands;
+using MRA.Jobs.Application.Contracts.MyProfile.Responses;
 
 namespace MRA.Jobs.Application.Features.Me.Commands;
 

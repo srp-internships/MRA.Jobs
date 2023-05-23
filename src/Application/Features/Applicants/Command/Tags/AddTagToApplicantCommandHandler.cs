@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Interfaces;
+using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Contracts.Applicant.Commands;
-using MRA.Jobs.Application.Features.Applicant.Command.CreateApplicant;
-using MRA.Jobs.Domain.Entities;
-using MRA.Jobs.Domain.Enums;
 
-namespace MRA.Jobs.Application.Features.Applicant.Command.Tags;
+namespace MRA.Jobs.Application.Features.Applicants.Command.Tags;
 public class AddTagToApplicantCommandHandler : IRequestHandler<AddTagsToApplicantCommand, bool>
 {
     private readonly IApplicationDbContext _context;
@@ -17,7 +14,7 @@ public class AddTagToApplicantCommandHandler : IRequestHandler<AddTagsToApplican
     {
         _context = context;
         _mapper = mapper;
-        _dateTime= dateTime;
+        _dateTime = dateTime;
         _currentUserService = currentUserService;
     }
 
@@ -54,7 +51,7 @@ public class AddTagToApplicantCommandHandler : IRequestHandler<AddTagsToApplican
                     EventType = TimelineEventType.Created,
                     Time = _dateTime.Now,
                     Note = $"Added '{tag.Name}' tag",
-                    CreateBy = _currentUserService.UserId
+                    CreateBy = _currentUserService.GetId() ?? Guid.Empty
                 };
                 await _context.UserTimelineEvents.AddAsync(timelineEvent, cancellationToken);
             }
@@ -63,10 +60,5 @@ public class AddTagToApplicantCommandHandler : IRequestHandler<AddTagsToApplican
         await _context.SaveChangesAsync(cancellationToken);
 
         return true;
-    }
-
-    public static implicit operator AddTagToApplicantCommandHandler(CreateApplicantCommandHandler v)
-    {
-        throw new NotImplementedException();
     }
 }

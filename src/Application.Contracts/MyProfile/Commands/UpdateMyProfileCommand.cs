@@ -1,6 +1,6 @@
-﻿using MRA.Jobs.Application.Contracts.Users.Responses;
+﻿using MRA.Jobs.Application.Contracts.MyProfile.Responses;
 
-namespace MRA.Jobs.Application.Contracts.Users.Commands;
+namespace MRA.Jobs.Application.Contracts.MyProfile.Commands;
 public class UpdateMyProfileCommand : IRequest<MyProfileResponse>
 {
     public string FirstName { get; set; }

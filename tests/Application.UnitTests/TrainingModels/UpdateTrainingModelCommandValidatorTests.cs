@@ -1,5 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Application.Features.TrainingVacancies.Commands.UpdateTrainingModel;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Update;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 

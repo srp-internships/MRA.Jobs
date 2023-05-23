@@ -1,6 +1,6 @@
 ﻿using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Contracts.MyProfile.Queries;
-using MRA.Jobs.Application.Contracts.Users.Responses;
+using MRA.Jobs.Application.Contracts.MyProfile.Responses;
 
 namespace MRA.Jobs.Application.Features.Me.Queries;
 

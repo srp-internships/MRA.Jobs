@@ -6,6 +6,6 @@ public class AddTagToInternshipVacancyCommandValidator : AbstractValidator<AddTa
     public AddTagToInternshipVacancyCommandValidator()
     {
         RuleFor(x => x.InternshipId).NotEmpty();
-        RuleFor(x => x.TagId).NotEmpty();
+        RuleFor(x => x.Tags).NotEmpty();
     }
 }

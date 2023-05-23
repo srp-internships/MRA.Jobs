@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
@@ -26,11 +25,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
     }
 
-    public EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class
-    {
-        return base.Entry(entity);
-    }
-
     public DbSet<PhoneNumberVerificationCode> PhoneNumberVerificationCodes { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Permission> Permissions { get; set; }
@@ -53,7 +47,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public DbSet<Domain.Entities.Application> Applications { get; set; }
     public DbSet<ApplicationTimelineEvent> ApplicationTimelineEvents { get; set; }
     public DbSet<InternshipVacancy> Internships { get; set; }
-    public DbSet<TrainingVacancy> TrainingModels { get; set; }
+    public DbSet<TrainingVacancy> TrainingVacancies { get; set; }
 
     #region override
     protected override void OnModelCreating(ModelBuilder builder)
@@ -93,5 +87,5 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }
-  
+
 }

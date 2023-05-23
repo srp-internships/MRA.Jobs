@@ -1,7 +1,7 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Application.Features.TrainingVacancies.Commands.DeleteTrainingModel;
+﻿namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 
-namespace MRA.Jobs.Application.UnitTests.TrainingModels;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Delete;
 using MRA.Jobs.Domain.Entities;
 public class DeleteTrainingModelCommandHandlerTests : BaseTestFixture
 {
@@ -20,7 +20,7 @@ public class DeleteTrainingModelCommandHandlerTests : BaseTestFixture
     {
         // Arrange
         var trainingModel = new TrainingVacancy { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.TrainingModels.FindAsync(new object[] { trainingModel.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(trainingModel);
+        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { trainingModel.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(trainingModel);
 
         var command = new DeleteTrainingVacancyCommand { Id = trainingModel.Id };
 
@@ -28,7 +28,7 @@ public class DeleteTrainingModelCommandHandlerTests : BaseTestFixture
         var result = await _handler.Handle(command, default);
 
         // Assert
-        _dbContextMock.Verify(x => x.TrainingModels.Remove(trainingModel), Times.Once);
+        _dbContextMock.Verify(x => x.TrainingVacancies.Remove(trainingModel), Times.Once);
         _dbContextMock.Verify(x => x.SaveChangesAsync(default), Times.Once);
         Assert.True(result);
     }
@@ -39,12 +39,12 @@ public class DeleteTrainingModelCommandHandlerTests : BaseTestFixture
         // Arrange
         var command = new DeleteTrainingVacancyCommand { Id = Guid.NewGuid() };
 
-        _dbContextMock.Setup(x => x.TrainingModels.FindAsync(new object[] { command.Id }, It.IsAny<CancellationToken>()))
+        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { command.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(null as TrainingVacancy);
 
         // Act + Assert
         Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, default));
-        _dbContextMock.Verify(x => x.TrainingModels.Remove(It.IsAny<TrainingVacancy>()), Times.Never);
+        _dbContextMock.Verify(x => x.TrainingVacancies.Remove(It.IsAny<TrainingVacancy>()), Times.Never);
         _dbContextMock.Verify(x => x.SaveChangesAsync(default), Times.Never);
     }
 }

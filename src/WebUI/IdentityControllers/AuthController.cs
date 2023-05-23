@@ -4,7 +4,7 @@ using MRA.Jobs.Infrastructure.Shared.Auth.Commands;
 using MRA.Jobs.Infrastructure.Shared.Auth.Responses;
 using MRA.Jobs.Web.Controllers;
 
-namespace MRA.Jobs.API.ControllersAuth;
+namespace MRA.Jobs.Web.IdentityControllers;
 
 [ApiController]
 public class AuthController : ApiControllerBase

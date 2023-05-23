@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Application.Contracts.Users.Responses;
+﻿namespace MRA.Jobs.Application.Contracts.MyProfile.Responses;
 
 public class MyProfileResponse
 {

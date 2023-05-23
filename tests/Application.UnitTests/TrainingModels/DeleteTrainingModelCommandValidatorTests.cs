@@ -1,17 +1,17 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Application.Features.TrainingVacancies.Commands.DeleteTrainingModel;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Delete;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 
 [TestFixture]
 public class DeleteTrainingModelCommandValidatorTests
 {
-    private DeleteTrainingModelCommandValidator _validator;
+    private DeleteTrainingVacancyCommandValidator _validator;
 
     [SetUp]
     public void SetUp()
     {
-        _validator = new DeleteTrainingModelCommandValidator();
+        _validator = new DeleteTrainingVacancyCommandValidator();
     }
 
     [Test]

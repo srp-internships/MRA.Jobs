@@ -6,6 +6,6 @@ public class RemoveTagFromInternshipVacancyCommandValidator : AbstractValidator<
     public RemoveTagFromInternshipVacancyCommandValidator()
     {
         RuleFor(x => x.InternshipId).NotEmpty();
-        RuleFor(x => x.TagId).NotEmpty();
+        RuleFor(x => x.Tags).NotEmpty();
     }
 }

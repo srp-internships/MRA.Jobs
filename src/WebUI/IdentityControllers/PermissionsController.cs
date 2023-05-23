@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Infrastructure.Shared.Pemission.Responces;
 using MRA.Jobs.Web.Controllers;
 
-namespace MRA.Jobs.API.ControllersAuth;
+namespace MRA.Jobs.Web.IdentityControllers;
 
 [ApiController]
 [Route("api/[controller]")]

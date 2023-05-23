@@ -1,34 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 using MRA.Jobs.Domain.Enums;
 
-namespace MRA.Jobs.Application.Features.TrainingModels.Commands.Tags;
-public class RemoveTagFromTrainingModelCommandHandler : IRequestHandler<RemoveTagFromTrainingModelCommand, bool>
+namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Tags;
+public class RemoveTagFromTrainingVacancyCommandHandler : IRequestHandler<RemoveTagFromTrainingVacancyCommand, bool>
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
 
-    public RemoveTagFromTrainingModelCommandHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService, IDateTime dateTime)
+    public RemoveTagFromTrainingVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService, IDateTime dateTime)
     {
         _context = context;
         _currentUserService = currentUserService;
         _dateTime = dateTime;
     }
 
-    public async Task<bool> Handle(RemoveTagFromTrainingModelCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(RemoveTagFromTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        var trainingModel = await _context.TrainingModels
+        var trainingVacancy = await _context.TrainingVacancies
          .Include(x => x.Tags)
          .ThenInclude(t => t.Tag)
-         .FirstOrDefaultAsync(x => x.Id == request.TrainingModelId, cancellationToken);
+         .FirstOrDefaultAsync(x => x.Id == request.VacancyId, cancellationToken);
 
-        if (trainingModel == null)
-            throw new NotFoundException(nameof(trainingModel), request.TrainingModelId);
+        if (trainingVacancy == null)
+            throw new NotFoundException(nameof(trainingVacancy), request.VacancyId);
 
         foreach (var tagName in request.Tags)
         {
-            var vacancyTag = trainingModel.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
+            var vacancyTag = trainingVacancy.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
 
             if (vacancyTag == null)
                 continue;
@@ -37,11 +37,11 @@ public class RemoveTagFromTrainingModelCommandHandler : IRequestHandler<RemoveTa
 
             var timelineEvent = new VacancyTimelineEvent
             {
-                VacancyId = trainingModel.Id,
+                VacancyId = trainingVacancy.Id,
                 EventType = TimelineEventType.Deleted,
                 Time = _dateTime.Now,
                 Note = $"Removed '{tagName}' tag",
-                CreateBy = _currentUserService.UserId
+                CreateBy = _currentUserService.GetId() ?? Guid.Empty
             };
             await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
 
