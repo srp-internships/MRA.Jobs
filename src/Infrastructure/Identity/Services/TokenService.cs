@@ -4,6 +4,9 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using MRA.Jobs.Infrastructure.Identity.Authorization;
+using MRA.Jobs.Infrastructure.Identity.Entities;
+using MRA.Jobs.Infrastructure.Identity.Settings;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Shared.Auth.Responses;
 

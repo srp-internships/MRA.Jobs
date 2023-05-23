@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Identity;
+using MRA.Jobs.Infrastructure.Identity.Entities;
+using MRA.Jobs.Infrastructure.Identity.Services;
 using MRA.Jobs.Infrastructure.Shared.Auth.Commands;
 using MRA.Jobs.Infrastructure.Shared.Auth.Responses;
 

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MRA.Jobs.Application.Common.Exceptions;
+using MRA.Jobs.Infrastructure.Identity.Entities;
 using MRA.Jobs.Infrastructure.Shared.Users.Commands.Roles;
 
 namespace MRA.Jobs.Infrastructure.Identity.Features.User.Commands.Roles;
