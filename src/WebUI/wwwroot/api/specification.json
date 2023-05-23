@@ -274,6 +274,101 @@
         }
       }
     },
+    "/api/application": {
+      "get": {
+        "tags": [
+          "Application"
+        ],
+        "operationId": "Application_GetAll",
+        "parameters": [
+          {
+            "name": "Filters",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Sorts",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 2147483647.0,
+              "minimum": 1.0,
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 2147483647.0,
+              "minimum": 1.0,
+              "nullable": true
+            },
+            "x-position": 4
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaggedListOfApplicationListDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Application"
+        ],
+        "operationId": "Application_CreateApplication",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApplicationCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/application/{Id}": {
       "get": {
         "tags": [
@@ -390,39 +485,6 @@
         }
       }
     },
-    "/api/application": {
-      "post": {
-        "tags": [
-          "Application"
-        ],
-        "operationId": "Application_CreateApplication",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateApplicationCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "guid"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/category": {
       "get": {
         "tags": [
@@ -477,10 +539,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/PaggedListOfVacancyCategoryListDTO"
                 }
               }
             }
@@ -611,6 +672,39 @@
             "x-position": 1
           }
         ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/emailtest": {
+      "post": {
+        "tags": [
+          "EmailTest"
+        ],
+        "operationId": "EmailTest_SendEmail",
+        "requestBody": {
+          "x-name": "emailMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailMessage"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -1513,6 +1607,38 @@
         }
       }
     },
+    "/api/sms": {
+      "post": {
+        "tags": [
+          "Sms"
+        ],
+        "operationId": "Sms_Create",
+        "requestBody": {
+          "x-name": "message",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SmsMessage"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/trainingmodel/{id}": {
       "get": {
         "tags": [
@@ -1685,10 +1811,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/PaggedListOfTrainingModelListDTO"
                 }
               }
             }
@@ -2001,7 +2126,42 @@
           }
         }
       },
-      "ApplicationDetailsDTO": {
+      "PaggedListOfApplicationListDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currentPageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ApplicationListDTO"
+            }
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ApplicationListDTO": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2013,7 +2173,33 @@
             "type": "string",
             "nullable": true
           },
-          "history": {
+          "vacancyId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "cv": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ApplicationDetailsDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "applicantId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "coverLetter": {
             "type": "string",
             "nullable": true
           },
@@ -2021,7 +2207,7 @@
             "type": "string",
             "format": "guid"
           },
-          "resumeUrl": {
+          "cv": {
             "type": "string",
             "nullable": true
           },
@@ -2072,15 +2258,11 @@
             "type": "string",
             "nullable": true
           },
-          "history": {
-            "type": "string",
-            "nullable": true
-          },
           "vacancyId": {
             "type": "string",
             "format": "guid"
           },
-          "resumeUrl": {
+          "cv": {
             "type": "string",
             "nullable": true
           },
@@ -2106,21 +2288,66 @@
             "type": "string",
             "nullable": true
           },
-          "history": {
-            "type": "string",
-            "nullable": true
-          },
           "vacancyId": {
             "type": "string",
             "format": "guid"
           },
-          "resumeUrl": {
+          "cv": {
             "type": "string",
             "nullable": true
           },
           "statusId": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "PaggedListOfVacancyCategoryListDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currentPageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VacancyCategoryListDTO"
+            }
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        }
+      },
+      "VacancyCategoryListDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -2145,6 +2372,31 @@
           "name": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "EmailMessage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "to": {
+            "type": "string",
+            "nullable": true
+          },
+          "from": {
+            "type": "string",
+            "nullable": true
+          },
+          "subject": {
+            "type": "string",
+            "nullable": true
+          },
+          "body": {
+            "type": "string",
+            "nullable": true
+          },
+          "isHtml": {
+            "type": "boolean"
           }
         }
       },
@@ -2525,6 +2777,101 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "SmsMessage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaggedListOfTrainingModelListDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currentPageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/TrainingModelListDTO"
+            }
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        }
+      },
+      "TrainingModelListDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "publishDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fees": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

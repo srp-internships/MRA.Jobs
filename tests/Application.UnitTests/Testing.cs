@@ -5,6 +5,7 @@ using MRA.Jobs.Application.Features.Reviewer;
 using MRA.Jobs.Application.Features.Internships;
 using MRA.Jobs.Application.Features.TrainingModels;
 using MRA.Jobs.Application.Features.VacancyCategories;
+using MRA.Jobs.Application.Features.JobVacancies;
 
 namespace MRA.Jobs.Application.UnitTests;
 
