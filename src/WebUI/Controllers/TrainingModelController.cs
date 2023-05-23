@@ -17,7 +17,7 @@ public class TrainingModelController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetTrainingModelsWithPagination([FromQuery] PaggedListQuery<TrainingModelListDTO> query)
+    public async Task<ActionResult<PaggedList<TrainingModelListDTO>>> GetTrainingModelsWithPagination([FromQuery] PaggedListQuery<TrainingModelListDTO> query)
     {
         var trainingModels = await Mediator.Send(query);
         return Ok(trainingModels);

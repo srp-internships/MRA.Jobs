@@ -14,9 +14,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     internal ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
         base(options)
     {
-
     }
-
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options,
         IMediator mediator,

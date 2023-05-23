@@ -3,17 +3,18 @@ using System.Reflection;
 using MRA.Jobs.Application.Contracts.Common;
 using Sieve.Models;
 using Sieve.Services;
+using MRA.Jobs.Domain.Common;
 
 namespace MRA.Jobs.Infrastructure;
 
 public class ApplicationSieveProcessor : SieveProcessor, IApplicationSieveProcessor
 {
     public ApplicationSieveProcessor(IOptions<SieveOptions> options) : base(options) { }
+    public ApplicationSieveProcessor(IOptions<SieveOptions> options, ISieveCustomFilterMethods sieveCustomFilter) : base(options, sieveCustomFilter) { }
 
     public PaggedList<TResult> ApplyAdnGetPaggedList<TSource, TResult>(SieveModel model, IQueryable<TSource> source, Func<TSource, TResult> converter)
     {
         source = Apply(model, source, applyPagination: false);
-
         var totalCount = source.Count();
         var pageSize = model.PageSize ?? Options.Value.DefaultPageSize;
         pageSize = Math.Min(Options?.Value.MaxPageSize ?? int.MaxValue, pageSize);
@@ -25,11 +26,12 @@ public class ApplicationSieveProcessor : SieveProcessor, IApplicationSieveProces
 
     protected override SievePropertyMapper MapProperties(SievePropertyMapper mapper)
     {
-        foreach (var assembly in Assemblies)
-            mapper.ApplyConfigurationsFromAssembly(assembly);
-
+        mapper.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         return mapper;
     }
+}
 
-    public static List<Assembly> Assemblies { get; } = new List<Assembly>();
+public class SieveCustomFilterMethods : ISieveCustomFilterMethods
+{
+
 }
