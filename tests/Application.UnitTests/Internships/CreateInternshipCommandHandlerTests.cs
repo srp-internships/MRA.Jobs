@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Features.Internships.Command.CreateInternship;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
+using MRA.Jobs.Domain.Entities;
 public class CreateInternshipCommandHandlerTests : BaseTestFixture
 {
     private CreateInternshipCommandHandler _handler;

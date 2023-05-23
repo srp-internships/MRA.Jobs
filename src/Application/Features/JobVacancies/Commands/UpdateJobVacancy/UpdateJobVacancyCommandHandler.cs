@@ -20,7 +20,7 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
 
     public async Task<Guid> Handle(UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+        var jobVacancy = await _dbContext.Internships.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Id);
 
         var category = await _dbContext.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken: cancellationToken);

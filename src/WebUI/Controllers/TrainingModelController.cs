@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
 using MRA.Jobs.Application.Contracts.TrainingModels.Responses;
 
@@ -44,5 +45,21 @@ public class TrainingModelController : ApiControllerBase
             return BadRequest();
 
         return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpPost("{id}/tags")]
+    public async Task<IActionResult> AddTag([FromRoute] Guid id, [FromBody] AddTagToTrainingModelCommand request, CancellationToken cancellationToken)
+    {
+        request.TrainingModelId = id;
+        await Mediator.Send(request, cancellationToken);
+        return Ok();
+    }
+
+    [HttpDelete("{id}/tags")]
+    public async Task<IActionResult> RemoveTags([FromRoute] Guid id, [FromBody] RemoveTagFromTrainingModelCommand request, CancellationToken cancellationToken)
+    {
+        request.TrainingModelId = id;
+        await Mediator.Send(request, cancellationToken);
+        return Ok();
     }
 }

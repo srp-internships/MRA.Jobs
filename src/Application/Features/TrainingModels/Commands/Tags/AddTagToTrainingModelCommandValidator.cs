@@ -8,6 +8,6 @@ public class AddTagToTrainingModelCommandValidator : AbstractValidator<AddTagToT
     public AddTagToTrainingModelCommandValidator()
     {
         RuleFor(x => x.TrainingModelId).NotEmpty();
-        RuleFor(x => x.TagId).NotEmpty();
+        RuleFor(x => x.Tags).NotEmpty();
     }
 }

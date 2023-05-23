@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Features.TrainingModels.Queries.GetTrainingModelById;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
+using MRA.Jobs.Domain.Entities;
 public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
 {
     private GetTrainingModelByIdQueryHandler _handler;
