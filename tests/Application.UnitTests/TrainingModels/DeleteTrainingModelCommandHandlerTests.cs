@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Features.TraningModels.Commands.DeleteTraningModel;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
+using MRA.Jobs.Domain.Entities;
 public class DeleteTrainingModelCommandHandlerTests : BaseTestFixture
 {
     private DeleteTrainingModelCommandHadler _handler;

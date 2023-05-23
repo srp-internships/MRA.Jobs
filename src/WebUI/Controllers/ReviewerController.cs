@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MRA.Jobs.Application.Contracts.Reviewer.Commands;
 using MRA.Jobs.Application.Contracts.Reviewer.Command;
 using MRA.Jobs.Application.Contracts.Reviewer.Queries;
 using MRA.Jobs.Application.Contracts.Reviewer.Response;
@@ -45,9 +46,24 @@ public class ReviewerController : ApiControllerBase
     }
     
     [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteApplicant(Guid id, [FromBody] DeleteReviewerCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<bool>> DeleteReviewer(Guid id, [FromBody] DeleteReviewerCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
-    
+
+    [HttpPost("{id}/tags")]
+    public async Task<IActionResult> AddTag(Guid id, [FromBody] AddTagsToReviewerCommand request, CancellationToken cancellationToken)
+    {
+        request.ReviewerId = id;
+        await Mediator.Send(request, cancellationToken);
+        return Ok();
+    }
+
+    [HttpDelete("{id}/tags")]
+    public async Task<IActionResult> RemoveTags(Guid id, [FromBody] RemoveTagsFromReviewerCommand request, CancellationToken cancellationToken)
+    {
+        request.ReviewerId = id;
+        await Mediator.Send(request, cancellationToken);
+        return Ok();
+    }
 }

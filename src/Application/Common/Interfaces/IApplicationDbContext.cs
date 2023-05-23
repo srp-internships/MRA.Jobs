@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 namespace MRA.Jobs.Application.Common.Interfaces;
+
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MRA.Jobs.Domain.Entities;
 
 public interface IApplicationDbContext
@@ -26,4 +28,6 @@ public interface IApplicationDbContext
     public DbSet<Internship> Internships { get; }
     public DbSet<TrainingModel> TrainingModels { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+
+    EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 }

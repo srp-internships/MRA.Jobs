@@ -1,12 +1,12 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.Applicant.Commands;
 
 namespace MRA.Jobs.Application.Features.Applicant.Command.Tags;
 
-public class RemoveTagFromApplicantCommandValidator : AbstractValidator<RemoveTagFromJobVacancyCommand>
+public class RemoveTagFromApplicantCommandValidator : AbstractValidator<RemoveTagsFromApplicantCommand>
 {
     public RemoveTagFromApplicantCommandValidator()
     {
-        RuleFor(x => x.JobVacancyId).NotEmpty();
-        RuleFor(x => x.TagId).NotEmpty();
+        RuleFor(x => x.ApplicantId).NotEmpty();
+        RuleFor(x => x.Tags).NotEmpty();
     }
 }

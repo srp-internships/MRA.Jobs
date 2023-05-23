@@ -186,15 +186,15 @@
         }
       }
     },
-    "/api/applicant/{applicantId}/tags/{tagId}": {
+    "/api/applicant/{id}/tags": {
       "post": {
         "tags": [
           "Applicant"
         ],
-        "operationId": "Applicant_AddTagToApplicant",
+        "operationId": "Applicant_AddTag",
         "parameters": [
           {
-            "name": "applicantId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -202,25 +202,28 @@
               "format": "guid"
             },
             "x-position": 1
-          },
-          {
-            "name": "tagId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 2
           }
         ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTagsToApplicantCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "boolean"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -231,10 +234,10 @@
         "tags": [
           "Applicant"
         ],
-        "operationId": "Applicant_RemoveTagFromApplicant",
+        "operationId": "Applicant_RemoveTags",
         "parameters": [
           {
-            "name": "applicantId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -242,25 +245,28 @@
               "format": "guid"
             },
             "x-position": 1
-          },
-          {
-            "name": "tagId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 2
           }
         ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveTagsFromApplicantCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "boolean"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -1073,6 +1079,94 @@
         }
       }
     },
+    "/api/jobvacancies/{id}/tags": {
+      "post": {
+        "tags": [
+          "JobVacancies"
+        ],
+        "operationId": "JobVacancies_AddTag",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTagsToJobVacancyCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "JobVacancies"
+        ],
+        "operationId": "JobVacancies_RemoveTags",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveTagsFromJobVacancyCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/reviewer": {
       "get": {
         "tags": [
@@ -1204,7 +1298,7 @@
         "tags": [
           "Reviewer"
         ],
-        "operationId": "Reviewer_DeleteApplicant",
+        "operationId": "Reviewer_DeleteReviewer",
         "parameters": [
           {
             "name": "id",
@@ -1236,6 +1330,94 @@
               "application/json": {
                 "schema": {
                   "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviewer/{id}/tags": {
+      "post": {
+        "tags": [
+          "Reviewer"
+        ],
+        "operationId": "Reviewer_AddTag",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTagsToReviewerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reviewer"
+        ],
+        "operationId": "Reviewer_RemoveTags",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveTagsFromReviewerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -1609,6 +1791,40 @@
           }
         }
       },
+      "AddTagsToApplicantCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "applicantId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RemoveTagsFromApplicantCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "applicantId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "ApplicationDetailsDTO": {
         "type": "object",
         "additionalProperties": false,
@@ -1956,6 +2172,40 @@
           }
         }
       },
+      "AddTagsToJobVacancyCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "jobVacancyId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RemoveTagsFromJobVacancyCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "jobVacancyId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "CreateReviewerCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -2031,6 +2281,40 @@
           "id": {
             "type": "string",
             "format": "guid"
+          }
+        }
+      },
+      "AddTagsToReviewerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reviewerId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RemoveTagsFromReviewerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reviewerId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },

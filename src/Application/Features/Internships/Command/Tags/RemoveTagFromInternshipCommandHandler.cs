@@ -6,33 +6,34 @@ namespace MRA.Jobs.Application.Features.Internships.Command.Tags;
 public class RemoveTagFromInternshipCommandHandler : IRequestHandler<RemoveTagFromInternshipCommand, bool>
 {
     private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
 
-    public RemoveTagFromInternshipCommandHandler(IApplicationDbContext context, IDateTime dateTime, ICurrentUserService currentUserService)
+    public RemoveTagFromInternshipCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _context = context;
+        _mapper = mapper;
         _dateTime = dateTime;
         _currentUserService = currentUserService;
     }
     public async Task<bool> Handle(RemoveTagFromInternshipCommand request, CancellationToken cancellationToken)
     {
-        var vacancyTag = await _context.VacancyTags
-            .FirstOrDefaultAsync(vt => vt.VacancyId == request.InternshipId && vt.TagId == request.TagId, cancellationToken);
+        var internship = await _context.Internships.FindAsync(new object[] { request.InternshipId }, cancellationToken);
 
-        _ = vacancyTag ?? throw new NotFoundException(nameof(VacancyTag), request.TagId);
+        if (internship == null)
+            throw new NotFoundException(nameof(internship), request.InternshipId);
 
-        var timelineEvent = new VacancyTimelineEvent
+        foreach (var tag in request.Tags)
         {
-            VacancyId = vacancyTag.VacancyId,
-            EventType = TimelineEventType.Created,
-            Time = _dateTime.Now,
-            Note = $"Removed '{vacancyTag.Tag.Name}' tag",
-            CreateBy = _currentUserService.UserId
-        };
+            var internshipTag = internship.Tags.FirstOrDefault(t => t.Tag.Name == tag);
 
-        _ = _context.VacancyTags.Remove(vacancyTag);
+            if (internshipTag != null)
+                _context.VacancyTags.Remove(internshipTag);
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
+
         return true;
     }
 }

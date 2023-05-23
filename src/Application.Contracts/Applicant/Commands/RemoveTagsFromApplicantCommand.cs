@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using MediatR;
 
 namespace MRA.Jobs.Application.Contracts.Applicant.Commands;
-public class AddTagToApplicantCommand : IRequest<bool>
+public class RemoveTagsFromApplicantCommand : IRequest<bool>
 {
     public Guid ApplicantId { get; set; }
-    public Guid TagId { get; set; }
+    public string[] Tags { get; set; }
 }

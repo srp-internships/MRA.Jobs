@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Features.JobVacancies.Commands.DeleteJobVacancy;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
-
+using MRA.Jobs.Domain.Entities;
 public class DeleteJobVacancyCommandHandlerTests : BaseTestFixture
 {
     private DeleteJobVacancyCommandHandler _handler;

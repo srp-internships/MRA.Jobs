@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Features.Internships.Command.UpdateInternship;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
+using MRA.Jobs.Domain.Entities;
 public class UpdateInternshipCommandHandlerTests : BaseTestFixture
 {
     private UpdateInternshipCommandHandler _handler;

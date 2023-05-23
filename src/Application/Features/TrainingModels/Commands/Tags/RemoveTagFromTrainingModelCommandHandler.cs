@@ -9,7 +9,7 @@ public class RemoveTagFromTrainingModelCommandHandler : IRequestHandler<RemoveTa
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
 
-    public RemoveTagFromTrainingModelCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService, IDateTime dateTime)
+    public RemoveTagFromTrainingModelCommandHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService, IDateTime dateTime)
     {
         _context = context;
         _currentUserService = currentUserService;
@@ -18,21 +18,31 @@ public class RemoveTagFromTrainingModelCommandHandler : IRequestHandler<RemoveTa
 
     public async Task<bool> Handle(RemoveTagFromTrainingModelCommand request, CancellationToken cancellationToken)
     {
-        var vacancyTag = await _context.VacancyTags
-            .FirstOrDefaultAsync(vt => vt.VacancyId == request.TrainingModelId && vt.TagId == request.TagId, cancellationToken);
+        var trainingModel = await _context.TrainingModels.FindAsync(new object[] { request.TrainingModelId }, cancellationToken);
 
-        _ = vacancyTag ?? throw new NotFoundException(nameof(VacancyTag), request.TagId);
+        if (trainingModel == null)
+            throw new NotFoundException(nameof(trainingModel), request.TrainingModelId);
 
-        var timeLineEvent = new VacancyTimelineEvent
+        foreach (var tag in request.Tags)
         {
-            VacancyId = vacancyTag.VacancyId,
-            EventType = TimelineEventType.Created,
-            Time = _dateTime.Now,
-            Note = $"Removed '{vacancyTag.Tag.Name}' tag",
-            CreateBy = _currentUserService.UserId
-        };
+            var vacancyTag = await _context.VacancyTags.FindAsync(new object[] { request.TrainingModelId, tag }, cancellationToken);
 
-        _ = _context.VacancyTags.Remove(vacancyTag);
+            if (vacancyTag != null)
+            {
+                _context.VacancyTags.Remove(vacancyTag);
+
+
+                var timelineEvent = new VacancyTimelineEvent
+                {
+                    VacancyId = trainingModel.Id,
+                    EventType = TimelineEventType.Deleted,
+                    Time = _dateTime.Now,
+                    Note = $"Removed '{tag}' tag",
+                    CreateBy = _currentUserService.UserId
+                };
+                await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
+            }
+        }
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }

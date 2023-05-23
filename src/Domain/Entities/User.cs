@@ -10,5 +10,5 @@ public abstract class User : BaseAuditableEntity
     public string PhoneNumber { get; set; }
 
     public ICollection<UserTimelineEvent> History { get; set; }
-    public ICollection<UserTag> Tags { get; set; }
+    public IList<UserTag> Tags { get; set; }
 }

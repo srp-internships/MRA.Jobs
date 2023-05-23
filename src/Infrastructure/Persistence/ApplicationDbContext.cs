@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
@@ -24,6 +25,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     {
         _mediator = mediator;
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
+    }
+
+    public EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class
+    {
+        return base.Entry(entity);
     }
 
     public DbSet<Applicant> Applicants { get; set; }
@@ -86,4 +92,5 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }
+  
 }

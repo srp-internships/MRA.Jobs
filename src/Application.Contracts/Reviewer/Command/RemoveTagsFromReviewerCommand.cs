@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using MediatR;
 
 namespace MRA.Jobs.Application.Contracts.Reviewer.Commands;
-public class AddTagToReviewerCommand : IRequest<bool>
+public class RemoveTagsFromReviewerCommand : IRequest<bool>
 {
     public Guid ReviewerId { get; set; }
-    public Guid TagId { get; set; }
+    public string [] Tags { get; set; }
 }

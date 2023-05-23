@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Features.JobVacancies.Commands.UpdateJobVacancy;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
-
+using MRA.Jobs.Domain.Entities;
 public class UpdateJobVacancyCommandHandlerTests : BaseTestFixture
 {
     private UpdateJobVacancyCommandHandler _handler;

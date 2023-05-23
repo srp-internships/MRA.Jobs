@@ -6,6 +6,6 @@ public class RemoveTagFromTrainingModelCommandValidator : AbstractValidator<Remo
     public RemoveTagFromTrainingModelCommandValidator()
     {
         RuleFor(x => x.TrainingModelId).NotEmpty();
-        RuleFor(x => x.TagId).NotEmpty();
+        RuleFor(x => x.Tags).NotEmpty();
     }
 }

@@ -3,6 +3,8 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+using MRA.Jobs.Application.Features.JobVacancies.Commands.Tags;
+using AddTagsToJobVacancyCommand = MRA.Jobs.Application.Contracts.JobVacancies.Commands.AddTagsToJobVacancyCommand;
 
 namespace MRA.Jobs.Web.Controllers;
 
@@ -45,5 +47,21 @@ public class JobVacanciesController : ApiControllerBase
             return BadRequest();
 
         return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpPost("{id}/tags")]
+    public async Task<IActionResult> AddTag(Guid id, [FromBody] AddTagsToJobVacancyCommand request, CancellationToken cancellationToken)
+    {
+        request.JobVacancyId = id;
+        await Mediator.Send(request, cancellationToken);
+        return Ok();
+    }
+
+    [HttpDelete("{id}/tags")]
+    public async Task<IActionResult> RemoveTags(Guid id, [FromBody] RemoveTagsFromJobVacancyCommand request, CancellationToken cancellationToken)
+    {
+        request.JobVacancyId = id;
+        await Mediator.Send(request, cancellationToken);
+        return Ok();
     }
 }

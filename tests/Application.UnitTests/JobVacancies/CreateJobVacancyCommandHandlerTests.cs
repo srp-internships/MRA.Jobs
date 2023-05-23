@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
-
+using MRA.Jobs.Domain.Entities;
 public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
 {
     private CreateJobVacancyCommandHandler _handler;

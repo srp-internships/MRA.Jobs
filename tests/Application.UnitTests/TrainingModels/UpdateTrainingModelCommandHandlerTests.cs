@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Features.TraningModels.Commands.UpdateTraningModel;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
+using MRA.Jobs.Domain.Entities;
 public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
 {
     private UpdateTrainingModelCommandHandler _handler;
