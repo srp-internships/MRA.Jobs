@@ -1,0 +1,29 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using MockTestingApi.Entities;
+using MockTestingApi.Services;
+
+namespace MockTestingApi.Controllers;
+[Route("api/[controller]")]
+[ApiController]
+public class TestController : ControllerBase
+{
+    private readonly ITestService _testService;
+
+    public TestController(ITestService testService)
+    {
+        _testService = testService;
+    }
+
+    [HttpPost("create")]
+    public async Task<ActionResult<CreateTestResponse>> CreateTest([FromBody] CreateTestRequest request)
+    {
+        return await _testService.CreateTest(request);
+    }
+
+    [HttpPost("pass")]
+    public async Task<IActionResult> PassTest([FromBody] PassTestRequest request)
+    {
+        await _testService.PassTest(request);
+        return Ok();
+    }
+}
