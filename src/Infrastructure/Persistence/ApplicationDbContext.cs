@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using MRA.Jobs.Infrastructure.Identity.Entities;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 
 namespace MRA.Jobs.Infrastructure.Persistence;
