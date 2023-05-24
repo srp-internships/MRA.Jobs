@@ -1,4 +1,10 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using MRA.Jobs.Application.Contracts.Common;
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
+@inject ICategoryService CService
+@inject HttpClient _http;
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <div class="image"> <img src="images/SRP_icon.png" class="img" /></div>
         <a class="navbar-brand" href="">MRA Jobs</a>
@@ -9,13 +15,13 @@
 </div>
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="category">
                 <span class="oi oi-project" aria-hidden="true"></span>Category
             </NavLink>
         </div>
-
 
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="user" @onclick="()=>expandSubMenu2=!expandSubMenu2">
@@ -29,7 +35,7 @@
                             <span class="oi oi-tags" aria-hidden="true"></span>Applicants
                         </NavLink>
                     </li>
-                    <li class="nav-item px-3" >
+                    <li class="nav-item px-3">
                         <NavLink class="nav-link" href="user/2">
                             <span class=" oi oi-dial" aria-hidden="true"></span>Reviewers
                         </NavLink>
@@ -37,24 +43,29 @@
                 </ul>
             }
         </div>
-
+ @*       vacancy*@
         <div class="nav-item px-3">
-            <NavLink class="nav-link"  @onclick="()=>expandSubMenu=!expandSubMenu">
+            <NavLink class="nav-link" @onclick="()=>expandSubMenu=!expandSubMenu">
                 <span class="oi oi-briefcase" aria-hidden="true"></span>Vacancy
             </NavLink>
+
             @if (expandSubMenu)
             {
                 <ul class="nav flex-column">
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="vacancy/1">
-                            <span class="oi oi-badge" aria-hidden="true"></span>Training
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
+                    @foreach (var item in Category)
+                    {
+                        <MatButton Style="color:white" Dense="true">@item.Name</MatButton>
+                      @*  <li class="nav-item px-3">
+                            <NavLink class="nav-link" href="vacancy/1">
+                                <span class="oi oi-badge" aria-hidden="true"></span>@item.Name
+                            </NavLink>
+                        </li>*@
+                    }
+                   @* <li class="nav-item px-3">
                         <NavLink class="nav-link" href="vacancy/2">
                             <span class="oi oi-people" aria-hidden="true"></span>Internship
                         </NavLink>
-                    </li>
+                    </li>*@
                 </ul>
             }
         </div>
@@ -62,13 +73,20 @@
 </div>
 
 @code {
-
     private bool collapseNavMenu = true;
     private bool expandSubMenu;
     private bool expandSubMenu2;
+    private List<VacancyCategoryListDTO> Category;
+    bool panelOpenState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var ress = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>("category");
+        Category = ress.Items;
+
+    }
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;

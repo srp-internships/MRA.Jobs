@@ -46,6 +46,8 @@ public class CategoryService : ICategoryService
         await _http.DeleteAsync($"category/{id}");
         var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category");
         Category = result.Items;
+     
+
     }
     public async Task OnSaveCreateClick()
     {

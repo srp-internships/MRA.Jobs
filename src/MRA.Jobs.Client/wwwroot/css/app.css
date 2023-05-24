@@ -100,10 +100,10 @@ a, .btn-link {
         content: var(--blazor-load-percentage-text, "Loading");
     }
 
-.nav-item a.active::after {
+/*.nav-item a.active::after {
     content: "*";
     margin-left: 1em;
-}
+}*/
 
 
 
@@ -114,3 +114,4 @@ a, .btn-link {
     border-left: none;
     width: 100%;
 }
+
