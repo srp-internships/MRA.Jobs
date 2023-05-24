@@ -1,16 +1,50 @@
 ﻿using MockTestingApi.Entities;
+using Newtonsoft.Json;
 
 namespace MockTestingApi.Services;
 
 public class TestService : ITestService
 {
-    public Task<CreateTestResponse> CreateTest(CreateTestRequest request)
+    private readonly HttpClient _http;
+
+    public TestService(HttpClient http)
     {
-        throw new NotImplementedException();
+        _http = http;
     }
 
-    public Task PassTest(PassTestRequest request)
+    public CreateTestResponse CreateTest(CreateTestRequest request)
     {
-        throw new NotImplementedException();
+        return new CreateTestResponse
+        {
+            TestId = Guid.NewGuid(),
+            MaxScore = new Random().Next(1, 100)
+        };
+    }
+
+    public async Task PassTest(PassTestRequest request)
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(request), System.Text.Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync("https://localhost:5001/", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("Success: " + responseContent);
+                }
+                else
+                {
+                    Console.WriteLine("Request error. Status code: " + response.StatusCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An Exception was thrown: " + ex.Message);
+            }
+        }
     }
 }

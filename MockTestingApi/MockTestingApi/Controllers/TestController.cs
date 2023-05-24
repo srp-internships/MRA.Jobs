@@ -15,9 +15,9 @@ public class TestController : ControllerBase
     }
 
     [HttpPost("create")]
-    public async Task<ActionResult<CreateTestResponse>> CreateTest([FromBody] CreateTestRequest request)
+    public ActionResult<CreateTestResponse> CreateTest([FromBody] CreateTestRequest request)
     {
-        return await _testService.CreateTest(request);
+        return _testService.CreateTest(request);
     }
 
     [HttpPost("pass")]
