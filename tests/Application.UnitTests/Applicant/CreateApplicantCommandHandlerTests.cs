@@ -29,7 +29,7 @@ public class CreateApplicantCommandHandlerTests : BaseTestFixture
             FirstName = "userFirstName",
             Email = "user@gmail.com",
             Patronymic = "user",
-            DateOfBrith = DateTime.UtcNow,
+            DateOfBirth = DateTime.UtcNow,
             PhoneNumber = "123456789"
         };
 
@@ -54,7 +54,7 @@ public class CreateApplicantCommandHandlerTests : BaseTestFixture
                         a.FirstName == request.FirstName &&
                         a.LastName == request.LastName &&
                         a.Email == request.Email &&
-                        a.DateOfBrith == request.DateOfBrith && 
+                        a.DateOfBrith == request.DateOfBirth && 
                         a.PhoneNumber == request.PhoneNumber
                 ), It.IsAny<CancellationToken>()), Times.Once);
         

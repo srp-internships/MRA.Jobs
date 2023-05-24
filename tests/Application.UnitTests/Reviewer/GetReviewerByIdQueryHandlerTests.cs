@@ -44,7 +44,7 @@ public class GetReviewerByIdQueryHandlerTests  : BaseTestFixture
         result.FirstName.Should().Be(reviewer.FirstName);
         result.LastName.Should().Be(reviewer.LastName);
         result.PhoneNumber.Should().Be(reviewer.PhoneNumber);
-        result.DateOfBrith.Should().Be(reviewer.DateOfBrith);
+        result.DateOfBirth.Should().Be(reviewer.DateOfBrith);
     }
 
     [Test]

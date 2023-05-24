@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using MRA.Jobs.Application.Common.Converter;
+using Newtonsoft.Json;
+
+using MediatR;
 
 namespace MRA.Jobs.Application.Contracts.Applicant.Commands;
 
@@ -10,5 +13,6 @@ public class CreateApplicantCommand : IRequest<Guid>
     public string Patronymic { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
-    public DateTime DateOfBrith { get; set; }
+    [JsonConverter(typeof(DateTimeToUnixConverter))]
+    public DateTime DateOfBirth { get; set; }
 }

@@ -40,7 +40,7 @@ public class CreateApplicantCommandValidatorTests : BaseTestFixture
             LastName = "",
             Email = "",
             Patronymic = "",
-            DateOfBrith = DateTime.UtcNow,
+            DateOfBirth = DateTime.UtcNow,
             PhoneNumber = ""
         };
         
@@ -62,7 +62,7 @@ public class CreateApplicantCommandValidatorTests : BaseTestFixture
             LastName = "userLastname",
             Email = "user@gmail.com",
             Patronymic = "userPatronymic",
-            DateOfBrith = DateTime.UtcNow,
+            DateOfBirth = DateTime.UtcNow,
             PhoneNumber = "+992123456789"
         };
         

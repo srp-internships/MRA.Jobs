@@ -1442,7 +1442,7 @@
             "type": "string",
             "nullable": true
           },
-          "dateOfBrith": {
+          "dateOfBirth": {
             "type": "string",
             "format": "date-time"
           }
@@ -1472,7 +1472,7 @@
             "type": "string",
             "nullable": true
           },
-          "dateOfBrith": {
+          "dateOfBirth": {
             "type": "string",
             "format": "date-time"
           },

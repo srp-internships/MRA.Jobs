@@ -43,7 +43,7 @@ public class GetReviewerByIdCommandHandlerTests : BaseTestFixture
         result.FirstName.Should().Be(applicant.FirstName);
         result.LastName.Should().Be(applicant.LastName);
         result.PhoneNumber.Should().Be(applicant.PhoneNumber);
-        result.DateOfBrith.Should().Be(applicant.DateOfBrith);
+        result.DateOfBirth.Should().Be(applicant.DateOfBrith);
     }
 
     [Test]
