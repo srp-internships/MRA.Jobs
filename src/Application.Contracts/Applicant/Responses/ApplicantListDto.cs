@@ -1,5 +1,7 @@
+
 ﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
 using Newtonsoft.Json;
+﻿using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.Contracts.Applicant.Responses;
 
@@ -23,4 +25,6 @@ public class ApplicantDetailsDto
     public DateTime DateOfBirth { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
+    
+    //public List<UserTimelineEvent> Timelines { get; set; }
 }
