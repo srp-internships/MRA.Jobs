@@ -1,24 +1,25 @@
-﻿using MRA.Jobs.Application.Contracts.Internships.Queries;
-using MRA.Jobs.Application.Features.Internships.Queries.GetInternshipById;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
+using MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
+using MRA.Jobs.Domain.Entities;
 public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
 {
-    private GetInternshipByIdQueryHandler _handler;
+    private GetInternshipVacancyByIdQueryHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
-        _handler = new GetInternshipByIdQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetInternshipVacancyByIdQueryHandler(_dbContextMock.Object, Mapper);
     }
 
     [Test]
     public async Task Handle_GivenValidQuery_ShouldReturnInternshipDetailsDTO()
     {
-        var query = new GetInternshipByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
 
-        var internship = new Internship
+        var internship = new InternshipVacancy
         {
             Id = query.Id,
             Title = "Job Title",
@@ -53,10 +54,10 @@ public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetInternshipByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Internship)null);
+            .ReturnsAsync((InternshipVacancy)null);
 
         // Act + Assert
         Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(query, CancellationToken.None));

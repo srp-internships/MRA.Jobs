@@ -1,5 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
-using MRA.Jobs.Domain.Enums;
+﻿using MRA.Jobs.Application.Common.Security;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 
@@ -17,7 +17,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         _dateTime = dateTime;
         _currentUserService = currentUserService;
     }
-
+        
     public async Task<Guid> Handle(CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories.FindAsync(request.CategoryId);
@@ -33,7 +33,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Job vacancy created",
-            CreateBy = _currentUserService.UserId
+            CreateBy = _currentUserService.GetId().Value
         };
         await _dbContext.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);

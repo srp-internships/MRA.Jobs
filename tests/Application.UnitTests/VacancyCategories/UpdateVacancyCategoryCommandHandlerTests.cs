@@ -8,8 +8,9 @@ public class UpdateVacancyCategoryCommandHandlerTests : BaseTestFixture
     private UpdateVacancyCategoryCommandHandler _handler;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
+        base.Setup();
         _handler = new UpdateVacancyCategoryCommandHandler(
             _dbContextMock.Object, Mapper);
     }

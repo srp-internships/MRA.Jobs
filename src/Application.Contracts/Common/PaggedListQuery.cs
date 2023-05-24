@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Sieve.Models;
+﻿using Sieve.Models;
 
 namespace MRA.Jobs.Application.Contracts.Common;
 

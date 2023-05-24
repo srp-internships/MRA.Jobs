@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.Seive;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Infrastructure;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyWithPagination;
 
@@ -20,7 +20,7 @@ public class GetJobVacanciesPagedQueryHandler : IRequestHandler<PaggedListQuery<
 
     public async Task<PaggedList<JobVacancyListDTO>> Handle(PaggedListQuery<JobVacancyListDTO> request, CancellationToken cancellationToken)
     {
-        var result = _sieveProcessor.ApplyAdnGetPaggedList(request, _dbContext.JobVacancies.AsNoTracking(), _mapper.Map<JobVacancyListDTO>);
+        var result = _sieveProcessor.ApplyAdnGetPaggedList(request, _dbContext.Internships.AsNoTracking(), _mapper.Map<JobVacancyListDTO>);
         return await Task.FromResult(result);
     }
 }

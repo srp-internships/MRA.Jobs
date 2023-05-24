@@ -1,8 +1,8 @@
 ﻿using MRA.Jobs.Application.Contracts.Applicant.Queries;
-using MRA.Jobs.Application.Features.Applicant.Query.GetApplicantById;
 
 namespace MRA.Jobs.Application.UnitTests.Applicant;
 using Domain.Entities;
+using MRA.Jobs.Application.Features.Applicants.Query.GetApplicantById;
 
 public class GetReviewerByIdCommandHandlerTests : BaseTestFixture
 {
@@ -28,7 +28,7 @@ public class GetReviewerByIdCommandHandlerTests : BaseTestFixture
             LastName = "userLastname",
             Email = "user@gmail.com",
             PhoneNumber = "123456789",
-            DateOfBrith = DateTime.UtcNow,
+            DateOfBirth = DateTime.UtcNow,
         };
 
         _dbContextMock.Setup(x => x.Applicants.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
@@ -43,7 +43,7 @@ public class GetReviewerByIdCommandHandlerTests : BaseTestFixture
         result.FirstName.Should().Be(applicant.FirstName);
         result.LastName.Should().Be(applicant.LastName);
         result.PhoneNumber.Should().Be(applicant.PhoneNumber);
-        result.DateOfBirth.Should().Be(applicant.DateOfBrith);
+        result.DateOfBirth.Should().Be(applicant.DateOfBirth);
     }
 
     [Test]

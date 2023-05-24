@@ -1,24 +1,24 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingModels.Commands;
-using MRA.Jobs.Application.Features.TraningModels.Commands.UpdateTraningModel;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Update;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 
 [TestFixture]
 public class UpdateTrainingModelCommandValidatorTests
 {
-    private UpdateTrainingModelCommandValidator _validator;
+    private UpdateTrainingVacancyCommandValidator _validator;
 
     [SetUp]
     public void Setup()
     {
-        _validator = new UpdateTrainingModelCommandValidator();
+        _validator = new UpdateTrainingVacancyCommandValidator();
     }
 
     [Test]
     public void Validate_IdIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand { Id = Guid.Empty };
+        var command = new UpdateTrainingVacancyCommand { Id = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -31,7 +31,7 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_TitleIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand { Title = null };
+        var command = new UpdateTrainingVacancyCommand { Title = null };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -44,7 +44,7 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_ShortDescriptionIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand { ShortDescription = null };
+        var command = new UpdateTrainingVacancyCommand { ShortDescription = null };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -57,7 +57,7 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_DescriptionIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand { Description = null };
+        var command = new UpdateTrainingVacancyCommand { Description = null };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -70,7 +70,7 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_PublishDateIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand { PublishDate = DateTime.MinValue };
+        var command = new UpdateTrainingVacancyCommand { PublishDate = DateTime.MinValue };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -83,7 +83,7 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_EndDateIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand { EndDate = DateTime.MinValue };
+        var command = new UpdateTrainingVacancyCommand { EndDate = DateTime.MinValue };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -96,7 +96,7 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_CategoryIdIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand { CategoryId = Guid.Empty };
+        var command = new UpdateTrainingVacancyCommand { CategoryId = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -109,7 +109,7 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_DurationIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand { Duration = 0 };
+        var command = new UpdateTrainingVacancyCommand { Duration = 0 };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -122,7 +122,7 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_FeesIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand { Fees = 0 };
+        var command = new UpdateTrainingVacancyCommand { Fees = 0 };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -135,7 +135,7 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_GivenValidCommand_ShouldNotHaveErrors()
     {
         // Arrange
-        var command = new UpdateTrainingModelCommand
+        var command = new UpdateTrainingVacancyCommand
         {
             Id = Guid.NewGuid(),
             Title = "Job Title",

@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Applicant.Commands;
-using MRA.Jobs.Application.Features.Applicant.Command.CreateApplicant;
+using MRA.Jobs.Application.Features.Applicants.Command.CreateApplicant;
 
 namespace MRA.Jobs.Application.UnitTests.Applicant;
 
@@ -54,7 +54,7 @@ public class CreateApplicantCommandHandlerTests : BaseTestFixture
                         a.FirstName == request.FirstName &&
                         a.LastName == request.LastName &&
                         a.Email == request.Email &&
-                        a.DateOfBrith == request.DateOfBirth && 
+                        a.DateOfBirth == request.DateOfBirth && 
                         a.PhoneNumber == request.PhoneNumber
                 ), It.IsAny<CancellationToken>()), Times.Once);
         

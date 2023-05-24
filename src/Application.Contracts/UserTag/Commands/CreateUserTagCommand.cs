@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace MRA.Jobs.Application.Contracts.UserTag.Commands;
+﻿namespace MRA.Jobs.Application.Contracts.UserTag.Commands;
 public class CreateUserTagCommand : IRequest<Guid>
 {
     public Guid UserId { get; set; }
