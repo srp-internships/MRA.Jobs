@@ -5,7 +5,7 @@ namespace MRA.Jobs.Application.Contracts.Converter.Converter;
 
 public class DateTimeToUnixConverter : DateTimeConverterBase
 {
-    public override void WriteJson(JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
         if (value is not DateTime dateTime)
             throw new Exception("Expected date object value.");
@@ -14,7 +14,7 @@ public class DateTimeToUnixConverter : DateTimeConverterBase
         writer.WriteValue(unixTime);
     }
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer)
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
     {
         if (reader.TokenType != JsonToken.Integer)
         {
