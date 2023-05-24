@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Applicant.Commands;
 using MRA.Jobs.Application.Contracts.Applicant.Queries;
+using MRA.Jobs.Application.Contracts.Applicant.Responses;
+using MRA.Jobs.Application.Contracts.Common;
 
 namespace MRA.Jobs.Web.Controllers;
 
@@ -14,19 +16,18 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllApplicant()
+    public async Task<IActionResult> GetAllApplicant([FromQuery] PaggedListQuery<ApplicantListDto> query)
     {
-        var applicants = await Mediator.Send(new GetAllApplicantQuery());
+        var applicants = await Mediator.Send(query);
         return Ok(applicants);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetApplicantById([FromRoute] Guid id)
+    public async Task<IActionResult> GetApplicantById([FromRoute] Guid id)
     {
-        var applicant = Mediator.Send(new GetApplicantByIdQuery { Id = id });
+        var applicant = await Mediator.Send(new GetApplicantByIdQuery { Id = id });
         return Ok(applicant);
     }
-
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateNewApplicant(CreateApplicantCommand request, CancellationToken cancellationToken)
     {

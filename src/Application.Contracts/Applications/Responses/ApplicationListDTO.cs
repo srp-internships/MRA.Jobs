@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Common.Converter;
+﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.Applications.Responses;

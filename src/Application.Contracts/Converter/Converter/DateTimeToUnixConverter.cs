@@ -1,8 +1,7 @@
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace MRA.Jobs.Application.Common.Converter;
+namespace MRA.Jobs.Application.Contracts.Converter.Converter;
 
 public class DateTimeToUnixConverter : DateTimeConverterBase
 {
