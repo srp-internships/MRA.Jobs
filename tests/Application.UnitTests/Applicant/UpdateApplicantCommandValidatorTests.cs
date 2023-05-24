@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Applicant.Commands;
-using MRA.Jobs.Application.Features.Applicant.Command.UpdateApplicant;
+using MRA.Jobs.Application.Features.Applicants.Command.UpdateApplicant;
 
 namespace MRA.Jobs.Application.UnitTests.Applicant;
 

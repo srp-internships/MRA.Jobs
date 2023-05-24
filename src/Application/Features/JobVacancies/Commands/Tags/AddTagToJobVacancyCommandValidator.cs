@@ -2,11 +2,11 @@
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.Tags;
 
-public class AddTagToJobVacancyCommandValidator : AbstractValidator<AddTagToJobVacancyCommand>
+public class AddTagToJobVacancyCommandValidator : AbstractValidator<AddTagsToJobVacancyCommand>
 {
     public AddTagToJobVacancyCommandValidator()
     {
         RuleFor(x => x.JobVacancyId).NotEmpty();
-        RuleFor(x => x.TagId).NotEmpty();
+        RuleFor(x => x.Tags).NotEmpty();
     }
 }

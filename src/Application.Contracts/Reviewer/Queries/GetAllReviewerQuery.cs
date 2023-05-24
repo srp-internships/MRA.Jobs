@@ -1,5 +1,4 @@
-﻿using MediatR;
-using MRA.Jobs.Application.Contracts.Reviewer.Response;
+﻿using MRA.Jobs.Application.Contracts.Reviewer.Response;
 
 namespace MRA.Jobs.Application.Contracts.Reviewer.Queries;
 

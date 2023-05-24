@@ -7,8 +7,9 @@ public class GetApplicationByIdQueryValidatorTests : BaseTestFixture
     private GetApplicationByIdQueryValidator _validator;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
+        base.Setup();
         _validator = new GetApplicationByIdQueryValidator();
     }
 

@@ -1,4 +1,6 @@
-﻿namespace MRA.Jobs.Application.UnitTests;
+﻿using MRA.Jobs.Application.Common.Security;
+
+namespace MRA.Jobs.Application.UnitTests;
 
 [TestFixture]
 public abstract class BaseTestFixture
@@ -14,5 +16,6 @@ public abstract class BaseTestFixture
         _dbContextMock = new Mock<IApplicationDbContext>();
         _dateTimeMock = new Mock<IDateTime>();
         _currentUserServiceMock = new Mock<ICurrentUserService>();
+        _currentUserServiceMock.Setup(r => r.GetId()).Returns(Guid.Empty);
     }
 }

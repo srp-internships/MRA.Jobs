@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace MRA.Jobs.Application.Contracts.VacancyTag.Commands;
+﻿namespace MRA.Jobs.Application.Contracts.VacancyTag.Commands;
 public class CreateVacancyTagCommand : IRequest<Guid>
 {
     public Guid VacancyId { get; set; }

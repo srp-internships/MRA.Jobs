@@ -1,5 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
-using MRA.Jobs.Domain.Enums;
+﻿using MRA.Jobs.Application.Common.Security;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.UpdateJobVacancy;
 
@@ -20,7 +20,7 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
 
     public async Task<Guid> Handle(UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+        var jobVacancy = await _dbContext.Internships.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Id);
 
         var category = await _dbContext.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken: cancellationToken);
@@ -34,7 +34,7 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Job vacancy updated",
-            CreateBy = _currentUserService.UserId
+            CreateBy = _currentUserService.GetId().Value
         };
         await _dbContext.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);

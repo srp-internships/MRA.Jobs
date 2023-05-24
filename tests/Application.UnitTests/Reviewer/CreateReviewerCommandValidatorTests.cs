@@ -39,7 +39,7 @@ public class CreateReviewerCommandValidatorTests : BaseTestFixture
             FirstName = "",
             LastName = "",
             Email = "",
-            DateOfBrith = DateTime.UtcNow,
+            DateOfBirth = DateTime.UtcNow,
             PhoneNumber = ""
         };
         
@@ -60,7 +60,7 @@ public class CreateReviewerCommandValidatorTests : BaseTestFixture
             FirstName = "userFirstname",
             LastName = "userLastname",
             Email = "user@gmail.com",
-            DateOfBrith = DateTime.UtcNow,
+            DateOfBirth = DateTime.UtcNow,
             PhoneNumber = "+992123456789"
         };
         

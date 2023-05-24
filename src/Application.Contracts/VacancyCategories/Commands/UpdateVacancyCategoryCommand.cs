@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
+﻿namespace MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 
 public class UpdateVacancyCategoryCommand : IRequest<Guid>
 {

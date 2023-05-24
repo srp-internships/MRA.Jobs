@@ -1,5 +1,4 @@
-﻿using MediatR;
-using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+﻿using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 
 namespace MRA.Jobs.Application.Contracts.JobVacancies.Queries;
 

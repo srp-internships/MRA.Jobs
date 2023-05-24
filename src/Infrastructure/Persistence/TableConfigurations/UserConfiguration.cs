@@ -8,7 +8,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         // Common properties
         builder.Property(u => u.Avatar).HasColumnType("nvarchar(max)");
-        builder.Property(u => u.DateOfBrith).HasColumnType("date");
+        builder.Property(u => u.DateOfBirth).HasColumnType("date");
         builder.Property(u => u.Email).HasColumnType("nvarchar(256)").IsRequired();
         builder.Property(u => u.FirstName).HasColumnType("nvarchar(128)").IsRequired();
         builder.Property(u => u.LastName).HasColumnType("nvarchar(128)").IsRequired();

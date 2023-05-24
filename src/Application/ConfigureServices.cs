@@ -1,9 +1,10 @@
 ﻿using System.Reflection;
 using MRA.Jobs.Application.Common.Behaviours;
 using Microsoft.Extensions.DependencyInjection;
-using MRA.Jobs.Infrastructure;
 using AutoMapper.Internal;
 using Microsoft.Extensions.Configuration;
+using Sieve.Services;
+using MRA.Jobs.Application.Common.Seive;
 
 namespace MRA.Jobs.Application;
 
@@ -23,9 +24,10 @@ public static class ConfigureServices
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
+        services.AddScoped<ISieveConfigurationsAssemblyMarker, ApplicationSieveConfigurationsAssemblyMarker>();
 
+        services.AddScoped<ISieveCustomFilterMethods, SieveCustomFilterMethods>();
         services.AddScoped<IApplicationSieveProcessor, ApplicationSieveProcessor>();
-
         return services;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Applicant.Commands;
-using MRA.Jobs.Application.Features.Applicant.Command.DeleteApplicant;
+using MRA.Jobs.Application.Features.Applicants.Command.DeleteApplicant;
 
 namespace MRA.Jobs.Application.UnitTests.Applicant;
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.Seive;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Infrastructure;
 
 namespace MRA.Jobs.Application.Features.Applications.Query.GetApplicationWithPagination;
 public class GetApplicationsPagedQueryHandler : IRequestHandler<PaggedListQuery<ApplicationListDTO>, PaggedList<ApplicationListDTO>>
