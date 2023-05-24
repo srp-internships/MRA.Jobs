@@ -1,10 +1,8 @@
 ﻿@page "/category"
 @page "/category/1"
 @page "/category/2"
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @inject ICategoryService CService
-@using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
-
-
 @if (_category == null)
 {
     <div>Loading</div>
@@ -17,19 +15,17 @@ else
                 <MatExpansionPanelHeader>Inserting a new Category Data</MatExpansionPanelHeader>
             </MatExpansionPanelSummary>
             <MatExpansionPanelDetails>
-
                 <MatTextField @bind-Value="@CService.creatingEntity.Name"></MatTextField>
                 <MatButton @onclick="@CService.OnSaveCreateClick">Insert</MatButton>
-
             </MatExpansionPanelDetails>
         </MatExpansionPanel>
     </MatAccordion>
+
     <MatTable Items="@CService.Category" ShowPaging="false" RequestApiOnlyOnce="true" RowClass="tester" class="mat-elevation-z5" PageSize="100">
         <MatTableHeader>
             <th>Name</th>
             <th>Actions</th>
         </MatTableHeader>
-
         <MatTableRow>
             <td>
                 @if (CService.updatingEntity?.Id == context.Id)

@@ -1,7 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Responces;
 
 namespace MRA.Jobs.Client.Services.CategoryServices;
 
@@ -13,24 +12,20 @@ public class CategoryService : ICategoryService
     {
         _http = http;
     }
-
     public List<CategoryResponse> Category { get; set; }
-    public List<VacancyCategoryListDTO> Category { get; set; }
     public UpdateVacancyCategoryCommand updatingEntity { get; set; }
     public DeleteVacancyCategoryCommand deletingEntity { get; set; }
     public CreateVacancyCategoryCommand creatingEntity { get; set; }
-
     public async Task<List<CategoryResponse>> GetAllCategory()
-    public async Task<List<VacancyCategoryListDTO>> GetAllCategory()
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("category");
-        var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>("category");
+        var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("categories");
+      
         Category = result.Items;
         creatingEntity = new() { Name = "" };
         return Category;
     }
+
     public void OnUpdateClick(CategoryResponse updateEntity)
-    public void OnUpdateClick(VacancyCategoryListDTO updateEntity)
     {
         updatingEntity = new()
         {
@@ -40,35 +35,33 @@ public class CategoryService : ICategoryService
     }
     public async Task OnSaveUpdateClick()
     {
-        var result = await _http.PutAsJsonAsync($"category/{updatingEntity.Id}", updatingEntity);
+        var result = await _http.PutAsJsonAsync($"categories/{updatingEntity.Id}", updatingEntity);
         result.EnsureSuccessStatusCode();
         updatingEntity = null;
-        var result2 = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"category");
-        var result2 = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category");
+        var result2 = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"categories");
         Category = result2.Items;
     }
     public async Task OnDeleteClick(Guid id)
     {
         await _http.DeleteAsync($"category/{id}");
-        var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category");
+        var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"categories");
         Category = result.Items;
      
 
-        var result2 = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"category");
-        Category = result2.Items;
-        var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category");
-        Category = result.Items;
+        //var result2 = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"category");
+        //Category = result2.Items;
+        //var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category");
+        //Category = result.Items;
     }
     public async Task OnSaveCreateClick()
     {
         var ss = creatingEntity;
         if (creatingEntity is not null)
-            await _http.PostAsJsonAsync("category", creatingEntity);
+            await _http.PostAsJsonAsync("categories", creatingEntity);
         creatingEntity.Name = string.Empty;
-        var result2 = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"category");
-        Category = result2.Items;
-        var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category");
+        var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"categories");
         Category = result.Items;
+    
     }
 
 

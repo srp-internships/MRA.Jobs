@@ -3154,10 +3154,6 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
           "applicantId": {
             "type": "string",
             "format": "guid"

@@ -38,12 +38,11 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Job vacancy created",
-            CreateBy = _currentUserService.GetId().Value
+            CreateBy = _currentUserService.GetId() ?? Guid.Empty
         };
 
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return application.Id;
-
     }
 }

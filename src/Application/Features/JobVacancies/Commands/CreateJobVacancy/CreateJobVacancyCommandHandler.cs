@@ -30,10 +30,11 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         var timelineEvent = new VacancyTimelineEvent
         {
             VacancyId = jobVacancy.Id,
+            Vacancy=jobVacancy,
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Job vacancy created",
-            CreateBy = _currentUserService.GetId().Value
+            CreateBy = _currentUserService.GetId() ?? Guid.Empty
         };
         await _dbContext.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
