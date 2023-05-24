@@ -7,7 +7,6 @@ namespace MRA.Jobs.Client.Services.CategoryServices;
 
 public interface ICategoryService
 {
-   
     List<VacancyCategoryListDTO> Category { get; set; }
     UpdateVacancyCategoryCommand updatingEntity { get; set; }
     DeleteVacancyCategoryCommand deletingEntity { get; set; }
