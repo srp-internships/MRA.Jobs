@@ -29,7 +29,7 @@ public class TestService : ITestService
             {
                 var content = new StringContent(JsonConvert.SerializeObject(request), System.Text.Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await client.PostAsync("https://localhost:5001/", content);
+                HttpResponseMessage response = await client.PostAsync("https://localhost:5001/api/", content);
 
                 if (response.IsSuccessStatusCode)
                 {
