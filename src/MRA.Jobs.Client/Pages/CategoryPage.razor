@@ -35,11 +35,10 @@ else
                 else
                 {
                     @context.Name
-
-                    }
-                </td>
-                <td>
-                    @if (CService.updatingEntity?.Id == context.Id)
+                }
+            </td>
+            <td>
+                @if (CService.updatingEntity?.Id == context.Id)
                 {
                     <MatButton OnClick="@CService.OnSaveUpdateClick" Style="color:#2094CC" Icon="edit">Save</MatButton>
                 }
