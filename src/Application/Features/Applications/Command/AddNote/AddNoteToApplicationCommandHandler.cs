@@ -1,32 +1,24 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
-namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplication;
-using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Application.Common.Security;
-using MRA.Jobs.Domain.Entities;
-using MRA.Jobs.Domain.Enums;
-
-public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationCommand, Guid>
+namespace MRA.Jobs.Application.Features.Applications.Command.AddNote;
+public class AddNoteToApplicationCommandHandler : IRequestHandler<AddNoteToApplicationCommand, bool>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
 
-    public UpdateApplicationCommandHadler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
+    public AddNoteToApplicationCommandHandler(IApplicationDbContext dbContext, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
-        _context = context;
+        _context = dbContext;
         _mapper = mapper;
         _dateTime = dateTime;
         _currentUserService = currentUserService;
     }
-
-    public async Task<Guid> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(AddNoteToApplicationCommand request, CancellationToken cancellationToken)
     {
         var application = await _context.Applications.FindAsync(request.Id);
-        _ = application ?? throw new NotFoundException(nameof(Application), request.Id);;
-
-        _mapper.Map(request, application);
+        _ = application ?? throw new NotFoundException(nameof(Application), request.Id); ;
 
         var timelineEvent = new ApplicationTimelineEvent
         {
@@ -34,12 +26,12 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
             Application = application,
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
-            Note = "Application updated",
+            Note = request.Note,
             CreateBy = _currentUserService.GetId() ?? Guid.Empty
         };
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return application.Id;
+        return true;
     }
 }
