@@ -10,5 +10,6 @@ public class JobVacancyProfile : Profile
         CreateMap<JobVacancy, JobVacancyDetailsDTO>();
         CreateMap<CreateJobVacancyCommand, JobVacancy>();
         CreateMap<UpdateJobVacancyCommand, JobVacancy>();
+        CreateMap<CreateJobVacancyTestCommand, Test>();
     }
 }
