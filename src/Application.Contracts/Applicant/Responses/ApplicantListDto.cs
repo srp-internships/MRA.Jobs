@@ -1,4 +1,6 @@
-﻿using MRA.Jobs.Domain.Entities;
+﻿using MRA.Jobs.Application.Contracts.TagDTO;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
+
 
 namespace MRA.Jobs.Application.Contracts.Applicant.Responses;
 
@@ -21,6 +23,6 @@ public class ApplicantDetailsDto
     public DateTime DateOfBirth { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
-    
-    public List<UserTimelineEvent> Timelines { get; set; }
+    public ICollection<TimeLineDetailsDto> History { get; set; }
+    public ICollection<TagDto> Tags { get; set; }
 }

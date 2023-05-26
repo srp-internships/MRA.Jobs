@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Queries;
@@ -14,7 +15,11 @@ public class GetTrainingVacancyByIdQueryHandler : IRequestHandler<GetTrainingVac
     }
     public async Task<TrainingVacancyDetailedResponce> Handle(GetTrainingVacancyByIdQuery request, CancellationToken cancellationToken)
     {
-        var trainingVacancy = await _context.TrainingVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+       // var trainingVacancy = await _context.TrainingVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+       var trainingVacancy = await _context.TrainingVacancies.Include(i => i.History)
+            .Include(i => i.Tags)
+            .ThenInclude(t => t.Tag)
+            .FirstOrDefaultAsync(i => i.Id == request.Id);
         _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Id);
         return _mapper.Map<TrainingVacancyDetailedResponce>(trainingVacancy);
     }

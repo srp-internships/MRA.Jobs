@@ -20,12 +20,28 @@ public class GetApplicantByIdQueryHandler : IRequestHandler<GetApplicantByIdQuer
         _mapper = mapper;
     }
 
+    //public async Task<ApplicantDetailsDto> Handle(GetApplicantByIdQuery request, CancellationToken cancellationToken)
+    //{
+    //    // var applicant = await _context.Applicants.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+
+    //    var applicant = await _context.Applicants
+    //       .Include(a => a.History)
+    //       .FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken);
+
+
+    //    _ = applicant ?? throw new NotFoundException(nameof(Applicant), request.Id);    
+    //    return _mapper.Map<ApplicantDetailsDto>(applicant);
+    //}
+
     public async Task<ApplicantDetailsDto> Handle(GetApplicantByIdQuery request, CancellationToken cancellationToken)
     {
-        var applicant = await _context.Applicants.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
-        var timeLine = await _context.ApplicationTimelineEvents.FirstOrDefaultAsync(x => x.ApplicationId == request.Id);
-         
-        _ = applicant ?? throw new NotFoundException(nameof(Applicant), request.Id);    
+        var applicant = await _context.Applicants
+                .Include(a => a.History)
+                 .Include(a => a.Tags)
+                   .ThenInclude(t => t.Tag)
+                .FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken);
+        _ = applicant ?? throw new NotFoundException(nameof(Applicant), request.Id);
         return _mapper.Map<ApplicantDetailsDto>(applicant);
     }
+
 }

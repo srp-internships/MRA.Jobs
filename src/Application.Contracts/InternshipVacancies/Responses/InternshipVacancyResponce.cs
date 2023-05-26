@@ -1,4 +1,7 @@
-﻿namespace MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+﻿using MRA.Jobs.Application.Contracts.TagDTO;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
+
+namespace MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 public class InternshipVacancyResponce
 {
     public Guid Id { get; set; }
@@ -17,4 +20,8 @@ public class InternshipVacancyResponce
     public Guid CreatedBy { get; set; }
     public DateTime? LastModifiedAt { get; set; }
     public Guid LastModifiedBy { get; set; }
+
+    public ICollection<TimeLineDetailsDto> History { get; set; }
+    public ICollection<TagDto> Tags { get; set; }
+
 }

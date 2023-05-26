@@ -1,4 +1,7 @@
-﻿namespace MRA.Jobs.Application.Contracts.Reviewer.Response;
+﻿using MRA.Jobs.Application.Contracts.TagDTO;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
+
+namespace MRA.Jobs.Application.Contracts.Reviewer.Response;
 
 public class ReviewerListDto
 {
@@ -20,4 +23,7 @@ public class ReviewerDetailsDto
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
     public string JobTitle { get; set; }
+
+    public ICollection<TimeLineDetailsDto> History { get; set; }
+    public ICollection<TagDto> Tags { get; set; }
 }
