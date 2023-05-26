@@ -22,5 +22,5 @@ public class ApplicantDetailsDto
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
     
-    //public List<UserTimelineEvent> Timelines { get; set; }
+    public List<UserTimelineEvent> Timelines { get; set; }
 }
