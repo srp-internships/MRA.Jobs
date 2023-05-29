@@ -53,53 +53,11 @@ public class UpdateApplicationCommandValidatorTests : BaseTestFixture
     }
 
     [Test]
-    public void Validate_ApplicantIdEmpty_ShouldFailValidation()
-    {
-        // Arrange
-        var request = new UpdateApplicationCommand { ApplicantId = Guid.Empty };
-
-        // Act
-        var result = _validator.TestValidate(request);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.ApplicantId);
-    }
-
-    [Test]
-    public void Validate_VacancyIdEmpty_ShouldFailValidation()
-    {
-        // Arrange
-        var request = new UpdateApplicationCommand { VacancyId = Guid.Empty };
-
-        // Act
-        var result = _validator.TestValidate(request);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.VacancyId);
-    }
-
-    [Test]
-    public void Validate_StatusIdEmpty_ShouldFailValidation()
-    {
-        // Arrange
-        var request = new UpdateApplicationCommand { StatusId = 0 };
-
-        // Act
-        var result = _validator.TestValidate(request);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.StatusId);
-    }
-
-    [Test]
     public void Validate_AllFieldsValid_ShouldPassValidation()
     {
         // Arrange
         var request = new UpdateApplicationCommand
         {
-            ApplicantId = Guid.NewGuid(),
-            VacancyId = Guid.NewGuid(),
-            StatusId = 1,
             CV = "https://github.com/srp-internships/MRA-Jobs/pulls",
             CoverLetter = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"
         };

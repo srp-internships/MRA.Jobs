@@ -14,6 +14,7 @@ public class ApplicationProfile: Profile
         CreateMap<Application, ApplicationDetailsDTO>()
               .ForMember(dest => dest.Histiry, opt => opt.MapFrom(src => src.History));
         CreateMap<CreateApplicationCommand, Application>();
+        CreateMap<CreateApplicationWithoutApplicantIdCommand, Application>();
         CreateMap<UpdateApplicationCommand, Application>();
         MappingConfiguration.ConfigureUserMap<ApplicationTimelineEvent, TimeLineDetailsDto>(this);
     }

@@ -35,9 +35,8 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentVacancyId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateApplicationCommand { Id = Guid.NewGuid(), VacancyId = Guid.NewGuid() };
+        var command = new UpdateApplicationCommand { Id = Guid.NewGuid()};
         _dbContextMock.Setup(x => x.Applications.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new Application());
-        _dbContextMock.Setup(x => x.Vacancies.FindAsync(new object[] { command.VacancyId }, CancellationToken.None)).ReturnsAsync(null as Vacancy);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -50,9 +49,8 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentApplicantId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateApplicationCommand { Id = Guid.NewGuid(), ApplicantId = Guid.NewGuid() };
+        var command = new UpdateApplicationCommand { Id = Guid.NewGuid() };
         _dbContextMock.Setup(x => x.Applications.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new Application());
-        _dbContextMock.Setup(x => x.Applicants.FindAsync(new object[] { command.ApplicantId }, CancellationToken.None)).ReturnsAsync(null as Applicant);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -68,24 +66,13 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
         var command = new UpdateApplicationCommand
         {
             Id = Guid.NewGuid(),
-            VacancyId = Guid.NewGuid(),
-            ApplicantId = Guid.NewGuid(),
             CoverLetter = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\r\n\r\n",
             CV = "https://www.lipsum.com/",
-            StatusId = (int)ApplicationStatus.Submitted
         };
 
         var existingApplication = new Application { Id = command.Id };
         _dbContextMock.Setup(x => x.Applications.FindAsync(command.Id))
             .ReturnsAsync(existingApplication);
-
-        var vacancy = new JobVacancy { Id = command.VacancyId };
-        _dbContextMock.Setup(x => x.Vacancies.FindAsync(command.VacancyId))
-            .ReturnsAsync(vacancy);
-
-        var applicant = new Applicant { Id = command.ApplicantId };
-        _dbContextMock.Setup(x => x.Applicants.FindAsync(command.ApplicantId))
-            .ReturnsAsync(applicant);
 
         var timelineEvent = new ApplicationTimelineEvent();
         _dbContextMock.Setup(x => x.ApplicationTimelineEvents.AddAsync(It.IsAny<ApplicationTimelineEvent>(), It.IsAny<CancellationToken>()))
@@ -107,10 +94,7 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
 
-        existingApplication.ApplicantId.Should().Be(command.ApplicantId);
-        existingApplication.VacancyId.Should().Be(command.VacancyId);
         existingApplication.CoverLetter.Should().Be(existingApplication.CoverLetter);
         existingApplication.CV.Should().Be(command.CV);
-        ((int)existingApplication.Status).Should().Be(command.StatusId);
     }
 }
