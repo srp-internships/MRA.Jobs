@@ -36,6 +36,12 @@ public class ApplicationsController : ApiControllerBase
         return await Mediator.Send(request, cancellationToken);
     }
 
+    [HttpPost("withoutApplicantId")]
+    public async Task<ActionResult<Guid>> CreateApplicationWithoutApplicantId(CreateApplicationWithoutApplicantIdCommand request, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(request, cancellationToken);
+    }
+
     [HttpPut("{Id}")]
     public async Task<ActionResult<Guid>> UpdateApplication(Guid Id, UpdateApplicationCommand request, CancellationToken cancellationToken)
     {
@@ -47,6 +53,20 @@ public class ApplicationsController : ApiControllerBase
     public async Task<ActionResult<bool>> DeleteApplication(Guid Id, CancellationToken cancellationToken)
     {
         var request = new DeleteApplicationCommand { Id = Id };
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpPut("{Id}/update-status")]
+    public async Task<ActionResult<bool>> UpdateStatus(Guid Id, UpdateApplicationStatus request, CancellationToken cancellationToken)
+    {
+        request.Id = Id;
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpPost("{Id}/add-note")]
+    public async Task<ActionResult<bool>> AddNote(Guid Id, AddNoteToApplicationCommand request, CancellationToken cancellationToken)
+    {
+        request.Id = Id;
         return await Mediator.Send(request, cancellationToken);
     }
 }
