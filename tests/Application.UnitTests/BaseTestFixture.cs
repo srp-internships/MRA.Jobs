@@ -15,6 +15,7 @@ public abstract class BaseTestFixture
     {
         _dbContextMock = new Mock<IApplicationDbContext>();
         _dateTimeMock = new Mock<IDateTime>();
+        _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _currentUserServiceMock.Setup(r => r.GetId()).Returns(Guid.Empty);
     }

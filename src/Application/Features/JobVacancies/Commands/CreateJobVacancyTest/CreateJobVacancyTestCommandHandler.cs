@@ -5,23 +5,40 @@ namespace MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancyTe
 public class CreateJobVacancyTestCommandHandler : IRequestHandler<CreateJobVacancyTestCommand, TestInfoDTO>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
-    private readonly IHttpClientDispatcher<CreateJobVacancyTestCommand, TestInfoDTO, TestPassDTO> _httpClient;
+    private readonly IJobVacancyHttpClientService _httpClient;
 
-    public CreateJobVacancyTestCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
+    public CreateJobVacancyTestCommandHandler(IApplicationDbContext context, IDateTime dateTime,
         ICurrentUserService currentUserService,
-        IHttpClientDispatcher<CreateJobVacancyTestCommand, TestInfoDTO, TestPassDTO> httpClient)
+       IJobVacancyHttpClientService httpClient)
     {
         _context = context;
-        _mapper = mapper;
         _dateTime = dateTime;
         _currentUserService = currentUserService;
         _httpClient = httpClient;
     }
-    public Task<TestInfoDTO> Handle(CreateJobVacancyTestCommand request, CancellationToken cancellationToken)
+    public async Task<TestInfoDTO> Handle(CreateJobVacancyTestCommand request, CancellationToken cancellationToken)
     {
+        var result = await _httpClient.SendTestCreationRequest(request);
 
+        var test = new Test
+        {
+            CreatedAt = _dateTime.Now,
+            CreatedBy = _currentUserService.GetId() ?? Guid.Empty,
+            Description = string.Empty,
+            Duration = TimeSpan.Zero,
+            Id = result.TestId,
+            NumberOfQuestion = request.NumberOfQuestion,
+            PassingScore = result.MaxScore,
+            Title = "test",
+            VacancyId = request.Id
+        };
+
+        await _context.Tests.AddAsync(test, cancellationToken);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return result;
     }
 }

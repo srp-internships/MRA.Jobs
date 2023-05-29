@@ -28,8 +28,8 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.5" />
-        <PackageReference Include="NSwag.AspNetCore" Version="13.19.0" />
-        <PackageReference Include="NSwag.MSBuild" Version="13.19.0">
+        <PackageReference Include="NSwag.AspNetCore" Version="13.18.5" />
+        <PackageReference Include="NSwag.MSBuild" Version="13.18.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

@@ -39,6 +39,15 @@ public class JobsController : ApiControllerBase
         return await Mediator.Send(request, cancellationToken);
     }
 
+    [HttpPost("{id}/test")]
+    public async Task<ActionResult<TestInfoDTO>> SendTestCreationRequest([FromRoute] Guid id, [FromBody] CreateJobVacancyTestCommand request, CancellationToken cancellationToken)
+    {
+        if (id != request.Id)
+            return BadRequest();
+
+        return await Mediator.Send(request, cancellationToken);
+    }
+
     [HttpPut("{id}")]
     public async Task<ActionResult<Guid>> Update([FromRoute] Guid id, [FromBody] UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {

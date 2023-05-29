@@ -10,6 +10,7 @@ using MRA.Jobs.Application.Common.Seive;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;
+using MRA.Jobs.Infrastructure.Services.JobVacancy;
 
 namespace MRA.Jobs.Infrastructure;
 
@@ -26,6 +27,7 @@ public static class ConfigureServices
             options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ApplicationDbContextInitialiser>();
+        services.AddScoped<IJobVacancyHttpClientService, JobVacancyHttpClientService>();
 
         services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
         services.AddTransient<IDateTime, DateTimeService>();
