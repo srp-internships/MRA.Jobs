@@ -5,5 +5,4 @@ public class CreateApplicationCommand:IRequest<Guid>
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
     public string CV { get; set; }
-    public int StatusId { get; set; }
 }

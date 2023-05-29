@@ -1329,6 +1329,127 @@
         }
       }
     },
+    "/api/applications/withoutapplicantid": {
+      "post": {
+        "tags": [
+          "Applications"
+        ],
+        "operationId": "Applications_CreateApplicationWithoutApplicantId",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApplicationWithoutApplicantIdCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications/{Id}/update-status": {
+      "put": {
+        "tags": [
+          "Applications"
+        ],
+        "operationId": "Applications_UpdateStatus",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateApplicationStatus"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications/{Id}/add-note": {
+      "post": {
+        "tags": [
+          "Applications"
+        ],
+        "operationId": "Applications_AddNote",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddNoteToApplicationCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/categories": {
       "get": {
         "tags": [
@@ -3267,6 +3388,10 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
           "applicantId": {
             "type": "string",
             "format": "guid"
@@ -3367,25 +3492,13 @@
           "cv": {
             "type": "string",
             "nullable": true
-          },
-          "statusId": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
-      "UpdateApplicationCommand": {
+      "CreateApplicationWithoutApplicantIdCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
-          "applicantId": {
-            "type": "string",
-            "format": "guid"
-          },
           "coverLetter": {
             "type": "string",
             "nullable": true
@@ -3397,10 +3510,52 @@
           "cv": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "UpdateApplicationCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "coverLetter": {
+            "type": "string",
+            "nullable": true
+          },
+          "cv": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateApplicationStatus": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
           },
           "statusId": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "AddNoteToApplicationCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
