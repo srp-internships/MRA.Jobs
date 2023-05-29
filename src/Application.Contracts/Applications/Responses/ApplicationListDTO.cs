@@ -1,4 +1,6 @@
-﻿namespace MRA.Jobs.Application.Contracts.Applications.Responses;
+﻿using MRA.Jobs.Application.Contracts.TimeLineDTO;
+
+namespace MRA.Jobs.Application.Contracts.Applications.Responses;
 public class ApplicationListDTO
 {
     public Guid ApplicantId { get; set; }
@@ -11,6 +13,7 @@ public class ApplicationListDTO
 public class ApplicationDetailsDTO
 {
     public Guid Id { get; set; }
+
     public Guid ApplicantId { get; set; }
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
@@ -21,4 +24,6 @@ public class ApplicationDetailsDTO
     public Guid? CreatedBy { get; set; }
     public DateTime? LastModifiedAt { get; set; }
     public Guid? LastModifiedBy { get; set; }
+
+    public IQueryable<TimeLineDetailsDto> Histiry { get; set; }
 }

@@ -3379,8 +3379,68 @@
             "type": "string",
             "format": "guid",
             "nullable": true
+          },
+          "histiry": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/TimeLineDetailsDto"
+            }
           }
         }
+      },
+      "TimeLineDetailsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "createBy": {
+            "type": "string",
+            "format": "guid"
+          },
+          "userFullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "userAvatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventType": {
+            "$ref": "#/components/schemas/TimelineEventType"
+          }
+        }
+      },
+      "TimelineEventType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Created",
+          "Updated",
+          "Deleted",
+          "StatusChanged",
+          "Note",
+          "Error"
+        ],
+        "enum": [
+          "Created",
+          "Updated",
+          "Deleted",
+          "StatusChanged",
+          "Note",
+          "Error"
+        ]
       },
       "GetByIdApplicationQuery": {
         "type": "object",
@@ -4034,59 +4094,6 @@
             }
           }
         }
-      },
-      "TimeLineDetailsDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "userId": {
-            "type": "string",
-            "format": "guid"
-          },
-          "createBy": {
-            "type": "string",
-            "format": "guid"
-          },
-          "userFullName": {
-            "type": "string",
-            "nullable": true
-          },
-          "userAvatar": {
-            "type": "string",
-            "nullable": true
-          },
-          "note": {
-            "type": "string",
-            "nullable": true
-          },
-          "time": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "eventType": {
-            "$ref": "#/components/schemas/TimelineEventType"
-          }
-        }
-      },
-      "TimelineEventType": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Created",
-          "Updated",
-          "Deleted",
-          "StatusChanged",
-          "Note",
-          "Error"
-        ],
-        "enum": [
-          "Created",
-          "Updated",
-          "Deleted",
-          "StatusChanged",
-          "Note",
-          "Error"
-        ]
       },
       "TagDto": {
         "type": "object",
