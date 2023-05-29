@@ -28,7 +28,6 @@ public class ApplicantController : ApiControllerBase
         var applicant = await Mediator.Send(new GetApplicantByIdQuery { Id = id });
         return Ok(applicant);
     }
-
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateNewApplicant(CreateApplicantCommand request, CancellationToken cancellationToken)
     {
