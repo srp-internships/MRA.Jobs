@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 namespace MRA.Jobs.Application.Contracts.Applications.Responses;
 public class ApplicationListDTO
 {
+    public Guid Id { get; set; }
     public Guid ApplicantId { get; set; }
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
