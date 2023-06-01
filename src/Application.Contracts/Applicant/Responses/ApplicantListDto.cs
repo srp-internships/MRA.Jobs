@@ -29,4 +29,5 @@ public class ApplicantDetailsDto
     public string Email { get; set; }
     public ICollection<TimeLineDetailsDto> History { get; set; }
     public ICollection<TagDto> Tags { get; set; }
+    public ICollection<ApplicantSocialMediaDto> SocialMedias { get; set;}
 }

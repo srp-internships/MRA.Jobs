@@ -21,6 +21,6 @@ public class ApplicantProfile : Profile
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag)));
         MappingConfiguration.ConfigureUserMap<UserTimelineEvent, TimeLineDetailsDto>(this);
         MappingConfiguration.ConfigureUserMap<Tag, TagDto>(this);
-
+        CreateMap<ApplicantSocialMedia, ApplicantSocialMediaDto>();
     }
 }
