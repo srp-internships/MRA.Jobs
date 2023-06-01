@@ -46,19 +46,6 @@ else
     WorkSchedule work;
     WorkSchedule[] value2Items = Enum.GetValues(typeof(WorkSchedule)).Cast<WorkSchedule>().ToArray();
 
-    enum Food
-    {
-        Grains,
-        Vegetables,
-        Fruit,
-    }
-
-    private WorkSchedule selectedV;
-    private void Onselect(ChangeEventArgs e)
-    {
-        selectedV = (WorkSchedule)Enum.Parse(typeof(WorkSchedule), e.Value.ToString());
-        Console.WriteLine(selectedV);
-    }
 
     private List<CategoryResponse> _category;
     protected override async Task OnInitializedAsync()

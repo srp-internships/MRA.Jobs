@@ -1,6 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Client.Services.CategoryServices;

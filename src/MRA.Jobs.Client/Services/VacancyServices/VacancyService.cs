@@ -2,8 +2,6 @@
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-using static System.Net.WebRequestMethods;
-
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
 public class VacancyService : IVacancyService
@@ -12,24 +10,19 @@ public class VacancyService : IVacancyService
 
     public VacancyService(HttpClient http)
     {
+        _http = http;
         guidId = "";
         creatingNewJob = new()
         {
             Title = "",
             Description = "",
             ShortDescription = "",
-            WorkSchedule = new()
-            {
-            
-            },
+            WorkSchedule = new() { },
             CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 0,
             EndDate = DateTime.Now,
             PublishDate = DateTime.Now,
-
         };
-
-        _http = http;
     }
     public List<CategoryResponse> Category { get; set; }
     public CreateJobVacancyCommand creatingNewJob { get; set; }
@@ -40,15 +33,12 @@ public class VacancyService : IVacancyService
     {
         var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("categories");
         Category = result.Items;
-
         return Category;
     }
-
     public async Task OnSaveCreateClick()
     {
-        
         Console.WriteLine(creatingNewJob.CategoryId);
-        await _http.PostAsJsonAsync("jobs",creatingNewJob);
+        await _http.PostAsJsonAsync("jobs", creatingNewJob);
         Console.WriteLine(creatingNewJob.Title);
         Console.WriteLine("shud");
     }

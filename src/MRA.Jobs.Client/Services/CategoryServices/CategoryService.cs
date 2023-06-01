@@ -19,12 +19,10 @@ public class CategoryService : ICategoryService
     public async Task<List<CategoryResponse>> GetAllCategory()
     {
         var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("categories");
-      
         Category = result.Items;
         creatingEntity = new() { Name = "" };
         return Category;
     }
-
     public void OnUpdateClick(CategoryResponse updateEntity)
     {
         updatingEntity = new()
@@ -46,23 +44,13 @@ public class CategoryService : ICategoryService
         await _http.DeleteAsync($"category/{id}");
         var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"categories");
         Category = result.Items;
-     
-
-        //var result2 = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"category");
-        //Category = result2.Items;
-        //var result = await _http.GetFromJsonAsync<PaggedList<VacancyCategoryListDTO>>($"category");
-        //Category = result.Items;
     }
     public async Task OnSaveCreateClick()
     {
-        var ss = creatingEntity;
         if (creatingEntity is not null)
             await _http.PostAsJsonAsync("categories", creatingEntity);
         creatingEntity.Name = string.Empty;
         var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"categories");
         Category = result.Items;
-    
     }
-
-
 }
