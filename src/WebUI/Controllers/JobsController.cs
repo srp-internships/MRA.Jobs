@@ -10,7 +10,7 @@ namespace MRA.Jobs.Web.Controllers;
 
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]")] 
 public class JobsController : ApiControllerBase
 {
     
