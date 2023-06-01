@@ -7,6 +7,8 @@ public class CreateJobVacancyTestCommandHandlerTests : BaseTestFixture
 {
     private CreateJobVacancyTestCommandHandler _handler;
     private Mock<IJobVacancyHttpClientService> _httpClientMock;
+
+
     [SetUp]
     public override void Setup()
     {
@@ -23,7 +25,6 @@ public class CreateJobVacancyTestCommandHandlerTests : BaseTestFixture
     public async Task Handle_ValidRequest_ShouldCreateJobVacancyTest()
     {
         // Arrange
-        var guid = Guid.NewGuid();
         var testInfo = new TestInfoDTO
         {
             MaxScore = 10,
@@ -32,21 +33,30 @@ public class CreateJobVacancyTestCommandHandlerTests : BaseTestFixture
 
         var jobVacancyRequest = new CreateJobVacancyTestCommand
         {
-            Id = guid,
-            NumberOfQuestion = 1
+            Id = Guid.NewGuid(),
+            NumberOfQuestion = 0
         };
 
         _httpClientMock.Setup(x => x.SendTestCreationRequest(jobVacancyRequest)).ReturnsAsync(testInfo);
 
-        var TestDbSetMock = new Mock<DbSet<Test>>();
+        var testDbSetMock = new Mock<DbSet<Test>>();
         var newEntityGuid = Guid.NewGuid();
-        TestDbSetMock.Setup(d => d.AddAsync(It.IsAny<Test>(), It.IsAny<CancellationToken>())).Callback<Test, CancellationToken>((t, ct) => t.Id = newEntityGuid);
-        _dbContextMock.Setup(x => x.Tests).Returns(TestDbSetMock.Object);
-
+        testDbSetMock.Setup(d => d.AddAsync(It.IsAny<Test>(), It.IsAny<CancellationToken>())).Callback<Test, CancellationToken>((t, ct) => t.Id = newEntityGuid);
+        _dbContextMock.Setup(x => x.Tests).Returns(testDbSetMock.Object);
 
         _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
 
         // Act
+        var result = await _handler.Handle(jobVacancyRequest, CancellationToken.None);
+
         // Assert
+        result.Should().Be(testInfo);
+
+        testDbSetMock.Verify(x => x.AddAsync(It.Is<Test>(t =>
+            t.VacancyId == jobVacancyRequest.Id &&
+            t.NumberOfQuestion == jobVacancyRequest.NumberOfQuestion
+        ), It.IsAny<CancellationToken>()), Times.Once);
+
+        _dbContextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
     }
 }
