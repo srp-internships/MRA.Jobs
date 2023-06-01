@@ -13,7 +13,7 @@ public interface ICategoryService
     CreateVacancyCategoryCommand creatingEntity { get; set; }
     Task<List<CategoryResponse>> GetAllCategory();
     Task OnSaveUpdateClick();
-    Task OnDeleteClick(Guid id);
+    Task OnDeleteClick(Guid id);    
     Task OnSaveCreateClick();
     void OnUpdateClick(CategoryResponse updateEntity);
 }

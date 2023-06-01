@@ -51,14 +51,14 @@ else
         </MatTableRow>
     </MatTable>
 }
-
+        
 @code {
     private List<CategoryResponse> _category;
     bool panelOpenState;
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await CService.GetAllCategory();
-        _category = result;
+        _category = await CService.GetAllCategory();
+        
     }
 }

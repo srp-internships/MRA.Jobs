@@ -13,6 +13,8 @@ namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 public class JobsController : ApiControllerBase
 {
+
+
     private readonly ILogger<JobsController> _logger;
 
     public JobsController(ILogger<JobsController> logger)

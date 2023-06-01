@@ -1,6 +1,9 @@
 ﻿@using MRA.Jobs.Application.Contracts.Common;
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+@using MRA.Jobs.Client.Services.VacancyServices
+
+@inject IVacancyService VService
 @inject ICategoryService CService
 @inject HttpClient _http;
 
@@ -43,27 +46,13 @@
                 </ul>
             }
         </div>
- @*       vacancy*@
+
         <div class="nav-item px-3">
-            <NavLink class="nav-link" @onclick="()=>expandSubMenu=!expandSubMenu">
+            <NavLink class="nav-link" href="vacancy" >
                 <span class="oi oi-briefcase" aria-hidden="true"></span>Vacancy
             </NavLink>
-
-            @if (expandSubMenu)
-            {
-                <ul class="nav flex-column">
-                    @foreach (var item in Category)
-                    {
-                        <MatButton Style="color:white" Dense="true">@item.Name</MatButton>
-                      @*  <li class="nav-item px-3">
-                            <NavLink class="nav-link" href="vacancy/1">
-                                <span class="oi oi-badge" aria-hidden="true"></span>@item.Name
-                            </NavLink>
-                        </li>*@
-                    }
-                </ul>
-            }
         </div>
+            
     </nav>
 </div>
 
@@ -71,14 +60,11 @@
     private bool collapseNavMenu = true;
     private bool expandSubMenu;
     private bool expandSubMenu2;
-    private List<CategoryResponse> Category;
     bool panelOpenState;
 
     protected override async Task OnInitializedAsync()
     {
-        var ress = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("categories");
-        Category = ress.Items;
-
+      
     }
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;

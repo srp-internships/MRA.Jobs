@@ -34,7 +34,7 @@ public class CategoryService : ICategoryService
         };
     }
     public async Task OnSaveUpdateClick()
-    {
+    {       
         var result = await _http.PutAsJsonAsync($"categories/{updatingEntity.Id}", updatingEntity);
         result.EnsureSuccessStatusCode();
         updatingEntity = null;
