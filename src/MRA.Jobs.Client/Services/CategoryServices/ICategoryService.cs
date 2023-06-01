@@ -8,10 +8,10 @@ public interface ICategoryService
     List<CategoryResponse> Category { get; set; }
     UpdateVacancyCategoryCommand updatingEntity { get; set; }
     DeleteVacancyCategoryCommand deletingEntity { get; set; }
-     CreateVacancyCategoryCommand creatingEntity { get; set; }
+    CreateVacancyCategoryCommand creatingEntity { get; set; }
     Task<List<CategoryResponse>> GetAllCategory();
     Task OnSaveUpdateClick();
-    Task OnDeleteClick(Guid id);
+    Task OnDeleteClick(Guid id);    
     Task OnSaveCreateClick();
     void OnUpdateClick(CategoryResponse updateEntity);
 }
