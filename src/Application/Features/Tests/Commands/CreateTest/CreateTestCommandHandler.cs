@@ -1,24 +1,24 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Application.Contracts.Tests.Commands;
 
-namespace MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancyTest;
-public class CreateJobVacancyTestCommandHandler : IRequestHandler<CreateJobVacancyTestCommand, TestInfoDTO>
+namespace MRA.Jobs.Application.Features.Tests.Commands.CreateTest;
+public class CreateTestCommandHandler : IRequestHandler<CreateTestCommand, TestInfoDTO>
 {
     private readonly IApplicationDbContext _context;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
-    private readonly IJobVacancyHttpClientService _httpClient;
+    private readonly ITestHttpClientService _httpClient;
 
-    public CreateJobVacancyTestCommandHandler(IApplicationDbContext context, IDateTime dateTime,
+    public CreateTestCommandHandler(IApplicationDbContext context, IDateTime dateTime,
         ICurrentUserService currentUserService,
-       IJobVacancyHttpClientService httpClient)
+       ITestHttpClientService httpClient)
     {
         _context = context;
         _dateTime = dateTime;
         _currentUserService = currentUserService;
         _httpClient = httpClient;
     }
-    public async Task<TestInfoDTO> Handle(CreateJobVacancyTestCommand request, CancellationToken cancellationToken)
+    public async Task<TestInfoDTO> Handle(CreateTestCommand request, CancellationToken cancellationToken)
     {
         var result = await _httpClient.SendTestCreationRequest(request);
 

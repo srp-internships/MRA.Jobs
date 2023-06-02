@@ -6,14 +6,14 @@ namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 public class CreateJobVacancyTestCommandHandlerTests : BaseTestFixture
 {
     private CreateJobVacancyTestCommandHandler _handler;
-    private Mock<IJobVacancyHttpClientService> _httpClientMock;
+    private Mock<ITestHttpClientService> _httpClientMock;
 
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
-        _httpClientMock = new Mock<IJobVacancyHttpClientService>();
+        _httpClientMock = new Mock<ITestHttpClientService>();
         _handler = new CreateJobVacancyTestCommandHandler(
             _dbContextMock.Object,
             _dateTimeMock.Object,

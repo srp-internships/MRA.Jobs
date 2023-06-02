@@ -2128,7 +2128,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateJobVacancyTestCommand"
+                "$ref": "#/components/schemas/CreateTestCommand"
               }
             }
           },
@@ -3753,14 +3753,13 @@
           }
         }
       },
-      "CreateJobVacancyTestCommand": {
+      "CreateTestCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string",
-            "format": "guid",
-            "nullable": true
+            "format": "guid"
           },
           "numberOfQuestion": {
             "type": "integer",
