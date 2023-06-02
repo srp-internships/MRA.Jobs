@@ -31,10 +31,9 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
         var timelineEvent = new ApplicationTimelineEvent
         {
             ApplicationId = application.Id,
-            Application = application,
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
-            Note = "Application updated",
+            Note = "Application vacancy updated",
             CreateBy = _currentUserService.GetId() ?? Guid.Empty
         };
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent);

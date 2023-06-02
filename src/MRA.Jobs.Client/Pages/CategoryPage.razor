@@ -1,12 +1,7 @@
-﻿@page "/category"
-@page "/category/1"
-@page "/category/2"
-@inject HttpClient _http
-@inject ICategoryService CService
-@using MRA.Jobs.Application.Contracts.Common;
-@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-@using MRA.Jobs.Application.Contracts.VacancyCategories.Commands
+﻿@page "/salom"
 
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+@inject ICategoryService CService
 @if (_category == null)
 {
     <div>Loading</div>
@@ -19,19 +14,17 @@ else
                 <MatExpansionPanelHeader>Inserting a new Category Data</MatExpansionPanelHeader>
             </MatExpansionPanelSummary>
             <MatExpansionPanelDetails>
-
-                <MatTextField @bind-Value="@CService.creatingEntity.Name"></MatTextField>
-                <MatButton @onclick="@CService.OnSaveCreateClick">Insert</MatButton>
-
+                <MatTextField PlaceHolder="data" @bind-Value="@CService.creatingEntity.Name"></MatTextField>
+                <MatButton  Outlined="true" @onclick="@CService.OnSaveCreateClick">Insert</MatButton>
             </MatExpansionPanelDetails>
         </MatExpansionPanel>
     </MatAccordion>
+
     <MatTable Items="@CService.Category" ShowPaging="false" RequestApiOnlyOnce="true" RowClass="tester" class="mat-elevation-z5" PageSize="100">
         <MatTableHeader>
             <th>Name</th>
             <th>Actions</th>
         </MatTableHeader>
-
         <MatTableRow>
             <td>
                 @if (CService.updatingEntity?.Id == context.Id)
@@ -39,12 +32,12 @@ else
                     <MatTextField @bind-Value="@CService.updatingEntity.Name"></MatTextField>
                 }
                 else
+                {
                     @context.Name
-
-                    }
-                </td>
-                <td>
-                    @if (CService.updatingEntity?.Id == context.Id)
+                }
+            </td>
+            <td>
+                @if (CService.updatingEntity?.Id == context.Id)
                 {
                     <MatButton OnClick="@CService.OnSaveUpdateClick" Style="color:#2094CC" Icon="edit">Save</MatButton>
                 }
@@ -57,15 +50,14 @@ else
         </MatTableRow>
     </MatTable>
 }
-
+        
 @code {
     private List<CategoryResponse> _category;
     bool panelOpenState;
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await CService.GetAllCategory();
-        _category = result;
-
+        _category = await CService.GetAllCategory();
+  
     }
 }
