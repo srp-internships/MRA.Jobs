@@ -36,6 +36,13 @@ public class JobsController : ApiControllerBase
         return Ok(category);
     }
 
+    [HttpGet("{title}")]
+    public async Task<IActionResult> GetByTitle([FromRoute] string title)
+    {
+        var result = await Mediator.Send(title);
+        return Ok(result);
+    }
+    
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateNewJobVacancy(CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
