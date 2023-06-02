@@ -16,7 +16,5 @@ public class JobVacancyListDTO
     public DateTime PublishDate { get; set; }
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime EndDate { get; set; }
-    public WorkSchedule WorkSchedule { get; set; }
-    public ICollection<TimeLineDetailsDto> History { get; set; }
-    public ICollection<TagDto> Tags { get; set; }
+    public WorkSchedule WorkSchedule { get; set; }   
 }

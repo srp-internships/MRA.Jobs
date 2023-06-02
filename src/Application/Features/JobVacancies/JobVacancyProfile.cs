@@ -8,12 +8,13 @@ public class JobVacancyProfile : Profile
 {
     public JobVacancyProfile()
     {
-        CreateMap<JobVacancy, JobVacancyListDTO>()
-             .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
-            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag))); ;
-        CreateMap<JobVacancy, JobVacancyDetailsDTO>();
+        CreateMap<JobVacancy, JobVacancyListDTO>();
+        CreateMap<JobVacancy, JobVacancyDetailsDTO>()
+            .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
+            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag)));
         CreateMap<CreateJobVacancyCommand, JobVacancy>();
         CreateMap<UpdateJobVacancyCommand, JobVacancy>();
+        CreateMap<DeleteJobVacancyCommand, JobVacancy>();
         MappingConfiguration.ConfigureVacancyMap<VacancyTimelineEvent, TimeLineDetailsDto>(this);
         MappingConfiguration.ConfigureVacancyMap<Tag, TagDto>(this);
     }

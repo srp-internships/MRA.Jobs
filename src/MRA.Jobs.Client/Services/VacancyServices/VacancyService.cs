@@ -1,5 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 namespace MRA.Jobs.Client.Services.VacancyServices;
@@ -41,5 +42,11 @@ public class VacancyService : IVacancyService
         await _http.PostAsJsonAsync("jobs", creatingNewJob);
         Console.WriteLine(creatingNewJob.Title);
         Console.WriteLine("shud");
+    }
+
+    public async Task<List<JobVacancyListDTO>> GetJobs()
+    {
+        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>("jobs");
+        return result.Items;
     }
 }

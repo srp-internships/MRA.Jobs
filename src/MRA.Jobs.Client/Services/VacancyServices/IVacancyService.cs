@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
@@ -12,4 +13,6 @@ public interface IVacancyService
     CreateVacancyCategoryCommand creatingEntity { get; set; }
     Task<List<CategoryResponse>> GetAllCategory();
     Task OnSaveCreateClick();
+
+    Task<List<JobVacancyListDTO>> GetJobs();
 }

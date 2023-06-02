@@ -1,4 +1,5 @@
 ﻿@page "/vacancy"
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @using MRA.Jobs.Domain.Enums;
 @inject IVacancyService VService
@@ -17,10 +18,10 @@ else
                 <MatExpansionPanelHeader>Inserting a new Job</MatExpansionPanelHeader>
             </MatExpansionPanelSummary>
             <MatExpansionPanelDetails Style="display: flex;flex-direction: column;">
-                <MatTextField @bind-Value="@VService.creatingNewJob.Title" PlaceHolder="Title"></MatTextField>
-                <MatTextField @bind-Value="@VService.creatingNewJob.ShortDescription" PlaceHolder="ShortDescription"></MatTextField>
-                <MatTextField @bind-Value="@VService.creatingNewJob.Description" PlaceHolder="Description"></MatTextField>
-                <MatTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" PlaceHolder="RequiredYearOfExperience"></MatTextField>
+                <MatTextField @bind-Value="@VService.creatingNewJob.Title" Label="Title"></MatTextField>
+				<MatTextField @bind-Value="@VService.creatingNewJob.ShortDescription" Label="ShortDescription" TextArea></MatTextField>
+				<MatTextField @bind-Value="@VService.creatingNewJob.Description" Label="Description" TextArea></MatTextField>
+                <MatTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="RequiredYearOfExperience"></MatTextField>
 
                 <MatSelectItem @bind-Value="VService.creatingNewJob.WorkSchedule" Items="@value2Items">
                 </MatSelectItem>
@@ -33,24 +34,62 @@ else
                         <span>@context?.Name</span>
                     </ItemTemplate>
                 </MatSelectValue>
-                <MatDatePicker @bind-Value="VService.creatingNewJob.EndDate" Format="MM/dd/yy H:mm:ss"></MatDatePicker>
-                <MatDatePicker @bind-Value="VService.creatingNewJob.PublishDate" Format="MM/dd/yy H:mm:ss"></MatDatePicker>
-                <MatButton @onclick="@VService.OnSaveCreateClick">Insert</MatButton>
+				<MatDatePicker @bind-Value="VService.creatingNewJob.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MatDatePicker>
+				<MatDatePicker @bind-Value="VService.creatingNewJob.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MatDatePicker>
+				<MatButton Type="submit" @onclick="@HandleSubmit">Insert</MatButton>
+				
             </MatExpansionPanelDetails>
         </MatExpansionPanel>
     </MatAccordion>
 
+	<MatTable Items="@vacancies" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
+		<MatTableHeader>
+			<th>Title</th>
+			<th>ShortDescription</th>
+			<th>Category</th>
+			<th>PublishDate</th>
+			<th>EndDate</th>
+			<th>WorkSchedule</th>
+			
+		</MatTableHeader>
+		<MatTableRow>
+			<td>@context.Title</td>
+			<td>@context.ShortDescription</td>
+			<td>@context.Category</td>
+			<td>@context.PublishDate</td>
+			<td>@context.EndDate</td>
+			<td>@context.WorkSchedule</td>
+			
+		</MatTableRow>
+	</MatTable>
+
+
+
 }
 
 @code {
-    WorkSchedule work;
-    WorkSchedule[] value2Items = Enum.GetValues(typeof(WorkSchedule)).Cast<WorkSchedule>().ToArray();
+	WorkSchedule work;
+	WorkSchedule[] value2Items = Enum.GetValues(typeof(WorkSchedule)).Cast<WorkSchedule>().ToArray();
 
 
-    private List<CategoryResponse> _category;
-    protected override async Task OnInitializedAsync()
-    {
-        _category = await VService.GetAllCategory();
-    }
-    bool panelOpenState;
+	private List<CategoryResponse> _category;
+	private List<JobVacancyListDTO> vacancies;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_category = await VService.GetAllCategory();
+		vacancies = await VService.GetJobs();
+	}
+	bool panelOpenState;
+
+	private async Task HandleSubmit()
+	{
+		await VService.OnSaveCreateClick();
+		await LoadData();
+	}
+
+	private async Task LoadData()
+	{
+		vacancies = await VService.GetJobs();
+	}
 }

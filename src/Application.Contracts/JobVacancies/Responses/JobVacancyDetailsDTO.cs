@@ -1,4 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
+using MRA.Jobs.Application.Contracts.TagDTO;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.JobVacancies.Responses;
@@ -22,4 +24,6 @@ public class JobVacancyDetailsDTO
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime? LastModifiedAt { get; set; }
     public Guid? LastModifiedBy { get; set; }
+    public ICollection<TimeLineDetailsDto> History { get; set; }
+    public ICollection<TagDto> Tags { get; set; }
 }
