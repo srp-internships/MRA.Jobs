@@ -11,7 +11,7 @@ public class DeleteJobVacancyCommandHandlerTests : BaseTestFixture
     public void SetUp()
     {
         _dbContextMock = new Mock<IApplicationDbContext>();
-    //       _handler = new DeleteJobVacancyCommandHandler(_dbContextMock.Object);
+        _handler = new DeleteJobVacancyCommandHandler(_dbContextMock.Object, _dateTimeMock.Object, _currentUserServiceMock.Object);
     }
 
     [Test]
