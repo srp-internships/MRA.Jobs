@@ -16,8 +16,23 @@ public class CreateTestResultCommandHandler : IRequestHandler<CreateTestResultCo
         _httpClient = httpClient;
         _context = context;
     }
-    public Task<TestResultDTO> Handle(CreateTestResultCommand request, CancellationToken cancellationToken)
+    public async Task<TestResultDTO> Handle(CreateTestResultCommand request, CancellationToken cancellationToken)
     {
+        var result = await _httpClient.GetTestResultRequest(request);
 
+        var testResult = new TestResult
+        {
+            Score = result.Score,
+            TestId = result.TestId,
+            CreatedBy = result.UserId,
+            ApplicationId = Guid.Empty,
+            CreatedAt = _dateTime.Now,
+            Passed = true
+        };
+
+        await _context.TestResults.AddAsync(testResult, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return result;
     }
 }

@@ -1,11 +1,11 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
-using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancyTest;
+using MRA.Jobs.Application.Contracts.Tests.Commands;
+using MRA.Jobs.Application.Features.Tests.Commands.CreateTest;
 
-namespace MRA.Jobs.Application.UnitTests.JobVacancies;
-public class CreateJobVacancyTestCommandHandlerTests : BaseTestFixture
+namespace MRA.Jobs.Application.UnitTests.Tests;
+public class CreateTestCommandHandlerTests : BaseTestFixture
 {
-    private CreateJobVacancyTestCommandHandler _handler;
+    private CreateTestCommandHandler _handler;
     private Mock<ITestHttpClientService> _httpClientMock;
 
 
@@ -14,7 +14,7 @@ public class CreateJobVacancyTestCommandHandlerTests : BaseTestFixture
     {
         base.Setup();
         _httpClientMock = new Mock<ITestHttpClientService>();
-        _handler = new CreateJobVacancyTestCommandHandler(
+        _handler = new CreateTestCommandHandler(
             _dbContextMock.Object,
             _dateTimeMock.Object,
             _currentUserServiceMock.Object,
@@ -22,7 +22,7 @@ public class CreateJobVacancyTestCommandHandlerTests : BaseTestFixture
     }
 
     [Test]
-    public async Task Handle_ValidRequest_ShouldCreateJobVacancyTest()
+    public async Task Handle_ValidRequest_ShouldCreateTest()
     {
         // Arrange
         var testInfo = new TestInfoDTO
@@ -31,13 +31,13 @@ public class CreateJobVacancyTestCommandHandlerTests : BaseTestFixture
             TestId = Guid.NewGuid()
         };
 
-        var jobVacancyRequest = new CreateJobVacancyTestCommand
+        var request = new CreateTestCommand
         {
             Id = Guid.NewGuid(),
             NumberOfQuestion = 0
         };
 
-        _httpClientMock.Setup(x => x.SendTestCreationRequest(jobVacancyRequest)).ReturnsAsync(testInfo);
+        _httpClientMock.Setup(x => x.SendTestCreationRequest(request)).ReturnsAsync(testInfo);
 
         var testDbSetMock = new Mock<DbSet<Test>>();
         var newEntityGuid = Guid.NewGuid();
@@ -47,14 +47,14 @@ public class CreateJobVacancyTestCommandHandlerTests : BaseTestFixture
         _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
 
         // Act
-        var result = await _handler.Handle(jobVacancyRequest, CancellationToken.None);
+        var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.Should().Be(testInfo);
 
         testDbSetMock.Verify(x => x.AddAsync(It.Is<Test>(t =>
-            t.VacancyId == jobVacancyRequest.Id &&
-            t.NumberOfQuestion == jobVacancyRequest.NumberOfQuestion
+            t.VacancyId == request.Id &&
+            t.NumberOfQuestion == request.NumberOfQuestion
         ), It.IsAny<CancellationToken>()), Times.Once);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
