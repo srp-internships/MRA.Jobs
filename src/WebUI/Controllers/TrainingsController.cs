@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.Tests.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
@@ -58,5 +59,23 @@ public class TrainingsController : ApiControllerBase
         request.VacancyId = id;
         await Mediator.Send(request, cancellationToken);
         return Ok();
+    }
+
+    [HttpPost("{id}/test")]
+    public async Task<ActionResult<TestInfoDTO>> SendTestCreationRequest([FromRoute] Guid id, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
+    {
+        if (id != request.Id)
+            return BadRequest();
+
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpPost("{id}/test/result")]
+    public async Task<ActionResult<TestResultDTO>> GetTestResultRequest([FromRoute] Guid id, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
+    {
+        if (id != request.TestId)
+            return BadRequest();
+
+        return await Mediator.Send(request, cancellationToken);
     }
 }
