@@ -8,7 +8,8 @@ public class JobVacancyProfile : Profile
 {
     public JobVacancyProfile()
     {
-        CreateMap<JobVacancy, JobVacancyListDTO>();
+        CreateMap<JobVacancy, JobVacancyListDTO>()
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
         CreateMap<JobVacancy, JobVacancyDetailsDTO>()
             .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag)));

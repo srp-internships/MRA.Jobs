@@ -8,7 +8,8 @@ public class InternshipProfile : Profile
 {
     public InternshipProfile()
     {
-        CreateMap<InternshipVacancy, InternshipVacancyListResponce>();
+        CreateMap<InternshipVacancy, InternshipVacancyListResponce>()
+            .ForMember(dest=> dest.Category, opt=>opt.MapFrom(src=>src.Category.Name));
         CreateMap<InternshipVacancy, InternshipVacancyResponce>()
             .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag)));

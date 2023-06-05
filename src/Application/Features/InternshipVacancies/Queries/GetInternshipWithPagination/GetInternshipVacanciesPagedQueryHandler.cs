@@ -18,7 +18,11 @@ public class GetInternshipVacanciesPagedQueryHandler : IRequestHandler<PaggedLis
     }
     public async Task<PaggedList<InternshipVacancyListResponce>> Handle(PaggedListQuery<InternshipVacancyListResponce> request, CancellationToken cancellationToken)
     {
-        var result = _sieveProcessor.ApplyAdnGetPaggedList(request, _context.Internships.AsNoTracking(), _mapper.Map<InternshipVacancyListResponce>);
+        var result = _sieveProcessor.ApplyAdnGetPaggedList(request,
+            _context.Internships
+            .Include(i => i.Category)
+            .AsNoTracking(),
+            _mapper.Map<InternshipVacancyListResponce>);
         return await Task.FromResult(result);
     }
 }

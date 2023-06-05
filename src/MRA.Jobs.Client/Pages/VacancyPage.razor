@@ -8,39 +8,40 @@
 <h3>Vacancy</h3>
 @if (_category == null)
 {
-    <div>Loading</div>
+	<div>Loading</div>
 }
 else
 {
-    <MatAccordion>
-        <MatExpansionPanel @bind-Expanded="@panelOpenState">
-            <MatExpansionPanelSummary>
-                <MatExpansionPanelHeader>Inserting a new Job</MatExpansionPanelHeader>
-            </MatExpansionPanelSummary>
-            <MatExpansionPanelDetails Style="display: flex;flex-direction: column;">
-                <MatTextField @bind-Value="@VService.creatingNewJob.Title" Label="Title"></MatTextField>
+	<MatAccordion>
+		<MatExpansionPanel @bind-Expanded="@panelOpenState">
+			<MatExpansionPanelSummary>
+				<MatExpansionPanelHeader>Inserting a new Job</MatExpansionPanelHeader>
+			</MatExpansionPanelSummary>
+			<MatExpansionPanelDetails Style="display: flex;flex-direction: column;">
+				<MatTextField @bind-Value="@VService.creatingNewJob.Title" Label="Title"></MatTextField>
 				<MatTextField @bind-Value="@VService.creatingNewJob.ShortDescription" Label="ShortDescription" TextArea></MatTextField>
 				<MatTextField @bind-Value="@VService.creatingNewJob.Description" Label="Description" TextArea></MatTextField>
-                <MatTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="RequiredYearOfExperience"></MatTextField>
+				<MatTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="RequiredYearOfExperience"></MatTextField>
+				<MatSelectItem @bind-Value="VService.creatingNewJob.WorkSchedule" Items="@value2Items">
+				</MatSelectItem>
+				<p>
+					Selected value: @work
+				</p>
 
-                <MatSelectItem @bind-Value="VService.creatingNewJob.WorkSchedule" Items="@value2Items">
-                </MatSelectItem>
-                <p> 
-                    Selected value: @work
-                </p>
-
-                <MatSelectValue @bind-Value="VService.creatingNewJob.CategoryId" Items="@_category" ValueSelector="@(i=>i.Id)">
-                    <ItemTemplate>
-                        <span>@context?.Name</span>
-                    </ItemTemplate>
-                </MatSelectValue>
+				<MatSelectValue @bind-Value="VService.creatingNewJob.CategoryId" Items="@_category" ValueSelector="@(i=>i.Id)">
+					<ItemTemplate>
+						<span>@context?.Name</span>
+					</ItemTemplate>
+				</MatSelectValue>
 				<MatDatePicker @bind-Value="VService.creatingNewJob.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MatDatePicker>
 				<MatDatePicker @bind-Value="VService.creatingNewJob.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MatDatePicker>
-				<MatButton Type="submit" @onclick="@HandleSubmit">Insert</MatButton>
-				
-            </MatExpansionPanelDetails>
-        </MatExpansionPanel>
-    </MatAccordion>
+				<MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MatButton>
+				<MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
+				<MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
+
+			</MatExpansionPanelDetails>
+		</MatExpansionPanel>
+	</MatAccordion>
 
 	<MatTable Items="@vacancies" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
 		<MatTableHeader>
@@ -50,7 +51,8 @@ else
 			<th>PublishDate</th>
 			<th>EndDate</th>
 			<th>WorkSchedule</th>
-			
+			<th></th>
+			<th></th>
 		</MatTableHeader>
 		<MatTableRow>
 			<td>@context.Title</td>
@@ -59,18 +61,16 @@ else
 			<td>@context.PublishDate</td>
 			<td>@context.EndDate</td>
 			<td>@context.WorkSchedule</td>
-			
+			<td><MatButton @onclick="()=>OnDeleteClick(context.Id)" Style="color:#2094CC" Icon="delete">Delete</MatButton></td>
+			<td>	<MatButton @onclick="()=>OnEditClick(context.Id)" Style="color:#2094CC" Icon="edit">Edit</MatButton></td>
 		</MatTableRow>
 	</MatTable>
-
-
 
 }
 
 @code {
 	WorkSchedule work;
 	WorkSchedule[] value2Items = Enum.GetValues(typeof(WorkSchedule)).Cast<WorkSchedule>().ToArray();
-
 
 	private List<CategoryResponse> _category;
 	private List<JobVacancyListDTO> vacancies;
@@ -81,15 +81,75 @@ else
 		vacancies = await VService.GetJobs();
 	}
 	bool panelOpenState;
-
+	private bool isInserting = false;
+	private bool isUpdating =true;
+	private Guid UpdateId;
 	private async Task HandleSubmit()
 	{
 		await VService.OnSaveCreateClick();
 		await LoadData();
+		Clear();
 	}
 
 	private async Task LoadData()
 	{
 		vacancies = await VService.GetJobs();
+	}
+
+	public async Task OnDeleteClick(Guid id)
+	{
+		await VService.OnDelete(id);
+		await LoadData();
+	}
+	public async Task OnEditClick(Guid id)
+	{
+		// Получение данных о выбранной вакансии
+		var vacancy = await VService.GetById(id);
+		if (vacancy != null)
+		{
+			// Отображение данных о выбранной вакансии в форме
+			VService.creatingNewJob.Title = vacancy.Title;
+			VService.creatingNewJob.ShortDescription = vacancy.ShortDescription;
+			VService.creatingNewJob.Description = vacancy.Description;
+			VService.creatingNewJob.RequiredYearOfExperience = vacancy.RequiredYearOfExperience;
+			VService.creatingNewJob.WorkSchedule = vacancy.WorkSchedule;
+			if (vacancy.CategoryId.HasValue)
+			{
+				VService.creatingNewJob.CategoryId = vacancy.CategoryId.Value;
+			}
+			VService.creatingNewJob.EndDate = vacancy.EndDate;
+			VService.creatingNewJob.PublishDate = vacancy.PublishDate;
+			// Открытие панели формы
+			panelOpenState = true;
+			isInserting = true;
+			isUpdating = false;
+			UpdateId = id;
+		}
+	}
+
+	private async Task HandleUpdate()
+	{
+		await VService.UpdateJobVacancy(UpdateId);
+		await LoadData();
+		Clear();
+	}
+
+	void HandleCancel()
+	{
+		Clear();
+	}
+
+	private void Clear()
+	{
+		VService.creatingNewJob.Title =string.Empty;
+		VService.creatingNewJob.ShortDescription = string.Empty;
+		VService.creatingNewJob.Description = string.Empty;
+		VService.creatingNewJob.RequiredYearOfExperience =0;
+		VService.creatingNewJob.WorkSchedule = 0;
+		VService.creatingNewJob.EndDate = DateTime.Now;
+		VService.creatingNewJob.PublishDate = DateTime.Now;
+		isInserting = false;
+		isUpdating = true;
+		UpdateId = Guid.NewGuid();
 	}
 }

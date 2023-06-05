@@ -13,6 +13,8 @@ public interface IVacancyService
     CreateVacancyCategoryCommand creatingEntity { get; set; }
     Task<List<CategoryResponse>> GetAllCategory();
     Task OnSaveCreateClick();
-
+    Task OnDelete(Guid Id);
     Task<List<JobVacancyListDTO>> GetJobs();
+    Task UpdateJobVacancy(Guid id);
+    Task<JobVacancyDetailsDTO> GetById(Guid Id);
 }

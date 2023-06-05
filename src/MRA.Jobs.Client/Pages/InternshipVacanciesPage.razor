@@ -1,0 +1,63 @@
+﻿@page "/internship"
+
+<h3>InternshipVacanciesPage</h3>
+
+
+
+<MatAccordion>
+	<MatExpansionPanel @bind-Expanded="@panelOpenState">
+		<MatExpansionPanelSummary>
+			<MatExpansionPanelHeader>Inserting a new Job</MatExpansionPanelHeader>
+		</MatExpansionPanelSummary>
+		<MatExpansionPanelDetails Style="display: flex;flex-direction: column;">
+			<MatTextField @bind-Value="@VService.creatingNewJob.Title" Label="Title"></MatTextField>
+			<MatTextField @bind-Value="@VService.creatingNewJob.ShortDescription" Label="ShortDescription" TextArea></MatTextField>
+			<MatTextField @bind-Value="@VService.creatingNewJob.Description" Label="Description" TextArea></MatTextField>
+			<MatTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="RequiredYearOfExperience"></MatTextField>
+			<MatSelectItem @bind-Value="VService.creatingNewJob.WorkSchedule" Items="@value2Items">
+			</MatSelectItem>
+			<p>
+				Selected value: @work
+			</p>
+
+			<MatSelectValue @bind-Value="VService.creatingNewJob.CategoryId" Items="@_category" ValueSelector="@(i=>i.Id)">
+				<ItemTemplate>
+					<span>@context?.Name</span>
+				</ItemTemplate>
+			</MatSelectValue>
+			<MatDatePicker @bind-Value="VService.creatingNewJob.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MatDatePicker>
+			<MatDatePicker @bind-Value="VService.creatingNewJob.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MatDatePicker>
+			<MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MatButton>
+			<MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
+			<MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
+
+		</MatExpansionPanelDetails>
+	</MatExpansionPanel>
+</MatAccordion>
+
+<MatTable Items="@vacancies" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
+	<MatTableHeader>
+		<th>Title</th>
+		<th>ShortDescription</th>
+		<th>Category</th>
+		<th>PublishDate</th>
+		<th>EndDate</th>
+		<th>WorkSchedule</th>
+		<th></th>
+		<th></th>
+	</MatTableHeader>
+	<MatTableRow>
+		<td>@context.Title</td>
+		<td>@context.ShortDescription</td>
+		<td>@context.Category</td>
+		<td>@context.PublishDate</td>
+		<td>@context.EndDate</td>
+		<td>@context.WorkSchedule</td>
+		<td><MatButton @onclick="()=>OnDeleteClick(context.Id)" Style="color:#2094CC" Icon="delete">Delete</MatButton></td>
+		<td>	<MatButton @onclick="()=>OnEditClick(context.Id)" Style="color:#2094CC" Icon="edit">Edit</MatButton></td>
+	</MatTableRow>
+</MatTable>
+@code {
+	bool panelOpenState;
+
+}
