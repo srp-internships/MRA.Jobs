@@ -5,7 +5,6 @@ namespace MRA.Jobs.Application.UnitTests.Applications;
 using MRA.Jobs.Domain.Entities;
 
 
-/*
 public class DeleteApplicationCommandHandlerTests : BaseTestFixture
 {
     private DeleteApplicationCommandHandler _handler;
@@ -14,7 +13,7 @@ public class DeleteApplicationCommandHandlerTests : BaseTestFixture
     public void SetUp()
     {
         _dbContextMock = new Mock<IApplicationDbContext>();
-        _handler = new DeleteApplicationCommandHandler(_dbContextMock.Object);
+        _handler = new DeleteApplicationCommandHandler(_dbContextMock.Object, _dateTimeMock.Object, _currentUserServiceMock.Object);
     }
 
     [Test]
@@ -50,4 +49,3 @@ public class DeleteApplicationCommandHandlerTests : BaseTestFixture
         _dbContextMock.Verify(x => x.SaveChangesAsync(default), Times.Never);
     }
 }
-*/
