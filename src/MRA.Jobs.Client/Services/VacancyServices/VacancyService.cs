@@ -25,23 +25,44 @@ public class VacancyService : IVacancyService
             PublishDate = DateTime.Now,
         };
     }
-    public List<CategoryResponse> Category { get; set; }
+    public List<CategoryResponse> Categories { get; set; }
+    
+    public List<JobVacancyListDTO> Vacanceies { get; set; }
+
     public CreateJobVacancyCommand creatingNewJob { get; set; }
-    public CreateVacancyCategoryCommand creatingEntity { get; set; }
+    
+    public event Action OnChange;
     public string guidId { get; set; } = string.Empty;
+    public async Task<List<JobVacancyListDTO>> GetAllVacancy()
+    {
+        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>("jobs");
+        Vacanceies = result.Items;
+        Console.WriteLine(Vacanceies.Count);
+        return Vacanceies;
+    }
+
+    public CreateVacancyCategoryCommand creatingEntity { get; set; }
 
     public async Task<List<CategoryResponse>> GetAllCategory()
     {
         var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("categories");
-        Category = result.Items;
-        return Category;
+        Categories = result.Items;
+        return Categories;
     }
+
+    public async Task<List<JobVacancyListDTO>> GetVacancyByTitle(string title)
+    {
+        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?Filters=Title@={title}");
+        Vacanceies = result.Items;
+        OnChange.Invoke();
+        return Vacanceies;
+    }
+
+
     public async Task OnSaveCreateClick()
     {
         Console.WriteLine(creatingNewJob.CategoryId);
         await _http.PostAsJsonAsync("jobs", creatingNewJob);
-        Console.WriteLine(creatingNewJob.Title);
-        Console.WriteLine("shud");
     }
 
     public async Task<List<JobVacancyListDTO>> GetJobs()

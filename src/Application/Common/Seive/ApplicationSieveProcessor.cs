@@ -31,7 +31,7 @@ public class ApplicationSieveProcessor : SieveProcessor, IApplicationSieveProces
     {
         //var markers = _services.GetServices<ISieveConfigurationsAssemblyMarker>();
         //foreach (var marker in markers)
-        mapper.ApplyConfigurationsFromAssembly(Assembly.GetEntryAssembly());
+        mapper.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         return mapper;
     }
