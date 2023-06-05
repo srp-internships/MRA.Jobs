@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="11.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Sieve" Version="2.5.5" />
   </ItemGroup>
 

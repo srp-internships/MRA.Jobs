@@ -11,6 +11,7 @@ public class ApplicationProfile: Profile
         CreateMap<Application, ApplicationListDTO>();
         CreateMap<Application, ApplicationDetailsDTO>();
         CreateMap<CreateApplicationCommand, Application>();
+        CreateMap<CreateApplicationWithoutApplicantIdCommand, Application>();
         CreateMap<UpdateApplicationCommand, Application>();
     }
 }

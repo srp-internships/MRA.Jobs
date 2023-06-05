@@ -12,6 +12,5 @@ public class CreateApplicationCommandValidator : AbstractValidator<CreateApplica
             .NotEmpty();
         RuleFor(v => v.ApplicantId).NotEmpty();
         RuleFor(v => v.VacancyId).NotEmpty();
-        RuleFor(v => v.StatusId).NotEmpty();
     }
 }

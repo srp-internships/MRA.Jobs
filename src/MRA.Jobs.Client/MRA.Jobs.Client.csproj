@@ -19,4 +19,8 @@
     <None Include="wwwroot\images\SRP_icon.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shared" />
+  </ItemGroup>
+
 </Project>

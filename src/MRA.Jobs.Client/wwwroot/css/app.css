@@ -1,7 +1,9 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
+   /* font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
+    background-color: #ffffff;
 }
 
 h1:focus {
@@ -9,7 +11,13 @@ h1:focus {
 }
 
 a, .btn-link {
+    text-decoration: none;
     color: #0071c1;
+}
+
+ul, li {
+    padding: 0;
+    margin: 0;
 }
 
 .btn-primary {
@@ -100,10 +108,10 @@ a, .btn-link {
         content: var(--blazor-load-percentage-text, "Loading");
     }
 
-.nav-item a.active::after {
+/*.nav-item a.active::after {
     content: "*";
     margin-left: 1em;
-}
+}*/
 
 
 
@@ -114,3 +122,4 @@ a, .btn-link {
     border-left: none;
     width: 100%;
 }
+

@@ -24,22 +24,16 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
     public async Task<Guid> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
     {
         var application = await _context.Applications.FindAsync(request.Id);
-        _ = application ?? throw new NotFoundException(nameof(Application), request.Id);
-
-        var applicant = await _context.Applicants.FindAsync(request.ApplicantId)
-             ?? throw new NotFoundException(nameof(Applicant), request.ApplicantId);
-        var vacancy = await _context.Vacancies.FindAsync(request.VacancyId)
-            ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
+        _ = application ?? throw new NotFoundException(nameof(Application), request.Id);;
 
         _mapper.Map(request, application);
 
         var timelineEvent = new ApplicationTimelineEvent
         {
             ApplicationId = application.Id,
-            Application = application,
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
-            Note = "Application updated",
+            Note = "Application vacancy updated",
             CreateBy = _currentUserService.GetId() ?? Guid.Empty
         };
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent);
