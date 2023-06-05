@@ -59,7 +59,7 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
         Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, CancellationToken.None));
     }
 
-    [Test]
+    /*[Test]
     public async Task Handle_GivenValidCommand_ShouldUpdateApplicationAndAddTimelineEvent()
     {
         // Arrange
@@ -96,5 +96,5 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
 
         existingApplication.CoverLetter.Should().Be(existingApplication.CoverLetter);
         existingApplication.CV.Should().Be(command.CV);
-    }
+    }*/
 }

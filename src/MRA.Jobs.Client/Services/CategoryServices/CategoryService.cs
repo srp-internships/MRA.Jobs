@@ -41,7 +41,7 @@ public class CategoryService : ICategoryService
     }
     public async Task OnDeleteClick(Guid id)
     {
-        await _http.DeleteAsync($"category/{id}");
+        await _http.DeleteAsync($"categories/{id}");
         var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"categories");
         Category = result.Items;
     }
