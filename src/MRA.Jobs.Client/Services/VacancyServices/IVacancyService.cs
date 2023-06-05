@@ -8,12 +8,15 @@ namespace MRA.Jobs.Client.Services.VacancyServices;
 
 public interface IVacancyService
 {
+    event Action OnChange;
     string guidId { get; set; }
     List<CategoryResponse> Categories { get; set; }
     List<JobVacancyListDTO> Vacanceies { get; set; }
-    Task<List<JobVacancyListDTO>> GetAllVacancy();
+  //  CreateVacancyCategoryCommand creatingEntity { get; set; }
     CreateJobVacancyCommand creatingNewJob { get; set; }
-    CreateVacancyCategoryCommand creatingEntity { get; set; }
+    Task<List<JobVacancyListDTO>> GetAllVacancy();
     Task<List<CategoryResponse>> GetAllCategory();
+
+    Task<List<JobVacancyListDTO>> GetVacancyByTitle(string title);
     Task OnSaveCreateClick();
 }

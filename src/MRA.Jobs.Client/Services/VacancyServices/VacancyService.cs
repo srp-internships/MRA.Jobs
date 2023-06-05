@@ -31,6 +31,8 @@ public class VacancyService : IVacancyService
 
     public CreateJobVacancyCommand creatingNewJob { get; set; }
     
+    public event Action OnChange;
+    public string guidId { get; set; } = string.Empty;
     public async Task<List<JobVacancyListDTO>> GetAllVacancy()
     {
         var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>("jobs");
@@ -40,7 +42,6 @@ public class VacancyService : IVacancyService
     }
 
     public CreateVacancyCategoryCommand creatingEntity { get; set; }
-    public string guidId { get; set; } = string.Empty;
 
     public async Task<List<CategoryResponse>> GetAllCategory()
     {
@@ -48,8 +49,16 @@ public class VacancyService : IVacancyService
         Categories = result.Items;
         return Categories;
     }
-    
-    
+
+    public async Task<List<JobVacancyListDTO>> GetVacancyByTitle(string title)
+    {
+        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?Filters=Title@={title}");
+        Vacanceies = result.Items;
+        OnChange.Invoke();
+        return Vacanceies;
+    }
+
+
     public async Task OnSaveCreateClick()
     {
         Console.WriteLine(creatingNewJob.CategoryId);

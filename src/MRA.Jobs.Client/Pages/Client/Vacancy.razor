@@ -1,8 +1,8 @@
 ﻿@page "/vacancy"
 @layout Main
-@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @inject IVacancyService VacancyService
+@implements IDisposable
 
 <!-- Vacancy page -->
 <div class="container">
@@ -14,9 +14,15 @@
                        class="form-control border-0"
                        placeholder="Search"
                        aria-label="Search"
+                       @bind-value="@Title"
                        aria-describedby="">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-primary" type="button">Search</button>
+                    <button
+                        class="btn btn-outline-primary"
+                        @onclick="(() => BtnSearch(Title))"
+                        type="button">
+                        Search
+                    </button>
                 </div>
             </div>
         </div>
@@ -55,9 +61,27 @@
 @code {
 
     private List<JobVacancyListDTO> _vacancies;
+    public string? Title;
     protected override async Task OnInitializedAsync()
     {
         _vacancies = await VacancyService.GetAllVacancy();
     }
+    
 
+
+    void BtnSearch(string text)
+    {
+        Console.WriteLine(text);
+        VacancyService.GetVacancyByTitle(text);
+        VacancyService.OnChange += StateHasChanged;
+        foreach (var vacancey in VacancyService.Vacanceies)
+        {
+            Console.WriteLine("title: "+ vacancey.Title);
+        }
+    }
+    
+    public void Dispose()
+    {
+        VacancyService.OnChange -= StateHasChanged;
+    }
 }
