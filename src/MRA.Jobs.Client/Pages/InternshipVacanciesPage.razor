@@ -1,4 +1,9 @@
 ﻿@page "/internship"
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+@using MRA.Jobs.Client.Services.InternshipsServices;
+
+@inject IInternshipService internshipService
+@inject ICategoryService categoryService
 
 <h3>InternshipVacanciesPage</h3>
 
@@ -10,17 +15,10 @@
 			<MatExpansionPanelHeader>Inserting a new Job</MatExpansionPanelHeader>
 		</MatExpansionPanelSummary>
 		<MatExpansionPanelDetails Style="display: flex;flex-direction: column;">
-			<MatTextField @bind-Value="@VService.creatingNewJob.Title" Label="Title"></MatTextField>
-			<MatTextField @bind-Value="@VService.creatingNewJob.ShortDescription" Label="ShortDescription" TextArea></MatTextField>
-			<MatTextField @bind-Value="@VService.creatingNewJob.Description" Label="Description" TextArea></MatTextField>
-			<MatTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="RequiredYearOfExperience"></MatTextField>
-			<MatSelectItem @bind-Value="VService.creatingNewJob.WorkSchedule" Items="@value2Items">
-			</MatSelectItem>
-			<p>
-				Selected value: @work
-			</p>
-
-			<MatSelectValue @bind-Value="VService.creatingNewJob.CategoryId" Items="@_category" ValueSelector="@(i=>i.Id)">
+			<MatTextField @bind-Value="@internshipService.createCommand.Title" Label="Title"></MatTextField>
+			<MatTextField @bind-Value="@internshipService.createCommand.ShortDescription" Label="ShortDescription" TextArea></MatTextField>
+			<MatTextField @bind-Value="@internshipService.createCommand.Description" Label="Description" TextArea></MatTextField>
+			<MatSelectValue @bind-Value="@internshipService.createCommand.CategoryId" Items=" @categories" ValueSelector="@(i=>i.Id)">
 				<ItemTemplate>
 					<span>@context?.Name</span>
 				</ItemTemplate>
@@ -59,5 +57,12 @@
 </MatTable>
 @code {
 	bool panelOpenState;
+
+	private List<CategoryResponse> categories;
+
+	protected override async Task OnInitializedAsync()
+	{
+		categories = await categoryService.GetAllCategory();
+	}
 
 }

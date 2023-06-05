@@ -12,10 +12,13 @@ public class InternshipService : IInternshipService
         _http = http;
     }
 
+    public CreateInternshipVacancyCommand createCommand { get; set; }
+    public UpdateInternshipVacancyCommand UpdateCommand { get; set; }
+    public DeleteInternshipVacancyCommand DeleteCommand { get; set; }
+
     public async Task<HttpResponseMessage> Create(CreateInternshipVacancyCommand createCommand)
     {
-        var result = await _http.PostAsJsonAsync<CreateInternshipVacancyCommand>("internships", createCommand);
-        return result;
+        return await _http.PostAsJsonAsync("internships", createCommand);
     }
 
     public Task Delete(Guid id)

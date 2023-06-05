@@ -12,4 +12,7 @@ public interface IInternshipService
     Task Update(UpdateInternshipVacancyCommand updateCommand);
     Task Delete(Guid id);
     
+    CreateInternshipVacancyCommand createCommand { get; set; }
+    UpdateInternshipVacancyCommand UpdateCommand { get; set; }
+    DeleteInternshipVacancyCommand DeleteCommand { get; set; }
 }
