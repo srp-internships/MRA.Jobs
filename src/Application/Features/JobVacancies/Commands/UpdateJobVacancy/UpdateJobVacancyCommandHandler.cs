@@ -31,10 +31,11 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
         var timelineEvent = new VacancyTimelineEvent
         {
             VacancyId = jobVacancy.Id,
+            Vacancy=jobVacancy,
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Job vacancy updated",
-            CreateBy = _currentUserService.GetId().Value
+            CreateBy = _currentUserService.GetId() ?? Guid.Empty
         };
         await _dbContext.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);

@@ -2648,6 +2648,26 @@
         }
       }
     },
+    "/api/test": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "operationId": "Test_GetAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/trainings/{id}": {
       "get": {
         "tags": [

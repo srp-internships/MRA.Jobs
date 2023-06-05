@@ -83,3 +83,6 @@
 .mdc-floating-label {
     color: white;
 }
+.mat-accordion .mat-expansion-panel{
+    background:none;
+}
