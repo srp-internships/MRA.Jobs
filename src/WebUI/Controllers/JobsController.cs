@@ -3,7 +3,7 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Application.Features.JobVacancies.Commands.Tags;
+using MRA.Jobs.Application.Contracts.Tests.Commands;
 using AddTagsToJobVacancyCommand = MRA.Jobs.Application.Contracts.JobVacancies.Commands.AddTagsToJobVacancyCommand;
 
 namespace MRA.Jobs.Web.Controllers;
@@ -37,10 +37,28 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateNewJobVacancy(CreateJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> CreateNewJobVacancy([FromBody] CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
-    } 
+    }
+
+    [HttpPost("{id}/test")]
+    public async Task<ActionResult<TestInfoDTO>> SendTestCreationRequest([FromRoute] Guid id, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
+    {
+        if (id != request.Id)
+            return BadRequest();
+
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpPost("{id}/test/result")]
+    public async Task<ActionResult<TestResultDTO>> GetTestResultRequest([FromRoute] Guid id, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
+    {
+        if (id != request.TestId)
+            return BadRequest();
+
+        return await Mediator.Send(request, cancellationToken);
+    }
 
     [HttpPut("{id}")]
     public async Task<ActionResult<Guid>> Update([FromRoute] Guid id, [FromBody] UpdateJobVacancyCommand request, CancellationToken cancellationToken)
