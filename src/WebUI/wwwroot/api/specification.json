@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v13.18.5.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "MRA.Jobs API",
@@ -2226,6 +2226,50 @@
         }
       }
     },
+    "/api/jobs/{id}/test": {
+      "post": {
+        "tags": [
+          "Jobs"
+        ],
+        "operationId": "Jobs_SendTestCreationRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTestCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestInfoDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/jobs/{id}/tags": {
       "post": {
         "tags": [
@@ -3973,6 +4017,41 @@
           "FullTime",
           "Flexible"
         ]
+      },
+      "TestInfoDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "testId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "maxScore": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CreateTestCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "numberOfQuestion": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "categories": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
       "UpdateJobVacancyCommand": {
         "type": "object",

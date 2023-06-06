@@ -21,9 +21,9 @@ public class TestController : ControllerBase
     }
 
     [HttpPost("pass")]
-    public async Task<IActionResult> PassTest([FromBody] PassTestRequest request)
+    public async Task<ActionResult<PassTestRequest>> PassTest([FromBody] PassTestRequest request)
     {
-        await _testService.PassTest(request);
-        return Ok();
+        var result = await Task.FromResult(request);
+        return Ok(result);
     }
 }
