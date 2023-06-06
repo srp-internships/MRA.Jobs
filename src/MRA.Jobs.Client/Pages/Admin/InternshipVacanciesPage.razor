@@ -1,4 +1,5 @@
-﻿@page "/internship"
+﻿@page "/dashboard/internship"
+@layout Dashboard
 @using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @using MRA.Jobs.Client.Services.InternshipsServices;
@@ -8,6 +9,39 @@
 
 <h3>InternshipVacanciesPage</h3>
 
+@if (interships == null)
+{
+	<div>loading....</div>
+}
+
+
+<MatAccordion>
+	<MatExpansionPanel @bind-Expanded="@panelOpenState">
+		<MatExpansionPanelSummary>
+			<MatExpansionPanelHeader>Inserting a new Job</MatExpansionPanelHeader>
+		</MatExpansionPanelSummary>
+		<MatExpansionPanelDetails Style="display: flex;flex-direction: column;">
+			<MatTextField @bind-Value="@internshipService.createCommand.Title" Label="Title"></MatTextField>
+			<MatTextField @bind-Value="@internshipService.createCommand.ShortDescription" Label="ShortDescription" TextArea></MatTextField>
+			<MatTextField @bind-Value="@internshipService.createCommand.Description" Label="Description" TextArea></MatTextField>
+			<MatTextField @bind-Value="@internshipService.createCommand.ApplicationDeadline" Format="MM/dd/yy H:mm:ss" Label="ApplicationDeadline"></MatTextField>
+			<MatTextField @bind-Value="@internshipService.createCommand.Duration" Label="Duration"></MatTextField>
+			<MatTextField @bind-Value="@internshipService.createCommand.Stipend" Label="Stipend"></MatTextField>
+
+			<MatSelectValue @bind-Value="internshipService.createCommand.CategoryId" Items="@categories" ValueSelector="@(i=>i.Id)">
+				<ItemTemplate>
+					<span>@context?.Name</span>
+				</ItemTemplate>
+			</MatSelectValue>
+			<MatDatePicker @bind-Value="internshipService.createCommand.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MatDatePicker>
+			<MatDatePicker @bind-Value="internshipService.createCommand.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MatDatePicker>
+			<MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MatButton>
+			<MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
+			<MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
+
+		</MatExpansionPanelDetails>
+	</MatExpansionPanel>
+</MatAccordion>
 
 <MatTable Items="@interships" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
 	<MatTableHeader>
@@ -33,18 +67,56 @@
 </MatTable>
 @code {
 	bool panelOpenState;
+	bool isInserting;
+	bool isUpdating;
+	Guid UpdateId;
+
+
 
 	private List<CategoryResponse> categories;
 	private List<InternshipVacancyListResponce> interships;
 
 	protected override async Task OnInitializedAsync()
 	{
-		categories = await categoryService.GetAllCategory();
+		categories = await internshipService.GetAllCategory();
 		await LoadData();
 	}
-
+		
+	
 	private async Task LoadData()
 	{
 		interships = await internshipService.GetAll();
+	}
+
+	private async Task HandleSubmit()
+	{
+		
+	}
+
+	private async Task HandleUpdate()
+	{
+	//	await internshipService.UpdateJobVacancy(UpdateId);
+		await LoadData();
+		Clear();
+	}
+
+	void HandleCancel()
+	{
+		Clear();
+	}
+
+	private void Clear()
+	{
+		internshipService.createCommand.Title = string.Empty;
+		internshipService.createCommand.ShortDescription = string.Empty;
+		internshipService.createCommand.Description = string.Empty;
+		internshipService.createCommand.ApplicationDeadline = DateTime.Now;
+		internshipService.createCommand.Stipend = 0;
+		internshipService.createCommand.Duration = 0;
+		internshipService.createCommand.EndDate = DateTime.Now;
+		internshipService.createCommand.PublishDate = DateTime.Now;
+		isInserting = false;
+		isUpdating = true;
+		UpdateId = Guid.NewGuid();
 	}
 }
