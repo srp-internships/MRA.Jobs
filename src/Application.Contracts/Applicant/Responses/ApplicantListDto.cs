@@ -1,3 +1,6 @@
+﻿using MRA.Jobs.Application.Contracts.TagDTO;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
+
 using MRA.Jobs.Application.Contracts.Converter.Converter;
 using Newtonsoft.Json;
 using MRA.Jobs.Domain.Entities;
@@ -24,6 +27,7 @@ public class ApplicantDetailsDto
     public DateTime DateOfBirth { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
-    
-    //public List<UserTimelineEvent> Timelines { get; set; }
+    public ICollection<TimeLineDetailsDto> History { get; set; }
+    public ICollection<TagDto> Tags { get; set; }
+    public ICollection<ApplicantSocialMediaDto> SocialMedias { get; set;}
 }

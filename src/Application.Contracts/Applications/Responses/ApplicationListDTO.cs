@@ -1,3 +1,4 @@
+﻿using MRA.Jobs.Application.Contracts.TimeLineDTO;
 ﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
 using Newtonsoft.Json;
 
@@ -15,6 +16,7 @@ public class ApplicationListDTO
 public class ApplicationDetailsDTO
 {
     public Guid Id { get; set; }
+
     public Guid ApplicantId { get; set; }
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
@@ -26,4 +28,6 @@ public class ApplicationDetailsDTO
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime? LastModifiedAt { get; set; }
     public Guid? LastModifiedBy { get; set; }
+
+    public IQueryable<TimeLineDetailsDto> Histiry { get; set; }
 }

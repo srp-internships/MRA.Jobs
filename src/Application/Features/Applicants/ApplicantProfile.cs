@@ -5,6 +5,8 @@ using MRA.Jobs.Application.Contracts.Identity.Events;
 namespace MRA.Jobs.Application.Features.Applicants;
 
 using Domain.Entities;
+using MRA.Jobs.Application.Contracts.TagDTO;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
 
 public class ApplicantProfile : Profile
 {
@@ -14,6 +16,11 @@ public class ApplicantProfile : Profile
         CreateMap<UpdateApplicantCommand, Applicant>();
         CreateMap<NewIdentityRegisteredEvent, Applicant>();
         CreateMap<Applicant, ApplicantListDto>();
-        CreateMap<Applicant, ApplicantDetailsDto>();
+        CreateMap<Applicant, ApplicantDetailsDto>()
+            .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
+            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag)));
+        MappingConfiguration.ConfigureUserMap<UserTimelineEvent, TimeLineDetailsDto>(this);
+        MappingConfiguration.ConfigureUserMap<Tag, TagDto>(this);
+        CreateMap<ApplicantSocialMedia, ApplicantSocialMediaDto>();
     }
 }

@@ -1,3 +1,5 @@
+﻿using MRA.Jobs.Application.Contracts.TagDTO;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
 ﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
 using Newtonsoft.Json;
 
@@ -15,4 +17,6 @@ public class JobVacancyListDTO
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime EndDate { get; set; }
     public WorkSchedule WorkSchedule { get; set; }
+    public ICollection<TimeLineDetailsDto> History { get; set; }
+    public ICollection<TagDto> Tags { get; set; }
 }

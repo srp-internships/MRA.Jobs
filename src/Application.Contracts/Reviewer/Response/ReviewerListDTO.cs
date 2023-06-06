@@ -1,3 +1,5 @@
+﻿using MRA.Jobs.Application.Contracts.TagDTO;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
 ﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
 using Newtonsoft.Json;
 
@@ -25,4 +27,7 @@ public class ReviewerDetailsDto
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
     public string JobTitle { get; set; }
+
+    public ICollection<TimeLineDetailsDto> History { get; set; }
+    public ICollection<TagDto> Tags { get; set; }
 }

@@ -22,8 +22,15 @@ public class GetApplicantByIdQueryHandler : IRequestHandler<GetApplicantByIdQuer
 
     public async Task<ApplicantDetailsDto> Handle(GetApplicantByIdQuery request, CancellationToken cancellationToken)
     {
-        var applicant = await _context.Applicants.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
-        _ = applicant ?? throw new NotFoundException(nameof(Applicant), request.Id);    
+        var applicant = await _context.Applicants
+                    .Include(a => a.History)
+                    .Include(a => a.SocialMedias)
+                    .Include(a => a.Tags)
+                    .ThenInclude(t => t.Tag)
+
+                .FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken);
+        _ = applicant ?? throw new NotFoundException(nameof(Applicant), request.Id);
         return _mapper.Map<ApplicantDetailsDto>(applicant);
     }
+
 }

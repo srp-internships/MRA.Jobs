@@ -26,7 +26,7 @@ public class AddTagToApplicantCommandHandler : IRequestHandler<AddTagsToApplican
          .FirstOrDefaultAsync(x => x.Id == request.ApplicantId, cancellationToken);
 
         if (applicant == null)
-            throw new NotFoundException(nameof(JobVacancy), request.ApplicantId);
+            throw new NotFoundException(nameof(Applicant), request.ApplicantId);
 
         foreach (var tagName in request.Tags)
         {
