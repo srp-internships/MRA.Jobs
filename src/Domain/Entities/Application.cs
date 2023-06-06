@@ -2,6 +2,7 @@
 
 public class Application : BaseAuditableEntity
 {
+
     public string CoverLetter { get; set; }
     public string CV { get; set; }
     public DateTime AppliedAt { get; set; }
