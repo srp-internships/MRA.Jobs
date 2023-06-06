@@ -1,0 +1,50 @@
+﻿@page "/internship"
+@using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+@using MRA.Jobs.Client.Services.InternshipsServices;
+
+@inject IInternshipService internshipService
+@inject ICategoryService categoryService
+
+<h3>InternshipVacanciesPage</h3>
+
+
+<MatTable Items="@interships" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
+	<MatTableHeader>
+		<th>Title</th>
+		<th>ShortDescription</th>
+		<th>Category</th>
+		<th>PublishDate</th>
+		<th>EndDate</th>
+		<th>ApplicationDeadline</th>
+		<th>Duration</th>
+		<th>Stipend</th>
+	</MatTableHeader>
+	<MatTableRow>
+		<td>@context.Title</td>
+		<td>@context.ShortDescription</td>
+		<td>@context.Category</td>
+		<td>@context.PublishDate</td>
+		<td>@context.EndDate</td>
+		<td>@context.ApplicationDeadline</td>
+		<td>@context.Duration</td>
+		<td>@context.Stipend</td>
+		</MatTableRow>
+</MatTable>
+@code {
+	bool panelOpenState;
+
+	private List<CategoryResponse> categories;
+	private List<InternshipVacancyListResponce> interships;
+
+	protected override async Task OnInitializedAsync()
+	{
+		categories = await categoryService.GetAllCategory();
+		await LoadData();
+	}
+
+	private async Task LoadData()
+	{
+		interships = await internshipService.GetAll();
+	}
+}

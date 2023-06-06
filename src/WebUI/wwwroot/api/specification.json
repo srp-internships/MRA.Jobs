@@ -2054,6 +2054,94 @@
         }
       }
     },
+    "/api/internships/{id}/test": {
+      "post": {
+        "tags": [
+          "Internships"
+        ],
+        "operationId": "Internships_SendTestCreationRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTestCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestInfoDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internships/{id}/test/result": {
+      "post": {
+        "tags": [
+          "Internships"
+        ],
+        "operationId": "Internships_GetTestResultRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTestResultCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResultDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/jobs": {
       "get": {
         "tags": [
@@ -2224,6 +2312,48 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Jobs"
+        ],
+        "operationId": "Jobs_DeleteJobVacancy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteJobVacancyCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/jobs/{id}/test": {
@@ -2263,6 +2393,50 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TestInfoDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/{id}/test/result": {
+      "post": {
+        "tags": [
+          "Jobs"
+        ],
+        "operationId": "Jobs_GetTestResultRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTestResultCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResultDTO"
                 }
               }
             }
@@ -2692,26 +2866,6 @@
         }
       }
     },
-    "/api/test": {
-      "get": {
-        "tags": [
-          "Test"
-        ],
-        "operationId": "Test_GetAll",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/trainings/{id}": {
       "get": {
         "tags": [
@@ -3006,6 +3160,94 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trainings/{id}/test": {
+      "post": {
+        "tags": [
+          "Trainings"
+        ],
+        "operationId": "Trainings_SendTestCreationRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTestCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestInfoDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trainings/{id}/test/result": {
+      "post": {
+        "tags": [
+          "Trainings"
+        ],
+        "operationId": "Trainings_GetTestResultRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTestResultCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResultDTO"
                 }
               }
             }
@@ -3969,6 +4211,77 @@
           }
         }
       },
+      "TestInfoDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "testId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "maxScore": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CreateTestCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "numberOfQuestion": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "categories": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "TestResultDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "testId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "score": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CreateTestResultCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "testId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "score": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "CreateJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -4018,41 +4331,6 @@
           "Flexible"
         ]
       },
-      "TestInfoDTO": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "testId": {
-            "type": "string",
-            "format": "guid"
-          },
-          "maxScore": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "CreateTestCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
-          "numberOfQuestion": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "categories": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "UpdateJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -4091,6 +4369,16 @@
           },
           "workSchedule": {
             "$ref": "#/components/schemas/WorkSchedule"
+          }
+        }
+      },
+      "DeleteJobVacancyCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
           }
         }
       },
