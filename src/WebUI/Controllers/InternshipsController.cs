@@ -3,6 +3,7 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+using MRA.Jobs.Application.Contracts.Tests.Commands;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
@@ -61,5 +62,23 @@ public class InternshipsController : ApiControllerBase
         request.InternshipId = id;
         await Mediator.Send(request, cancellationToken);
         return Ok();
+    }
+
+    [HttpPost("{id}/test")]
+    public async Task<ActionResult<TestInfoDTO>> SendTestCreationRequest([FromRoute] Guid id, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
+    {
+        if (id != request.Id)
+            return BadRequest();
+
+        return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpPost("{id}/test/result")]
+    public async Task<ActionResult<TestResultDTO>> GetTestResultRequest([FromRoute] Guid id, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
+    {
+        if (id != request.TestId)
+            return BadRequest();
+
+        return await Mediator.Send(request, cancellationToken);
     }
 }

@@ -3,5 +3,5 @@
 public class CreateTestRequest
 {
     public List<string> Categories { get; set; }
-    public int QuestionCount { get; set; }
+    public long NumberOfQuestion { get; set; }
 }
