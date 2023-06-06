@@ -44,5 +44,6 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return application.Id;
+
     }
 }

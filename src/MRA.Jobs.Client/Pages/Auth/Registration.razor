@@ -1,0 +1,59 @@
+﻿@page "/registration"
+
+<div class="container">
+    <div class="col-5 m-3">
+        <MatTextField @bind-Value="name" Class="w-100" Label="Name" Outlined="true"></MatTextField>
+    </div>
+    <div class="col-5 m-3">
+        <MatTextField @bind-Value="name" Class="w-100" Label="LastName" Outlined="true"></MatTextField>
+    </div>
+    <div class="col-5 m-3">
+        <MatTextField @bind-Value="name" Class="w-100" Label="Patronymic" Outlined="true"></MatTextField>
+    </div>
+    <div class="col-5 m-3">
+        <MatTextField @bind-Value="name" Class="w-100" Label="Email" Outlined="true"></MatTextField>
+    </div>
+    <div class="col-5 m-3">
+        <MatDatePicker Label="Date of Brith" Class="w-100" Outlined="true" TValue="DateTime"></MatDatePicker>
+    </div>
+    <div class="col-5 m-3">
+       <MatSelect Label="Pick a Food Group" Class="w-100" Outlined="true" TValue="string">
+           <MatOptionString></MatOptionString>
+           <MatOptionString Value="grains">Bread, Cereal, Rice, and Pasta</MatOptionString>
+           <MatOptionString Value="vegetables">Vegetables</MatOptionString>
+           <MatOptionString Value="fruit">Fruit</MatOptionString>
+           </MatSelect>
+    </div>
+    <div class="col-5 m-3">
+        <MatTextField @bind-Value="name" Class="w-100" Label="PhoneVerificationCode" Outlined="true"></MatTextField>
+    </div>
+    <div class="col-5 m-3">
+         <MatCheckbox @bind-Value="@checked2" Label="@(getLabel(checked2))"></MatCheckbox>
+    </div>
+
+    <div class="col-5 m-3">
+        <MatTextField @bind-Value="name" Class="w-100" Label="Password" Outlined="true"></MatTextField>
+    </div>
+
+    <div class="col-5 m-3">
+        <MatTextField @bind-Value="name" Class="w-100" Label="PasswordConfirmation" Outlined="true"></MatTextField>
+    </div>
+</div>
+
+@code {
+    public string Name
+    {
+        get => Name;
+        set { name = value; this.StateHasChanged();}
+    }
+ 
+    private string name;
+    
+    bool checked2 = false;
+    bool? checked3 = null;
+ 
+    string getLabel(bool val)
+    {
+        return !val ? "Check me!" : "Uncheck me?";
+    }
+}

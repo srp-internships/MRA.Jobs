@@ -1,7 +1,10 @@
-﻿@page "/salom"
-
+﻿@page "/dashboard/category"
+@layout Dashboard
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @inject ICategoryService CService
+
+<h1>Category</h1>
+
 @if (_category == null)
 {
     <div>Loading</div>
@@ -58,5 +61,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         _category = await CService.GetAllCategory();  
+        Console.WriteLine(CService.Category);
     }
 }
