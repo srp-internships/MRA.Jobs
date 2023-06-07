@@ -29,7 +29,7 @@ public class InternshipService : IInternshipService
     public CreateInternshipVacancyCommand createCommand { get; set; }
     public UpdateInternshipVacancyCommand UpdateCommand { get; set; }
     public DeleteInternshipVacancyCommand DeleteCommand { get; set; }
-    public List<CategoryResponse> Categories { get; set; }
+
 
     public async Task<HttpResponseMessage> Create(CreateInternshipVacancyCommand createCommand)
     {
@@ -57,10 +57,4 @@ public class InternshipService : IInternshipService
         throw new NotImplementedException();
     }
 
-    public async Task<List<CategoryResponse>> GetAllCategory()
-    {
-        var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("categories");
-        Categories = result.Items;
-        return Categories;
-    }
 }

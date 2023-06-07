@@ -27,10 +27,9 @@
 			<MatTextField @bind-Value="@internshipService.createCommand.ApplicationDeadline" Format="MM/dd/yy H:mm:ss" Label="ApplicationDeadline"></MatTextField>
 			<MatTextField @bind-Value="@internshipService.createCommand.Duration" Label="Duration"></MatTextField>
 			<MatTextField @bind-Value="@internshipService.createCommand.Stipend" Label="Stipend"></MatTextField>
-
 			<MatSelectValue @bind-Value="internshipService.createCommand.CategoryId" Items="@categories" ValueSelector="@(i=>i.Id)">
 				<ItemTemplate>
-					<span>@context?.Name</span>
+					<span>@context?.Name</span>ыы
 				</ItemTemplate>
 			</MatSelectValue>
 			<MatDatePicker @bind-Value="internshipService.createCommand.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MatDatePicker>
@@ -78,7 +77,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		categories = await internshipService.GetAllCategory();
+		categories = await categoryService.GetAllCategory();
 		await LoadData();
 	}
 		

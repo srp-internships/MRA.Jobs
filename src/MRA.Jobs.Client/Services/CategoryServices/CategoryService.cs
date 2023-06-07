@@ -21,7 +21,7 @@ public class CategoryService : ICategoryService
         var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("categories");
         Category = result.Items;
         creatingEntity = new() { Name = "" };
-        return Category;
+        return result.Items;
     }
     public void OnUpdateClick(CategoryResponse updateEntity)
     {
