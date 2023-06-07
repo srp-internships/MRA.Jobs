@@ -41,11 +41,7 @@ public class InternshipService : IInternshipService
 
     public  async Task Delete(Guid id)
     {
-        DeleteCommand = new DeleteInternshipVacancyCommand
-        {
-            Id = id
-        };
-        await  _http.DeleteFromJsonAsync<DeleteInternshipVacancyCommand>($"internships/{id}");
+        await _http.DeleteAsync($"internships/{id}");
     }
 
     public async Task<List<InternshipVacancyListResponce>> GetAll()

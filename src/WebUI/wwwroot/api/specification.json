@@ -1909,18 +1909,6 @@
             "x-position": 1
           }
         ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteInternshipVacancyCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
         "responses": {
           "200": {
             "description": "",
@@ -4164,16 +4152,6 @@
           "stipend": {
             "type": "integer",
             "format": "int32"
-          }
-        }
-      },
-      "DeleteInternshipVacancyCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
           }
         }
       },
