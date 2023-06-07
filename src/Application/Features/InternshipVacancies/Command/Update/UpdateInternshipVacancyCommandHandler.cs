@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Common.Security;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Update;
@@ -19,11 +20,16 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
 
     public async Task<Guid> Handle(UpdateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
-        var internship = await _context.Internships.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
-        _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Id);
+        //var internship = await _context.Internships.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+        //_ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Id);
 
-        var category = await _context.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken: cancellationToken);
-        _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
+        //var category = await _context.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken: cancellationToken);
+        //_ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
+
+        var internship = await _context.Internships
+            .Include(i => i.Category)
+            .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
+        _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Id);
 
         _mapper.Map(request, internship);
 

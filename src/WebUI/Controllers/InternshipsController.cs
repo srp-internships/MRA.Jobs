@@ -33,11 +33,9 @@ public class InternshipsController : ApiControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteInternship([FromRoute] Guid id, [FromBody] DeleteInternshipVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<bool>> DeleteInternship([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        if (id != request.Id)
-            return BadRequest();
-
+        var request = new DeleteInternshipVacancyCommand { Id = id };
         return await Mediator.Send(request, cancellationToken);
     }
 

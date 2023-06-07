@@ -1,0 +1,29 @@
+﻿<MatDialog @bind-IsOpen="@IsOpen">
+	<MatDialogTitle>Подтверждение удаления</MatDialogTitle>
+	<MatDialogContent>
+		Вы уверены, что хотите удалить этот элемент?
+	</MatDialogContent>
+	<MatDialogActions>
+		<MatButton OnClick="ConfirmDelete">Удалить</MatButton>
+		<MatButton OnClick="CancelDelete">Отмена</MatButton>
+	</MatDialogActions>
+</MatDialog>
+
+@code {
+	[Parameter] public bool IsOpen { get; set; }
+	[Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
+	[Parameter] public EventCallback OnConfirm { get; set; }
+
+	void ConfirmDelete()
+	{
+		OnConfirm.InvokeAsync();
+		IsOpen = false;
+		IsOpenChanged.InvokeAsync(IsOpen);
+	}
+
+	void CancelDelete()
+	{
+		IsOpen = false;
+		IsOpenChanged.InvokeAsync(IsOpen);
+	}
+}

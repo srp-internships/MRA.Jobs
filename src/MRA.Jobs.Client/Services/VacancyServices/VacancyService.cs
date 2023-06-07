@@ -1,4 +1,6 @@
-﻿using MRA.Jobs.Application.Contracts.Common;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
+using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
@@ -63,5 +65,42 @@ public class VacancyService : IVacancyService
     {
         Console.WriteLine(creatingNewJob.CategoryId);
         await _http.PostAsJsonAsync("jobs", creatingNewJob);
+
+        Console.WriteLine(creatingNewJob.Title);
+    }
+
+    public async Task<List<JobVacancyListDTO>> GetJobs()
+    {
+        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>("jobs");
+        return result.Items;
+    }
+
+    public async Task OnDelete(Guid Id)
+    {
+        await _http.DeleteAsync($"jobs/{Id}");
+    }
+
+    public async Task<JobVacancyDetailsDTO> GetById(Guid Id)
+    {
+        var result = await _http.GetFromJsonAsync<JobVacancyDetailsDTO>($"jobs/{Id}");
+        return result;
+    }
+
+    public async Task UpdateJobVacancy(Guid id)
+    {
+        var update = new UpdateJobVacancyCommand
+        {
+            Id = id,
+            Title = creatingNewJob.Title,
+            ShortDescription = creatingNewJob.ShortDescription,
+            Description = creatingNewJob.Description,
+            WorkSchedule = creatingNewJob.WorkSchedule,
+            CategoryId = creatingNewJob.CategoryId,
+            RequiredYearOfExperience = creatingNewJob.RequiredYearOfExperience,
+            EndDate = creatingNewJob.EndDate,
+            PublishDate = creatingNewJob.PublishDate,
+        };
+        await _http.PutAsJsonAsync($"jobs/{id}", update);
+
     }
 }

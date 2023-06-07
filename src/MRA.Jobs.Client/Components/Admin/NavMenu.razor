@@ -1,7 +1,7 @@
 ﻿@using MRA.Jobs.Application.Contracts.Common;
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-@using MRA.Jobs.Client.Services.VacancyServices
+@using MRA.Jobs.Client.Services.VacancyServices;
 
 @inject IVacancyService VService
 @inject ICategoryService CService
@@ -21,7 +21,7 @@
 
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="dashboard/category">
+            <NavLink class="nav-link" href="dashboard/categories">
                 <span class="oi oi-project" aria-hidden="true"></span>Category
             </NavLink>
         </div>
@@ -48,11 +48,15 @@
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="dashboard/vacancy" >
+            <NavLink class="nav-link" href="dashboard/jobs" >
                 <span class="oi oi-briefcase" aria-hidden="true"></span>Vacancy
             </NavLink>
         </div>
-            
+		<div class="nav-item px-3">
+			<NavLink class="nav-link" href="dashboard/internship">
+				<span class="oi oi-briefcase" aria-hidden="true"></span>internship
+			</NavLink>
+		</div>
     </nav>
 </div>
 
