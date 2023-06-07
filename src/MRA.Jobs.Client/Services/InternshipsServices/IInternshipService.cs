@@ -9,12 +9,11 @@ public interface IInternshipService
     Task<List<InternshipVacancyListResponce>> GetAll();
     Task<InternshipVacancyResponce> GetById(Guid id);
 
-    Task<HttpResponseMessage> Create(CreateInternshipVacancyCommand createCommand);
-    Task Update(UpdateInternshipVacancyCommand updateCommand);
+    Task<HttpResponseMessage> Create();
+    Task<HttpResponseMessage> Update(Guid id);
     Task Delete(Guid id);
 
     CreateInternshipVacancyCommand createCommand { get; set; }
     UpdateInternshipVacancyCommand UpdateCommand { get; set; }
     DeleteInternshipVacancyCommand DeleteCommand { get; set; }
-
 }
