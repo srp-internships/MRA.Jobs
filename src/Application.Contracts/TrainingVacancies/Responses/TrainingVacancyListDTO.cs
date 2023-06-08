@@ -20,6 +20,5 @@ public class TrainingVacancyListDTO
     public DateTime EndDate { get; set; }
     public int Duration { get; set; }
     public int Fees { get; set; }
-    public ICollection<TimeLineDetailsDto> History { get; set; }
-    public ICollection<TagDto> Tags { get; set; }
+ 
 }

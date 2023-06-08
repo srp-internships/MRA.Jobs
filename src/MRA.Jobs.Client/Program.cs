@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MRA.Jobs.Client;
 using MRA.Jobs.Client.Services.InternshipsServices;
+using MRA.Jobs.Client.Services.TrainingServices;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -20,5 +21,6 @@ builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<IInternshipService, InternshipService>();
+builder.Services.AddScoped<ITrainingService, TrainingService>();
 
 await builder.Build().RunAsync();
