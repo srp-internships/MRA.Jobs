@@ -6,6 +6,7 @@ public class VacancyCategoryConfiguration : IEntityTypeConfiguration<VacancyCate
 {
     public void Configure(EntityTypeBuilder<VacancyCategory> builder)
     {
+        builder.HasQueryFilter(e => !e.IsDeleted);
         builder.Property(vc => vc.Name).HasColumnType("nvarchar(128)").IsRequired();
 
         builder.HasMany(vc => vc.Vacancies)

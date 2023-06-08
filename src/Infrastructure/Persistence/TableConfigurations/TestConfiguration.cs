@@ -6,6 +6,7 @@ public class TestConfiguration : IEntityTypeConfiguration<Test>
 {
     public void Configure(EntityTypeBuilder<Test> builder)
     {
+        builder.HasQueryFilter(e => !e.IsDeleted);
         builder.Property(t => t.Title).HasColumnType("nvarchar(256)").IsRequired();
         builder.Property(t => t.Description).HasColumnType("nvarchar(max)");
         builder.Property(t => t.Duration).HasColumnType("time");

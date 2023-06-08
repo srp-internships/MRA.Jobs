@@ -6,6 +6,7 @@ public class VacancyTagConfiguration : IEntityTypeConfiguration<VacancyTag>
 {
     public void Configure(EntityTypeBuilder<VacancyTag> builder)
     {
+        builder.HasQueryFilter(e => !e.IsDeleted);
         builder.HasOne(vt => vt.Tag)
             .WithMany(t => t.VacancyTags)
             .HasForeignKey(vt => vt.TagId)

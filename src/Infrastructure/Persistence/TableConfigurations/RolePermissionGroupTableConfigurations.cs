@@ -6,6 +6,7 @@ public class RolePermissionGroupTableConfigurations : IEntityTypeConfiguration<R
 {
     public void Configure(EntityTypeBuilder<RolePermission> builder)
     {
+
         builder.ToTable(nameof(RolePermission));
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id).ValueGeneratedOnAdd();

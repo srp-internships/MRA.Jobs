@@ -6,6 +6,7 @@ public class ApplicationTimelineEventConfiguration : IEntityTypeConfiguration<Ap
 {
     public void Configure(EntityTypeBuilder<ApplicationTimelineEvent> builder)
     {
+       
         // No need to specify the properties here as they are already defined in the base TimelineEventConfiguration
 
         // Navigation properties

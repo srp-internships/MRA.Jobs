@@ -6,6 +6,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.HasQueryFilter(e => !e.IsDeleted);
         // Common properties
         builder.Property(u => u.Avatar).HasColumnType("nvarchar(max)");
         builder.Property(u => u.DateOfBirth).HasColumnType("date");

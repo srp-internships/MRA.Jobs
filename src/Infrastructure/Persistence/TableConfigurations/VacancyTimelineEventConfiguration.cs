@@ -6,6 +6,7 @@ public class VacancyTimelineEventConfiguration : IEntityTypeConfiguration<Vacanc
 {
     public void Configure(EntityTypeBuilder<VacancyTimelineEvent> builder)
     {
+      
         // No need to specify the properties here as they are already defined in the base TimelineEventConfiguration
 
         // Navigation properties

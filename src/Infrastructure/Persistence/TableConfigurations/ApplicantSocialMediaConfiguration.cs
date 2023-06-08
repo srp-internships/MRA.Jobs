@@ -6,6 +6,7 @@ public class ApplicantSocialMediaConfiguration : IEntityTypeConfiguration<Applic
 {
     public void Configure(EntityTypeBuilder<ApplicantSocialMedia> builder)
     {
+        builder.HasQueryFilter(e => !e.IsDeleted);
         builder.Property(sm => sm.ProfileUrl).HasColumnType("nvarchar(max)").IsRequired();
         builder.Property(sm => sm.Type).HasColumnType("int").IsRequired();
 
@@ -14,6 +15,7 @@ public class ApplicantSocialMediaConfiguration : IEntityTypeConfiguration<Applic
             .WithMany(a => a.SocialMedias)
             .HasForeignKey(sm => sm.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
+       
     }
 }
 

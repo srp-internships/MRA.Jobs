@@ -6,6 +6,7 @@ public class TestResultConfiguration : IEntityTypeConfiguration<TestResult>
 {
     public void Configure(EntityTypeBuilder<TestResult> builder)
     {
+        builder.HasQueryFilter(e => !e.IsDeleted);
         builder.Property(tr => tr.CompletedAt).HasColumnType("datetime2");
         builder.Property(tr => tr.Passed).HasColumnType("bit");
         builder.Property(tr => tr.Score).HasColumnType("int");

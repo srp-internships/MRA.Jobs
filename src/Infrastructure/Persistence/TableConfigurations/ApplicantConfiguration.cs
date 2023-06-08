@@ -6,6 +6,7 @@ public class ApplicantConfiguration : IEntityTypeConfiguration<Applicant>
 {
     public void Configure(EntityTypeBuilder<Applicant> builder)
     {
+      
         // Navigation properties
         builder.HasMany(a => a.Applications)
             .WithOne(ap => ap.Applicant)
@@ -16,6 +17,7 @@ public class ApplicantConfiguration : IEntityTypeConfiguration<Applicant>
             .WithOne(sm => sm.Applicant)
             .HasForeignKey(sm => sm.ApplicantId)
             .OnDelete(DeleteBehavior.Restrict);
+      
     }
 }
 

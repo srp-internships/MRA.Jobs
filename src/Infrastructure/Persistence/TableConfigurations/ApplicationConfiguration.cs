@@ -6,6 +6,7 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Domain.Entities
 {
     public void Configure(EntityTypeBuilder<Domain.Entities.Application> builder)
     {
+        builder.HasQueryFilter(e => !e.IsDeleted);
         builder.Property(a => a.CoverLetter).HasColumnType("nvarchar(max)");
         builder.Property(a => a.CV).HasColumnType("nvarchar(max)").IsRequired();
         builder.Property(a => a.AppliedAt).HasColumnType("datetime2");
