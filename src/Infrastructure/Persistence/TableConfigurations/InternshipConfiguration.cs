@@ -5,6 +5,7 @@ public class InternshipConfiguration : IEntityTypeConfiguration<InternshipVacanc
 {
     public void Configure(EntityTypeBuilder<InternshipVacancy> builder)
     {
+      
         builder.Property(i => i.ApplicationDeadline).HasColumnType("datetime2");
     }
 }

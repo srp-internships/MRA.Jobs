@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using MRA.Jobs.Infrastructure.Identity.Entities;
@@ -53,8 +55,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     #region override
     protected override void OnModelCreating(ModelBuilder builder)
     {
+       // builder.Entity<BaseEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Ignore<BaseEntity>();
-        builder.Ignore<BaseAuditableEntity>();
+        builder.Ignore<BaseAuditableEntity>();        
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(builder);
     }
@@ -67,6 +70,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         //await _mediator.DispatchDomainEvents(this); //Right now we do not need domain events.
+        foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted && e.Entity is ISoftDelete))
+        {
+            entry.State = EntityState.Modified;
+            ((ISoftDelete)entry.Entity).IsDeleted = true;
+        }
         return await base.SaveChangesAsync(cancellationToken);
     }
     #endregion

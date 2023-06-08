@@ -6,6 +6,7 @@ public class VacancyConfiguration : IEntityTypeConfiguration<Vacancy>
 {
     public void Configure(EntityTypeBuilder<Vacancy> builder)
     {
+        builder.HasQueryFilter(e => !e.IsDeleted);
         // Common properties
         builder.Property(v => v.Title).HasColumnType("nvarchar(256)").IsRequired();
         builder.Property(v => v.ShortDescription).HasColumnType("nvarchar(max)");

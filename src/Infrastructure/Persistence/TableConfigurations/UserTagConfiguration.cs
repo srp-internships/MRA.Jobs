@@ -6,6 +6,7 @@ public class UserTagConfiguration : IEntityTypeConfiguration<UserTag>
 {
     public void Configure(EntityTypeBuilder<UserTag> builder)
     {
+        builder.HasQueryFilter(e => !e.IsDeleted);
         builder.HasOne(ut => ut.Tag)
             .WithMany(t => t.UserTags)
             .HasForeignKey(ut => ut.TagId)

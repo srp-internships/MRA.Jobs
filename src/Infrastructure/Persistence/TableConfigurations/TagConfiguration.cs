@@ -6,6 +6,8 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
 {
     public void Configure(EntityTypeBuilder<Tag> builder)
     {
+
+        builder.HasQueryFilter(e => !e.IsDeleted);
         builder.Property(t => t.Name).HasColumnType("nvarchar(128)").IsRequired();
 
         builder.HasMany(t => t.VacancyTags)

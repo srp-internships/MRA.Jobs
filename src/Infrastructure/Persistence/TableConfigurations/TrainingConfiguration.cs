@@ -5,5 +5,6 @@ public class TrainingConfiguration : IEntityTypeConfiguration<TrainingVacancy>
 {
     public void Configure(EntityTypeBuilder<TrainingVacancy> builder)
     {
+     
     }
 }
