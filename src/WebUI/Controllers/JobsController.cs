@@ -71,11 +71,9 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteJobVacancy([FromRoute] Guid id, [FromBody] DeleteJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<bool>> DeleteJobVacancy([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        if (id != request.Id)
-            return BadRequest();
-
+        var request = new DeleteJobVacancyCommand { Id = id };
         return await Mediator.Send(request, cancellationToken);
     }
 
