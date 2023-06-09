@@ -19,7 +19,7 @@ public class GetApplicationByIdQueryHandler : IRequestHandler<GetByIdApplication
     public async Task<ApplicationDetailsDTO> Handle(GetByIdApplicationQuery request, CancellationToken cancellationToken)
     {
        // var application = await _dbContext.Applications.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
-      var application = await _dbContext.Applicants
+      var application = await _dbContext.Applications
             .Include(a=>a.History)
             .FirstOrDefaultAsync(a=>a.Id == request.Id, cancellationToken);
         _ = application ?? throw new NotFoundException(nameof(Application), request.Id);

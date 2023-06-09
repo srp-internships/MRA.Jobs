@@ -1450,6 +1450,38 @@
         }
       }
     },
+    "/api/applications/{status}": {
+      "get": {
+        "tags": [
+          "Applications"
+        ],
+        "operationId": "Applications_GetApplicationsByStatus",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ApplicationStatus"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/categories": {
       "get": {
         "tags": [
@@ -3944,6 +3976,38 @@
             "nullable": true
           }
         }
+      },
+      "ApplicationStatus": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Submitted",
+          "TestCompleted",
+          "Verified",
+          "InterviewPassed",
+          "Approved",
+          "Hired",
+          "Reserved",
+          "Expired",
+          "Refused",
+          "TestFailed",
+          "InterviewFailed",
+          "Rejected"
+        ],
+        "enum": [
+          "Submitted",
+          "TestCompleted",
+          "Verified",
+          "InterviewPassed",
+          "Approved",
+          "Hired",
+          "Reserved",
+          "Expired",
+          "Refused",
+          "TestFailed",
+          "InterviewFailed",
+          "Rejected"
+        ]
       },
       "PaggedListOfCategoryResponse": {
         "type": "object",

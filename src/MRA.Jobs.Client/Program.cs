@@ -5,6 +5,7 @@ using MatBlazor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MRA.Jobs.Client;
+using MRA.Jobs.Client.Services.ApplicationService;
 using MRA.Jobs.Client.Services.InternshipsServices;
 using MRA.Jobs.Client.Services.TrainingServices;
 
@@ -22,5 +23,6 @@ builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
+builder.Services.AddScoped<IApplicationService, ApplicationService>();
 
 await builder.Build().RunAsync();
