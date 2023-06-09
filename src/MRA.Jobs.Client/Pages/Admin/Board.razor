@@ -10,63 +10,19 @@
 <main class="content">
 	<div class="container-fluid">
 
-		<a href="#" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> New task</a>
 		<div class="mb-3">
-			<h1 class="h3 d-inline align-middle">Tasks</h1><a class="badge bg-primary ms-2" href="https://adminkit.io/pricing/" target="_blank">
-				Pro
-				Component <i class="fas fa-fw fa-external-link-alt"></i>
-			</a>
+			<h1 class="h3 d-inline align-middle">Applications</h1>
 		</div>
 
-		<div class="row">
+		<div class="row">	
 
-			<div class="col-3">
-				<ApplicationCards Title="Submitted" Applications="@submittedApplications" />
-			</div>
+			@foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
+			{
+				<div class="col-3">
+					<ApplicationCards Title="@status.ToString()" Applications="@applicationsByStatus[status]" />
 
-			<div class="col-3">
-				<ApplicationCards Title="TestCompleted" Applications="@testCompletedApplications" />
-			</div>
-
-			<div class="col-3">
-				<ApplicationCards Title="Verified" Applications="@verifiedApplications" />
-			</div>
-
-			<div class="col-3">
-				<ApplicationCards Title="Interview" Applications="@interviewPassedApplications" />
-			</div>
-
-			<div class="col-3">
-				<ApplicationCards Title="Approved" Applications="@approvedApplications" />
-			</div>
-
-			<div class="col-3">
-				<ApplicationCards Title="Hired" Applications="@hiredApplications" />
-			</div>
-
-			<div class="col-3">
-				<ApplicationCards Title="Reserved" Applications="@reservedApplications" />
-			</div>
-
-			<div class="col-3">
-				<ApplicationCards Title="Expired" Applications="@expiredApplications" />
-			</div>
-
-			<div class="col-3">
-				<ApplicationCards Title="Refused" Applications="@refusedApplications" />
-			</div>
-
-			<div class="col-3">
-				<ApplicationCards Title="TestFailed" Applications="@testFailedApplications" />
-			</div>
-
-			<div class="col-3">
-				<ApplicationCards Title="InterviewFailed" Applications="@interviewFailedApplications" />
-			</div>
-
-			<div class="col-3">
-				<ApplicationCards Title="Rejected" Applications="@rejectedApplications" />
-			</div>
+				</div>
+			}
 		</div>
 	</div>
 </main>
@@ -74,32 +30,15 @@
 
 
 @code {
-	private List<ApplicationListStatus> submittedApplications;
-	private List<ApplicationListStatus> testCompletedApplications;
-	private List<ApplicationListStatus> verifiedApplications;
-	private List<ApplicationListStatus> interviewPassedApplications;
-	private List<ApplicationListStatus> approvedApplications;
-	private List<ApplicationListStatus> hiredApplications;
-	private List<ApplicationListStatus> reservedApplications;
-	private List<ApplicationListStatus> expiredApplications;
-	private List<ApplicationListStatus> refusedApplications;
-	private List<ApplicationListStatus> testFailedApplications;
-	private List<ApplicationListStatus> interviewFailedApplications;
-	private List<ApplicationListStatus> rejectedApplications;
+	private Dictionary<ApplicationStatus, List<ApplicationListStatus>> applicationsByStatus;
 
 	protected override async Task OnInitializedAsync()
 	{
-		submittedApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.Submitted);
-		testCompletedApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.TestCompleted);
-		verifiedApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.Verified);
-		interviewPassedApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.InterviewPassed);
-		approvedApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.Approved);
-		hiredApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.Hired);
-		expiredApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.Expired);
-		refusedApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.Refused);
-		reservedApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.Reserved);
-		testFailedApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.TestFailed);
-		interviewFailedApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.InterviewFailed);
-		rejectedApplications = await ApplicationService.GetApplicationsByStatus(ApplicationStatus.Rejected);
+		applicationsByStatus = new Dictionary<ApplicationStatus, List<ApplicationListStatus>>();
+		foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
+		{
+			var applications = await ApplicationService.GetApplicationsByStatus(status);
+			applicationsByStatus[status] = applications;
+		}
 	}
 }
