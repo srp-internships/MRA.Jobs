@@ -9,25 +9,20 @@
 
 <main class="content">
 	<div class="container-fluid">
-
 		<div class="mb-3">
 			<h1 class="h3 d-inline align-middle">Applications</h1>
 		</div>
 
 		<div class="row">	
-
 			@foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
 			{
 				<div class="col-3">
 					<ApplicationCards Title="@status.ToString()" Applications="@applicationsByStatus[status]" />
-
 				</div>
 			}
 		</div>
 	</div>
 </main>
-
-
 
 @code {
 	private Dictionary<ApplicationStatus, List<ApplicationListStatus>> applicationsByStatus;

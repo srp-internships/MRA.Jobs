@@ -2,10 +2,11 @@
 @layout Dashboard
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+@using MRA.Jobs.Client.Services.JobServices;
 @using MRA.Jobs.Domain.Enums;
 @using MRA.Jobs.Client.Components.Dialogs;
 
-@inject IVacancyService VService
+@inject IJobVacancyService VService
 @inject ICategoryService CService
 
 <h3>Vacancy</h3>

@@ -6,6 +6,11 @@ public class PaggedListQuery<T> : SieveModel, IRequest<PaggedList<T>>
 {
 }
 
+public class PaggedListVacancyByCategory<T> :SieveModel, IRequest<PaggedList<T>>
+{
+    public Guid? CategoryId { get; set; }
+}
+
 public class PaggedList<T>
 {
     public int TotalCount { get; set; }
@@ -16,3 +21,4 @@ public class PaggedList<T>
     public bool HasPreviousPage { get; set; }
     public bool HasNextPage { get; set; }
 }
+

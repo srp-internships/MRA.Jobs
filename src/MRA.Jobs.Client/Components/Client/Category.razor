@@ -1,8 +1,10 @@
 ﻿@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses
-@inject ICategoryService CategoryService
+@using MRA.Jobs.Application.Contracts.Vacncies.Responses;
+
+@inject IVacancyService VacancyService
 
 
-<!--- Category -->
+@*<!--- Category -->
 <section id="category">
     <div class="w-100">
         <h4 class="mb-2 text-dark">Category</h4>
@@ -20,15 +22,37 @@
             </ul>
         }
     </div>
-</section>
+</section>*@
+
+<h1>Категории</h1>
+
+<ul class="list-group">
+	<li class="list-group-item d-flex justify-content-between align-items-center">
+		Все категории
+		<span class="badge bg-primary rounded-pill">@totalVacancyCount</span>
+	</li>
+	@foreach (var category in categories)
+	{
+		<li class="list-group-item d-flex justify-content-between align-items-center">
+			@category.CategoryName
+			<span class="badge bg-primary rounded-pill">@category.VacancyCount</span>
+		</li>
+	}
+</ul>
 
 @code {
 
-    private  List<CategoryResponse> _categoryResponses;
-    protected override async Task OnInitializedAsync()
-    {
-        _categoryResponses = await CategoryService.GetAllCategory();
-    }
+    //private  List<CategoryResponse> _categoryResponses;
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    _categoryResponses = await CategoryService.GetAllCategory();
+    //}
     
-
+	private List<CategoryVacancyCountDTO> categories;
+	private int totalVacancyCount;
+	protected override async Task OnInitializedAsync()
+	{
+		categories = await VacancyService.GetCategories();
+		totalVacancyCount = categories.Sum(c => c.VacancyCount);
+	}
 }

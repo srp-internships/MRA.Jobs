@@ -1,7 +1,11 @@
 ﻿@page "/vacancy"
 @layout Main
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
-@inject IVacancyService VacancyService
+@using MRA.Jobs.Client.Services.JobServices;
+
+@inject IJobVacancyService JobService
+@inject IVacancyService VServise
+
 @implements IDisposable
 
 <!-- Vacancy page -->
@@ -33,14 +37,14 @@
             <Category></Category>
         </div>
         <div class="vacancy">
-            @if (_vacancies is null)
+			@if (_jobVacancies is null)
             {
                 <div></div>
             }
             else
             {
                 <div>
-                @foreach (var vacancy in VacancyService.Vacanceies)
+					@foreach (var vacancy in JobService.Vacanceies)
                 {
                     <a href="">
                         <div class="card-vacancy w-100 bg-white shadow-lg rounded mb-4">
@@ -60,11 +64,12 @@
 
 @code {
 
-    private List<JobVacancyListDTO> _vacancies;
+
+    private List<JobVacancyListDTO> _jobVacancies;
     public string? Title;
     protected override async Task OnInitializedAsync()
     {
-        _vacancies = await VacancyService.GetAllVacancy();
+		_jobVacancies = await JobService.GetAllVacancy();
     }
     
 
@@ -72,9 +77,9 @@
     void BtnSearch(string text)
     {
         Console.WriteLine(text);
-        VacancyService.GetVacancyByTitle(text);
-        VacancyService.OnChange += StateHasChanged;
-        foreach (var vacancey in VacancyService.Vacanceies)
+		JobService.GetVacancyByTitle(text);
+		JobService.OnChange += StateHasChanged;
+		foreach (var vacancey in JobService.Vacanceies)
         {
             Console.WriteLine("title: "+ vacancey.Title);
         }
@@ -82,6 +87,6 @@
     
     public void Dispose()
     {
-        VacancyService.OnChange -= StateHasChanged;
+		JobService.OnChange -= StateHasChanged;
     }
 }
