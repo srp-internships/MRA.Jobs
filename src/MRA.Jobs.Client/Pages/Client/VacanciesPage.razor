@@ -1,0 +1,139 @@
+﻿@page "/Vacancies"
+@layout Main
+@using MRA.Jobs.Application.Contracts.Common;
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+@using MRA.Jobs.Application.Contracts.Vacncies.Responses;
+
+@inject IVacancyService VacancyService
+
+@if (categories is null)
+{
+
+	<div>Loading.....</div>
+}
+else
+{
+	<div class="container">
+		<div class="row">
+			<div class="col-3">
+				<div class="w-100 bg-white shadow-lg rounded">
+					<div class="d-flex flex-column p-3">
+						<h1>Категории</h1>
+
+						<div class="btn-group-vertical w-100">
+
+							<button class="btn @(allCategory == true ? "btn-primary" : "btn-ligth") text-start" @onclick="()=>GetVacancies()">
+								Все категории
+								<span class="badge bg-primary rounded-pill">@totalVacancyCount</span>
+							</button>
+
+							@foreach (var category in categories)
+							{
+
+								<button class="btn @(selectedCategory == category.CategoryId ? "btn-primary" : "btn-light") text-start" @onclick="() => GetByCategoryVacancies(category.CategoryId)">
+									@category.CategoryName
+									<span class="badge bg-primary rounded-pill">@category.VacancyCount</span>
+								</button>
+
+							}
+							
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-9">
+				@if (vacancies is null)
+				{
+					<div></div>
+				}
+				else
+				{
+					<div>
+						@foreach (var vacancy in vacancies.Items)
+						{
+							<a href="" class="vacancyCard">
+								<div class="card-vacancy w-100 bg-white shadow-lg rounded mb-4">
+									<div class="d-flex flex-column p-3">
+										<h2 class="mb-2 text-black">@vacancy.Title</h2>
+										<p class="mb-2 text-black">@vacancy.ShortDescription</p>
+									</div>
+								</div>
+							</a>
+						}
+						@if (vacancies.HasPreviousPage)
+						{
+							<button @onclick="PreviousPage">Предыдущая страница</button>
+						}
+						@if (vacancies.HasNextPage)
+						{
+							<button @onclick="NextPage">Следующая страница</button>
+						}
+						<label for="pageSizeSelect">Количество данных на одной странице:</label>
+						<select id="pageSizeSelect" @bind="pageSize" @bind:event="onchange">
+							<option value="5">5</option>
+							<option value="10">10</option>
+							<option value="20">20</option>
+						</select>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+}
+
+@code {
+
+	private List<CategoryVacancyCountDTO> categories;
+	private int totalVacancyCount;
+	private PaggedList<VacancyListDTO> vacancies;
+	private bool allCategory = true;
+	private int pageIndex = 1;
+	private int pageSize = 5;
+
+	protected override async Task OnInitializedAsync()
+	{
+		categories = await VacancyService.GetCategories();
+		totalVacancyCount = categories.Sum(c => c.VacancyCount);
+		await GetVacancies();
+	}
+	private Guid selectedCategory;
+
+	private async Task GetByCategoryVacancies(Guid categoryId)
+	{
+		allCategory = false;
+		selectedCategory = categoryId;
+		var query = new PaggedListVacancyByCategory<VacancyListDTO>
+			{
+				CategoryId = categoryId,
+				Page = pageIndex,
+				PageSize = pageSize,
+
+			};
+		vacancies = await VacancyService.GetVacanciesByCategory(query);
+	}
+
+	private async Task GetVacancies()
+	{
+		selectedCategory = Guid.NewGuid();
+		allCategory = true;
+		var query = new PaggedListQuery<VacancyListDTO>
+		{
+				Page = pageIndex,
+				PageSize = pageSize,
+		};
+		vacancies = await VacancyService.GetVacancies(query);
+	}
+
+	private async Task PreviousPage()
+	{
+		pageIndex--;
+		await GetVacancies();
+	}
+
+	private async Task NextPage()
+	{
+		pageIndex++;
+		await GetVacancies();
+	}
+}

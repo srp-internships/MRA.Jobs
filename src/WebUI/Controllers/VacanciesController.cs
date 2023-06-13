@@ -10,7 +10,6 @@ namespace MRA.Jobs.Web.Controllers;
 public class VacanciesController : ApiControllerBase
 {
 
-
     [HttpGet]
     public async Task<IActionResult> GetWithPagination([FromQuery] PaggedListQuery<VacancyListDTO> query, CancellationToken cancellationToken)
     {

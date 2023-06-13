@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Common.Seive;
+﻿using System.Diagnostics.CodeAnalysis;
+using MRA.Jobs.Application.Common.Seive;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Vacncies.Responses;
 
