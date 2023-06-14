@@ -48,7 +48,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
         {
             Email = request.Email,
             PhoneNumber = request.PhoneNumber,
-            UserName = $"{request.LastName} {request.FirstName} {request.Patronymic}",
+            UserName = request.Email,
             PhoneNumberConfirmed = true,
             EmailConfirmed = true,
         };
