@@ -1,4 +1,8 @@
-﻿
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject ILocalStorageService LocalStorageService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
 <header class="header bg-light">
     <div class="container">
         <div class="w-100 row flex-row p-3">
@@ -21,12 +25,22 @@
             <!-- Reg/Login -->
             <div class="col-3 d-flex">
                 <div class="row flex-row w-100 justify-content-between align-items-center">
-                    <div class="col-6">
-                        <a href="">Registration</a>
-                    </div>
-                    <div class="col-6">
-                        <a href="login">Login</a>
-                    </div>
+                   <AuthorizeView>
+					   <Authorized>
+						   <div class="col-6">
+							   <button @onclick="LogOut">LogOut</button>
+						   </div>
+					   </Authorized>
+					   <NotAuthorized>
+							<div class="col-6">
+								<a href="">Registration</a>
+							</div>
+							<div class="col-6">
+								<a href="login">Login</a>
+							</div>
+					   </NotAuthorized>
+				   </AuthorizeView>
+					
                 </div>
             </div>
         </div>
@@ -36,5 +50,13 @@
 
 
 @code {
-    
+
+	private async Task LogOut()
+	{
+		await LocalStorageService.RemoveAsync("AccessToken");
+		await LocalStorageService.RemoveAsync("RefreshTOken");
+		await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		NavigationManager.NavigateTo("");
+	}
+
 }

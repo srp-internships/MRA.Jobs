@@ -1,5 +1,6 @@
 ﻿global using System.Net.Http.Json;
 global using MRA.Jobs.Client.Services.CategoryServices;
+global using Microsoft.AspNetCore.Components.Authorization;
 using MatBlazor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -24,6 +25,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IJobVacancyService, JobVacancyService>();
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();

@@ -6,6 +6,7 @@
 @inject IAuthService AuthServise
 @inject NavigationManager NavigationManager
 @inject ILocalStorageService LocalStorageService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="container">
 	<div class="form col-6 p-4 mx-auto rounded">
@@ -51,6 +52,7 @@
 			await LocalStorageService.SaveStringAsync("AccessToken", result.AccessToken);
 			await LocalStorageService.SaveStringAsync("RefreshToken", result.RefreshToken);
 			await LocalStorageService.SaveStringAsync("RefreshTokenValidTo", result.RefreshTokenValidTo.ToString());
+			await AuthenticationStateProvider.GetAuthenticationStateAsync();
 			NavigationManager.NavigateTo("vacancies");
 		}
 	}
