@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MRA.Jobs.Client;
 using MRA.Jobs.Client.Services.ApplicationService;
+using MRA.Jobs.Client.Services.AuthService;
 using MRA.Jobs.Client.Services.InternshipsServices;
 using MRA.Jobs.Client.Services.JobServices;
+using MRA.Jobs.Client.Services.LocalStorageService;
 using MRA.Jobs.Client.Services.TrainingServices;
 using MRA.Jobs.Client.Services.VacancyServices;
 
@@ -26,5 +28,8 @@ builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ILocalStorageService,  LocalStorageService>();
+
 
 await builder.Build().RunAsync();
