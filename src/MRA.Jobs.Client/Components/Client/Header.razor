@@ -56,7 +56,7 @@
 		await LocalStorageService.RemoveAsync("AccessToken");
 		await LocalStorageService.RemoveAsync("RefreshTOken");
 		await AuthenticationStateProvider.GetAuthenticationStateAsync();
-		NavigationManager.NavigateTo("");
+		NavigationManager.NavigateTo("/");
 	}
 
 }

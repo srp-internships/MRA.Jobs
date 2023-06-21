@@ -53,6 +53,7 @@
 			await LocalStorageService.SaveStringAsync("RefreshToken", result.RefreshToken);
 			await LocalStorageService.SaveStringAsync("RefreshTokenValidTo", result.RefreshTokenValidTo.ToString());
 			await AuthenticationStateProvider.GetAuthenticationStateAsync();
+			
 			NavigationManager.NavigateTo("vacancies");
 		}
 	}

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Applicant.Commands;
 using MRA.Jobs.Application.Contracts.Applicant.Queries;
 using MRA.Jobs.Application.Contracts.Applicant.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 
 namespace MRA.Jobs.Web.Controllers;
-
+[Authorize]
 public class ApplicantController : ApiControllerBase
 {
     private readonly ILogger<ApplicantController> _logger;
@@ -15,6 +16,7 @@ public class ApplicantController : ApiControllerBase
         _logger = logger;
     }
 
+  
     [HttpGet]
     public async Task<IActionResult> GetAllApplicant([FromQuery] PaggedListQuery<ApplicantListDto> query)
     {

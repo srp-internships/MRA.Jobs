@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
@@ -78,6 +79,7 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpPost("{id}/tags")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> AddTag([FromRoute] Guid id, [FromBody] AddTagsToJobVacancyCommand request, CancellationToken cancellationToken)
     {
         request.JobVacancyId = id;
@@ -92,4 +94,6 @@ public class JobsController : ApiControllerBase
         await Mediator.Send(request, cancellationToken);
         return Ok();
     }
+
+
 }
