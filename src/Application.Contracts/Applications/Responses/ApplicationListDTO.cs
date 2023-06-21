@@ -31,3 +31,15 @@ public class ApplicationDetailsDTO
 
     public IQueryable<TimeLineDetailsDto> Histiry { get; set; }
 }
+
+
+public class ApplicationListStatus
+{
+    public Guid Id { get; set; }
+    public Guid ApplicantId { get; set; }
+    public string ApplicantFullName { get; set; }
+    public Guid VacancyId { get; set; }
+    public string VacancyTitle { get;set; }
+    public ApplicationStatus Status { get; set; }
+
+}

@@ -3,6 +3,8 @@
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @using MRA.Jobs.Domain.Enums;
+@using MRA.Jobs.Client.Components.Dialogs;
+
 @inject IVacancyService VService
 @inject ICategoryService CService
 
@@ -43,7 +45,7 @@ else
 			</MatExpansionPanelDetails>
 		</MatExpansionPanel>
 	</MatAccordion>
-
+	<DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem" />
 	<MatTable Items="@vacancies" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
 		<MatTableHeader>
 			<th>Title</th>
@@ -75,16 +77,32 @@ else
 
 	private List<CategoryResponse> _category;
 	private List<JobVacancyListDTO> vacancies;
+	private bool isDialogOpen = false;
+	private Guid itemIdToDelete;
+	bool panelOpenState;
+	private bool isInserting = false;
+	private bool isUpdating = true;
+	private Guid UpdateId;
+
+	void OnDeleteClick(Guid id)
+	{
+		itemIdToDelete = id;
+		isDialogOpen = true;
+	}
+
+	private async Task DeleteItem()
+	{
+		await VService.OnDelete(itemIdToDelete);
+		isDialogOpen = false;
+		await LoadData();
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
 		_category = await VService.GetAllCategory();
 		vacancies = await VService.GetJobs();
 	}
-	bool panelOpenState;
-	private bool isInserting = false;
-	private bool isUpdating =true;
-	private Guid UpdateId;
+
 	private async Task HandleSubmit()
 	{
 		await VService.OnSaveCreateClick();
@@ -97,11 +115,7 @@ else
 		vacancies = await VService.GetJobs();
 	}
 
-	public async Task OnDeleteClick(Guid id)
-	{
-		await VService.OnDelete(id);
-		await LoadData();
-	}
+
 	public async Task OnEditClick(Guid id)
 	{
 		// Получение данных о выбранной вакансии
@@ -142,10 +156,10 @@ else
 
 	private void Clear()
 	{
-		VService.creatingNewJob.Title =string.Empty;
+		VService.creatingNewJob.Title = string.Empty;
 		VService.creatingNewJob.ShortDescription = string.Empty;
 		VService.creatingNewJob.Description = string.Empty;
-		VService.creatingNewJob.RequiredYearOfExperience =0;
+		VService.creatingNewJob.RequiredYearOfExperience = 0;
 		VService.creatingNewJob.WorkSchedule = 0;
 		VService.creatingNewJob.EndDate = DateTime.Now;
 		VService.creatingNewJob.PublishDate = DateTime.Now;

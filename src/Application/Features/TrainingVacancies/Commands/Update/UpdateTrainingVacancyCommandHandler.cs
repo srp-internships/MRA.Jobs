@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Common.Security;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Update;
@@ -18,11 +19,15 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
     }
     public async Task<Guid> Handle(UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        var trainingVacancy = await _context.TrainingVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
-        _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Id);
+        //var trainingVacancy = await _context.TrainingVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+        //_ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Id);
 
-        var category = await _context.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken: cancellationToken);
-        _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
+        //var category = await _context.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken: cancellationToken);
+        //_ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
+        var trainingVacancy = await _context.TrainingVacancies
+           .Include(i => i.Category)
+           .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
+        _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Id);
 
         _mapper.Map(request, trainingVacancy);
 
