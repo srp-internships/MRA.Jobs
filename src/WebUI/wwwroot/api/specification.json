@@ -1450,6 +1450,38 @@
         }
       }
     },
+    "/api/applications/{status}": {
+      "get": {
+        "tags": [
+          "Applications"
+        ],
+        "operationId": "Applications_GetApplicationsByStatus",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ApplicationStatus"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/categories": {
       "get": {
         "tags": [
@@ -2318,18 +2350,6 @@
             "x-position": 1
           }
         ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteJobVacancyCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
         "responses": {
           "200": {
             "description": "",
@@ -3957,6 +3977,38 @@
           }
         }
       },
+      "ApplicationStatus": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Submitted",
+          "TestCompleted",
+          "Verified",
+          "InterviewPassed",
+          "Approved",
+          "Hired",
+          "Reserved",
+          "Expired",
+          "Refused",
+          "TestFailed",
+          "InterviewFailed",
+          "Rejected"
+        ],
+        "enum": [
+          "Submitted",
+          "TestCompleted",
+          "Verified",
+          "InterviewPassed",
+          "Approved",
+          "Hired",
+          "Reserved",
+          "Expired",
+          "Refused",
+          "TestFailed",
+          "InterviewFailed",
+          "Rejected"
+        ]
+      },
       "PaggedListOfCategoryResponse": {
         "type": "object",
         "additionalProperties": false,
@@ -4350,16 +4402,6 @@
           }
         }
       },
-      "DeleteJobVacancyCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
       "AddTagsToJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -4598,30 +4640,6 @@
           "fees": {
             "type": "integer",
             "format": "int32"
-          },
-          "history": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/TimeLineDetailsDto"
-            }
-          },
-          "tags": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/TagDto"
-            }
-          }
-        }
-      },
-      "TagDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
           }
         }
       },

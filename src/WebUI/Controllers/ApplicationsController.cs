@@ -3,6 +3,7 @@ using MRA.Jobs.Application.Contracts.Applications.Commands;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
@@ -23,7 +24,7 @@ public class ApplicationsController : ApiControllerBase
         return Ok(applications);
     }
 
-    [HttpGet("{Id}")]
+    [HttpGet("{Id:guid}")]
     public async Task<ActionResult<ApplicationDetailsDTO>> GetApplicationById(GetByIdApplicationQuery request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
@@ -69,4 +70,13 @@ public class ApplicationsController : ApiControllerBase
         request.Id = Id;
         return await Mediator.Send(request, cancellationToken);
     }
+
+    [HttpGet("{status}")]
+    public async Task<IActionResult> GetApplicationsByStatus(ApplicationStatus status)
+    {
+        var query = new GetApplicationsByStatusQuery { Status = status };
+        var result = await Mediator.Send(query);
+        return Ok(result);
+    }
+
 }

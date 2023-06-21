@@ -2,7 +2,7 @@
 @layout Dashboard
 @using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-@using MRA.Jobs.Client.Components.Dialogs
+@using MRA.Jobs.Client.Components.Dialogs;
 @using MRA.Jobs.Client.Services.InternshipsServices;
 
 @inject IInternshipService internshipService
@@ -100,6 +100,7 @@ else
 	{
 		await internshipService.Delete(itemIdToDelete);
 		isDialogOpen = false;
+		await LoadData();
 	}
 
 	private async Task OnEditClick(Guid id)

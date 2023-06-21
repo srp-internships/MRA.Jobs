@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
 using MRA.Jobs.Application.Contracts.Tests.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
 namespace MRA.Jobs.Web.Controllers;
@@ -9,10 +11,12 @@ namespace MRA.Jobs.Web.Controllers;
 [ApiController]
 public class TrainingsController : ApiControllerBase
 {
+   
     [HttpGet("{id}")]
     public async Task<IActionResult> GetTrainingVacancyById(Guid id)
     {
-        return Ok(await Mediator.Send(new TrainingVacancyDetailedResponce { Id = id }));
+        var training = await Mediator.Send(new GetTrainingVacancyByIdQuery { Id = id });
+        return Ok(training);
     }
 
     [HttpGet]

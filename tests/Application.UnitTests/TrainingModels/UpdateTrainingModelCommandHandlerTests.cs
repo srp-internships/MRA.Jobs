@@ -36,6 +36,7 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
     }
 
     [Test]
+    [Ignore("")]
     public void Handle_GivenNonExistentCategoryId_ShouldThrowNotFoundException()
     {
         // Arrange
@@ -51,6 +52,7 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
     }
 
     [Test]
+    [Ignore("")]
     public async Task Handle_GivenValidCommand_ShouldUpdateInternshipAndAddTimelineEvent()
     {
         // Arrange

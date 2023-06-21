@@ -17,5 +17,8 @@ public class ApplicationProfile: Profile
         CreateMap<CreateApplicationWithoutApplicantIdCommand, Application>();
         CreateMap<UpdateApplicationCommand, Application>();
         MappingConfiguration.ConfigureUserMap<ApplicationTimelineEvent, TimeLineDetailsDto>(this);
+        CreateMap<Application, ApplicationListStatus>()
+           .ForMember(dest => dest.ApplicantFullName, opt => opt.MapFrom(src => src.Applicant.FirstName + " " + src.Applicant.LastName))
+           .ForMember(dest => dest.VacancyTitle, opt => opt.MapFrom(src => src.Vacancy.Title));
     }
 }
