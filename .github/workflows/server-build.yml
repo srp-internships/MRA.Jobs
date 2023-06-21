@@ -21,6 +21,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore /p:DefineConstants=GITHUB_BUILD
+      run: dotnet build --configuration Release /p:DefineConstants=GITHUB_BUILD
     - name: Test
       run: dotnet test --no-build --verbosity normal
