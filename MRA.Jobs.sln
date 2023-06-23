@@ -28,6 +28,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Application.Contracts", "src\Application.Contracts\MRA.Jobs.Application.Contracts.csproj", "{C8D144EB-C2C2-49EB-BFD2-F322F5148300}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{384F34D2-454F-4878-A40D-69B36E9DC43B}"
+	ProjectSection(SolutionItems) = preProject
+		src\ReadMe.md = src\ReadMe.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Client", "src\MRA.Jobs.Client\MRA.Jobs.Client.csproj", "{B02B7AED-4B88-45D1-9138-158D309D50D7}"
 EndProject
