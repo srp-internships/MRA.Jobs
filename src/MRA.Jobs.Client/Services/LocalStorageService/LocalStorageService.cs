@@ -11,7 +11,7 @@ public class LocalStorageService : ILocalStorageService
         _jSRuntime = jSRuntime;
     }
 
-    public async Task<string[]> GetStringArrayAsync(string key)
+    public async Task<string[]> GetItemArrayAsync(string key)
     {
         var data = await _jSRuntime.InvokeAsync<string>("localStorage.getItem", key);
         if (!string.IsNullOrEmpty(data))
@@ -19,7 +19,7 @@ public class LocalStorageService : ILocalStorageService
         return null;
     }
 
-    public async Task<string> GetStringAsync(string key)
+    public async Task<string> GetItemAsync(string key)
     {
         return await _jSRuntime.InvokeAsync<string>("localStorage.getItem", key);
     }
@@ -29,13 +29,13 @@ public class LocalStorageService : ILocalStorageService
         await _jSRuntime.InvokeVoidAsync("localStorage.removeItem", key);
     }
 
-    public async Task SaveStringArrayAsync(string key, string[] values)
+    public async Task SaveItemArrayAsync(string key, string[] values)
     {
        if(values != null)
             await _jSRuntime.InvokeVoidAsync("localStorage.setItem", key, string.Join("\0", values));
     }
 
-    public async Task SaveStringAsync(string key, string value)
+    public async Task SaveItemAsync(string key, string value)
     {
         await _jSRuntime.InvokeVoidAsync("localStorage.setItem", key, value);
     }

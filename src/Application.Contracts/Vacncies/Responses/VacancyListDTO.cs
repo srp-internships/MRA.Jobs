@@ -5,15 +5,8 @@ public class VacancyListDTO
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
-    public string ShortDescription { get; set; }
-    
-    public VacancyType Discriminator { get; set; }
+    public string ShortDescription { get; set; }    
+ 
 }
 
 
-public enum VacancyType
-{
-    JobVacancy,
-    InternshipVacancy,
-    TrainingVacancy
-}

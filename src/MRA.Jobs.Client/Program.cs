@@ -12,6 +12,8 @@ using MRA.Jobs.Client.Services.JobServices;
 using MRA.Jobs.Client.Services.LocalStorageService;
 using MRA.Jobs.Client.Services.TrainingServices;
 using MRA.Jobs.Client.Services.VacancyServices;
+using Microsoft.Exchange.WebServices.Data;
+using MRA.Jobs.Client.Services.ApiService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -32,6 +34,7 @@ builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ILocalStorageService,  LocalStorageService>();
+builder.Services.AddScoped<IApiService, ApiService>();
 
 
 await builder.Build().RunAsync();

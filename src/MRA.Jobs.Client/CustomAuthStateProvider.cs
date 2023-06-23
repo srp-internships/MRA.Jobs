@@ -17,7 +17,7 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
     }
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        string accessToken = await _localStorageService.GetStringAsync("AccessToken");
+        string accessToken = await _localStorageService.GetItemAsync("AccessToken");
 
         var identity = new ClaimsIdentity();
         _httpClient.DefaultRequestHeaders.Authorization = null;

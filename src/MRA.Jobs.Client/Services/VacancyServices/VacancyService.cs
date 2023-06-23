@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Vacncies.Responses;
+using MRA.Jobs.Client.Services.ApiService;
 
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
@@ -12,7 +13,6 @@ public class VacancyService : IVacancyService
     {
         _http = http;
     }
-
 
     public async Task<List<CategoryVacancyCountDTO>> GetCategories()
     {
@@ -38,5 +38,5 @@ public class VacancyService : IVacancyService
         return await response.Content.ReadFromJsonAsync<PaggedList<VacancyListDTO>>();
     }
 
-
+   
 }

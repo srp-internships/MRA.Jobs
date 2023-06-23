@@ -49,9 +49,9 @@
 		var result = await AuthServise.Login(email, password);
 		if (result != null)
 		{
-			await LocalStorageService.SaveStringAsync("AccessToken", result.AccessToken);
-			await LocalStorageService.SaveStringAsync("RefreshToken", result.RefreshToken);
-			await LocalStorageService.SaveStringAsync("RefreshTokenValidTo", result.RefreshTokenValidTo.ToString());
+			await LocalStorageService.SaveItemAsync("AccessToken", result.AccessToken);
+			await LocalStorageService.SaveItemAsync("RefreshToken", result.RefreshToken);
+			await LocalStorageService.SaveItemAsync("RefreshTokenValidTo", result.RefreshTokenValidTo.ToString());
 			await AuthenticationStateProvider.GetAuthenticationStateAsync();
 			
 			NavigationManager.NavigateTo("vacancies");

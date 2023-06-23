@@ -16,8 +16,11 @@
             <div class="col-7 d-flex mx-3">
                 <div class="w-100 d-flex flex-row justify-content-between align-items-center">
                     <div class="col-2">
-                        <a href="vacancy">Vacancy</a>
+                        <a href="vacancies" >О нас</a>
                     </div>
+					<div class="col-2">
+						<a href="vacancies">Вакансии</a>
+					</div>
                 </div>
             </div>
             <!-- End Menu -->
@@ -28,7 +31,7 @@
                    <AuthorizeView>
 					   <Authorized>
 						   <div class="col-6">
-							   <button @onclick="LogOut">LogOut</button>
+								<button @onclick="LogOut" class="btn btn-danger">LogOut</button>
 						   </div>
 					   </Authorized>
 					   <NotAuthorized>

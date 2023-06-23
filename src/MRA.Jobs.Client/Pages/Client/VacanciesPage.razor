@@ -36,13 +36,15 @@ else
 								</button>
 
 							}
-							
+
 
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-9">
+				<input type="text" @bind="searchTerm" placeholder="Поиск по названию вакансии" />
+				<button @onclick="SearchVacancies">Поиск</button>
 				@if (vacancies is null)
 				{
 					<div></div>
@@ -52,7 +54,7 @@ else
 					<div>
 						@foreach (var vacancy in vacancies.Items)
 						{
-							<a href="" class="vacancyCard">
+							<a href="/vacancy?id=@vacancy.Id" class="vacancyCard">
 								<div class="card-vacancy w-100 bg-white shadow-lg rounded mb-4">
 									<div class="d-flex flex-column p-3">
 										<h2 class="mb-2 text-black">@vacancy.Title</h2>
@@ -90,6 +92,7 @@ else
 	private bool allCategory = true;
 	private int pageIndex = 1;
 	private int pageSize = 5;
+	private string searchTerm;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -108,7 +111,6 @@ else
 				CategoryId = categoryId,
 				Page = pageIndex,
 				PageSize = pageSize,
-
 			};
 		vacancies = await VacancyService.GetVacanciesByCategory(query);
 	}
@@ -118,11 +120,19 @@ else
 		selectedCategory = Guid.NewGuid();
 		allCategory = true;
 		var query = new PaggedListQuery<VacancyListDTO>
-		{
+			{
 				Page = pageIndex,
 				PageSize = pageSize,
-		};
+			};
 		vacancies = await VacancyService.GetVacancies(query);
+	}
+
+	private async Task SearchVacancies()
+	{
+		// Reset page index
+		pageIndex = 1;
+		// Get vacancies with search term
+		await GetVacancies();
 	}
 
 	private async Task PreviousPage()

@@ -21,6 +21,7 @@ public class GetVacanciesPagedQueryHandler : IRequestHandler<PaggedListQuery<Vac
         var currentDate = DateTime.Now;
         var filteredVacancies = _dbContext.Vacancies
             .Where(v => v.PublishDate <= currentDate && v.EndDate >= currentDate);
+
         var result = _sieveProcessor.ApplyAdnGetPaggedList(request, filteredVacancies, _mapper.Map<VacancyListDTO>);
         return await Task.FromResult(result);
     }

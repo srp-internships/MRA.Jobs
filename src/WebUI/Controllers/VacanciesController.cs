@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Vacncies.Queries;
 using MRA.Jobs.Application.Contracts.Vacncies.Responses;
@@ -6,6 +7,7 @@ using MRA.Jobs.Application.Contracts.Vacncies.Responses;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class VacanciesController : ApiControllerBase
 {
 
@@ -19,7 +21,6 @@ public class VacanciesController : ApiControllerBase
     [HttpGet("byCategory")]
     public async Task<IActionResult> GetWithPaginationByCategory([FromQuery] PaggedListVacancyByCategory<VacancyListDTO> query, CancellationToken cancellationToken)
     {
-        
         var vacancies = await Mediator.Send(query, cancellationToken);
         return Ok(vacancies);
     }

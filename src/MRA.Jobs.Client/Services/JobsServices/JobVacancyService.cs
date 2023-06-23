@@ -59,12 +59,10 @@ public class JobVacancyService : IJobVacancyService
         return Vacanceies;
     }
 
-
     public async Task OnSaveCreateClick()
     {
         Console.WriteLine(creatingNewJob.CategoryId);
         await _http.PostAsJsonAsync("jobs", creatingNewJob);
-
         Console.WriteLine(creatingNewJob.Title);
     }
 
@@ -100,6 +98,5 @@ public class JobVacancyService : IJobVacancyService
             PublishDate = creatingNewJob.PublishDate,
         };
         await _http.PutAsJsonAsync($"jobs/{id}", update);
-
     }
 }

@@ -6,9 +6,10 @@ public class PaggedListQuery<T> : SieveModel, IRequest<PaggedList<T>>
 {
 }
 
-public class PaggedListVacancyByCategory<T> :SieveModel, IRequest<PaggedList<T>>
+public class PaggedListVacancyByCategory<T> : SieveModel, IRequest<PaggedList<T>>
 {
     public Guid? CategoryId { get; set; }
+
 }
 
 public class PaggedList<T>
