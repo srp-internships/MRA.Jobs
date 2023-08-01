@@ -1,0 +1,78 @@
+﻿@page "/Registration";
+
+<h3>Registration</h3>
+
+<div class="container">
+	<div class="form col-6 p-4 mx-auto rounded">
+		<div class="d-flex flex-column">
+
+			<div class="form-label-group mb-3">
+				<input class="form-control form-control-lg"
+					   type="text"
+					   placeholder="First Name"
+					   aria-label="firstName"
+					   @bind="firstName" />
+			</div>
+
+			<div class="form-label-group mb-3">
+				<input class="form-control form-control-lg"
+					   type="text"
+					   placeholder="Last Name"
+					   aria-label="lastName"
+					   @bind="lastName" />
+			</div>
+
+			<div class="form-label-group mb-3">
+				<input class="form-control form-control-lg"
+					   type="text"
+					   placeholder="Patronymic"
+					   aria-label="patronymic"
+					   @bind="patronymic" />
+			</div>
+
+			<div class="form-label-group mb-3">
+				<input class="form-control form-control-lg"
+					   type="date"
+					   placeholder="Date Of Birth"
+					   aria-label="dateOfBirth"
+					   @bind="dateOfBirth" />
+			</div>
+
+			<div class="form-label-group mb-3">
+				<input class="form-control form-control-lg"
+					   type="text"
+					   placeholder="phoneNumber"
+					   aria-label="phoneNumber"
+					   @bind="phoneNumber" />
+			</div>
+
+			<div class="form-label-group mb-3">
+				<input class="form-control form-control-lg"
+					   type="text"
+					   placeholder="login"
+					   aria-label="login"
+					   @bind="email">
+			</div>
+
+			<div class="form-label-group mb-3">
+				<input class="form-control form-control-lg"
+					   type="password" placeholder="password"
+					   aria-label="password"
+					   @bind="password">
+			</div>
+
+			<div class="checkbox mb-3">
+				<label>
+					<input type="checkbox" value="remember-me"> Remember me
+				</label>
+			</div>
+
+			<button class="btn btn-primary" type="submit" @onclick="HandleLogin">Login</button>
+
+		</div>
+	</div>
+</div>
+
+@code {
+
+}

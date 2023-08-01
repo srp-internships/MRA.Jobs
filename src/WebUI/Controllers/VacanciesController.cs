@@ -7,7 +7,6 @@ using MRA.Jobs.Application.Contracts.Vacncies.Responses;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public class VacanciesController : ApiControllerBase
 {
 
