@@ -24,8 +24,8 @@ public class ApplicationsController : ApiControllerBase
         return Ok(applications);
     }
 
-    [HttpGet("{Id:guid}")]
-    public async Task<ActionResult<ApplicationDetailsDTO>> GetApplicationById(GetByIdApplicationQuery request, CancellationToken cancellationToken)
+    [HttpGet("{slug}")]
+    public async Task<ActionResult<ApplicationDetailsDTO>> Get(GetBySlugApplicationQuery request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }

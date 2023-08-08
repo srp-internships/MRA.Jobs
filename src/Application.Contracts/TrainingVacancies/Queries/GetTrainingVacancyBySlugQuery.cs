@@ -1,7 +1,7 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
 namespace MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
-public class GetTrainingVacancyByIdQuery : IRequest<TrainingVacancyDetailedResponce>
+public class GetTrainingVacancyBySlugQuery : IRequest<TrainingVacancyDetailedResponce>
 {
-    public Guid Id { get; set; }
+    public string Slug { get; set; }
 }

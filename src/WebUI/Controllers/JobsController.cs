@@ -11,10 +11,10 @@ namespace MRA.Jobs.Web.Controllers;
 
 
 [ApiController]
-[Route("api/[controller]")] 
+[Route("api/[controller]")]
 public class JobsController : ApiControllerBase
 {
-    
+
 
     private readonly ILogger<JobsController> _logger;
 
@@ -30,10 +30,10 @@ public class JobsController : ApiControllerBase
         return Ok(categories);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> Get([FromRoute] Guid id)
+    [HttpGet("{slug}")]
+    public async Task<IActionResult> Get([FromRoute] string slug)
     {
-        var category = await Mediator.Send(new GetJobVacancyByIdQuery { Id = id });
+        var category = await Mediator.Send(new GetJobVacancyBySlugQuery { Slug = slug });
         return Ok(category);
     }
 

@@ -2,9 +2,9 @@
 
 namespace MRA.Jobs.Application.Contracts.JobVacancies.Queries;
 
-public class GetJobVacancyByIdQuery : IRequest<JobVacancyDetailsDTO>
+public class GetJobVacancyBySlugQuery : IRequest<JobVacancyDetailsDTO>
 {
-    public Guid Id { get; set; }
+    public string Slug { get; set; }
 }
 
 

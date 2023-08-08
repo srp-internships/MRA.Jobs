@@ -3,22 +3,22 @@ using MRA.Jobs.Application.Features.Applications.Query.GetApplicationById;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;
 using MRA.Jobs.Domain.Entities;
-public class GetApplicationByIdQueryHandlerTests : BaseTestFixture
+public class GetApplicationBySlugQueryHandlerTests : BaseTestFixture
 {
-    private GetApplicationByIdQueryHandler _handler;
+    private GetApplicationBySlugQueryHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
-        _handler = new GetApplicationByIdQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetApplicationBySlugQueryHandler(_dbContextMock.Object, Mapper);
     }
 
     [Test]
     [Ignore("игнориуем изза TimeLine")]
     public async Task Handle_GivenValidQuery_ShouldReturnApplicationDetailsDTO()
     {
-        var query = new GetByIdApplicationQuery { Id = Guid.NewGuid() };
+        var query = new GetBySlugApplicationQuery { Id = Guid.NewGuid() };
 
         var application = new Application
         {

@@ -1235,7 +1235,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetByIdApplicationQuery"
+                "$ref": "#/components/schemas/GetBySlugApplicationQuery"
               }
             }
           },
@@ -3881,7 +3881,7 @@
           "Error"
         ]
       },
-      "GetByIdApplicationQuery": {
+      "GetBySlugApplicationQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

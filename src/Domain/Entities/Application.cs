@@ -17,5 +17,6 @@ public class Application : BaseAuditableEntity
     public TestResult TestResult { get; set; }
 
     public ICollection<ApplicationTimelineEvent> History { get; set; }
+    public string Slug { get; set; }    
 
 }

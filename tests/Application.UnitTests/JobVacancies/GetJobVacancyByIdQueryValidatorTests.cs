@@ -3,21 +3,21 @@ using MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 
-public class GetVacancyCategoryByIdQueryValidatorTests
+public class GetVacancyCategoryBySlugQueryValidatorTests
 {
-    private GetJobVacancyByIdQueryValidator _validator;
+    private GetJobVacancyBySlugQueryValidator _validator;
 
     [SetUp]
     public void Setup()
     {
-        _validator = new GetJobVacancyByIdQueryValidator();
+        _validator = new GetJobVacancyBySlugQueryValidator();
     }
 
     [Test]
     public void Validate_IdIsZero()
     {
         // Arrange
-        var query = new GetJobVacancyByIdQuery { Id = Guid.Empty };
+        var query = new GetJobVacancyBySlugQuery { Id = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(query);
@@ -30,7 +30,7 @@ public class GetVacancyCategoryByIdQueryValidatorTests
     public void Validate_IdIsNotZero()
     {
         // Arrange
-        var query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetJobVacancyBySlugQuery { Id = Guid.NewGuid() };
 
         // Act
         var result = _validator.TestValidate(query);

@@ -23,10 +23,10 @@ public class CategoriesController : ApiControllerBase
         return Ok(categories);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(Guid id)
+    [HttpGet("{slug}")]
+    public async Task<IActionResult> Get(string slug)
     {
-        var category = await Mediator.Send(new GetVacancyCategoryByIdQuery { Id = id });
+        var category = await Mediator.Send(new GetVacancyCategoryBySlugQuery { Slug = slug });
         return Ok(category);
     }
 

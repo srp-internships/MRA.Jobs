@@ -5,20 +5,20 @@ namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 using MRA.Jobs.Domain.Entities;
 public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
 {
-    private GetJobVacancyByIdQueryHandler _handler;
+    private GetJobVacancyBySlugQueryHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
-        _handler = new GetJobVacancyByIdQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetJobVacancyBySlugQueryHandler(_dbContextMock.Object, Mapper);
     }
 
     [Test]
     [Ignore("Игнорируем тест из-за TimeLine & Tag")]
     public async Task Handle_GivenValidQuery_ShouldReturnJobVacancyDetailsDTO()
     {
-        var query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetJobVacancyBySlugQuery { Id = Guid.NewGuid() };
 
         var jobVacancy = new JobVacancy
         {
@@ -54,7 +54,7 @@ public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetJobVacancyBySlugQuery { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.JobVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((JobVacancy)null);

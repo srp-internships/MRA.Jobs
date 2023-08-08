@@ -6,19 +6,19 @@ namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 [TestFixture]
 public class GetTrainingModelByIdQueryValidatorTests
 {
-    private GetTrainingVacancyByIdQueryValidator _validator;
+    private GetTrainingVacancyBySlugQueryValidator _validator;
 
     [SetUp]
     public void Setup()
     {
-        _validator = new GetTrainingVacancyByIdQueryValidator();
+        _validator = new GetTrainingVacancyBySlugQueryValidator();
     }
 
     [Test]
     public void Validate_IdIsZero()
     {
         // Arrange
-        var query = new GetTrainingVacancyByIdQuery { Id = Guid.Empty };
+        var query = new GetTrainingVacancyBySlugQuery { Id = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(query);
@@ -31,7 +31,7 @@ public class GetTrainingModelByIdQueryValidatorTests
     public void Validate_IdIsNotZero()
     {
         // Arrange
-        var query = new GetTrainingVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetTrainingVacancyBySlugQuery { Id = Guid.NewGuid() };
 
         // Act
         var result = _validator.TestValidate(query);

@@ -29,6 +29,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         _ = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
 
         var application = _mapper.Map<Application>(request);
+        application.Slug = GenerateSlug(applicant, vacancy);
 
         await _context.Applications.AddAsync(application, cancellationToken);
 
@@ -45,5 +46,12 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         await _context.SaveChangesAsync(cancellationToken);
         return application.Id;
 
+    }
+
+    private string GenerateSlug(Applicant applicant, Vacancy vacancy)
+    {
+        //Here instead of the applicant.Firstname should be used applicnat.Username,
+        //beacuse the applicant model should be redesigned, i used Firstname temparoraly.
+        return $"{applicant.FirstName.ToLower().Trim()}-{vacancy.Title.ToLower().Trim()}";
     }
 }

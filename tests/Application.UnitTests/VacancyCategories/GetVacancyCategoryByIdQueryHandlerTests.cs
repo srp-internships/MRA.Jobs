@@ -3,21 +3,21 @@ using MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategory
 
 namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
 
-public class GetVacancyCategoryByIdQueryHandlerTests : BaseTestFixture
+public class GetVacancyCategoryBySlugQueryHandlerTests : BaseTestFixture
 {
-    private GetVacancyCategoryByIdQueryHandler _handler;
+    private GetVacancyCategoryBySlugQueryHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
-        _handler = new GetVacancyCategoryByIdQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetVacancyCategoryBySlugQueryHandler(_dbContextMock.Object, Mapper);
     }
 
     [Test]
     public async Task Handle_GivenValidQuery_ShouldReturnVacancyCategoryDetailsDTO()
     {
-        var query = new GetVacancyCategoryByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetVacancyCategoryBySlugQuery { Id = Guid.NewGuid() };
 
         var VacancyCategory = new VacancyCategory
         {
@@ -39,7 +39,7 @@ public class GetVacancyCategoryByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetVacancyCategoryByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetVacancyCategoryBySlugQuery { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((VacancyCategory)null);

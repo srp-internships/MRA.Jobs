@@ -11,11 +11,11 @@ namespace MRA.Jobs.Web.Controllers;
 [ApiController]
 public class TrainingsController : ApiControllerBase
 {
-   
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetTrainingVacancyById(Guid id)
+
+    [HttpGet("{slug}")]
+    public async Task<IActionResult> GetTrainingVacancyById(string slug)
     {
-        var training = await Mediator.Send(new GetTrainingVacancyByIdQuery { Id = id });
+        var training = await Mediator.Send(new GetTrainingVacancyBySlugQuery { Slug = slug });
         return Ok(training);
     }
 

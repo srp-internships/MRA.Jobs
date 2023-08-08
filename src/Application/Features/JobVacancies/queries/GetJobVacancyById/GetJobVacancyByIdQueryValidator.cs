@@ -2,9 +2,9 @@
 
 namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
 
-public class GetJobVacancyByIdQueryValidator : AbstractValidator<GetJobVacancyByIdQuery>
+public class GetJobVacancyBySlugQueryValidator : AbstractValidator<GetJobVacancyBySlugQuery>
 {
-    public GetJobVacancyByIdQueryValidator()
+    public GetJobVacancyBySlugQueryValidator()
     {
         RuleFor(x => x.Id).NotEmpty();
     }

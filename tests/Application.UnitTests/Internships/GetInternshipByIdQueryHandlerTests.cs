@@ -5,20 +5,20 @@ namespace MRA.Jobs.Application.UnitTests.Internships;
 using MRA.Jobs.Domain.Entities;
 public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
 {
-    private GetInternshipVacancyByIdQueryHandler _handler;
+    private GetInternshipVacancyBySlugQueryHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
-        _handler = new GetInternshipVacancyByIdQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetInternshipVacancyBySlugQueryHandler(_dbContextMock.Object, Mapper);
     }
 
     [Test]
     [Ignore("Игнорируем тест из-за TimeLine & Tag")]
     public async Task Handle_GivenValidQuery_ShouldReturnInternshipDetailsDTO()
     {
-        var query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetInternshipVacancyBySlugQuery { Id = Guid.NewGuid() };
 
         var internship = new InternshipVacancy
         {
@@ -56,7 +56,7 @@ public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetInternshipVacancyBySlugQuery { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((InternshipVacancy)null);

@@ -5,21 +5,21 @@ using MRA.Jobs.Application.Features.TrainingVacancies.Queries;
 using MRA.Jobs.Domain.Entities;
 public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
 {
-    private GetTrainingVacancyByIdQueryHandler _handler;
+    private GetTrainingVacancyBySlugQueryHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
 
-        _handler = new GetTrainingVacancyByIdQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetTrainingVacancyBySlugQueryHandler(_dbContextMock.Object, Mapper);
     }
 
     [Test]
     [Ignore("Игнорируем тест из-за TimeLine & Tag")]
     public async Task Handle_GivenValidQuery_ShouldReturnJobVacancyDetailsDTO()
     {
-        var query = new GetTrainingVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetTrainingVacancyBySlugQuery { Id = Guid.NewGuid() };
 
         var trainingModel = new TrainingVacancy
         {
@@ -55,7 +55,7 @@ public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetTrainingVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetTrainingVacancyBySlugQuery { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((TrainingVacancy)null);

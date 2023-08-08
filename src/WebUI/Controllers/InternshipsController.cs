@@ -39,10 +39,10 @@ public class InternshipsController : ApiControllerBase
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetInternshipById(Guid id)
+    [HttpGet("{slug}")]
+    public async Task<IActionResult> GetInternshipById(string slug)
     {
-        var internship = await Mediator.Send(new GetInternshipVacancyByIdQuery { Id = id });
+        var internship = await Mediator.Send(new GetInternshipVacancyBySlugQuery { Slug = slug });
         return Ok(internship);
     }
 

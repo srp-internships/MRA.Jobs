@@ -2,22 +2,22 @@
 using MRA.Jobs.Application.Features.Applications.Query.GetApplicationById;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;
-public class GetApplicationByIdQueryValidatorTests : BaseTestFixture
+public class GetApplicationBySlugQueryValidatorTests : BaseTestFixture
 {
-    private GetApplicationByIdQueryValidator _validator;
+    private GetApplicationBySlugQueryValidator _validator;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
-        _validator = new GetApplicationByIdQueryValidator();
+        _validator = new GetApplicationBySlugQueryValidator();
     }
 
     [Test]
     public void Validate_IdIsEmpty()
     {
         // Arrange
-        var query = new GetByIdApplicationQuery { Id = Guid.Empty };
+        var query = new GetBySlugApplicationQuery { Id = Guid.Empty };
 
         // Act
         var result = _validator.TestValidate(query);
@@ -30,7 +30,7 @@ public class GetApplicationByIdQueryValidatorTests : BaseTestFixture
     public void Validate_IdIsNotEmpty()
     {
         // Arrange
-        var query = new GetByIdApplicationQuery { Id = Guid.NewGuid() };
+        var query = new GetBySlugApplicationQuery { Id = Guid.NewGuid() };
 
         // Act
         var result = _validator.TestValidate(query);
