@@ -1,0 +1,515 @@
+/* Sidebar */
+
+.sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1010;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: var(--backdrop-color);
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--t-base);
+    transition-timing-function: linear;
+
+    .sidebar-show & {
+        opacity: var(--backdrop-opacity);
+        pointer-events: all;
+    }
+
+    @include media ('<xl', '>sm-tablet') {
+        display: block;
+    }
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1010;
+    height: 100%;
+    display: flex;
+    width: var(--sidebar-full-width);
+    transition: var(--t-base);
+    transition-property: width, opacity;
+    transition-timing-function: linear;
+
+    @include media('<xl') {
+        width: 100%;
+    }
+
+    @include media('>xl') {
+        .sidebar-collapse & {
+            width: var(--sidebar-collapse-width);
+        }
+    }
+
+    @include media('<xl', '>sm-tablet') {
+        width: var(--sidebar-collapse-width);
+
+        &:hover,
+        &--show {
+            width: var(--sidebar-full-width);
+        }
+    }
+
+    @include media('<sm-tablet') {
+        width: 100%;
+        transform: translateX(-100%);
+        opacity: 0;
+
+        &--show {
+            transform: translateX(0px);
+            opacity: 1;
+        }
+    }
+
+    &__backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--backdrop-color);
+        opacity: 0;
+        transition: var(--t-base);
+
+        .sidebar-show & {
+            opacity: var(--backdrop-opacity);
+        }
+
+        @include media ('>sm-tablet') {
+            display: none;
+        }
+    }
+
+    &__container {
+        flex-shrink: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--background-secondary-color);
+        border-right: 1px solid var(--border-grey-color);
+        z-index: 1;
+        transition: var(--t-base);
+        transition-property: width, transform;
+        transition-timing-function: linear;
+
+        &,
+        .sidebar:hover &,
+        .sidebar--show & {
+            width: var(--sidebar-full-width);
+            pointer-events: all;
+        }
+
+        @include media('<xl', '>sm-tablet') {
+            width: 100%;
+            pointer-events: none;
+        }
+
+        @include media('>xl') {
+            .sidebar-collapse & {
+                width: 100%;
+                pointer-events: none;
+            }
+        }
+
+        @include media('<sm-tablet') {
+            width: var(--sidebar-full-width);
+            transform: translateX(-100%);
+
+            .sidebar--translate & {
+                transform: translateX(0);
+            }
+        }
+    }
+
+    &__top {
+        flex-shrink: 0;
+        height: var(--header-height);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &__logo {
+        display: flex;
+        align-items: center;
+        font-family: var(--font-family-secondary);
+        font-weight: 700;
+        font-size: 1.875rem;
+        line-height: 1;
+        letter-spacing: 0.1em;
+        white-space: nowrap;
+        transition: var(--t-base);
+        transition-property: transform;
+
+        &,
+        .sidebar:hover &,
+        .sidebar--show & {
+            transform: translateX(0px);
+        }
+
+        @include media('<xl', '>sm-tablet') {
+            transform: translateX(-10px);
+        }
+
+        @include media('>xl') {
+            .sidebar-collapse & {
+                transform: translateX(-10px);
+            }
+        }
+    }
+
+    &__logo-icon {
+        flex-shrink: 0;
+        min-width: 43px;
+        width: 43px;
+        margin-right: 5px;
+    }
+
+    &__logo-text {
+        transition: var(--t-base);
+
+        &,
+        .sidebar:hover &,
+        .sidebar--show & {
+            opacity: 1;
+        }
+
+        @include media('<xl', '>sm-tablet') {
+            opacity: 0;
+        }
+
+        @include media('>xl') {
+            .sidebar-collapse & {
+                opacity: 0;
+            }
+        }
+    }
+
+    &__content {
+        flex-grow: 1;
+        height: calc(100% - var(--header-height));
+    }
+
+    &__section {
+        margin: 2rem 0;
+        padding: 0 1.6rem;
+
+        &,
+        .sidebar:hover &,
+        .sidebar--show & {
+            display: block;
+        }
+
+        @include media('<xl', '>sm-tablet') {
+            display: none;
+        }
+
+        @include media('>xl') {
+            .sidebar-collapse & {
+                display: none;
+            }
+        }
+    }
+
+    &__section-title {
+        margin-bottom: 24/15*1em;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18/15*1em;
+        text-transform: uppercase;
+        color: var(--text-secondary-color);
+        white-space: nowrap;
+    }
+
+    &__events {
+        display: grid;
+        grid-gap: 2rem 0;
+    }
+
+    &__events-item {
+        font-weight: 500;
+        line-height: 18/15*1em;
+        white-space: nowrap;
+
+        .marker-item {
+            width: 12px;
+            height: 12px;
+            margin-right: 0.9333rem;
+        }
+    }
+
+    &__menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        @include media('>sm-tablet') {
+            .sidebar:hover &,
+            .sidebar--show & {
+                .sidebar__collapse-menu {
+                    display: block;
+                }
+            }
+        }
+
+        @include media('<xl', '>sm-tablet') {
+            .sidebar__collapse-menu {
+                display: none;
+            }
+        }
+
+        @include media('>xl') {
+            .sidebar-collapse & {
+                .sidebar__collapse-menu {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &__link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 13px 16px 13px 1.3125rem;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18/15*1em;
+        color: inherit;
+        transition: var(--t-base);
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 0 5px 5px 0;
+            background-color: var(--primary-color);
+            opacity: 0;
+
+            .sidebar__collapse-menu & {
+                display: none;
+            }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: -2px;
+            width: 48px;
+            height: 48px;
+            margin: auto;
+            border-radius: var(--radius-lg);
+            background-color: var(--background-primary-color);
+            z-index: -1;
+            opacity: 0;
+        }
+
+        .badge {
+            margin-left: auto;
+        }
+
+        &:hover {
+            background-color: var(--background-primary-color);
+            color: inherit;
+
+            .sidebar__collapse-menu & {
+                background-color: var(--control-background-active);
+            }
+        }
+
+        &:active {
+            background-color: var(--control-background-active);
+            transition-duration: 0.1s;
+        }
+
+        &.active {
+            background-color: var(--background-primary-color);
+
+            &::before,
+            &::after {
+                opacity: 1;
+            }
+
+            .sidebar__collapse-menu & {
+                &::before {
+                    opacity: 0;
+                }
+            }
+        }
+
+        .sidebar__collapse-menu & {
+            color: var(--text-secondary-color);
+        }
+
+        &.active {
+            color: var(--text-primary-color);
+        }
+
+        &,
+        .sidebar:hover &,
+        .sidebar--show & {
+            &.active::before {
+                opacity: 1;
+            }
+        }
+
+        @include media('<xl', '>sm-tablet') {
+            &.active {
+                background-color: transparent;
+
+                &::before {
+                    opacity: 0;
+                }
+            }
+
+            .sidebar:hover &,
+            .sidebar--show & {
+                &.active {
+                    background-color: var(--background-primary-color);
+                }
+            }
+        }
+
+        @include media('>xl') {
+            .sidebar-collapse & {
+                &.active {
+                    background-color: transparent;
+
+                    &::before {
+                        opacity: 0;
+                    }
+                }
+            }
+
+            .sidebar:hover & {
+                &.active {
+                    background-color: var(--background-primary-color);
+                }
+            }
+        }
+    }
+
+    &__link-icon {
+        flex-shrink: 0;
+        width: 22px;
+        height: 22px;
+        margin-right: 10px;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            color: var(--text-secondary-color);
+        }
+
+        .sidebar__link.active & {
+            svg {
+                color: currentColor;
+            }
+        }
+    }
+
+    &__link-text {
+        white-space: nowrap;
+        transition: var(--t-base);
+        transition-property: opacity;
+
+        &,
+        .sidebar:hover &,
+        .sidebar--show & {
+            opacity: 1;
+        }
+
+        @include media('<xl', '>sm-tablet') {
+            opacity: 0;
+        }
+
+        @include media('>xl') {
+            .sidebar-collapse & {
+                opacity: 0;
+            }
+        }
+    }
+
+    &__link-arrow {
+        margin-left: auto;
+        transform: rotate(-90deg);
+        transition: var(--t-base);
+        transition-timing-function: linear;
+
+        &,
+        .sidebar:hover &,
+        .sidebar--show & {
+            opacity: 1;
+        }
+
+        @include media('<xl', '>sm-tablet') {
+            opacity: 0;
+        }
+
+        @include media('>xl') {
+            .sidebar-collapse & {
+                opacity: 0;
+            }
+        }
+
+        .sidebar__link[aria-expanded="true"] & {
+            transform: rotate(0deg);
+        }
+
+        svg {
+            width: 11px;
+            height: 6px;
+            color: var(--text-third-color);
+        }
+    }
+
+    &__collapse-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background-color: var(--background-primary-color);
+    }
+
+    &__link-signal {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        margin-right: 10px;
+        pointer-events: none;
+
+        &::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--grey-light-color-4);
+            border: 2px solid var(--text-secondary-color);
+        }
+
+        .sidebar__link.active & {
+            &::before {
+                background-color: var(--grey-color-3);
+                border-color: var(--grey-color-3);
+            }
+        }
+    }
+}

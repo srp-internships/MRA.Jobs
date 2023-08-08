@@ -1,0 +1,364 @@
+/* Modals */
+
+.modal {
+    --modal-container-gutter: 2.6667rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1050;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+
+    &[data-simplebar] {
+        overflow: initial;
+
+        > .simplebar-wrapper > .simplebar-mask > .simplebar-offset > .simplebar-content-wrapper {
+            display: flex;
+
+            > .simplebar-content {
+                flex-grow: 1;
+                margin: auto;
+            }
+        }
+    }
+
+    @include media('<sm') {
+        --modal-container-gutter: 14px;
+    }
+
+    &.is-active {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    &.is-animate {
+        pointer-events: all;
+    }
+
+    &__overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--backdrop-color);
+        opacity: 0;
+        transition: var(--t-base);
+
+        .modal.is-animate & {
+            opacity: var(--backdrop-opacity);
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: var(--border-grey-color);
+        cursor: pointer;
+        transition: var(--t-base);
+
+        &:hover {
+            background-color: var(--control-background-hover);
+        }
+
+        svg[class*="icon"] {
+            width: 22px;
+            height: 22px;
+        }
+    }
+
+    &__wrap {
+        position: relative;
+        width: 0;
+        pointer-events: none;
+        overflow: hidden;
+
+        .modal.is-active & {
+            width: 100%;
+            overflow: initial;
+        }
+
+        .modal--panel & {
+            display: flex;
+            justify-content: flex-end;
+            height: 100%;
+            margin-right: 0;
+            margin-left: auto;
+        }
+
+        .modal-compact & {
+            max-width: 580px;
+            margin: auto;
+        }
+
+        .modal-success & {
+            max-width: 420px;
+        }
+
+        .modal-add-review &,
+        .modal-add-event & {
+            max-width: 500px;
+        }
+    }
+
+    &__window {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-height: 100%;
+        transition: transform 0.3s ease-in-out;
+
+        .modal--panel & {
+            max-width: 580px;
+            pointer-events: all;
+        }
+
+        .modal--panel.modal--sm & {
+            max-width: 500px;
+        }
+
+        .modal--right & {
+            transform: translateX(100%);
+        }
+
+        .modal-compact & {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            transform: translateY(-40%);
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .modal.is-animate & {
+            transform: translate(0);
+        }
+
+        .modal-compact.is-animate & {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    &__content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        pointer-events: all;
+        background-color: var(--background-secondary-color);
+
+        .modal--panel & {
+            min-height: 100vh;
+            box-shadow: -4px 0px 8px rgba(169, 194, 209, 0.1), -16px 0px 32px rgba(169, 194, 209, 0.15);
+        }
+
+        .modal-compact & {
+            margin: 10px auto;
+            max-width: calc(100% - 20px);
+            border-radius: var(--card-border-radius);
+            box-shadow: 0px 4px 8px rgba(169, 194, 209, 0.25), 0px 16px 32px rgba(169, 194, 209, 0.25);
+        }
+    }
+
+    &__content-wrap {
+        flex-grow: 1;
+    }
+
+    &__container {
+        padding-right: var(--modal-container-gutter);
+        padding-left: var(--modal-container-gutter);
+
+        .modal-compact & {
+            padding-right: 2.6667rem;
+            padding-left: 2.6667rem;
+
+            @include media('<sm') {
+                padding-right: var(--modal-container-gutter);
+                padding-left: var(--modal-container-gutter);
+            }
+        }
+
+        .modal-success & {
+            padding-right: 1.6rem;
+            padding-left: 1.6rem;
+
+            @include media('<sm') {
+                padding-right: var(--modal-container-gutter);
+                padding-left: var(--modal-container-gutter);
+            }
+        }
+    }
+
+    &__header {
+        padding: 1.6667rem 0 2.2667rem;
+        font-size: 14px;
+        line-height: 1.5;
+
+        .modal-compact & {
+            padding-bottom: 1.2rem;
+
+            @include media('<sm') {
+                padding: 1.3rem 0 0;
+            }
+        }
+
+        @include media('<sm') {
+            padding-bottom: 15px;
+        }
+    }
+
+    &__title {
+        margin-bottom: 0;
+        font-size: 2rem;
+        line-height: 35/30*1em;
+
+        @include media('<sm') {
+            font-size: 1.5rem;
+        }
+    }
+
+    &__body {
+        flex-grow: 1;
+        max-height: 100%;
+
+        &[data-simplebar] {
+            overflow-x: hidden;
+        }
+
+        .modal-compact & {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            width: 100%;
+            padding: 1.2rem 0 1rem;
+        }
+
+        .modal-success & {
+            padding: 4rem 0;
+
+            @include media('<sm') {
+                padding: 3rem 0 2.75rem;
+            }
+        }
+    }
+
+    &__footer {
+        padding-top: 20px;
+        padding-bottom: 2rem;
+
+        .modal--panel & {
+            position: sticky;
+            bottom: 0;
+            z-index: 1;
+            background-color: var(--background-secondary-color);;
+        }
+
+        .modal-compact & {
+            padding-top: 1rem;
+        }
+
+        @include media('<sm') {
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+    }
+
+    &__footer-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        grid-gap: var(--container-gutter-sm);
+        justify-content: flex-end;
+
+        @include media('<sm') {
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        }
+
+        .button {
+            min-width: 110px;
+        }
+    }
+}
+
+.modal-compact {
+    &__buttons {
+        position: relative;
+        display: grid;
+        grid-template-columns: 50% 50%;
+
+        &::before {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            z-index: 1;
+            transform: translateX(-50%);
+            content: '';
+            border-right: 1px solid var(--background-secondary-color);
+            pointer-events: none;
+        }
+    }
+
+    &__button-item {
+        display: flex;
+    }
+
+    &__button {
+        flex-grow: 1;
+        height: auto;
+        padding: 1.2667rem 0.8rem;
+        border-radius: 0;
+        font-weight: 400;
+        font-size: inherit;
+        background-color: var(--background-primary-color);
+
+        @include media('<sm') {
+            padding: 1rem 0.5rem;
+        }
+
+        .modal-compact__button-item:first-child & {
+            border-bottom-left-radius: var(--card-border-radius);
+        }
+
+        .modal-compact__button-item:last-child & {
+            border-bottom-right-radius: var(--card-border-radius);
+            color: var(--text-secondary-color);
+        }
+
+        &:hover {
+            background-color: var(--control-background-hover);
+        }
+
+        &:active {
+            background-color: var(--control-background-active);
+        }
+    }
+}
+
+.modal-success {
+    text-align: center;
+
+    &__icon {
+        margin-bottom: 1.7333rem;
+    }
+
+    &__title {
+        margin: 0;
+        font-weight: normal;
+        font-size: 1.3333rem;
+        line-height: 23/20*1em;
+    }
+}

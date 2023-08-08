@@ -1,0 +1,156 @@
+/* Charts */
+.chart-revenue,
+.chart-activity,
+.chart-overview,
+.chart-statistics {
+    min-height: 400px;
+}
+
+.chart-activity {
+    min-height: 530px;
+}
+
+.chart-revenue,
+.chart-activity,
+.chart-overview,
+.chart-statistics,
+.chart-activity {
+    @include media('<sm') {
+        min-height: 260px;
+        height: 38vh;
+    }
+}
+
+.chart-profit {
+    width: 400px;
+    margin: 2.6667rem 0;
+
+    @include media('<sm') {
+        width: 340px;
+    }
+}
+
+.chart-task {
+    width: 470px;
+
+    @include media('<sm') {
+        width: 410px;
+    }
+}
+
+.chart-legend {
+    position: relative;
+    z-index: 2;
+    display: flex;
+
+    &__button {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 46px;
+    }
+
+    &__marker {
+        display: inline-block;
+        vertical-align: middle;
+        width: 8px;
+        height: 8px;
+        margin-right: 8px;
+        border-radius: 50%;
+        background-color: currentColor;
+    }
+}
+
+.apexcharts-tooltip {
+    padding: 0;
+    background-color: transparent!important;
+    border-width: 0!important;
+    box-shadow: none!important;
+    overflow: initial!important;
+}
+
+.chart-tooltip-custom {
+    position: relative;
+    padding: 12px 17px;
+    font-size: 15px;
+    font-family: var(--font-family-default);
+    line-height: 18/15*1em;
+    border-radius: 4px;
+    background-color: var(--background-secondary-color);
+    color: var(--text-primary-color);
+    box-shadow: 0 10px 60px rgba(166, 178, 191, 0.4);
+    border: 1px solid var(--border-grey-color);
+
+    &::before,
+    &::after {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        content: "";
+        width: 0;
+        height: 0;
+        pointer-events: none;
+    }
+
+    &::before {
+        border: 6px solid transparent;
+        border-bottom-width: 0;
+        border-top-color: var(--border-grey-color);
+    }
+
+    &::after {
+        z-index: 1;
+        border: 4px solid transparent;
+        border-bottom-width: 0;
+        border-top-color: var(--background-secondary-color);
+    }
+
+    &__items {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+    }
+
+    &__separate-item {
+        align-self: center;
+        height: 18/15*1em;
+        margin: 0 8px;
+        border-right: 1px solid var(--border-grey-color);
+
+        &:last-of-type {
+            display: none;
+        }
+    }
+
+    &__value {
+        font-weight: 500;
+    }
+
+    &__title {
+        margin-top: 8px;
+        font-size: 13px;
+        line-height: 13/15*1em;
+        text-align: center;
+        color: var(--text-secondary-color);
+    }
+
+    &__marker {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        width: 8px;
+        height: 8px;
+        margin-right: 8px;
+
+        > * {
+            flex-shrink: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+    }
+}

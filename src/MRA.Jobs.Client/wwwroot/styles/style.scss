@@ -1,0 +1,100 @@
+/* -----------------------------------
+ * TABLE OF CONTENTS:
+ * Variables
+ * Fonts
+ * Icons
+ * Base
+ * Typography
+ * Buttons
+ * Labels
+ * Badges
+ * Dropdowns
+ * Tooltips
+ * Scrollbars
+ * Widgets
+ * Cards
+ * Forms
+ * Tags
+ * Files Uploads
+ * Charts
+ * Page
+ * Tables
+ * Sidebar
+ * Sidebar Panel
+ * Header
+ * Calendar
+ * Breadcrumbs
+ * Pagination
+ * Products
+ * Orders
+ * Order Notes
+ * Order Messages
+ * Customer Account
+ * Cart
+ * Calendar Full
+ * Inbox
+ * Chat
+ * Contacts
+ * Todo
+ * File Manager
+ * Timeline
+ * Authentication
+ ------------------------------------- */
+
+// Variables and Mixins
+@import "include/variables";
+@import "include/plugins";
+
+
+// Includes
+@import "include/fonts";
+@import "include/animations";
+@import "include/extends";
+@import "include/icons";
+@import "include/common";
+@import "include/typography";
+@import "include/buttons";
+@import "include/labels";
+@import "include/badge";
+@import "include/dropdown";
+@import "include/tooltip";
+@import "include/scrollbar";
+@import "include/progressbar";
+@import "include/widget";
+@import "include/card";
+@import "include/forms";
+@import "include/tags";
+@import "include/files-upload";
+@import "include/charts";
+
+
+// Components
+@import "components/page";
+@import "components/tables";
+@import "components/sidebar";
+@import "components/sidebar-panel";
+@import "components/header";
+@import "components/calendar";
+@import "components/breadcrumbs";
+@import "components/pagination";
+@import "components/modals";
+@import "components/product";
+@import "components/orders";
+@import "components/order-notes";
+@import "components/order-messages";
+@import "components/customer-account";
+@import "components/cart";
+@import "components/calendar-full";
+@import "components/inbox";
+@import "components/chat";
+@import "components/contacts";
+@import "components/todo";
+@import "components/file-manager";
+@import "components/timeline";
+@import "components/authentication";
+
+
+/**
+* Colors theme { selector: html[data-theme="light"], html[data-theme="dark"] }
+*/
+@import "include/theme";

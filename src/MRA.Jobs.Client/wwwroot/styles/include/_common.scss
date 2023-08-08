@@ -1,0 +1,91 @@
+/* Base */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+
+    &,
+    &::before,
+    &::after {
+        box-sizing: border-box;
+    }
+}
+
+html,
+body {
+    -webkit-overflow-scrolling: touch;
+}
+
+html {
+    font-size: var(--font-size-base);
+
+    &.rtl {
+        direction: rtl;
+		text-align: inherit;
+    }
+
+    @include media ('<lg-tablet') {
+        font-size: 92%;
+    }
+
+    @include media ('<sm-tablet') {
+        font-size: 86.5%;
+    }
+}
+
+body {
+    margin: 0;
+    font-weight: 400;
+    font-size: calc(var(--font-size-base) * 1rem);
+    line-height: 1.6;
+    font-family: var(--font-family-default);
+    font-feature-settings: normal;
+    font-variant: normal;
+    color: var(--text-primary-color);
+    background: var(--background-primary-color);
+    opacity: 0;
+    overflow: hidden;
+
+    &.load {
+        opacity: 1;
+        overflow: initial;
+        transition: var(--t-base);
+        transition-property: opacity;
+    }
+}
+
+@-ms-viewport {
+    width: auto;
+}
+
+a,
+button {
+    cursor: pointer;
+}
+
+button,
+input {
+    -webkit-appearance: none;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    outline: none;
+    color: inherit;
+}
+
+img,
+embed,
+video {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    line-height: 1;
+    border: none;
+}
+
+svg {
+    display: inline-block;
+    line-height: 1;
+    fill: currentColor;
+}

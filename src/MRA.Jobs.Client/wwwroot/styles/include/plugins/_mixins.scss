@@ -1,0 +1,103 @@
+// Mixins.
+
+@mixin nl {
+    margin: 0;
+    padding: 0;
+    text-indent: 0;
+    list-style: none;
+    list-style-position: outside;
+}
+
+@mixin cf {
+    &:before,
+    &:after {
+        display: table;
+        content: "";
+    }
+
+    &:after {
+        clear: both;
+    }
+
+    .lt-ie8 & {
+        zoom: 1;
+    }
+}
+
+@mixin blocks-justify {
+    text-align: justify;
+    text-justify: newspaper;
+}
+
+// You can add your own mixins here:
+
+@mixin block-base {
+    background-color: $white;
+    box-shadow: $box-shadow-base;
+    border-radius: 4px;
+}
+
+@mixin reset-btn {
+    background: none;
+    box-shadow: none;
+    border: 0;
+    outline: none;
+}
+
+@mixin text-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+@mixin bg-cover {
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+@mixin overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+}
+
+@mixin card-overlay {
+    @include overlay;
+    background-color: rgba($color-primary, 0.7);
+    display: flex;
+    flex-direction: column;
+    color: $white;
+    transition: $transition-base;
+    visibility: hidden;
+    opacity: 0;
+}
+
+@mixin flex-auto {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+}
+
+@mixin flex-100 {
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+}
+
+@mixin text-ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+@mixin hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

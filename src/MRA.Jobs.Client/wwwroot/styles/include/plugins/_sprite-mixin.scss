@@ -1,0 +1,29 @@
+@mixin sprite-image($sprite) {
+    background-image: url("__static__sprite.png");
+}
+
+@mixin sprite-image2x($sprite) {
+    background-image: url("__static__sprite@2x.png");
+}
+
+@mixin retina-sprite($retina-group) {
+    $normal-sprite: nth($retina-group, 2);
+    $retina-sprite: nth($retina-group, 3);
+    @include sprite($normal-sprite);
+
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        @include sprite-image2x($retina-sprite);
+        @include sprite-background-size($normal-sprite);
+    }
+}
+
+@mixin retina-sprites($retina-groups) {
+    @each $retina-group in $retina-groups {
+        $sprite-name: nth($retina-group, 1);
+        .s-icon-#{$sprite-name} {
+            &::before {
+                @include retina-sprite($retina-group);
+            }
+        }
+    }
+}

@@ -1,0 +1,227 @@
+.progressbar {
+    --bar-radius: 3px;
+    display: flex;
+    flex-wrap: wrap;
+
+    &--lg {
+        --bar-radius: 10px;
+    }
+
+    &--axis-top {
+        padding-top: 2.2667rem;
+
+        @include media ('<sm') {
+            padding-top: 0;
+        }
+    }
+
+    &__legend {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin-bottom: 3px;
+    }
+
+    &__legend-marker {
+        width: 12px;
+        height: 12px;
+        margin-right: 7px;
+        border: 3px solid currentColor;
+        border-radius: 50%;
+    }
+
+    &__items {
+        flex-grow: 1;
+        align-self: center;
+        display: flex;
+        min-width: 1px;
+        height: 4px;
+        background-color: var(--grey-light-color-4);
+        border-radius: var(--bar-radius);
+
+        .progressbar--lg & {
+            height: 10px;
+        }
+    }
+
+    &__bar {
+        position: relative;
+        width: 0;
+        border-radius: var(--bar-radius);
+        animation: progressbarStart 1.2s ease-out forwards;
+
+        &--green {
+            background-color: var(--green-color);
+            box-shadow: 0px 8px 15px rgba(9, 182, 109, 0.3);
+        }
+
+        &--orange {
+            background-color: var(--orange-color-2);
+            box-shadow: 0px 8px 15px rgba(253, 191, 94, 0.3);
+        }
+
+        &--red {
+            background-color: var(--red-color-2);
+            box-shadow: 0px 8px 15px rgba(255, 61, 87, 0.3);
+        }
+
+        &--orange-dark {
+            background-color: var(--orange-color-1);
+            box-shadow: 0px 8px 15px rgba(255, 138, 72, 0.3);
+        }
+
+        &--teal {
+            background-color: var(--teal-color);
+            box-shadow: 0px 8px 15px rgba(34, 204, 226, 0.3);
+        }
+
+        .progressbar--red & {
+            background-color: var(--red-color-2);
+        }
+
+        .progressbar--teal & {
+            background-color: var(--teal-color);
+        }
+
+        .progressbar--orange & {
+            background-color: var(--orange-color-2);
+        }
+
+        .progressbar--stacked & {
+            flex-grow: 1;
+            border-radius: 0;
+            cursor: pointer;
+            transition: var(--t-base);
+            transition-property: box-shadow;
+
+            &:hover {
+                box-shadow: 0 0 0 transparent;
+            }
+
+            &:first-child {
+                border-radius: var(--bar-radius) 0 0 var(--bar-radius);
+            }
+
+            &:last-child {
+                border-radius: 0 var(--bar-radius) var(--bar-radius) 0;
+            }
+        }
+    }
+
+    &__bar-count {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        padding-left: 3px;
+        color: var(--text-secondary-color);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+
+        .progressbar--axis-top & {
+            top: -2.6667rem;
+            bottom: 0;
+
+            @include media ('<sm') {
+                opacity: 0;
+            }
+        }
+    }
+
+    &__append {
+        width: 2.9333rem;
+        text-align: right;
+    }
+
+    &__percentage {
+        color: var(--text-secondary-color);
+    }
+}
+
+.country-legend {
+    --item-bottom-gutter: 1.6rem;
+    --item-gutter-x: 2.6667rem;
+
+    @include media('<sm') {
+        --item-bottom-gutter: 1rem;
+    }
+
+    &__row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 0 calc(var(--item-bottom-gutter) * -1) calc(var(--item-gutter-x) * -1);
+
+        @include media ('<sm') {
+            flex-direction: column;
+        }
+    }
+
+    &__item {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 0 var(--item-bottom-gutter) var(--item-gutter-x);
+        white-space: nowrap;
+    }
+
+    &__left {
+        margin-right: 1.6rem;
+    }
+
+    &__marker {
+        display: inline-block;
+        vertical-align: middle;
+        width: 8px;
+        height: 8px;
+        margin-right: 8px;
+        border-radius: 50%;
+    }
+
+    &__name {
+        vertical-align: middle;
+        font-weight: 500;
+    }
+
+    &__quot {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    &__percentage {
+        vertical-align: middle;
+        color: var(--text-secondary-color);
+    }
+}
+
+.media-progress {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    line-height: 18/15*1em;
+
+    &__title {
+        margin-bottom: 0;
+    }
+
+    &__progressbar {
+        grid-column: span 1 / 2;
+        margin-top: 12px;
+        grid-column: span 2;
+        height: 5px;
+        border-radius: 5px;
+        background-color: var(--border-grey-color);
+    }
+
+    &__bar {
+        width: 0;
+        height: 100%;
+        border-radius: 5px;
+        background-color: var(--primary-color);
+        animation: progressbarStart 1.2s ease-out forwards;
+        pointer-events: none;
+    }
+}
+
+@keyframes progressbarStart {
+    from {
+        width: 0;
+    }
+}

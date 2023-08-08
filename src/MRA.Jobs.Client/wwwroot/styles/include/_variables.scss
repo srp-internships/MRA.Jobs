@@ -1,0 +1,203 @@
+$breakpoints: (
+  'xs': 375px,
+  'sm': 576px,
+  'sm-tablet': 768px,
+  'md': 992px,
+  'lg-tablet': 1024px,
+  'lg': 1200px,
+  'xl': 1366px
+) !default;
+
+/* Variables */
+:root {
+    --black-color: #15232E;
+    --black-color-2: #1F2935;
+    --black-color-3: #2D3743;
+    --black-color-4: #333E4C;
+    --black-color-control-1: #141f27;
+    --black-color-control-2: #1d2c38;
+    --black-color-control-light: #333E4C;
+
+    --grey-color-1: #8697A8;
+    --grey-color-2: #A6B2BF;
+    --grey-color-3: #44566C;
+    --grey-color-4: #B3C0CE;
+    --grey-color-5: #CFCFD1;
+    --grey-color-6: #737781;
+    --grey-color-7: #C4C4C4;
+    --grey-light-color-1: #F8FAFB;
+    --grey-light-color-2: #eef3f5;
+    --grey-light-color-3: #EAEDF0;
+    --grey-light-color-4: #EFF4F8;
+    --grey-light-color-5: #F4F4F9;
+    --grey-light-color-6: #E5E5E5;
+
+    --white-color: #ffffff;
+    --blue-color: #0081FF;
+    --blue-color-a15: rgba(0, 129, 255, 0.15);
+    --blue-color-2: #0037FA;
+    --blue-color-control-1: #2c91f7;
+    --blue-color-control-2: #0f3ad8;
+    --teal-color: #22CCE2;
+    --red-color: #FD594A;
+    --red-color-2: #FF3D57;
+    --green-color: #09B66D;
+    --orange-color-1: #FF8A48;
+    --orange-color-2: #FDBF5E;
+
+    /* Transitions */
+    --t-base: 0.18s ease-in-out;
+    --t-smooth: cubic-bezier(.215, .61, .355, 1);
+    --t-elastic: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* Fonts */
+    --font-size-base: 15px;
+    --font-family-default: 'Roboto', sans-serif;
+    --font-family-secondary: 'Comfortaa', sans-serif;
+    --font-family-third: 'Rounded Mplus 1c';
+    --font-icons: 'Material Icons';
+
+    --sidebar-width: 15rem;
+    --sidebar-full-width: 15rem;
+    --sidebar-collapse-width: 64px;
+
+    --header-height: 4.2667rem;
+    --subheader-height: 4.2rem;
+    --order-tabs-height: 4.3333rem;
+    --order-tabs-offset-bottom: 2.6667rem;
+
+    --container-width: 100%;
+    --container-width-xl: 1200px;
+    --container-gutter: 30px;
+    --container-gutter-sm: 24px;
+
+    --column-gutter: 15px;
+    --column-gutter-md: 12px;
+    --column-gutter-sm: 10px;
+    --column-gutter-xs: 7px;
+
+    --gutter-bottom-xl: 2rem;
+    --gutter-bottom-lg: 1.6rem;
+    --gutter-bottom-sm: 1.3333rem;
+    --gutter-bottom-xs: 14px;
+
+    --calendar-inline-width: 307px;
+
+    --radius-base: 5px;
+    --radius-lg: 10px;
+
+    --tooltip-arrow-size: 12px;
+
+    /* Cards */
+    --card-border-radius: 10px;
+    --card-gutter-x: 2.6667rem;
+
+    /* Inputs */
+    --input-gutter-x: 17px;
+
+    @media screen and (max-width: 1365px) {
+      --sidebar-width: 64px;
+      --container-gutter: 1.6rem;
+      --column-gutter: 10px;
+      --column-gutter-md: 10px;
+      --gutter-bottom-xl: 1.5rem;
+      --card-gutter-x: 1.25rem;
+    }
+
+    @media screen and (max-width: 991px) {
+      --order-tabs-offset-bottom: 16px;
+    }
+
+    @media screen and (max-width: 767px) {
+      --subheader-height: 3.2rem;
+      --order-tabs-height: 3.4rem;
+
+      --container-gutter-sm: 15px;
+    }
+
+    @media screen and (max-width: 575px) {
+      --gutter-bottom-xl: 1.1rem;
+    }
+
+    @media screen and (max-width: 374px) {
+      --container-gutter: 10px;
+
+      --column-gutter: 8px;
+    }
+}
+
+/* Colors theme */
+html[data-theme='light'] {
+    --background-primary-color: var(--grey-light-color-1);
+    --background-secondary-color: var(--white-color);
+    --background-secondary-reverse: var(--grey-color-3);
+    --primary-color: var(--blue-color);
+    --secondary-color: var(--orange-color-2);
+
+    --text-primary-color: var(--grey-color-3);
+    --text-primary-reverse: var(--white-color);
+    --text-secondary-color: var(--grey-color-1);
+    --text-third-color: var(--grey-color-3);
+
+    --border-grey-color: var(--grey-light-color-3);
+    --scrollbar-color: var(--grey-light-color-3);
+    --control-background-hover: var(--grey-light-color-2);
+    --control-background-hover-light: var(--grey-light-color-3);
+    --control-background-active: var(--grey-light-color-3);
+    --control-shadow: 0px 4px 4px rgba(169, 194, 209, 0.05), 0px 8px 16px rgba(169, 194, 209, 0.1);
+    --placeholder-color: var(--grey-color-1);
+
+    --card-footer-background: var(--grey-light-color-1);
+    --card-shadow: 0px 2px 4px rgba(169, 194, 209, 0.05), 0px 12px 16px rgba(169, 194, 209, 0.1);
+    --card-shadow-shape: 0px 32px 32px rgba(169, 194, 209, 0.1), 0px 8px 16px rgba(169, 194, 209, 0.05);
+
+    --dropdown-shadow: 0px 16px 24px rgba(169, 194, 209, 0.25), 0px 2px 4px rgba(169, 194, 209, 0.1);
+    --dropdown-shadow-shape: 0px 4px 32px rgba(169, 194, 209, 0.05), 0px 2px 16px rgba(169, 194, 209, 0.05);
+
+    --backdrop-color: var(--grey-color-3);
+    --backdrop-opacity: 0.12;
+}
+
+html[data-theme='dark'] {
+    --background-primary-color: var(--black-color);
+    --background-secondary-color: var(--black-color-2);
+    --background-secondary-reverse: var(--grey-color-3);
+    --primary-color: var(--blue-color-2);
+    --secondary-color: var(--orange-color-1);
+
+    --text-primary-color: var(--white-color);
+    --text-primary-reverse: var(--grey-color-3);
+    --text-secondary-color: var(--grey-color-6);
+    --text-third-color: var(--grey-color-6);
+
+    --border-grey-color: var(--black-color-4);
+    --scrollbar-color: var(--grey-color-6);
+    --control-background-hover: var(--black-color-control-1);
+    --control-background-hover-light: var(--black-color-control-light);
+    --control-background-active: var(--black-color-control-2);
+    --placeholder-color: var(--white-color);
+
+    --card-footer-background: var(--background-secondary-color);
+    --card-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 12px 16px rgba(0, 0, 0, 0.2);
+    --card-shadow-shape: 0px 32px 32px rgba(0, 0, 0, 0.15), 0px 8px 16px rgba(0, 0, 0, 0.1);
+
+    --dropdown-shadow: 0px 16px 24px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.1);
+    --dropdown-shadow-shape: 0px 4px 32px rgba(0, 0, 0, 0.05), 0px 2px 16px rgba(0, 0, 0, 0.05);
+
+    --backdrop-color: var(--black-color);
+    --backdrop-opacity: 0.4;
+}
+
+$theme-colors: (
+    theme: --primary-color,
+    blue: --blue-color,
+    teal: --teal-color,
+    red: --red-color-2,
+    green: --green-color,
+    orange: --orange-color-2,
+    orange-dark: --orange-color-1,
+    grey-bg: --background-primary-color,
+    grey: --text-secondary-color,
+    grey-dark: --text-primary-color,
+    grey-light: --border-grey-color
+);

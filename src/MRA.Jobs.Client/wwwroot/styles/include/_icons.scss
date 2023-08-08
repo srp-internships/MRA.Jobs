@@ -1,0 +1,232 @@
+/* Icons */
+[class^="icon-"] {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.icon-arrow-down {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    color: var(--text-third-color);
+
+    svg {
+        width: 100%;
+        height: 100%;
+        fill: currentColor;
+    }
+}
+
+.trade-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    margin-right: 3px;
+    margin-left: 3px;
+
+    &--up {
+        color: var(--green-color);
+    }
+
+    &--down {
+        color: var(--red-color-2);
+    }
+
+    svg {
+        vertical-align: top;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.quotation {
+    display: inline-block;
+    vertical-align: middle;
+
+    svg {
+        vertical-align: top;
+        width: 22px;
+        height: 22px;
+    }
+
+    &--up {
+        color: var(--green-color);
+
+        svg {
+            transform: rotate(180deg);
+        }
+    }
+
+    &--down {
+        color: var(--red-color-2);
+    }
+}
+
+.media-item {
+    display: flex;
+    align-items: center;
+
+    &--medium {
+        line-height: 1rem;
+    }
+
+    &--file {
+        display: inline-flex;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        position: relative;
+        z-index: 0;
+        min-width: 2rem;
+        width: 2rem;
+        height: 2rem;
+        margin-right: 16/15*1rem;
+        font-weight: 500;
+        font-size: 11px;
+        line-height: 1;
+        color: var(--white-color);
+        text-transform: uppercase;
+        border-radius: 50%;
+
+        .badge-signal {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 8px;
+            height: 8px;
+            border-width: 2px;
+            z-index: inherit;
+        }
+
+        .media-item--medium & {
+            width: 2.6667rem;
+            height: 2.6667rem;
+            font-size: 0.9333rem;
+
+            .badge-signal {
+                width: 10px;
+                height: 10px;
+            }
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+    }
+
+    &__icon-folder,
+    &__icon-file {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 41px;
+        height: 42px;
+        margin-right: 10px;
+    }
+
+    &__icon-file {
+        svg {
+            width: 31px;
+            height: 100%;
+        }
+    }
+
+    &__right {
+        flex-grow: 1;
+    }
+
+    &__icon-text {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: -1;
+    }
+
+    &__title {
+        margin-top: 0;
+        margin-bottom: 2px;
+        font-weight: normal;
+        font-size: 1rem;
+        line-height: 18/15*1em;
+
+        .media-item--file & {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.marker-item {
+    flex-shrink: 0;
+    align-self: center;
+    display: inline-block;
+    vertical-align: middle;
+    width: 6px;
+    height: 6px;
+    margin-right: 7px;
+    border-radius: 50%;
+}
+
+.sort {
+    flex-shrink: 0;
+    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 22px;
+    height: 22px;
+    color: var(--text-third-color);
+
+    &::before,
+    &::after {
+        content: " ";
+        display: block;
+        width: 0;
+        height: 0;
+        margin: 1px 3px;
+        border-style: solid;
+        border-color: transparent;
+    }
+
+    &::before {
+        border-width: 0 4px 5px;
+        border-bottom-color: currentColor;
+    }
+
+    &::after {
+        border-width: 5px 4px 0;
+        border-top-color: currentColor;
+    }
+
+    &--up {
+        &::after {
+            display: none;
+        }
+    }
+
+    &--down {
+        &::before {
+            display: none;
+        }
+    }
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}

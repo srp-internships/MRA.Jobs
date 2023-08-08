@@ -1,0 +1,200 @@
+/* Products */
+
+.add-product {
+    min-height: calc(100vh - 260px);
+    padding: 2.8rem 0 2rem;
+
+    &__row {
+        display: grid;
+        grid-gap: 2.75rem;
+        justify-content: center;
+        max-width: var(--container-width-xl);
+        margin: auto;
+
+        @include media('>sm') {
+            grid-template-columns: repeat(1, minmax(460px, 600px));
+            grid-row-gap: 4rem;
+        }
+
+        @include media('>lg-tablet') {
+            grid-template-columns: 1fr minmax(380px, 28%);
+            grid-column-gap: 2.5rem;
+        }
+
+        @include media('>xl') {
+            grid-column-gap: 74/1140*100%;
+            grid-template-columns: 1fr  minmax(380px, 420/1140*100%);
+        }
+    }
+
+    &__slider {
+        display: flex;
+        align-self: flex-start;
+
+        @include media('>sm-tablet') {
+            margin-top: calc(22px + 1.0667rem);
+        }
+    }
+
+    &__thumbs {
+        flex-shrink: 0;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        margin-right: 1rem;
+        overflow: hidden;
+
+        @include media('>sm') {
+            margin-right: 24px;
+        }
+
+        @include media('>1440px') {
+            margin-right: 56/480*100%;
+        }
+    }
+
+    &__thumbs-slider {
+        height: 248px;
+        margin: 8px 0;
+
+        @include media('>xs') {
+            height: 304px;
+        }
+
+        @include media('>sm') {
+            height: 472px;
+        }
+    }
+
+    &__thumb,
+    &__gallery-slide {
+        position: relative;
+        background-image: url(__static__content/product/placeholder-thumbnail.jpg);
+        background-size: cover;
+        background-position: center center;
+        border: 1px solid var(--border-grey-color);
+        overflow: hidden;
+    }
+
+    &__gallery-image,
+    &__thumb-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background-color: var(--white-color);
+        object-position: 50% 50%;
+    }
+
+    &__thumb {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 8px;
+        cursor: pointer;
+
+        @include media('>xs') {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 14px;
+        }
+
+        @include media ('>sm') {
+            height: 100px;
+            width: 100px;
+            margin-bottom: 24px;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &.swiper-slide-thumb-active {
+            border-color: var(--blue-color);
+        }
+    }
+
+    &__thumbs-prev {
+        order: -1;
+    }
+
+    &__thumbs-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 2.1333rem;
+
+        @include media('>sm') {
+            height: 50px;
+        }
+
+        svg {
+            width: 24px;
+            height: 14px;
+        }
+
+        &--prev {
+            top: 0;
+        }
+
+        &--next {
+            bottom: 0;
+
+            svg {
+                transform: rotate(180deg)
+            }
+        }
+    }
+
+    &__gallery {
+        flex-grow: 1;
+    }
+
+    &__gallery-slider {
+        height: 100%;
+    }
+
+    &__gallery-slide {
+        width: 100% !important;
+    }
+
+    &__lazy-preloader {
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        border-radius: 0;
+        border: none;
+        background-color: var(--background-primary-color);
+        animation: none;
+        opacity: 0;
+        pointer-events: none;
+
+        &::before {
+            content: " ";
+            height: 44px;
+            width: 44px;
+            background-image: url(__static__content/upload-progress.svg);
+            background-size: 100% 100%;
+            animation: infinite rotate 1s linear;
+        }
+    }
+
+    &__submit {
+        display: grid;
+        grid-template-columns: repeat(2, 110px);
+        grid-gap: var(--container-gutter-sm);
+        justify-content: flex-end;
+        margin-top: 1rem;
+
+        @include media('<sm') {
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        }
+    }
+}

@@ -1,0 +1,51 @@
+/* Animations */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fade {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform-origin: center;
+        transform: rotate(0deg);
+    }
+    to {
+        transform-origin: center;
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes selectAddTag {
+    0% {
+        transform: translateX(-5px) rotate(5deg);
+        opacity: 0;
+    } 100% {
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+}

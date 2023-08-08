@@ -1,0 +1,82 @@
+/* Tags */
+.tags {
+    --labels-gutter: 8px;
+    min-height: 40px;
+    padding: var(--labels-gutter);
+    border-radius: var(--radius-base);
+    background-color: var(--background-primary-color);
+
+    &__container {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0 calc(var(--labels-gutter) * -1) calc(var(--labels-gutter) * -1) 0;
+    }
+
+    &__item {
+        margin: 0 var(--labels-gutter) var(--labels-gutter) 0;
+    }
+}
+
+.tag {
+    position: relative;
+    min-height: 24px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 7px 0 8px;
+    border-radius: var(--radius-base);
+    font-size: 13px;
+    line-height: 24px;
+
+    &.is-animating {
+        animation: selectTagRemove 300ms linear forwards;
+        pointer-events: none;
+    }
+
+    &--append {
+        padding-right: 26px;
+    }
+
+    &__marker {
+        width: 8px;
+        height: 8px;
+        margin-right: 7px;
+        border-radius: 50%;
+    }
+
+    &__append {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+        border-radius: 0 var(--radius-base) var(--radius-base) 0;
+        transition: var(--t-base);
+
+        svg[class*="icon"] {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    &--default {
+        background-color: var(--grey-light-color-3);
+
+        .tag__append:hover {
+            background-color: var(--control-background-hover);
+        }
+    }
+}
+
+@keyframes selectTagRemove {
+    0% {
+        transform: translateX(-0) rotate(0deg);
+    } 100% {
+        transform: translateX(-5px) rotate(5deg);
+        opacity: 0;
+    }
+}

@@ -1,0 +1,814 @@
+/* Forms */
+.input {
+    display: block;
+    width: 100%;
+    height: 42px;
+    padding: 11px var(--input-gutter-x);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18/16*1em;
+    font-family: var(--font-family-default);
+    color: inherit;
+    background-color: var(--background-primary-color);
+    border-radius: 5px;
+    border: 1px solid transparent;
+    outline: none;
+    transition: var(--t-base);
+    transition-property: border-color, transform, background-color, opacity;
+
+    &[type="time"] {
+        padding-right: 0;
+
+        &::-webkit-calendar-picker-indicator {
+            width: 32px;
+            height: 36px;
+            background: none;
+            cursor: pointer;
+        }
+    }
+
+    &[type='password'] {
+        letter-spacing: 0.15rem;
+
+        &::placeholder {
+            letter-spacing: normal;
+        }
+    }
+
+    &::placeholder {
+        color: var(--placeholder-color);
+    }
+
+    &:hover {
+        background-color: var(--control-background-hover);
+    }
+
+    &[readonly] {
+        user-select: none;
+    }
+
+    &--edit {
+        display: inline-block;
+        width: auto;
+        background-color: transparent;
+
+        &:focus {
+            background-color: var(--control-background-hover);
+        }
+    }
+
+    .input-group--white & {
+        background-color: var(--background-secondary-color);
+        filter: drop-shadow(0px 4px 4px rgba(169, 194, 209, 0.05)) drop-shadow(0px 8px 16px rgba(169, 194, 209, 0.1));
+
+        &:hover {
+            background-color: var(--control-background-hover);
+        }
+    }
+
+    &--fluid {
+        width: 100%;
+
+        ~ .select2 {
+            width: 100%!important;
+        }
+    }
+
+    &--select {
+        cursor: pointer;
+
+        &:focus ~ .dropdown-items {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+        }
+
+        .input-group--white & {
+            background-color: var(--background-secondary-color);
+        }
+    }
+
+    .input-group--prepend & {
+        padding-left: 3.1333rem;
+    }
+
+    .input-group--prepend-xs & {
+        padding-left: 1.8rem;
+    }
+
+    .input-group--append & {
+        padding-right: 3.1333rem;
+    }
+
+    .input-group--append-lg & {
+        padding-right: 3.8667rem;
+    }
+}
+
+.select2-container {
+    width: 100%;
+    font-size: inherit;
+
+    .select2-selection--single {
+        border: none;
+        background-color: transparent;
+        border-radius: 0;
+        outline: none;
+
+        .input-group & {
+            @extend .input;
+            display: flex;
+            align-items: center;
+            border-radius: var(--radius-base)!important;
+        }
+
+        .input-group--white & {
+            @extend .input;
+        }
+
+        .input-group--append-lg & {
+            @extend .input;
+        }
+    }
+
+    .select2-selection {
+        display: flex;
+        align-items: center;
+        color: inherit;
+
+        .select2-selection__rendered {
+            padding: 0;
+            line-height: inherit;
+            color: var(--text-primary-color);
+            text-overflow: clip;
+        }
+
+        .select2-search__field {
+            color: inherit;
+        }
+
+        .select2-selection__placeholder {
+            color: var(--placeholder-color);
+        }
+
+        .select2-selection__arrow {
+            display: none;
+
+            [role="presentation"] {
+                display: none;
+            }
+        }
+    }
+
+    .select2-selection--multiple {
+        --labels-gutter: 8px;
+        min-height: 40px;
+        padding: var(--labels-gutter);
+        border: none!important;
+        border-radius: var(--radius-base);
+        background-color: var(--background-primary-color);
+        transition: var(--t-base);
+        transition-property: background-color;
+
+        &:hover {
+            background-color: var(--control-background-hover);
+        }
+
+        .select2-search__field {
+            margin-top: var(--labels-gutter);
+        }
+
+        .select2-selection__rendered {
+            width: auto;
+            padding: 0;
+            margin: calc(var(--labels-gutter) * -1) calc(var(--labels-gutter) * -1) 0  0;
+        }
+
+        .select2-selection__choice {
+            position: relative;
+            min-height: 22px;
+            padding: 0 26px 0 8px;
+            margin-right: var(--labels-gutter);
+            margin-top: var(--labels-gutter);
+            border: none;
+            border-radius: var(--radius-base);
+            font-size: 13px;
+            line-height: 24px;
+            background-color: var(--grey-light-color-3);
+            animation: selectAddTag 0.3s linear forwards;
+
+            > .select2-selection__choice__remove {
+                text-indent: -9999px;
+                pointer-events: all;
+            }
+        }
+
+        .select2-selection__choice__remove {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            padding: 4px;
+            margin: 0;
+            border-radius: 0 var(--radius-base) var(--radius-base) 0;
+            color: inherit!important;
+            transition: var(--t-base);
+            pointer-events: none;
+            opacity: 0.6;
+
+            &:hover {
+                background-color: var(--control-background-hover);
+                opacity: 1;
+            }
+
+            svg[class*="icon"] {
+                width: 14px;
+                height: 14px;
+            }
+        }
+    }
+
+    &--open {
+        .select2-selection__arrow {
+            transform: rotate(-180deg);
+        }
+    }
+
+    .select2-dropdown {
+        padding: 6px 0;
+        background-color: var(--background-secondary-color);
+        border: 1px solid var(--border-grey-color);
+        border-radius: var(--card-border-radius);
+
+        &--below {
+            margin-top: 2px;
+        }
+
+        &--above {
+            margin-top: -2px;
+        }
+    }
+
+    .select2-results {
+        .select2-results__options {
+            max-height: 228px;
+        }
+
+        &__option {
+            @extend .dropdown-menu__item;
+            padding-right: 3.1333rem;
+            white-space: nowrap;
+
+            &[aria-selected="true"] {
+                &::after {
+                    position: absolute;
+                    right: var(--input-gutter-x);
+                    top: 50%;
+                    transform: translateY(-50%);
+                    margin-top: -1px;
+                    content: '\E5CA';
+                    font-family: var(--font-icons);
+                }
+            }
+
+            &[aria-selected="true"],
+            &--highlighted[aria-selected] {
+                color: var(--text-primary-color);
+                background-color: var(--grey-light-color-1);
+            }
+        }
+    }
+}
+
+textarea {
+    &.input {
+        height: auto;
+        font-size: inherit;
+        line-height: inherit;
+    }
+}
+
+.form-group {
+    &--lg {
+        margin-bottom: 2rem;
+
+        @include media('<sm') {
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    &--inline {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+    }
+
+    &--label {
+        margin-bottom: 0.8rem;
+    }
+}
+
+.input-group {
+    position: relative;
+
+    &__prepend,
+    &__append {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        color: var(--text-secondary-color);
+        pointer-events: none;
+
+        &--default {
+            color: inherit;
+        }
+
+        svg {
+            width: 22px;
+            height: 22px;
+            color: currentColor;
+        }
+    }
+
+    &__prepend {
+        left: 14px;
+    }
+
+    &__append {
+        right: 14px;
+    }
+
+    &__symbol {
+        padding-left: 6px;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    &__arrow {
+        position: absolute;
+        top: 0;
+        right: var(--input-gutter-x);
+        bottom: 0;
+        width: 11px;
+        height: 6px;
+        margin: auto;
+        color: var(--text-secondary-color);
+        pointer-events: none;
+
+        .input-group--white & {
+            color: var(--grey-color-4);
+        }
+
+        svg {
+            vertical-align: top;
+            width: 100%;
+            height: 100%;
+            color: currentColor;
+        }
+    }
+
+    &__arrows {
+        position: absolute;
+        right: 10px;
+        top: 0;
+        bottom: 0;
+        width: 22px;
+        height: 36px;
+        margin: auto;
+        background: url(__static__content/arrow-double.svg) no-repeat center center;
+        cursor: pointer;
+        pointer-events: none;
+
+        html[data-theme="dark"] & {
+            background-image: url(__static__content/arrow-double-dark.svg);
+        }
+    }
+}
+
+.form-label {
+    margin-top: 0;
+    margin-bottom: 1.0667rem;
+    font-weight: 400;
+    font-size: inherit;
+    color: var(--text-secondary-color);
+
+    &--sm {
+        margin-bottom: 0.8rem;
+        line-height: 18/15*1em;
+    }
+
+    .form-group--inline & {
+        margin: 0 8px 0 0;
+        white-space: nowrap;
+
+        &--append {
+            order: 1;
+            margin-right: 0;
+            margin-left: 1rem;
+            color: inherit;
+        }
+    }
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+
+    &[data-readonly] {
+        pointer-events: none;
+    }
+
+    .jq-star {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    &--md .jq-star {
+        width: 25px!important;
+        height: 25px!important;
+    }
+
+    .jq-star-svg {
+        vertical-align: top;
+        padding-right: 4px;
+        width: 100%;
+        height: 100%;
+        color: var(--orange-color-2);
+
+        [class*="svg"] {
+            transition: var(--t-base);
+            transition-property: fill;
+            transition-duration: 80ms;
+        }
+
+        [class*="svg-empty"] {
+            fill: var(--grey-color-4);
+        }
+
+        [class*="svg-hovered"],
+        [class*="svg-active"],
+        [class*="svg-rated"] {
+            fill: currentColor;
+        }
+    }
+}
+
+// Checkbox & Radio
+.checkbox,
+.radio {
+    --transition-duration: 110ms;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 16px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 13px;
+    line-height: 15/13*1em;
+    transition: var(--t-base);
+    transition-duration: var(--transition-duration);
+
+    &.disabled {
+        pointer-events: none;
+    }
+
+    input {
+        &[type="checkbox"],
+        &[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            cursor: pointer;
+
+            &[disabled] ~ .checkbox__marker,
+            &[disabled] ~ .radio__marker,
+            &.disabled ~ .checkbox__marker,
+            &.disabled ~ .radio__marker {
+                color: var(--text-secondary-color);
+                fill: var(--text-secondary-color);
+                border-color: var(--background-secondary-color);
+                background-color: var(--background-secondary-color);
+                pointer-events: none;
+            }
+        }
+    }
+
+    &__label {
+        display: inline-block;
+        width: 100%;
+        padding-top: 1px;
+        margin-left: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    &__marker {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        display: flex;
+        width: 16px;
+        height: 16px;
+        line-height: 0;
+        border-radius: 4px;
+        color: var(--white-color);
+        border: 1px solid var(--grey-light-color-3);
+        transform: translateY(-50%);
+        background-color: var(--grey-light-color-1);
+        cursor: pointer;
+        transition: var(--t-base);
+        transition-duration: var(--transition-duration);
+
+        .checkbox--circle & {
+            width: 18px;
+            height: 18px;
+            border: none;
+            background-color: transparent;
+
+            &::before {
+                position: absolute;
+                content: "";
+                width: 100%;
+                height: 100%;
+                opacity: 1;
+                background-image: url(__static__/content/checkbox.svg);
+                transition: var(--t-base);
+                transition-property: opacity;
+                transition-duration: var(--transition-duration);
+            }
+        }
+    }
+
+    &__marker-icon {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 14px;
+        height: 100%;
+        padding-top: 2px;
+        margin: auto;
+        opacity: 0;
+        transition: var(--t-base);
+        transition-property: opacity;
+        transition-duration: var(--transition-duration);
+
+        .checkbox--circle & {
+            width: 100%;
+            height: 100%;
+            background-image: url('__static__content/checkbox-checked.svg');
+        }
+
+        svg {
+            vertical-align: top;
+            width: 100%;
+            height: 100%;
+        }
+
+        .checkbox--circle & {
+            svg {
+                display: none;
+            }
+        }
+    }
+}
+
+.checkbox {
+    &__marker {
+        .checkbox:not(.checkbox--circle) input:checked:not(.disabled):not(:disabled) ~ & {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+        }
+
+        &::before {
+            .checkbox--circle input:checked:not(.disabled):not(:disabled) ~ & {
+                opacity: 0;
+            }
+        }
+    }
+
+    &__marker-icon {
+        .checkbox input:checked:not(.disabled):not(:disabled) ~ .checkbox__marker & {
+            opacity: 1;
+        }
+    }
+}
+
+.radio {
+    &__marker {
+        .radio input:checked:not(.disabled):not(:disabled) ~ & {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+        }
+    }
+
+    &__marker-icon {
+        .radio input:checked:not(.disabled):not(:disabled) ~ .radio__marker & {
+            opacity: 1;
+        }
+    }
+}
+
+.checkbox-toggle {
+    display: inline-block;
+    width: 40px;
+    height: 24px;
+    padding: 0;
+    margin: 0;
+    background-color: var(--grey-light-color-4);
+    border-radius: 50px;
+    line-height: 1;
+    cursor: pointer;
+    transition: var(--t-base);
+
+    &.is-active {
+        background-color: var(--primary-color);
+    }
+
+    input[type='checkbox'] {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    &__range {
+        display: block;
+        width: 18px;
+        height: 18px;
+        margin: 3px;
+        border-radius: 50%;
+        box-shadow: 0px 2px 2px rgba(68, 86, 108, 0.5);
+        background-color: var(--white-color);
+        transition: var(--t-base);
+
+        .checkbox-toggle.is-active & {
+            transform: translateX(16px)
+        }
+    }
+}
+
+.input-editor {
+    border-radius: var(--radius-base);
+    background-color: var(--background-primary-color);
+
+    .ql-snow {
+        &.ql-toolbar {
+            font-family: inherit;
+            border: none;
+            border-bottom: 1px solid var(--border-grey-color);
+            color: var(--text-secondary-color);
+
+            .ql-picker-options {
+                padding: 6px;
+                background-color: var(--background-secondary-color);
+                border: 1px solid var(--border-grey-color) !important;
+                border-radius: var(--card-border-radius);
+                box-shadow: none;
+            }
+        }
+
+        &.ql-container {
+            border: none;
+        }
+
+        .ql-picker {
+            color: inherit;
+            font-size: inherit;
+            line-height: inherit;
+        }
+
+        .ql-stroke {
+            stroke: currentColor;
+        }
+    }
+
+    .ql-snow .ql-picker.ql-header {
+        width: auto;
+        margin-right: 10px;
+
+        @include media('<sm') {
+            margin-right: 0;
+        }
+    }
+
+    .ql-snow .ql-picker-label {
+        padding-right: 16px;
+
+        &::before {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+
+            @include media('<sm') {
+                width: 54px;
+            }
+        }
+    }
+
+    .ql-toolbar.ql-snow .ql-formats {
+        margin-right: 0;
+        border-right: 1px solid var(--border-grey-color);
+
+        @include media('<sm') {
+            border-right-width: 0;
+        }
+
+        &:last-child {
+            border: none;
+        }
+    }
+
+    .ql-snow.ql-toolbar button,
+    .ql-snow .ql-toolbar button {
+        width: 32px;
+        height: 26px;
+        padding: 2px 8px;
+
+        @include media('<sm') {
+            width: 24px;
+            padding: 2px;
+        }
+    }
+
+    .ql-snow.ql-toolbar button svg,
+    .ql-snow .ql-toolbar button svg {
+        vertical-align: top;
+        width: 100%;
+        height: 100%;
+    }
+
+    .ql-editor {
+        min-height: 9.3333rem;
+        padding: 13px 18px 20px;
+    }
+
+    .ql-container {
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+
+        p {
+            font-size: inherit;
+            line-height: 24/15*1em;
+            color: inherit;
+        }
+    }
+
+    .ql-snow.ql-toolbar button:hover,
+    .ql-snow .ql-toolbar button:hover,
+    .ql-snow.ql-toolbar button:focus,
+    .ql-snow .ql-toolbar button:focus,
+    .ql-snow.ql-toolbar button.ql-active,
+    .ql-snow .ql-toolbar button.ql-active,
+    .ql-snow.ql-toolbar .ql-picker-label:hover,
+    .ql-snow .ql-toolbar .ql-picker-label:hover,
+    .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+    .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+    .ql-snow.ql-toolbar .ql-picker-item:hover,
+    .ql-snow .ql-toolbar .ql-picker-item:hover,
+    .ql-snow.ql-toolbar .ql-picker-item.ql-selected, .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+        color: var(--blue-color);
+    }
+
+    .ql-snow.ql-toolbar button:hover .ql-stroke,
+    .ql-snow .ql-toolbar button:hover .ql-stroke,
+    .ql-snow.ql-toolbar button:focus .ql-stroke,
+    .ql-snow .ql-toolbar button:focus .ql-stroke,
+    .ql-snow.ql-toolbar button.ql-active .ql-stroke,
+    .ql-snow .ql-toolbar button.ql-active .ql-stroke,
+    .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+    .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke,
+    .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+    .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+    .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke,
+    .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke,
+    .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+    .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+    .ql-snow.ql-toolbar button:hover .ql-stroke-miter,
+    .ql-snow .ql-toolbar button:hover .ql-stroke-miter,
+    .ql-snow.ql-toolbar button:focus .ql-stroke-miter,
+    .ql-snow .ql-toolbar button:focus .ql-stroke-miter,
+    .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter,
+    .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter,
+    .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+    .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+    .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+    .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+    .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+    .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+    .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
+    .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+        stroke: var(--blue-color);
+    }
+}
