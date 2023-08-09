@@ -3,4 +3,5 @@ public class TrainingVacancy : Vacancy
 {
     public int Duration { get; set; }
     public int Fees { get; set; }
+    public string Slug { get; set; }
 }

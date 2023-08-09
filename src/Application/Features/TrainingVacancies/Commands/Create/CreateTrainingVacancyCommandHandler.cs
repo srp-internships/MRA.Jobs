@@ -23,6 +23,7 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
 
         var traningModel = _mapper.Map<TrainingVacancy>(request);
         traningModel.Category = category;
+        traningModel.Slug = traningModel.Title.ToLower().Trim();
         await _context.TrainingVacancies.AddAsync(traningModel, cancellationToken);
 
         var timelineEvent = new VacancyTimelineEvent
