@@ -6,6 +6,6 @@ public class GetJobVacancyBySlugQueryValidator : AbstractValidator<GetJobVacancy
 {
     public GetJobVacancyBySlugQueryValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Slug).NotEmpty();
     }
 }

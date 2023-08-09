@@ -1,7 +1,7 @@
 ﻿
 namespace MRA.Jobs.Domain.Entities;
 
-public abstract class User : UserIdentity<> /*BaseAuditableEntity*/
+public abstract class User : BaseAuditableEntity
 {
     public string Avatar { get; set; }
     public DateTime DateOfBirth { get; set; }

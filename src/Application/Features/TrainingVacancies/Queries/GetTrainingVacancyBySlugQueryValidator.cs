@@ -5,6 +5,6 @@ public class GetTrainingVacancyBySlugQueryValidator : AbstractValidator<GetTrain
 {
     public GetTrainingVacancyBySlugQueryValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Slug).NotEmpty();
     }
 }

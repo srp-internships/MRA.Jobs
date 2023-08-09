@@ -1213,15 +1213,15 @@
         }
       }
     },
-    "/api/applications/{Id}": {
+    "/api/applications/{slug}": {
       "get": {
         "tags": [
           "Applications"
         ],
-        "operationId": "Applications_GetApplicationById",
+        "operationId": "Applications_Get",
         "parameters": [
           {
-            "name": "Id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
@@ -1254,7 +1254,42 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/applications/withoutapplicantid": {
+      "post": {
+        "tags": [
+          "Applications"
+        ],
+        "operationId": "Applications_CreateApplicationWithoutApplicantId",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApplicationWithoutApplicantIdCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications/{Id}": {
       "put": {
         "tags": [
           "Applications"
@@ -1322,39 +1357,6 @@
               "application/json": {
                 "schema": {
                   "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/applications/withoutapplicantid": {
-      "post": {
-        "tags": [
-          "Applications"
-        ],
-        "operationId": "Applications_CreateApplicationWithoutApplicantId",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateApplicationWithoutApplicantIdCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "guid"
                 }
               }
             }
@@ -1577,20 +1579,19 @@
         }
       }
     },
-    "/api/categories/{id}": {
+    "/api/categories/{slug}": {
       "get": {
         "tags": [
           "Categories"
         ],
-        "operationId": "Categories_GetById",
+        "operationId": "Categories_Get",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1608,7 +1609,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/categories/{id}": {
       "put": {
         "tags": [
           "Categories"
@@ -1953,7 +1956,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/internships/{slug}": {
       "get": {
         "tags": [
           "Internships"
@@ -1961,12 +1966,11 @@
         "operationId": "Internships_GetInternshipById",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -2258,7 +2262,7 @@
         }
       }
     },
-    "/api/jobs/{id}": {
+    "/api/jobs/{slug}": {
       "get": {
         "tags": [
           "Jobs"
@@ -2266,12 +2270,11 @@
         "operationId": "Jobs_Get2",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -2284,79 +2287,6 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Jobs"
-        ],
-        "operationId": "Jobs_Update",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateJobVacancyCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "guid"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Jobs"
-        ],
-        "operationId": "Jobs_DeleteJobVacancy",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
                 }
               }
             }
@@ -2445,6 +2375,81 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TestResultDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/{id}": {
+      "put": {
+        "tags": [
+          "Jobs"
+        ],
+        "operationId": "Jobs_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateJobVacancyCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Jobs"
+        ],
+        "operationId": "Jobs_DeleteJobVacancy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -2874,7 +2879,7 @@
         }
       }
     },
-    "/api/trainings/{id}": {
+    "/api/trainings/{slug}": {
       "get": {
         "tags": [
           "Trainings"
@@ -2882,12 +2887,11 @@
         "operationId": "Trainings_GetTrainingVacancyById",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -2900,91 +2904,6 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_UpdateTrainingVacancy",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTrainingVacancyCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "guid"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_DeleteTrainingVacancy",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteTrainingVacancyCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
                 }
               }
             }
@@ -3080,6 +2999,93 @@
                 "schema": {
                   "type": "string",
                   "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trainings/{id}": {
+      "put": {
+        "tags": [
+          "Trainings"
+        ],
+        "operationId": "Trainings_UpdateTrainingVacancy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTrainingVacancyCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Trainings"
+        ],
+        "operationId": "Trainings_DeleteTrainingVacancy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteTrainingVacancyCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -3885,9 +3891,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
+          "slug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           }
         }
       },
