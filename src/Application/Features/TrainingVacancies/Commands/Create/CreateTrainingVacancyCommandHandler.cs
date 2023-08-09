@@ -23,7 +23,7 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
 
         var traningModel = _mapper.Map<TrainingVacancy>(request);
         traningModel.Category = category;
-        traningModel.Slug = traningModel.Title.ToLower().Trim();
+        traningModel.Slug = GenerateSlug(traningModel.Title);
         await _context.TrainingVacancies.AddAsync(traningModel, cancellationToken);
 
         var timelineEvent = new VacancyTimelineEvent
@@ -38,4 +38,5 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         await _context.SaveChangesAsync(cancellationToken);
         return traningModel.Id;
     }
+    public string GenerateSlug(string title) => $"trainings-{title.ToLower().Trim()}";
 }
