@@ -41,5 +41,5 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         return jobVacancy.Id;
     }
 
-    public string GenerateSlug(string title) => $"jobs-{title.ToLower().Trim()}";
+    private string GenerateSlug(string title) => $"jobs-{title.ToLower().Trim()}";
 }

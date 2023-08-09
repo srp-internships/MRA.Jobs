@@ -19,6 +19,5 @@ public class CreateVacancyCategoryCommandHandler : IRequestHandler<CreateVacancy
         await _context.SaveChangesAsync(cancellationToken);
         return vacancyCategory.Id;
     }
-
-    public string GenerateSlug(string title) => $"categories-{title.ToLower().Trim()}";
+    private string GenerateSlug(string title) => $"categories-{title.ToLower().Trim()}";
 }

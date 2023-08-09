@@ -39,5 +39,5 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         return internship.Id;
     }
 
-    public string GenerateSlug(string title) => $"internships-{title.ToLower().Trim()}";
+    private string GenerateSlug(string title) => $"internships-{title.ToLower().Trim()}";
 }

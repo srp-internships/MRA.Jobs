@@ -38,5 +38,5 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         await _context.SaveChangesAsync(cancellationToken);
         return traningModel.Id;
     }
-    public string GenerateSlug(string title) => $"trainings-{title.ToLower().Trim()}";
+    private string GenerateSlug(string title) => $"trainings-{title.ToLower().Trim()}";
 }
