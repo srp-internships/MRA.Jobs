@@ -17,14 +17,14 @@ public class GetVacancyCategoryBySlugQueryHandlerTests : BaseTestFixture
     [Test]
     public async Task Handle_GivenValidQuery_ShouldReturnVacancyCategoryDetailsDTO()
     {
-        var query = new GetVacancyCategoryBySlugQuery { Id = Guid.NewGuid() };
+        var query = new GetVacancyCategoryBySlugQuery { Slug= "categories-softwaredevelopment" };
 
         var VacancyCategory = new VacancyCategory
         {
-            Id = query.Id,
+            Id = Guid.NewGuid(),
             Name = "Software Development",
         };
-        _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(VacancyCategory);
+        _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>())).ReturnsAsync(VacancyCategory);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -39,9 +39,9 @@ public class GetVacancyCategoryBySlugQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetVacancyCategoryBySlugQuery { Id = Guid.NewGuid() };
+        var query = new GetVacancyCategoryBySlugQuery {Slug="fsfsefse"};
 
-        _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
+        _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((VacancyCategory)null);
 
         // Act + Assert
