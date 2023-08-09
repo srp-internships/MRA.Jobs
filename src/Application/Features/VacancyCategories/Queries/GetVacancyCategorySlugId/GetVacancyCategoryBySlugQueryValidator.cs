@@ -6,6 +6,6 @@ public class GetVacancyCategoryBySlugQueryValidator : AbstractValidator<GetVacan
 {
     public GetVacancyCategoryBySlugQueryValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Slug).NotEmpty();
     }
 }

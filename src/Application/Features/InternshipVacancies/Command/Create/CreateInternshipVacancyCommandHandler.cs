@@ -23,7 +23,7 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
         var internship = _mapper.Map<InternshipVacancy>(request);
-        internship.Slug = internship.Title.ToLower().Trim();
+        internship.Slug = GenerateSlug(internship.Title);
         await _context.Internships.AddAsync(internship, cancellationToken);
 
         var timelineEvent = new VacancyTimelineEvent
@@ -38,4 +38,6 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         await _context.SaveChangesAsync(cancellationToken);
         return internship.Id;
     }
+
+    public string GenerateSlug(string title) => $"internships-{title.ToLower().Trim()}";
 }

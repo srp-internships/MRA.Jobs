@@ -21,8 +21,8 @@ public class GetJobVacancyBySlugQueryHandler : IRequestHandler<GetJobVacancyBySl
         var jobVacancy= await _dbContext.JobVacancies.Include(i => i.History)
             .Include(i => i.Tags)
             .ThenInclude(t => t.Tag)
-            .FirstOrDefaultAsync(i => i.Id == request.Id);
-        _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Id);
+            .FirstOrDefaultAsync(i => i.Slug == request.Slug);
+        _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Slug);
         return _mapper.Map<JobVacancyDetailsDTO>(jobVacancy);
     }
 }
