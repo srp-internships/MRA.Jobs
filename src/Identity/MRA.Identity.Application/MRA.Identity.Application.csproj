@@ -7,7 +7,23 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj" />
       <ProjectReference Include="..\MRA.Identity.Domain\MRA.Identity.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Common\Exceptions\" />
+      <Folder Include="Common\Models\" />
+      <Folder Include="Common\Seive\" />
+      <Folder Include="Features\Applicants\Events\" />
+      <Folder Include="Features\Applicants\Query\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="11.0.0" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0" />
+      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
     </ItemGroup>
 
 </Project>
