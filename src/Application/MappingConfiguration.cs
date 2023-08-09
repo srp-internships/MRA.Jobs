@@ -7,7 +7,7 @@ using MRA.Jobs.Application.Contracts.Applicant.Responses;
 using MRA.Jobs.Application.Contracts.TagDTO;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 
-namespace MRA.Jobs.Application.Features;
+namespace MRA.Jobs.Application;
 public class MappingConfiguration
 {
     public static void ConfigureUserMap<TSource, TDestination>(Profile profile)
@@ -24,17 +24,17 @@ public class MappingConfiguration
         }
     }
     public static void ConfigureVacancyMap<TSource, TDestination>(Profile profile)
-{
-    if (typeof(TSource) == typeof(VacancyTimelineEvent) && typeof(TDestination) == typeof(TimeLineDetailsDto))
     {
+        if (typeof(TSource) == typeof(VacancyTimelineEvent) && typeof(TDestination) == typeof(TimeLineDetailsDto))
+        {
             profile.CreateMap<VacancyTimelineEvent, TimeLineDetailsDto>();
-           
+
+        }
+        else if (typeof(TSource) == typeof(Tag) && typeof(TDestination) == typeof(TagDto))
+        {
+            profile.CreateMap<Tag, TagDto>();
+        }
     }
-    else if (typeof(TSource) == typeof(Tag) && typeof(TDestination) == typeof(TagDto))
-    {
-        profile.CreateMap<Tag, TagDto>();
-    }
-}
 
 }
 

@@ -3,6 +3,7 @@ using MRA.Jobs.Application.Contracts.Reviewer.Response;
 
 namespace MRA.Jobs.Application.Features.Reviewer;
 using Domain.Entities;
+using MRA.Jobs.Application;
 using MRA.Jobs.Application.Contracts.TagDTO;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 

@@ -5,6 +5,7 @@ using MRA.Jobs.Application.Contracts.Identity.Events;
 namespace MRA.Jobs.Application.Features.Applicants;
 
 using Domain.Entities;
+using MRA.Jobs.Application;
 using MRA.Jobs.Application.Contracts.TagDTO;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 

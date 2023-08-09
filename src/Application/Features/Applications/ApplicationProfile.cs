@@ -3,6 +3,7 @@ using MRA.Jobs.Application.Contracts.Applications.Responses;
 
 namespace MRA.Jobs.Application.Features.Applications;
 
+using MRA.Jobs.Application;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 using MRA.Jobs.Domain.Entities;
 
