@@ -14,9 +14,11 @@ public class CreateVacancyCategoryCommandHandler : IRequestHandler<CreateVacancy
     public async Task<Guid> Handle(CreateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
         var vacancyCategory = _mapper.Map<VacancyCategory>(request);
-        vacancyCategory.Slug = vacancyCategory.Name.ToLower().Trim();
+        vacancyCategory.Slug = GenerateSlug(vacancyCategory.Name);
         await _context.Categories.AddAsync(vacancyCategory, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return vacancyCategory.Id;
     }
+
+    public string GenerateSlug(string title) => $"categories-{title.ToLower().Trim()}";
 }
