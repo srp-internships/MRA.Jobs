@@ -1,6 +1,4 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Queries;
-using MRA.Jobs.Application.Features.Applications.Query.GetApplicationById;
-
 namespace MRA.Jobs.Application.UnitTests.Applications;
 using MRA.Jobs.Application.Features.Applications.Query.GetApplicationBySlug;
 using MRA.Jobs.Domain.Entities;
