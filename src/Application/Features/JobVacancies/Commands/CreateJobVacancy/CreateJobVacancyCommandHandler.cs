@@ -24,7 +24,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
 
         var jobVacancy = _mapper.Map<JobVacancy>(request);
         jobVacancy.Category = category;
-        jobVacancy.Slug = jobVacancy.Title;
+        jobVacancy.Slug = GenerateSlug(jobVacancy.Title);
         await _dbContext.JobVacancies.AddAsync(jobVacancy, cancellationToken);
 
         var timelineEvent = new VacancyTimelineEvent
@@ -40,4 +40,6 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         await _dbContext.SaveChangesAsync(cancellationToken);
         return jobVacancy.Id;
     }
+
+    public string GenerateSlug(string title) => $"jobs-{title.ToLower().Trim()}";
 }
