@@ -24,16 +24,17 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
 
         var jobVacancy = _mapper.Map<JobVacancy>(request);
         jobVacancy.Category = category;
+        jobVacancy.Slug = jobVacancy.Title;
         await _dbContext.JobVacancies.AddAsync(jobVacancy, cancellationToken);
 
         var timelineEvent = new VacancyTimelineEvent
         {
             VacancyId = jobVacancy.Id,
-            Vacancy=jobVacancy,
+            Vacancy = jobVacancy,
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Job vacancy created",
-           CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetId() ?? Guid.Empty
         };
         await _dbContext.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
