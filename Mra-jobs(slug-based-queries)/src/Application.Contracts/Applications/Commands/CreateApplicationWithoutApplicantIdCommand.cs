@@ -5,3 +5,4 @@ public class CreateApplicationWithoutApplicantIdCommand : IRequest<Guid>
     public Guid VacancyId { get; set; }
     public string CV { get; set; }
 }
+eSDFSfwgwertwe
