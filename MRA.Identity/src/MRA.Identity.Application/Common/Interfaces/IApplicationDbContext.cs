@@ -1,14 +1,10 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using MRA.Identity.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace MRA.Identity.Application.Common.Interfaces;
 
 
 public interface IApplicationDbContext
 {
-    public DbSet<User> Users { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
