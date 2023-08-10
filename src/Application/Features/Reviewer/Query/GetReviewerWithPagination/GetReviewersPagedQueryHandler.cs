@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Seive;
+using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Reviewer.Response;
 
@@ -20,7 +20,7 @@ public class GetReviewersPagedQueryHandler : IRequestHandler<PaggedListQuery<Rev
 
     public async Task<PaggedList<ReviewerListDto>> Handle(PaggedListQuery<ReviewerListDto> request, CancellationToken cancellationToken)
     {
-        var result = _sieveProcessor.ApplyAdnGetPaggedList(request, _dbContext.Reviewers.AsNoTracking(), _mapper.Map<ReviewerListDto>);
+        var result = _sieveProcessor.ApplyAdnGetPagedList(request, _dbContext.Reviewers.AsNoTracking(), _mapper.Map<ReviewerListDto>);
         return await Task.FromResult(result);
     }
 }

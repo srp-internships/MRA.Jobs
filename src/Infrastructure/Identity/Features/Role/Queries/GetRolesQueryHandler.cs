@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Common.Seive;
+﻿using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Shared.Role.Responses;
@@ -18,7 +18,7 @@ public class GetRolesQueryHandler : IRequestHandler<PaggedListQuery<RoleResponse
 
     public async Task<PaggedList<RoleResponse>> Handle(PaggedListQuery<RoleResponse> request, CancellationToken cancellationToken)
     {
-        var result = _sieveProcessor.ApplyAdnGetPaggedList(request, _context.Roles, FromEntity);
+        var result = _sieveProcessor.ApplyAdnGetPagedList(request, _context.Roles, FromEntity);
         return await Task.FromResult(result);
     }
 

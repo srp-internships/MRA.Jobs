@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Infrastructure;
-using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Services;
 using MRA.Jobs.Web;
 using Newtonsoft.Json;

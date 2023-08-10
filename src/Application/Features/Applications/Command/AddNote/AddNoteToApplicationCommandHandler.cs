@@ -18,7 +18,7 @@ public class AddNoteToApplicationCommandHandler : IRequestHandler<AddNoteToAppli
     public async Task<bool> Handle(AddNoteToApplicationCommand request, CancellationToken cancellationToken)
     {
         var application = await _context.Applications.FindAsync(request.Id);
-        _ = application ?? throw new NotFoundException(nameof(Application), request.Id); ;
+        _ = application ?? throw new NotFoundException(nameof(Application), request.Id);
 
         var timelineEvent = new ApplicationTimelineEvent
         {

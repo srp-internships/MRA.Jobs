@@ -3,8 +3,9 @@ using MRA.Jobs.Application.Common.Behaviours;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper.Internal;
 using Microsoft.Extensions.Configuration;
-using Sieve.Services;
 using MRA.Jobs.Application.Common.Seive;
+using Sieve.Services;
+using MRA.Jobs.Application.Common.Sieve;
 
 namespace MRA.Jobs.Application;
 

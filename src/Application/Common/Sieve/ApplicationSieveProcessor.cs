@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Reflection;
+using Microsoft.Extensions.Options;
 using MRA.Jobs.Application.Contracts.Common;
 using Sieve.Models;
 using Sieve.Services;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
-namespace MRA.Jobs.Application.Common.Seive;
+namespace MRA.Jobs.Application.Common.Sieve;
 
 public class ApplicationSieveProcessor : SieveProcessor, IApplicationSieveProcessor
 {
@@ -15,7 +14,7 @@ public class ApplicationSieveProcessor : SieveProcessor, IApplicationSieveProces
         _services = services;
     }
 
-    public PaggedList<TResult> ApplyAdnGetPaggedList<TSource, TResult>(SieveModel model, IQueryable<TSource> source, Func<TSource, TResult> converter)
+    public PaggedList<TResult> ApplyAdnGetPagedList<TSource, TResult>(SieveModel model, IQueryable<TSource> source, Func<TSource, TResult> converter)
     {
         source = Apply(model, source, applyPagination: false);
         var totalCount = source.Count();

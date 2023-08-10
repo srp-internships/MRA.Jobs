@@ -22,6 +22,7 @@ public static class ConfigureServices
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         var dbConectionString = configuration.GetConnectionString("SqlServer");
+        
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();

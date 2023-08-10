@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Seive;
+using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 
@@ -19,7 +19,7 @@ public class GetApplicationsPagedQueryHandler : IRequestHandler<PaggedListQuery<
 
     public Task<PaggedList<ApplicationListDTO>> Handle(PaggedListQuery<ApplicationListDTO> request, CancellationToken cancellationToken)
     {
-        var result = _sieveProcessor.ApplyAdnGetPaggedList(request, _dbContext.Applications.AsNoTracking(), _mapper.Map<ApplicationListDTO>);
+        var result = _sieveProcessor.ApplyAdnGetPagedList(request, _dbContext.Applications.AsNoTracking(), _mapper.Map<ApplicationListDTO>);
         return Task.FromResult(result);
     }
 }

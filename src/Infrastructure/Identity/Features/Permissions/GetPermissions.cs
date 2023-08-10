@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Common.Seive;
+﻿using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Shared.Pemission.Responces;
@@ -18,7 +18,7 @@ public class GetPermissionsHandler : IRequestHandler<PaggedListQuery<PermissionR
 
     public async Task<PaggedList<PermissionResponse>> Handle(PaggedListQuery<PermissionResponse> request, CancellationToken cancellationToken)
     {
-        var result = _sieveProcessor.ApplyAdnGetPaggedList(request, _context.Permissions, FromEntity);
+        var result = _sieveProcessor.ApplyAdnGetPagedList(request, _context.Permissions, FromEntity);
         return await Task.FromResult(result);
     }
 

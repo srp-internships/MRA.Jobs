@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Seive;
+using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
@@ -19,7 +19,7 @@ public class GetTrainingVacanciesQueryHandler : IRequestHandler<PaggedListQuery<
 
     public async Task<PaggedList<TrainingVacancyListDTO>> Handle(PaggedListQuery<TrainingVacancyListDTO> request, CancellationToken cancellationToken)
     {
-        var result = _sieveProcessor.ApplyAdnGetPaggedList(request, _context.TrainingVacancies.AsNoTracking(), _mapper.Map<TrainingVacancyListDTO>);
+        var result = _sieveProcessor.ApplyAdnGetPagedList(request, _context.TrainingVacancies.AsNoTracking(), _mapper.Map<TrainingVacancyListDTO>);
         return await Task.FromResult(result);
     }
 }

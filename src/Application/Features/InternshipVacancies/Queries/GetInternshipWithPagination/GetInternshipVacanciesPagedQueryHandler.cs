@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Seive;
+using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 
@@ -18,7 +18,7 @@ public class GetInternshipVacanciesPagedQueryHandler : IRequestHandler<PaggedLis
     }
     public async Task<PaggedList<InternshipVacancyListResponce>> Handle(PaggedListQuery<InternshipVacancyListResponce> request, CancellationToken cancellationToken)
     {
-        var result = _sieveProcessor.ApplyAdnGetPaggedList(request,
+        var result = _sieveProcessor.ApplyAdnGetPagedList(request,
             _context.Internships
             .Include(i => i.Category)
             .AsNoTracking(),
