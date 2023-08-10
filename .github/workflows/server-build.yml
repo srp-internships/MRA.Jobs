@@ -19,9 +19,10 @@ jobs:
       with:
         dotnet-version: 7.0.x
         # change
-    - uses: 280780363/sqlserver-action@v1.0
+    - name: Install a SQL Server suite of tools
+      uses: potatoqualitee/mssqlsuite@v1.7
       with:
-        accept eula: Y #Required, ACCEPT_EULA confirms your acceptance of the End-User Licensing Agreement.
+        install: sqlengine
         #change
     - name: Restore dependencies
       run: dotnet restore
