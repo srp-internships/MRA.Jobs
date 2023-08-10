@@ -19,6 +19,12 @@ jobs:
       with:
         dotnet-version: 7.0.x
         # change
+    - name: Set up environment
+      run: |
+        echo "ASPNETCORE_ENVIRONMENT=Development" >> $GITHUB_ENV
+        echo "ConnectionStrings__DefaultConnection=data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True" >> $GITHUB_ENV
+        echo "ConnectionStrings__SqlServer=data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True" >> $GITHUB_ENV
+        
     - name: Install a SQL Server suite of tools
       uses: potatoqualitee/mssqlsuite@v1.7
       with:
