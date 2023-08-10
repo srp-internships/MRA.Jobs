@@ -20,8 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
-        <PackageReference Include="Azure.Identity" Version="1.9.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.5" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
         <PackageReference Include="nunit" Version="3.13.3" />

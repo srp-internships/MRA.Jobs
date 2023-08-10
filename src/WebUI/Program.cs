@@ -1,8 +1,6 @@
 using System.Net.Mime;
 using System.Security.Cryptography.X509Certificates;
-using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
 using MRA.Jobs.Application.Common.Interfaces;
@@ -23,16 +21,16 @@ if (builder.Environment.IsProduction())
     var x509Certificate = x509Store.Certificates
         .Find(
             X509FindType.FindByThumbprint,
-            builder.Configuration["AzureADCertThumbprint"],
+            builder.Configuration["AzureKeyVault:AzureADCertThumbprint"],
             validOnly: false)
         .OfType<X509Certificate2>()
         .Single();
 
     builder.Configuration.AddAzureKeyVault(
-        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+        new Uri($"https://{builder.Configuration["AzureKeyVault:KeyVaultName"]}.vault.azure.net/"),
         new ClientCertificateCredential(
-            builder.Configuration["AzureADDirectoryId"],
-            builder.Configuration["AzureADApplicationId"],
+            builder.Configuration["AzureKeyVault:AzureADDirectoryId"],
+            builder.Configuration["AzureKeyVault:AzureADApplicationId"],
             x509Certificate));
 }
 
