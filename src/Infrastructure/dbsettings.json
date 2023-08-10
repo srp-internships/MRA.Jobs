@@ -7,7 +7,7 @@
     "EnableSsl": true
   },
   "ConnectionStrings": {
-    "DefaultConnection": "data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True",
+    "DefaultConnection": "data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;Trusted_Connection=False;TrustServerCertificate=True",
     "SqlServer": "data source=localhost; initial catalog=MRA_Jobs; integrated security=true; persist security info=true;TrustServerCertificate=True"
   }
 }
