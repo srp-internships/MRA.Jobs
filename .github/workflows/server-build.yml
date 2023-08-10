@@ -18,11 +18,6 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-        # change
-    - uses: 280780363/sqlserver-action@v1.0
-      with:
-        accept eula: Y #Required, ACCEPT_EULA confirms your acceptance of the End-User Licensing Agreement.
-        #change
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
