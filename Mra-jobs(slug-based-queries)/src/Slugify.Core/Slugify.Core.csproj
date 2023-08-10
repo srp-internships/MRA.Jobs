@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyTitle>Slugify Core</AssemblyTitle>
+
+    <VersionPrefix>5.0.0</VersionPrefix>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Slugify.Core</AssemblyName>
+    <PackageId>Slugify.Core</PackageId>
+    <PackageTags>URL;Slug;Web;Slugify</PackageTags>
+    <PackageReleaseNotes>5.0.0 - Added support for Non-Ascii languages for SlugHelperForNonAsciiLanguades
+4.0.0 - Bug fix relase from 3.0.0
+3.0.0 - Much improved performance and memory usage. Config file renamed. Potentially some breaking changes but none we're aware of
+2.4.0 - NetStandard 2.0 support only
+2.3.0 - ISlugHelper interface added. Thanks @jcharlesworthuk
+2.2.2 - NetStandard 2.0
+2.2.1 - NuGet package updates
+2.2.0 - Minor tweaks
+    </PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/ctolkien/Slugify</PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/ctolkien/Slugify</RepositoryUrl>
+    <Authors>Chad Tolkien;Federico Cingolani</Authors>
+    <Description>Simple Slug / Clean URL generator helper for Microsoft .NET framework and .NET Standard.
+
+With default settings, you will get an hyphenized, lowercase, alphanumeric version of any string you please, with any diacritics removed and collapsed whitespace, collapsed dashes and trimmed whitespace.</Description>
+
+    <!-- Sourcelink support -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+
+  </PropertyGroup>
+
+  <!-- Deterministic builds -->
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Update="icon.png" Pack="true" PackagePath="">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
