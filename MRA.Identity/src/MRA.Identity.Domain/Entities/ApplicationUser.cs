@@ -2,7 +2,6 @@
 
 namespace MRA.Identity.Domain.Entities;
 
-public class ApplicationUser:IdentityUser<Guid>
+public class ApplicationUser : IdentityUser<Guid>
 {
-    
 }

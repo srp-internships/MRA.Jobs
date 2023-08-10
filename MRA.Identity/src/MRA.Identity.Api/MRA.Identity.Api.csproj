@@ -7,16 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\api\" />
+        <Folder Include="wwwroot\api\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MRA.Identity.Infrastructure\MRA.Identity.Infrastructure.csproj" />
+        <ProjectReference Include="..\MRA.Identity.Infrastructure\MRA.Identity.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

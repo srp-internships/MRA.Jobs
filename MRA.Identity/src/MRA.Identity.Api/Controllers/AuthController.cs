@@ -7,14 +7,15 @@ namespace MRA.Identity.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class JwtIdentityController:ControllerBase
+public class AuthController : ControllerBase
 {
     private readonly ISender _mediator;
-    public JwtIdentityController(ISender mediator)
+
+    public AuthController(ISender mediator)
     {
         _mediator = mediator;
     }
-    
+
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserCommand request)
     {
@@ -22,7 +23,7 @@ public class JwtIdentityController:ControllerBase
         return result == null ? Unauthorized() : Ok(result);
     }
 
-    
+
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserCommand request)
     {

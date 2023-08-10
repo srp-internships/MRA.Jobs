@@ -4,25 +4,30 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipWithPagination;
-public class GetInternshipVacanciesPagedQueryHandler : IRequestHandler<PaggedListQuery<InternshipVacancyListResponce>, PaggedList<InternshipVacancyListResponce>>
+
+public class GetInternshipVacanciesPagedQueryHandler : IRequestHandler<PagedListQuery<InternshipVacancyListResponse>,
+    PagedList<InternshipVacancyListResponse>>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IApplicationSieveProcessor _sieveProcessor;
     private readonly IMapper _mapper;
+    private readonly IApplicationSieveProcessor _sieveProcessor;
 
-    public GetInternshipVacanciesPagedQueryHandler(IApplicationDbContext context, IApplicationSieveProcessor sieveProcessor, IMapper mapper)
+    public GetInternshipVacanciesPagedQueryHandler(IApplicationDbContext context,
+        IApplicationSieveProcessor sieveProcessor, IMapper mapper)
     {
         _context = context;
         _sieveProcessor = sieveProcessor;
         _mapper = mapper;
     }
-    public async Task<PaggedList<InternshipVacancyListResponce>> Handle(PaggedListQuery<InternshipVacancyListResponce> request, CancellationToken cancellationToken)
+
+    public async Task<PagedList<InternshipVacancyListResponse>> Handle(
+        PagedListQuery<InternshipVacancyListResponse> request, CancellationToken cancellationToken)
     {
-        var result = _sieveProcessor.ApplyAdnGetPagedList(request,
+        PagedList<InternshipVacancyListResponse> result = _sieveProcessor.ApplyAdnGetPagedList(request,
             _context.Internships
-            .Include(i => i.Category)
-            .AsNoTracking(),
-            _mapper.Map<InternshipVacancyListResponce>);
+                .Include(i => i.Category)
+                .AsNoTracking(),
+            _mapper.Map<InternshipVacancyListResponse>);
         return await Task.FromResult(result);
     }
 }

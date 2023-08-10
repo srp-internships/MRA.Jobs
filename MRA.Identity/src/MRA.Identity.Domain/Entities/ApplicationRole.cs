@@ -1,9 +1,7 @@
-﻿
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace MRA.Identity.Domain.Entities;
 
-public class ApplicationRole:IdentityRole<Guid>
+public class ApplicationRole : IdentityRole<Guid>
 {
-    
 }

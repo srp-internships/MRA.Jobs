@@ -9,21 +9,33 @@ namespace MRA.Jobs.Application.Common.Sieve;
 public class ApplicationSieveProcessor : SieveProcessor, IApplicationSieveProcessor
 {
     private readonly IServiceProvider _services;
-    public ApplicationSieveProcessor(IOptions<SieveOptions> options, ISieveCustomFilterMethods sieveCustomFilter, IServiceProvider services) : base(options, sieveCustomFilter)
+
+    public ApplicationSieveProcessor(IOptions<SieveOptions> options, ISieveCustomFilterMethods sieveCustomFilter,
+        IServiceProvider services) : base(options, sieveCustomFilter)
     {
         _services = services;
     }
 
-    public PaggedList<TResult> ApplyAdnGetPagedList<TSource, TResult>(SieveModel model, IQueryable<TSource> source, Func<TSource, TResult> converter)
+    public PagedList<TResult> ApplyAdnGetPagedList<TSource, TResult>(SieveModel model, IQueryable<TSource> source,
+        Func<TSource, TResult> converter)
     {
         source = Apply(model, source, applyPagination: false);
-        var totalCount = source.Count();
-        var pageSize = model.PageSize ?? Options.Value.DefaultPageSize;
+        int totalCount = source.Count();
+        int pageSize = model.PageSize ?? Options.Value.DefaultPageSize;
         pageSize = Math.Min(Options?.Value.MaxPageSize ?? int.MaxValue, pageSize);
-        var currentPage = model.Page ?? 1;
-        var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
-        var result = ApplyPagination(model, source).ToArray().Select(converter).ToList();
-        return new PaggedList<TResult> { TotalCount = totalCount, PageSize = pageSize, TotalPages = totalPages, CurrentPageNumber = model.Page ?? 1, Items = result, HasPreviousPage = currentPage > 1, HasNextPage = currentPage < totalPages };
+        int currentPage = model.Page ?? 1;
+        int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+        List<TResult> result = ApplyPagination(model, source).ToArray().Select(converter).ToList();
+        return new PagedList<TResult>
+        {
+            TotalCount = totalCount,
+            PageSize = pageSize,
+            TotalPages = totalPages,
+            CurrentPageNumber = model.Page ?? 1,
+            Items = result,
+            HasPreviousPage = currentPage > 1,
+            HasNextPage = currentPage < totalPages
+        };
     }
 
     protected override SievePropertyMapper MapProperties(SievePropertyMapper mapper)

@@ -13,21 +13,23 @@ public class GetRolePermissionsQueryHandler : IRequestHandler<GetRolePermissions
         _context = context;
     }
 
-    public async Task<IEnumerable<PermissionResponse>> Handle(GetRolePermissionsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<PermissionResponse>> Handle(GetRolePermissionsQuery request,
+        CancellationToken cancellationToken)
     {
-        var permissions = await _context.RolePermissions.Where(r => r.RoleId == request.Id).Select(r => r.Permission).ToListAsync();
+        List<Permission> permissions = await _context.RolePermissions.Where(r => r.RoleId == request.Id)
+            .Select(r => r.Permission).ToListAsync();
         return permissions.Select(FromEntity).ToArray();
     }
 
-    private PermissionResponse FromEntity(Entities.Permission p)
+    private PermissionResponse FromEntity(Permission p)
     {
-        return new PermissionResponse()
+        return new PermissionResponse
         {
             Id = p.Id,
             Name = p.Name,
             Group = p.Group,
             DisplayName = p.Name,
-            GroupDisplayName = p.Group,
+            GroupDisplayName = p.Group
         };
     }
 }

@@ -1,18 +1,20 @@
-﻿using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Infrastructure.Persistence;
+﻿using System.Text.Json.Serialization;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using MRA.Jobs.Application.Common.Interfaces;
+using MRA.Jobs.Infrastructure.Persistence;
+using MRA.Jobs.Web.Filters;
+using MRA.Jobs.Web.Services;
 using NSwag;
 using NSwag.Generation.Processors.Security;
-using MRA.Jobs.Web.Services;
-using MRA.Jobs.Web.Filters;
-using System.Text.Json.Serialization;
 
 namespace MRA.Jobs.Web;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddWebUIServices(this IServiceCollection services)
+    public static void AddWebUiServices(this IServiceCollection services,IConfiguration configuration)
     {
         services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -27,7 +29,7 @@ public static class ConfigureServices
             {
                 options.Filters.Add<ApiExceptionFilterAttribute>();
             })
-        .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
         services.AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters();
@@ -38,19 +40,19 @@ public static class ConfigureServices
         services.Configure<ApiBehaviorOptions>(options =>
             options.SuppressModelStateInvalidFilter = true);
 
-        services.AddOpenApiDocument(configure =>
-        {
-            configure.Title = "MRA.Jobs API";
-            configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
-                Type = OpenApiSecuritySchemeType.ApiKey,
-                Name = "Authorization",
-                In = OpenApiSecurityApiKeyLocation.Header,
-                Description = "Type into the textbox: Bearer {your JWT token}."
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(System.Text.Encoding.UTF8
+                            .GetBytes(configuration.GetSection("JwtSettings")["SecurityKey"]!)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
 
-            configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
-        });
-        return services;
     }
 }

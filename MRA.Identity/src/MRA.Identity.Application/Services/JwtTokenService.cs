@@ -1,29 +1,34 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MRA.Identity.Application.Common.Interfaces.Services;
 
 namespace MRA.Identity.Application.Services;
 
-internal class JwtTokenService:IJwtTokenService
+internal class JwtTokenService : IJwtTokenService
 {
-    internal static string SecretKey="123";
+    private readonly IConfiguration _configuration;
+
+    public JwtTokenService(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
 
     public string CreateTokenByClaims(IList<Claim> claims)
     {
+        SymmetricSecurityKey key = new(Encoding.UTF8
+            .GetBytes(_configuration.GetSection("JwtSettings")["SecurityKey"]!));
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8
-            .GetBytes(SecretKey));
+        SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha512Signature);
 
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-        var token = new JwtSecurityToken(
+        JwtSecurityToken token = new(
             claims: claims,
-            expires: DateTime.Now.AddDays(1),
+            expires: DateTime.Now.AddDays(int.Parse(_configuration.GetSection("JwtSettings")["ExpireDayFromNow"]!)),
             signingCredentials: creds);
 
-        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        string? jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwt;
     }

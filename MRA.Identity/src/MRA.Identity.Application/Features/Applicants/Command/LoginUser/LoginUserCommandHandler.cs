@@ -8,10 +8,11 @@ using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Applicants.Command.LoginUser;
 
-public class LoginUserCommandHandler:IRequestHandler<LoginUserCommand,JwtTokenResponse?>
+public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, JwtTokenResponse?>
 {
     private readonly IJwtTokenService _jwtTokenService;
     private readonly UserManager<ApplicationUser> _userManager;
+
     public LoginUserCommandHandler(IJwtTokenService jwtTokenService, UserManager<ApplicationUser> userManager)
     {
         _jwtTokenService = jwtTokenService;
@@ -20,9 +21,10 @@ public class LoginUserCommandHandler:IRequestHandler<LoginUserCommand,JwtTokenRe
 
     public async Task<JwtTokenResponse?> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var user=await _userManager.Users.FirstOrDefaultAsync(u => u.UserName ==request.Username, cancellationToken: cancellationToken);
-        
-        var success =user != null && await _userManager.CheckPasswordAsync(user, request.Password);
+        ApplicationUser? user =
+            await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.Username, cancellationToken);
+
+        bool success = user != null && await _userManager.CheckPasswordAsync(user, request.Password);
 
         if (success)
         {
@@ -31,6 +33,7 @@ public class LoginUserCommandHandler:IRequestHandler<LoginUserCommand,JwtTokenRe
                 AccessToken = _jwtTokenService.CreateTokenByClaims(await _userManager.GetClaimsAsync(user))
             };
         }
+
         return null;
     }
 }

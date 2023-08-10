@@ -5,8 +5,6 @@ namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
 
 public class CreateVacancyCategoryCommandHandlerTests : BaseTestFixture
 {
-    private CreateVacancyCategoryCommandHandler _handler;
-
     [SetUp]
     public override void Setup()
     {
@@ -17,27 +15,25 @@ public class CreateVacancyCategoryCommandHandlerTests : BaseTestFixture
             Mapper);
     }
 
+    private CreateVacancyCategoryCommandHandler _handler;
+
     [Test]
     public async Task Handle_ValidRequest_ShouldCreateVacancyCategory()
     {
         // Arrange
-        var request = new CreateVacancyCategoryCommand
-        {
-            Name = "Software Development"
-        };
+        CreateVacancyCategoryCommand request = new CreateVacancyCategoryCommand { Name = "Software Development" };
 
-        var categorySetMock = new Mock<DbSet<VacancyCategory>>();
-        var newEntityGuid = Guid.NewGuid();
+        Mock<DbSet<VacancyCategory>> categorySetMock = new Mock<DbSet<VacancyCategory>>();
+        Guid newEntityGuid = Guid.NewGuid();
         categorySetMock.Setup(d => d.AddAsync(
-            It.IsAny<VacancyCategory>(), 
+            It.IsAny<VacancyCategory>(),
             It.IsAny<CancellationToken>())
         ).Callback<VacancyCategory,
             CancellationToken>((v, ct) => v.Id = newEntityGuid);
-        _dbContextMock.Setup(x => x.Categories).
-            Returns(categorySetMock.Object);
+        _dbContextMock.Setup(x => x.Categories).Returns(categorySetMock.Object);
 
         // Act
-        var result = await _handler.Handle(request,CancellationToken.None);
+        Guid result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.Should().Be(newEntityGuid);
@@ -49,4 +45,3 @@ public class CreateVacancyCategoryCommandHandlerTests : BaseTestFixture
         _dbContextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }
-

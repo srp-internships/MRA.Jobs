@@ -5,22 +5,26 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyWithPagination;
 
-public class GetJobVacanciesPagedQueryHandler : IRequestHandler<PaggedListQuery<JobVacancyListDTO>, PaggedList<JobVacancyListDTO>>
+public class
+    GetJobVacanciesPagedQueryHandler : IRequestHandler<PagedListQuery<JobVacancyListDto>, PagedList<JobVacancyListDto>>
 {
     private readonly IApplicationDbContext _dbContext;
-    private readonly IApplicationSieveProcessor _sieveProcessor;
     private readonly IMapper _mapper;
+    private readonly IApplicationSieveProcessor _sieveProcessor;
 
-    public GetJobVacanciesPagedQueryHandler(IApplicationDbContext dbContext, IApplicationSieveProcessor sieveProcessor, IMapper mapper)
+    public GetJobVacanciesPagedQueryHandler(IApplicationDbContext dbContext, IApplicationSieveProcessor sieveProcessor,
+        IMapper mapper)
     {
         _dbContext = dbContext;
         _sieveProcessor = sieveProcessor;
         _mapper = mapper;
     }
 
-    public async Task<PaggedList<JobVacancyListDTO>> Handle(PaggedListQuery<JobVacancyListDTO> request, CancellationToken cancellationToken)
+    public async Task<PagedList<JobVacancyListDto>> Handle(PagedListQuery<JobVacancyListDto> request,
+        CancellationToken cancellationToken)
     {
-        var result = _sieveProcessor.ApplyAdnGetPagedList(request, _dbContext.JobVacancies.Include(j=>j.Category).AsNoTracking(), _mapper.Map<JobVacancyListDTO>);
+        PagedList<JobVacancyListDto> result = _sieveProcessor.ApplyAdnGetPagedList(request,
+            _dbContext.JobVacancies.Include(j => j.Category).AsNoTracking(), _mapper.Map<JobVacancyListDto>);
         return await Task.FromResult(result);
     }
 }

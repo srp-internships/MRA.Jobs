@@ -1,12 +1,11 @@
-﻿namespace MRA.Jobs.Application.UnitTests.TrainingModels;
-
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Features.TrainingVacancies.Queries;
-using MRA.Jobs.Domain.Entities;
+
+namespace MRA.Jobs.Application.UnitTests.TrainingModels;
+
 public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
 {
-    private GetTrainingVacancyByIdQueryHandler _handler;
-
     [SetUp]
     public override void Setup()
     {
@@ -15,13 +14,15 @@ public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
         _handler = new GetTrainingVacancyByIdQueryHandler(_dbContextMock.Object, Mapper);
     }
 
+    private GetTrainingVacancyByIdQueryHandler _handler;
+
     [Test]
     [Ignore("Игнорируем тест из-за TimeLine & Tag")]
     public async Task Handle_GivenValidQuery_ShouldReturnJobVacancyDetailsDTO()
     {
-        var query = new GetTrainingVacancyByIdQuery { Id = Guid.NewGuid() };
+        GetTrainingVacancyByIdQuery query = new GetTrainingVacancyByIdQuery { Id = Guid.NewGuid() };
 
-        var trainingModel = new TrainingVacancy
+        TrainingVacancy trainingModel = new TrainingVacancy
         {
             Id = query.Id,
             Title = "Job Title",
@@ -33,10 +34,12 @@ public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
             Duration = 1,
             Fees = 1
         };
-        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(trainingModel);
+        _dbContextMock
+            .Setup(x => x.TrainingVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(trainingModel);
 
         // Act
-        var result = await _handler.Handle(query, CancellationToken.None);
+        TrainingVacancyDetailedResponse result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
         result.Id.Should().Be(trainingModel.Id);
@@ -55,9 +58,10 @@ public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetTrainingVacancyByIdQuery { Id = Guid.NewGuid() };
+        GetTrainingVacancyByIdQuery query = new GetTrainingVacancyByIdQuery { Id = Guid.NewGuid() };
 
-        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
+        _dbContextMock.Setup(x =>
+                x.TrainingVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((TrainingVacancy)null);
 
         // Act + Assert

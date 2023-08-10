@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace MRA.Jobs.Infrastructure.Identity.Authorization;
 
-class ClaimsTransformation : IClaimsTransformation
+internal class ClaimsTransformation : IClaimsTransformation
 {
     private readonly CurrentUserService _currentUser;
 
@@ -22,6 +22,7 @@ class ClaimsTransformation : IClaimsTransformation
             _currentUser.UserName = principal.FindFirstValue(JwtRegisteredClaimNames.Name);
             _currentUser.Roles = principal.FindAll(JwtRegisteredCustomClaimNames.Role).Select(c => c.Value).ToArray();
         }
+
         return await Task.FromResult(principal);
     }
 }

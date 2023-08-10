@@ -17,11 +17,11 @@ public class GetReviewerByIdQueryValidatorTests
     public void Validate_IdIsZero()
     {
         // Arrange
-        var query = new GetReviewerByIdQuery { Id = Guid.Empty };
-        
+        GetReviewerByIdQuery query = new GetReviewerByIdQuery { Id = Guid.Empty };
+
         // Act 
-        var result = _validator.TestValidate(query);
-        
+        TestValidationResult<GetReviewerByIdQuery> result = _validator.TestValidate(query);
+
         // Assert
         result.ShouldHaveValidationErrorFor(a => a.Id);
     }
@@ -30,11 +30,11 @@ public class GetReviewerByIdQueryValidatorTests
     public void Validate_IdIsNotZero()
     {
         // Arrange 
-        var query = new GetReviewerByIdQuery { Id = Guid.NewGuid() };
-        
+        GetReviewerByIdQuery query = new GetReviewerByIdQuery { Id = Guid.NewGuid() };
+
         // Act 
-        var result = _validator.TestValidate(query);
-        
+        TestValidationResult<GetReviewerByIdQuery> result = _validator.TestValidate(query);
+
         // Assert 
         result.ShouldNotHaveValidationErrorFor(a => a.Id);
     }

@@ -3,11 +3,9 @@ using MRA.Jobs.Application.Contracts.Tests.Commands;
 using MRA.Jobs.Application.Features.Tests.Commands.CreateTestResult;
 
 namespace MRA.Jobs.Application.UnitTests.Tests;
+
 public class CreateTestResultCommandHandlerTests : BaseTestFixture
 {
-    private CreateTestResultCommandHandler _handler;
-    private Mock<ITestHttpClientService> _httpClientMock;
-
     [SetUp]
     public override void Setup()
     {
@@ -20,35 +18,32 @@ public class CreateTestResultCommandHandlerTests : BaseTestFixture
             _dbContextMock.Object);
     }
 
+    private CreateTestResultCommandHandler _handler;
+    private Mock<ITestHttpClientService> _httpClientMock;
+
     [Test]
     public async Task Handle_ValidRequest_ShouldCreateTestResult()
     {
         // Arrange
-        var testResult = new TestResultDTO
-        {
-            Score = 1,
-            TestId = Guid.NewGuid(),
-            UserId = Guid.NewGuid()
-        };
+        TestResultDto testResult = new TestResultDto { Score = 1, TestId = Guid.NewGuid(), UserId = Guid.NewGuid() };
 
-        var request = new CreateTestResultCommand
+        CreateTestResultCommand request = new CreateTestResultCommand
         {
-            Score = testResult.Score,
-            TestId = testResult.TestId,
-            UserId = testResult.UserId
+            Score = testResult.Score, TestId = testResult.TestId, UserId = testResult.UserId
         };
 
         _httpClientMock.Setup(x => x.GetTestResultRequest(request)).ReturnsAsync(testResult);
 
-        var testResultDbSetMock = new Mock<DbSet<TestResult>>();
-        var newEntityGuid = Guid.NewGuid();
-        testResultDbSetMock.Setup(d => d.AddAsync(It.IsAny<TestResult>(), It.IsAny<CancellationToken>())).Callback<TestResult, CancellationToken>((t, ct) => t.Id = newEntityGuid);
+        Mock<DbSet<TestResult>> testResultDbSetMock = new Mock<DbSet<TestResult>>();
+        Guid newEntityGuid = Guid.NewGuid();
+        testResultDbSetMock.Setup(d => d.AddAsync(It.IsAny<TestResult>(), It.IsAny<CancellationToken>()))
+            .Callback<TestResult, CancellationToken>((t, ct) => t.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.TestResults).Returns(testResultDbSetMock.Object);
 
         _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        TestResultDto result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.Should().Be(testResult);

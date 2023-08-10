@@ -6,39 +6,38 @@ namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
 [TestFixture]
 public class DeleteVacancyCategoryCommandValidatorTests
 {
-    private DeleteVacancyCategoryCommandValidator _validator;
-
     [SetUp]
     public void SetUp()
     {
         _validator = new DeleteVacancyCategoryCommandValidator();
     }
 
+    private DeleteVacancyCategoryCommandValidator _validator;
+
 
     [Test]
     public void Validate_IdIsEmpty_ShouldReturnValidationError()
     {
         // Arrange
-        var command = new DeleteVacancyCategoryCommand { Id = Guid.Empty };
+        DeleteVacancyCategoryCommand command = new DeleteVacancyCategoryCommand { Id = Guid.Empty };
 
         // Act
-       var result =_validator.TestValidate(command);
+        TestValidationResult<DeleteVacancyCategoryCommand> result = _validator.TestValidate(command);
 
         // Assert
-       result.ShouldHaveValidationErrorFor(x=>x.Id);
+        result.ShouldHaveValidationErrorFor(x => x.Id);
     }
 
     [Test]
     public void Validate_IdIsNotEmpty_ShouldNotReturnValidationError()
     {
         // Arrange
-        var command = new DeleteVacancyCategoryCommand { Id = Guid.NewGuid() };
+        DeleteVacancyCategoryCommand command = new DeleteVacancyCategoryCommand { Id = Guid.NewGuid() };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<DeleteVacancyCategoryCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Id);
     }
-    
 }

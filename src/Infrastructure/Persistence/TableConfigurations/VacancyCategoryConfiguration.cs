@@ -15,4 +15,3 @@ public class VacancyCategoryConfiguration : IEntityTypeConfiguration<VacancyCate
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
-

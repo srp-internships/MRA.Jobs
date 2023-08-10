@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace MRA.Jobs.Application.Common.Interfaces;
-
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using MRA.Jobs.Domain.Entities;
 
 public interface IApplicationDbContext
 {

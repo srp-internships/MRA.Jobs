@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,16 +16,18 @@ namespace MRA.Jobs.Infrastructure;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddAppIdentity(configuration);
         services.AddMediatR(typeof(ConfigureServices).Assembly);
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-        var dbConectionString = configuration.GetConnectionString("SqlServer");
-        
+        string dbConectionString = configuration.GetConnectionString("SqlServer");
+
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+            options.UseSqlServer(dbConectionString,
+                builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddScoped<ITestHttpClientService, TestHttpClientService>();
@@ -42,28 +45,27 @@ public static class ConfigureServices
         services.AddOptions();
 
         services.AddScoped<ICurrentUserService, CurrentUserService>();
-        services.AddScoped<Microsoft.AspNetCore.Authentication.IClaimsTransformation, ClaimsTransformation>();
+        services.AddScoped<IClaimsTransformation, ClaimsTransformation>();
         services.AddScoped<IAuthorizationHandler, CheckCurrentUserAuthHandler>();
         services.AddScoped<TokenService>();
         services.AddTransient<IIdentityService, IdentityService>();
 
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
-        {
-            options.User.RequireUniqueEmail = true;
-            options.SignIn.RequireConfirmedPhoneNumber = true;
-            options.SignIn.RequireConfirmedEmail = true;
-            options.Password.RequireNonAlphanumeric = true;
-            options.Password.RequireLowercase = true;
-            options.Password.RequireUppercase = true;
-            options.Password.RequireDigit = true;
-            options.Password.RequiredLength = 8;
-
-        })
+            {
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedPhoneNumber = true;
+                options.SignIn.RequireConfirmedEmail = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+            })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        var settings = services.BuildServiceProvider().GetService<IOptions<JwtSettings>>().Value;
-        var tokenValidationParameters = new TokenValidationParameters
+        JwtSettings settings = services.BuildServiceProvider().GetService<IOptions<JwtSettings>>().Value;
+        TokenValidationParameters tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = settings.SigningCredentials.Key,
@@ -77,26 +79,27 @@ public static class ConfigureServices
 
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication(o =>
-        {
-            o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = tokenValidationParameters;
-        });
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = tokenValidationParameters;
+            });
 
         services.AddAuthorization(auth =>
         {
-            auth.DefaultPolicy = new AuthorizationPolicyBuilder(new string[] { JwtBearerDefaults.AuthenticationScheme })
-                    .RequireAuthenticatedUser()
-                    .AddRequirements(new CheckCurrentUserRequirement())
-                    .Build();
+            auth.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser()
+                .AddRequirements(new CheckCurrentUserRequirement())
+                .Build();
         });
 
         return services;
     }
 }
 
-public class InfrastructureSieveConfigurationsAssemblyMarker : ISieveConfigurationsAssemblyMarker { };
-
+public class InfrastructureSieveConfigurationsAssemblyMarker : ISieveConfigurationsAssemblyMarker
+{
+}

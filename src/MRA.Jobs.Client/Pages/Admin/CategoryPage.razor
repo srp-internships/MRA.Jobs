@@ -1,6 +1,6 @@
 ﻿@page "/dashboard/categories"
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses
 @layout Dashboard
-@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @inject ICategoryService CService
 
 <h1>Category</h1>
@@ -18,7 +18,7 @@ else
             </MatExpansionPanelSummary>
             <MatExpansionPanelDetails>
                 <MatTextField PlaceHolder="data" @bind-Value="@CService.creatingEntity.Name"></MatTextField>
-                <MatButton  Outlined="true" @onclick="@CService.OnSaveCreateClick">Insert</MatButton>
+                <MatButton Outlined="true" @onclick="@CService.OnSaveCreateClick">Insert</MatButton>
             </MatExpansionPanelDetails>
         </MatExpansionPanel>
     </MatAccordion>
@@ -46,21 +46,22 @@ else
                 }
                 else
                 {
-                    <MatButton @onclick="() =>CService.OnUpdateClick(context)" Style="color:#2094CC" Icon="edit">Update</MatButton>
+                    <MatButton @onclick="() => CService.OnUpdateClick(context)" Style="color:#2094CC" Icon="edit">Update</MatButton>
                 }
-                <MatButton @onclick="()=>CService.OnDeleteClick(context.Id)" Style="color:#2094CC" Icon="delete">Delete</MatButton>
+                <MatButton @onclick="() => CService.OnDeleteClick(context.Id)" Style="color:#2094CC" Icon="delete">Delete</MatButton>
             </td>
         </MatTableRow>
     </MatTable>
 }
-        
+
 @code {
     private List<CategoryResponse> _category;
     bool panelOpenState;
 
     protected override async Task OnInitializedAsync()
     {
-        _category = await CService.GetAllCategory();  
+        _category = await CService.GetAllCategory();
         Console.WriteLine(CService.Category);
     }
+
 }

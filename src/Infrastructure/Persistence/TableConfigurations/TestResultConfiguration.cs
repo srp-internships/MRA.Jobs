@@ -22,4 +22,3 @@ public class TestResultConfiguration : IEntityTypeConfiguration<TestResult>
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
-

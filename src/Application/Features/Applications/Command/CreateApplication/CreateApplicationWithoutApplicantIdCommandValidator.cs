@@ -1,7 +1,9 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
-public class CreateApplicationWithoutApplicantIdCommandValidator : AbstractValidator<CreateApplicationWithoutApplicantIdCommand>
+
+public class
+    CreateApplicationWithoutApplicantIdCommandValidator : AbstractValidator<CreateApplicationWithoutApplicantIdCommand>
 {
     public CreateApplicationWithoutApplicantIdCommandValidator()
     {

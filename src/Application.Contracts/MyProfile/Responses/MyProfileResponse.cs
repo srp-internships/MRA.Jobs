@@ -6,8 +6,10 @@ namespace MRA.Jobs.Application.Contracts.MyProfile.Responses;
 public class MyProfileResponse
 {
     public string Avatar { get; set; }
+
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime DateOfBirth { get; set; }
+
     public string Email { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }

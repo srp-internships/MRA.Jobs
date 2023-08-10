@@ -1,6 +1,7 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
+
 public class CreateTrainingVacancyCommandValidator : AbstractValidator<CreateTrainingVacancyCommand>
 {
     public CreateTrainingVacancyCommandValidator()

@@ -1,12 +1,11 @@
 ﻿using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
+using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
-using MRA.Jobs.Domain.Entities;
+
 public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
 {
-    private GetJobVacancyByIdQueryHandler _handler;
-
     [SetUp]
     public override void Setup()
     {
@@ -14,13 +13,15 @@ public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
         _handler = new GetJobVacancyByIdQueryHandler(_dbContextMock.Object, Mapper);
     }
 
+    private GetJobVacancyByIdQueryHandler _handler;
+
     [Test]
     [Ignore("Игнорируем тест из-за TimeLine & Tag")]
     public async Task Handle_GivenValidQuery_ShouldReturnJobVacancyDetailsDTO()
     {
-        var query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
+        GetJobVacancyByIdQuery query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
 
-        var jobVacancy = new JobVacancy
+        JobVacancy jobVacancy = new JobVacancy
         {
             Id = query.Id,
             Title = "Job Title",
@@ -32,10 +33,11 @@ public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
             RequiredYearOfExperience = 1,
             WorkSchedule = WorkSchedule.FullTime
         };
-        _dbContextMock.Setup(x => x.JobVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(jobVacancy);
+        _dbContextMock.Setup(x => x.JobVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(jobVacancy);
 
         // Act
-        var result = await _handler.Handle(query, CancellationToken.None);
+        JobVacancyDetailsDto result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
         result.Id.Should().Be(jobVacancy.Id);
@@ -54,7 +56,7 @@ public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
+        GetJobVacancyByIdQuery query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.JobVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((JobVacancy)null);

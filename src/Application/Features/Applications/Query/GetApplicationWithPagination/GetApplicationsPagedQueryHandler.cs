@@ -4,22 +4,28 @@ using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 
 namespace MRA.Jobs.Application.Features.Applications.Query.GetApplicationWithPagination;
-public class GetApplicationsPagedQueryHandler : IRequestHandler<PaggedListQuery<ApplicationListDTO>, PaggedList<ApplicationListDTO>>
+
+public class
+    GetApplicationsPagedQueryHandler : IRequestHandler<PagedListQuery<ApplicationListDto>,
+        PagedList<ApplicationListDto>>
 {
     private readonly IApplicationDbContext _dbContext;
-    private readonly IApplicationSieveProcessor _sieveProcessor;
     private readonly IMapper _mapper;
+    private readonly IApplicationSieveProcessor _sieveProcessor;
 
-    public GetApplicationsPagedQueryHandler(IApplicationDbContext dbContext, IApplicationSieveProcessor sieveProcessor, IMapper mapper)
+    public GetApplicationsPagedQueryHandler(IApplicationDbContext dbContext, IApplicationSieveProcessor sieveProcessor,
+        IMapper mapper)
     {
         _dbContext = dbContext;
         _sieveProcessor = sieveProcessor;
         _mapper = mapper;
     }
 
-    public Task<PaggedList<ApplicationListDTO>> Handle(PaggedListQuery<ApplicationListDTO> request, CancellationToken cancellationToken)
+    public Task<PagedList<ApplicationListDto>> Handle(PagedListQuery<ApplicationListDto> request,
+        CancellationToken cancellationToken)
     {
-        var result = _sieveProcessor.ApplyAdnGetPagedList(request, _dbContext.Applications.AsNoTracking(), _mapper.Map<ApplicationListDTO>);
+        PagedList<ApplicationListDto> result = _sieveProcessor.ApplyAdnGetPagedList(request,
+            _dbContext.Applications.AsNoTracking(), _mapper.Map<ApplicationListDto>);
         return Task.FromResult(result);
     }
 }

@@ -17,10 +17,10 @@ public class GetVacancyCategoryByIdQueryValidatorTests
     public void Validate_IdIsZero()
     {
         // Arrange
-        var query = new GetJobVacancyByIdQuery { Id = Guid.Empty };
+        GetJobVacancyByIdQuery query = new GetJobVacancyByIdQuery { Id = Guid.Empty };
 
         // Act
-        var result = _validator.TestValidate(query);
+        TestValidationResult<GetJobVacancyByIdQuery> result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
@@ -30,10 +30,10 @@ public class GetVacancyCategoryByIdQueryValidatorTests
     public void Validate_IdIsNotZero()
     {
         // Arrange
-        var query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
+        GetJobVacancyByIdQuery query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
 
         // Act
-        var result = _validator.TestValidate(query);
+        TestValidationResult<GetJobVacancyByIdQuery> result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Id);
