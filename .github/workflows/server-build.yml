@@ -12,6 +12,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      DOTNET_RUNNING_IN_GITHUB_ACTIONS: 1
+
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
