@@ -23,9 +23,12 @@ public static class ConfigureServices
         services.AddMediatR(typeof(ConfigureServices).Assembly);
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+        
         var dbConectionString = configuration.GetConnectionString("SqlServer");
+        
         services.AddDbContext<ApplicationDbContext>((flag is not null) ? options => options.UseInMemoryDatabase("InMemoryDatabase") : options =>  
             options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddScoped<ITestHttpClientService, TestHttpClientService>();
