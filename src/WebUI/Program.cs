@@ -1,4 +1,8 @@
 using System.Net.Mime;
+using System.Security.Cryptography.X509Certificates;
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
 using MRA.Jobs.Application.Common.Interfaces;
@@ -10,6 +14,28 @@ using Newtonsoft.Json;
 using Sieve.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+if (builder.Environment.IsProduction())
+{
+    using var x509Store = new X509Store(StoreLocation.CurrentUser);
+
+    x509Store.Open(OpenFlags.ReadOnly);
+
+    var x509Certificate = x509Store.Certificates
+        .Find(
+            X509FindType.FindByThumbprint,
+            builder.Configuration["AzureADCertThumbprint"],
+            validOnly: false)
+        .OfType<X509Certificate2>()
+        .Single();
+
+    builder.Configuration.AddAzureKeyVault(
+        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+        new ClientCertificateCredential(
+            builder.Configuration["AzureADDirectoryId"],
+            builder.Configuration["AzureADApplicationId"],
+            x509Certificate));
+}
+
 builder.Configuration.AddJsonFile("dbsettings.json", optional: true);
 
 builder.Services.AddApplicationServices(builder.Configuration);
