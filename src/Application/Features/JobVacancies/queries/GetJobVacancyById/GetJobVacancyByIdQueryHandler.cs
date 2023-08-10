@@ -7,6 +7,7 @@ namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
 public class GetJobVacancyByIdQueryHandler : IRequestHandler<GetJobVacancyByIdQuery, JobVacancyDetailsDTO>
 {
     private readonly IApplicationDbContext _dbContext;
+
     private readonly IMapper _mapper;
 
     public GetJobVacancyByIdQueryHandler(IApplicationDbContext dbContext, IMapper mapper)

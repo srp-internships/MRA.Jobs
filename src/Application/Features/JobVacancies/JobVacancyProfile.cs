@@ -18,5 +18,6 @@ public class JobVacancyProfile : Profile
         CreateMap<DeleteJobVacancyCommand, JobVacancy>();
         MappingConfiguration.ConfigureVacancyMap<VacancyTimelineEvent, TimeLineDetailsDto>(this);
         MappingConfiguration.ConfigureVacancyMap<Tag, TagDto>(this);
+        CreateMap<JobVacancy, JobVacancyByCategoryDTO>();
     }
 }

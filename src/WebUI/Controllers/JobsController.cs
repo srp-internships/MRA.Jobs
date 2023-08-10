@@ -5,16 +5,18 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Tests.Commands;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+using MRA.Jobs.Application.Features.JobVacancies.queries.GetCategoryuWithJobs;
 using AddTagsToJobVacancyCommand = MRA.Jobs.Application.Contracts.JobVacancies.Commands.AddTagsToJobVacancyCommand;
 
 namespace MRA.Jobs.Web.Controllers;
 
 
 [ApiController]
-[Route("api/[controller]")] 
+[Route("api/[controller]")]
 public class JobsController : ApiControllerBase
 {
-    
+
 
     private readonly ILogger<JobsController> _logger;
 
@@ -91,5 +93,20 @@ public class JobsController : ApiControllerBase
         request.JobVacancyId = id;
         await Mediator.Send(request, cancellationToken);
         return Ok();
+    }
+
+    [HttpGet("/categories")]
+    public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
+    {
+        var query = new GetCategoriesQuery();
+        var categories = await Mediator.Send(query);
+        return Ok(categories);
+    }
+
+    [HttpGet("/categories/{IdCategory}")]
+    public async Task<IActionResult> GetJobsPagedByCategoryQueryHandler([FromRoute] Guid IdCategory, CancellationToken cancellationToken)
+    {
+        var category = await Mediator.Send(new GetJobsPagedByCategoryQuery { CatrgoryId = IdCategory }, cancellationToken);
+        return Ok(category);
     }
 }
