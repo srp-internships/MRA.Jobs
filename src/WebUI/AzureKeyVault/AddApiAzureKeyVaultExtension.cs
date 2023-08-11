@@ -3,9 +3,9 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace MRA.Jobs.Web.AzureKeyVault;
 
-public static class AddApiAzureKeyVaultExtension
-{
-    public static void ConfigureAzureKeyVault(WebApplicationBuilder builder)
+public static class WebApplicationBuilderExtension
+{ 
+    public static void ConfigureAzureKeyVault(this WebApplicationBuilder builder)
     {
             using var x509Store = new X509Store(StoreLocation.CurrentUser);
             x509Store.Open(OpenFlags.ReadOnly);

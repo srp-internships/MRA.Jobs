@@ -16,7 +16,7 @@ using MRA.Jobs.Web.AzureKeyVault;
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
 {
-    AddApiAzureKeyVaultExtension.ConfigureAzureKeyVault(builder);
+    builder.ConfigureAzureKeyVault();
 }
 
 builder.Configuration.AddJsonFile("dbsettings.json", optional: true);
