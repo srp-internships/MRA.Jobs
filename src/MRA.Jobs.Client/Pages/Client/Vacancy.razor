@@ -1,7 +1,7 @@
 ﻿@page "/vacancy"
 @layout Main
-@using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @inject IVacancyService VacancyService
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @implements IDisposable
 
 <!-- Vacancy page -->
@@ -19,7 +19,7 @@
                 <div class="input-group-append">
                     <button
                         class="btn btn-outline-primary"
-                        @onclick="(() => BtnSearch(Title))"
+                        @onclick="() => BtnSearch(Title)"
                         type="button">
                         Search
                     </button>
@@ -40,17 +40,17 @@
             else
             {
                 <div>
-                @foreach (var vacancy in VacancyService.Vacanceies)
-                {
-                    <a href="">
-                        <div class="card-vacancy w-100 bg-white shadow-lg rounded mb-4">
-                            <div class="d-flex flex-column p-3">
-                                <h2 class="mb-2 text-black">@vacancy.Title</h2>
-                                <p class="mb-2 text-black">@vacancy.ShortDescription</p>
+                    @foreach (var vacancy in VacancyService.Vacanceies)
+                    {
+                        <a href="">
+                            <div class="card-vacancy w-100 bg-white shadow-lg rounded mb-4">
+                                <div class="d-flex flex-column p-3">
+                                    <h2 class="mb-2 text-black">@vacancy.Title</h2>
+                                    <p class="mb-2 text-black">@vacancy.ShortDescription</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                }
+                        </a>
+                    }
                 </div>
             }
         </div>
@@ -60,13 +60,13 @@
 
 @code {
 
-    private List<JobVacancyListDTO> _vacancies;
+    private List<JobVacancyListDto> _vacancies;
     public string? Title;
+
     protected override async Task OnInitializedAsync()
     {
         _vacancies = await VacancyService.GetAllVacancy();
     }
-    
 
 
     void BtnSearch(string text)
@@ -76,12 +76,13 @@
         VacancyService.OnChange += StateHasChanged;
         foreach (var vacancey in VacancyService.Vacanceies)
         {
-            Console.WriteLine("title: "+ vacancey.Title);
+            Console.WriteLine("title: " + vacancey.Title);
         }
     }
-    
+
     public void Dispose()
     {
         VacancyService.OnChange -= StateHasChanged;
     }
+
 }

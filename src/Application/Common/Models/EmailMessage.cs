@@ -1,4 +1,5 @@
 ﻿namespace MRA.Jobs.Application.Common.Models;
+
 public class EmailMessage
 {
     public string To { get; set; }

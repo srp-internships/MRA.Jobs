@@ -1,5 +1,6 @@
 ﻿namespace MRA.Jobs.Application.Contracts.Common;
-public class TestResultDTO
+
+public class TestResultDto
 {
     public Guid UserId { get; set; }
     public Guid TestId { get; set; }

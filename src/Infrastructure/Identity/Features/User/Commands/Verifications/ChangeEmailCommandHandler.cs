@@ -15,17 +15,30 @@ public class ChangeEmailCommandHandler : IRequestHandler<ChangeEmailCommand, Uni
 
     public async Task<Unit> Handle(ChangeEmailCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+        ApplicationUser user = await _userManager.FindByIdAsync(request.UserId.ToString());
         if (user == null)
+        {
             throw new NotFoundException(nameof(ApplicationUser), request.UserId);
+        }
 
         if (user.Email.Equals(request.NewEmail))
+        {
             return await Task.FromResult(Unit.Value);
+        }
 
         if (_userManager.Users.Any(u => u.NormalizedEmail == request.NewEmail && u.Id != u.Id))
-            throw new ValidationException(new[] { new ValidationFailure() { PropertyName = nameof(request.NewEmail), ErrorMessage = $"Account with {request.NewEmail} email already exist!" } });
+        {
+            throw new ValidationException(new[]
+            {
+                new ValidationFailure
+                {
+                    PropertyName = nameof(request.NewEmail),
+                    ErrorMessage = $"Account with {request.NewEmail} email already exist!"
+                }
+            });
+        }
 
-        var token = await _userManager.GenerateChangeEmailTokenAsync(user, request.NewEmail);
+        string token = await _userManager.GenerateChangeEmailTokenAsync(user, request.NewEmail);
 
         //TODO: Send email to confirm email
         //var confirmationLink = Path.Combine(.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, token, newEmail }, Request.Scheme);

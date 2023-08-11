@@ -9,7 +9,7 @@ using MRA.Jobs.Client.Services.ApplicationService;
 using MRA.Jobs.Client.Services.InternshipsServices;
 using MRA.Jobs.Client.Services.TrainingServices;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
+WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddMatBlazor();
 builder.RootComponents.Add<App>("#app");

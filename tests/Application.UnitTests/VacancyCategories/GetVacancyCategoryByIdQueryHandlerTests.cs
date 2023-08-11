@@ -1,12 +1,11 @@
 ﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryById;
 
 namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
 
 public class GetVacancyCategoryByIdQueryHandlerTests : BaseTestFixture
 {
-    private GetVacancyCategoryByIdQueryHandler _handler;
-
     [SetUp]
     public override void Setup()
     {
@@ -14,32 +13,30 @@ public class GetVacancyCategoryByIdQueryHandlerTests : BaseTestFixture
         _handler = new GetVacancyCategoryByIdQueryHandler(_dbContextMock.Object, Mapper);
     }
 
+    private GetVacancyCategoryByIdQueryHandler _handler;
+
     [Test]
     public async Task Handle_GivenValidQuery_ShouldReturnVacancyCategoryDetailsDTO()
     {
-        var query = new GetVacancyCategoryByIdQuery { Id = Guid.NewGuid() };
+        GetVacancyCategoryByIdQuery query = new GetVacancyCategoryByIdQuery { Id = Guid.NewGuid() };
 
-        var VacancyCategory = new VacancyCategory
-        {
-            Id = query.Id,
-            Name = "Software Development",
-        };
-        _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(VacancyCategory);
+        VacancyCategory VacancyCategory = new VacancyCategory { Id = query.Id, Name = "Software Development" };
+        _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(VacancyCategory);
 
         // Act
-        var result = await _handler.Handle(query, CancellationToken.None);
+        CategoryResponse result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
         result.Id.Should().Be(VacancyCategory.Id);
         result.Name.Should().Be(VacancyCategory.Name);
- 
     }
 
     [Test]
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetVacancyCategoryByIdQuery { Id = Guid.NewGuid() };
+        GetVacancyCategoryByIdQuery query = new GetVacancyCategoryByIdQuery { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((VacancyCategory)null);

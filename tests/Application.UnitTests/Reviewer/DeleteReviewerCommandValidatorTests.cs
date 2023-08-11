@@ -3,9 +3,8 @@ using MRA.Jobs.Application.Features.Reviewer.Command.DeleteReviewer;
 
 namespace MRA.Jobs.Application.UnitTests.Reviewer;
 
-public class DeleteReviewerCommandValidatorTests 
+public class DeleteReviewerCommandValidatorTests
 {
-    
     private DeleteReviewerCommandValidator _validator;
 
     [SetUp]
@@ -19,11 +18,11 @@ public class DeleteReviewerCommandValidatorTests
     public void Validate_IdIsEmpty_ShouldReturnValidationError()
     {
         // Arrange
-        var command = new DeleteReviewerCommand { Id = Guid.Empty };
-        
+        DeleteReviewerCommand command = new DeleteReviewerCommand { Id = Guid.Empty };
+
         // Act 
-        var result = _validator.TestValidate(command);
-        
+        TestValidationResult<DeleteReviewerCommand> result = _validator.TestValidate(command);
+
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
     }
@@ -32,11 +31,11 @@ public class DeleteReviewerCommandValidatorTests
     public void Validate_IdIsNotEmpty_ShouldNotReturnValidationError()
     {
         // Arrange 
-        var command = new DeleteReviewerCommand { Id = Guid.NewGuid() };
-        
+        DeleteReviewerCommand command = new DeleteReviewerCommand { Id = Guid.NewGuid() };
+
         // Act 
-        var result = _validator.TestValidate(command);
-        
+        TestValidationResult<DeleteReviewerCommand> result = _validator.TestValidate(command);
+
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Id);
     }

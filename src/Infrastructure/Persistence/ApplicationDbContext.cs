@@ -1,17 +1,15 @@
-﻿using System.Linq.Expressions;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using MRA.Jobs.Infrastructure.Identity.Entities;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 
 namespace MRA.Jobs.Infrastructure.Persistence;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IApplicationDbContext
 {
-    private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
+    private readonly IMediator _mediator;
 
     internal ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
         base(options)
@@ -53,11 +51,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public DbSet<TrainingVacancy> TrainingVacancies { get; set; }
 
     #region override
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
-       // builder.Entity<BaseEntity>().HasQueryFilter(e => !e.IsDeleted);
+        // builder.Entity<BaseEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Ignore<BaseEntity>();
-        builder.Ignore<BaseAuditableEntity>();        
+        builder.Ignore<BaseAuditableEntity>();
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(builder);
     }
@@ -70,13 +69,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         //await _mediator.DispatchDomainEvents(this); //Right now we do not need domain events.
-        foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted && e.Entity is ISoftDelete))
+        foreach (EntityEntry entry in ChangeTracker.Entries()
+                     .Where(e => e.State == EntityState.Deleted && e.Entity is ISoftDelete))
         {
             entry.State = EntityState.Modified;
             ((ISoftDelete)entry.Entity).IsDeleted = true;
         }
+
         return await base.SaveChangesAsync(cancellationToken);
     }
+
     #endregion
 }
 
@@ -84,17 +86,17 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
 {
     public ApplicationDbContext CreateDbContext(string[] args)
     {
-        var basePath = Directory.GetCurrentDirectory();
-        var configuration = new ConfigurationBuilder()
+        string basePath = Directory.GetCurrentDirectory();
+        IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(basePath)
-            .AddJsonFile("dbsettings.json", optional: true, reloadOnChange: true)
-            .AddJsonFile($"dbsettings.Development.json", optional: true, reloadOnChange: true)
+            .AddJsonFile("dbsettings.json", true, true)
+            .AddJsonFile("dbsettings.Development.json", true, true)
             .Build();
 
-        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+        DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder =
+            new DbContextOptionsBuilder<ApplicationDbContext>();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }
-
 }

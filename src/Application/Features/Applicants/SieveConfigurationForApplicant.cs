@@ -1,7 +1,7 @@
 ﻿using Sieve.Services;
 
 namespace MRA.Jobs.Application.Features.Applicants;
-using MRA.Jobs.Domain.Entities;
+
 public class SieveConfigurationForApplicant : ISieveConfiguration
 {
     public void Configure(SievePropertyMapper mapper)

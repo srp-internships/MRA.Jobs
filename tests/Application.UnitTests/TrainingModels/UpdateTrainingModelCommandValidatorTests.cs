@@ -6,22 +6,22 @@ namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 [TestFixture]
 public class UpdateTrainingModelCommandValidatorTests
 {
-    private UpdateTrainingVacancyCommandValidator _validator;
-
     [SetUp]
     public void Setup()
     {
         _validator = new UpdateTrainingVacancyCommandValidator();
     }
 
+    private UpdateTrainingVacancyCommandValidator _validator;
+
     [Test]
     public void Validate_IdIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { Id = Guid.Empty };
+        UpdateTrainingVacancyCommand command = new UpdateTrainingVacancyCommand { Id = Guid.Empty };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
@@ -31,10 +31,10 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_TitleIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { Title = null };
+        UpdateTrainingVacancyCommand command = new UpdateTrainingVacancyCommand { Title = null };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Title);
@@ -44,10 +44,10 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_ShortDescriptionIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { ShortDescription = null };
+        UpdateTrainingVacancyCommand command = new UpdateTrainingVacancyCommand { ShortDescription = null };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.ShortDescription);
@@ -57,10 +57,10 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_DescriptionIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { Description = null };
+        UpdateTrainingVacancyCommand command = new UpdateTrainingVacancyCommand { Description = null };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Description);
@@ -70,10 +70,10 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_PublishDateIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { PublishDate = DateTime.MinValue };
+        UpdateTrainingVacancyCommand command = new UpdateTrainingVacancyCommand { PublishDate = DateTime.MinValue };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.PublishDate);
@@ -83,10 +83,10 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_EndDateIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { EndDate = DateTime.MinValue };
+        UpdateTrainingVacancyCommand command = new UpdateTrainingVacancyCommand { EndDate = DateTime.MinValue };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.EndDate);
@@ -96,10 +96,10 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_CategoryIdIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { CategoryId = Guid.Empty };
+        UpdateTrainingVacancyCommand command = new UpdateTrainingVacancyCommand { CategoryId = Guid.Empty };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.CategoryId);
@@ -109,10 +109,10 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_DurationIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { Duration = 0 };
+        UpdateTrainingVacancyCommand command = new UpdateTrainingVacancyCommand { Duration = 0 };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Duration);
@@ -122,10 +122,10 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_FeesIsRequired()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { Fees = 0 };
+        UpdateTrainingVacancyCommand command = new UpdateTrainingVacancyCommand { Fees = 0 };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Fees);
@@ -135,7 +135,7 @@ public class UpdateTrainingModelCommandValidatorTests
     public void Validate_GivenValidCommand_ShouldNotHaveErrors()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand
+        UpdateTrainingVacancyCommand command = new UpdateTrainingVacancyCommand
         {
             Id = Guid.NewGuid(),
             Title = "Job Title",
@@ -149,7 +149,7 @@ public class UpdateTrainingModelCommandValidatorTests
         };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();

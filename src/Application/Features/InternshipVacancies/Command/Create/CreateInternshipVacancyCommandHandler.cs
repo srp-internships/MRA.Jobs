@@ -1,15 +1,16 @@
-﻿using MRA.Jobs.Application.Common.Security;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
+
 public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInternshipVacancyCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
-    private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTime _dateTime;
+    private readonly IMapper _mapper;
 
-    public CreateInternshipVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
+    public CreateInternshipVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
+        ICurrentUserService currentUserService)
     {
         _context = context;
         _mapper = mapper;
@@ -19,13 +20,13 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
 
     public async Task<Guid> Handle(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
-        var category = await _context.Categories.FindAsync(request.CategoryId);
+        VacancyCategory category = await _context.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
-        var internship = _mapper.Map<InternshipVacancy>(request);
+        InternshipVacancy internship = _mapper.Map<InternshipVacancy>(request);
         await _context.Internships.AddAsync(internship, cancellationToken);
 
-        var timelineEvent = new VacancyTimelineEvent
+        VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
         {
             VacancyId = internship.Id,
             EventType = TimelineEventType.Created,

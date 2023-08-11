@@ -13,4 +13,3 @@ public class TimelineEventConfiguration : IEntityTypeConfiguration<TimelineEvent
         builder.Property(te => te.EventType).HasColumnType("int");
     }
 }
-

@@ -1,6 +1,7 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
+
 public class CreateApplicationCommandValidator : AbstractValidator<CreateApplicationCommand>
 {
     public CreateApplicationCommandValidator()

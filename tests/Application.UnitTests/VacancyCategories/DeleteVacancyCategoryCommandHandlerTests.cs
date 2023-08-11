@@ -1,11 +1,10 @@
-﻿using MRA.Jobs.Application.Features.VacancyCategories.Command.DeleteVacancyCategory;
-using DeleteVacancyCategoryCommand = MRA.Jobs.Application.Contracts.VacancyCategories.Commands.DeleteVacancyCategoryCommand;
+﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
+using MRA.Jobs.Application.Features.VacancyCategories.Command.DeleteVacancyCategory;
 
 namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
+
 public class DeleteVacancyCategoryCommandHandlerTests : BaseTestFixture
 {
-    private DeleteVacancyCategoryCommandHandler _handler;
-
     [SetUp]
     public void SetUp()
     {
@@ -13,20 +12,22 @@ public class DeleteVacancyCategoryCommandHandlerTests : BaseTestFixture
         _handler = new DeleteVacancyCategoryCommandHandler(_dbContextMock.Object);
     }
 
+    private DeleteVacancyCategoryCommandHandler _handler;
+
     [Test]
     public async Task Handle_CategoryVacancyExists_ShouldRemoveCategoryVacancy()
     {
         //Arrange
-        var vacancyCategory = new VacancyCategory { Id = Guid.NewGuid() };
+        VacancyCategory vacancyCategory = new VacancyCategory { Id = Guid.NewGuid() };
         _dbContextMock.Setup(x => x.Categories.FindAsync(
-            new object[] { vacancyCategory.Id },
-            It.IsAny<CancellationToken>()))
+                new object[] { vacancyCategory.Id },
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(vacancyCategory);
 
-        var command = new DeleteVacancyCategoryCommand { Id = vacancyCategory.Id };
+        DeleteVacancyCategoryCommand command = new DeleteVacancyCategoryCommand { Id = vacancyCategory.Id };
 
         // Act
-        var result = await _handler.Handle(command, default);
+        bool result = await _handler.Handle(command, default);
 
         // Assert
         _dbContextMock.Verify(x => x.Categories.Remove(vacancyCategory), Times.Once);
@@ -38,11 +39,11 @@ public class DeleteVacancyCategoryCommandHandlerTests : BaseTestFixture
     public void Handle_VacancyCategoryNotFound_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new DeleteVacancyCategoryCommand { Id = Guid.NewGuid() };
+        DeleteVacancyCategoryCommand command = new DeleteVacancyCategoryCommand { Id = Guid.NewGuid() };
 
 
         _dbContextMock.Setup(x => x.Categories
-            .FindAsync(new object[] { command.Id }, It.IsAny<CancellationToken>()))
+                .FindAsync(new object[] { command.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(null as VacancyCategory);
 
         // Act + Assert
