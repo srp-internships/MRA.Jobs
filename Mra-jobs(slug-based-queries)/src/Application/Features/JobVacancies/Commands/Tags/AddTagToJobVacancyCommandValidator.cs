@@ -6,7 +6,7 @@ public class AddTagToJobVacancyCommandValidator : AbstractValidator<AddTagsToJob
 {
     public AddTagToJobVacancyCommandValidator()
     {
-        RuleFor(x => x.JobVacancyId).NotEmpty();
+        RuleFor(x => x.JobVacancySlug).NotEmpty();
         RuleFor(x => x.Tags).NotEmpty();
     }
 }

@@ -22,6 +22,8 @@ public class CreateTestCommandHandler : IRequestHandler<CreateTestCommand, TestI
     {
         var result = await _httpClient.SendTestCreationRequest(request);
 
+
+
         var test = new Test
         {
             CreatedAt = _dateTime.Now,

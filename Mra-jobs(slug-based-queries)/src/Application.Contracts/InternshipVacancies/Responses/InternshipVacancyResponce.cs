@@ -1,6 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.TagDTO;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
-﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
+using MRA.Jobs.Application.Contracts.Converter.Converter;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
@@ -30,5 +30,7 @@ public class InternshipVacancyResponce
 
     public ICollection<TimeLineDetailsDto> History { get; set; }
     public ICollection<TagDto> Tags { get; set; }
+
+    public string Slug { get; set; }
 
 }

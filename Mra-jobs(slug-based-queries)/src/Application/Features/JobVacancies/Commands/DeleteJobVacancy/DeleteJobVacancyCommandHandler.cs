@@ -18,10 +18,10 @@ public class DeleteJobVacancyCommandHandler : IRequestHandler<DeleteJobVacancyCo
 
     public async Task<bool> Handle(DeleteJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+        var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Slug }, cancellationToken: cancellationToken);
 
         if (jobVacancy == null)
-            throw new NotFoundException(nameof(JobVacancy), request.Id);
+            throw new NotFoundException(nameof(JobVacancy), request.Slug);
 
         var timelineEvent = new VacancyTimelineEvent
         {

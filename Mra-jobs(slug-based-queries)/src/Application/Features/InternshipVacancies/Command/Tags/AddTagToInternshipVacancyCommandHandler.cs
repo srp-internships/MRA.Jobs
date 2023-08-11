@@ -21,10 +21,10 @@ public class AddTagToInternshipVacancyCommandHandler : IRequestHandler<AddTagToI
         var internship = await _context.Internships
           .Include(x => x.Tags)
           .ThenInclude(t => t.Tag)
-          .FirstOrDefaultAsync(x => x.Id == request.InternshipId, cancellationToken);
+          .FirstOrDefaultAsync(x => x.Slug == request.InternshipSlug, cancellationToken);
 
         if (internship == null)
-            throw new NotFoundException(nameof(internship), request.InternshipId);
+            throw new NotFoundException(nameof(internship), request.InternshipSlug);
 
         foreach (var tagName in request.Tags)
         {
@@ -40,7 +40,7 @@ public class AddTagToInternshipVacancyCommandHandler : IRequestHandler<AddTagToI
 
             if (vacancyTag == null)
             {
-                vacancyTag = new VacancyTag { VacancyId = request.InternshipId, TagId = tag.Id };
+                vacancyTag = new VacancyTag { VacancyId = internship.Id, TagId = tag.Id };
                 _context.VacancyTags.Add(vacancyTag);
 
                 var timelineEvent = new VacancyTimelineEvent

@@ -8,7 +8,7 @@ public class DeleteApplicationCommandHandler : IRequestHandler<DeleteApplication
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
 
-    public DeleteApplicationCommandHandler(IApplicationDbContext context ,IDateTime dateTime,ICurrentUserService currentUserService)
+    public DeleteApplicationCommandHandler(IApplicationDbContext context, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _context = context;
         _dateTime = dateTime;
@@ -17,8 +17,8 @@ public class DeleteApplicationCommandHandler : IRequestHandler<DeleteApplication
 
     public async Task<bool> Handle(DeleteApplicationCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Applications.FindAsync(new object[] { request.Id }, cancellationToken)
-            ?? throw new NotFoundException(nameof(Application), request.Id);
+        var entity = await _context.Applications.FindAsync(new object[] { request.Slug }, cancellationToken)
+            ?? throw new NotFoundException(nameof(Application), request.Slug);
 
         var timelineEvent = new ApplicationTimelineEvent
         {

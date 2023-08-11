@@ -19,7 +19,7 @@ public class DeleteReviewerCommandHandlerTests : BaseTestFixture
     public async Task Handle_ReviewerExists_ShouldRemoveApplicant()
     {
         // Arrange 
-        var reviewer = new Reviewer { Id = Guid.NewGuid() };
+        var reviewer = new Reviewer { Id=Guid.NewGuid() };
         _dbContextMock.Setup(x => x.Reviewers
                 .FindAsync(new object[] { reviewer.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(reviewer);
@@ -39,7 +39,7 @@ public class DeleteReviewerCommandHandlerTests : BaseTestFixture
     public void Handle_ReviewerNotFound_ShouldThrowNotFoundException()
     {
         // Arrange 
-        var command = new DeleteReviewerCommand { Id = Guid.NewGuid() };
+        var command = new DeleteReviewerCommand { Id=Guid.NewGuid() };
         _dbContextMock.Setup(i => i.Reviewers.FindAsync(new object[] { command.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(null as Reviewer);
         

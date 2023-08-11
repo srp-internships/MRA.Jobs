@@ -23,13 +23,13 @@ public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
 
         var trainingModel = new TrainingVacancy
         {
-            Id = Guid.NewGuid(),
+            Slug=string.Empty,
             Title = "Job Title",
             ShortDescription = "Short Description",
             Description = "Job Description",
             PublishDate = new DateTime(2023, 05, 05),
             EndDate = new DateTime(2023, 05, 06),
-            CategoryId = Guid.NewGuid(),
+            CategoryId = Guid.Empty,
             Duration = 1,
             Fees = 1
         };

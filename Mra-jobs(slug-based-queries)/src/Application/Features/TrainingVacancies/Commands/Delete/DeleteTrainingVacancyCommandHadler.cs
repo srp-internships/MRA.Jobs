@@ -11,10 +11,10 @@ public class DeleteTrainingVacancyCommandHadler : IRequestHandler<DeleteTraining
     }
     public async Task<bool> Handle(DeleteTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        var traningModel = await _context.TrainingVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+        var traningModel = await _context.TrainingVacancies.FindAsync(new object[] { request.Slug }, cancellationToken: cancellationToken);
 
         if (traningModel == null)
-            throw new NotFoundException(nameof(TrainingVacancy), request.Id);
+            throw new NotFoundException(nameof(TrainingVacancy), request.Slug);
 
         _context.TrainingVacancies.Remove(traningModel);
         await _context.SaveChangesAsync(cancellationToken);

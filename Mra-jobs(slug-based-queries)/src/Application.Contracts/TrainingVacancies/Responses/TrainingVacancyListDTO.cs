@@ -1,7 +1,3 @@
-﻿using MRA.Jobs.Application.Contracts.TagDTO;
-using MRA.Jobs.Application.Contracts.TimeLineDTO;
-using MRA.Jobs.Domain.Entities;
-using static Sieve.Extensions.MethodInfoExtended;
 ﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
 using Newtonsoft.Json;
 
@@ -20,5 +16,5 @@ public class TrainingVacancyListDTO
     public DateTime EndDate { get; set; }
     public int Duration { get; set; }
     public int Fees { get; set; }
- 
+    public string Slug { get; set; }
 }

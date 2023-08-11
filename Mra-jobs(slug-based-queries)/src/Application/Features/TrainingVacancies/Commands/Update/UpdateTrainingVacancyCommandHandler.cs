@@ -26,8 +26,8 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
         //_ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
         var trainingVacancy = await _context.TrainingVacancies
            .Include(i => i.Category)
-           .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
-        _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Id);
+           .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken);
+        _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Slug);
 
         _mapper.Map(request, trainingVacancy);
 

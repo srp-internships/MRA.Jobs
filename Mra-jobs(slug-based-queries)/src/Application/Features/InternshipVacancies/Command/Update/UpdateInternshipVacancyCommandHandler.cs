@@ -28,8 +28,8 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
 
         var internship = await _context.Internships
             .Include(i => i.Category)
-            .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
-        _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Id);
+            .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken);
+        _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Slug);
 
         _mapper.Map(request, internship);
 

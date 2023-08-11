@@ -7,7 +7,7 @@ public class AddTagToTrainingVacancyCommandValidator : AbstractValidator<AddTagT
 {
     public AddTagToTrainingVacancyCommandValidator()
     {
-        RuleFor(x => x.VacancyId).NotEmpty();
+        RuleFor(x => x.TrainingVacancySlug).NotEmpty();
         RuleFor(x => x.Tags).NotEmpty();
     }
 }

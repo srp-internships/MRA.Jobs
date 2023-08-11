@@ -28,10 +28,10 @@ public class RemoveTagsFromJobVacancyCommandHandler : IRequestHandler<RemoveTags
         var jobVacancy = await _context.JobVacancies
           .Include(x => x.Tags)
           .ThenInclude(t => t.Tag)
-          .FirstOrDefaultAsync(x => x.Id == request.JobVacancyId, cancellationToken);
+          .FirstOrDefaultAsync(x => x.Slug == request.JobVacancySlug, cancellationToken);
 
         if (jobVacancy == null)
-            throw new NotFoundException(nameof(JobVacancy), request.JobVacancyId);
+            throw new NotFoundException(nameof(JobVacancy), request.JobVacancySlug);
 
         foreach (var tagName in request.Tags)
         {
@@ -56,5 +56,5 @@ public class RemoveTagsFromJobVacancyCommandHandler : IRequestHandler<RemoveTags
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
-   
+
 }

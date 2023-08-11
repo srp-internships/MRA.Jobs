@@ -32,7 +32,7 @@ public class DeleteApplicantCommandValidatorTests
     public void Validate_IdIsNotEmpty_ShouldNotReturnValidationError()
     {
         // Arrange 
-        var command = new DeleteApplicantCommand { Id = Guid.NewGuid() };
+        var command = new DeleteApplicantCommand { Id=Guid.NewGuid() };
         
         // Act 
         var result = _validator.TestValidate(command);

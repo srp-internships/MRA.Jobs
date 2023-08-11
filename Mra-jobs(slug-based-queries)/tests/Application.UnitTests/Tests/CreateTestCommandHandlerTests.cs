@@ -33,7 +33,7 @@ public class CreateTestCommandHandlerTests : BaseTestFixture
 
         var request = new CreateTestCommand
         {
-            Id = Guid.NewGuid(),
+            Slug = string.Empty,
             NumberOfQuestion = 0
         };
 

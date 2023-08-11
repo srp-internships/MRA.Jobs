@@ -21,7 +21,7 @@ public class GetVacancyCategoryBySlugQueryHandlerTests : BaseTestFixture
 
         var VacancyCategory = new VacancyCategory
         {
-            Id = Guid.NewGuid(),
+            Slug=string.Empty,
             Name = "Software Development",
         };
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>())).ReturnsAsync(VacancyCategory);

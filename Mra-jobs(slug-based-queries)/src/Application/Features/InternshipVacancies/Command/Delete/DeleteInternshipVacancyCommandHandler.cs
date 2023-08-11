@@ -14,10 +14,10 @@ public class DeleteInternshipVacancyCommandHandler : IRequestHandler<DeleteInter
     public async Task<bool> Handle(DeleteInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         //var internship = await _context.Internships.FindAsync(new object[] { request.Id }, cancellationToken);
-        var internship = await _context.Internships.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
+        var internship = await _context.Internships.FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken);
 
         if (internship == null)
-            throw new NotFoundException(nameof(InternshipVacancy), request.Id);
+            throw new NotFoundException(nameof(InternshipVacancy), request.Slug);
 
         _context.Internships.Remove(internship);
         await _context.SaveChangesAsync(cancellationToken);

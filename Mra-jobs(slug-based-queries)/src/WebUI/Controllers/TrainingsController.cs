@@ -31,53 +31,53 @@ public class TrainingsController : ApiControllerBase
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<Guid>> UpdateTrainingVacancy([FromRoute] Guid id, [FromBody] UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
+    [HttpPut("{slug}")]
+    public async Task<ActionResult<Guid>> UpdateTrainingVacancy([FromRoute] string slug, [FromBody] UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        if (id != request.Id)
+        if (slug != request.Slug)
             return BadRequest();
 
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteTrainingVacancy([FromRoute] Guid id, [FromBody] DeleteTrainingVacancyCommand request, CancellationToken cancellationToken)
+    [HttpDelete("{slug}")]
+    public async Task<ActionResult<bool>> DeleteTrainingVacancy([FromRoute] string slug, [FromBody] DeleteTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        if (id != request.Id)
+        if (slug != request.Slug)
             return BadRequest();
 
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPost("{id}/tags")]
-    public async Task<IActionResult> AddTag([FromRoute] Guid id, [FromBody] AddTagToTrainingVacancyCommand request, CancellationToken cancellationToken)
+    [HttpPost("{slug}/tags")]
+    public async Task<IActionResult> AddTag([FromRoute] string slug, [FromBody] AddTagToTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        request.VacancyId = id;
+        request.TrainingVacancySlug = slug;
         await Mediator.Send(request, cancellationToken);
         return Ok();
     }
 
-    [HttpDelete("{id}/tags")]
-    public async Task<IActionResult> RemoveTags([FromRoute] Guid id, [FromBody] RemoveTagFromTrainingVacancyCommand request, CancellationToken cancellationToken)
+    [HttpDelete("{slug}/tags")]
+    public async Task<IActionResult> RemoveTags([FromRoute] string slug, [FromBody] RemoveTagFromTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        request.VacancyId = id;
+        request.TrainingVacancySlug = slug;
         await Mediator.Send(request, cancellationToken);
         return Ok();
     }
 
-    [HttpPost("{id}/test")]
-    public async Task<ActionResult<TestInfoDTO>> SendTestCreationRequest([FromRoute] Guid id, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
+    [HttpPost("{slug}/test")]
+    public async Task<ActionResult<TestInfoDTO>> SendTestCreationRequest([FromRoute] string slug, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
     {
-        if (id != request.Id)
+        if (slug != request.Slug)
             return BadRequest();
 
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPost("{id}/test/result")]
-    public async Task<ActionResult<TestResultDTO>> GetTestResultRequest([FromRoute] Guid id, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
+    [HttpPost("{slug}/test/result")]
+    public async Task<ActionResult<TestResultDTO>> GetTestResultRequest([FromRoute] string slug, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
     {
-        if (id != request.TestId)
+        if (slug != request.Slug)
             return BadRequest();
 
         return await Mediator.Send(request, cancellationToken);

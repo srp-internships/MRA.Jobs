@@ -23,8 +23,8 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentTrainingModelId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(command.Id)).ReturnsAsync(null as TrainingVacancy);
+        var command = new UpdateTrainingVacancyCommand { Slug=string.Empty };
+        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(command.Slug)).ReturnsAsync(null as TrainingVacancy);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -40,8 +40,8 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentCategoryId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { Id = Guid.NewGuid(), CategoryId = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new TrainingVacancy());
+        var command = new UpdateTrainingVacancyCommand { Slug=string.Empty, CategoryId = Guid.Empty };
+        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { command.Slug }, CancellationToken.None)).ReturnsAsync(new TrainingVacancy());
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { command.CategoryId }, CancellationToken.None)).ReturnsAsync(null as VacancyCategory);
 
         // Act
@@ -58,13 +58,13 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
         // Arrange
         var command = new UpdateTrainingVacancyCommand
         {
-            Id = Guid.NewGuid(),
+            Slug=string.Empty,
             Title = "Training Model Title",
             ShortDescription = "New Short Description",
             Description = "New Job Description",
             PublishDate = new DateTime(2023, 05, 05),
             EndDate = new DateTime(2023, 05, 06),
-            CategoryId = Guid.NewGuid(),
+            CategoryId = Guid.Empty,
             Duration = 10,
             Fees = 100
         };
@@ -75,8 +75,8 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
         _dbContextMock.Setup(c => c.TrainingVacancies).Returns(trainingModelsDbSetMock.Object);
         _dbContextMock.Setup(c => c.Categories).Returns(categoryDbSetMock.Object);
 
-        var trainingModel = new TrainingVacancy { Id = command.Id };
-        trainingModelsDbSetMock.Setup(x => x.FindAsync(new object[] { command.Id }, CancellationToken.None))
+        var trainingModel = new TrainingVacancy { Slug = command.Slug };
+        trainingModelsDbSetMock.Setup(x => x.FindAsync(new object[] { command.Slug }, CancellationToken.None))
             .ReturnsAsync(trainingModel);
 
         var category = new VacancyCategory { Id = command.CategoryId };
@@ -91,11 +91,11 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Should().Be(command.Id);
+        result.Should().Be(command.Slug);
 
         timelineEvent.Should().NotBeNull();
 
-        timelineEvent.VacancyId.Should().Be(command.Id);
+        timelineEvent.VacancyId.Should().Be(command.Slug);
         timelineEvent.EventType.Should().Be(TimelineEventType.Updated);
         timelineEvent.Time.Should().Be(_dateTimeMock.Object.Now);
         timelineEvent.Note.Should().Be("Training Model updated");

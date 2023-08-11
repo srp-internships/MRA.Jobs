@@ -1,9 +1,9 @@
 using System.Net.Mime;
+using MediatR;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Infrastructure;
-using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Services;
 using MRA.Jobs.Web;
 using Newtonsoft.Json;
@@ -18,6 +18,7 @@ builder.Services.AddWebUIServices();
 builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("Sieve"));
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddTransient<IEmailService, SmtpEmailService>();
+builder.Services.AddMediatR(typeof(Program));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

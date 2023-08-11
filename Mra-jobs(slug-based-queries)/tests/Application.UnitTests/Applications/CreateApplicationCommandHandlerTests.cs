@@ -2,6 +2,8 @@
 using MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;
+
+using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Domain.Entities;
 public class CreateApplicationCommandHandlerTests : BaseTestFixture
 {
@@ -16,7 +18,8 @@ public class CreateApplicationCommandHandlerTests : BaseTestFixture
             _dbContextMock.Object,
             Mapper,
             _dateTimeMock.Object,
-            _currentUserServiceMock.Object);
+            _currentUserServiceMock.Object,
+            _slugGenerator.Object);
     }
 
     [Test]

@@ -19,6 +19,7 @@ public static class ConfigureServices
             config.Internal().MethodMappingEnabled = false;
         }, typeof(IApplicationMarker).Assembly);
 
+        services.AddSingleton<ISlugGeneratorService, SlugGeneratorService>();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
@@ -26,8 +27,7 @@ public static class ConfigureServices
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         services.AddScoped<ISieveConfigurationsAssemblyMarker, ApplicationSieveConfigurationsAssemblyMarker>();
-        services.AddSingleton<ISlugGeneratorService, SlugGeneratorService>();
-
+      
         services.AddScoped<ISieveCustomFilterMethods, SieveCustomFilterMethods>();
         services.AddScoped<IApplicationSieveProcessor, ApplicationSieveProcessor>();
         return services;

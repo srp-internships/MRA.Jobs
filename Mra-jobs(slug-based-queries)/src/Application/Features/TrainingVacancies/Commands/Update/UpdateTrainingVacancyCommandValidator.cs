@@ -5,7 +5,7 @@ public class UpdateTrainingVacancyCommandValidator : AbstractValidator<UpdateTra
 {
     public UpdateTrainingVacancyCommandValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Slug).NotEmpty();
         RuleFor(x => x.Title).NotEmpty();
         RuleFor(x => x.ShortDescription).NotEmpty();
         RuleFor(x => x.Description).NotEmpty();

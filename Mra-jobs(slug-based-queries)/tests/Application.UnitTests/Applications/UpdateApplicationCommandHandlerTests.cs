@@ -19,8 +19,8 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentApplicationId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateApplicationCommand { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.Applications.FindAsync(command.Id)).ReturnsAsync(null as Application);
+        var command = new UpdateApplicationCommand { Slug=string.Empty };
+        _dbContextMock.Setup(x => x.Applications.FindAsync(command.Slug)).ReturnsAsync(null as Application);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -28,15 +28,15 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
 
         // Assert
         act.Should().ThrowAsync<NotFoundException>()
-            .WithMessage($"*{nameof(Application)}*{command.Id}*");
+            .WithMessage($"*{nameof(Application)}*{command.Slug}*");
     }
 
     [Test]
     public void Handle_GivenNonExistentVacancyId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateApplicationCommand { Id = Guid.NewGuid()};
-        _dbContextMock.Setup(x => x.Applications.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new Application());
+        var command = new UpdateApplicationCommand { Slug=string.Empty};
+        _dbContextMock.Setup(x => x.Applications.FindAsync(new object[] { command.Slug }, CancellationToken.None)).ReturnsAsync(new Application());
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -49,8 +49,8 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentApplicantId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateApplicationCommand { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.Applications.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new Application());
+        var command = new UpdateApplicationCommand { Slug=string.Empty };
+        _dbContextMock.Setup(x => x.Applications.FindAsync(new object[] { command.Slug }, CancellationToken.None)).ReturnsAsync(new Application());
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -65,13 +65,13 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
         // Arrange
         var command = new UpdateApplicationCommand
         {
-            Id = Guid.NewGuid(),
+            Slug=string.Empty,
             CoverLetter = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\r\n\r\n",
             CV = "https://www.lipsum.com/",
         };
 
-        var existingApplication = new Application { Id = command.Id };
-        _dbContextMock.Setup(x => x.Applications.FindAsync(command.Id))
+        var existingApplication = new Application { Id = command.Slug };
+        _dbContextMock.Setup(x => x.Applications.FindAsync(command.Slug))
             .ReturnsAsync(existingApplication);
 
         var timelineEvent = new ApplicationTimelineEvent();
@@ -82,11 +82,11 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Should().Be(command.Id);
+        result.Should().Be(command.Slug);
 
         timelineEvent.Should().NotBeNull();
 
-        timelineEvent.ApplicationId.Should().Be(command.Id);
+        timelineEvent.ApplicationId.Should().Be(command.Slug);
         timelineEvent.EventType.Should().Be(TimelineEventType.Updated);
         timelineEvent.Time.Should().Be(_dateTimeMock.Object.Now);
         timelineEvent.Note.Should().Be("Application updated");

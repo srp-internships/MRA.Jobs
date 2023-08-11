@@ -36,19 +36,19 @@ public class CategoriesController : ApiControllerBase
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<Guid>> Update([FromRoute] Guid id, [FromBody] UpdateVacancyCategoryCommand request, CancellationToken cancellationToken)
+    [HttpPut("{slug}")]
+    public async Task<ActionResult<Guid>> Update([FromRoute] string slug, [FromBody] UpdateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
-        if (id != request.Id)
+        if (slug != request.Slug)
             return BadRequest();
 
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    [HttpDelete("{slug}")]
+    public async Task<IActionResult> Delete(string slug)
     {
-        var command = new DeleteVacancyCategoryCommand { Id = id };
+        var command = new DeleteVacancyCategoryCommand { Slug = slug };
         await Mediator.Send(command);
         return NoContent();
     }

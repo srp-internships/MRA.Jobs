@@ -20,8 +20,8 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
 
     public async Task<Guid> Handle(UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
-        _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Id);
+        var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Slug }, cancellationToken: cancellationToken);
+        _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Slug);
 
         var category = await _dbContext.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken: cancellationToken);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
@@ -33,7 +33,7 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
         var timelineEvent = new VacancyTimelineEvent
         {
             VacancyId = jobVacancy.Id,
-            Vacancy=jobVacancy,
+            Vacancy = jobVacancy,
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Job vacancy updated",

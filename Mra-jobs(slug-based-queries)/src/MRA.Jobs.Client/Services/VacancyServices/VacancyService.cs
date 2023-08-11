@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
-using MRA.Jobs.Application.Contracts.Common;
+﻿using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
@@ -28,11 +26,11 @@ public class VacancyService : IVacancyService
         };
     }
     public List<CategoryResponse> Categories { get; set; }
-    
+
     public List<JobVacancyListDTO> Vacanceies { get; set; }
 
     public CreateJobVacancyCommand creatingNewJob { get; set; }
-    
+
     public event Action OnChange;
     public string guidId { get; set; } = string.Empty;
     public async Task<List<JobVacancyListDTO>> GetAllVacancy()
@@ -60,7 +58,6 @@ public class VacancyService : IVacancyService
         return Vacanceies;
     }
 
-
     public async Task OnSaveCreateClick()
     {
         Console.WriteLine(creatingNewJob.CategoryId);
@@ -75,22 +72,22 @@ public class VacancyService : IVacancyService
         return result.Items;
     }
 
-    public async Task OnDelete(Guid Id)
+    public async Task OnDelete(string slug)
     {
-        await _http.DeleteAsync($"jobs/{Id}");
+        await _http.DeleteAsync($"jobs/{slug}");
     }
 
-    public async Task<JobVacancyDetailsDTO> GetById(Guid Id)
+    public async Task<JobVacancyDetailsDTO> GetBySlug(string slug)
     {
-        var result = await _http.GetFromJsonAsync<JobVacancyDetailsDTO>($"jobs/{Id}");
+        var result = await _http.GetFromJsonAsync<JobVacancyDetailsDTO>($"jobs/{slug}");
         return result;
     }
 
-    public async Task UpdateJobVacancy(Guid id)
+    public async Task UpdateJobVacancy(string slug)
     {
         var update = new UpdateJobVacancyCommand
         {
-            Id = id,
+            Slug = slug,
             Title = creatingNewJob.Title,
             ShortDescription = creatingNewJob.ShortDescription,
             Description = creatingNewJob.Description,
@@ -100,7 +97,7 @@ public class VacancyService : IVacancyService
             EndDate = creatingNewJob.EndDate,
             PublishDate = creatingNewJob.PublishDate,
         };
-        await _http.PutAsJsonAsync($"jobs/{id}", update);
+        await _http.PutAsJsonAsync($"jobs/{slug}", update);
 
     }
 }

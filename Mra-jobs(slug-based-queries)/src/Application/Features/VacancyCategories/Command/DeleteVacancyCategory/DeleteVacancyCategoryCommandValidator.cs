@@ -7,6 +7,6 @@ public class DeleteVacancyCategoryCommandValidator: AbstractValidator<DeleteVaca
 {
     public DeleteVacancyCategoryCommandValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Slug).NotEmpty();
     }
 }

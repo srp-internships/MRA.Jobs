@@ -5,6 +5,6 @@ public class DeleteInternshipVacancyCommandValidator : AbstractValidator<DeleteI
 {
     public DeleteInternshipVacancyCommandValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Slug).NotEmpty();
     }
 }

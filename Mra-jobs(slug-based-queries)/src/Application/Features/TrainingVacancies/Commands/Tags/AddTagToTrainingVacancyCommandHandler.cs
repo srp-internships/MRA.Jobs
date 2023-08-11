@@ -18,10 +18,10 @@ public class AddTagToTrainingVacancyCommandHandler : IRequestHandler<AddTagToTra
     }
     public async Task<bool> Handle(AddTagToTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        var trainingVacancy = await _context.TrainingVacancies.FindAsync(new object[] { request.VacancyId }, cancellationToken);
+        var trainingVacancy = await _context.TrainingVacancies.FindAsync(new object[] { request.TrainingVacancySlug }, cancellationToken);
 
         if (trainingVacancy == null)
-            throw new NotFoundException(nameof(JobVacancy), request.VacancyId);
+            throw new NotFoundException(nameof(JobVacancy), request.TrainingVacancySlug);
 
         foreach (var tagName in request.Tags)
         {
@@ -33,11 +33,11 @@ public class AddTagToTrainingVacancyCommandHandler : IRequestHandler<AddTagToTra
                 _context.Tags.Add(tag);
             }
 
-            var vacancyTag = await _context.VacancyTags.FindAsync(new object[] { request.VacancyId, tag.Id }, cancellationToken);
+            var vacancyTag = await _context.VacancyTags.FindAsync(new object[] { request.TrainingVacancySlug, tag.Id }, cancellationToken);
 
             if (vacancyTag == null)
             {
-                vacancyTag = new VacancyTag { VacancyId = request.VacancyId, TagId = tag.Id };
+                vacancyTag = new VacancyTag { VacancyId = trainingVacancy.Id, TagId = tag.Id };
                 _context.VacancyTags.Add(vacancyTag);
 
                 var timelineEvent = new VacancyTimelineEvent

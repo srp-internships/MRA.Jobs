@@ -18,12 +18,12 @@ public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
     [Ignore("Игнорируем тест из-за TimeLine & Tag")]
     public async Task Handle_GivenValidQuery_ShouldReturnJobVacancyDetailsDTO()
     {
-        var query = new GetJobVacancyBySlugQuery { Slug ="jobs-jobtitle" };
+        var query = new GetJobVacancyBySlugQuery { Slug = "jobs-jobtitle" };
 
         var jobVacancy = new JobVacancy
         {
             Id = Guid.NewGuid(),
-            Slug= "jobs-jobtitle",
+            Slug = "jobs-jobtitle",
             Title = "Job Title",
             ShortDescription = "Short Description",
             Description = "Job Description",
@@ -33,7 +33,7 @@ public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
             RequiredYearOfExperience = 1,
             WorkSchedule = WorkSchedule.FullTime
         };
-        _dbContextMock.Setup(x => x.JobVacancies.FindAsync(new object[] { query.Slug}, It.IsAny<CancellationToken>())).ReturnsAsync(jobVacancy);
+        _dbContextMock.Setup(x => x.JobVacancies.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>())).ReturnsAsync(jobVacancy);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);

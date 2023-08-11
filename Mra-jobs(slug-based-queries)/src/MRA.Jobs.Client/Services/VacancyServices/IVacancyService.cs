@@ -19,8 +19,8 @@ public interface IVacancyService
 
     Task<List<JobVacancyListDTO>> GetVacancyByTitle(string title);
     Task OnSaveCreateClick();
-    Task OnDelete(Guid Id);
+    Task OnDelete(string slug);
     Task<List<JobVacancyListDTO>> GetJobs();
-    Task UpdateJobVacancy(Guid id);
-    Task<JobVacancyDetailsDTO> GetById(Guid Id);
+    Task UpdateJobVacancy(string slug);
+    Task<JobVacancyDetailsDTO> GetBySlug(string slug);
 }

@@ -17,13 +17,13 @@ public class UpdateVacancyCategoryCommandValidatorTests
     public void Validate_IdIsRequired()
     {
         // Arrange
-        var command = new UpdateVacancyCategoryCommand { Id = Guid.Empty };
+        var command = new UpdateVacancyCategoryCommand { Slug = string.Empty };
 
         // Act
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Id);
+        result.ShouldHaveValidationErrorFor(x => x.Slug);
     }
 
     [Test]

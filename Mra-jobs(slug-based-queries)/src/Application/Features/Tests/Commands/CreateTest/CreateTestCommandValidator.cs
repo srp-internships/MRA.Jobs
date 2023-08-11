@@ -8,6 +8,6 @@ public class CreateTestCommandValidator : AbstractValidator<CreateTestCommand>
         RuleFor(x => x.NumberOfQuestion).NotEmpty();
         RuleFor(x => x.Categories).NotEmpty();
         RuleForEach(x => x.Categories).NotEmpty();
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Slug).NotEmpty();
     }
 }
