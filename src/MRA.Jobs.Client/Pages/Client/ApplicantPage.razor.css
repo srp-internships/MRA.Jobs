@@ -1,6 +1,5 @@
 ﻿body {
     margin: 0;
-    font-family: Arial, sans-serif;
 }
 
 header {
@@ -8,6 +7,26 @@ header {
     padding: 20px;
     text-align: center;
     color: #fff;
+}
+
+.navbar {
+    background-color: #40aee4;
+    height: 90px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.shapka {
+    color: white;
+    font-size: xx-large;
+}
+
+.container {
+    justify-content: center;
+}
+
+.form-horizontal {
+    justify-content: center;
 }
 
 main {
