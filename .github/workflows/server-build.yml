@@ -10,10 +10,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
-
-    env:
-      DOTNET_RUNNING_IN_GITHUB_ACTIONS: 1
+    strategy:
+      matrix:
+        os: [windows-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3

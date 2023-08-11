@@ -17,7 +17,7 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        string flag = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_GITHUB_ACTIONS");
+        //string flag = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_GITHUB_ACTIONS");
         
         services.AddAppIdentity(configuration);
         services.AddMediatR(typeof(ConfigureServices).Assembly);
@@ -25,10 +25,11 @@ public static class ConfigureServices
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         
         var dbConectionString = configuration.GetConnectionString("SqlServer");
-        
-        services.AddDbContext<ApplicationDbContext>((flag is not null) ? options => options.UseInMemoryDatabase("InMemoryDatabase") : options =>  
-            options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-        
+        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+
+        //services.AddDbContext<ApplicationDbContext>((flag is not null) ? options => options.UseInMemoryDatabase("InMemoryDatabase") : options =>  
+        //    options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddScoped<ITestHttpClientService, TestHttpClientService>();
