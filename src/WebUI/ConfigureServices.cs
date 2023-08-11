@@ -1,18 +1,20 @@
-﻿using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Infrastructure.Persistence;
+﻿using System.Text.Json.Serialization;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using MRA.Jobs.Application.Common.Interfaces;
+using MRA.Jobs.Infrastructure.Persistence;
+using MRA.Jobs.Web.Filters;
+using MRA.Jobs.Web.Services;
 using NSwag;
 using NSwag.Generation.Processors.Security;
-using MRA.Jobs.Web.Services;
-using MRA.Jobs.Web.Filters;
-using System.Text.Json.Serialization;
 
 namespace MRA.Jobs.Web;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddWebUIServices(this IServiceCollection services)
+    public static void AddWebUiServices(this IServiceCollection services,IConfiguration configuration)
     {
         services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -27,7 +29,7 @@ public static class ConfigureServices
             {
                 options.Filters.Add<ApiExceptionFilterAttribute>();
             })
-        .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
         services.AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters();
@@ -51,6 +53,6 @@ public static class ConfigureServices
 
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
-        return services;
+
     }
 }

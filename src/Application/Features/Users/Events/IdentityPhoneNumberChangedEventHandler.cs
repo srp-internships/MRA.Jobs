@@ -9,7 +9,8 @@ public class IdentityPhoneNumberChangedEventHandler : INotificationHandler<Ident
     private readonly IApplicationDbContext _context;
     private readonly ILogger<IdentityEmailChangedEventHandler> _logger;
 
-    public IdentityPhoneNumberChangedEventHandler(IApplicationDbContext context, ILogger<IdentityEmailChangedEventHandler> logger)
+    public IdentityPhoneNumberChangedEventHandler(IApplicationDbContext context,
+        ILogger<IdentityEmailChangedEventHandler> logger)
     {
         _context = context;
         _logger = logger;
@@ -18,7 +19,7 @@ public class IdentityPhoneNumberChangedEventHandler : INotificationHandler<Ident
 
     public async Task Handle(IdentityPhoneNumberChangedEvent notification, CancellationToken cancellationToken)
     {
-        var entity = await _context.DomainUsers.FirstOrDefaultAsync(x => x.Id == notification.Id, cancellationToken);
+        User entity = await _context.DomainUsers.FirstOrDefaultAsync(x => x.Id == notification.Id, cancellationToken);
         if (entity != null)
         {
             entity.PhoneNumber = notification.NewPhoneNumber;

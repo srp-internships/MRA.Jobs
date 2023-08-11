@@ -2,10 +2,9 @@
 using MRA.Jobs.Application.Features.Applications.Query.GetApplicationById;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;
+
 public class GetApplicationByIdQueryValidatorTests : BaseTestFixture
 {
-    private GetApplicationByIdQueryValidator _validator;
-
     [SetUp]
     public override void Setup()
     {
@@ -13,14 +12,16 @@ public class GetApplicationByIdQueryValidatorTests : BaseTestFixture
         _validator = new GetApplicationByIdQueryValidator();
     }
 
+    private GetApplicationByIdQueryValidator _validator;
+
     [Test]
     public void Validate_IdIsEmpty()
     {
         // Arrange
-        var query = new GetByIdApplicationQuery { Id = Guid.Empty };
+        GetByIdApplicationQuery query = new GetByIdApplicationQuery { Id = Guid.Empty };
 
         // Act
-        var result = _validator.TestValidate(query);
+        TestValidationResult<GetByIdApplicationQuery> result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
@@ -30,10 +31,10 @@ public class GetApplicationByIdQueryValidatorTests : BaseTestFixture
     public void Validate_IdIsNotEmpty()
     {
         // Arrange
-        var query = new GetByIdApplicationQuery { Id = Guid.NewGuid() };
+        GetByIdApplicationQuery query = new GetByIdApplicationQuery { Id = Guid.NewGuid() };
 
         // Act
-        var result = _validator.TestValidate(query);
+        TestValidationResult<GetByIdApplicationQuery> result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Id);

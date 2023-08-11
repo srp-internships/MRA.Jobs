@@ -25,7 +25,7 @@ public class ValidationException : Exception
     }
 
     public ValidationException(string message, IEnumerable<ValidationFailure> failures)
-       : this(message)
+        : this(message)
     {
         Errors = failures
             .GroupBy(e => e.PropertyName, e => e.ErrorMessage)

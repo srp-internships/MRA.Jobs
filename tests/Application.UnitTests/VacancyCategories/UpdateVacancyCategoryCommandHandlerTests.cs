@@ -5,8 +5,6 @@ namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
 
 public class UpdateVacancyCategoryCommandHandlerTests : BaseTestFixture
 {
-    private UpdateVacancyCategoryCommandHandler _handler;
-
     [SetUp]
     public override void Setup()
     {
@@ -15,11 +13,13 @@ public class UpdateVacancyCategoryCommandHandlerTests : BaseTestFixture
             _dbContextMock.Object, Mapper);
     }
 
+    private UpdateVacancyCategoryCommandHandler _handler;
+
     [Test]
     public void Handle_GivenNonExistentVacancyCategoryId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateVacancyCategoryCommand { Id = Guid.NewGuid() };
+        UpdateVacancyCategoryCommand command = new UpdateVacancyCategoryCommand { Id = Guid.NewGuid() };
         _dbContextMock.Setup(x => x.Categories.FindAsync(command.Id)).ReturnsAsync(null as VacancyCategory);
 
         // Act
@@ -35,23 +35,22 @@ public class UpdateVacancyCategoryCommandHandlerTests : BaseTestFixture
     public async Task Handle_GivenValidCommand_ShouldUpdateVacancyCategory()
     {
         // Arrange
-        var command = new UpdateVacancyCategoryCommand
+        UpdateVacancyCategoryCommand command = new UpdateVacancyCategoryCommand
         {
-            Id = Guid.NewGuid(),
-            Name = "New Category Title",
+            Id = Guid.NewGuid(), Name = "New Category Title"
         };
 
-        var categoryDbSetMock = new Mock<DbSet<VacancyCategory>>();
+        Mock<DbSet<VacancyCategory>> categoryDbSetMock = new Mock<DbSet<VacancyCategory>>();
 
         _dbContextMock.Setup(x => x.Categories).Returns(categoryDbSetMock.Object);
 
-        var existingVacancyCategory = new VacancyCategory { Id = command.Id, Name = command.Name };
+        VacancyCategory existingVacancyCategory = new VacancyCategory { Id = command.Id, Name = command.Name };
 
         categoryDbSetMock.Setup(x => x.FindAsync(new object[] { command.Id }, CancellationToken.None))
             .ReturnsAsync(existingVacancyCategory);
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
+        Guid result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         result.Should().Be(command.Id);

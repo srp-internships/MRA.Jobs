@@ -1,5 +1,6 @@
 ﻿namespace MRA.Jobs.Application.Contracts.Applications.Commands;
-public class CreateApplicationCommand:IRequest<Guid>
+
+public class CreateApplicationCommand : IRequest<Guid>
 {
     public Guid ApplicantId { get; set; }
     public string CoverLetter { get; set; }

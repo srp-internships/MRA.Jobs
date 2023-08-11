@@ -14,7 +14,7 @@ public class EmailExistQueryHandler : IRequestHandler<EmailExistQuery, bool>
 
     public async Task<bool> Handle(EmailExistQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
+        ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
         return user is not null;
     }
 }

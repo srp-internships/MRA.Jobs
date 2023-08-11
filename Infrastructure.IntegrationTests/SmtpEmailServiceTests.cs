@@ -10,10 +10,6 @@ namespace Infrastructure.IntegrationTests;
 [TestFixture]
 public class SmtpEmailServiceTests
 {
-    private SmtpEmailService _emailService;
-    private Mock<IOptions<SmtpSettings>> _smtpSettingsMock;
-    private Mock<ILogger<SmtpEmailService>> _loggerMock;
-
     [SetUp]
     public void Setup()
     {
@@ -32,11 +28,15 @@ public class SmtpEmailServiceTests
         _emailService = new SmtpEmailService(_smtpSettingsMock.Object, _loggerMock.Object);
     }
 
+    private SmtpEmailService _emailService;
+    private Mock<IOptions<SmtpSettings>> _smtpSettingsMock;
+    private Mock<ILogger<SmtpEmailService>> _loggerMock;
+
     [Test]
     public async Task SendEmailAsync_ValidMessage_EmailSentSuccessfully()
     {
         // Arrange
-        var emailMessage = new EmailMessage
+        EmailMessage emailMessage = new EmailMessage
         {
             From = "from@test.com",
             To = "vernice77@ethereal.email",
@@ -45,14 +45,14 @@ public class SmtpEmailServiceTests
             IsHtml = true
         };
 
-        var server = SimpleSmtpServer.Start(9009);
+        SimpleSmtpServer server = SimpleSmtpServer.Start(9009);
 
         // Act
         await _emailService.SendEmailAsync(emailMessage);
 
         // Assert
 
-        var emails = server.ReceivedEmail;
+        SmtpMessage[] emails = server.ReceivedEmail;
         Assert.AreEqual(1, emails.Count());
     }
 }

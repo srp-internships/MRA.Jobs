@@ -24,15 +24,19 @@ public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, RoleR
 
     public async Task<RoleResponse> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
     {
-        var role = await _roleManager.FindByIdAsync(request.Id.ToString());
+        ApplicationRole role = await _roleManager.FindByIdAsync(request.Id.ToString());
         if (role == null)
+        {
             throw new NotFoundException(nameof(ApplicationRole), request.Id);
+        }
 
         role.Name = request.Name;
-        var result = await _roleManager.UpdateAsync(role);
+        IdentityResult result = await _roleManager.UpdateAsync(role);
         if (!result.Succeeded)
+        {
             throw new Exception("Error on creating role");
+        }
 
-        return new RoleResponse() { Name = request.Name };
+        return new RoleResponse { Name = request.Name };
     }
 }

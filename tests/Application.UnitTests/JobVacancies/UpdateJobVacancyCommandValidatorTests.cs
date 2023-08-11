@@ -17,10 +17,10 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_IdIsRequired()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { Id = Guid.Empty };
+        UpdateJobVacancyCommand command = new UpdateJobVacancyCommand { Id = Guid.Empty };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateJobVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
@@ -30,10 +30,10 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_TitleIsRequired()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { Title = null };
+        UpdateJobVacancyCommand command = new UpdateJobVacancyCommand { Title = null };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateJobVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Title);
@@ -43,10 +43,10 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_ShortDescriptionIsRequired()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { ShortDescription = null };
+        UpdateJobVacancyCommand command = new UpdateJobVacancyCommand { ShortDescription = null };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateJobVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.ShortDescription);
@@ -56,10 +56,10 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_DescriptionIsRequired()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { Description = null };
+        UpdateJobVacancyCommand command = new UpdateJobVacancyCommand { Description = null };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateJobVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Description);
@@ -69,10 +69,10 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_PublishDateIsRequired()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { PublishDate = DateTime.MinValue };
+        UpdateJobVacancyCommand command = new UpdateJobVacancyCommand { PublishDate = DateTime.MinValue };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateJobVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.PublishDate);
@@ -82,10 +82,10 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_EndDateIsRequired()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { EndDate = DateTime.MinValue };
+        UpdateJobVacancyCommand command = new UpdateJobVacancyCommand { EndDate = DateTime.MinValue };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateJobVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.EndDate);
@@ -95,10 +95,10 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_CategoryIdIsRequired()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { CategoryId = Guid.Empty };
+        UpdateJobVacancyCommand command = new UpdateJobVacancyCommand { CategoryId = Guid.Empty };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateJobVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.CategoryId);
@@ -108,10 +108,10 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_RequiredYearOfExperienceCannotBeNegative()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { RequiredYearOfExperience = -1 };
+        UpdateJobVacancyCommand command = new UpdateJobVacancyCommand { RequiredYearOfExperience = -1 };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateJobVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.RequiredYearOfExperience);
@@ -121,10 +121,10 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_WorkScheduleMustBeValidEnumValue()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { WorkSchedule = (WorkSchedule)10 };
+        UpdateJobVacancyCommand command = new UpdateJobVacancyCommand { WorkSchedule = (WorkSchedule)10 };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateJobVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.WorkSchedule);
@@ -134,7 +134,7 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_GivenValidCommand_ShouldNotHaveErrors()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand
+        UpdateJobVacancyCommand command = new UpdateJobVacancyCommand
         {
             Id = Guid.NewGuid(),
             Title = "Job Title",
@@ -148,7 +148,7 @@ public class UpdateJobVacancyCommandValidatorTests
         };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<UpdateJobVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();

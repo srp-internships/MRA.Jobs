@@ -1,6 +1,7 @@
 ﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
+
 public class CreateInternshipVacancyCommandValidator : AbstractValidator<CreateInternshipVacancyCommand>
 {
     public CreateInternshipVacancyCommandValidator()

@@ -3,6 +3,7 @@
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Delete;
+
 public class DeleteTrainingVacancyCommandValidator : AbstractValidator<DeleteTrainingVacancyCommand>
 {
     public DeleteTrainingVacancyCommandValidator()

@@ -38,15 +38,16 @@ public class TrainingService : ITrainingService
         await _httpClient.DeleteAsync($"trainings/{id}");
     }
 
-    public async Task<List<TrainingVacancyListDTO>> GetAll()
+    public async Task<List<TrainingVacancyListDto>> GetAll()
     {
-        var result = await _httpClient.GetFromJsonAsync<PaggedList<TrainingVacancyListDTO>>("trainings");
+        PagedList<TrainingVacancyListDto> result =
+            await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
         return result.Items;
     }
 
-    public async Task<TrainingVacancyDetailedResponce> GetById(Guid id)
+    public async Task<TrainingVacancyDetailedResponse> GetById(Guid id)
     {
-        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponce>($"trainings/{id}");
+        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{id}");
     }
 
     public async Task<HttpResponseMessage> Update(Guid id)

@@ -20,9 +20,9 @@ public class GenericSmsService : ISmsService
 
     private string Create(string from, string body, string to)
     {
-        var result = $"To:   {to} /n" +
-               $"Body: {body} /n" +
-               $"From: {from} /n";
+        string result = $"To:   {to} /n" +
+                        $"Body: {body} /n" +
+                        $"From: {from} /n";
         return result;
     }
 }

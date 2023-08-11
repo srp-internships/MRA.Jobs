@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using MRA.Jobs.Application.Common.Security;
 
 namespace MRA.Jobs.Application.Common.Behaviours;
 
-public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly IIdentityService _identityService;
@@ -16,28 +16,33 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
         _identityService = identityService;
     }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
-        var authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>();
+        IEnumerable<AuthorizeAttribute> authorizeAttributes =
+            request.GetType().GetCustomAttributes<AuthorizeAttribute>();
 
         if (authorizeAttributes.Any())
         {
             // Must be authenticated user
             if (_currentUserService.GetId().Value == Guid.Empty)
+            {
                 throw new UnauthorizedAccessException();
+            }
 
             // Role-based authorization
-            var authorizeAttributesWithRoles = authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Roles));
+            IEnumerable<AuthorizeAttribute> authorizeAttributesWithRoles =
+                authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Roles));
 
             if (authorizeAttributesWithRoles.Any())
             {
-                var authorized = false;
+                bool authorized = false;
 
-                foreach (var roles in authorizeAttributesWithRoles.Select(a => a.Roles.Split(',')))
+                foreach (string[] roles in authorizeAttributesWithRoles.Select(a => a.Roles.Split(',')))
                 {
-                    foreach (var role in roles)
+                    foreach (string role in roles)
                     {
-                        var isInRole = await _currentUserService.HasPermissionAsync(role.Trim(), cancellationToken);
+                        bool isInRole = await _currentUserService.HasPermissionAsync(role.Trim(), cancellationToken);
                         if (isInRole)
                         {
                             authorized = true;

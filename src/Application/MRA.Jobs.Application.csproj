@@ -8,16 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Application.Contracts\MRA.Jobs.Application.Contracts.csproj" />
-      <ProjectReference Include="..\Domain\MRA.Jobs.Domain.csproj" />
+        <ProjectReference Include="..\Application.Contracts\MRA.Jobs.Application.Contracts.csproj"/>
+        <ProjectReference Include="..\Domain\MRA.Jobs.Domain.csproj"/>
     </ItemGroup>
 
 

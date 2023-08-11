@@ -2,7 +2,6 @@
 
 public class Application : BaseAuditableEntity
 {
-
     public string CoverLetter { get; set; }
     public string CV { get; set; }
     public DateTime AppliedAt { get; set; }
@@ -17,5 +16,4 @@ public class Application : BaseAuditableEntity
     public TestResult TestResult { get; set; }
 
     public ICollection<ApplicationTimelineEvent> History { get; set; }
-
 }

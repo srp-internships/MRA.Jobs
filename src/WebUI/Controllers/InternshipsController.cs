@@ -6,28 +6,33 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Tests.Commands;
 
 namespace MRA.Jobs.Web.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class InternshipsController : ApiControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetWithPagination([FromQuery] PaggedListQuery<InternshipVacancyListResponce> query)
+    public async Task<IActionResult> GetWithPagination([FromQuery] PagedListQuery<InternshipVacancyListResponse> query)
     {
-        var internships = await Mediator.Send(query);
+        PagedList<InternshipVacancyListResponse> internships = await Mediator.Send(query);
         return Ok(internships);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateNewInternship(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> CreateNewInternship(CreateInternshipVacancyCommand request,
+        CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Guid>> UpdateInternship([FromRoute] Guid id, [FromBody] UpdateInternshipVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> UpdateInternship([FromRoute] Guid id,
+        [FromBody] UpdateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         if (id != request.Id)
+        {
             return BadRequest();
+        }
 
         return await Mediator.Send(request, cancellationToken);
     }
@@ -35,19 +40,20 @@ public class InternshipsController : ApiControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult<bool>> DeleteInternship([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var request = new DeleteInternshipVacancyCommand { Id = id };
+        DeleteInternshipVacancyCommand request = new DeleteInternshipVacancyCommand { Id = id };
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetInternshipById(Guid id)
     {
-        var internship = await Mediator.Send(new GetInternshipVacancyByIdQuery { Id = id });
+        InternshipVacancyResponse internship = await Mediator.Send(new GetInternshipVacancyByIdQuery { Id = id });
         return Ok(internship);
     }
 
     [HttpPost("{id}/tags")]
-    public async Task<IActionResult> AddTag([FromRoute] Guid id, [FromBody] AddTagToInternshipVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddTag([FromRoute] Guid id, [FromBody] AddTagToInternshipVacancyCommand request,
+        CancellationToken cancellationToken)
     {
         request.InternshipId = id;
         await Mediator.Send(request, cancellationToken);
@@ -55,7 +61,8 @@ public class InternshipsController : ApiControllerBase
     }
 
     [HttpDelete("{id}/tags")]
-    public async Task<IActionResult> RemoveTags([FromRoute] Guid id, [FromBody] RemoveTagFromInternshipVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveTags([FromRoute] Guid id,
+        [FromBody] RemoveTagFromInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         request.InternshipId = id;
         await Mediator.Send(request, cancellationToken);
@@ -63,19 +70,25 @@ public class InternshipsController : ApiControllerBase
     }
 
     [HttpPost("{id}/test")]
-    public async Task<ActionResult<TestInfoDTO>> SendTestCreationRequest([FromRoute] Guid id, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<TestInfoDto>> SendTestCreationRequest([FromRoute] Guid id,
+        [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
     {
         if (id != request.Id)
+        {
             return BadRequest();
+        }
 
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpPost("{id}/test/result")]
-    public async Task<ActionResult<TestResultDTO>> GetTestResultRequest([FromRoute] Guid id, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<TestResultDto>> GetTestResultRequest([FromRoute] Guid id,
+        [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
     {
         if (id != request.TestId)
+        {
             return BadRequest();
+        }
 
         return await Mediator.Send(request, cancellationToken);
     }

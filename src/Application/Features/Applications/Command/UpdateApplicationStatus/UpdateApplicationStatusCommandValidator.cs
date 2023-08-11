@@ -1,6 +1,7 @@
 ﻿namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplicationStatus;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
-public class UpdateApplicationStatusCommandValidator : AbstractValidator<UpdateApplicationStatus>
+
+public class
+    UpdateApplicationStatusCommandValidator : AbstractValidator<Contracts.Applications.Commands.UpdateApplicationStatus>
 {
     public UpdateApplicationStatusCommandValidator()
     {

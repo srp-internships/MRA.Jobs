@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace MRA.Jobs.Infrastructure.Persistence.Extensions;
+
 public static class ChangeTrackerExtensions
 {
     public static void SetAuditProperties(this ChangeTracker changeTracker)

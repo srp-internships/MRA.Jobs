@@ -1,7 +1,6 @@
-﻿using MRA.Jobs.Application.Common.Exceptions;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using MRA.Jobs.Application.Common.Exceptions;
 
 namespace MRA.Jobs.Web.Filters;
 
@@ -25,24 +24,21 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     public bool HandleTaskCanceledException(ExceptionContext context)
     {
-        var details = new ProblemDetails
+        ProblemDetails details = new ProblemDetails
         {
             Status = StatusCodes.Status400BadRequest,
             Title = "Request was canceled.",
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
         };
 
-        context.Result = new ObjectResult(details)
-        {
-            StatusCode = StatusCodes.Status400BadRequest
-        };
+        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status400BadRequest };
 
         return true;
     }
 
     public bool HandleUnknownException(ExceptionContext context)
     {
-        var details = new ProblemDetails
+        ProblemDetails details = new ProblemDetails
         {
             Status = StatusCodes.Status500InternalServerError,
             Title = "An error occurred while processing your request.",
@@ -51,23 +47,20 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             Extensions =
             {
                 { "traceId", context.HttpContext.TraceIdentifier },
-                { "stackTrace", context.Exception.StackTrace },
+                { "stackTrace", context.Exception.StackTrace }
             }
         };
 
-        context.Result = new ObjectResult(details)
-        {
-            StatusCode = StatusCodes.Status500InternalServerError
-        };
+        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status500InternalServerError };
 
         return true;
     }
 
     private bool HandleValidationException(ExceptionContext context)
     {
-        var exception = (ValidationException)context.Exception;
+        ValidationException exception = (ValidationException)context.Exception;
 
-        var details = new ValidationProblemDetails(exception.Errors)
+        ValidationProblemDetails details = new ValidationProblemDetails(exception.Errors)
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
         };
@@ -79,7 +72,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     private bool HandleInvalidModelStateException(ExceptionContext context)
     {
-        var details = new ValidationProblemDetails(context.ModelState)
+        ValidationProblemDetails details = new ValidationProblemDetails(context.ModelState)
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
         };
@@ -91,9 +84,9 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     private bool HandleNotFoundException(ExceptionContext context)
     {
-        var exception = (NotFoundException)context.Exception;
+        NotFoundException exception = (NotFoundException)context.Exception;
 
-        var details = new ProblemDetails()
+        ProblemDetails details = new ProblemDetails
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
             Title = "The specified resource was not found.",
@@ -107,34 +100,28 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     private bool HandleUnauthorizedAccessException(ExceptionContext context)
     {
-        var details = new ProblemDetails
+        ProblemDetails details = new ProblemDetails
         {
             Status = StatusCodes.Status401Unauthorized,
             Title = "Unauthorized",
             Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
         };
 
-        context.Result = new ObjectResult(details)
-        {
-            StatusCode = StatusCodes.Status401Unauthorized
-        };
+        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status401Unauthorized };
 
         return true;
     }
 
     private bool HandleForbiddenAccessException(ExceptionContext context)
     {
-        var details = new ProblemDetails
+        ProblemDetails details = new ProblemDetails
         {
             Status = StatusCodes.Status403Forbidden,
             Title = "Forbidden",
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
         };
 
-        context.Result = new ObjectResult(details)
-        {
-            StatusCode = StatusCodes.Status403Forbidden
-        };
+        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status403Forbidden };
 
         return true;
     }

@@ -1,9 +1,6 @@
-﻿using System.Net.Http.Json;
-using MRA.Jobs.Application.Contracts.Common;
+﻿using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
-using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Client.Components.Client;
 
 namespace MRA.Jobs.Client.Services.InternshipsServices;
 
@@ -26,7 +23,6 @@ public class InternshipService : IInternshipService
             Duration = 0,
             Stipend = 0
         };
-
     }
 
     public CreateInternshipVacancyCommand createCommand { get; set; }
@@ -39,25 +35,26 @@ public class InternshipService : IInternshipService
         return await _http.PostAsJsonAsync("internships", createCommand);
     }
 
-    public  async Task Delete(Guid id)
+    public async Task Delete(Guid id)
     {
         await _http.DeleteAsync($"internships/{id}");
     }
 
-    public async Task<List<InternshipVacancyListResponce>> GetAll()
+    public async Task<List<InternshipVacancyListResponse>> GetAll()
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<InternshipVacancyListResponce>>("internships");
+        PagedList<InternshipVacancyListResponse> result =
+            await _http.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>("internships");
         return result.Items;
     }
 
-    public async Task<InternshipVacancyResponce> GetById(Guid id)
+    public async Task<InternshipVacancyResponse> GetById(Guid id)
     {
-        return await _http.GetFromJsonAsync<InternshipVacancyResponce>($"internships/{id}");
+        return await _http.GetFromJsonAsync<InternshipVacancyResponse>($"internships/{id}");
     }
 
     public async Task<HttpResponseMessage> Update(Guid id)
     {
-        var updateCommand = new UpdateInternshipVacancyCommand
+        UpdateInternshipVacancyCommand updateCommand = new UpdateInternshipVacancyCommand
         {
             Id = id,
             Title = createCommand.Title,
@@ -68,10 +65,9 @@ public class InternshipService : IInternshipService
             EndDate = createCommand.EndDate,
             ApplicationDeadline = createCommand.ApplicationDeadline,
             Duration = createCommand.Duration,
-            Stipend = createCommand.Stipend,
+            Stipend = createCommand.Stipend
         };
 
         return await _http.PutAsJsonAsync($"internships/{id}", updateCommand);
     }
-
 }

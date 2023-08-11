@@ -2,11 +2,9 @@
 using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
-using MRA.Jobs.Domain.Entities;
+
 public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
 {
-    private CreateJobVacancyCommandHandler _handler;
-
     [SetUp]
     public override void Setup()
     {
@@ -19,11 +17,13 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
             _currentUserServiceMock.Object);
     }
 
+    private CreateJobVacancyCommandHandler _handler;
+
     [Test]
     public async Task Handle_ValidRequest_ShouldCreateJobVacancyAndTimelineEvent()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",
@@ -35,22 +35,23 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
             WorkSchedule = WorkSchedule.FullTime
         };
 
-        var category = new VacancyCategory { Id = request.CategoryId };
+        VacancyCategory category = new VacancyCategory { Id = request.CategoryId };
         _dbContextMock.Setup(x => x.Categories.FindAsync(request.CategoryId)).ReturnsAsync(category);
 
-        var timelineEventSetMock = new Mock<DbSet<VacancyTimelineEvent>>();
+        Mock<DbSet<VacancyTimelineEvent>> timelineEventSetMock = new Mock<DbSet<VacancyTimelineEvent>>();
         _dbContextMock.Setup(x => x.VacancyTimelineEvents).Returns(timelineEventSetMock.Object);
 
-        var jobVacancySetMock = new Mock<DbSet<JobVacancy>>();
-        var newEntityGuid = Guid.NewGuid();
-        jobVacancySetMock.Setup(d => d.AddAsync(It.IsAny<JobVacancy>(), It.IsAny<CancellationToken>())).Callback<JobVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
+        Mock<DbSet<JobVacancy>> jobVacancySetMock = new Mock<DbSet<JobVacancy>>();
+        Guid newEntityGuid = Guid.NewGuid();
+        jobVacancySetMock.Setup(d => d.AddAsync(It.IsAny<JobVacancy>(), It.IsAny<CancellationToken>()))
+            .Callback<JobVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.JobVacancies).Returns(jobVacancySetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
         _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        Guid result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.Should().Be(newEntityGuid);
@@ -80,7 +81,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
     [Test]
     public void Handle_CategoryNotFound_ShouldThrowNotFoundException()
     {
-        var request = new CreateJobVacancyCommand
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",
@@ -99,6 +100,6 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
 
         // Assert
         act.Should().ThrowAsync<NotFoundException>()
-         .WithMessage($"*{nameof(VacancyCategory)}*{request.CategoryId}*");
+            .WithMessage($"*{nameof(VacancyCategory)}*{request.CategoryId}*");
     }
 }
