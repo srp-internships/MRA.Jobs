@@ -52,7 +52,6 @@
       <Folder Include="Identity\Features\User\Events\" />
       <Folder Include="Identity\Features\Verification\Commands\" />
       <Folder Include="Identity\Features\Verification\Queries\" />
-      <Folder Include="Persistence\Migrations\" />
     </ItemGroup>
 
     <ProjectExtensions><VisualStudio><UserProperties dbsettings_1json__JsonSchema="https://docs.renovatebot.com/renovate-schema.json" /></VisualStudio></ProjectExtensions>
