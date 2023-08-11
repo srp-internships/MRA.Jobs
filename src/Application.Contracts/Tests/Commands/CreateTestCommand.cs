@@ -1,7 +1,8 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
 
 namespace MRA.Jobs.Application.Contracts.Tests.Commands;
-public class CreateTestCommand : IRequest<TestInfoDTO>
+
+public class CreateTestCommand : IRequest<TestInfoDto>
 {
     public Guid Id { get; set; }
     public long NumberOfQuestion { get; set; }

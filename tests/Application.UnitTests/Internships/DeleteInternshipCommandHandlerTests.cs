@@ -2,10 +2,9 @@
 using MRA.Jobs.Application.Features.InternshipVacancies.Command.Delete;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
-using MRA.Jobs.Domain.Entities;
+
 public class DeleteInternshipCommandHandlerTests : BaseTestFixture
 {
-    DeleteInternshipVacancyCommandHandler _handler;
     [SetUp]
     public void SetUp()
     {
@@ -13,18 +12,22 @@ public class DeleteInternshipCommandHandlerTests : BaseTestFixture
         _handler = new DeleteInternshipVacancyCommandHandler(_dbContextMock.Object);
     }
 
+    private DeleteInternshipVacancyCommandHandler _handler;
+
     [Test]
     [Ignore("")]
     public async Task Handle_InternshipExists_ShouldRemoveInternship()
     {
         // Arrange
-        var internship = new InternshipVacancy { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { internship.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(internship);
+        InternshipVacancy internship = new InternshipVacancy { Id = Guid.NewGuid() };
+        _dbContextMock
+            .Setup(x => x.Internships.FindAsync(new object[] { internship.Id }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(internship);
 
-        var command = new DeleteInternshipVacancyCommand { Id = internship.Id };
+        DeleteInternshipVacancyCommand command = new DeleteInternshipVacancyCommand { Id = internship.Id };
 
         // Act
-        var result = await _handler.Handle(command, default);
+        bool result = await _handler.Handle(command, default);
 
         // Assert
         _dbContextMock.Verify(x => x.Internships.Remove(internship), Times.Once);
@@ -37,7 +40,7 @@ public class DeleteInternshipCommandHandlerTests : BaseTestFixture
     public void Handle_InternshipNotFound_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new DeleteInternshipVacancyCommand { Id = Guid.NewGuid() };
+        DeleteInternshipVacancyCommand command = new DeleteInternshipVacancyCommand { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(null as InternshipVacancy);

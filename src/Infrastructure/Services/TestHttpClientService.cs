@@ -1,10 +1,12 @@
 ﻿using System.Net.Http.Json;
+using System.Text;
 using Microsoft.Extensions.Configuration;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Tests.Commands;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Infrastructure.Services;
+
 public class TestHttpClientService : ITestHttpClientService
 {
     private readonly IConfiguration _configuration;
@@ -13,41 +15,40 @@ public class TestHttpClientService : ITestHttpClientService
     {
         _configuration = configuration;
     }
-    public async Task<TestInfoDTO> SendTestCreationRequest(CreateTestCommand request)
+
+    public async Task<TestInfoDto> SendTestCreationRequest(CreateTestCommand request)
     {
         using HttpClient client = new();
-        var content = new StringContent(JsonConvert.SerializeObject(request), System.Text.Encoding.UTF8, "application/json");
+        StringContent content =
+            new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
         string path = _configuration.GetSection("UrlSettings:DefaultUrl").Value;
 
         HttpResponseMessage response = await client.PostAsync(path + "api/test/create", content);
 
         if (response.IsSuccessStatusCode)
         {
-            var responseContent = await response.Content.ReadFromJsonAsync<TestInfoDTO>();
+            TestInfoDto responseContent = await response.Content.ReadFromJsonAsync<TestInfoDto>();
             return responseContent;
         }
-        else
-        {
-            throw new InvalidOperationException("Request to server failed.");
-        }
+
+        throw new InvalidOperationException("Request to server failed.");
     }
 
-    public async Task<TestResultDTO> GetTestResultRequest(CreateTestResultCommand request)
+    public async Task<TestResultDto> GetTestResultRequest(CreateTestResultCommand request)
     {
         using HttpClient client = new();
-        var content = new StringContent(JsonConvert.SerializeObject(request), System.Text.Encoding.UTF8, "application/json");
+        StringContent content =
+            new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
         string path = _configuration.GetSection("UrlSettings:DefaultUrl").Value;
 
         HttpResponseMessage response = await client.PostAsync(path + "api/test/pass", content);
 
         if (response.IsSuccessStatusCode)
         {
-            var responseContent = await response.Content.ReadFromJsonAsync<TestResultDTO>();
+            TestResultDto responseContent = await response.Content.ReadFromJsonAsync<TestResultDto>();
             return responseContent;
         }
-        else
-        {
-            throw new InvalidOperationException("Request to server failed.");
-        }
+
+        throw new InvalidOperationException("Request to server failed.");
     }
 }

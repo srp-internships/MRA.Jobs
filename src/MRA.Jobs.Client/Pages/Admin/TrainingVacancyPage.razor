@@ -1,9 +1,9 @@
 ﻿@page "/dashboard/trainings"
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses
+@using MRA.Jobs.Client.Components.Dialogs
+@using MRA.Jobs.Client.Services.TrainingServices
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses
 @layout Dashboard
-@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-@using MRA.Jobs.Client.Services.TrainingServices;
-@using MRA.Jobs.Client.Components.Dialogs;
 @inject ITrainingService trainingService
 @inject ICategoryService categoryService
 
@@ -13,150 +13,153 @@
 
 @if (categories == null)
 {
-	<div>loading....</div>
+    <div>loading....</div>
 }
 else
 {
-		<MatAccordion>
-		<MatExpansionPanel @bind-Expanded="@panelOpenState">
-			<MatExpansionPanelSummary>
-				<MatExpansionPanelHeader>Inserting a new Job</MatExpansionPanelHeader>
-			</MatExpansionPanelSummary>
-			<MatExpansionPanelDetails Style="display: flex;flex-direction: column;">
-				<MatTextField @bind-Value="@trainingService.createCommand.Title" Label="Title"></MatTextField>
-				<MatTextField @bind-Value="@trainingService.createCommand.ShortDescription" Label="ShortDescription" TextArea></MatTextField>
-				<MatTextField @bind-Value="@trainingService.createCommand.Description" Label="Description" TextArea></MatTextField>
-				<MatTextField @bind-Value="@trainingService.createCommand.Duration" Label="Duration"></MatTextField>
-				<MatTextField @bind-Value="@trainingService.createCommand.Fees" Label="Fees"></MatTextField>
-				<MatSelectValue @bind-Value="@trainingService.createCommand.CategoryId" Items="@categories" ValueSelector="@(i=>i.Id)">
-					<ItemTemplate>
-						<span>@context?.Name</span>
-					</ItemTemplate>
-				</MatSelectValue>
-				<MatDatePicker @bind-Value="trainingService.createCommand.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MatDatePicker>
-				<MatDatePicker @bind-Value="trainingService.createCommand.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MatDatePicker>
-				<MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MatButton>
-				<MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
-				<MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
-			</MatExpansionPanelDetails>
-		</MatExpansionPanel>
-	</MatAccordion>
-	<DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem" />
-	<MatTable Items="@trainings" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
-		<MatTableHeader>
-			<th>Title</th>
-			<th>ShortDescription</th>
-			<th>Category</th>
-			<th>PublishDate</th>
-			<th>EndDate</th>
-			<th>Duration</th>
-			<th>Fees</th>
-			<th></th>
-			<th></th>
-		</MatTableHeader>
-		<MatTableRow>
-			<td>@context.Title</td>
-			<td>@context.ShortDescription</td>
-			<td>@context.Category</td>
-			<td>@context.PublishDate</td>
-			<td>@context.EndDate</td>
-			<td>@context.Duration</td>
-			<td>@context.Fees</td>
-			<td><MatButton @onclick="()=>OnDeleteClick(context.Id)" Style="color:#2094CC" Icon="delete">Delete</MatButton></td>
-			<td><MatButton @onclick="()=>OnEditClick(context.Id)" Style="color:#2094CC" Icon="edit">Edit</MatButton></td>
-		</MatTableRow>
-	</MatTable>
+    <MatAccordion>
+        <MatExpansionPanel @bind-Expanded="@panelOpenState">
+            <MatExpansionPanelSummary>
+                <MatExpansionPanelHeader>Inserting a new Job</MatExpansionPanelHeader>
+            </MatExpansionPanelSummary>
+            <MatExpansionPanelDetails Style="display: flex;flex-direction: column;">
+                <MatTextField @bind-Value="@trainingService.createCommand.Title" Label="Title"></MatTextField>
+                <MatTextField @bind-Value="@trainingService.createCommand.ShortDescription" Label="ShortDescription" TextArea></MatTextField>
+                <MatTextField @bind-Value="@trainingService.createCommand.Description" Label="Description" TextArea></MatTextField>
+                <MatTextField @bind-Value="@trainingService.createCommand.Duration" Label="Duration"></MatTextField>
+                <MatTextField @bind-Value="@trainingService.createCommand.Fees" Label="Fees"></MatTextField>
+                <MatSelectValue @bind-Value="@trainingService.createCommand.CategoryId" Items="@categories" ValueSelector="@(i => i.Id)">
+                    <ItemTemplate>
+                        <span>@context?.Name</span>
+                    </ItemTemplate>
+                </MatSelectValue>
+                <MatDatePicker @bind-Value="trainingService.createCommand.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MatDatePicker>
+                <MatDatePicker @bind-Value="trainingService.createCommand.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MatDatePicker>
+                <MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MatButton>
+                <MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
+                <MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
+            </MatExpansionPanelDetails>
+        </MatExpansionPanel>
+    </MatAccordion>
+    <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem"/>
+    <MatTable Items="@trainings" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
+        <MatTableHeader>
+            <th>Title</th>
+            <th>ShortDescription</th>
+            <th>Category</th>
+            <th>PublishDate</th>
+            <th>EndDate</th>
+            <th>Duration</th>
+            <th>Fees</th>
+            <th></th>
+            <th></th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Title</td>
+            <td>@context.ShortDescription</td>
+            <td>@context.Category</td>
+            <td>@context.PublishDate</td>
+            <td>@context.EndDate</td>
+            <td>@context.Duration</td>
+            <td>@context.Fees</td>
+            <td>
+                <MatButton @onclick="() => OnDeleteClick(context.Id)" Style="color:#2094CC" Icon="delete">Delete</MatButton>
+            </td>
+            <td>
+                <MatButton @onclick="() => OnEditClick(context.Id)" Style="color:#2094CC" Icon="edit">Edit</MatButton>
+            </td>
+        </MatTableRow>
+    </MatTable>
 }
 
 @code {
-	bool panelOpenState;
-	bool isInserting;
-	bool isUpdating = true;
-	Guid UpdateId;
+    bool panelOpenState;
+    bool isInserting;
+    bool isUpdating = true;
+    Guid UpdateId;
 
-	private List<CategoryResponse> categories;
-	private List<TrainingVacancyListDTO> trainings;
+    private List<CategoryResponse> categories;
+    private List<TrainingVacancyListDto> trainings;
 
-	protected override async Task OnInitializedAsync()
-	{
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
 
-		await LoadData();
-	}
+    private bool isDialogOpen;
+    private Guid itemIdToDelete;
 
-	private bool isDialogOpen = false;
-	private Guid itemIdToDelete;
+    void OnDeleteClick(Guid id)
+    {
+        itemIdToDelete = id;
+        isDialogOpen = true;
+    }
 
-	void OnDeleteClick(Guid id)
-	{
-		itemIdToDelete = id;
-		isDialogOpen = true;
-	}
+    private async Task DeleteItem()
+    {
+        await trainingService.Delete(itemIdToDelete);
+        isDialogOpen = false;
+        await LoadData();
+    }
 
-	private async Task DeleteItem()
-	{
-		await trainingService.Delete(itemIdToDelete);
-		isDialogOpen = false;
-		await LoadData();
-	}
+    private async Task OnEditClick(Guid id)
+    {
+        var vacancy = await trainingService.GetById(id);
+        if (vacancy != null)
+        {
+            trainingService.createCommand.Title = vacancy.Title;
+            trainingService.createCommand.ShortDescription = vacancy.ShortDescription;
+            trainingService.createCommand.Description = vacancy.Description;
+            trainingService.createCommand.Duration = vacancy.Duration;
+            trainingService.createCommand.EndDate = vacancy.EndDate;
+            trainingService.createCommand.PublishDate = vacancy.PublishDate;
+            trainingService.createCommand.CategoryId = vacancy.CategoryId;
+            trainingService.createCommand.Fees = vacancy.Fees;
+            isInserting = true;
+            isUpdating = false;
+            panelOpenState = true;
+            UpdateId = id;
+        }
+    }
 
-	private async Task OnEditClick(Guid id)
-	{
-		var vacancy = await trainingService.GetById(id);
-		if (vacancy != null)
-		{
-			trainingService.createCommand.Title = vacancy.Title;
-			trainingService.createCommand.ShortDescription = vacancy.ShortDescription;
-			trainingService.createCommand.Description = vacancy.Description;
-			trainingService.createCommand.Duration = vacancy.Duration;
-			trainingService.createCommand.EndDate = vacancy.EndDate;
-			trainingService.createCommand.PublishDate = vacancy.PublishDate;
-			trainingService.createCommand.CategoryId = vacancy.CategoryId;
-			trainingService.createCommand.Fees = vacancy.Fees;
-			isInserting = true;
-			isUpdating = false;
-			panelOpenState = true;
-			UpdateId = id;
-		}
-	}
+    private async Task LoadData()
+    {
+        trainings = await trainingService.GetAll();
+        categories = await categoryService.GetAllCategory();
+    }
 
-	private async Task LoadData()
-	{
-		trainings = await trainingService.GetAll();
-		categories = await categoryService.GetAllCategory();
-	}
+    private async Task HandleSubmit()
+    {
+        await trainingService.Create();
+        await LoadData();
+        Clear();
+    }
 
-	private async Task HandleSubmit()
-	{
-		await trainingService.Create();
-		await LoadData();
-		Clear();
-	}
+    private async Task HandleUpdate()
+    {
+        await trainingService.Update(UpdateId);
+        await LoadData();
+        Clear();
+    }
 
-	private async Task HandleUpdate()
-	{
-		await trainingService.Update(UpdateId);
-		await LoadData();
-		Clear();
-	}
+    void HandleCancel()
+    {
+        Clear();
+    }
 
-	void HandleCancel()
-	{
-		Clear();
-	}
-
-	private void Clear()
-	{
-		trainingService.createCommand.Title = string.Empty;
-		trainingService.createCommand.ShortDescription = string.Empty;
-		trainingService.createCommand.Description = string.Empty;
-		trainingService.createCommand.Fees = 0;
-		trainingService.createCommand.Duration = 0;
-		trainingService.createCommand.EndDate = DateTime.Now;
-		trainingService.createCommand.PublishDate = DateTime.Now;
-		isInserting = false;
-		isUpdating = true;
-		panelOpenState = false;
-		UpdateId = Guid.NewGuid();
-	}
+    private void Clear()
+    {
+        trainingService.createCommand.Title = string.Empty;
+        trainingService.createCommand.ShortDescription = string.Empty;
+        trainingService.createCommand.Description = string.Empty;
+        trainingService.createCommand.Fees = 0;
+        trainingService.createCommand.Duration = 0;
+        trainingService.createCommand.EndDate = DateTime.Now;
+        trainingService.createCommand.PublishDate = DateTime.Now;
+        isInserting = false;
+        isUpdating = true;
+        panelOpenState = false;
+        UpdateId = Guid.NewGuid();
+    }
 
 }

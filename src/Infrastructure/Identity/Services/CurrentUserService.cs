@@ -7,8 +7,6 @@ public class CurrentUserService : ICurrentUserService
     internal string Email { get; set; }
     internal string[] Roles { get; set; }
 
-    public CurrentUserService() { }
-
     public async Task<Guid?> GetIdAsync(CancellationToken cancellationToken)
     {
         return await Task.FromResult(Id);

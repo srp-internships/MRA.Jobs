@@ -1,7 +1,8 @@
 ﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
-public class GetInternshipVacancyByIdQueryValidator : AbstractValidator<InternshipVacancyResponce>
+
+public class GetInternshipVacancyByIdQueryValidator : AbstractValidator<InternshipVacancyResponse>
 {
     public GetInternshipVacancyByIdQueryValidator()
     {

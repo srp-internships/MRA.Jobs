@@ -2,11 +2,11 @@
 
 namespace MRA.Jobs.Application.Contracts.Common;
 
-public class PaggedListQuery<T> : SieveModel, IRequest<PaggedList<T>>
+public class PagedListQuery<T> : SieveModel, IRequest<PagedList<T>>
 {
 }
 
-public class PaggedList<T>
+public class PagedList<T>
 {
     public int TotalCount { get; set; }
     public int PageSize { get; set; }

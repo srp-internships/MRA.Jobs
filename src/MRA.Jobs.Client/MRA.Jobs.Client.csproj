@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
@@ -13,16 +13,16 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.2" PrivateAssets="all" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Application.Contracts\MRA.Jobs.Application.Contracts.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Application.Contracts\MRA.Jobs.Application.Contracts.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Include="wwwroot\images\SRP_icon.png" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="wwwroot\images\SRP_icon.png"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Shared" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Shared"/>
+    </ItemGroup>
 
 </Project>

@@ -4,5 +4,4 @@ namespace MRA.Jobs.Application.Contracts.Applicant.Queries;
 
 public class GetAllApplicantQuery : IRequest<List<ApplicantListDto>>
 {
-  
 }

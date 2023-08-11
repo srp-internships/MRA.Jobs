@@ -4,5 +4,4 @@ namespace MRA.Jobs.Application.Contracts.Reviewer.Queries;
 
 public class GetAllReviewerQuery : IRequest<List<ReviewerListDto>>
 {
-  
 }

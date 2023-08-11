@@ -1,12 +1,11 @@
 ﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
-using MRA.Jobs.Domain.Entities;
+
 public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
 {
-    private GetInternshipVacancyByIdQueryHandler _handler;
-
     [SetUp]
     public override void Setup()
     {
@@ -14,13 +13,15 @@ public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
         _handler = new GetInternshipVacancyByIdQueryHandler(_dbContextMock.Object, Mapper);
     }
 
+    private GetInternshipVacancyByIdQueryHandler _handler;
+
     [Test]
     [Ignore("Игнорируем тест из-за TimeLine & Tag")]
     public async Task Handle_GivenValidQuery_ShouldReturnInternshipDetailsDTO()
     {
-        var query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
+        GetInternshipVacancyByIdQuery query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
 
-        var internship = new InternshipVacancy
+        InternshipVacancy internship = new InternshipVacancy
         {
             Id = query.Id,
             Title = "Job Title",
@@ -33,10 +34,11 @@ public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
             Duration = 10,
             Stipend = 100
         };
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(internship);
+        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(internship);
 
         // Act
-        var result = await _handler.Handle(query, CancellationToken.None);
+        InternshipVacancyResponse result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
         result.Id.Should().Be(internship.Id);
@@ -56,7 +58,7 @@ public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
+        GetInternshipVacancyByIdQuery query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
 
         _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((InternshipVacancy)null);

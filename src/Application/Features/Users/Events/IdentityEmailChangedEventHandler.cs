@@ -9,7 +9,8 @@ public class IdentityEmailChangedEventHandler : INotificationHandler<IdentityEma
     private readonly IApplicationDbContext _context;
     private readonly ILogger<IdentityEmailChangedEventHandler> _logger;
 
-    public IdentityEmailChangedEventHandler(IApplicationDbContext context, ILogger<IdentityEmailChangedEventHandler> logger)
+    public IdentityEmailChangedEventHandler(IApplicationDbContext context,
+        ILogger<IdentityEmailChangedEventHandler> logger)
     {
         _context = context;
         _logger = logger;
@@ -18,7 +19,7 @@ public class IdentityEmailChangedEventHandler : INotificationHandler<IdentityEma
 
     public async Task Handle(IdentityEmailChangedEvent notification, CancellationToken cancellationToken)
     {
-        var entity = await _context.DomainUsers.FirstOrDefaultAsync(x => x.Id == notification.Id, cancellationToken);
+        User entity = await _context.DomainUsers.FirstOrDefaultAsync(x => x.Id == notification.Id, cancellationToken);
         if (entity != null)
         {
             entity.Email = notification.NewEmail;

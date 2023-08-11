@@ -1,14 +1,15 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.DeleteApplication;
-using MRA.Jobs.Domain.Entities;
+
 public class DeleteApplicationCommandHandler : IRequestHandler<DeleteApplicationCommand, bool>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTime _dateTime;
 
-    public DeleteApplicationCommandHandler(IApplicationDbContext context ,IDateTime dateTime,ICurrentUserService currentUserService)
+    public DeleteApplicationCommandHandler(IApplicationDbContext context, IDateTime dateTime,
+        ICurrentUserService currentUserService)
     {
         _context = context;
         _dateTime = dateTime;
@@ -17,10 +18,11 @@ public class DeleteApplicationCommandHandler : IRequestHandler<DeleteApplication
 
     public async Task<bool> Handle(DeleteApplicationCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Applications.FindAsync(new object[] { request.Id }, cancellationToken)
-            ?? throw new NotFoundException(nameof(Application), request.Id);
+        Domain.Entities.Application entity =
+            await _context.Applications.FindAsync(new object[] { request.Id }, cancellationToken)
+            ?? throw new NotFoundException(nameof(Domain.Entities.Application), request.Id);
 
-        var timelineEvent = new ApplicationTimelineEvent
+        ApplicationTimelineEvent timelineEvent = new ApplicationTimelineEvent
         {
             ApplicationId = entity.Id,
             EventType = TimelineEventType.Deleted,

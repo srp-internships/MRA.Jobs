@@ -3,6 +3,7 @@ using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Application.Common.Models;
 
 namespace MRA.Jobs.Web.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class EmailTestController : ControllerBase

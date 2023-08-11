@@ -2,7 +2,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using MRA.Jobs.Application.Contracts.Identity.Events;
-using MRA.Jobs.Infrastructure.Shared.Auth.Commands;
 using MRA.Jobs.Infrastructure.Shared.Users.Commands;
 using ValidationException = MRA.Jobs.Application.Common.Exceptions.ValidationException;
 
@@ -16,7 +15,8 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
     {
         RuleFor(x => x.FirstName).NotEmpty().Must(s => Regex.IsMatch(s, pattern)).WithMessage("Unacceptable symbols");
         RuleFor(x => x.LastName).NotEmpty().Must(s => Regex.IsMatch(s, pattern)).WithMessage("Unacceptable symbols");
-        RuleFor(x => x.Patronymic).Must(s => string.IsNullOrEmpty(s) || Regex.IsMatch(s, pattern)).WithMessage("Unacceptable symbols");
+        RuleFor(x => x.Patronymic).Must(s => string.IsNullOrEmpty(s) || Regex.IsMatch(s, pattern))
+            .WithMessage("Unacceptable symbols");
         RuleFor(x => x.Email).NotEmpty().EmailAddress();
         RuleFor(x => x.DateOfBirth).NotEmpty();
         RuleFor(x => x.PhoneNumber).NotEmpty();
@@ -31,8 +31,8 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Guid>
 {
-    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMediator _mediator;
+    private readonly UserManager<ApplicationUser> _userManager;
 
     public RegisterUserCommandHandler(UserManager<ApplicationUser> userManager, IMediator mediator)
     {
@@ -44,24 +44,28 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
     {
         //TODO: check phone verification code
 
-        var user = new ApplicationUser()
+        ApplicationUser user = new ApplicationUser
         {
             Email = request.Email,
             PhoneNumber = request.PhoneNumber,
             UserName = $"{request.LastName} {request.FirstName} {request.Patronymic}",
             PhoneNumberConfirmed = true,
-            EmailConfirmed = true,
+            EmailConfirmed = true
         };
 
-        var result = await _userManager.CreateAsync(user, request.Password);
+        IdentityResult result = await _userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
+        {
             throw new ValidationException(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+        }
 
         result = await _userManager.AddToRoleAsync(user, "Applicant");
         if (!result.Succeeded)
+        {
             throw new ValidationException(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+        }
 
-        var notification = new NewIdentityRegisteredEvent()
+        NewIdentityRegisteredEvent notification = new NewIdentityRegisteredEvent
         {
             Id = user.Id,
             Email = user.Email,

@@ -2,12 +2,12 @@
 
 public class PermissionDefinitionContext : IPermissionDefinitionContext
 {
-    public Dictionary<string, IPermissionGroupDefinition> Groups { get; }
-
     public PermissionDefinitionContext()
     {
         Groups = new Dictionary<string, IPermissionGroupDefinition>();
     }
+
+    public Dictionary<string, IPermissionGroupDefinition> Groups { get; }
 
     public virtual IPermissionGroupDefinition AddGroup(string name)
     {
@@ -21,7 +21,7 @@ public class PermissionDefinitionContext : IPermissionDefinitionContext
 
     public virtual IPermissionGroupDefinition GetGroup(string name)
     {
-        var group = GetGroupOrNull(name);
+        IPermissionGroupDefinition group = GetGroupOrNull(name);
 
         if (group == null)
         {
@@ -53,9 +53,10 @@ public class PermissionDefinitionContext : IPermissionDefinitionContext
 
     public virtual IPermissionDefinition GetPermissionOrNull(string name)
     {
-        foreach (var groupDefinition in Groups.Values)
+        foreach (IPermissionGroupDefinition groupDefinition in Groups.Values)
         {
-            var permissionDefinition = groupDefinition.Permissions.FirstOrDefault(p => p.Name == name);
+            IPermissionDefinition permissionDefinition =
+                groupDefinition.Permissions.FirstOrDefault(p => p.Name == name);
             if (permissionDefinition != null)
             {
                 return permissionDefinition;

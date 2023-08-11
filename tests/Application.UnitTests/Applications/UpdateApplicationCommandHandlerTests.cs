@@ -1,12 +1,10 @@
-﻿using MRA.Jobs.Application.Features.Applications.Command.UpdateApplication;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
+using MRA.Jobs.Application.Features.Applications.Command.UpdateApplication;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;
-using MRA.Jobs.Domain.Entities;
+
 public class UpdateApplicationCommandHandlerTests : BaseTestFixture
 {
-    private UpdateApplicationCommandHadler _handler;
-
     [SetUp]
     public override void Setup()
     {
@@ -15,12 +13,15 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
             _dbContextMock.Object, Mapper, _dateTimeMock.Object, _currentUserServiceMock.Object);
     }
 
+    private UpdateApplicationCommandHadler _handler;
+
     [Test]
     public void Handle_GivenNonExistentApplicationId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateApplicationCommand { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.Applications.FindAsync(command.Id)).ReturnsAsync(null as Application);
+        UpdateApplicationCommand command = new UpdateApplicationCommand { Id = Guid.NewGuid() };
+        _dbContextMock.Setup(x => x.Applications.FindAsync(command.Id))
+            .ReturnsAsync(null as Domain.Entities.Application);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -28,15 +29,16 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
 
         // Assert
         act.Should().ThrowAsync<NotFoundException>()
-            .WithMessage($"*{nameof(Application)}*{command.Id}*");
+            .WithMessage($"*{nameof(Domain.Entities.Application)}*{command.Id}*");
     }
 
     [Test]
     public void Handle_GivenNonExistentVacancyId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateApplicationCommand { Id = Guid.NewGuid()};
-        _dbContextMock.Setup(x => x.Applications.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new Application());
+        UpdateApplicationCommand command = new UpdateApplicationCommand { Id = Guid.NewGuid() };
+        _dbContextMock.Setup(x => x.Applications.FindAsync(new object[] { command.Id }, CancellationToken.None))
+            .ReturnsAsync(new Domain.Entities.Application());
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -49,8 +51,9 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentApplicantId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateApplicationCommand { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.Applications.FindAsync(new object[] { command.Id }, CancellationToken.None)).ReturnsAsync(new Application());
+        UpdateApplicationCommand command = new UpdateApplicationCommand { Id = Guid.NewGuid() };
+        _dbContextMock.Setup(x => x.Applications.FindAsync(new object[] { command.Id }, CancellationToken.None))
+            .ReturnsAsync(new Domain.Entities.Application());
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);

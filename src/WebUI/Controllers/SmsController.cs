@@ -6,7 +6,6 @@ namespace MRA.Jobs.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-
 public class SmsController : ApiControllerBase
 {
     private readonly ISmsService _smsService;

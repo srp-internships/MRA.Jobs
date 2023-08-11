@@ -6,22 +6,22 @@ namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 [TestFixture]
 public class DeleteTrainingModelCommandValidatorTests
 {
-    private DeleteTrainingVacancyCommandValidator _validator;
-
     [SetUp]
     public void SetUp()
     {
         _validator = new DeleteTrainingVacancyCommandValidator();
     }
 
+    private DeleteTrainingVacancyCommandValidator _validator;
+
     [Test]
     public void Validate_IdIsEmpty_ShouldReturnValidationError()
     {
         // Arrange
-        var command = new DeleteTrainingVacancyCommand { Id = Guid.Empty };
+        DeleteTrainingVacancyCommand command = new DeleteTrainingVacancyCommand { Id = Guid.Empty };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<DeleteTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
@@ -31,10 +31,10 @@ public class DeleteTrainingModelCommandValidatorTests
     public void Validate_IdIsNotEmpty_ShouldNotReturnValidationError()
     {
         // Arrange
-        var command = new DeleteTrainingVacancyCommand { Id = Guid.NewGuid() };
+        DeleteTrainingVacancyCommand command = new DeleteTrainingVacancyCommand { Id = Guid.NewGuid() };
 
         // Act
-        var result = _validator.TestValidate(command);
+        TestValidationResult<DeleteTrainingVacancyCommand> result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Id);

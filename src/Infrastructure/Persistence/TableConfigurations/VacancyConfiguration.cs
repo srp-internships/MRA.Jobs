@@ -36,4 +36,3 @@ public class VacancyConfiguration : IEntityTypeConfiguration<Vacancy>
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
-

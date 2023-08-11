@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
-using MRA.Jobs.Application.Contracts.Common;
+﻿using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+using MRA.Jobs.Domain.Enums;
+
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
 public class VacancyService : IVacancyService
@@ -15,46 +15,48 @@ public class VacancyService : IVacancyService
     {
         _http = http;
         guidId = "";
-        creatingNewJob = new()
+        creatingNewJob = new CreateJobVacancyCommand
         {
             Title = "",
             Description = "",
             ShortDescription = "",
-            WorkSchedule = new() { },
+            WorkSchedule = new WorkSchedule(),
             CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 0,
             EndDate = DateTime.Now,
-            PublishDate = DateTime.Now,
+            PublishDate = DateTime.Now
         };
     }
+
+    public CreateVacancyCategoryCommand creatingEntity { get; set; }
     public List<CategoryResponse> Categories { get; set; }
-    
-    public List<JobVacancyListDTO> Vacanceies { get; set; }
+
+    public List<JobVacancyListDto> Vacanceies { get; set; }
 
     public CreateJobVacancyCommand creatingNewJob { get; set; }
-    
+
     public event Action OnChange;
     public string guidId { get; set; } = string.Empty;
-    public async Task<List<JobVacancyListDTO>> GetAllVacancy()
+
+    public async Task<List<JobVacancyListDto>> GetAllVacancy()
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>("jobs");
+        PagedList<JobVacancyListDto> result = await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>("jobs");
         Vacanceies = result.Items;
         Console.WriteLine(Vacanceies.Count);
         return Vacanceies;
     }
 
-    public CreateVacancyCategoryCommand creatingEntity { get; set; }
-
     public async Task<List<CategoryResponse>> GetAllCategory()
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("categories");
+        PagedList<CategoryResponse> result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>("categories");
         Categories = result.Items;
         return Categories;
     }
 
-    public async Task<List<JobVacancyListDTO>> GetVacancyByTitle(string title)
+    public async Task<List<JobVacancyListDto>> GetVacancyByTitle(string title)
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?Filters=Title@={title}");
+        PagedList<JobVacancyListDto> result =
+            await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Title@={title}");
         Vacanceies = result.Items;
         OnChange.Invoke();
         return Vacanceies;
@@ -69,9 +71,9 @@ public class VacancyService : IVacancyService
         Console.WriteLine(creatingNewJob.Title);
     }
 
-    public async Task<List<JobVacancyListDTO>> GetJobs()
+    public async Task<List<JobVacancyListDto>> GetJobs()
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>("jobs");
+        PagedList<JobVacancyListDto> result = await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>("jobs");
         return result.Items;
     }
 
@@ -80,15 +82,15 @@ public class VacancyService : IVacancyService
         await _http.DeleteAsync($"jobs/{Id}");
     }
 
-    public async Task<JobVacancyDetailsDTO> GetById(Guid Id)
+    public async Task<JobVacancyDetailsDto> GetById(Guid Id)
     {
-        var result = await _http.GetFromJsonAsync<JobVacancyDetailsDTO>($"jobs/{Id}");
+        JobVacancyDetailsDto result = await _http.GetFromJsonAsync<JobVacancyDetailsDto>($"jobs/{Id}");
         return result;
     }
 
     public async Task UpdateJobVacancy(Guid id)
     {
-        var update = new UpdateJobVacancyCommand
+        UpdateJobVacancyCommand update = new()
         {
             Id = id,
             Title = creatingNewJob.Title,
@@ -98,9 +100,8 @@ public class VacancyService : IVacancyService
             CategoryId = creatingNewJob.CategoryId,
             RequiredYearOfExperience = creatingNewJob.RequiredYearOfExperience,
             EndDate = creatingNewJob.EndDate,
-            PublishDate = creatingNewJob.PublishDate,
+            PublishDate = creatingNewJob.PublishDate
         };
         await _http.PutAsJsonAsync($"jobs/{id}", update);
-
     }
 }
