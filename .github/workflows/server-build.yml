@@ -8,11 +8,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [windows-latest]
-    runs-on: ${{ matrix.os }}
+  build:   
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
