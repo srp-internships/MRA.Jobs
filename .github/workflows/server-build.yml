@@ -31,6 +31,12 @@ jobs:
         
     - name: Restore dependencies
       run: dotnet restore
+
+    - name: Update database
+      run: |
+          dotnet tool install --global dotnet-ef
+          dotnet tool restore
+          dotnet ef database update
       
     - name: Build
       run: dotnet build --no-restore
