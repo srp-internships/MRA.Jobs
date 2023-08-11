@@ -2,55 +2,65 @@
 .logo {
     display: block;
     width: auto;
-    height: 50px;
+    height: 100px;
+}
+
+.header {
+    position: fixed;
+    top: -20px;
+    width: 100%;
+    z-index: 9999;
+    height: 120px;
+}
+
+a {
+    color: white;
 }
 
 nav ul {
     float: right;
 }
 
-nav ul li {
-    float: left;
-    list-style: none;
-    position: relative;
-}
+    nav ul li {
+        float: left;
+        list-style: none;
+        position: relative;
+    }
 
-nav ul li a {
-    text-decoration: none;
-    font-family: sans-serif;
-    font-size: 17px;
-    padding: 0px 16px;
-    display: block;
-}
+        nav ul li a {
+            text-decoration: none;
+            font-family: sans-serif;
+            font-size: 17px;
+            padding: 0px 16px;
+            display: block;
+        }
 
-nav ul li a:hover {
-    background-color: #f9f2f2;
+            nav ul li a:hover {
+                background-color: #f9f2f2;
+            }
 
-}
+        nav ul li ul {
+            position: absolute;
+            display: none;
+            background-color: #5dbfe1;
+            border-radius: 0px 0px 5px 5px;
+        }
 
-nav ul li ul {
-    position: absolute;
-    display: none;
-    background-color: #5dbfe1;
-    border-radius: 0px 0px 5px 5px;
-}
- 
-nav ul li:hover ul {
-    display: block;
-}
+        nav ul li:hover ul {
+            display: block;
+        }
 
-nav ul li ul li {
-    line-height: 1;
-    width: 190px;
-    border-radius: 5px;
-    padding: 6px;
-}
-nav ul li ul li a {
-   padding: 10px 16px;
+        nav ul li ul li {
+            line-height: 1;
+            width: 190px;
+            border-radius: 5px;
+            padding: 6px;
+        }
 
-}
+            nav ul li ul li a {
+                padding: 10px 16px;
+            }
 
-nav ul li ul li a:hover {
-   background-color: #f9f2f2;
-
-}
+                nav ul li ul li a:hover {
+                    background-color: #f9f2f2;
+                }
