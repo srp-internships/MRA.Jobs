@@ -21,6 +21,15 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+    - name: Start SQL Server Container
+      run: |
+        docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=" -p 1433:1433 --name sql_server_container -d mcr.microsoft.com/mssql/server:2019-latest
+    - name: Wait for SQL Server to Start
+      run: |
+        for i in {1..30}; do
+          sleep 5
+          sqlcmd -S localhost,1433 -U sa -P '' -Q "SELECT 1" && break
+        done
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
