@@ -1,36 +1,62 @@
 ﻿@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="page_header_wrapper ds ms affix-wrapper" style="height: 94px;">
-                        
-                        <header class="page_header without-dots justify-nav-center ds ms affix">
-                            <div class="container-fluid">
-                                <div class="row align-items-center">
-                                    <div class="col-xl-3 col-md-7 col-10">
-                                        <a href="https://www.silkroadprofessionals.com/" rel="home" class="logo logo_image_and_text">
-                                            <img class="logo-color" src="//www.silkroadprofessionals.com/wp-content/uploads/2021/07/Preloader.png" alt="SILK ROAD<br><small>PROFESSIONALS</small>">
-                                            <span class="logo-text">
-                                                SILK ROAD<br><small>PROFESSIONALS</small> </span>
-                                        </a> </div>
-                                    <div class="col-xl-9 col-1 flex-menu">
-                                        <!-- main nav start -->
-                                        <nav class="top-nav" style="">
-                                            <ul id="menu-main_menu" class="sf-menu nav sf-js-enabled sf-arrows" style="touch-action: pan-y;"><li id="menu-item-1750" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-1750 active"><a href="http://www.silkroadprofessionals.com/">Home</a></li>
-                                                <li id="menu-item-1800" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1800"><a href="https://www.silkroadprofessionals.com/about/">About Us</a></li>
-                                                <li id="menu-item-1426" class="menu-item menu-item-type-taxonomy menu-item-object-fw-team-category menu-item-1426"><a href="https://www.silkroadprofessionals.com/team/team/">Team</a></li>
-                                                <li id="menu-item-3725" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3725"><a href="https://www.silkroadprofessionals.com/vacancies/">Vacancies</a></li>
-                                                <li id="menu-item-4206" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4206"><a href="https://www.silkroadprofessionals.com/ournews/">News</a></li>
-                                                <li id="menu-item-1330" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1330"><a href="https://www.silkroadprofessionals.com/contact-us/">Contact Us</a></li>
-                                            </ul> </nav>
-                                        <a href="#" class="search_modal_button text-right flex-grow-2 hidden-below-xl">
-                                            <i class="fa fa-search"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- header toggler -->
-                            <span class="toggle_menu"><span></span></span>
-                        </header>
-                    </div>
+
+	<header class="page_header without-dots justify-nav-center ds ms affix">
+		<div class="container-fluid">
+			<div class="row align-items-center">
+				<div class="col-xl-3 col-md-7 col-10">
+					<a href="https://www.silkroadprofessionals.com/" rel="home" class="logo logo_image_and_text">
+						<img class="logo-color" src="//www.silkroadprofessionals.com/wp-content/uploads/2021/07/Preloader.png" alt="SILK ROAD<br><small>PROFESSIONALS</small>">
+						<span class="logo-text">
+							SILK ROAD<br><small>PROFESSIONALS</small>
+						</span>
+					</a>
+				</div>
+				<div class="col-xl-9 col-1 flex-menu">
+					<!-- main nav start -->
+					<nav class="top-nav" style="">
+						<ul id="menu-main_menu" class="sf-menu nav sf-js-enabled sf-arrows" style="touch-action: pan-y;">
+							<li id="menu-item-1750" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-1750 active"><a href="http://www.silkroadprofessionals.com/">Home</a></li>
+							<li id="menu-item-1800" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1800"><a href="https://www.silkroadprofessionals.com/about/">About Us</a></li>
+							<li id="menu-item-1426" class="menu-item menu-item-type-taxonomy menu-item-object-fw-team-category menu-item-1426"><a href="jobs">Jobs</a></li>
+							<li id="menu-item-3725" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3725"><a href="internships">Internships</a></li>
+							<li id="menu-item-4206" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4206"><a href="trainings">Trainings</a></li>
+
+						</ul>
+					</nav>
+					<a href="#" class="search_modal_button text-right flex-grow-2 hidden-below-xl">
+						<nav class="ml-auto">
+							<ul>
+								<li>
+
+									<i class="fas fa-user"></i>
+
+									<ul>
+										<CascadingAuthenticationState>
+											<AuthorizeView>
+												<Authorized>
+													<li><a href="/ApplicantPage">Profile</a></li>
+													<li><a href="">Application</a></li>
+												</Authorized>
+												<NotAuthorized>
+													<a href="">Registration</a>
+													<a href="login">Login</a>
+												</NotAuthorized>
+											</AuthorizeView>
+										</CascadingAuthenticationState>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+					</a>
+				</div>
+			</div>
+		</div>
+		<!-- header toggler -->
+		<span class="toggle_menu"><span></span></span>
+	</header>
+</div>
 
 
 
