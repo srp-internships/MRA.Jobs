@@ -14,15 +14,15 @@
   </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Application.Contracts\MRA.Jobs.Application.Contracts.csproj"/>
+        <ProjectReference Include="..\Application.Contracts\MRA.Jobs.Application.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="wwwroot\images\SRP_icon.png"/>
+        <None Include="wwwroot\images\SRP_icon.png" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Shared"/>
+        <Folder Include="Shared" />
     </ItemGroup>
 
 </Project>
