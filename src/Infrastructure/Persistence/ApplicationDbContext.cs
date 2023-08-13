@@ -6,7 +6,7 @@ using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 
 namespace MRA.Jobs.Infrastructure.Persistence;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IApplicationDbContext
+public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
     private readonly IMediator _mediator;
@@ -26,10 +26,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
     }
 
-    public DbSet<PhoneNumberVerificationCode> PhoneNumberVerificationCodes { get; set; }
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
-    public DbSet<Permission> Permissions { get; set; }
-    public DbSet<RolePermission> RolePermissions { get; set; }
+    // public DbSet<PhoneNumberVerificationCode> PhoneNumberVerificationCodes { get; set; }
+    // public DbSet<RefreshToken> RefreshTokens { get; set; }
+    // public DbSet<Permission> Permissions { get; set; }
+    // public DbSet<RolePermission> RolePermissions { get; set; }
     public DbSet<Applicant> Applicants { get; set; }
     public DbSet<ApplicantSocialMedia> ApplicantSocialMedias { get; set; }
     public DbSet<VacancyTimelineEvent> VacancyTimelineEvents { get; set; }

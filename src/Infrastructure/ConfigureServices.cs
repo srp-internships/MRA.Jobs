@@ -29,7 +29,7 @@ public static class ConfigureServices
             options.UseSqlServer(dbConectionString,
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-        services.AddScoped<ApplicationDbContextInitialiser>();
+        // services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddScoped<ITestHttpClientService, TestHttpClientService>();
 
         services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
@@ -43,27 +43,27 @@ public static class ConfigureServices
     {
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         services.AddOptions();
-
+    
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IClaimsTransformation, ClaimsTransformation>();
         services.AddScoped<IAuthorizationHandler, CheckCurrentUserAuthHandler>();
-        services.AddScoped<TokenService>();
-        services.AddTransient<IIdentityService, IdentityService>();
-
-        services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
-            {
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedPhoneNumber = true;
-                options.SignIn.RequireConfirmedEmail = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-            })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
-
+        // services.AddScoped<TokenService>();
+        // services.AddTransient<IIdentityService, IdentityService>();
+    
+        // services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+            // {
+                // options.User.RequireUniqueEmail = true;
+                // options.SignIn.RequireConfirmedPhoneNumber = true;
+                // options.SignIn.RequireConfirmedEmail = true;
+                // options.Password.RequireNonAlphanumeric = true;
+                // options.Password.RequireLowercase = true;
+                // options.Password.RequireUppercase = true;
+                // options.Password.RequireDigit = true;
+                // options.Password.RequiredLength = 8;
+            // })
+            // .AddEntityFrameworkStores<ApplicationDbContext>()
+            // .AddDefaultTokenProviders();
+    
         JwtSettings settings = services.BuildServiceProvider().GetService<IOptions<JwtSettings>>().Value;
         TokenValidationParameters tokenValidationParameters = new TokenValidationParameters
         {
@@ -76,7 +76,7 @@ public static class ConfigureServices
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
-
+    
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication(o =>
             {
@@ -87,7 +87,7 @@ public static class ConfigureServices
             {
                 options.TokenValidationParameters = tokenValidationParameters;
             });
-
+    
         services.AddAuthorization(auth =>
         {
             auth.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
@@ -95,7 +95,7 @@ public static class ConfigureServices
                 .AddRequirements(new CheckCurrentUserRequirement())
                 .Build();
         });
-
+    
         return services;
     }
 }

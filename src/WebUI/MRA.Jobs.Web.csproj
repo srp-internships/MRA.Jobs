@@ -7,29 +7,27 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\MRA.Jobs.Infrastructure.Shared\MRA.Jobs.Infrastructure.Shared.csproj"/>
-        <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj"/>
-        <ProjectReference Include="..\Infrastructure\MRA.Jobs.Infrastructure.csproj"/>
+        <ProjectReference Include="..\..\MRA.Jobs.Infrastructure.Shared\MRA.Jobs.Infrastructure.Shared.csproj" />
+        <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj" />
+        <ProjectReference Include="..\Infrastructure\MRA.Jobs.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="MRA.Jobs.Application.IntegrationTests"/>
+        <InternalsVisibleTo Include="MRA.Jobs.Application.IntegrationTests" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="7.0.5"/>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.5"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.5"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.5"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5"/>
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+        <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="7.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.5"/>
-        <PackageReference Include="NSwag.AspNetCore" Version="13.18.5"/>
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.5" />
+        <PackageReference Include="NSwag.AspNetCore" Version="13.18.5" />
         <PackageReference Include="NSwag.MSBuild" Version="13.18.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -37,7 +35,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="wwwroot\api\"/>
+        <Folder Include="wwwroot\api\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -53,12 +51,12 @@
 
     <Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
         <Exec ConsoleToMSBuild="true" ContinueOnError="true" WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run /variables:Configuration=$(Configuration)">
-            <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode"/>
-            <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput"/>
+            <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode" />
+            <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput" />
         </Exec>
 
-        <Message Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' == '0'" Importance="low"/>
-        <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'"/>
+        <Message Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' == '0'" Importance="low" />
+        <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'" />
     </Target>
 
 </Project>
