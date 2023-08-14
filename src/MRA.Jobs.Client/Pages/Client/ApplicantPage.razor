@@ -1,5 +1,7 @@
 ﻿@page "/ApplicantPage"
 
+@*It is Profile Page.*@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,201 +13,72 @@
         <span class="shapka">Your Profile</span>
     </nav>
     <div class="container">
-
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="userFullName">Full Name:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="fullname" placeholder="Victoria Davidson">
+        <div class="" style="padding-left:170px;">
+            <div class="form-group">
+                <label class="control-label col" for="userFullName">Full Name:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="fullname" placeholder="Victoria Davidson">
+                </div>
             </div>
-        </div>
 
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="dateOfBirth">Date Of Birth:</label>
-            <div class="col-sm-10">
-                <input type="date" class="form-control" id="date" placeholder="">
+            <div class="form-group">
+                <label class="control-label col" for="dateOfBirth">Date Of Birth:</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="date" placeholder="">
+                </div>
             </div>
-        </div>
 
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="SpecifyTheGender">Specify the gender:</label>
-            <div class="col-sm-10">
-                <div class="row" style="border:1px solid #ced4da; margin-left:3px; margin-right:3px; padding:5px; border-radius:4px;">
-                    <div class="col">
-                        <input type="radio" value="man" checked name="gender" /> Man
-                    </div>
-                    <div class="col">
-                        <input type="radio" value="man" checked name="gender" /> Woman
+            <div class="form-group">
+                <label class="control-label col" for="SpecifyTheGender">Specify the gender:</label>
+                <div class="col-sm-10">
+                    <div class="row" style="border:1px solid #ced4da; margin-left:3px; margin-right:3px; padding:5px; border-radius:4px;">
+                        <div class="col">
+                            <input type="radio" value="man" checked name="gender" /> Man
+                        </div>
+                        <div class="col">
+                            <input type="radio" value="man" checked name="gender" /> Woman
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="phoneNumber">Phone Number:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" placeholder="+992-92-444-22-77"
-                       pattern="\+\d{3}-\d{3}-\d{3}-\d{3}-\d{3}" id="phone" name="phone" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="email">Email Address:</label>
-            <div class="col-sm-10">
-                <input type="email" class="form-control" id="email" placeholder="user@gmail.com">
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <div class="checkbox">
-                    <label><input type="checkbox"> Remember me</label>
+            <div class="form-group">
+                <label class="control-label col" for="phoneNumber">Phone Number:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="+992-92-444-22-77"
+                           pattern="\+\d{3}-\d{3}-\d{3}-\d{3}-\d{3}" id="phone" name="phone" />
                 </div>
             </div>
-        </div>
 
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Submit</button>
+            <div class="form-group">
+                <label class="control-label col" for="email">Email Address:</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="email" placeholder="user@gmail.com">
+                </div>
             </div>
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Remember me</label>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
+        <div class="d-grid gap-2">
+            <button class="btn btn-info" type="button" style="color: white; font-size: 20px">Submit</button>
+        </div>
+
     </div>
-
-
-
-
-
-
-
-
-    <div class="form-group">
-        <label for="comment">Full Name:</label>
-        <textarea class="form-control" rows="2" id="Full Name"></textarea>
-    </div>
-
-    <p>
-        <input type="submit" value="Save" />
-        <input type="reset" value="Cancel" />
-    </p>
-
-    <p>
-        <label for="date">Date Of Birth: </label>
-        <input type="date" id="date" name="date" />
-    </p>
-
-    <form>
-        <h5>Specify the gender</h5>
-        <p>
-            <input type="radio" value="man" checked name="gender" /> Man
-        </p>
-        <p>
-            <input type="radio" value="woman" name="gender" /> Woman
-        </p>
-    </form>
-
 </body>
 </html>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@*<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
-    <header>
-        <h1>Your Profile</h1>
-    </header>
-    <main>
-        <section>
-            <h2>Name: </h2>
-            <p>Your Name</p>
-        </section>
-
-        <section>
-            <h2>Surname: </h2>
-            <p>Your Surname</p>
-        </section>
-
-        <section>
-            <h2>Date of Birth: </h2>
-            <p>Your Date of Birth</p>
-        </section>
-
-        <section>
-            <h2>Phone Number: </h2>
-            <p>Your Phone Number</p>
-        </section>
-
-        <section>
-            <h2>Email: </h2>
-            <p>Your Email</p>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2021 Your Name</p>
-    </footer>
-</body>
-</html>
-
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Текстовые поля в HTML5</title>
-</head>
-<body>
-    <form>
-        <p><input type="text" name="userName" placeholder="Введите имя" size="18" /></p>
-        <p><input type="text" name="userPhone" placeholder="Введите номер телефона" size="18" maxlength="11" /></p>
-        <p>
-            <button type="submit">Отправить</button>
-            <button type="reset">Отмена</button>
-        </p>
-    </form>
-</body>
-</html>*@
 
 @code {
 

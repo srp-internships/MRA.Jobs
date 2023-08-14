@@ -10,9 +10,9 @@ header {
 }
 
 .navbar {
-    background-color: #40aee4;
+    background-color: #0dcaf0;
     height: 90px;
-    justify-content: center;
+    justify-content: center; 
     margin-bottom: 15px;
 }
 
@@ -23,6 +23,7 @@ header {
 
 .container {
     justify-content: center;
+    font-size: larger;
 }
 
 .form-horizontal {
@@ -50,4 +51,8 @@ h1, h2 {
 
 p {
     line-height: 1.5;
+}
+
+.form-group {
+    margin-bottom: 25px;
 }
