@@ -1,4 +1,6 @@
-﻿namespace MRA.Jobs.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MRA.Jobs.Domain.Entities;
 
 public abstract class Vacancy : BaseAuditableEntity
 {
@@ -7,6 +9,7 @@ public abstract class Vacancy : BaseAuditableEntity
     public string Description { get; set; }
     public DateTime PublishDate { get; set; }
     public DateTime EndDate { get; set; }
+    [Key]
     public string Slug { get; set; }
 
     public Guid CategoryId { get; set; }

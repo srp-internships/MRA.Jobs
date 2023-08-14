@@ -1,4 +1,6 @@
-﻿namespace MRA.Jobs.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MRA.Jobs.Domain.Entities;
 
 public class Application : BaseAuditableEntity
 {
@@ -17,6 +19,7 @@ public class Application : BaseAuditableEntity
     public TestResult TestResult { get; set; }
 
     public ICollection<ApplicationTimelineEvent> History { get; set; }
+    [Key]
     public string Slug { get; set; }    
 
 }
