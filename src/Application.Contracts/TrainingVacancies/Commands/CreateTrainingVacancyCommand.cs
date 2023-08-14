@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+
 public class CreateTrainingVacancyCommand : IRequest<Guid>
 {
     public string Title { get; set; }

@@ -14,7 +14,7 @@ public class NewIdentityRegisteredEventHandler : INotificationHandler<NewIdentit
 
     public async Task Handle(NewIdentityRegisteredEvent notification, CancellationToken cancellationToken)
     {
-        var entity = new Applicant()
+        Applicant entity = new Applicant
         {
             Id = notification.Id,
             LastName = notification.LastName,
@@ -23,7 +23,7 @@ public class NewIdentityRegisteredEventHandler : INotificationHandler<NewIdentit
             Email = notification.Email,
             DateOfBirth = notification.DateOfBirth,
             PhoneNumber = notification.PhoneNumber,
-            Gender = notification.Gender,
+            Gender = notification.Gender
         };
         await _context.Applicants.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

@@ -5,6 +5,8 @@ namespace MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 
 public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCommand, Guid>
 {
+    private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTime _dateTime;
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
     private readonly IDateTime _dateTime;
@@ -22,7 +24,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
 
     public async Task<Guid> Handle(CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var category = await _dbContext.Categories.FindAsync(request.CategoryId);
+        VacancyCategory category = await _dbContext.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
         var jobVacancy = _mapper.Map<JobVacancy>(request);
@@ -30,7 +32,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         jobVacancy.Slug = GenerateSlug(jobVacancy);
         await _dbContext.JobVacancies.AddAsync(jobVacancy, cancellationToken);
 
-        var timelineEvent = new VacancyTimelineEvent
+        VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
         {
             VacancyId = jobVacancy.Id,
             Vacancy = jobVacancy,

@@ -22,6 +22,5 @@ public class CreateApplicantCommandValidator : AbstractValidator<CreateApplicant
             .NotEmpty();
         RuleFor(a => a.PhoneNumber)
             .NotEmpty();
-
     }
 }

@@ -24,7 +24,7 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Domain.Entities
 
         builder.HasOne(a => a.TestResult)
             .WithOne(tr => tr.Application)
-            .HasForeignKey<Domain.Entities.TestResult>(a => a.ApplicationId)
+            .HasForeignKey<TestResult>(a => a.ApplicationId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(a => a.History)
@@ -33,4 +33,3 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Domain.Entities
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
-

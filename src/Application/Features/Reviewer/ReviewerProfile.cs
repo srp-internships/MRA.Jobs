@@ -11,12 +11,12 @@ public class ReviewerProfile : Profile
 {
     public ReviewerProfile()
     {
-        CreateMap<Reviewer, ReviewerListDto>();
-        CreateMap<Reviewer, ReviewerDetailsDto>()
-              .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
+        CreateMap<Domain.Entities.Reviewer, ReviewerListDto>();
+        CreateMap<Domain.Entities.Reviewer, ReviewerDetailsDto>()
+            .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag)));
-        CreateMap<CreateReviewerCommand, Reviewer>();
-        CreateMap<UpdateReviewerCommand, Reviewer>();
+        CreateMap<CreateReviewerCommand, Domain.Entities.Reviewer>();
+        CreateMap<UpdateReviewerCommand, Domain.Entities.Reviewer>();
         MappingConfiguration.ConfigureUserMap<UserTimelineEvent, TimeLineDetailsDto>(this);
         MappingConfiguration.ConfigureUserMap<Tag, TagDto>(this);
     }

@@ -9,19 +9,18 @@ using MRA.Jobs.Infrastructure.Identity.Entities;
 using MRA.Jobs.Infrastructure.Persistence;
 using NUnit.Framework;
 using Respawn;
+using Respawn.Graph;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
 [SetUpFixture]
-public partial class Testing
+public class Testing
 {
     private static WebApplicationFactory<Program> _factory = null!;
     private static IConfiguration _configuration = null!;
     private static IServiceScopeFactory _scopeFactory = null!;
     private static Respawner _checkpoint = null!;
     private static Guid _currentUserId;
-
-
 
 
     [OneTimeSetUp]
@@ -31,18 +30,16 @@ public partial class Testing
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
         _configuration = _factory.Services.GetRequiredService<IConfiguration>();
 
-        _checkpoint = Respawner.CreateAsync(_configuration.GetConnectionString("DefaultConnection"), new RespawnerOptions
-        {
-            TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" }
-        }).GetAwaiter().GetResult();
+        _checkpoint = Respawner.CreateAsync(_configuration.GetConnectionString("DefaultConnection"),
+            new RespawnerOptions { TablesToIgnore = new Table[] { "__EFMigrationsHistory" } }).GetAwaiter().GetResult();
     }
 
 
     public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
     {
-        using var scope = _scopeFactory.CreateScope();
+        using IServiceScope scope = _scopeFactory.CreateScope();
 
-        var mediator = scope.ServiceProvider.GetRequiredService<ISender>();
+        ISender mediator = scope.ServiceProvider.GetRequiredService<ISender>();
 
         return await mediator.Send(request);
     }
@@ -64,19 +61,21 @@ public partial class Testing
 
     public static async Task<Guid> RunAsUserAsync(string userName, string password, string[] roles)
     {
-        using var scope = _scopeFactory.CreateScope();
+        using IServiceScope scope = _scopeFactory.CreateScope();
 
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        UserManager<ApplicationUser> userManager =
+            scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-        var user = new ApplicationUser { UserName = userName, Email = userName };
+        ApplicationUser user = new ApplicationUser { UserName = userName, Email = userName };
 
-        var result = await userManager.CreateAsync(user, password);
+        IdentityResult result = await userManager.CreateAsync(user, password);
 
         if (roles.Any())
         {
-            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            RoleManager<IdentityRole> roleManager =
+                scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            foreach (var role in roles)
+            foreach (string role in roles)
             {
                 await roleManager.CreateAsync(new IdentityRole(role));
             }
@@ -91,7 +90,7 @@ public partial class Testing
             return _currentUserId;
         }
 
-        var errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
+        string errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
 
         throw new Exception($"Unable to create {userName}.{Environment.NewLine}{errors}");
     }
@@ -103,15 +102,16 @@ public partial class Testing
             await _checkpoint.ResetAsync(_configuration.GetConnectionString("DefaultConnection"));
         }
         catch (Exception) { }
+
         _currentUserId = Guid.Empty;
     }
 
     public static async Task<TEntity> FindAsync<TEntity>(params object[] keyValues)
         where TEntity : class
     {
-        using var scope = _scopeFactory.CreateScope();
+        using IServiceScope scope = _scopeFactory.CreateScope();
 
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         return await context.FindAsync<TEntity>(keyValues);
     }
@@ -119,9 +119,9 @@ public partial class Testing
     public static async Task AddAsync<TEntity>(TEntity entity)
         where TEntity : class
     {
-        using var scope = _scopeFactory.CreateScope();
+        using IServiceScope scope = _scopeFactory.CreateScope();
 
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         context.Add(entity);
 
@@ -130,9 +130,9 @@ public partial class Testing
 
     public static async Task<int> CountAsync<TEntity>() where TEntity : class
     {
-        using var scope = _scopeFactory.CreateScope();
+        using IServiceScope scope = _scopeFactory.CreateScope();
 
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         return await context.Set<TEntity>().CountAsync();
     }

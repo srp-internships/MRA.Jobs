@@ -4,5 +4,5 @@ namespace MRA.Jobs.Application.Contracts.Applicant.Queries;
 
 public class GetApplicantByIdQuery : IRequest<ApplicantDetailsDto>
 {
-    public Guid Id { get; set; }  
+    public Guid Id { get; set; }
 }

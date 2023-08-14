@@ -4,10 +4,6 @@ namespace MRA.Jobs.Infrastructure.Identity.Authorization;
 
 public class PermissionGroupDefinition : IPermissionGroupDefinition
 {
-    public string Name { get; }
-
-    public IReadOnlyList<IPermissionDefinition> Permissions => _permissions.ToImmutableList();
-
     private readonly List<PermissionDefinition> _permissions;
 
     protected internal PermissionGroupDefinition(string name)
@@ -16,9 +12,13 @@ public class PermissionGroupDefinition : IPermissionGroupDefinition
         _permissions = new List<PermissionDefinition>();
     }
 
+    public string Name { get; }
+
+    public IReadOnlyList<IPermissionDefinition> Permissions => _permissions.ToImmutableList();
+
     public virtual IPermissionDefinition AddPermission(string name, bool isEnabled = true)
     {
-        var permission = new PermissionDefinition(name, isEnabled);
+        PermissionDefinition permission = new PermissionDefinition(name, isEnabled);
         _permissions.Add(permission);
         return permission;
     }

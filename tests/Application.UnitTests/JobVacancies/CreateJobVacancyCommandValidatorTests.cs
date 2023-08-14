@@ -6,22 +6,22 @@ namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 [TestFixture]
 public class CreateJobVacancyCommandValidatorTests
 {
-    private CreateJobVacancyCommandValidator _validator;
-
     [SetUp]
     public void SetUp()
     {
         _validator = new CreateJobVacancyCommandValidator();
     }
 
+    private CreateJobVacancyCommandValidator _validator;
+
     [Test]
     public void Validate_InvalidCommand_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand();
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand();
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.IsValid.Should().BeFalse();
@@ -32,10 +32,10 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_TitleEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand { Title = "" };
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand { Title = "" };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Title);
@@ -45,10 +45,10 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_ShortDescriptionEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand { ShortDescription = "" };
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand { ShortDescription = "" };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.ShortDescription);
@@ -58,10 +58,10 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_DescriptionEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand { Description = "" };
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand { Description = "" };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Description);
@@ -71,10 +71,10 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_PublishDateEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand { PublishDate = DateTime.MinValue };
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand { PublishDate = DateTime.MinValue };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.PublishDate);
@@ -84,10 +84,10 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_EndDateEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand { EndDate = DateTime.MinValue };
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand { EndDate = DateTime.MinValue };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.EndDate);
@@ -97,10 +97,10 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_CategoryIdEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand { CategoryId = Guid.Empty };
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand { CategoryId = Guid.Empty };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.CategoryId);
@@ -110,10 +110,10 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_RequiredYearOfExperienceNegative_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand { RequiredYearOfExperience = -1 };
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand { RequiredYearOfExperience = -1 };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.RequiredYearOfExperience);
@@ -123,10 +123,10 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_RequiredYearOfExperienceZero_ShouldPass()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand { RequiredYearOfExperience = 0 };
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand { RequiredYearOfExperience = 0 };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.RequiredYearOfExperience);
@@ -136,10 +136,10 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_WorkScheduleInvalid_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand { WorkSchedule = (WorkSchedule)3 };
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand { WorkSchedule = (WorkSchedule)3 };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.WorkSchedule);
@@ -149,7 +149,7 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_AllFieldsValid_ShouldPassValidation()
     {
         // Arrange
-        var request = new CreateJobVacancyCommand
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand
         {
             Title = "Test Job Vacancy",
             ShortDescription = "Test Job Vacancy Short Description",
@@ -162,7 +162,7 @@ public class CreateJobVacancyCommandValidatorTests
         };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();

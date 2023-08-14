@@ -15,7 +15,5 @@ public class ApplicantSocialMediaConfiguration : IEntityTypeConfiguration<Applic
             .WithMany(a => a.SocialMedias)
             .HasForeignKey(sm => sm.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
-       
     }
 }
-

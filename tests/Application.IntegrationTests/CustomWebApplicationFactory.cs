@@ -1,11 +1,11 @@
-﻿using MRA.Jobs.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using MRA.Jobs.Application.Common.Security;
+using MRA.Jobs.Infrastructure.Persistence;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
@@ -17,7 +17,7 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
         builder.ConfigureAppConfiguration(configurationBuilder =>
         {
-            var integrationConfig = new ConfigurationBuilder()
+            IConfigurationRoot integrationConfig = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables()
                 .Build();

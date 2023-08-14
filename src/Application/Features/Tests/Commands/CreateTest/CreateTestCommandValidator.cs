@@ -1,6 +1,7 @@
 ﻿using MRA.Jobs.Application.Contracts.Tests.Commands;
 
 namespace MRA.Jobs.Application.Features.Tests.Commands.CreateTest;
+
 public class CreateTestCommandValidator : AbstractValidator<CreateTestCommand>
 {
     public CreateTestCommandValidator()

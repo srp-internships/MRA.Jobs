@@ -1,16 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Update;
+
 public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInternshipVacancyCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
-    private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTime _dateTime;
+    private readonly IMapper _mapper;
 
-    public UpdateInternshipVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
+    public UpdateInternshipVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
+        ICurrentUserService currentUserService)
     {
         _context = context;
         _mapper = mapper;
@@ -26,14 +27,14 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
         //var category = await _context.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken: cancellationToken);
         //_ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
-        var internship = await _context.Internships
+        InternshipVacancy internship = await _context.Internships
             .Include(i => i.Category)
             .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken);
         _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Slug);
 
         _mapper.Map(request, internship);
 
-        var timelineEvent = new VacancyTimelineEvent
+        VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
         {
             VacancyId = internship.Id,
             EventType = TimelineEventType.Updated,

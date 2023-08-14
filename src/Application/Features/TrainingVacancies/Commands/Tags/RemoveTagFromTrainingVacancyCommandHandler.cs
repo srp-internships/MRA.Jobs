@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
-using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Tags;
+
 public class RemoveTagFromTrainingVacancyCommandHandler : IRequestHandler<RemoveTagFromTrainingVacancyCommand, bool>
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
 
-    public RemoveTagFromTrainingVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService, IDateTime dateTime)
+    public RemoveTagFromTrainingVacancyCommandHandler(IApplicationDbContext context, IMapper mapper,
+        ICurrentUserService currentUserService, IDateTime dateTime)
     {
         _context = context;
         _currentUserService = currentUserService;
@@ -28,14 +29,21 @@ public class RemoveTagFromTrainingVacancyCommandHandler : IRequestHandler<Remove
 
         foreach (var tagName in request.Tags)
         {
-            var vacancyTag = trainingVacancy.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
+            throw new NotFoundException(nameof(trainingVacancy), request.VacancyId);
+        }
+
+        foreach (string tagName in request.Tags)
+        {
+            VacancyTag vacancyTag = trainingVacancy.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
 
             if (vacancyTag == null)
+            {
                 continue;
+            }
 
             _context.VacancyTags.Remove(vacancyTag);
 
-            var timelineEvent = new VacancyTimelineEvent
+            VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
             {
                 VacancyId = trainingVacancy.Id,
                 EventType = TimelineEventType.Deleted,
@@ -44,8 +52,8 @@ public class RemoveTagFromTrainingVacancyCommandHandler : IRequestHandler<Remove
                 CreateBy = _currentUserService.GetId() ?? Guid.Empty
             };
             await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
-
         }
+
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }

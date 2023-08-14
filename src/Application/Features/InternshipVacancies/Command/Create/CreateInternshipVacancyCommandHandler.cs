@@ -4,6 +4,7 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 using Slugify;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
+
 public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInternshipVacancyCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
@@ -23,14 +24,14 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
 
     public async Task<Guid> Handle(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
-        var category = await _context.Categories.FindAsync(request.CategoryId);
+        VacancyCategory category = await _context.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
         var internship = _mapper.Map<InternshipVacancy>(request);
         internship.Slug = GenerateSlug(internship);
         await _context.Internships.AddAsync(internship, cancellationToken);
 
-        var timelineEvent = new VacancyTimelineEvent
+        VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
         {
             VacancyId = internship.Id,
             EventType = TimelineEventType.Created,

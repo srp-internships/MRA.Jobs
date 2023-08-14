@@ -5,5 +5,3 @@ public class RemoveTagsFromJobVacancyCommand : IRequest<bool>
     public string JobVacancySlug { get; set; }
     public String[] Tags { get; set; }
 }
-
-

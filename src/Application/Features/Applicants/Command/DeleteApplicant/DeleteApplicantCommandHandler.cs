@@ -13,10 +13,12 @@ public class DeleteApplicantCommandHandler : IRequestHandler<DeleteApplicantComm
 
     public async Task<bool> Handle(DeleteApplicantCommand request, CancellationToken cancellationToken)
     {
-        var applicant = await _context.Applicants.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+        Applicant applicant = await _context.Applicants.FindAsync(new object[] { request.Id }, cancellationToken);
 
         if (applicant == null)
+        {
             throw new NotFoundException(nameof(Applicant), request.Id);
+        }
 
         _context.Applicants.Remove(applicant);
         await _context.SaveChangesAsync(cancellationToken);

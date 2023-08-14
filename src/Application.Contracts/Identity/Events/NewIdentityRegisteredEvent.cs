@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.Identity.Events;
+
 public class NewIdentityRegisteredEvent : INotification
 {
     public Guid Id { get; set; }
@@ -9,8 +10,10 @@ public class NewIdentityRegisteredEvent : INotification
     public string LastName { get; set; }
     public string Patronymic { get; set; }
     public string Email { get; set; }
+
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime DateOfBirth { get; set; }
+
     public string PhoneNumber { get; set; }
     public Gender Gender { get; set; }
 }

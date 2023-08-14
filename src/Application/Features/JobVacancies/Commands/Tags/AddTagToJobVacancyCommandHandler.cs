@@ -1,19 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
-using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.Tags;
-
 
 public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagsToJobVacancyCommand, bool>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
+    private readonly IMapper _mapper;
 
-    public AddTagToJobVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService, IDateTime dateTime)
+    public AddTagToJobVacancyCommandHandler(IApplicationDbContext context, IMapper mapper,
+        ICurrentUserService currentUserService, IDateTime dateTime)
     {
         _context = context;
         _mapper = mapper;
@@ -41,14 +39,14 @@ public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagsToJobVaca
                 _context.Tags.Add(tag);
             }
 
-            var vacancyTag = jobVacancy.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
+            VacancyTag vacancyTag = jobVacancy.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
 
             if (vacancyTag == null)
             {
                 vacancyTag = new VacancyTag { VacancyId = jobVacancy.Id, TagId = tag.Id };
                 _context.VacancyTags.Add(vacancyTag);
 
-                var timelineEvent = new VacancyTimelineEvent
+                VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
                 {
                     VacancyId = jobVacancy.Id,
                     EventType = TimelineEventType.Created,
@@ -65,4 +63,3 @@ public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagsToJobVaca
         return true;
     }
 }
-

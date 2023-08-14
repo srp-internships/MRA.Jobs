@@ -3,6 +3,7 @@ using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
+
 public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainingVacancyCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
@@ -19,9 +20,10 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         _currentUserService = currentUserService;
         _slugService = slugService;
     }
+
     public async Task<Guid> Handle(CreateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        var category = await _context.Categories.FindAsync(request.CategoryId);
+        VacancyCategory category = await _context.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
         var traningModel = _mapper.Map<TrainingVacancy>(request);
@@ -29,7 +31,7 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         traningModel.Slug = GenerateSlug(traningModel);
         await _context.TrainingVacancies.AddAsync(traningModel, cancellationToken);
 
-        var timelineEvent = new VacancyTimelineEvent
+        VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
         {
             VacancyId = traningModel.Id,
             EventType = TimelineEventType.Created,
@@ -41,5 +43,4 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         await _context.SaveChangesAsync(cancellationToken);
         return traningModel.Id;
     }
-    private string GenerateSlug(TrainingVacancy training) => _slugService.GenerateSlug($"{training.Title}-{training.CreatedAt.Year}-{training.CreatedAt.Month}");
 }

@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Identity;
-using MRA.Jobs.Infrastructure.Identity.Entities;
-using MRA.Jobs.Infrastructure.Identity.Services;
 using MRA.Jobs.Infrastructure.Shared.Auth.Commands;
 using MRA.Jobs.Infrastructure.Shared.Auth.Responses;
 
@@ -18,8 +16,8 @@ public class BasicAuthenticationCommandValidator : AbstractValidator<BasicAuthen
 
 public class BasicAuthenticationHandler : IRequestHandler<BasicAuthenticationCommand, JwtTokenResponse>
 {
-    private readonly UserManager<ApplicationUser> _userManager;
     private readonly TokenService _tokenService;
+    private readonly UserManager<ApplicationUser> _userManager;
 
     public BasicAuthenticationHandler(UserManager<ApplicationUser> userManager, TokenService tokenService)
     {
@@ -29,10 +27,10 @@ public class BasicAuthenticationHandler : IRequestHandler<BasicAuthenticationCom
 
     public async Task<JwtTokenResponse> Handle(BasicAuthenticationCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
+        ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
         if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
         {
-            var token = await _tokenService.GenerateTokens(user, cancellationToken);
+            JwtTokenResponse token = await _tokenService.GenerateTokens(user, cancellationToken);
             return token;
         }
 

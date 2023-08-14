@@ -25,11 +25,12 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         _currentUserService = currentUserService;
         _slugService = slugService;
     }
+
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
-        var applicant = await _context.Applicants.FindAsync(request.ApplicantId);
+        Applicant applicant = await _context.Applicants.FindAsync(request.ApplicantId);
         _ = applicant ?? throw new NotFoundException(nameof(Applicant), request.ApplicantId);
-        var vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
+        Vacancy vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
         _ = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
 
         var application = _mapper.Map<Application>(request);
@@ -37,7 +38,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         await _context.Applications.AddAsync(application, cancellationToken);
 
-        var timelineEvent = new ApplicationTimelineEvent
+        ApplicationTimelineEvent timelineEvent = new ApplicationTimelineEvent
         {
             ApplicationId = application.Id,
             EventType = TimelineEventType.Created,

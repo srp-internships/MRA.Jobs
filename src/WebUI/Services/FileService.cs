@@ -1,6 +1,7 @@
 ﻿using MRA.Jobs.Application.Common.Interfaces;
 
 namespace MRA.Jobs.Web.Services;
+
 public class FileService : IFileService
 {
     private readonly IWebHostEnvironment _environment;

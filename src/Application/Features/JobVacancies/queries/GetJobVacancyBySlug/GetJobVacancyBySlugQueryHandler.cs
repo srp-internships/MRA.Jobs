@@ -18,7 +18,7 @@ public class GetJobVacancyBySlugQueryHandler : IRequestHandler<GetJobVacancyBySl
     public async Task<JobVacancyDetailsDTO> Handle(GetJobVacancyBySlugQuery request, CancellationToken cancellationToken)
     {
         //var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
-        var jobVacancy= await _dbContext.JobVacancies.Include(i => i.History)
+        JobVacancy jobVacancy = await _dbContext.JobVacancies.Include(i => i.History)
             .Include(i => i.Tags)
             .ThenInclude(t => t.Tag)
             .FirstOrDefaultAsync(i => i.Slug == request.Slug);
@@ -26,4 +26,3 @@ public class GetJobVacancyBySlugQueryHandler : IRequestHandler<GetJobVacancyBySl
         return _mapper.Map<JobVacancyDetailsDTO>(jobVacancy);
     }
 }
-

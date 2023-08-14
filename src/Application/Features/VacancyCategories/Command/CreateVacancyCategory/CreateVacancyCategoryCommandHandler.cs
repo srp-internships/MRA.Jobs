@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Command.CreateVacancyCategory;
+
 public class CreateVacancyCategoryCommandHandler : IRequestHandler<CreateVacancyCategoryCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
@@ -14,6 +15,7 @@ public class CreateVacancyCategoryCommandHandler : IRequestHandler<CreateVacancy
         _mapper = mapper;
         _slugService = slugService;
     }
+
     public async Task<Guid> Handle(CreateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
         var vacancyCategory = _mapper.Map<VacancyCategory>(request);

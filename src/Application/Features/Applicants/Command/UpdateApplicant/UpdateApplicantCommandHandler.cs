@@ -16,8 +16,8 @@ public class UpdateApplicantCommandHandler : IRequestHandler<UpdateApplicantComm
 
     public async Task<Guid> Handle(UpdateApplicantCommand request, CancellationToken cancellationToken)
     {
-        var applicant =
-            await _context.Applicants.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+        Applicant applicant =
+            await _context.Applicants.FindAsync(new object[] { request.Id }, cancellationToken);
         _ = applicant ?? throw new NotFoundException(nameof(Applicant), request.Id);
 
         _mapper.Map(request, applicant);
