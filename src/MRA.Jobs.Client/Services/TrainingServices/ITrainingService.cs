@@ -5,8 +5,8 @@ namespace MRA.Jobs.Client.Services.TrainingServices;
 
 public interface ITrainingService
 {
-    Task<List<TrainingVacancyListDTO>> GetAll();
-    Task<TrainingVacancyDetailedResponce> GetBySlug(string slug);
+    Task<List<TrainingVacancyListDto>> GetAll();
+    Task<TrainingVacancyDetailedResponse> GetBySlug(string slug);
 
     Task<HttpResponseMessage> Create();
     Task<HttpResponseMessage> Update(string slug);

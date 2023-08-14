@@ -36,14 +36,14 @@ public class TrainingService : ITrainingService
     {
         await _httpClient.DeleteAsync($"trainings/{slug}");
     }
-    public async Task<List<TrainingVacancyListDTO>> GetAll()
+    public async Task<List<TrainingVacancyListDto>> GetAll()
     {
-        var result = await _httpClient.GetFromJsonAsync<PaggedList<TrainingVacancyListDTO>>("trainings");
+        var result = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
         return result.Items;
     }
-    public async Task<TrainingVacancyDetailedResponce> GetBySlug(string slug)
+    public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug)
     {
-        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponce>($"trainings/{slug}");
+        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
     }
     public async Task<HttpResponseMessage> Update(string slug)
     {

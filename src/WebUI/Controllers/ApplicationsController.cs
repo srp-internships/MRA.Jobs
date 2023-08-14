@@ -18,14 +18,14 @@ public class ApplicationsController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PaggedList<ApplicationListDTO>>> GetAll([FromQuery] PaggedListQuery<ApplicationListDTO> query)
+    public async Task<ActionResult<PagedList<ApplicationListDto>>> GetAll([FromQuery] PagedListQuery<ApplicationListDto> query)
     {
         var applications = await Mediator.Send(query);
         return Ok(applications);
     }
 
     [HttpGet("{slug}")]
-    public async Task<ActionResult<ApplicationDetailsDTO>> Get(GetBySlugApplicationQuery request, CancellationToken cancellationToken)
+    public async Task<ActionResult<ApplicationDetailsDto>> Get(GetBySlugApplicationQuery request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }

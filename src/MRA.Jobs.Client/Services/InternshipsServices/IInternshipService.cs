@@ -5,8 +5,8 @@ namespace MRA.Jobs.Client.Services.InternshipsServices;
 
 public interface IInternshipService
 {
-    Task<List<InternshipVacancyListResponce>> GetAll();
-    Task<InternshipVacancyResponce> GetBySlug(string slug);
+    Task<List<InternshipVacancyListResponse>> GetAll();
+    Task<InternshipVacancyResponse> GetBySlug(string slug);
 
     Task<HttpResponseMessage> Create();
     Task<HttpResponseMessage> Update(string slug);

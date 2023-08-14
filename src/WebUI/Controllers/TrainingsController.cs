@@ -20,7 +20,7 @@ public class TrainingsController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PaggedList<TrainingVacancyListDTO>>> GetTrainingVacancysWithPagination([FromQuery] PaggedListQuery<TrainingVacancyListDTO> query)
+    public async Task<ActionResult<PagedList<TrainingVacancyListDto>>> GetTrainingVacancysWithPagination([FromQuery] PagedListQuery<TrainingVacancyListDto> query)
     {
         return Ok(await Mediator.Send(query));
     }
@@ -66,7 +66,7 @@ public class TrainingsController : ApiControllerBase
     }
 
     [HttpPost("{slug}/test")]
-    public async Task<ActionResult<TestInfoDTO>> SendTestCreationRequest([FromRoute] string slug, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<TestInfoDto>> SendTestCreationRequest([FromRoute] string slug, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
             return BadRequest();
@@ -75,7 +75,7 @@ public class TrainingsController : ApiControllerBase
     }
 
     [HttpPost("{slug}/test/result")]
-    public async Task<ActionResult<TestResultDTO>> GetTestResultRequest([FromRoute] string slug, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<TestResultDto>> GetTestResultRequest([FromRoute] string slug, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
             return BadRequest();

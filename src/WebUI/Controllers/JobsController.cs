@@ -24,7 +24,7 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] PaggedListQuery<JobVacancyListDTO> query)
+    public async Task<IActionResult> Get([FromQuery] PagedListQuery<JobVacancyListDto> query)
     {
         var categories = await Mediator.Send(query);
         return Ok(categories);
@@ -44,7 +44,7 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpPost("{slug}/test")]
-    public async Task<ActionResult<TestInfoDTO>> SendTestCreationRequest([FromRoute] string slug, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<TestInfoDto>> SendTestCreationRequest([FromRoute] string slug, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
             return BadRequest();
@@ -53,7 +53,7 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpPost("{slug}/test/result")]
-    public async Task<ActionResult<TestResultDTO>> GetTestResultRequest([FromRoute] string slug, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<TestResultDto>> GetTestResultRequest([FromRoute] string slug, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
             return BadRequest();

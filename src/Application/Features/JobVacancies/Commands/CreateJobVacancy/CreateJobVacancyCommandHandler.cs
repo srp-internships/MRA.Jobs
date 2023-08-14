@@ -9,8 +9,6 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
     private readonly IDateTime _dateTime;
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
-    private readonly IDateTime _dateTime;
-    private readonly ICurrentUserService _currentUserService;
     private readonly ISlugGeneratorService _slugService;
 
     public CreateJobVacancyCommandHandler(ISlugGeneratorService slugService, IApplicationDbContext dbContext, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)

@@ -32,7 +32,7 @@ public class RemoveTagsFromJobVacancyCommandHandler : IRequestHandler<RemoveTags
 
         foreach (var tagName in request.Tags)
         {
-            throw new NotFoundException(nameof(JobVacancy), request.JobVacancyId);
+            throw new NotFoundException(nameof(JobVacancy), request.JobVacancySlug);
         }
 
         foreach (string tagName in request.Tags)

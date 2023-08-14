@@ -2,7 +2,7 @@
 
 namespace MRA.Jobs.Application.Contracts.JobVacancies.Queries;
 
-public class GetJobVacancyBySlugQuery : IRequest<JobVacancyDetailsDTO>
+public class GetJobVacancyBySlugQuery : IRequest<JobVacancyDetailsDto>
 {
     public string Slug { get; set; }
 }

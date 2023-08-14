@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
 
-public class GetJobVacancyBySlugQueryHandler : IRequestHandler<GetJobVacancyBySlugQuery, JobVacancyDetailsDTO>
+public class GetJobVacancyBySlugQueryHandler : IRequestHandler<GetJobVacancyBySlugQuery, JobVacancyDetailsDto>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -15,7 +15,7 @@ public class GetJobVacancyBySlugQueryHandler : IRequestHandler<GetJobVacancyBySl
         _mapper = mapper;
     }
 
-    public async Task<JobVacancyDetailsDTO> Handle(GetJobVacancyBySlugQuery request, CancellationToken cancellationToken)
+    public async Task<JobVacancyDetailsDto> Handle(GetJobVacancyBySlugQuery request, CancellationToken cancellationToken)
     {
         //var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         JobVacancy jobVacancy = await _dbContext.JobVacancies.Include(i => i.History)
@@ -23,6 +23,6 @@ public class GetJobVacancyBySlugQueryHandler : IRequestHandler<GetJobVacancyBySl
             .ThenInclude(t => t.Tag)
             .FirstOrDefaultAsync(i => i.Slug == request.Slug);
         _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Slug);
-        return _mapper.Map<JobVacancyDetailsDTO>(jobVacancy);
+        return _mapper.Map<JobVacancyDetailsDto>(jobVacancy);
     }
 }

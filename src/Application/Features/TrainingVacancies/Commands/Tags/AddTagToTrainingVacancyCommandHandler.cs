@@ -27,7 +27,7 @@ public class AddTagToTrainingVacancyCommandHandler : IRequestHandler<AddTagToTra
 
         foreach (var tagName in request.Tags)
         {
-            throw new NotFoundException(nameof(JobVacancy), request.VacancyId);
+            throw new NotFoundException(nameof(JobVacancy), request.TrainingVacancySlug);
         }
 
         foreach (string tagName in request.Tags)

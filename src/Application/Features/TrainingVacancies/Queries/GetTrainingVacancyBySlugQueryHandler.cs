@@ -3,7 +3,7 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Queries;
-public class GetTrainingVacancyBySlugQueryHandler : IRequestHandler<GetTrainingVacancyBySlugQuery, TrainingVacancyDetailedResponce>
+public class GetTrainingVacancyBySlugQueryHandler : IRequestHandler<GetTrainingVacancyBySlugQuery, TrainingVacancyDetailedResponse>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -13,7 +13,7 @@ public class GetTrainingVacancyBySlugQueryHandler : IRequestHandler<GetTrainingV
         _context = context;
         _mapper = mapper;
     }
-    public async Task<TrainingVacancyDetailedResponce> Handle(GetTrainingVacancyBySlugQuery request, CancellationToken cancellationToken)
+    public async Task<TrainingVacancyDetailedResponse> Handle(GetTrainingVacancyBySlugQuery request, CancellationToken cancellationToken)
     {
         // var trainingVacancy = await _context.TrainingVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         var trainingVacancy = await _context.TrainingVacancies.Include(i => i.History)
@@ -21,6 +21,6 @@ public class GetTrainingVacancyBySlugQueryHandler : IRequestHandler<GetTrainingV
              .ThenInclude(t => t.Tag)
              .FirstOrDefaultAsync(i => i.Slug == request.Slug);
         _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Slug);
-        return _mapper.Map<TrainingVacancyDetailedResponce>(trainingVacancy);
+        return _mapper.Map<TrainingVacancyDetailedResponse>(trainingVacancy);
     }
 }

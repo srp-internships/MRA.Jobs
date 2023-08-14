@@ -41,15 +41,15 @@ public class InternshipService : IInternshipService
         await _http.DeleteAsync($"internships/{slug}");
     }
 
-    public async Task<List<InternshipVacancyListResponce>> GetAll()
+    public async Task<List<InternshipVacancyListResponse>> GetAll()
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<InternshipVacancyListResponce>>("internships");
+        var result = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>("internships");
         return result.Items;
     }
 
-    public async Task<InternshipVacancyResponce> GetBySlug(string slug)
+    public async Task<InternshipVacancyResponse> GetBySlug(string slug)
     {
-        return await _http.GetFromJsonAsync<InternshipVacancyResponce>($"internships/{slug}");
+        return await _http.GetFromJsonAsync<InternshipVacancyResponse>($"internships/{slug}");
     }
 
     public async Task<HttpResponseMessage> Update(string slug)

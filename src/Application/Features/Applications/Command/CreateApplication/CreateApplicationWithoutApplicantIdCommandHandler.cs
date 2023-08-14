@@ -28,7 +28,7 @@ public class
         Applicant applicant = await _context.Applicants.FindAsync(_currentUserService.GetId().Value);
         _ = applicant ?? throw new NotFoundException(nameof(Applicant), _currentUserService.GetId().Value);
 
-        var application = _mapper.Map<Application>(request);
+        var application = _mapper.Map<MRA.Jobs.Domain.Entities.Application>(request);
         application.Slug = GenerateSlug(applicant, vacancy);
         application.Applicant = applicant;
 

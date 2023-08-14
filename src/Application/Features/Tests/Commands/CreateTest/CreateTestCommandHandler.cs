@@ -19,12 +19,6 @@ public class CreateTestCommandHandler : IRequestHandler<CreateTestCommand, TestI
         _currentUserService = currentUserService;
         _httpClient = httpClient;
     }
-    public async Task<TestInfoDTO> Handle(CreateTestCommand request, CancellationToken cancellationToken)
-    {
-        var result = await _httpClient.SendTestCreationRequest(request);
-
-
-
     public async Task<TestInfoDto> Handle(CreateTestCommand request, CancellationToken cancellationToken)
     {
         TestInfoDto result = await _httpClient.SendTestCreationRequest(request);

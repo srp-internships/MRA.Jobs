@@ -11,7 +11,7 @@ namespace MRA.Jobs.Web.Controllers;
 public class InternshipsController : ApiControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetWithPagination([FromQuery] PaggedListQuery<InternshipVacancyListResponce> query)
+    public async Task<IActionResult> GetWithPagination([FromQuery] PagedListQuery<InternshipVacancyListResponse> query)
     {
         var internships = await Mediator.Send(query);
         return Ok(internships);
@@ -63,7 +63,7 @@ public class InternshipsController : ApiControllerBase
     }
 
     [HttpPost("{slug}/test")]
-    public async Task<ActionResult<TestInfoDTO>> SendTestCreationRequest([FromRoute] string slug, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<TestInfoDto>> SendTestCreationRequest([FromRoute] string slug, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
             return BadRequest();
@@ -72,7 +72,7 @@ public class InternshipsController : ApiControllerBase
     }
 
     [HttpPost("{slug}/test/result")]
-    public async Task<ActionResult<TestResultDTO>> GetTestResultRequest([FromRoute] string slug, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<TestResultDto>> GetTestResultRequest([FromRoute] string slug, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
             return BadRequest();

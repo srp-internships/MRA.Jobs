@@ -43,4 +43,7 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         await _context.SaveChangesAsync(cancellationToken);
         return traningModel.Id;
     }
+
+    private string GenerateSlug(TrainingVacancy vacancy) => _slugService.GenerateSlug($"{vacancy.Title}-{vacancy.PublishDate.Year}-{vacancy.PublishDate.Month}");
+
 }

@@ -29,7 +29,7 @@ public class RemoveTagFromTrainingVacancyCommandHandler : IRequestHandler<Remove
 
         foreach (var tagName in request.Tags)
         {
-            throw new NotFoundException(nameof(trainingVacancy), request.VacancyId);
+            throw new NotFoundException(nameof(trainingVacancy), request.TrainingVacancySlug);
         }
 
         foreach (string tagName in request.Tags)
