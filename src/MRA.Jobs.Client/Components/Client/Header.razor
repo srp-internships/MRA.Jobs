@@ -1,6 +1,6 @@
 ﻿@inject AuthenticationStateProvider AuthenticationStateProvider
 
-@*<div class="page_header_wrapper ds ms affix-wrapper" style="height: 94px;">
+<div class="page_header_wrapper ds ms affix-wrapper" style="height: 94px;">
 
 	<header class="page_header without-dots justify-nav-center ds ms affix">
 		<div class="container-fluid">
@@ -56,62 +56,7 @@
 		<!-- header toggler -->
 		<span class="toggle_menu"><span></span></span>
 	</header>
-</div>*@
-
-<nav class="navbar navbar-expand-lg bg-body-tertiary  bg-dark" data-bs-theme="dark">
-	<div class="container-fluid">
-		<a href="https://www.silkroadprofessionals.com/" rel="home" class="logo logo_image_and_text">
-			@*<img class="logo-color" src="//www.silkroadprofessionals.com/wp-content/uploads/2021/07/Preloader.png" alt="SILK ROAD<br><small>PROFESSIONALS</small>">
-			<span class="logo-text">
-			SILK ROAD<br><small>PROFESSIONALS</small>
-			</span>*@
-			<img src="./images/bluewhite.png" class="img-fluid" style="width:150%" />
-		</a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarText">
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item">
-					<a class="nav-link active" aria-current="page" href="home">Home</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="https://www.silkroadprofessionals.com/about/">About Us</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Jobs</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="internships">Internships</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="trainings">Trainings</a>
-				</li>
-			</ul>
-			<span class="navbar-text">
-				<div class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						<i class="fa fa-user"></i>
-					</a>
-					<ul class="dropdown-menu">
-						<CascadingAuthenticationState>
-							<AuthorizeView>
-								<Authorized>
-									<li><a href="/ApplicantPage">Profile</a></li>
-									<li><a href="">Application</a></li>
-								</Authorized>
-								<NotAuthorized>
-									<li><a href="">Registration</a></li>
-									<li><a href="login">Login</a></li>
-								</NotAuthorized>
-							</AuthorizeView>
-						</CascadingAuthenticationState>
-					</ul>
-				</div>
-			</span>
-		</div>
-	</div>
-</nav>
+</div>
 
 
 
