@@ -25,7 +25,7 @@ public class CreateTestCommandHandlerTests : BaseTestFixture
     public async Task Handle_ValidRequest_ShouldCreateTest()
     {
         // Arrange
-        var testInfo = new TestInfoDTO
+        var testInfo = new TestInfoDto
         {
             MaxScore = 10,
             TestId = Guid.NewGuid()
