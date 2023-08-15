@@ -6,7 +6,6 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Tests.Commands;
 
 namespace MRA.Jobs.Web.Controllers;
-
 [Route("api/[controller]")]
 [ApiController]
 public class InternshipsController : ApiControllerBase
@@ -14,81 +13,69 @@ public class InternshipsController : ApiControllerBase
     [HttpGet]
     public async Task<IActionResult> GetWithPagination([FromQuery] PagedListQuery<InternshipVacancyListResponse> query)
     {
-        PagedList<InternshipVacancyListResponse> internships = await Mediator.Send(query);
+        var internships = await Mediator.Send(query);
         return Ok(internships);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateNewInternship(CreateInternshipVacancyCommand request,
-        CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> CreateNewInternship(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<Guid>> UpdateInternship([FromRoute] Guid id,
-        [FromBody] UpdateInternshipVacancyCommand request, CancellationToken cancellationToken)
+    [HttpPut("{slug}")]
+    public async Task<ActionResult<Guid>> UpdateInternship([FromRoute] string slug, [FromBody] UpdateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
-        if (id != request.Id)
-        {
+        if (slug != request.Slug)
             return BadRequest();
-        }
 
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteInternship([FromRoute] Guid id, CancellationToken cancellationToken)
+    [HttpDelete("{slug}")]
+    public async Task<ActionResult<bool>> DeleteInternship([FromRoute] string slug, CancellationToken cancellationToken)
     {
-        DeleteInternshipVacancyCommand request = new DeleteInternshipVacancyCommand { Id = id };
+        var request = new DeleteInternshipVacancyCommand { Slug = slug };
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetInternshipById(Guid id)
+    [HttpGet("{slug}")]
+    public async Task<IActionResult> GetInternshipById(string slug)
     {
-        InternshipVacancyResponse internship = await Mediator.Send(new GetInternshipVacancyByIdQuery { Id = id });
+        var internship = await Mediator.Send(new GetInternshipVacancyBySlugQuery { Slug = slug });
         return Ok(internship);
     }
 
-    [HttpPost("{id}/tags")]
-    public async Task<IActionResult> AddTag([FromRoute] Guid id, [FromBody] AddTagToInternshipVacancyCommand request,
-        CancellationToken cancellationToken)
+    [HttpPost("{slug}/tags")]
+    public async Task<IActionResult> AddTag([FromRoute] string slug, [FromBody] AddTagToInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
-        request.InternshipId = id;
+        request.InternshipSlug = slug;
         await Mediator.Send(request, cancellationToken);
         return Ok();
     }
 
-    [HttpDelete("{id}/tags")]
-    public async Task<IActionResult> RemoveTags([FromRoute] Guid id,
-        [FromBody] RemoveTagFromInternshipVacancyCommand request, CancellationToken cancellationToken)
+    [HttpDelete("{slug}/tags")]
+    public async Task<IActionResult> RemoveTags([FromRoute] string slug, [FromBody] RemoveTagFromInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
-        request.InternshipId = id;
+        request.InernshipSlug = slug;
         await Mediator.Send(request, cancellationToken);
         return Ok();
     }
 
-    [HttpPost("{id}/test")]
-    public async Task<ActionResult<TestInfoDto>> SendTestCreationRequest([FromRoute] Guid id,
-        [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
+    [HttpPost("{slug}/test")]
+    public async Task<ActionResult<TestInfoDto>> SendTestCreationRequest([FromRoute] string slug, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
     {
-        if (id != request.Id)
-        {
+        if (slug != request.Slug)
             return BadRequest();
-        }
 
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPost("{id}/test/result")]
-    public async Task<ActionResult<TestResultDto>> GetTestResultRequest([FromRoute] Guid id,
-        [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
+    [HttpPost("{slug}/test/result")]
+    public async Task<ActionResult<TestResultDto>> GetTestResultRequest([FromRoute] string slug, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
     {
-        if (id != request.TestId)
-        {
+        if (slug != request.Slug)
             return BadRequest();
-        }
 
         return await Mediator.Send(request, cancellationToken);
     }

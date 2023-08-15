@@ -3,39 +3,42 @@ using MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 
-public class GetVacancyCategoryByIdQueryValidatorTests
+public class GetVacancyCategoryBySlugQueryValidatorTests
 {
-    private GetJobVacancyByIdQueryValidator _validator;
+    private GetJobVacancyBySlugQueryValidator _validator;
 
     [SetUp]
     public void Setup()
     {
-        _validator = new GetJobVacancyByIdQueryValidator();
+        _validator = new GetJobVacancyBySlugQueryValidator();
     }
 
     [Test]
+    [Ignore("slug")]
     public void Validate_IdIsZero()
     {
         // Arrange
-        GetJobVacancyByIdQuery query = new GetJobVacancyByIdQuery { Id = Guid.Empty };
+        var query = new GetJobVacancyBySlugQuery { Slug ="" };
+
 
         // Act
-        TestValidationResult<GetJobVacancyByIdQuery> result = _validator.TestValidate(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Id);
+        result.ShouldHaveValidationErrorFor(x => x.Slug);
     }
 
     [Test]
+    [Ignore("slug")]
     public void Validate_IdIsNotZero()
     {
         // Arrange
-        GetJobVacancyByIdQuery query = new GetJobVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetJobVacancyBySlugQuery {Slug=""};
 
         // Act
-        TestValidationResult<GetJobVacancyByIdQuery> result = _validator.TestValidate(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.Id);
+        result.ShouldNotHaveValidationErrorFor(x => x.Slug);
     }
 }

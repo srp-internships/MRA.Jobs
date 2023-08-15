@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Application.Common.Seive;
+﻿namespace MRA.Jobs.Application.Common.Sieve;
 
 public interface ISieveConfigurationsAssemblyMarker
 {

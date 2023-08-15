@@ -6,6 +6,6 @@ public class DeleteApplicationCommandValidator : AbstractValidator<DeleteApplica
 {
     public DeleteApplicationCommandValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Slug).NotEmpty();
     }
 }

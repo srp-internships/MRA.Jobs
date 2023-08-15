@@ -23,6 +23,7 @@ public class InternshipService : IInternshipService
             Duration = 0,
             Stipend = 0
         };
+
     }
 
     public CreateInternshipVacancyCommand createCommand { get; set; }
@@ -35,28 +36,27 @@ public class InternshipService : IInternshipService
         return await _http.PostAsJsonAsync("internships", createCommand);
     }
 
-    public async Task Delete(Guid id)
+    public async Task Delete(string slug)
     {
-        await _http.DeleteAsync($"internships/{id}");
+        await _http.DeleteAsync($"internships/{slug}");
     }
 
     public async Task<List<InternshipVacancyListResponse>> GetAll()
     {
-        PagedList<InternshipVacancyListResponse> result =
-            await _http.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>("internships");
+        var result = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>("internships");
         return result.Items;
     }
 
-    public async Task<InternshipVacancyResponse> GetById(Guid id)
+    public async Task<InternshipVacancyResponse> GetBySlug(string slug)
     {
-        return await _http.GetFromJsonAsync<InternshipVacancyResponse>($"internships/{id}");
+        return await _http.GetFromJsonAsync<InternshipVacancyResponse>($"internships/{slug}");
     }
 
-    public async Task<HttpResponseMessage> Update(Guid id)
+    public async Task<HttpResponseMessage> Update(string slug)
     {
-        UpdateInternshipVacancyCommand updateCommand = new UpdateInternshipVacancyCommand
+        var updateCommand = new UpdateInternshipVacancyCommand
         {
-            Id = id,
+            Slug = slug,
             Title = createCommand.Title,
             ShortDescription = createCommand.ShortDescription,
             Description = createCommand.Description,
@@ -65,9 +65,10 @@ public class InternshipService : IInternshipService
             EndDate = createCommand.EndDate,
             ApplicationDeadline = createCommand.ApplicationDeadline,
             Duration = createCommand.Duration,
-            Stipend = createCommand.Stipend
+            Stipend = createCommand.Stipend,
         };
 
-        return await _http.PutAsJsonAsync($"internships/{id}", updateCommand);
+        return await _http.PutAsJsonAsync($"internships/{slug}", updateCommand);
     }
+
 }

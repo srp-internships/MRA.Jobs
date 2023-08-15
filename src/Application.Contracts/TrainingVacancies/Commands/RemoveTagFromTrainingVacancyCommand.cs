@@ -2,6 +2,6 @@
 
 public class RemoveTagFromTrainingVacancyCommand : IRequest<bool>
 {
-    public Guid VacancyId { get; set; }
+    public string TrainingVacancySlug { get; set; }
     public string[] Tags { get; set; }
 }

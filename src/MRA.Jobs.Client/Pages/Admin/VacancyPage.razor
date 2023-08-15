@@ -1,9 +1,9 @@
 ﻿@page "/dashboard/jobs"
-@using MRA.Jobs.Domain.Enums
-@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses
-@using MRA.Jobs.Client.Components.Dialogs
-@using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @layout Dashboard
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+@using MRA.Jobs.Domain.Enums;
+@using MRA.Jobs.Client.Components.Dialogs;
 
 @inject IVacancyService VService
 @inject ICategoryService CService
@@ -31,7 +31,7 @@ else
                     Selected value: @work
                 </p>
 
-                <MatSelectValue @bind-Value="VService.creatingNewJob.CategoryId" Items="@_category" ValueSelector="@(i => i.Id)">
+                <MatSelectValue @bind-Value="VService.creatingNewJob.CategoryId" Items="@_category" ValueSelector="@(i=>i.Id)">
                     <ItemTemplate>
                         <span>@context?.Name</span>
                     </ItemTemplate>
@@ -45,7 +45,7 @@ else
             </MatExpansionPanelDetails>
         </MatExpansionPanel>
     </MatAccordion>
-    <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem"/>
+    <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem" />
     <MatTable Items="@vacancies" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
         <MatTableHeader>
             <th>Title</th>
@@ -64,38 +64,35 @@ else
             <td>@context.PublishDate</td>
             <td>@context.EndDate</td>
             <td>@context.WorkSchedule</td>
-            <td>
-                <MatButton @onclick="() => OnDeleteClick(context.Id)" Style="color:#2094CC" Icon="delete">Delete</MatButton>
-            </td>
-            <td>
-                <MatButton @onclick="() => OnEditClick(context.Id)" Style="color:#2094CC" Icon="edit">Edit</MatButton>
-            </td>
+            <td><MatButton @onclick="()=>OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MatButton></td>
+            <td>	<MatButton @onclick="()=>OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MatButton></td>
         </MatTableRow>
     </MatTable>
+
 }
 
 @code {
     WorkSchedule work;
-    readonly WorkSchedule[] value2Items = Enum.GetValues(typeof(WorkSchedule)).Cast<WorkSchedule>().ToArray();
+    WorkSchedule[] value2Items = Enum.GetValues(typeof(WorkSchedule)).Cast<WorkSchedule>().ToArray();
 
     private List<CategoryResponse> _category;
     private List<JobVacancyListDto> vacancies;
-    private bool isDialogOpen;
-    private Guid itemIdToDelete;
+    private bool isDialogOpen = false;
+    private string itemSlugToDelete;
     bool panelOpenState;
-    private bool isInserting;
+    private bool isInserting = false;
     private bool isUpdating = true;
-    private Guid UpdateId;
+    private string UpdateSlug;
 
-    void OnDeleteClick(Guid id)
+    void OnDeleteClick(string slug)
     {
-        itemIdToDelete = id;
+        itemSlugToDelete = slug;
         isDialogOpen = true;
     }
 
     private async Task DeleteItem()
     {
-        await VService.OnDelete(itemIdToDelete);
+        await VService.OnDelete(itemSlugToDelete);
         isDialogOpen = false;
         await LoadData();
     }
@@ -119,13 +116,13 @@ else
     }
 
 
-    public async Task OnEditClick(Guid id)
+    public async Task OnEditClick(string slug)
     {
-    // Получение данных о выбранной вакансии
-        var vacancy = await VService.GetById(id);
+        // Получение данных о выбранной вакансии
+        var vacancy = await VService.GetBySlug(slug);
         if (vacancy != null)
         {
-    // Отображение данных о выбранной вакансии в форме
+            // Отображение данных о выбранной вакансии в форме
             VService.creatingNewJob.Title = vacancy.Title;
             VService.creatingNewJob.ShortDescription = vacancy.ShortDescription;
             VService.creatingNewJob.Description = vacancy.Description;
@@ -137,17 +134,17 @@ else
             }
             VService.creatingNewJob.EndDate = vacancy.EndDate;
             VService.creatingNewJob.PublishDate = vacancy.PublishDate;
-    // Открытие панели формы
+            // Открытие панели формы
             panelOpenState = true;
             isInserting = true;
             isUpdating = false;
-            UpdateId = id;
+            UpdateSlug = slug;
         }
     }
 
     private async Task HandleUpdate()
     {
-        await VService.UpdateJobVacancy(UpdateId);
+        await VService.UpdateJobVacancy(UpdateSlug);
         await LoadData();
         Clear();
     }
@@ -168,7 +165,6 @@ else
         VService.creatingNewJob.PublishDate = DateTime.Now;
         isInserting = false;
         isUpdating = true;
-        UpdateId = Guid.NewGuid();
+        UpdateSlug = string.Empty;
     }
-
 }
