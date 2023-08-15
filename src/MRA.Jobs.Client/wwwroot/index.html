@@ -548,15 +548,40 @@
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet">
+    <style>
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .blinking-image {
+            animation: blink 1s;
+            animation-iteration-count: infinite;
+        }
+    </style>
 </head>
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle cx="50%" cy="50%" r="40%" />
-            <circle cx="50%" cy="50%" r="40%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <!--<svg class="loading-progress">
+             <circle cx="50%" cy="50%" r="40%" />
+             <circle cx="50%" cy="50%" r="40%" />
+         </svg>
+        <div class="loading-progress-text"></div>-->
+        <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <img class="blinking-image" src="images/SRP_icon.png" style="width:130px; height:100px;" />
+        </div>
+
+
     </div>
 
     <!--<div id="blazor-error-ui">
