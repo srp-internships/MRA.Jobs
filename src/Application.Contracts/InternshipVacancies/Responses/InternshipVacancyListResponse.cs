@@ -22,4 +22,5 @@ public class InternshipVacancyListResponse
 
     public int Duration { get; set; }
     public int Stipend { get; set; }
+    public string Slug { get; set; }
 }

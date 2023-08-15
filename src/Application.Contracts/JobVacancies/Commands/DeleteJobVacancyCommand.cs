@@ -2,5 +2,7 @@
 
 public class DeleteJobVacancyCommand : IRequest<bool>
 {
-    public Guid Id { get; set; }
+    public string Slug { get; set; }
 }
+
+

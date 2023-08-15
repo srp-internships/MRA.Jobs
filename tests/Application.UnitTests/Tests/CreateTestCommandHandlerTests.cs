@@ -3,9 +3,12 @@ using MRA.Jobs.Application.Contracts.Tests.Commands;
 using MRA.Jobs.Application.Features.Tests.Commands.CreateTest;
 
 namespace MRA.Jobs.Application.UnitTests.Tests;
-
 public class CreateTestCommandHandlerTests : BaseTestFixture
 {
+    private CreateTestCommandHandler _handler;
+    private Mock<ITestHttpClientService> _httpClientMock;
+
+
     [SetUp]
     public override void Setup()
     {
@@ -18,29 +21,33 @@ public class CreateTestCommandHandlerTests : BaseTestFixture
             _httpClientMock.Object);
     }
 
-    private CreateTestCommandHandler _handler;
-    private Mock<ITestHttpClientService> _httpClientMock;
-
     [Test]
     public async Task Handle_ValidRequest_ShouldCreateTest()
     {
         // Arrange
-        TestInfoDto testInfo = new TestInfoDto { MaxScore = 10, TestId = Guid.NewGuid() };
+        var testInfo = new TestInfoDto
+        {
+            MaxScore = 10,
+            TestId = Guid.NewGuid()
+        };
 
-        CreateTestCommand request = new CreateTestCommand { Id = Guid.NewGuid(), NumberOfQuestion = 0 };
+        var request = new CreateTestCommand
+        {
+            Slug = string.Empty,
+            NumberOfQuestion = 0
+        };
 
         _httpClientMock.Setup(x => x.SendTestCreationRequest(request)).ReturnsAsync(testInfo);
 
-        Mock<DbSet<Test>> testDbSetMock = new Mock<DbSet<Test>>();
-        Guid newEntityGuid = Guid.NewGuid();
-        testDbSetMock.Setup(d => d.AddAsync(It.IsAny<Test>(), It.IsAny<CancellationToken>()))
-            .Callback<Test, CancellationToken>((t, ct) => t.Id = newEntityGuid);
+        var testDbSetMock = new Mock<DbSet<Test>>();
+        var newEntityGuid = Guid.NewGuid();
+        testDbSetMock.Setup(d => d.AddAsync(It.IsAny<Test>(), It.IsAny<CancellationToken>())).Callback<Test, CancellationToken>((t, ct) => t.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.Tests).Returns(testDbSetMock.Object);
 
         _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
 
         // Act
-        TestInfoDto result = await _handler.Handle(request, CancellationToken.None);
+        var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.Should().Be(testInfo);

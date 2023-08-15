@@ -8,6 +8,6 @@ public class DeleteTrainingVacancyCommandValidator : AbstractValidator<DeleteTra
 {
     public DeleteTrainingVacancyCommandValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Slug).NotEmpty();
     }
 }

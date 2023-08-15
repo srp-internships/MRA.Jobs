@@ -1,57 +1,58 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+﻿namespace MRA.Jobs.Application.UnitTests.TrainingModels;
+
+using MRA.Jobs.Application.Common.SlugGeneratorService;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
-
-namespace MRA.Jobs.Application.UnitTests.TrainingModels;
-
+using MRA.Jobs.Domain.Entities;
 public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
 {
+    private CreateTrainingVacancyCommandHandler _handler;
+
     [SetUp]
     public override void Setup()
     {
         base.Setup();
 
         _handler = new CreateTrainingVacancyCommandHandler(
+            _slugGenerator.Object,
             _dbContextMock.Object,
             Mapper,
             _dateTimeMock.Object,
             _currentUserServiceMock.Object);
     }
 
-    private CreateTrainingVacancyCommandHandler _handler;
-
     [Test]
     public async Task Handle_ValidRequest_ShouldCreateTrainingModelAndTimelineEvent()
     {
         // Arrange
-        CreateTrainingVacancyCommand request = new CreateTrainingVacancyCommand
+        var request = new CreateTrainingVacancyCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",
             Description = "We're looking for a software developer to help us build amazing products",
             PublishDate = DateTime.UtcNow.AddDays(1),
             EndDate = DateTime.UtcNow.AddDays(30),
-            CategoryId = Guid.NewGuid(),
+            CategoryId = Guid.Empty,
             Duration = 2,
             Fees = 2
         };
 
-        VacancyCategory category = new VacancyCategory { Id = request.CategoryId };
+        var category = new VacancyCategory { Id = request.CategoryId };
         _dbContextMock.Setup(x => x.Categories.FindAsync(request.CategoryId)).ReturnsAsync(category);
 
-        Mock<DbSet<VacancyTimelineEvent>> timelineEventSetMock = new Mock<DbSet<VacancyTimelineEvent>>();
+        var timelineEventSetMock = new Mock<DbSet<VacancyTimelineEvent>>();
         _dbContextMock.Setup(x => x.VacancyTimelineEvents).Returns(timelineEventSetMock.Object);
 
-        Mock<DbSet<TrainingVacancy>> trainingModelSetMock = new Mock<DbSet<TrainingVacancy>>();
-        Guid newEntityGuid = Guid.NewGuid();
-        trainingModelSetMock.Setup(d => d.AddAsync(It.IsAny<TrainingVacancy>(), It.IsAny<CancellationToken>()))
-            .Callback<TrainingVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
+        var trainingModelSetMock = new Mock<DbSet<TrainingVacancy>>();
+        var newEntityGuid = Guid.NewGuid();
+        trainingModelSetMock.Setup(d => d.AddAsync(It.IsAny<TrainingVacancy>(), It.IsAny<CancellationToken>())).Callback<TrainingVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.TrainingVacancies).Returns(trainingModelSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
         _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
 
         // Act
-        Guid result = await _handler.Handle(request, CancellationToken.None);
+        var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.Should().Be(newEntityGuid);
@@ -81,14 +82,14 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
     [Test]
     public void Handle_CategoryNotFound_ShouldThrowNotFoundException()
     {
-        CreateTrainingVacancyCommand request = new CreateTrainingVacancyCommand
+        var request = new CreateTrainingVacancyCommand
         {
             Title = "Software Developer",
             ShortDescription = "Join our team of talented developers",
             Description = "We're looking for a software developer to help us build amazing products",
             PublishDate = DateTime.UtcNow.AddDays(1),
             EndDate = DateTime.UtcNow.AddDays(30),
-            CategoryId = Guid.NewGuid(),
+            CategoryId = Guid.Empty,
             Duration = 2,
             Fees = 2
         };
@@ -100,6 +101,6 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
 
         // Assert
         act.Should().ThrowAsync<NotFoundException>()
-            .WithMessage($"*{nameof(VacancyCategory)}*{request.CategoryId}*");
+         .WithMessage($"*{nameof(VacancyCategory)}*{request.CategoryId}*");
     }
 }

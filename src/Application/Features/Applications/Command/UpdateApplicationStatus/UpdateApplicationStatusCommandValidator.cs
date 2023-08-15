@@ -5,7 +5,7 @@ public class
 {
     public UpdateApplicationStatusCommandValidator()
     {
-        RuleFor(v => v.Id)
+        RuleFor(v => v.Slug)
             .NotEmpty();
         RuleFor(v => v.StatusId)
             .NotEmpty();

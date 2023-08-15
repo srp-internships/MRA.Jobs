@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 
@@ -8,14 +9,15 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
     private readonly IDateTime _dateTime;
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly ISlugGeneratorService _slugService;
 
-    public CreateJobVacancyCommandHandler(IApplicationDbContext dbContext, IMapper mapper, IDateTime dateTime,
-        ICurrentUserService currentUserService)
+    public CreateJobVacancyCommandHandler(ISlugGeneratorService slugService, IApplicationDbContext dbContext, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _dbContext = dbContext;
         _mapper = mapper;
         _dateTime = dateTime;
         _currentUserService = currentUserService;
+        _slugService = slugService;
     }
 
     public async Task<Guid> Handle(CreateJobVacancyCommand request, CancellationToken cancellationToken)
@@ -23,8 +25,9 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         VacancyCategory category = await _dbContext.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
-        JobVacancy jobVacancy = _mapper.Map<JobVacancy>(request);
+        var jobVacancy = _mapper.Map<JobVacancy>(request);
         jobVacancy.Category = category;
+        jobVacancy.Slug = GenerateSlug(jobVacancy);
         await _dbContext.JobVacancies.AddAsync(jobVacancy, cancellationToken);
 
         VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
@@ -40,4 +43,6 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         await _dbContext.SaveChangesAsync(cancellationToken);
         return jobVacancy.Id;
     }
+
+    private string GenerateSlug(JobVacancy job) => _slugService.GenerateSlug($"{job.Title}-{job.CreatedAt.Year}-{job.CreatedAt.Month}");
 }

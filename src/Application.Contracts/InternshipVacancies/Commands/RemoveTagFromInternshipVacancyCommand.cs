@@ -2,6 +2,6 @@
 
 public class RemoveTagFromInternshipVacancyCommand : IRequest<bool>
 {
-    public Guid InternshipId { get; set; }
+    public string InernshipSlug { get; set; }
     public string[] Tags { get; set; }
 }
