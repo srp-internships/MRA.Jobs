@@ -25,7 +25,7 @@ public class
         CancellationToken cancellationToken)
     {
         PagedList<TrainingVacancyListDto> result = _sieveProcessor.ApplyAdnGetPagedList(request,
-            _context.TrainingVacancies.AsNoTracking(), _mapper.Map<TrainingVacancyListDto>);
+            _context.TrainingVacancies.Include(t => t.Category).AsNoTracking(), _mapper.Map<TrainingVacancyListDto>);
         return await Task.FromResult(result);
     }
 }
