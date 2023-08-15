@@ -2,8 +2,9 @@
 using MRA.Jobs.Application.Contracts.Tests.Commands;
 
 namespace MRA.Jobs.Application.Common.Interfaces;
+
 public interface ITestHttpClientService
 {
-    Task<TestInfoDTO> SendTestCreationRequest(CreateTestCommand request);
-    Task<TestResultDTO> GetTestResultRequest(CreateTestResultCommand request);
+    Task<TestInfoDto> SendTestCreationRequest(CreateTestCommand request);
+    Task<TestResultDto> GetTestResultRequest(CreateTestResultCommand request);
 }

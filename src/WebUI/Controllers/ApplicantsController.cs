@@ -16,26 +16,29 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllApplicant([FromQuery] PaggedListQuery<ApplicantListDto> query)
+    public async Task<IActionResult> GetAllApplicant([FromQuery] PagedListQuery<ApplicantListDto> query)
     {
-        var applicants = await Mediator.Send(query);
+        PagedList<ApplicantListDto> applicants = await Mediator.Send(query);
         return Ok(applicants);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetApplicantById([FromRoute] Guid id)
     {
-        var applicant = await Mediator.Send(new GetApplicantByIdQuery { Id = id });
+        ApplicantDetailsDto applicant = await Mediator.Send(new GetApplicantByIdQuery { Id = id });
         return Ok(applicant);
     }
+
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateNewApplicant(CreateApplicantCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> CreateNewApplicant(CreateApplicantCommand request,
+        CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Guid>> UpdateApplicant([FromRoute] Guid id, [FromBody] UpdateApplicantCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> UpdateApplicant([FromRoute] Guid id,
+        [FromBody] UpdateApplicantCommand request, CancellationToken cancellationToken)
     {
         if (id != request.Id)
         {
@@ -46,13 +49,15 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteApplicant([FromRoute] Guid id, [FromBody] DeleteApplicantCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<bool>> DeleteApplicant([FromRoute] Guid id,
+        [FromBody] DeleteApplicantCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpPost("{id}/tags")]
-    public async Task<IActionResult> AddTag([FromRoute] Guid id, [FromBody] AddTagsToApplicantCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddTag([FromRoute] Guid id, [FromBody] AddTagsToApplicantCommand request,
+        CancellationToken cancellationToken)
     {
         request.ApplicantId = id;
         await Mediator.Send(request, cancellationToken);
@@ -60,7 +65,8 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpDelete("{id}/tags")]
-    public async Task<IActionResult> RemoveTags([FromRoute] Guid id, [FromBody] RemoveTagsFromApplicantCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveTags([FromRoute] Guid id, [FromBody] RemoveTagsFromApplicantCommand request,
+        CancellationToken cancellationToken)
     {
         request.ApplicantId = id;
         await Mediator.Send(request, cancellationToken);

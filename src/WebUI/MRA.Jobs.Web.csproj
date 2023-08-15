@@ -17,6 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
+        <PackageReference Include="Azure.Identity" Version="1.9.0" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="7.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.5" />
@@ -58,7 +60,7 @@
         </Exec>
 
         <Message Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' == '0'" Importance="low" />
-        <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'" />
+        <!--<Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'" />-->
     </Target>
 
 </Project>

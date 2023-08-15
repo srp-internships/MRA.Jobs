@@ -1,5 +1,6 @@
 ﻿namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 
+using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Domain.Entities;
@@ -13,6 +14,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
         base.Setup();
 
         _handler = new CreateTrainingVacancyCommandHandler(
+            _slugGenerator.Object,
             _dbContextMock.Object,
             Mapper,
             _dateTimeMock.Object,
@@ -30,7 +32,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
             Description = "We're looking for a software developer to help us build amazing products",
             PublishDate = DateTime.UtcNow.AddDays(1),
             EndDate = DateTime.UtcNow.AddDays(30),
-            CategoryId = Guid.NewGuid(),
+            CategoryId = Guid.Empty,
             Duration = 2,
             Fees = 2
         };
@@ -87,7 +89,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
             Description = "We're looking for a software developer to help us build amazing products",
             PublishDate = DateTime.UtcNow.AddDays(1),
             EndDate = DateTime.UtcNow.AddDays(30),
-            CategoryId = Guid.NewGuid(),
+            CategoryId = Guid.Empty,
             Duration = 2,
             Fees = 2
         };

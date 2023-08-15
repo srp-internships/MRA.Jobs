@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
-using MRA.Jobs.Application.Contracts.Common;
+﻿using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
@@ -28,16 +26,16 @@ public class VacancyService : IVacancyService
         };
     }
     public List<CategoryResponse> Categories { get; set; }
-    
-    public List<JobVacancyListDTO> Vacanceies { get; set; }
+
+    public List<JobVacancyListDto> Vacanceies { get; set; }
 
     public CreateJobVacancyCommand creatingNewJob { get; set; }
-    
+
     public event Action OnChange;
     public string guidId { get; set; } = string.Empty;
-    public async Task<List<JobVacancyListDTO>> GetAllVacancy()
+    public async Task<List<JobVacancyListDto>> GetAllVacancy()
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>("jobs");
+        var result = await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>("jobs");
         Vacanceies = result.Items;
         Console.WriteLine(Vacanceies.Count);
         return Vacanceies;
@@ -47,19 +45,18 @@ public class VacancyService : IVacancyService
 
     public async Task<List<CategoryResponse>> GetAllCategory()
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("categories");
+        var result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>("categories");
         Categories = result.Items;
         return Categories;
     }
 
-    public async Task<List<JobVacancyListDTO>> GetVacancyByTitle(string title)
+    public async Task<List<JobVacancyListDto>> GetVacancyByTitle(string title)
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?Filters=Title@={title}");
+        var result = await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Title@={title}");
         Vacanceies = result.Items;
         OnChange.Invoke();
         return Vacanceies;
     }
-
 
     public async Task OnSaveCreateClick()
     {
@@ -69,28 +66,28 @@ public class VacancyService : IVacancyService
         Console.WriteLine(creatingNewJob.Title);
     }
 
-    public async Task<List<JobVacancyListDTO>> GetJobs()
+    public async Task<List<JobVacancyListDto>> GetJobs()
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>("jobs");
+        var result = await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>("jobs");
         return result.Items;
     }
 
-    public async Task OnDelete(Guid Id)
+    public async Task OnDelete(string slug)
     {
-        await _http.DeleteAsync($"jobs/{Id}");
+        await _http.DeleteAsync($"jobs/{slug}");
     }
 
-    public async Task<JobVacancyDetailsDTO> GetById(Guid Id)
+    public async Task<JobVacancyDetailsDto> GetBySlug(string slug)
     {
-        var result = await _http.GetFromJsonAsync<JobVacancyDetailsDTO>($"jobs/{Id}");
+        var result = await _http.GetFromJsonAsync<JobVacancyDetailsDto>($"jobs/{slug}");
         return result;
     }
 
-    public async Task UpdateJobVacancy(Guid id)
+    public async Task UpdateJobVacancy(string slug)
     {
         var update = new UpdateJobVacancyCommand
         {
-            Id = id,
+            Slug = slug,
             Title = creatingNewJob.Title,
             ShortDescription = creatingNewJob.ShortDescription,
             Description = creatingNewJob.Description,
@@ -100,7 +97,7 @@ public class VacancyService : IVacancyService
             EndDate = creatingNewJob.EndDate,
             PublishDate = creatingNewJob.PublishDate,
         };
-        await _http.PutAsJsonAsync($"jobs/{id}", update);
+        await _http.PutAsJsonAsync($"jobs/{slug}", update);
 
     }
 }

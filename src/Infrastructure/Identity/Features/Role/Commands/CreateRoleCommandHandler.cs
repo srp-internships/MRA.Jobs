@@ -24,10 +24,12 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, RoleR
 
     public async Task<RoleResponse> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
     {
-        var result = await _roleManager.CreateAsync(new ApplicationRole(request.Name));
+        IdentityResult result = await _roleManager.CreateAsync(new ApplicationRole(request.Name));
         if (!result.Succeeded)
+        {
             throw new Exception("Error on creating role");
+        }
 
-        return new RoleResponse() { Name = request.Name };
+        return new RoleResponse { Name = request.Name };
     }
 }

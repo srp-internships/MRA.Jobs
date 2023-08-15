@@ -8,7 +8,7 @@
         <h4 class="mb-2 text-dark">Category</h4>
         @if (_categoryResponses is null)
         {
-            <div></div>   
+            <div></div>
         }
         else
         {
@@ -24,11 +24,12 @@
 
 @code {
 
-    private  List<CategoryResponse> _categoryResponses;
+    private List<CategoryResponse> _categoryResponses;
+
     protected override async Task OnInitializedAsync()
     {
         _categoryResponses = await CategoryService.GetAllCategory();
     }
-    
+
 
 }

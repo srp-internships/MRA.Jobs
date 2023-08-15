@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Common.Security;
+using MRA.Jobs.Application.Common.SlugGeneratorService;
 
 namespace MRA.Jobs.Application.UnitTests;
 
@@ -9,12 +10,14 @@ public abstract class BaseTestFixture
     public static IMapper Mapper { get; set; }
     protected Mock<IDateTime> _dateTimeMock;
     protected Mock<ICurrentUserService> _currentUserServiceMock;
+    protected Mock<ISlugGeneratorService> _slugGenerator;
 
     [SetUp]
     public virtual void Setup()
     {
         _dbContextMock = new Mock<IApplicationDbContext>();
         _dateTimeMock = new Mock<IDateTime>();
+        _slugGenerator = new Mock<ISlugGeneratorService>();
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _currentUserServiceMock.Setup(r => r.GetId()).Returns(Guid.Empty);

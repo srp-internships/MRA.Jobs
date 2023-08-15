@@ -18,7 +18,7 @@ public class CategoryService : ICategoryService
     public CreateVacancyCategoryCommand creatingEntity { get; set; }
     public async Task<List<CategoryResponse>> GetAllCategory()
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("categories");
+        var result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>("categories");
         Category = result.Items;
         creatingEntity = new() { Name = "" };
         return result.Items;
@@ -27,22 +27,22 @@ public class CategoryService : ICategoryService
     {
         updatingEntity = new()
         {
-            Id = updateEntity.Id,
+            Slug = updateEntity.Slug,
             Name = updateEntity.Name
         };
     }
     public async Task OnSaveUpdateClick()
-    {       
-        var result = await _http.PutAsJsonAsync($"categories/{updatingEntity.Id}", updatingEntity);
+    {
+        var result = await _http.PutAsJsonAsync($"categories/{updatingEntity.Slug}", updatingEntity);
         result.EnsureSuccessStatusCode();
         updatingEntity = null;
-        var result2 = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"categories");
+        var result2 = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>($"categories");
         Category = result2.Items;
     }
-    public async Task OnDeleteClick(Guid id)
+    public async Task OnDeleteClick(string slug)
     {
-        await _http.DeleteAsync($"categories/{id}");
-        var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"categories");
+        await _http.DeleteAsync($"categories/{slug}");
+        var result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>($"categories");
         Category = result.Items;
     }
     public async Task OnSaveCreateClick()
@@ -50,7 +50,7 @@ public class CategoryService : ICategoryService
         if (creatingEntity is not null)
             await _http.PostAsJsonAsync("categories", creatingEntity);
         creatingEntity.Name = string.Empty;
-        var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>($"categories");
+        var result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>($"categories");
         Category = result.Items;
     }
 }

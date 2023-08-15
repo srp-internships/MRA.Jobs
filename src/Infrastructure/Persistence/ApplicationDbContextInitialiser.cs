@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Infrastructure.Persistence;
 
 public class ApplicationDbContextInitialiser
 {
-    private readonly ILogger<ApplicationDbContextInitialiser> _logger;
     private readonly ApplicationDbContext _context;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ILogger<ApplicationDbContextInitialiser> _logger;
     private readonly RoleManager<ApplicationRole> _roleManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+    public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger,
+        ApplicationDbContext context, UserManager<ApplicationUser> userManager,
+        RoleManager<ApplicationRole> roleManager)
     {
         _logger = logger;
         _context = context;
@@ -50,13 +53,14 @@ public class ApplicationDbContextInitialiser
     public async Task TrySeedAsync()
     {
         // Default roles
-        var administratorRole = new ApplicationRole("Administrator");
-        var applicantRole = new ApplicationRole("Applicant");
+        ApplicationRole administratorRole = new ApplicationRole("Administrator");
+        ApplicationRole applicantRole = new ApplicationRole("Applicant");
 
         if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
         {
             await _roleManager.CreateAsync(administratorRole);
         }
+
         if (_roleManager.Roles.All(r => r.Name != applicantRole.Name))
         {
             await _roleManager.CreateAsync(applicantRole);
@@ -66,13 +70,13 @@ public class ApplicationDbContextInitialiser
 
         if (!_userManager.Users.Any(u => u.UserName == "Admin"))
         {
-            var administrator = new ApplicationUser
+            ApplicationUser administrator = new ApplicationUser
             {
                 UserName = "Admin",
                 Email = "administrator@localhost.com",
                 PhoneNumber = "1234567890",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
+                PhoneNumberConfirmed = true
             };
 
             await _userManager.CreateAsync(administrator, "Test.12324");
@@ -88,13 +92,12 @@ public class ApplicationDbContextInitialiser
                 Email = administrator.Email,
                 PhoneNumber = administrator.PhoneNumber,
                 Avatar = "https://i.pravatar.cc/300",
-                Gender = Domain.Enums.Gender.Male,
+                Gender = Gender.Male,
                 FirstName = "Admin",
                 LastName = "Admin",
                 JobTitle = "Administrator"
             });
             await _context.SaveChangesAsync();
         }
-
     }
 }

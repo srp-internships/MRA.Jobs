@@ -6,9 +6,7 @@ public class ReviewerConfiguration : IEntityTypeConfiguration<Reviewer>
 {
     public void Configure(EntityTypeBuilder<Reviewer> builder)
     {
-    
         // Specific properties
         builder.Property(r => r.JobTitle).HasColumnType("nvarchar(256)");
     }
 }
-

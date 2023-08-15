@@ -17,11 +17,11 @@ public class UpdateApplicantCommandValidatorTests
     public void Validate_IdIsRequired()
     {
         // Arrange 
-        var command = new UpdateApplicantCommand { Id = Guid.Empty };
-        
+        UpdateApplicantCommand command = new UpdateApplicantCommand { Id = Guid.Empty };
+
         // Act 
-        var result = _validator.TestValidate(command);
-        
+        TestValidationResult<UpdateApplicantCommand> result = _validator.TestValidate(command);
+
         // Assert 
         result.ShouldHaveValidationErrorFor(x => x.Id);
     }
@@ -30,63 +30,63 @@ public class UpdateApplicantCommandValidatorTests
     public void Validate_FirstNameIsRequired()
     {
         // Arrange
-        var command = new UpdateApplicantCommand { FirstName = null };
-        
+        UpdateApplicantCommand command = new UpdateApplicantCommand { FirstName = null };
+
         // Act
-        var result = _validator.TestValidate(command);
-        
+        TestValidationResult<UpdateApplicantCommand> result = _validator.TestValidate(command);
+
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.FirstName);
     }
-    
+
     [Test]
     public void Validate_LastNameIsRequired()
     {
         // Arrange
-        var command = new UpdateApplicantCommand { LastName = null };
-        
+        UpdateApplicantCommand command = new UpdateApplicantCommand { LastName = null };
+
         // Act
-        var result = _validator.TestValidate(command);
-        
+        TestValidationResult<UpdateApplicantCommand> result = _validator.TestValidate(command);
+
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.LastName);
     }
-    
+
     [Test]
     public void Validate_AvatarIsRequired()
     {
         // Arrange
-        var command = new UpdateApplicantCommand { Avatar = null };
-        
+        UpdateApplicantCommand command = new UpdateApplicantCommand { Avatar = null };
+
         // Act
-        var result = _validator.TestValidate(command);
-        
+        TestValidationResult<UpdateApplicantCommand> result = _validator.TestValidate(command);
+
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Avatar);
     }
-    
+
     [Test]
     public void Validate_PhoneNumberIsRequired()
     {
         // Arrange
-        var command = new UpdateApplicantCommand { PhoneNumber = null };
-        
+        UpdateApplicantCommand command = new UpdateApplicantCommand { PhoneNumber = null };
+
         // Act
-        var result = _validator.TestValidate(command);
-        
+        TestValidationResult<UpdateApplicantCommand> result = _validator.TestValidate(command);
+
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.PhoneNumber);
     }
-    
+
     [Test]
     public void Validate_PatronymicNumberIsRequired()
     {
         // Arrange
-        var command = new UpdateApplicantCommand { Patronymic = null };
-        
+        UpdateApplicantCommand command = new UpdateApplicantCommand { Patronymic = null };
+
         // Act
-        var result = _validator.TestValidate(command);
-        
+        TestValidationResult<UpdateApplicantCommand> result = _validator.TestValidate(command);
+
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Patronymic);
     }
@@ -95,13 +95,12 @@ public class UpdateApplicantCommandValidatorTests
     public void Validate_EmailNumberIsRequired()
     {
         // Arrange
-        var command = new UpdateApplicantCommand { Email = null };
-        
+        UpdateApplicantCommand command = new UpdateApplicantCommand { Email = null };
+
         // Act
-        var result = _validator.TestValidate(command);
-        
+        TestValidationResult<UpdateApplicantCommand> result = _validator.TestValidate(command);
+
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Email);
     }
-    
 }

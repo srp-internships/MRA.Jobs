@@ -18,8 +18,8 @@ public class UpdateApplicationStatusCommandHandler : IRequestHandler<UpdateAppli
     }
     public async Task<bool> Handle(UpdateApplicationStatus request, CancellationToken cancellationToken)
     {
-        var application = await _context.Applications.FindAsync(request.Id);
-        _ = application ?? throw new NotFoundException(nameof(Application), request.Id); ;
+        var application = await _context.Applications.FindAsync(request.Slug);
+        _ = application ?? throw new NotFoundException(nameof(Application), request.Slug); ;
 
         application.Status = (ApplicationStatus)request.StatusId;
 

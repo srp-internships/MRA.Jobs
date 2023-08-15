@@ -1,6 +1,4 @@
 ﻿@using MRA.Jobs.Application.Contracts.Applications.Responses
-
-
 @inherits OwningComponentBase
 
 <div class="card">
@@ -21,7 +19,8 @@
                         <small>Applicant:</small>
                         @application.ApplicantFullName
                     </div>
-                </div> <br \>
+                </div>
+                <br \>
             }
         </div>
 
@@ -33,6 +32,11 @@
 
 
 @code{
-	[Parameter]	public List<ApplicationListStatus> Applications { get; set; }
-	[Parameter]	public string Title { get; set; }
+
+    [Parameter]
+    public List<ApplicationListStatus> Applications { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
 }

@@ -20,4 +20,3 @@ public class UserTagConfiguration : IEntityTypeConfiguration<UserTag>
         builder.HasIndex(ut => new { ut.TagId, ut.UserId }).IsUnique();
     }
 }
-

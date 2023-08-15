@@ -5,12 +5,12 @@ namespace MRA.Jobs.Client.Services.TrainingServices;
 
 public interface ITrainingService
 {
-    Task<List<TrainingVacancyListDTO>> GetAll();
-    Task<TrainingVacancyDetailedResponce> GetById(Guid id);
+    Task<List<TrainingVacancyListDto>> GetAll();
+    Task<TrainingVacancyDetailedResponse> GetBySlug(string slug);
 
     Task<HttpResponseMessage> Create();
-    Task<HttpResponseMessage> Update(Guid id);
-    Task Delete(Guid id);
+    Task<HttpResponseMessage> Update(string slug);
+    Task Delete(string slug);
 
     CreateTrainingVacancyCommand createCommand { get; set; }
     UpdateTrainingVacancyCommand UpdateCommand { get; set; }

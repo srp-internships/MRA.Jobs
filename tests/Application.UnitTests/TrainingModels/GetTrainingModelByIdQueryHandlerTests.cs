@@ -5,35 +5,35 @@ using MRA.Jobs.Application.Features.TrainingVacancies.Queries;
 using MRA.Jobs.Domain.Entities;
 public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
 {
-    private GetTrainingVacancyByIdQueryHandler _handler;
+    private GetTrainingVacancyBySlugQueryHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
 
-        _handler = new GetTrainingVacancyByIdQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetTrainingVacancyBySlugQueryHandler(_dbContextMock.Object, Mapper);
     }
 
     [Test]
     [Ignore("Игнорируем тест из-за TimeLine & Tag")]
     public async Task Handle_GivenValidQuery_ShouldReturnJobVacancyDetailsDTO()
     {
-        var query = new GetTrainingVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetTrainingVacancyBySlugQuery { Slug="" };
 
         var trainingModel = new TrainingVacancy
         {
-            Id = query.Id,
+            Slug=string.Empty,
             Title = "Job Title",
             ShortDescription = "Short Description",
             Description = "Job Description",
             PublishDate = new DateTime(2023, 05, 05),
             EndDate = new DateTime(2023, 05, 06),
-            CategoryId = Guid.NewGuid(),
+            CategoryId = Guid.Empty,
             Duration = 1,
             Fees = 1
         };
-        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(trainingModel);
+        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>())).ReturnsAsync(trainingModel);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -55,9 +55,9 @@ public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetTrainingVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetTrainingVacancyBySlugQuery { Slug = "" };
 
-        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
+        _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((TrainingVacancy)null);
 
         // Act + Assert

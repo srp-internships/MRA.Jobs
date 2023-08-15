@@ -9,28 +9,30 @@ internal class PaswordHelper
         bool requireUppercase = true,
         bool requireDigit = true)
     {
-        string[] randomChars = new[]
-        {
-                "ABCDEFGHJKLMNOPQRSTUVWXYZ",
-                "abcdefghijkmnopqrstuvwxyz",
-                "0123456789",
-                "!@$?_-&*"
-            };
+        string[] randomChars = { "ABCDEFGHJKLMNOPQRSTUVWXYZ", "abcdefghijkmnopqrstuvwxyz", "0123456789", "!@$?_-&*" };
 
-        Random rand = new Random(Environment.TickCount);
-        List<char> chars = new List<char>();
+        Random rand = new(Environment.TickCount);
+        List<char> chars = new();
 
         if (requireUppercase)
+        {
             chars.Insert(rand.Next(0, chars.Count), randomChars[0][rand.Next(0, randomChars[0].Length)]);
+        }
 
         if (requireLowercase)
+        {
             chars.Insert(rand.Next(0, chars.Count), randomChars[1][rand.Next(0, randomChars[1].Length)]);
+        }
 
         if (requireDigit)
+        {
             chars.Insert(rand.Next(0, chars.Count), randomChars[2][rand.Next(0, randomChars[2].Length)]);
+        }
 
         if (requireNonAlphanumeric)
+        {
             chars.Insert(rand.Next(0, chars.Count), randomChars[3][rand.Next(0, randomChars[3].Length)]);
+        }
 
         for (int i = chars.Count; i < length; i++)
         {

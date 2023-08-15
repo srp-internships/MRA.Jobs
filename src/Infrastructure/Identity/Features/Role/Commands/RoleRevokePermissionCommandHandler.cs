@@ -23,19 +23,22 @@ public class RoleRevokePermissionCommandHandler : IRequestHandler<RoleRevokePerm
 
     public async Task<Unit> Handle(RoleRevokePermissionCommand request, CancellationToken cancellationToken)
     {
-        var role = await _context.Roles.FindAsync(request.Id);
+        ApplicationRole role = await _context.Roles.FindAsync(request.Id);
         if (role == null)
         {
             throw new NotFoundException(nameof(ApplicationRole), request.Id);
         }
 
-        var permissions = await _context.RolePermissions.Where(r => r.RoleId == request.Id).ToListAsync();
+        List<RolePermission> permissions =
+            await _context.RolePermissions.Where(r => r.RoleId == request.Id).ToListAsync();
 
-        foreach (var permissionId in request.Permissions)
+        foreach (Guid permissionId in request.Permissions)
         {
-            var permission = permissions.FirstOrDefault(p => p.PermissionId == permissionId);
+            RolePermission permission = permissions.FirstOrDefault(p => p.PermissionId == permissionId);
             if (permission == null)
+            {
                 continue;
+            }
 
             _context.RolePermissions.Remove(permission);
         }

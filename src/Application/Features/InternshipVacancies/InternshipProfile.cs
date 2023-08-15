@@ -4,13 +4,14 @@ using MRA.Jobs.Application.Contracts.TagDTO;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies;
+
 public class InternshipProfile : Profile
 {
     public InternshipProfile()
     {
-        CreateMap<InternshipVacancy, InternshipVacancyListResponce>()
-            .ForMember(dest=> dest.Category, opt=>opt.MapFrom(src=>src.Category.Name));
-        CreateMap<InternshipVacancy, InternshipVacancyResponce>()
+        CreateMap<InternshipVacancy, InternshipVacancyListResponse>()
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+        CreateMap<InternshipVacancy, InternshipVacancyResponse>()
             .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag)));
         CreateMap<CreateInternshipVacancyCommand, InternshipVacancy>();

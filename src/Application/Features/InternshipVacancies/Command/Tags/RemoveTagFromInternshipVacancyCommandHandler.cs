@@ -22,10 +22,10 @@ public class RemoveTagFromInternshipVacancyCommandHandler : IRequestHandler<Remo
         var internship = await _context.Internships
            .Include(x => x.Tags)
            .ThenInclude(t => t.Tag)
-           .FirstOrDefaultAsync(x => x.Id == request.InternshipId, cancellationToken);
+           .FirstOrDefaultAsync(x => x.Slug == request.InernshipSlug, cancellationToken);
 
         if (internship == null)
-            throw new NotFoundException(nameof(internship), request.InternshipId);
+            throw new NotFoundException(nameof(internship), request.InernshipSlug);
 
         foreach (var tagName in request.Tags)
         {

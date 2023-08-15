@@ -5,24 +5,25 @@ namespace MRA.Jobs.Application.UnitTests.Internships;
 using MRA.Jobs.Domain.Entities;
 public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
 {
-    private GetInternshipVacancyByIdQueryHandler _handler;
+    private GetInternshipVacancyBySlugQueryHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
-        _handler = new GetInternshipVacancyByIdQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetInternshipVacancyBySlugQueryHandler(_dbContextMock.Object, Mapper);
     }
 
     [Test]
     [Ignore("Игнорируем тест из-за TimeLine & Tag")]
     public async Task Handle_GivenValidQuery_ShouldReturnInternshipDetailsDTO()
     {
-        var query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetInternshipVacancyBySlugQuery { Slug = "slag1" };
 
         var internship = new InternshipVacancy
         {
-            Id = query.Id,
+            Id = Guid.NewGuid(),
+            Slug = query.Slug,
             Title = "Job Title",
             ShortDescription = "Short Description",
             Description = "Job Description",
@@ -33,7 +34,7 @@ public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
             Duration = 10,
             Stipend = 100
         };
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(internship);
+        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>())).ReturnsAsync(internship);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -56,9 +57,9 @@ public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetInternshipVacancyByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetInternshipVacancyBySlugQuery { Slug = "slag" };
 
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
+        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((InternshipVacancy)null);
 
         // Act + Assert
