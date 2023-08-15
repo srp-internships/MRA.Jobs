@@ -34,4 +34,5 @@ public class JobVacancyDetailsDto
     public Guid? LastModifiedBy { get; set; }
     public ICollection<TimeLineDetailsDto> History { get; set; }
     public ICollection<TagDto> Tags { get; set; }
+    public string Slug { get; set; }
 }

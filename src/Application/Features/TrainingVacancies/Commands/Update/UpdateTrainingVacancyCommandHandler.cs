@@ -26,10 +26,10 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
 
         //var category = await _context.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken: cancellationToken);
         //_ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
-        TrainingVacancy trainingVacancy = await _context.TrainingVacancies
-            .Include(i => i.Category)
-            .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
-        _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Id);
+        var trainingVacancy = await _context.TrainingVacancies
+           .Include(i => i.Category)
+           .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken);
+        _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Slug);
 
         _mapper.Map(request, trainingVacancy);
 

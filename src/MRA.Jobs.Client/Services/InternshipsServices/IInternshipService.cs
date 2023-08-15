@@ -5,13 +5,14 @@ namespace MRA.Jobs.Client.Services.InternshipsServices;
 
 public interface IInternshipService
 {
+    Task<List<InternshipVacancyListResponse>> GetAll();
+    Task<InternshipVacancyResponse> GetBySlug(string slug);
+
+    Task<HttpResponseMessage> Create();
+    Task<HttpResponseMessage> Update(string slug);
+    Task Delete(string slug);
+
     CreateInternshipVacancyCommand createCommand { get; set; }
     UpdateInternshipVacancyCommand UpdateCommand { get; set; }
     DeleteInternshipVacancyCommand DeleteCommand { get; set; }
-    Task<List<InternshipVacancyListResponse>> GetAll();
-    Task<InternshipVacancyResponse> GetById(Guid id);
-
-    Task<HttpResponseMessage> Create();
-    Task<HttpResponseMessage> Update(Guid id);
-    Task Delete(Guid id);
 }

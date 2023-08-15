@@ -19,14 +19,17 @@ public class RemoveTagFromTrainingVacancyCommandHandler : IRequestHandler<Remove
 
     public async Task<bool> Handle(RemoveTagFromTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        TrainingVacancy trainingVacancy = await _context.TrainingVacancies
-            .Include(x => x.Tags)
-            .ThenInclude(t => t.Tag)
-            .FirstOrDefaultAsync(x => x.Id == request.VacancyId, cancellationToken);
+        var trainingVacancy = await _context.TrainingVacancies
+         .Include(x => x.Tags)
+         .ThenInclude(t => t.Tag)
+         .FirstOrDefaultAsync(x => x.Slug == request.TrainingVacancySlug, cancellationToken);
 
         if (trainingVacancy == null)
+            throw new NotFoundException(nameof(trainingVacancy), request.TrainingVacancySlug);
+
+        foreach (var tagName in request.Tags)
         {
-            throw new NotFoundException(nameof(trainingVacancy), request.VacancyId);
+            throw new NotFoundException(nameof(trainingVacancy), request.TrainingVacancySlug);
         }
 
         foreach (string tagName in request.Tags)

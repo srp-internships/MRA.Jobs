@@ -21,19 +21,17 @@ public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagsToJobVaca
 
     public async Task<bool> Handle(AddTagsToJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        InternshipVacancy jobVacancy = await _context.Internships
-            .Include(x => x.Tags)
-            .ThenInclude(t => t.Tag)
-            .FirstOrDefaultAsync(x => x.Id == request.JobVacancyId, cancellationToken);
+        var jobVacancy = await _context.Internships
+          .Include(x => x.Tags)
+          .ThenInclude(t => t.Tag)
+          .FirstOrDefaultAsync(x => x.Slug == request.JobVacancySlug, cancellationToken);
 
         if (jobVacancy == null)
-        {
-            throw new NotFoundException(nameof(JobVacancy), request.JobVacancyId);
-        }
+            throw new NotFoundException(nameof(JobVacancy), request.JobVacancySlug);
 
-        foreach (string tagName in request.Tags)
+        foreach (var tagName in request.Tags)
         {
-            Tag tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name.Equals(tagName), cancellationToken);
+            var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name.Equals(tagName), cancellationToken);
 
             if (tag == null)
             {
@@ -45,7 +43,7 @@ public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagsToJobVaca
 
             if (vacancyTag == null)
             {
-                vacancyTag = new VacancyTag { VacancyId = request.JobVacancyId, TagId = tag.Id };
+                vacancyTag = new VacancyTag { VacancyId = jobVacancy.Id, TagId = tag.Id };
                 _context.VacancyTags.Add(vacancyTag);
 
                 VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent

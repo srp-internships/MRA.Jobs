@@ -5,6 +5,7 @@ namespace MRA.Jobs.Application.UnitTests.Reviewer;
 
 public class DeleteReviewerCommandValidatorTests
 {
+
     private DeleteReviewerCommandValidator _validator;
 
     [SetUp]
@@ -18,10 +19,10 @@ public class DeleteReviewerCommandValidatorTests
     public void Validate_IdIsEmpty_ShouldReturnValidationError()
     {
         // Arrange
-        DeleteReviewerCommand command = new DeleteReviewerCommand { Id = Guid.Empty };
+        var command = new DeleteReviewerCommand { Id = Guid.Empty };
 
         // Act 
-        TestValidationResult<DeleteReviewerCommand> result = _validator.TestValidate(command);
+        var result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
@@ -31,10 +32,10 @@ public class DeleteReviewerCommandValidatorTests
     public void Validate_IdIsNotEmpty_ShouldNotReturnValidationError()
     {
         // Arrange 
-        DeleteReviewerCommand command = new DeleteReviewerCommand { Id = Guid.NewGuid() };
+        var command = new DeleteReviewerCommand { Id = Guid.NewGuid() };
 
         // Act 
-        TestValidationResult<DeleteReviewerCommand> result = _validator.TestValidate(command);
+        var result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Id);

@@ -28,7 +28,8 @@ public class
         Applicant applicant = await _context.Applicants.FindAsync(_currentUserService.GetId().Value);
         _ = applicant ?? throw new NotFoundException(nameof(Applicant), _currentUserService.GetId().Value);
 
-        Domain.Entities.Application application = _mapper.Map<Domain.Entities.Application>(request);
+        var application = _mapper.Map<MRA.Jobs.Domain.Entities.Application>(request);
+        application.Slug = GenerateSlug(applicant, vacancy);
         application.Applicant = applicant;
 
         await _context.Applications.AddAsync(application, cancellationToken);
@@ -45,5 +46,12 @@ public class
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return application.Id;
+    }
+
+    private string GenerateSlug(Applicant applicant, Vacancy vacancy)
+    {
+        //Here instead of the applicant.Firstname should be used applicnat.Username,
+        //beacuse the applicant model should be redesigned, i used Firstname temparoraly.
+        return $"{applicant.FirstName.ToLower().Trim()}-{vacancy.Title.ToLower().Trim()}";
     }
 }

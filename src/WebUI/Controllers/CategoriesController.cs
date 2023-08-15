@@ -5,7 +5,6 @@ using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Web.Controllers;
-
 [Route("api/[controller]")]
 [ApiController]
 public class CategoriesController : ApiControllerBase
@@ -18,43 +17,38 @@ public class CategoriesController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PagedList<CategoryResponse>>> GetAll(
-        [FromQuery] PagedListQuery<CategoryResponse> query)
+    public async Task<ActionResult<PagedList<CategoryResponse>>> GetAll([FromQuery] PagedListQuery<CategoryResponse> query)
     {
-        PagedList<CategoryResponse> categories = await Mediator.Send(query);
+        var categories = await Mediator.Send(query);
         return Ok(categories);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(Guid id)
+    [HttpGet("{slug}")]
+    public async Task<IActionResult> Get(string slug)
     {
-        CategoryResponse category = await Mediator.Send(new GetVacancyCategoryByIdQuery { Id = id });
+        var category = await Mediator.Send(new GetVacancyCategoryBySlugQuery { Slug = slug });
         return Ok(category);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateNewJobVacancy(CreateVacancyCategoryCommand request,
-        CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> CreateNewJobVacancy(CreateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<Guid>> Update([FromRoute] Guid id, [FromBody] UpdateVacancyCategoryCommand request,
-        CancellationToken cancellationToken)
+    [HttpPut("{slug}")]
+    public async Task<ActionResult<Guid>> Update([FromRoute] string slug, [FromBody] UpdateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
-        if (id != request.Id)
-        {
+        if (slug != request.Slug)
             return BadRequest();
-        }
 
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    [HttpDelete("{slug}")]
+    public async Task<IActionResult> Delete(string slug)
     {
-        DeleteVacancyCategoryCommand command = new DeleteVacancyCategoryCommand { Id = id };
+        var command = new DeleteVacancyCategoryCommand { Slug = slug };
         await Mediator.Send(command);
         return NoContent();
     }

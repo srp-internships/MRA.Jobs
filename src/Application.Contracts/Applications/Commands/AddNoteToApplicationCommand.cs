@@ -2,6 +2,6 @@
 
 public class AddNoteToApplicationCommand : IRequest<bool>
 {
-    public Guid Id { get; set; }
+    public string Slug { get; set; }
     public string Note { get; set; }
 }

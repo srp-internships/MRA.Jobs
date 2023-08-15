@@ -12,50 +12,45 @@ public class CategoryService : ICategoryService
     {
         _http = http;
     }
-
     public List<CategoryResponse> Category { get; set; }
     public UpdateVacancyCategoryCommand updatingEntity { get; set; }
     public DeleteVacancyCategoryCommand deletingEntity { get; set; }
     public CreateVacancyCategoryCommand creatingEntity { get; set; }
-
     public async Task<List<CategoryResponse>> GetAllCategory()
     {
-        PagedList<CategoryResponse> result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>("categories");
+        var result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>("categories");
         Category = result.Items;
-        creatingEntity = new CreateVacancyCategoryCommand { Name = "" };
+        creatingEntity = new() { Name = "" };
         return result.Items;
     }
-
     public void OnUpdateClick(CategoryResponse updateEntity)
     {
-        updatingEntity = new UpdateVacancyCategoryCommand { Id = updateEntity.Id, Name = updateEntity.Name };
+        updatingEntity = new()
+        {
+            Slug = updateEntity.Slug,
+            Name = updateEntity.Name
+        };
     }
-
     public async Task OnSaveUpdateClick()
     {
-        HttpResponseMessage result = await _http.PutAsJsonAsync($"categories/{updatingEntity.Id}", updatingEntity);
+        var result = await _http.PutAsJsonAsync($"categories/{updatingEntity.Slug}", updatingEntity);
         result.EnsureSuccessStatusCode();
         updatingEntity = null;
-        PagedList<CategoryResponse> result2 = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>("categories");
+        var result2 = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>($"categories");
         Category = result2.Items;
     }
-
-    public async Task OnDeleteClick(Guid id)
+    public async Task OnDeleteClick(string slug)
     {
-        await _http.DeleteAsync($"categories/{id}");
-        PagedList<CategoryResponse> result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>("categories");
+        await _http.DeleteAsync($"categories/{slug}");
+        var result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>($"categories");
         Category = result.Items;
     }
-
     public async Task OnSaveCreateClick()
     {
         if (creatingEntity is not null)
-        {
             await _http.PostAsJsonAsync("categories", creatingEntity);
-        }
-
         creatingEntity.Name = string.Empty;
-        PagedList<CategoryResponse> result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>("categories");
+        var result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>($"categories");
         Category = result.Items;
     }
 }
