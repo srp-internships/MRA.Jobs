@@ -10,6 +10,7 @@ using MRA.Jobs.Web;
 using Newtonsoft.Json;
 using Sieve.Models;
 using MRA.Jobs.Web.AzureKeyVault;
+using MRA.Jobs.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
@@ -36,9 +37,9 @@ if (app.Environment.IsDevelopment())
 
     using (var scope = app.Services.CreateScope())
     {
-        //var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
-        //await initialiser.InitialiseAsync();
-        //await initialiser.SeedAsync();
+        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+        await initialiser.InitialiseAsync();
+        await initialiser.SeedAsync();
     }
 }
 else
