@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace MRA.Jobs.Domain.Entities;
 
+[Index(nameof(Slug))]
 public class VacancyCategory : BaseEntity
 {
     public string Name { get; set; }
-    [Key]
     public string Slug { get; set; }
     public ICollection<Vacancy> Vacancies { get; set; }
 }
