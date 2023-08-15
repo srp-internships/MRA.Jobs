@@ -4,8 +4,6 @@
 name: .NET
 
 on:
-  pull_request:
-    branches: [ "main" ]
   schedule:
     - cron: "0 21 * * *"
 
