@@ -6,22 +6,22 @@ namespace MRA.Jobs.Application.UnitTests.Internships;
 [TestFixture]
 public class CreateInternshipCommandValidatorTests
 {
-    private CreateInternshipVacancyCommandValidator _validator;
-
     [SetUp]
     public void SetUp()
     {
         _validator = new CreateInternshipVacancyCommandValidator();
     }
 
+    private CreateInternshipVacancyCommandValidator _validator;
+
     [Test]
     public void Validate_InvalidCommand_ShouldFailValidation()
     {
         //Arrange
-        var request = new CreateInternshipVacancyCommand();
+        CreateInternshipVacancyCommand request = new CreateInternshipVacancyCommand();
 
         //Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateInternshipVacancyCommand> result = _validator.TestValidate(request);
 
         //Assert
         result.IsValid.Should().BeFalse();
@@ -32,10 +32,10 @@ public class CreateInternshipCommandValidatorTests
     public void Validate_TitleEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateInternshipVacancyCommand { Title = "" };
+        CreateInternshipVacancyCommand request = new CreateInternshipVacancyCommand { Title = "" };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateInternshipVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Title);
@@ -45,10 +45,10 @@ public class CreateInternshipCommandValidatorTests
     public void Validate_ShortDescriptionEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateInternshipVacancyCommand { ShortDescription = "" };
+        CreateInternshipVacancyCommand request = new CreateInternshipVacancyCommand { ShortDescription = "" };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateInternshipVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.ShortDescription);
@@ -58,10 +58,10 @@ public class CreateInternshipCommandValidatorTests
     public void Validate_DescriptionEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateInternshipVacancyCommand { Description = "" };
+        CreateInternshipVacancyCommand request = new CreateInternshipVacancyCommand { Description = "" };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateInternshipVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Description);
@@ -71,10 +71,10 @@ public class CreateInternshipCommandValidatorTests
     public void Validate_PublishDateEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateInternshipVacancyCommand { PublishDate = DateTime.MinValue };
+        CreateInternshipVacancyCommand request = new CreateInternshipVacancyCommand { PublishDate = DateTime.MinValue };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateInternshipVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.PublishDate);
@@ -84,10 +84,10 @@ public class CreateInternshipCommandValidatorTests
     public void Validate_EndDateEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateInternshipVacancyCommand { EndDate = DateTime.MinValue };
+        CreateInternshipVacancyCommand request = new CreateInternshipVacancyCommand { EndDate = DateTime.MinValue };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateInternshipVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.EndDate);
@@ -97,10 +97,10 @@ public class CreateInternshipCommandValidatorTests
     public void Validate_CategoryIdEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateInternshipVacancyCommand { CategoryId = Guid.Empty };
+        CreateInternshipVacancyCommand request = new CreateInternshipVacancyCommand { CategoryId = Guid.Empty };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateInternshipVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.CategoryId);
@@ -110,10 +110,11 @@ public class CreateInternshipCommandValidatorTests
     public void Validate_ApplicationDeadlineEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateInternshipVacancyCommand { ApplicationDeadline = DateTime.MinValue };
+        CreateInternshipVacancyCommand request =
+            new CreateInternshipVacancyCommand { ApplicationDeadline = DateTime.MinValue };
 
         // Act 
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateInternshipVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.ApplicationDeadline);
@@ -123,10 +124,10 @@ public class CreateInternshipCommandValidatorTests
     public void Validate_DurationEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateInternshipVacancyCommand { Duration = 0 };
+        CreateInternshipVacancyCommand request = new CreateInternshipVacancyCommand { Duration = 0 };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateInternshipVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Duration);
@@ -136,10 +137,10 @@ public class CreateInternshipCommandValidatorTests
     public void Validate_StipendEmpty_ShouldFailValidation()
     {
         // Arrange
-        var request = new CreateInternshipVacancyCommand { Stipend = 0 };
+        CreateInternshipVacancyCommand request = new CreateInternshipVacancyCommand { Stipend = 0 };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateInternshipVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Stipend);
@@ -149,7 +150,7 @@ public class CreateInternshipCommandValidatorTests
     public void Validate_AllFieldsValid_ShouldPassValidation()
     {
         // Arrange
-        var request = new CreateInternshipVacancyCommand
+        CreateInternshipVacancyCommand request = new CreateInternshipVacancyCommand
         {
             Title = "Test Internship",
             ShortDescription = "Test Internship Short Description",
@@ -163,7 +164,7 @@ public class CreateInternshipCommandValidatorTests
         };
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<CreateInternshipVacancyCommand> result = _validator.TestValidate(request);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();

@@ -11,16 +11,16 @@ public interface IVacancyService
     event Action OnChange;
     string guidId { get; set; }
     List<CategoryResponse> Categories { get; set; }
-    List<JobVacancyListDTO> Vacanceies { get; set; }
-  //  CreateVacancyCategoryCommand creatingEntity { get; set; }
+    List<JobVacancyListDto> Vacanceies { get; set; }
+    //  CreateVacancyCategoryCommand creatingEntity { get; set; }
     CreateJobVacancyCommand creatingNewJob { get; set; }
-    Task<List<JobVacancyListDTO>> GetAllVacancy();
+    Task<List<JobVacancyListDto>> GetAllVacancy();
     Task<List<CategoryResponse>> GetAllCategory();
 
-    Task<List<JobVacancyListDTO>> GetVacancyByTitle(string title);
+    Task<List<JobVacancyListDto>> GetVacancyByTitle(string title);
     Task OnSaveCreateClick();
-    Task OnDelete(Guid Id);
-    Task<List<JobVacancyListDTO>> GetJobs();
-    Task UpdateJobVacancy(Guid id);
-    Task<JobVacancyDetailsDTO> GetById(Guid Id);
+    Task OnDelete(string slug);
+    Task<List<JobVacancyListDto>> GetJobs();
+    Task UpdateJobVacancy(string slug);
+    Task<JobVacancyDetailsDto> GetBySlug(string slug);
 }

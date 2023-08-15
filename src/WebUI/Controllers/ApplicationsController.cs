@@ -18,14 +18,14 @@ public class ApplicationsController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PaggedList<ApplicationListDTO>>> GetAll([FromQuery] PaggedListQuery<ApplicationListDTO> query)
+    public async Task<ActionResult<PagedList<ApplicationListDto>>> GetAll([FromQuery] PagedListQuery<ApplicationListDto> query)
     {
         var applications = await Mediator.Send(query);
         return Ok(applications);
     }
 
-    [HttpGet("{Id:guid}")]
-    public async Task<ActionResult<ApplicationDetailsDTO>> GetApplicationById(GetByIdApplicationQuery request, CancellationToken cancellationToken)
+    [HttpGet("{slug}")]
+    public async Task<ActionResult<ApplicationDetailsDto>> Get(GetBySlugApplicationQuery request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
@@ -43,31 +43,31 @@ public class ApplicationsController : ApiControllerBase
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPut("{Id}")]
-    public async Task<ActionResult<Guid>> UpdateApplication(Guid Id, UpdateApplicationCommand request, CancellationToken cancellationToken)
+    [HttpPut("{slug}")]
+    public async Task<ActionResult<Guid>> UpdateApplication(string slug, UpdateApplicationCommand request, CancellationToken cancellationToken)
     {
-        request.Id = Id;
+        request.Slug = slug;
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpDelete("{Id}")]
-    public async Task<ActionResult<bool>> DeleteApplication(Guid Id, CancellationToken cancellationToken)
+    [HttpDelete("{slug}")]
+    public async Task<ActionResult<bool>> DeleteApplication(string slug, CancellationToken cancellationToken)
     {
-        var request = new DeleteApplicationCommand { Id = Id };
+        var request = new DeleteApplicationCommand { Slug = slug };
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPut("{Id}/update-status")]
-    public async Task<ActionResult<bool>> UpdateStatus(Guid Id, UpdateApplicationStatus request, CancellationToken cancellationToken)
+    [HttpPut("{slug}/update-status")]
+    public async Task<ActionResult<bool>> UpdateStatus(string slug, UpdateApplicationStatus request, CancellationToken cancellationToken)
     {
-        request.Id = Id;
+        request.Slug = slug;
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPost("{Id}/add-note")]
-    public async Task<ActionResult<bool>> AddNote(Guid Id, AddNoteToApplicationCommand request, CancellationToken cancellationToken)
+    [HttpPost("{slug}/add-note")]
+    public async Task<ActionResult<bool>> AddNote(string slug, AddNoteToApplicationCommand request, CancellationToken cancellationToken)
     {
-        request.Id = Id;
+        request.Slug = slug;
         return await Mediator.Send(request, cancellationToken);
     }
 

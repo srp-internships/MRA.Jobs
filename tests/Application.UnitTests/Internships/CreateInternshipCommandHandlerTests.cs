@@ -2,6 +2,8 @@
 using MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
+
+using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Domain.Entities;
 public class CreateInternshipCommandHandlerTests : BaseTestFixture
 {
@@ -16,7 +18,8 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
             _dbContextMock.Object,
             Mapper,
             _dateTimeMock.Object,
-            _currentUserServiceMock.Object);
+            _currentUserServiceMock.Object,
+            _slugGenerator.Object);
     }
 
     [Test]

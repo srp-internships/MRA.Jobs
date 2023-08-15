@@ -3,28 +3,28 @@ using MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategory
 
 namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
 
-public class GetVacancyCategoryByIdQueryHandlerTests : BaseTestFixture
+public class GetVacancyCategoryBySlugQueryHandlerTests : BaseTestFixture
 {
-    private GetVacancyCategoryByIdQueryHandler _handler;
+    private GetVacancyCategoryBySlugQueryHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
-        _handler = new GetVacancyCategoryByIdQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetVacancyCategoryBySlugQueryHandler(_dbContextMock.Object, Mapper);
     }
 
     [Test]
     public async Task Handle_GivenValidQuery_ShouldReturnVacancyCategoryDetailsDTO()
     {
-        var query = new GetVacancyCategoryByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetVacancyCategoryBySlugQuery { Slug= "categories-softwaredevelopment" };
 
         var VacancyCategory = new VacancyCategory
         {
-            Id = query.Id,
+            Slug=string.Empty,
             Name = "Software Development",
         };
-        _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(VacancyCategory);
+        _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>())).ReturnsAsync(VacancyCategory);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -39,9 +39,9 @@ public class GetVacancyCategoryByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        var query = new GetVacancyCategoryByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetVacancyCategoryBySlugQuery {Slug="fsfsefse"};
 
-        _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
+        _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((VacancyCategory)null);
 
         // Act + Assert

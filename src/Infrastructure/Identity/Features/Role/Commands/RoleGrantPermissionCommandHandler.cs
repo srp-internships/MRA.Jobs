@@ -23,19 +23,21 @@ public class RoleGrantPermissionCommandHandler : IRequestHandler<RoleGrantPermis
 
     public async Task<Unit> Handle(RoleGrantPermissionCommand request, CancellationToken cancellationToken)
     {
-        var role = await _context.Roles.FindAsync(request.Id);
+        ApplicationRole role = await _context.Roles.FindAsync(request.Id);
         if (role == null)
         {
             throw new NotFoundException(nameof(ApplicationRole), request.Id);
         }
 
-        foreach (var permissionId in request.Permissions)
+        foreach (Guid permissionId in request.Permissions)
         {
-            var permission = await _context.Permissions.FindAsync(permissionId);
+            Permission permission = await _context.Permissions.FindAsync(permissionId);
             if (permission == null)
+            {
                 continue;
+            }
 
-            await _context.RolePermissions.AddAsync(new RolePermission() { Role = role, Permission = permission });
+            await _context.RolePermissions.AddAsync(new RolePermission { Role = role, Permission = permission });
         }
 
         await _context.SaveChangesAsync();

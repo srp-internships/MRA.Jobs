@@ -30,17 +30,23 @@ public class FileController : ControllerBase
     public ActionResult AddFile(IFormFile file)
     {
         if (file == null)
+        {
             return BadRequest();
+        }
 
         string uploadsFolder = Path.Combine(_environment.WebRootPath, "Images");
         if (!Directory.Exists(uploadsFolder))
+        {
             Directory.CreateDirectory(uploadsFolder);
+        }
 
-        var uniqueFileName = Guid.NewGuid().ToString() + "." + file.FileName.Split(".").Last();
+        string uniqueFileName = Guid.NewGuid() + "." + file.FileName.Split(".").Last();
         string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        using (FileStream fileStream = new(filePath, FileMode.Create))
+        {
             file.CopyTo(fileStream);
+        }
 
         return Ok(uniqueFileName);
     }

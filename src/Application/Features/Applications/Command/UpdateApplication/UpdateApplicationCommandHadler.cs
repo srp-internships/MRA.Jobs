@@ -23,8 +23,8 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
 
     public async Task<Guid> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
     {
-        var application = await _context.Applications.FindAsync(request.Id);
-        _ = application ?? throw new NotFoundException(nameof(Application), request.Id);;
+        var application = await _context.Applications.FindAsync(request.Slug);
+        _ = application ?? throw new NotFoundException(nameof(Application), request.Slug); ;
 
         _mapper.Map(request, application);
 

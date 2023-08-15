@@ -17,11 +17,11 @@ public class GetApplicantByIdQueryValidatorTests
     public void Validate_IdIsZero()
     {
         // Arrange
-        var query = new GetApplicantByIdQuery { Id = Guid.Empty };
-        
+        GetApplicantByIdQuery query = new GetApplicantByIdQuery { Id = Guid.Empty };
+
         // Act 
-        var result = _validator.TestValidate(query);
-        
+        TestValidationResult<GetApplicantByIdQuery> result = _validator.TestValidate(query);
+
         // Assert
         result.ShouldHaveValidationErrorFor(a => a.Id);
     }
@@ -30,11 +30,11 @@ public class GetApplicantByIdQueryValidatorTests
     public void Validate_IdIsNotZero()
     {
         // Arrange 
-        var query = new GetApplicantByIdQuery { Id = Guid.NewGuid() };
-        
+        GetApplicantByIdQuery query = new GetApplicantByIdQuery { Id = Guid.NewGuid() };
+
         // Act 
-        var result = _validator.TestValidate(query);
-        
+        TestValidationResult<GetApplicantByIdQuery> result = _validator.TestValidate(query);
+
         // Assert 
         result.ShouldNotHaveValidationErrorFor(a => a.Id);
     }

@@ -10,12 +10,12 @@ using MRA.Jobs.Application.Features.VacancyCategories;
 namespace MRA.Jobs.Application.UnitTests;
 
 [SetUpFixture]
-public partial class Testing
+public class Testing
 {
     [OneTimeSetUp]
     public void RunBeforeAnyTests()
     {
-        var configurationProvider = new MapperConfiguration(cfg =>
+        MapperConfiguration configurationProvider = new MapperConfiguration(cfg =>
         {
             cfg.Internal().MethodMappingEnabled = false;
             cfg.AddProfile<JobVacancyProfile>();

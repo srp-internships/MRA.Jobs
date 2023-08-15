@@ -19,16 +19,16 @@ public class DeleteApplicantCommandHandlerTests : BaseTestFixture
     public async Task Handle_ApplicantExists_ShouldRemoveApplicant()
     {
         // Arrange 
-        var applicant = new Applicant { Id = Guid.NewGuid() };
+        var applicant = new Applicant { Slug = string.Empty };
         _dbContextMock.Setup(x => x.Applicants
             .FindAsync(new object[] { applicant.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(applicant);
 
         var command = new DeleteApplicantCommand { Id = applicant.Id };
-        
+
         // Act
         var result = await _handler.Handle(command, default);
-        
+
         // Assert
         _dbContextMock.Verify(a => a.Applicants.Remove(applicant), Times.Once);
         _dbContextMock.Verify(a => a.SaveChangesAsync(default), Times.Once);
@@ -42,7 +42,7 @@ public class DeleteApplicantCommandHandlerTests : BaseTestFixture
         var command = new DeleteApplicantCommand { Id = Guid.NewGuid() };
         _dbContextMock.Setup(i => i.Applicants.FindAsync(new object[] { command.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(null as Applicant);
-        
+
         // Act + Assert
         Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, default));
         _dbContextMock.Verify(i => i.Applicants.Remove(It.IsAny<Applicant>()), Times.Never);

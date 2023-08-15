@@ -4,13 +4,14 @@ using MRA.Jobs.Application.Contracts.TagDTO;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 
 namespace MRA.Jobs.Application.Features.JobVacancies;
+
 public class JobVacancyProfile : Profile
 {
     public JobVacancyProfile()
     {
-        CreateMap<JobVacancy, JobVacancyListDTO>()
+        CreateMap<JobVacancy, JobVacancyListDto>()
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
-        CreateMap<JobVacancy, JobVacancyDetailsDTO>()
+        CreateMap<JobVacancy, JobVacancyDetailsDto>()
             .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag)));
         CreateMap<CreateJobVacancyCommand, JobVacancy>();

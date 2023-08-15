@@ -1,6 +1,7 @@
 ﻿using Sieve.Services;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies;
+
 public class SieveConfigurationForTrainingVacancy : ISieveConfiguration
 {
     public void Configure(SievePropertyMapper mapper)

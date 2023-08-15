@@ -19,7 +19,7 @@ public class GetReviewerByIdQueryHandlerTests  : BaseTestFixture
     [Ignore("Игнорируем тест из-за TimeLine & Tag")]
     public async Task Handle_GivenValidQuery_ShouldReturnApplicantDetailsDto()
     {
-        var query = new GetReviewerByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetReviewerByIdQuery { Id=Guid.NewGuid() };
 
         var reviewer = new Reviewer
         {

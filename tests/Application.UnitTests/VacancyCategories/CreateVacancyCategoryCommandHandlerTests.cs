@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
+﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Features.VacancyCategories.Command.CreateVacancyCategory;
 
 namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
@@ -13,6 +14,7 @@ public class CreateVacancyCategoryCommandHandlerTests : BaseTestFixture
         base.Setup();
 
         _handler = new CreateVacancyCategoryCommandHandler(
+            _slugGenerator.Object,
             _dbContextMock.Object,
             Mapper);
     }
@@ -29,7 +31,7 @@ public class CreateVacancyCategoryCommandHandlerTests : BaseTestFixture
         var categorySetMock = new Mock<DbSet<VacancyCategory>>();
         var newEntityGuid = Guid.NewGuid();
         categorySetMock.Setup(d => d.AddAsync(
-            It.IsAny<VacancyCategory>(), 
+            It.IsAny<VacancyCategory>(),
             It.IsAny<CancellationToken>())
         ).Callback<VacancyCategory,
             CancellationToken>((v, ct) => v.Id = newEntityGuid);
@@ -37,7 +39,7 @@ public class CreateVacancyCategoryCommandHandlerTests : BaseTestFixture
             Returns(categorySetMock.Object);
 
         // Act
-        var result = await _handler.Handle(request,CancellationToken.None);
+        var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.Should().Be(newEntityGuid);

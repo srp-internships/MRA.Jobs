@@ -1,44 +1,44 @@
 ﻿@page "/board"
-@using MRA.Jobs.Application.Contracts.Applications.Responses;
+@using MRA.Jobs.Domain.Enums
+@using MRA.Jobs.Application.Contracts.Applications.Responses
 @using MRA.Jobs.Client.Components.Admin.Cards
-@using MRA.Jobs.Client.Services.ApplicationService;
-@using MRA.Jobs.Domain.Enums;
+@using MRA.Jobs.Client.Services.ApplicationService
 @inject IApplicationService ApplicationService
 <h3>Board</h3>
 
 
 <main class="content">
-	<div class="container-fluid">
+    <div class="container-fluid">
 
-		<div class="mb-3">
-			<h1 class="h3 d-inline align-middle">Applications</h1>
-		</div>
+        <div class="mb-3">
+            <h1 class="h3 d-inline align-middle">Applications</h1>
+        </div>
 
-		<div class="row">	
+        <div class="row">
 
-			@foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
-			{
-				<div class="col-3">
-					<ApplicationCards Title="@status.ToString()" Applications="@applicationsByStatus[status]" />
+            @foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
+            {
+                <div class="col-3">
+                    <ApplicationCards Title="@status.ToString()" Applications="@applicationsByStatus[status]"/>
 
-				</div>
-			}
-		</div>
-	</div>
+                </div>
+            }
+        </div>
+    </div>
 </main>
 
 
-
 @code {
-	private Dictionary<ApplicationStatus, List<ApplicationListStatus>> applicationsByStatus;
+    private Dictionary<ApplicationStatus, List<ApplicationListStatus>> applicationsByStatus;
 
-	protected override async Task OnInitializedAsync()
-	{
-		applicationsByStatus = new Dictionary<ApplicationStatus, List<ApplicationListStatus>>();
-		foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
-		{
-			var applications = await ApplicationService.GetApplicationsByStatus(status);
-			applicationsByStatus[status] = applications;
-		}
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        applicationsByStatus = new Dictionary<ApplicationStatus, List<ApplicationListStatus>>();
+        foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
+        {
+            var applications = await ApplicationService.GetApplicationsByStatus(status);
+            applicationsByStatus[status] = applications;
+        }
+    }
+
 }

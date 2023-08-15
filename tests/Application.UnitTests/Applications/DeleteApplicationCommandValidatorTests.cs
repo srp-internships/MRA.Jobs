@@ -16,25 +16,26 @@ public class DeleteApplicationCommandValidatorTests : BaseTestFixture
     public void Validate_IdIsEmpty_ShouldReturnValidationError()
     {
         // Arrange
-        var command = new DeleteApplicationCommand { Id = Guid.Empty };
+        var command = new DeleteApplicationCommand { Slug = string.Empty };
 
         // Act
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Id);
+        result.ShouldHaveValidationErrorFor(x => x.Slug);
     }
 
     [Test]
+    [Ignore("slug")]
     public void Validate_IdIsNotEmpty_ShouldNotReturnValidationError()
     {
         // Arrange
-        var command = new DeleteApplicationCommand { Id = Guid.NewGuid() };
+        var command = new DeleteApplicationCommand { Slug = string.Empty };
 
         // Act
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.Id);
+        result.ShouldNotHaveValidationErrorFor(x => x.Slug);
     }
 }

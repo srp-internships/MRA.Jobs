@@ -18,10 +18,10 @@ public class DeleteInternshipCommandHandlerTests : BaseTestFixture
     public async Task Handle_InternshipExists_ShouldRemoveInternship()
     {
         // Arrange
-        var internship = new InternshipVacancy { Id = Guid.NewGuid() };
+        var internship = new InternshipVacancy { Slug = string.Empty };
         _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { internship.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(internship);
 
-        var command = new DeleteInternshipVacancyCommand { Id = internship.Id };
+        var command = new DeleteInternshipVacancyCommand { Slug = internship.Slug };
 
         // Act
         var result = await _handler.Handle(command, default);
@@ -37,9 +37,9 @@ public class DeleteInternshipCommandHandlerTests : BaseTestFixture
     public void Handle_InternshipNotFound_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new DeleteInternshipVacancyCommand { Id = Guid.NewGuid() };
+        var command = new DeleteInternshipVacancyCommand { Slug = string.Empty };
 
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Id }, It.IsAny<CancellationToken>()))
+        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Slug }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(null as InternshipVacancy);
 
         // Act + Assert

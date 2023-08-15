@@ -2,6 +2,8 @@
 using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
+
+using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Domain.Entities;
 public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
 {
@@ -13,6 +15,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
         base.Setup();
 
         _handler = new CreateJobVacancyCommandHandler(
+           _slugGenerator.Object,
             _dbContextMock.Object,
             Mapper,
             _dateTimeMock.Object,

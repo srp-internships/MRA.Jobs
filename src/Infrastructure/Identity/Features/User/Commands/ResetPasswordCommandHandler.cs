@@ -15,14 +15,18 @@ public class ResetPasswordCommandHandler : IRequestHandler<ResetUserPasswordComm
 
     public async Task<Unit> Handle(ResetUserPasswordCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+        ApplicationUser user = await _userManager.FindByIdAsync(request.UserId.ToString());
         if (user == null)
+        {
             throw new NotFoundException(nameof(ApplicationUser), request.UserId);
+        }
 
-        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        var result = await _userManager.ResetPasswordAsync(user, token, PaswordHelper.RandomPassword());
+        string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        IdentityResult result = await _userManager.ResetPasswordAsync(user, token, PaswordHelper.RandomPassword());
         if (!result.Succeeded)
+        {
             throw new ValidationException(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+        }
 
         //TODO: Send Email to use with new password
 

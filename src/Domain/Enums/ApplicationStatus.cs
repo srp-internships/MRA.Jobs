@@ -19,12 +19,11 @@ public enum ApplicationStatus
     Rejected
 }
 
-
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Gender
 {
     Male = 0,
-    Female = 1,
+    Female = 1
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -42,7 +41,7 @@ public enum SocialMediaType
     GitHub,
     Twitter,
     Facebook,
-    Instagram,
+    Instagram
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]

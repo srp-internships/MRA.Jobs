@@ -18,4 +18,3 @@ public class VacancyTagConfiguration : IEntityTypeConfiguration<VacancyTag>
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
-

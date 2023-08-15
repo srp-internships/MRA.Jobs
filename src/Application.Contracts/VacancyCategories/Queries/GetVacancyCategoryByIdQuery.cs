@@ -1,6 +1,8 @@
-﻿namespace MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
-public class GetVacancyCategoryByIdQuery : IRequest<Responses.CategoryResponse>
+namespace MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+
+public class GetVacancyCategoryByIdQuery : IRequest<CategoryResponse>
 {
     public Guid Id { get; set; }
 }

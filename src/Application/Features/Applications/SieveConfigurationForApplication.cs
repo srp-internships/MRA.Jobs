@@ -1,30 +1,30 @@
 ﻿using Sieve.Services;
 
 namespace MRA.Jobs.Application.Features.Applications;
-using MRA.Jobs.Domain.Entities;
+
 public class SieveConfigurationForApplication : ISieveConfiguration
 {
     public void Configure(SievePropertyMapper mapper)
     {
-        mapper.Property<Application>(p => p.Applicant.FirstName)
+        mapper.Property<Domain.Entities.Application>(p => p.Applicant.FirstName)
             .CanFilter()
-            .HasName(nameof(Application.Applicant));
+            .HasName(nameof(Domain.Entities.Application.Applicant));
 
-        mapper.Property<Application>(p => p.ApplicantId)
+        mapper.Property<Domain.Entities.Application>(p => p.ApplicantId)
             .CanFilter();
 
-        mapper.Property<Application>(p => p.Vacancy.Title)
+        mapper.Property<Domain.Entities.Application>(p => p.Vacancy.Title)
             .CanFilter()
-            .HasName(nameof(Application.Vacancy));
+            .HasName(nameof(Domain.Entities.Application.Vacancy));
 
-        mapper.Property<Application>(p => p.VacancyId)
+        mapper.Property<Domain.Entities.Application>(p => p.VacancyId)
             .CanFilter();
 
-        mapper.Property<Application>(p => p.CV)
+        mapper.Property<Domain.Entities.Application>(p => p.CV)
             .CanFilter()
             .CanSort();
 
-        mapper.Property<Application>(p => p.Status)
+        mapper.Property<Domain.Entities.Application>(p => p.Status)
             .CanFilter()
             .CanSort();
     }

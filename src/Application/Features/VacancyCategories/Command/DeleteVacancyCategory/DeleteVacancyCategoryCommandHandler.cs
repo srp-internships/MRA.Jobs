@@ -13,9 +13,9 @@ public class DeleteVacancyCategoryCommandHandler : IRequestHandler<DeleteVacancy
 
     public async Task<bool> Handle(DeleteVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
-        var vacancyCategory = await _dbContext.Categories.FindAsync(new object[] { request.Id }, cancellationToken);
-        if (vacancyCategory == null) 
-            throw new NotFoundException(nameof(VacancyCategory),request.Id);
+        var vacancyCategory = await _dbContext.Categories.FindAsync(new object[] { request.Slug }, cancellationToken);
+        if (vacancyCategory == null)
+            throw new NotFoundException(nameof(VacancyCategory), request.Slug);
 
         _dbContext.Categories.Remove(vacancyCategory);
         await _dbContext.SaveChangesAsync(cancellationToken);
