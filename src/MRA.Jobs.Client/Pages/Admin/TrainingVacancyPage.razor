@@ -1,9 +1,9 @@
 ﻿@page "/dashboard/trainings"
-@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses
-@using MRA.Jobs.Client.Components.Dialogs
-@using MRA.Jobs.Client.Services.TrainingServices
-@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses
 @layout Dashboard
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+@using MRA.Jobs.Client.Services.TrainingServices;
+@using MRA.Jobs.Client.Components.Dialogs;
 @inject ITrainingService trainingService
 @inject ICategoryService categoryService
 
@@ -28,7 +28,7 @@ else
                 <MatTextField @bind-Value="@trainingService.createCommand.Description" Label="Description" TextArea></MatTextField>
                 <MatTextField @bind-Value="@trainingService.createCommand.Duration" Label="Duration"></MatTextField>
                 <MatTextField @bind-Value="@trainingService.createCommand.Fees" Label="Fees"></MatTextField>
-                <MatSelectValue @bind-Value="@trainingService.createCommand.CategoryId" Items="@categories" ValueSelector="@(i => i.Id)">
+                <MatSelectValue @bind-Value="@trainingService.createCommand.CategoryId" Items="@categories" ValueSelector="@(i=>i.Id)">
                     <ItemTemplate>
                         <span>@context?.Name</span>
                     </ItemTemplate>
@@ -41,7 +41,7 @@ else
             </MatExpansionPanelDetails>
         </MatExpansionPanel>
     </MatAccordion>
-    <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem"/>
+    <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem" />
     <MatTable Items="@trainings" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
         <MatTableHeader>
             <th>Title</th>
@@ -62,12 +62,8 @@ else
             <td>@context.EndDate</td>
             <td>@context.Duration</td>
             <td>@context.Fees</td>
-            <td>
-                <MatButton @onclick="() => OnDeleteClick(context.Id)" Style="color:#2094CC" Icon="delete">Delete</MatButton>
-            </td>
-            <td>
-                <MatButton @onclick="() => OnEditClick(context.Id)" Style="color:#2094CC" Icon="edit">Edit</MatButton>
-            </td>
+            <td><MatButton @onclick="()=>OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MatButton></td>
+            <td><MatButton @onclick="()=>OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MatButton></td>
         </MatTableRow>
     </MatTable>
 }
@@ -76,35 +72,35 @@ else
     bool panelOpenState;
     bool isInserting;
     bool isUpdating = true;
-    Guid UpdateId;
+    string UpdateSlug;
 
     private List<CategoryResponse> categories;
     private List<TrainingVacancyListDto> trainings;
 
     protected override async Task OnInitializedAsync()
     {
+
         await LoadData();
     }
 
-    private bool isDialogOpen;
-    private Guid itemIdToDelete;
+    private bool isDialogOpen = false;
+    private string itemSlugToDelete;
 
-    void OnDeleteClick(Guid id)
+    void OnDeleteClick(string slug)
     {
-        itemIdToDelete = id;
+        itemSlugToDelete = slug;
         isDialogOpen = true;
     }
-
     private async Task DeleteItem()
     {
-        await trainingService.Delete(itemIdToDelete);
+        await trainingService.Delete(itemSlugToDelete);
         isDialogOpen = false;
         await LoadData();
     }
 
-    private async Task OnEditClick(Guid id)
+    private async Task OnEditClick(string slug)
     {
-        var vacancy = await trainingService.GetById(id);
+        var vacancy = await trainingService.GetBySlug(slug);
         if (vacancy != null)
         {
             trainingService.createCommand.Title = vacancy.Title;
@@ -118,7 +114,7 @@ else
             isInserting = true;
             isUpdating = false;
             panelOpenState = true;
-            UpdateId = id;
+            UpdateSlug = slug;
         }
     }
 
@@ -137,7 +133,7 @@ else
 
     private async Task HandleUpdate()
     {
-        await trainingService.Update(UpdateId);
+        await trainingService.Update(UpdateSlug);
         await LoadData();
         Clear();
     }
@@ -159,7 +155,7 @@ else
         isInserting = false;
         isUpdating = true;
         panelOpenState = false;
-        UpdateId = Guid.NewGuid();
+        UpdateSlug = string.Empty;
     }
 
 }

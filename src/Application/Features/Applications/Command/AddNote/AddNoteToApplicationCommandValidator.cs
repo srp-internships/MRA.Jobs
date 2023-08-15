@@ -6,7 +6,7 @@ public class AddNoteToApplicationCommandValidator : AbstractValidator<AddNoteToA
 {
     public AddNoteToApplicationCommandValidator()
     {
-        RuleFor(v => v.Id)
+        RuleFor(v => v.Slug)
             .NotEmpty();
         RuleFor(v => v.Note)
             .NotEmpty()

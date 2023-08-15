@@ -7,7 +7,7 @@ public class CreateTestResultCommandValidator : AbstractValidator<CreateTestResu
     public CreateTestResultCommandValidator()
     {
         RuleFor(x => x.TestId).NotEmpty();
-        RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.Slug).NotEmpty();
         RuleFor(x => x.Score).NotEmpty();
     }
 }

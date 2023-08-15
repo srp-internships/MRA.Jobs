@@ -32,29 +32,24 @@ public class TrainingService : ITrainingService
     {
         return await _httpClient.PostAsJsonAsync("trainings", createCommand);
     }
-
-    public async Task Delete(Guid id)
+    public async Task Delete(string slug)
     {
-        await _httpClient.DeleteAsync($"trainings/{id}");
+        await _httpClient.DeleteAsync($"trainings/{slug}");
     }
-
     public async Task<List<TrainingVacancyListDto>> GetAll()
     {
-        PagedList<TrainingVacancyListDto> result =
-            await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
+        var result = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
         return result.Items;
     }
-
-    public async Task<TrainingVacancyDetailedResponse> GetById(Guid id)
+    public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug)
     {
-        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{id}");
+        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
     }
-
-    public async Task<HttpResponseMessage> Update(Guid id)
+    public async Task<HttpResponseMessage> Update(string slug)
     {
         UpdateCommand = new UpdateTrainingVacancyCommand
         {
-            Id = id,
+            Slug = slug,
             Title = createCommand.Title,
             Description = createCommand.Description,
             Duration = createCommand.Duration,
@@ -64,6 +59,6 @@ public class TrainingService : ITrainingService
             CategoryId = createCommand.CategoryId,
             Fees = createCommand.Fees
         };
-        return await _httpClient.PutAsJsonAsync($"trainings/{id}", UpdateCommand);
+        return await _httpClient.PutAsJsonAsync($"trainings/{slug}", UpdateCommand);
     }
 }

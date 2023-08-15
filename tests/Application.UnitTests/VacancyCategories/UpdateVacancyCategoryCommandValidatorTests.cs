@@ -17,23 +17,23 @@ public class UpdateVacancyCategoryCommandValidatorTests
     public void Validate_IdIsRequired()
     {
         // Arrange
-        UpdateVacancyCategoryCommand command = new UpdateVacancyCategoryCommand { Id = Guid.Empty };
+        var command = new UpdateVacancyCategoryCommand { Slug = string.Empty };
 
         // Act
-        TestValidationResult<UpdateVacancyCategoryCommand> result = _validator.TestValidate(command);
+        var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Id);
+        result.ShouldHaveValidationErrorFor(x => x.Slug);
     }
 
     [Test]
     public void Validate_NameIsRequired()
     {
         // Arrange
-        UpdateVacancyCategoryCommand command = new UpdateVacancyCategoryCommand { Name = null };
+        var command = new UpdateVacancyCategoryCommand { Name = null };
 
         // Act
-        TestValidationResult<UpdateVacancyCategoryCommand> result = _validator.TestValidate(command);
+        var result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);

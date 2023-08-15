@@ -22,14 +22,17 @@ public class RemoveTagsFromJobVacancyCommandHandler : IRequestHandler<RemoveTags
 
     public async Task<bool> Handle(RemoveTagsFromJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        JobVacancy jobVacancy = await _context.JobVacancies
-            .Include(x => x.Tags)
-            .ThenInclude(t => t.Tag)
-            .FirstOrDefaultAsync(x => x.Id == request.JobVacancyId, cancellationToken);
+        var jobVacancy = await _context.JobVacancies
+          .Include(x => x.Tags)
+          .ThenInclude(t => t.Tag)
+          .FirstOrDefaultAsync(x => x.Slug == request.JobVacancySlug, cancellationToken);
 
         if (jobVacancy == null)
+            throw new NotFoundException(nameof(JobVacancy), request.JobVacancySlug);
+
+        foreach (var tagName in request.Tags)
         {
-            throw new NotFoundException(nameof(JobVacancy), request.JobVacancyId);
+            throw new NotFoundException(nameof(JobVacancy), request.JobVacancySlug);
         }
 
         foreach (string tagName in request.Tags)

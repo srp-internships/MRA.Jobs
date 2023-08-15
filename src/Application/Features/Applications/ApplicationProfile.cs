@@ -4,7 +4,11 @@ using MRA.Jobs.Application.Contracts.TimeLineDTO;
 
 namespace MRA.Jobs.Application.Features.Applications;
 
-public class ApplicationProfile : Profile
+using MRA.Jobs.Application;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
+using MRA.Jobs.Domain.Entities;
+
+public class ApplicationProfile: Profile
 {
     public ApplicationProfile()
     {

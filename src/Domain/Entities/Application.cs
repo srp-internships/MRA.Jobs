@@ -1,5 +1,8 @@
-﻿namespace MRA.Jobs.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace MRA.Jobs.Domain.Entities;
+
+[Index(nameof(Slug))]
 public class Application : BaseAuditableEntity
 {
     public string CoverLetter { get; set; }
@@ -16,4 +19,6 @@ public class Application : BaseAuditableEntity
     public TestResult TestResult { get; set; }
 
     public ICollection<ApplicationTimelineEvent> History { get; set; }
+    public string Slug { get; set; }
+
 }

@@ -1,4 +1,5 @@
-﻿namespace MRA.Jobs.Domain.Entities;
+﻿
+namespace MRA.Jobs.Domain.Entities;
 
 public abstract class User : BaseAuditableEntity
 {

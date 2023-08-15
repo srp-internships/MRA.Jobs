@@ -6,7 +6,7 @@ public class RemoveTagFromJobVacancyCommandValidator : AbstractValidator<RemoveT
 {
     public RemoveTagFromJobVacancyCommandValidator()
     {
-        RuleFor(x => x.JobVacancyId).NotEmpty();
+        RuleFor(x => x.JobVacancySlug).NotEmpty();
         RuleFor(x => x.Tags).NotEmpty();
     }
 }
