@@ -3,8 +3,10 @@ using AutoMapper.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MRA.Jobs.Application.Common.Behaviours;
-using MRA.Jobs.Application.Common.Seive;
 using MRA.Jobs.Application.Common.Sieve;
+using MRA.Jobs.Application.Common.SlugGeneratorService;
+
+
 using Sieve.Services;
 
 namespace MRA.Jobs.Application;
@@ -20,6 +22,7 @@ public static class ConfigureServices
             config.Internal().MethodMappingEnabled = false;
         }, typeof(IApplicationMarker).Assembly);
 
+        services.AddSingleton<ISlugGeneratorService, SlugGeneratorService>();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
@@ -27,7 +30,7 @@ public static class ConfigureServices
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         services.AddScoped<ISieveConfigurationsAssemblyMarker, ApplicationSieveConfigurationsAssemblyMarker>();
-
+      
         services.AddScoped<ISieveCustomFilterMethods, SieveCustomFilterMethods>();
         services.AddScoped<IApplicationSieveProcessor, ApplicationSieveProcessor>();
         return services;

@@ -1,27 +1,27 @@
 ﻿using MRA.Jobs.Application.Contracts.Reviewer.Queries;
-using MRA.Jobs.Application.Contracts.Reviewer.Response;
 using MRA.Jobs.Application.Features.Reviewer.Query.GetReviewerById;
 
 namespace MRA.Jobs.Application.UnitTests.Reviewer;
+using Domain.Entities;
 
-public class GetReviewerByIdQueryHandlerTests : BaseTestFixture
+public class GetReviewerByIdQueryHandlerTests  : BaseTestFixture
 {
+    private GetReviewerByIdQueryHandler _handler;
+
     [SetUp]
     public override void Setup()
     {
         base.Setup();
         _handler = new GetReviewerByIdQueryHandler(_dbContextMock.Object, Mapper);
     }
-
-    private GetReviewerByIdQueryHandler _handler;
-
+    
     [Test]
     [Ignore("Игнорируем тест из-за TimeLine & Tag")]
     public async Task Handle_GivenValidQuery_ShouldReturnApplicantDetailsDto()
     {
-        GetReviewerByIdQuery query = new GetReviewerByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetReviewerByIdQuery { Id=Guid.NewGuid() };
 
-        Domain.Entities.Reviewer reviewer = new Domain.Entities.Reviewer
+        var reviewer = new Reviewer
         {
             Id = query.Id,
             Avatar = "user_avatar",
@@ -29,14 +29,14 @@ public class GetReviewerByIdQueryHandlerTests : BaseTestFixture
             LastName = "userLastname",
             Email = "user@gmail.com",
             PhoneNumber = "123456789",
-            DateOfBirth = DateTime.UtcNow
+            DateOfBirth = DateTime.UtcNow,
         };
 
         _dbContextMock.Setup(x => x.Reviewers.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(reviewer);
-
+        
         // Act
-        ReviewerDetailsDto result = await _handler.Handle(query, CancellationToken.None);
+        var result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
         result.Id.Should().Be(reviewer.Id);
@@ -52,11 +52,12 @@ public class GetReviewerByIdQueryHandlerTests : BaseTestFixture
     public void Handle_GivenInvalidQuery_ShouldThrowNotFoundException()
     {
         // Arrange
-        GetReviewerByIdQuery query = new GetReviewerByIdQuery { Id = Guid.NewGuid() };
+        var query = new GetReviewerByIdQuery { Id = Guid.NewGuid() };
         _dbContextMock.Setup(a => a.Reviewers.FindAsync(new object[] { query.Id }, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Domain.Entities.Reviewer)null);
-
+            .ReturnsAsync((Reviewer)null);
+        
         // Act + Assert 
         Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(query, CancellationToken.None));
     }
+
 }

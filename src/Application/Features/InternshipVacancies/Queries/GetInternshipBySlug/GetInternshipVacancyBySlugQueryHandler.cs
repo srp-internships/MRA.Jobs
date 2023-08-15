@@ -3,29 +3,25 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
-
-public class
-    GetInternshipVacancyByIdQueryHandler : IRequestHandler<GetInternshipVacancyByIdQuery, InternshipVacancyResponse>
+public class GetInternshipVacancyBySlugQueryHandler : IRequestHandler<GetInternshipVacancyBySlugQuery, InternshipVacancyResponse>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetInternshipVacancyByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public GetInternshipVacancyBySlugQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
-
-    public async Task<InternshipVacancyResponse> Handle(GetInternshipVacancyByIdQuery request,
-        CancellationToken cancellationToken)
+    public async Task<InternshipVacancyResponse> Handle(GetInternshipVacancyBySlugQuery request, CancellationToken cancellationToken)
     {
         // var internship = await _context.Internships.FindAsync(new object[] { request.Id }, cancellationToken);
-        InternshipVacancy internship = await _context.Internships
+        var internship = await _context.Internships
             .Include(i => i.History)
             .Include(i => i.Tags)
             .ThenInclude(t => t.Tag)
-            .FirstOrDefaultAsync(i => i.Id == request.Id);
-        _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Id);
+            .FirstOrDefaultAsync(i => i.Slug == request.Slug);
+        _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Slug);
         return _mapper.Map<InternshipVacancyResponse>(internship);
     }
 }

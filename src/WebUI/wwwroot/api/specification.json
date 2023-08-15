@@ -413,15 +413,15 @@
         }
       }
     },
-    "/api/applications/{Id}": {
+    "/api/applications/{slug}": {
       "get": {
         "tags": [
           "Applications"
         ],
-        "operationId": "Applications_GetApplicationById",
+        "operationId": "Applications_Get",
         "parameters": [
           {
-            "name": "Id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
@@ -435,7 +435,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetByIdApplicationQuery"
+                "$ref": "#/components/schemas/GetBySlugApplicationQuery"
               }
             }
           },
@@ -462,12 +462,11 @@
         "operationId": "Applications_UpdateApplication",
         "parameters": [
           {
-            "name": "Id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -505,12 +504,11 @@
         "operationId": "Applications_DeleteApplication",
         "parameters": [
           {
-            "name": "Id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -562,7 +560,7 @@
         }
       }
     },
-    "/api/applications/{Id}/update-status": {
+    "/api/applications/{slug}/update-status": {
       "put": {
         "tags": [
           "Applications"
@@ -570,12 +568,11 @@
         "operationId": "Applications_UpdateStatus",
         "parameters": [
           {
-            "name": "Id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -606,7 +603,7 @@
         }
       }
     },
-    "/api/applications/{Id}/add-note": {
+    "/api/applications/{slug}/add-note": {
       "post": {
         "tags": [
           "Applications"
@@ -614,12 +611,11 @@
         "operationId": "Applications_AddNote",
         "parameters": [
           {
-            "name": "Id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -777,20 +773,19 @@
         }
       }
     },
-    "/api/categories/{id}": {
+    "/api/categories/{slug}": {
       "get": {
         "tags": [
           "Categories"
         ],
-        "operationId": "Categories_GetById",
+        "operationId": "Categories_Get",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -816,12 +811,11 @@
         "operationId": "Categories_Update",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -859,12 +853,11 @@
         "operationId": "Categories_Delete",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1080,7 +1073,7 @@
         }
       }
     },
-    "/api/internships/{id}": {
+    "/api/internships/{slug}": {
       "put": {
         "tags": [
           "Internships"
@@ -1088,12 +1081,11 @@
         "operationId": "Internships_UpdateInternship",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1131,12 +1123,11 @@
         "operationId": "Internships_DeleteInternship",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1161,12 +1152,11 @@
         "operationId": "Internships_GetInternshipById",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1186,7 +1176,7 @@
         }
       }
     },
-    "/api/internships/{id}/tags": {
+    "/api/internships/{slug}/tags": {
       "post": {
         "tags": [
           "Internships"
@@ -1194,12 +1184,11 @@
         "operationId": "Internships_AddTag",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1237,12 +1226,11 @@
         "operationId": "Internships_RemoveTags",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1274,7 +1262,7 @@
         }
       }
     },
-    "/api/internships/{id}/test": {
+    "/api/internships/{slug}/test": {
       "post": {
         "tags": [
           "Internships"
@@ -1282,12 +1270,11 @@
         "operationId": "Internships_SendTestCreationRequest",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1318,7 +1305,7 @@
         }
       }
     },
-    "/api/internships/{id}/test/result": {
+    "/api/internships/{slug}/test/result": {
       "post": {
         "tags": [
           "Internships"
@@ -1326,12 +1313,11 @@
         "operationId": "Internships_GetTestResultRequest",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1458,7 +1444,7 @@
         }
       }
     },
-    "/api/jobs/{id}": {
+    "/api/jobs/{slug}": {
       "get": {
         "tags": [
           "Jobs"
@@ -1466,12 +1452,11 @@
         "operationId": "Jobs_Get2",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1497,12 +1482,11 @@
         "operationId": "Jobs_Update",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1540,12 +1524,11 @@
         "operationId": "Jobs_DeleteJobVacancy",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1564,7 +1547,7 @@
         }
       }
     },
-    "/api/jobs/{id}/test": {
+    "/api/jobs/{slug}/test": {
       "post": {
         "tags": [
           "Jobs"
@@ -1572,12 +1555,11 @@
         "operationId": "Jobs_SendTestCreationRequest",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1608,7 +1590,7 @@
         }
       }
     },
-    "/api/jobs/{id}/test/result": {
+    "/api/jobs/{slug}/test/result": {
       "post": {
         "tags": [
           "Jobs"
@@ -1616,12 +1598,11 @@
         "operationId": "Jobs_GetTestResultRequest",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1652,7 +1633,7 @@
         }
       }
     },
-    "/api/jobs/{id}/tags": {
+    "/api/jobs/{slug}/tags": {
       "post": {
         "tags": [
           "Jobs"
@@ -1660,12 +1641,11 @@
         "operationId": "Jobs_AddTag",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1703,12 +1683,11 @@
         "operationId": "Jobs_RemoveTags",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -2074,7 +2053,7 @@
         }
       }
     },
-    "/api/trainings/{id}": {
+    "/api/trainings/{slug}": {
       "get": {
         "tags": [
           "Trainings"
@@ -2082,12 +2061,11 @@
         "operationId": "Trainings_GetTrainingVacancyById",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -2113,12 +2091,11 @@
         "operationId": "Trainings_UpdateTrainingVacancy",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -2156,12 +2133,11 @@
         "operationId": "Trainings_DeleteTrainingVacancy",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -2287,7 +2263,7 @@
         }
       }
     },
-    "/api/trainings/{id}/tags": {
+    "/api/trainings/{slug}/tags": {
       "post": {
         "tags": [
           "Trainings"
@@ -2295,12 +2271,11 @@
         "operationId": "Trainings_AddTag",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -2338,12 +2313,11 @@
         "operationId": "Trainings_RemoveTags",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -2375,7 +2349,7 @@
         }
       }
     },
-    "/api/trainings/{id}/test": {
+    "/api/trainings/{slug}/test": {
       "post": {
         "tags": [
           "Trainings"
@@ -2383,12 +2357,11 @@
         "operationId": "Trainings_SendTestCreationRequest",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -2419,7 +2392,7 @@
         }
       }
     },
-    "/api/trainings/{id}/test/result": {
+    "/api/trainings/{slug}/test/result": {
       "post": {
         "tags": [
           "Trainings"
@@ -2427,12 +2400,11 @@
         "operationId": "Trainings_GetTestResultRequest",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -2756,13 +2728,13 @@
           "Error"
         ]
       },
-      "GetByIdApplicationQuery": {
+      "GetBySlugApplicationQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
+          "slug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           }
         }
       },
@@ -2810,9 +2782,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
+          "slug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "coverLetter": {
             "type": "string",
@@ -2828,9 +2800,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
+          "slug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "statusId": {
             "type": "integer",
@@ -2842,9 +2814,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
+          "slug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "note": {
             "type": "string",
@@ -2927,6 +2899,10 @@
             "type": "string",
             "format": "guid"
           },
+          "slug": {
+            "type": "string",
+            "nullable": true
+          },
           "name": {
             "type": "string",
             "nullable": true
@@ -2947,9 +2923,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
+          "slug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "name": {
             "type": "string",
@@ -3028,9 +3004,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
+          "slug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "title": {
             "type": "string",
@@ -3086,9 +3062,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "internshipId": {
+          "internshipSlug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "tags": {
             "type": "array",
@@ -3103,9 +3079,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "internshipId": {
+          "inernshipSlug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "tags": {
             "type": "array",
@@ -3137,6 +3113,10 @@
           "id": {
             "type": "string",
             "format": "guid"
+          },
+          "slug": {
+            "type": "string",
+            "nullable": true
           },
           "numberOfQuestion": {
             "type": "integer",
@@ -3180,6 +3160,10 @@
           "userId": {
             "type": "string",
             "format": "guid"
+          },
+          "slug": {
+            "type": "string",
+            "nullable": true
           },
           "score": {
             "type": "integer",
@@ -3240,9 +3224,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
+          "slug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "title": {
             "type": "string",
@@ -3281,9 +3265,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "jobVacancyId": {
+          "jobVacancySlug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "tags": {
             "type": "array",
@@ -3298,9 +3282,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "jobVacancyId": {
+          "jobVacancySlug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "tags": {
             "type": "array",
@@ -3515,6 +3499,10 @@
           "fees": {
             "type": "integer",
             "format": "int32"
+          },
+          "slug": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -3560,9 +3548,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
+          "slug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "title": {
             "type": "string",
@@ -3602,9 +3590,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
+          "slug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           }
         }
       },
@@ -3612,9 +3600,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "vacancyId": {
+          "trainingVacancySlug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "tags": {
             "type": "array",
@@ -3629,9 +3617,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "vacancyId": {
+          "trainingVacancySlug": {
             "type": "string",
-            "format": "guid"
+            "nullable": true
           },
           "tags": {
             "type": "array",

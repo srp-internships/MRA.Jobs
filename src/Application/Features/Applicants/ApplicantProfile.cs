@@ -1,10 +1,13 @@
 ﻿using MRA.Jobs.Application.Contracts.Applicant.Commands;
 using MRA.Jobs.Application.Contracts.Applicant.Responses;
 using MRA.Jobs.Application.Contracts.Identity.Events;
-using MRA.Jobs.Application.Contracts.TagDTO;
-using MRA.Jobs.Application.Contracts.TimeLineDTO;
 
 namespace MRA.Jobs.Application.Features.Applicants;
+
+using Domain.Entities;
+using MRA.Jobs.Application;
+using MRA.Jobs.Application.Contracts.TagDTO;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
 
 public class ApplicantProfile : Profile
 {
