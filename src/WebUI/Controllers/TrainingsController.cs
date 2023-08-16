@@ -17,6 +17,12 @@ public class TrainingsController : ApiControllerBase
     {
         var training = await Mediator.Send(new GetTrainingVacancyBySlugQuery { Slug = slug });
         return Ok(training);
+    } 
+    [HttpGet("/GetWithIf/{slug}")]
+    public async Task<IActionResult> GetTrainingVacancyByIdSlugSinceCheckDate(string slug)
+    {
+        var training = await Mediator.Send(new GetTrairaingVacancyBySlugSinceCheckDate { Slug = slug });
+        return Ok(training);
     }
 
     [HttpGet]

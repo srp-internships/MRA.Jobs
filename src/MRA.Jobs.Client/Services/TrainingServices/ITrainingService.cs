@@ -7,6 +7,7 @@ public interface ITrainingService
 {
     Task<List<TrainingVacancyListDto>> GetAll();
     Task<TrainingVacancyDetailedResponse> GetBySlug(string slug);
+    Task<TrainingVacancyDetailedResponse> GetBySlugSinceCheckDate(string slug);
 
     Task<HttpResponseMessage> Create();
     Task<HttpResponseMessage> Update(string slug);
