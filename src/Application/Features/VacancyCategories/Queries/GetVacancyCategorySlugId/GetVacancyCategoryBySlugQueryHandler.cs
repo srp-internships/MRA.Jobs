@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryById;
@@ -14,7 +15,7 @@ public class GetVacancyCategoryBySlugQueryHandler : IRequestHandler<GetVacancyCa
     }
     public async Task<CategoryResponse> Handle(GetVacancyCategoryBySlugQuery request, CancellationToken cancellationToken)
     {
-        var vacancyCategory = await _dbContext.Categories.FindAsync(new object[] { request.Slug }, cancellationToken);
+        var vacancyCategory = await _dbContext.Categories.FirstOrDefaultAsync(v => v.Slug == request.Slug, cancellationToken);
         _ = vacancyCategory ?? throw new NotFoundException(nameof(VacancyCategory), request.Slug);
         return _mapper.Map<CategoryResponse>(vacancyCategory);
     }

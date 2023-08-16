@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.DeleteJobVacancy;
 
@@ -18,7 +19,7 @@ public class DeleteJobVacancyCommandHandler : IRequestHandler<DeleteJobVacancyCo
 
     public async Task<bool> Handle(DeleteJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Slug }, cancellationToken: cancellationToken);
+        var jobVacancy = await _dbContext.JobVacancies.FirstOrDefaultAsync(j => j.Slug == request.Slug, cancellationToken);
 
         if (jobVacancy == null)
             throw new NotFoundException(nameof(JobVacancy), request.Slug);

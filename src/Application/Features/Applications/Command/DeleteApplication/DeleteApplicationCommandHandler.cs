@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.Applications.Commands;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.DeleteApplication;
 
@@ -17,7 +18,7 @@ public class DeleteApplicationCommandHandler : IRequestHandler<DeleteApplication
 
     public async Task<bool> Handle(DeleteApplicationCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Applications.FindAsync(new object[] { request.Slug }, cancellationToken)
+        var entity = await _context.Applications.FirstOrDefaultAsync(t => t.Slug == request.Slug, cancellationToken)
             ?? throw new NotFoundException(nameof(Application), request.Slug);
 
         ApplicationTimelineEvent timelineEvent = new ApplicationTimelineEvent

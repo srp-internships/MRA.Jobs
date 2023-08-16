@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Update;
@@ -9,14 +10,16 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
     private readonly IMapper _mapper;
+    private readonly ISlugGeneratorService _slugService;
 
     public UpdateTrainingVacancyCommandHandler(IApplicationDbContext context, IMapper mapper,
-        ICurrentUserService currentUserService, IDateTime dateTime)
+        ICurrentUserService currentUserService, IDateTime dateTime, ISlugGeneratorService slugService)
     {
         _context = context;
         _mapper = mapper;
         _currentUserService = currentUserService;
         _dateTime = dateTime;
+        _slugService = slugService;
     }
 
     public async Task<Guid> Handle(UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
@@ -32,6 +35,7 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
         _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Slug);
 
         _mapper.Map(request, trainingVacancy);
+        trainingVacancy.Slug = _slugService.GenerateSlug($"{trainingVacancy.Title}-{trainingVacancy.PublishDate.Year}-{trainingVacancy.PublishDate.Month}");
 
         VacancyTimelineEvent timeLineEvent = new VacancyTimelineEvent
         {
