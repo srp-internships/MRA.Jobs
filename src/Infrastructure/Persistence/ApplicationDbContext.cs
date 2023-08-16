@@ -49,6 +49,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public DbSet<ApplicationTimelineEvent> ApplicationTimelineEvents { get; set; }
     public DbSet<InternshipVacancy> Internships { get; set; }
     public DbSet<TrainingVacancy> TrainingVacancies { get; set; }
+    public DbSet<EducationDetail> EducationDetails { get; set; }
+    public DbSet<ExperienceDetail> ExperienceDetails { get; set; }
+    public DbSet<Skill> Skills { get; set; }
 
     #region override
 
