@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace MRA.Jobs.Domain.Entities;
 
@@ -6,7 +6,6 @@ namespace MRA.Jobs.Domain.Entities;
 public class VacancyCategory : BaseEntity
 {
     public string Name { get; set; }
-    [Key]
     public string Slug { get; set; }
     public ICollection<Vacancy> Vacancies { get; set; }
 }

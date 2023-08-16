@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Command.DeleteVacancyCategory;
 
@@ -13,7 +14,7 @@ public class DeleteVacancyCategoryCommandHandler : IRequestHandler<DeleteVacancy
 
     public async Task<bool> Handle(DeleteVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
-        var vacancyCategory = await _dbContext.Categories.FindAsync(new object[] { request.Slug }, cancellationToken);
+        var vacancyCategory = await _dbContext.Categories.FirstOrDefaultAsync(v => v.Slug == request.Slug, cancellationToken);
         if (vacancyCategory == null)
             throw new NotFoundException(nameof(VacancyCategory), request.Slug);
 

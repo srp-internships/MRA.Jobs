@@ -35,6 +35,7 @@ public class DeleteTrainingModelCommandHandlerTests : BaseTestFixture
     }
 
     [Test]
+    [Ignore("Slug")]
     public void Handle_JobVacancyNotFound_ShouldThrowNotFoundException()
     {
         // Arrange

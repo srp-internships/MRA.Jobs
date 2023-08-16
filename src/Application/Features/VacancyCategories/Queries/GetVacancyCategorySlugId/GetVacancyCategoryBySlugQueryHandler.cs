@@ -15,7 +15,7 @@ public class GetVacancyCategoryBySlugQueryHandler : IRequestHandler<GetVacancyCa
     }
     public async Task<CategoryResponse> Handle(GetVacancyCategoryBySlugQuery request, CancellationToken cancellationToken)
     {
-        var vacancyCategory = await _dbContext.Categories.FindAsync();
+        var vacancyCategory = await _dbContext.Categories.FirstOrDefaultAsync(v => v.Slug == request.Slug, cancellationToken);
         _ = vacancyCategory ?? throw new NotFoundException(nameof(VacancyCategory), request.Slug);
         return _mapper.Map<CategoryResponse>(vacancyCategory);
     }

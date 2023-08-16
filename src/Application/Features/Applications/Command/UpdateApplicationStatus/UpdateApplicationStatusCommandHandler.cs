@@ -1,4 +1,6 @@
 ﻿namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplicationStatus;
+
+using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Applications.Commands;
 using MRA.Jobs.Domain.Enums;
 
@@ -18,7 +20,7 @@ public class UpdateApplicationStatusCommandHandler : IRequestHandler<UpdateAppli
     }
     public async Task<bool> Handle(UpdateApplicationStatus request, CancellationToken cancellationToken)
     {
-        var application = await _context.Applications.FindAsync(request.Slug);
+        var application = await _context.Applications.FirstOrDefaultAsync(t => t.Slug == request.Slug, cancellationToken);
         _ = application ?? throw new NotFoundException(nameof(Application), request.Slug); ;
 
         application.Status = (ApplicationStatus)request.StatusId;

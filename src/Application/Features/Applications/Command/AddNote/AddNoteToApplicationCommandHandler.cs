@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.Applications.Commands;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.AddNote;
 
@@ -20,7 +21,7 @@ public class AddNoteToApplicationCommandHandler : IRequestHandler<AddNoteToAppli
 
     public async Task<bool> Handle(AddNoteToApplicationCommand request, CancellationToken cancellationToken)
     {
-        var application = await _context.Applications.FindAsync(request.Slug);
+        var application = await _context.Applications.FirstOrDefaultAsync(a => a.Slug == request.Slug, cancellationToken);
         _ = application ?? throw new NotFoundException(nameof(Application), request.Slug); ;
 
         ApplicationTimelineEvent timelineEvent = new ApplicationTimelineEvent
