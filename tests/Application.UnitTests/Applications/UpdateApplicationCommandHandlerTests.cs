@@ -12,7 +12,7 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
     {
         base.Setup();
         _handler = new UpdateApplicationCommandHadler(
-            _dbContextMock.Object, Mapper, _dateTimeMock.Object, _currentUserServiceMock.Object);
+            _dbContextMock.Object, Mapper, _dateTimeMock.Object, _currentUserServiceMock.Object,_slugGenerator.Object);
     }
 
     [Test]
