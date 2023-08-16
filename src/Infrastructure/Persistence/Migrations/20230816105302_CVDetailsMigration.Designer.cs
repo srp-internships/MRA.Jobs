@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230816103238_CVDetailsMigration")]
+    [Migration("20230816105302_CVDetailsMigration")]
     partial class CVDetailsMigration
     {
         /// <inheritdoc />
