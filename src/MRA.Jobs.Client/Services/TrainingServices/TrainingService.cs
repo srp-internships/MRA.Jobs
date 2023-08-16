@@ -52,6 +52,35 @@ public class TrainingService : ITrainingService
         };
         return await _httpClient.PutAsJsonAsync($"trainings/{slug}", UpdateCommand);
     }
+
+    public async Task<List<TrainingVacancyListDto>> GetAll()
+    {
+        var result = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
+        return result.Items;
+    }
+    public async Task<List<TrainingVacancyWithCategoryDto>> GetAllWithCategories()
+    {
+        var trainings = await GetAll();
+
+        var grouped = (from t in trainings
+                       group t by t.CategoryId).ToList();
+
+        var trainingsCategoried = new List<TrainingVacancyWithCategoryDto>();
+        foreach (var training in grouped)
+        {
+            trainingsCategoried.Add(new TrainingVacancyWithCategoryDto
+            {
+                CategoryId = training.Key,
+                Trainings = training.ToList()
+            });
+        }
+
+        return trainingsCategoried;
+    }
+    public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug)
+    {
+        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
+    }
     public async Task<List<TrainingVacancyListDto>> GetAll()
     {
         var result = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");

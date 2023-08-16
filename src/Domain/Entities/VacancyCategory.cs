@@ -2,6 +2,7 @@
 
 namespace MRA.Jobs.Domain.Entities;
 
+[Index(nameof(Slug), IsUnique = true)]
 public class VacancyCategory : BaseEntity
 {
     public string Name { get; set; }

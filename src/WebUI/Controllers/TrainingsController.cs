@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
 using MRA.Jobs.Application.Contracts.Tests.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
