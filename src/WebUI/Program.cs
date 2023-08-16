@@ -8,15 +8,13 @@ using MRA.Jobs.Web;
 using Newtonsoft.Json;
 using Sieve.Models;
 using MRA.Jobs.Web.AzureKeyVault;
-using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Web.ApplicationInsights;
 
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddJsonFile("dbsettings.json", true);
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("dbsettings.json", true);
 if (builder.Environment.IsProduction())
 {
     builder.AddApiApplicationInsights();
