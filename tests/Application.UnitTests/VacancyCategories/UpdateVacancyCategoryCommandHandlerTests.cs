@@ -12,7 +12,7 @@ public class UpdateVacancyCategoryCommandHandlerTests : BaseTestFixture
     {
         base.Setup();
         _handler = new UpdateVacancyCategoryCommandHandler(
-            _dbContextMock.Object, Mapper);
+            _dbContextMock.Object, Mapper, _slugGenerator.Object);
     }
 
     [Test]
