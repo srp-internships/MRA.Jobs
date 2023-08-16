@@ -11,10 +11,12 @@ using Newtonsoft.Json;
 using Sieve.Models;
 using MRA.Jobs.Web.AzureKeyVault;
 using MRA.Jobs.Infrastructure.Persistence;
+using MRA.Jobs.Web.ApplicationInsights;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
 {
+    builder.AddApiApplicationInsights();
     builder.ConfigureAzureKeyVault();
 }
 
