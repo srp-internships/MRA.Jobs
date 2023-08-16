@@ -9,7 +9,6 @@ namespace MRA.Jobs.Infrastructure.Persistence;
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
-    private readonly IMediator _mediator;
 
     internal ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
         base(options)
@@ -22,14 +21,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
         : base(options)
     {
-        _mediator = mediator;
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
     }
 
-    // public DbSet<PhoneNumberVerificationCode> PhoneNumberVerificationCodes { get; set; }
-    // public DbSet<RefreshToken> RefreshTokens { get; set; }
-    // public DbSet<Permission> Permissions { get; set; }
-    // public DbSet<RolePermission> RolePermissions { get; set; }
     public DbSet<Applicant> Applicants { get; set; }
     public DbSet<ApplicantSocialMedia> ApplicantSocialMedias { get; set; }
     public DbSet<VacancyTimelineEvent> VacancyTimelineEvents { get; set; }

@@ -38,12 +38,12 @@ public static class ConfigureServices
 
     public static IServiceCollection AddAppIdentity(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+        // services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         services.AddOptions();
 
         services.AddScoped<ICurrentUserService, CurrentUserService>();
-        services.AddScoped<IClaimsTransformation, ClaimsTransformation>();
-        services.AddScoped<IAuthorizationHandler, CheckCurrentUserAuthHandler>();
+        // services.AddScoped<IClaimsTransformation, ClaimsTransformation>();
+        // services.AddScoped<IAuthorizationHandler, CheckCurrentUserAuthHandler>();
 
 
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -57,7 +57,7 @@ public static class ConfigureServices
         {
             auth.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
-                .AddRequirements(new CheckCurrentUserRequirement())
+                // .AddRequirements(new CheckCurrentUserRequirement())
                 .Build();
         });
 
