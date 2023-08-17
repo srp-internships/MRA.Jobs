@@ -10,7 +10,6 @@ public class ApplicationListDto
     public Guid ApplicantId { get; set; }
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
-    public string CV { get; set; }
     public int StatusId { get; set; }
 }
 
@@ -21,7 +20,6 @@ public class ApplicationDetailsDto
     public Guid ApplicantId { get; set; }
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
-    public string Cv { get; set; }
     public int StatusId { get; set; }
 
     [JsonConverter(typeof(DateTimeToUnixConverter))]

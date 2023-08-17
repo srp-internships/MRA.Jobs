@@ -40,7 +40,6 @@ public class GetApplicationBySlugQueryHandlerTests : BaseTestFixture
         result.ApplicantId.Should().Be(application.ApplicantId);
         result.VacancyId.Should().Be(application.VacancyId);
         result.CoverLetter.Should().Be(application.CoverLetter);
-        result.Cv.Should().Be(application.CV);
         result.StatusId.Should().Be((int)application.Status);
     }
 }

@@ -2642,10 +2642,6 @@
             "type": "string",
             "format": "guid"
           },
-          "cv": {
-            "type": "string",
-            "nullable": true
-          },
           "statusId": {
             "type": "integer",
             "format": "int32"
@@ -2671,10 +2667,6 @@
           "vacancyId": {
             "type": "string",
             "format": "guid"
-          },
-          "cv": {
-            "type": "string",
-            "nullable": true
           },
           "statusId": {
             "type": "integer",
@@ -2786,10 +2778,6 @@
           "vacancyId": {
             "type": "string",
             "format": "guid"
-          },
-          "cv": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -2804,10 +2792,6 @@
           "vacancyId": {
             "type": "string",
             "format": "guid"
-          },
-          "cv": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -2820,10 +2804,6 @@
             "nullable": true
           },
           "coverLetter": {
-            "type": "string",
-            "nullable": true
-          },
-          "cv": {
             "type": "string",
             "nullable": true
           }

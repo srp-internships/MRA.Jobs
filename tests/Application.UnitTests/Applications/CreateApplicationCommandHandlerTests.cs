@@ -31,7 +31,6 @@ public class CreateApplicationCommandHandlerTests : BaseTestFixture
         {
             ApplicantId = Guid.NewGuid(),
             CoverLetter = "Jax Sampson\r\n\r\n(111) 789-3456\r\n\r\njax.sampson@email.com\r\n\r\n13-Jul-19\r\n\r\nDear Hiring Manager,\r\n\r\nI would like to throw in my hat as an applicant for the open DevOps Engineer position at Flagship Engineering. I have the analytical mind necessary to write code and the big-picture mentality to make it innovative and unique. I also enjoy overseeing projects, organizing people and channeling them into areas where they can make the best use of their talents. I'm thrilled at the prospect of becoming a part of your team at Flagship and placing my abilities at your service.\r\n\r\nI began my IT career as a front-end developer at Crossover Software. My first job entailed working with teams of developers to write apps with varying functionalities from mobile games to search algorithms and malware detection packages. Collaborating with other developers not only honed my coding skills but also taught me the value of how to effectively work with others and subdivide tasks to improve efficiency and ensure smooth teamwork. I then became a cybersecurity technician with Centurion Technologies, designing encryption software and instructing clients in its use.",
-            CV = "https://www.indeed.com/career-advice/cover-letter-samples/devops-engineer",
             VacancyId = Guid.NewGuid(),
         };
 
