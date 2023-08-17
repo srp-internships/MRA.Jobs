@@ -49,9 +49,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Identity\Features\User\Events\" />
-        <Folder Include="Identity\Features\Verification\Commands\" />
-        <Folder Include="Identity\Features\Verification\Queries\" />
+        <Folder Include="Identity\Features\User\Events\"/>
+        <Folder Include="Identity\Features\Verification\Commands\"/>
+        <Folder Include="Identity\Features\Verification\Queries\"/>
+        <Folder Include="Persistence\Migrations\"/>
     </ItemGroup>
 
     <ProjectExtensions>
