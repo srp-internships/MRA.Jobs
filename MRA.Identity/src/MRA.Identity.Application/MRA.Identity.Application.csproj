@@ -19,7 +19,6 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-        <PackageReference Include="Azure.Communication.Email" Version="1.0.0-beta.1" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
     </ItemGroup>

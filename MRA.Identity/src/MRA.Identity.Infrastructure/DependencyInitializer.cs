@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MRA.Identity.Application.Common.Interfaces.Services;
+using MRA.Identity.Application.Services;
 using MRA.Identity.Domain.Entities;
 using MRA.Identity.Infrastructure.Persistence;
 
@@ -14,7 +16,7 @@ public static class DependencyInitializer
         string? dbConnectionString = configurations.GetConnectionString("SqlServer");
         services.AddDbContext<ApplicationDbContext>(s => s
             .UseSqlServer(dbConnectionString));
-
+        services.AddScoped<IEmailService, EmailService>();
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
