@@ -24,7 +24,7 @@ public static class ConfigureServices
 
         services.AddDbContext<ApplicationDbContext>(options =>
 
-            options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
+            options.UseSqlServer(dbConnectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
 
         );
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
