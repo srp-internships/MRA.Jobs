@@ -1,5 +1,10 @@
-﻿@page "/TrainingsInfo"
+﻿@*@page "/trainings/{slug}"*@
+@page "/TrainingsInfo"
+@using Blazored.LocalStorage;
 @using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+@using Microsoft.AspNetCore.Components.Authorization;
+@inject AuthenticationStateProvider provider
+@inject ILocalStorageService LocalStorage;
 
 @layout Main
 @inject ITrainingService _trainingService
@@ -21,7 +26,7 @@
 					</h3>
 					<p class="mb-2 text-black">@_training.Description</p>
 					<h3 class="mb-2 text-black">
-						EndDate: 
+						EndDate:
 					</h3>
 					<p class="mb-2 text-black">@_training.EndDate</p>
 					<h3 class="mb-2 text-black">
@@ -41,7 +46,17 @@
 					<div class="card w-100 bg-white shadow-lg rounded mb-4">
 						<div class="card-body">
 							<h2 class="mb-2 text-black">Interested in a trainings?</h2>
-							<a href="ApplytoTrainings/{@_training.Slug}/{@_training.Id}" class="btn btn-primary">Apply</a>
+							<a href="ApplytoTrainings/{@_training.Slug}" class="btn btn-primary">Apply</a>
+							@*<CascadingAuthenticationState>
+								<AuthorizeView>
+									<Authorized>
+										<a href="ApplytoTrainings/{@_training.Slug}/{@_training.Id}" class="btn btn-primary">Apply</a>
+									</Authorized>
+									<NotAuthorized>
+										<a href="login" class="btn btn-primary">Aply</a>
+									</NotAuthorized>
+								</AuthorizeView>
+							</CascadingAuthenticationState>*@
 						</div>
 					</div>
 				</div>
@@ -53,11 +68,18 @@
 
 
 @code {
-	private string slug = "-2023-8";
+	//[Parameter]
+	public string Slug = "-2023-8";
 	private TrainingVacancyDetailedResponse _training { get; set; } = new TrainingVacancyDetailedResponse();
 
 	protected override async Task OnInitializedAsync()
 	{
-		_training = await _trainingService.GetBySlugSinceCheckDate(slug);
+		_training = await _trainingService.GetBySlugSinceCheckDate(Slug);
+	}
+	public int ApplicantId { get; set; }
+	protected async Task SaveAndRetrieveData()
+	{
+		await LocalStorage.SetItemAsync("Trainingid", $"{_training.Id}");
+		await LocalStorage.SetItemAsync("Applicant", $"{ApplicantId}");
 	}
 }

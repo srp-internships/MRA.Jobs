@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Responses;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
+using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Domain.Enums;
 
 namespace MRA.Jobs.Client.Services.ApplicationService;
@@ -19,4 +20,11 @@ public class ApplicationService : IApplicationService
         List<ApplicationListStatus> result = await response.Content.ReadFromJsonAsync<List<ApplicationListStatus>>();
         return result;
     }
+
+    public async Task<HttpResponseMessage> CreateApplicate(CreateApplicationCommand command)
+    {
+        var response = await _httpClient.PostAsJsonAsync($"applications", command);
+        return response;
+    }
+
 }
