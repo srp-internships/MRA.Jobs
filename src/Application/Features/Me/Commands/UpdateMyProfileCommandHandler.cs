@@ -24,12 +24,12 @@ public class UpdateMyProfileCommandHandler : IRequestHandler<UpdateMyProfileComm
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUser;
-    private readonly IIdentityService _identityService;
+    // private readonly IIdentityService _identityService;
 
-    public UpdateMyProfileCommandHandler(IIdentityService identityService, ICurrentUserService currentUser,
+    public UpdateMyProfileCommandHandler(ICurrentUserService currentUser,
         IApplicationDbContext context)
     {
-        _identityService = identityService;
+        // _identityService = identityService;
         _currentUser = currentUser;
         _context = context;
     }
@@ -62,8 +62,8 @@ public class UpdateMyProfileCommandHandler : IRequestHandler<UpdateMyProfileComm
         await _context.SaveChangesAsync(cancellationToken);
 
 
-        UserIdentityResponse identityProfile =
-            await _identityService.GetUserIdentityAsync(userId.Value, cancellationToken);
+        // UserIdentityResponse identityProfile =
+            // await _identityService.GetUserIdentityAsync(userId.Value, cancellationToken);
 
         MyProfileResponse response = new MyProfileResponse
         {
@@ -74,10 +74,10 @@ public class UpdateMyProfileCommandHandler : IRequestHandler<UpdateMyProfileComm
             Gender = domainUser.Gender,
             Identity = new MyIdentityResponse
             {
-                IsActive = identityProfile.IsActive,
-                Permissions = identityProfile.Permissions,
-                Roles = identityProfile.Roles,
-                TwoFactorEnabled = identityProfile.TwoFactorEnabled
+                // IsActive = identityProfile.IsActive,
+                // Permissions = identityProfile.Permissions,
+                // Roles = identityProfile.Roles,
+                // TwoFactorEnabled = identityProfile.TwoFactorEnabled
             },
             LastName = domainUser.LastName,
             Patronymic = domainUser.Patronymic,

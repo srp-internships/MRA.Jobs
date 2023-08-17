@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Delete;
 
@@ -13,7 +14,7 @@ public class DeleteTrainingVacancyCommandHadler : IRequestHandler<DeleteTraining
 
     public async Task<bool> Handle(DeleteTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        var traningModel = await _context.TrainingVacancies.FindAsync(new object[] { request.Slug }, cancellationToken: cancellationToken);
+        var traningModel = await _context.TrainingVacancies.FirstOrDefaultAsync(t => t.Slug == request.Slug, cancellationToken);
 
         if (traningModel == null)
             throw new NotFoundException(nameof(TrainingVacancy), request.Slug);

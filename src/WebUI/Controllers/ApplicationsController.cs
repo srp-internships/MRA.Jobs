@@ -8,7 +8,7 @@ using MRA.Jobs.Domain.Enums;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class ApplicationsController : ApiControllerBase
+public class  ApplicationsController : ApiControllerBase
 {
     private readonly ILogger<ApplicationsController> _logger;
 
