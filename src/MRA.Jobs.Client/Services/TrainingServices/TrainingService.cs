@@ -67,25 +67,8 @@ public class TrainingService : ITrainingService
     }
     public async Task<List<TrainingVacancyWithCategoryDto>> GetAllWithCategories()
     {
-        var trainings = await GetAll();
-
-        var sortedTrainings = (from t in trainings
-                               group t by t.CategoryId).ToList();
-
-        var trainingsWithCategory = new List<TrainingVacancyWithCategoryDto>();
-
-        foreach (var training in sortedTrainings)
-        {
-            var categories = await _categoryService.GetAllCategory();
-            trainingsWithCategory.Add(new TrainingVacancyWithCategoryDto
-            {
-                CategoryId = training.Key,
-                CategoryName = categories.FirstOrDefault(c => c.Id == training.Key).Name
-                //Trainings = training.ToList()
-            });
-        }
-        return trainingsWithCategory;
-
+        var result = await _httpClient.GetFromJsonAsync<List<TrainingVacancyWithCategoryDto>>("trainings/getwithcategories");
+        return result;
     }
     public async Task<TrainingVacancyWithCategoryDto> GetCategoriesByName(string name)
     {

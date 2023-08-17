@@ -1,7 +1,6 @@
 using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Graph.Models.ExternalConnectors;
 using MRA.Jobs.Application;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Infrastructure;
@@ -11,6 +10,8 @@ using Newtonsoft.Json;
 using Sieve.Models;
 using MRA.Jobs.Web.AzureKeyVault;
 using MRA.Jobs.Infrastructure.Persistence;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
@@ -19,6 +20,9 @@ if (builder.Environment.IsProduction())
 }
 
 builder.Configuration.AddJsonFile("dbsettings.json", optional: true);
+
+builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+        { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve; });
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);

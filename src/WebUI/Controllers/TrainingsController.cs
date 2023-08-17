@@ -18,8 +18,14 @@ public class TrainingsController : ApiControllerBase
         return Ok(training);
     }
 
-    [HttpGet]
-    [Route("getwithcategories")]
+    [HttpGet("getwithcategories/{slug}")]
+    public async Task<ActionResult<TrainingVacancyWithCategoryDto>> GetTrainingsCategoriesWithSlug(string slug)
+    {
+        var result = await Mediator.Send(new GetTrainingCategoriesByCategoryNameQuery { CategorySlug = slug });
+        return Ok(result);
+    }
+
+    [HttpGet("getwithcategories")]
     public async Task<ActionResult<List<TrainingVacancyWithCategoryDto>>> GetTrainingsWithCategories()
     {
         return Ok(await Mediator.Send(new GetTrainingVacancyWithCategoriesQuery()));
