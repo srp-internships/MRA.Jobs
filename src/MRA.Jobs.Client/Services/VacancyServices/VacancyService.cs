@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
-using MRA.Jobs.Application.Contracts.Common;
+﻿using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
 public class VacancyService : IVacancyService
@@ -28,38 +29,71 @@ public class VacancyService : IVacancyService
         };
     }
     public List<CategoryResponse> Categories { get; set; }
-    
-    public List<JobVacancyListDTO> Vacanceies { get; set; }
-
+    public List<JobVacancyListDTO> VacanciesOnPage { get; set; }
+    public int FilteredVacanciesCount { get; set; }
+    public List<JobVacancyListDTO> AllVacancies { get; set; }
     public CreateJobVacancyCommand creatingNewJob { get; set; }
-    
+
     public event Action OnChange;
     public string guidId { get; set; } = string.Empty;
-    public async Task<List<JobVacancyListDTO>> GetAllVacancy()
-    {
-        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>("jobs");
-        Vacanceies = result.Items;
-        Console.WriteLine(Vacanceies.Count);
-        return Vacanceies;
-    }
 
     public CreateVacancyCategoryCommand creatingEntity { get; set; }
 
-    public async Task<List<CategoryResponse>> GetAllCategory()
+    public int PagesCount { get; set; } = 0;
+    const float PageSize = 10f;
+
+    public int VacanciesCountPerCategory(string categoryName)
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<CategoryResponse>>("categories");
-        Categories = result.Items;
-        return Categories;
+        return AllVacancies != null
+            ? categoryName == "All categories" ? AllVacancies.Count : AllVacancies.Where(v => v.Category == categoryName).Count()
+            : 0;
     }
 
-    public async Task<List<JobVacancyListDTO>> GetVacancyByTitle(string title)
+    public async Task InitAllVacancies()
     {
-        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?Filters=Title@={title}");
-        Vacanceies = result.Items;
-        OnChange.Invoke();
-        return Vacanceies;
+        AllVacancies = (await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?PageSize={int.MaxValue}")).Items;
+        OnChange?.Invoke();
     }
 
+
+    public async Task<List<JobVacancyListDTO>> GetFilteredVacancies(string title = "", string categoryName = "All categories", int page = 1)
+    {
+        PaggedList<JobVacancyListDTO> result;
+        if (title == "")
+        {
+            if (categoryName == "All categories")
+            {
+                if (page == 1)
+                {
+                    FilteredVacanciesCount = (await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?PageSize={int.MaxValue}")).TotalCount;
+                    PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
+                }
+                result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?PageSize=10&Page={page}");
+            }
+            else
+            {
+                if (page == 1)
+                {
+                    FilteredVacanciesCount = (await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?Filters=Category@={categoryName}&PageSize={int.MaxValue}")).TotalCount;
+                    PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
+                }
+                result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?Filters=Category@={categoryName}&PageSize=10&Page={page}");
+            }
+        }
+        else
+        {
+            if (page == 1)
+            {
+                FilteredVacanciesCount = (await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?Filters=Title@={title}&PageSize={int.MaxValue}")).TotalCount;
+                PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
+            }
+
+            result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>($"jobs?Filters=Title@={title}&PageSize=10&Page={page}");
+        }
+        VacanciesOnPage = result.Items;
+        OnChange?.Invoke();
+        return VacanciesOnPage;
+    }
 
     public async Task OnSaveCreateClick()
     {
@@ -67,12 +101,6 @@ public class VacancyService : IVacancyService
         await _http.PostAsJsonAsync("jobs", creatingNewJob);
 
         Console.WriteLine(creatingNewJob.Title);
-    }
-
-    public async Task<List<JobVacancyListDTO>> GetJobs()
-    {
-        var result = await _http.GetFromJsonAsync<PaggedList<JobVacancyListDTO>>("jobs");
-        return result.Items;
     }
 
     public async Task OnDelete(Guid Id)

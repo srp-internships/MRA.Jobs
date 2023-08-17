@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Client\Jobs.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MatBlazor" Version="2.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.2" PrivateAssets="all" />
@@ -16,11 +20,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\Client\Jobs.razor" />
     <None Include="wwwroot\images\SRP_icon.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Shared" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Client\Jobs.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Client\Jobs.razor" />
   </ItemGroup>
 
 </Project>

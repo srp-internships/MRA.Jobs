@@ -1,0 +1,35 @@
+﻿a {
+    cursor: pointer;
+}
+
+.categories {
+    width: 38%;
+    margin-right: 20px;
+}
+
+.vacancy {
+    width: 100%;
+}
+
+.card-vacancy:hover {
+    box-shadow: 2px 5px 10px 8px rgb(242 242 242 / 69%) !important;
+    transition: .2s;
+}
+
+    .card-vacancy:hover h2 {
+        color: #0e6df9d9 !important;
+        transition: .2s;
+    }
+
+.selectedCategory {
+    background-color: #e6e6e6;
+}
+
+.category:hover {
+    background-color: #e6e6e6;
+}
+
+.category {
+    cursor: pointer;
+    border-radius: 5px;
+}
