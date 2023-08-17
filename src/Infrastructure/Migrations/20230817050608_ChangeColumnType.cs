@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace MRA.Jobs.Infrastructure.Persistence.Migrations
+namespace MRA.Jobs.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class CVDetailsMigration : Migration
+    public partial class ChangeColumnType : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace MRA.Jobs.Infrastructure.Persistence.Migrations
+namespace MRA.Jobs.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Auth : Migration
+    public partial class RerunInitialMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,7 +55,9 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(128)", nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,7 +78,9 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     Patronymic = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<int>(type: "int", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     JobTitle = table.Column<string>(type: "nvarchar(256)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -85,6 +89,41 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DomainUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EducationDetails",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Major = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UniversityName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CertificateDegreeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EducationDetails", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ExperienceDetails",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    JobLocationCity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    JobLocationCountry = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsCurrentJob = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExperienceDetails", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,11 +155,24 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Skills",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SkillName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skills", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tags",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(128)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -267,6 +319,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PublishDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ApplicationDeadline = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -276,6 +329,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     WorkSchedule = table.Column<int>(type: "int", nullable: true),
                     Duration = table.Column<int>(type: "int", nullable: true),
                     Fees = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -299,7 +353,8 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProfileUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    ApplicantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ApplicantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -343,7 +398,8 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -373,6 +429,8 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     VacancyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -406,6 +464,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     NumberOfQuestion = table.Column<long>(type: "bigint", nullable: false),
                     PassingScore = table.Column<int>(type: "int", nullable: false),
                     VacancyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -428,7 +487,8 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VacancyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    VacancyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -459,7 +519,8 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    VacancyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    VacancyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -494,6 +555,7 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                     Score = table.Column<int>(type: "int", nullable: false),
                     TestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -525,6 +587,11 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 name: "IX_Applications_ApplicantId",
                 table: "Applications",
                 column: "ApplicantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Applications_Slug",
+                table: "Applications",
+                column: "Slug");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_VacancyId",
@@ -569,6 +636,11 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_Slug",
+                table: "Categories",
+                column: "Slug");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_UserId",
@@ -633,6 +705,11 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Vacancies_Slug",
+                table: "Vacancies",
+                column: "Slug");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_VacancyTags_TagId",
                 table: "VacancyTags",
                 column: "TagId");
@@ -665,6 +742,12 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "EducationDetails");
+
+            migrationBuilder.DropTable(
+                name: "ExperienceDetails");
+
+            migrationBuilder.DropTable(
                 name: "PhoneNumberVerificationCodes");
 
             migrationBuilder.DropTable(
@@ -672,6 +755,9 @@ namespace MRA.Jobs.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "RolePermission");
+
+            migrationBuilder.DropTable(
+                name: "Skills");
 
             migrationBuilder.DropTable(
                 name: "TestResults");

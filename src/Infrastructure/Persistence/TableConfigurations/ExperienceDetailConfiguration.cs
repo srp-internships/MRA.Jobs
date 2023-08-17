@@ -11,5 +11,6 @@ public class ExperienceDetailConfiguration : IEntityTypeConfiguration<Experience
     public void Configure(EntityTypeBuilder<ExperienceDetail> builder)
     {
         builder.HasKey(ed => ed.UserId);
+        builder.Property(ed => ed.IsCurrentJob).HasColumnType("bit");
     }
 }

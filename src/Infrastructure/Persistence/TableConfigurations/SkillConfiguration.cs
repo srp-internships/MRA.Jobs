@@ -10,6 +10,6 @@ public class SkillConfiguration : IEntityTypeConfiguration<Skill>
 {
     public void Configure(EntityTypeBuilder<Skill> builder)
     {
-        builder.HasKey(s => s.UserId);
+        builder.HasKey(s => s.Id);
     }
 }

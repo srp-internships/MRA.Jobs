@@ -26,8 +26,10 @@ public static class ConfigureServices
         string dbConectionString = configuration.GetConnectionString("SqlServer");
 
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(dbConectionString,
-                builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+
+            options.UseSqlServer(dbConectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
+
+        );
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddScoped<ITestHttpClientService, TestHttpClientService>();
