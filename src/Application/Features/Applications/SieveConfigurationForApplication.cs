@@ -20,9 +20,6 @@ public class SieveConfigurationForApplication : ISieveConfiguration
         mapper.Property<Domain.Entities.Application>(p => p.VacancyId)
             .CanFilter();
 
-        mapper.Property<Domain.Entities.Application>(p => p.CV)
-            .CanFilter()
-            .CanSort();
 
         mapper.Property<Domain.Entities.Application>(p => p.Status)
             .CanFilter()
