@@ -7,8 +7,9 @@ namespace MRA.Jobs.Client.Services.TrainingServices;
 public class TrainingService : ITrainingService
 {
     private readonly HttpClient _httpClient;
+    private readonly ICategoryService _categoryService;
 
-    public TrainingService(HttpClient httpClient)
+    public TrainingService(HttpClient httpClient, ICategoryService categoryService)
     {
         _httpClient = httpClient;
         createCommand = new CreateTrainingVacancyCommand
@@ -22,6 +23,8 @@ public class TrainingService : ITrainingService
             PublishDate = DateTime.Now,
             Fees = 0
         };
+        _categoryService = categoryService;
+
     }
 
     public CreateTrainingVacancyCommand createCommand { get; set; }
@@ -58,39 +61,11 @@ public class TrainingService : ITrainingService
         var result = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
         return result.Items;
     }
+    public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug)
+    {
+        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
+    }
     public async Task<List<TrainingVacancyWithCategoryDto>> GetAllWithCategories()
-    {
-        var trainings = await GetAll();
-
-        var grouped = (from t in trainings
-                       group t by t.CategoryId).ToList();
-
-        var trainingsCategoried = new List<TrainingVacancyWithCategoryDto>();
-        foreach (var training in grouped)
-        {
-            trainingsCategoried.Add(new TrainingVacancyWithCategoryDto
-            {
-                CategoryId = training.Key,
-                Trainings = training.ToList()
-            });
-        }
-
-        return trainingsCategoried;
-    }
-    public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug)
-    {
-        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
-    }
-    public async Task<List<TrainingVacancyListDto>> GetAll()
-    {
-        var result = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
-        return result.Items;
-    }
-    public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug)
-    {
-        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
-    }
-    public async Task<List<TrainingVacancyWithCategoryDto>> GetAllByCategory()
     {
         var trainings = await GetAll();
 
@@ -101,13 +76,21 @@ public class TrainingService : ITrainingService
 
         foreach (var training in sortedTrainings)
         {
+            var categories = await _categoryService.GetAllCategory();
             trainingsWithCategory.Add(new TrainingVacancyWithCategoryDto
             {
                 CategoryId = training.Key,
-                Trainings = training.ToList()
+                CategoryName = categories.FirstOrDefault(c => c.Id == training.Key).Name
+                //Trainings = training.ToList()
             });
         }
         return trainingsWithCategory;
 
+    }
+    public async Task<TrainingVacancyWithCategoryDto> GetCategoriesByName(string name)
+    {
+        var trainings = await GetAllWithCategories();
+        var training = trainings.FirstOrDefault(t => t.CategoryName == name);
+        return training;
     }
 }

@@ -1,0 +1,101 @@
+﻿@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+@using Services.TrainingServices;
+@inject ITrainingService _trainingService;
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Aside Component with Controllers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <aside class="col-md-3" style="margin-bottom:20px">
+                <section class="mb-4">
+                    <div>
+                        <h2>Categories</h2>
+                        @if (inAll)
+                        {
+                            <button class="selectedbtn rounded-2" @onclick="selectedAllCategories">
+                                all @Count
+                            </button>
+                        }
+                        @if (!loading)
+                        {
+                            foreach (var category in Categories)
+                            {
+                                if (category.Selected)
+                                {
+                                    <button class="selectedbtn rounded-2" @onclick="()=>CategoryButtonSelected(category.CategoryName)">
+                                        @category.CategoryName (@category.Trainings.Count)
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="categorybtn rounded-2" @onclick="()=>CategoryButtonSelected(category.CategoryName)">
+                                        @category.CategoryName (@category.Trainings.Count)
+                                    </button>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <h1>Loading...</h1>
+                        }
+                    </div>
+                </section>
+            </aside>
+            <div class="col-md-9">
+                <section>
+                    <ShowTrainings Categories="Categories" />
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+
+@code {
+    public List<TrainingVacancyWithCategoryDto> Categories { get; set; }
+    public int MyProperty { get; set; }
+    bool loading = true;
+    bool inAll = true;
+    public int Count { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await _trainingService.GetAllWithCategories();
+        CountTrainings();
+        loading = false;
+    }
+
+    void CountTrainings()
+    {
+        foreach (var category in Categories)
+        {
+            Count += category.Trainings.Count;
+        }
+    }
+
+    private async void selectedAllCategories()
+    {
+        Categories = await _trainingService.GetAllWithCategories();
+        StateHasChanged();
+    }
+
+    async void CategoryButtonSelected(string categoryName)
+    {
+        var category = Categories.FirstOrDefault(c => c.CategoryName == categoryName);
+        foreach (var item in Categories)
+        {
+            item.Selected = false;
+        }
+        category.Selected = true;
+
+        Categories = new List<TrainingVacancyWithCategoryDto>();
+        var trainings = await _trainingService.GetCategoriesByName(categoryName);
+        Categories.Add(trainings);
+
+        StateHasChanged();
+    }
+}
