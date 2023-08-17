@@ -19,6 +19,13 @@ public class TrainingsController : ApiControllerBase
     }
 
     [HttpGet]
+    [Route("getwithcategories")]
+    public async Task<ActionResult<List<TrainingVacancyWithCategoryDto>>> GetTrainingsWithCategories()
+    {
+        return Ok(await Mediator.Send(new GetTrainingVacancyWithCategoriesQuery()));
+    }
+
+    [HttpGet]
     public async Task<ActionResult<PagedList<TrainingVacancyListDto>>> GetTrainingVacancysWithPagination([FromQuery] PagedListQuery<TrainingVacancyListDto> query)
     {
         return Ok(await Mediator.Send(query));
