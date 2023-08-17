@@ -50,7 +50,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
         _dbContextMock.Setup(x => x.JobVacancies).Returns(jobVacancySetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
-        _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
+        _currentUserServiceMock.Setup(x => x.GetId()) .Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

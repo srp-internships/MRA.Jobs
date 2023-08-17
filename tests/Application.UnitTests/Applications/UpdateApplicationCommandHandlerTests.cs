@@ -24,8 +24,7 @@ public class UpdateApplicationCommandHandlerTests : BaseTestFixture
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
-
-
+        
         // Assert
         act.Should().ThrowAsync<NotFoundException>()
             .WithMessage($"*{nameof(Application)}*{command.Slug}*");

@@ -21,19 +21,13 @@ public class AuthController : ControllerBase
     {
         var result = await _mediator.Send(request);
         if (result.IsSuccess)
-        {
             return Ok(result.Response);
-        }
 
         if (result.ErrorMessage!=null)
-        {
             return BadRequest(result.ErrorMessage);
-        }
 
         if (result.Exception!=null)
-        {
             return BadRequest(result.Exception);
-        }
 
         return BadRequest();
     }
