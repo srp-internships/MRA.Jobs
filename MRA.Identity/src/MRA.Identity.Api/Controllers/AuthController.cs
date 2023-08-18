@@ -19,15 +19,45 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserCommand request)
     {
-        JwtTokenResponse? result = await _mediator.Send(request);
-        return result == null ? Unauthorized() : Ok(result);
+        var result = await _mediator.Send(request);
+        if (result.IsSuccess)
+        {
+            return Ok(result.Response);
+        }
+
+        if (result.ErrorMessage!=null)
+        {
+            return BadRequest(result.ErrorMessage);
+        }
+
+        if (result.Exception!=null)
+        {
+            return BadRequest(result.Exception);
+        }
+
+        return BadRequest();
     }
 
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserCommand request)
     {
-        Guid? result = await _mediator.Send(request);
-        return result == null ? BadRequest() : Ok();
+        var result = await _mediator.Send(request);
+        if (result.IsSuccess)
+        {
+            return Ok(result.Response);
+        }
+
+        if (result.ErrorMessage!=null)
+        {
+            return BadRequest(result.ErrorMessage);
+        }
+
+        if (result.Exception!=null)
+        {
+            return BadRequest(result.Exception);
+        }
+
+        return BadRequest();
     }
 }

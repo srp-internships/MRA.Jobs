@@ -11,7 +11,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
     public void SetUp()
     {
         _handler = new UpdateInternshipVacancyCommandHandler(
-            _dbContextMock.Object, Mapper, _dateTimeMock.Object, _currentUserServiceMock.Object);
+            _dbContextMock.Object, Mapper, _dateTimeMock.Object, _currentUserServiceMock.Object, _slugGenerator.Object);
     }
 
     [Test]

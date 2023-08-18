@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Tags;
 
@@ -20,7 +21,7 @@ public class AddTagToTrainingVacancyCommandHandler : IRequestHandler<AddTagToTra
 
     public async Task<bool> Handle(AddTagToTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        var trainingVacancy = await _context.TrainingVacancies.FindAsync(new object[] { request.TrainingVacancySlug }, cancellationToken);
+        var trainingVacancy = await _context.TrainingVacancies.FirstOrDefaultAsync(t => t.Slug == request.TrainingVacancySlug, cancellationToken);
 
         if (trainingVacancy == null)
             throw new NotFoundException(nameof(JobVacancy), request.TrainingVacancySlug);

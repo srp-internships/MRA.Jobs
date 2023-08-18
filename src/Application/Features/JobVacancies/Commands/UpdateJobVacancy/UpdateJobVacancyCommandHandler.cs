@@ -1,4 +1,6 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.SlugGeneratorService;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.UpdateJobVacancy;
 
@@ -8,27 +10,30 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
     private readonly IDateTime _dateTime;
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly ISlugGeneratorService _slugService;
 
     public UpdateJobVacancyCommandHandler(IApplicationDbContext dbContext, IMapper mapper, IDateTime dateTime,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService, ISlugGeneratorService slugService)
     {
         _dbContext = dbContext;
         _mapper = mapper;
         _dateTime = dateTime;
         _currentUserService = currentUserService;
+        _slugService = slugService;
     }
 
     public async Task<Guid> Handle(UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Slug }, cancellationToken: cancellationToken);
+        var jobVacancy = await _dbContext.JobVacancies.FirstOrDefaultAsync(j => j.Slug == request.Slug, cancellationToken);
         _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Slug);
 
         VacancyCategory category =
-            await _dbContext.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken);
+            await _dbContext.Categories.FirstOrDefaultAsync(j => j.Slug == request.Slug, cancellationToken);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
 
         _mapper.Map(request, jobVacancy);
+        jobVacancy.Slug = _slugService.GenerateSlug($"{jobVacancy.Title}-{jobVacancy.CreatedAt.Year}-{jobVacancy.CreatedAt.Month}");
 
         VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
         {

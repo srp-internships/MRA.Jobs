@@ -16,14 +16,15 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
             _dbContextMock.Object,
             Mapper,
             _currentUserServiceMock.Object,
-            _dateTimeMock.Object);
+            _dateTimeMock.Object,
+            _slugGenerator.Object);
     }
 
     [Test]
     public void Handle_GivenNonExistentTrainingModelId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { Slug=string.Empty };
+        var command = new UpdateTrainingVacancyCommand { Slug = string.Empty };
         _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(command.Slug)).ReturnsAsync(null as TrainingVacancy);
 
         // Act
@@ -40,7 +41,7 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
     public void Handle_GivenNonExistentCategoryId_ShouldThrowNotFoundException()
     {
         // Arrange
-        var command = new UpdateTrainingVacancyCommand { Slug=string.Empty, CategoryId = Guid.Empty };
+        var command = new UpdateTrainingVacancyCommand { Slug = string.Empty, CategoryId = Guid.Empty };
         _dbContextMock.Setup(x => x.TrainingVacancies.FindAsync(new object[] { command.Slug }, CancellationToken.None)).ReturnsAsync(new TrainingVacancy());
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { command.CategoryId }, CancellationToken.None)).ReturnsAsync(null as VacancyCategory);
 
@@ -58,7 +59,7 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
         // Arrange
         var command = new UpdateTrainingVacancyCommand
         {
-            Slug=string.Empty,
+            Slug = string.Empty,
             Title = "Training Model Title",
             ShortDescription = "New Short Description",
             Description = "New Job Description",

@@ -2,7 +2,7 @@
 
 namespace MRA.Identity.Application.Contract.User.Commands;
 
-public class RegisterUserCommand : IRequest<Guid?>
+public class RegisterUserCommand :IRequest<ApplicationResponse<Guid>>
 {
     public string Email { get; set; } = "";
     public string FirstName { get; set; } = "";

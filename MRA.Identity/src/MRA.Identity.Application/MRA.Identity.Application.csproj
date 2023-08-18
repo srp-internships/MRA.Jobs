@@ -7,20 +7,33 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Common\Exceptions\"/>
-        <Folder Include="Common\Models\"/>
-        <Folder Include="Common\Seive\"/>
+        <Folder Include="Common\Exceptions\" />
+        <Folder Include="Common\Models\" />
+        <Folder Include="Common\Seive\" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj"/>
-        <ProjectReference Include="..\MRA.Identity.Domain\MRA.Identity.Domain.csproj"/>
+        <ProjectReference Include="..\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj" />
+        <ProjectReference Include="..\MRA.Identity.Domain\MRA.Identity.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10"/>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Features\Roles\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Features\Roles\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Features\Roles\**" />
     </ItemGroup>
 
 </Project>
