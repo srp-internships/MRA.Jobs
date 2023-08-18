@@ -12,14 +12,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1e53947-9aef-4ed5-b626-eea786f53406" name="Changes" comment="changes Header">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.MRA.Jobs/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.MRA.Jobs/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.MRA.Jobs/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.MRA.Jobs/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="d1e53947-9aef-4ed5-b626-eea786f53406" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MRA.Jobs/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MRA.Jobs/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MRA.Jobs.Client/MRA.Jobs.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/MRA.Jobs.Client/MRA.Jobs.Client.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WebUI/wwwroot/api/specification.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/WebUI/wwwroot/api/specification.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MRA.Jobs.Client/Components/Client/Header.razor" beforeDir="false" afterPath="$PROJECT_DIR$/src/MRA.Jobs.Client/Components/Client/Header.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MRA.Jobs.Client/Pages/Client/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/src/MRA.Jobs.Client/Pages/Client/Home.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MRA.Jobs.Client/Pages/Client/Main.razor" beforeDir="false" afterPath="$PROJECT_DIR$/src/MRA.Jobs.Client/Pages/Client/Main.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MRA.Jobs.Client/wwwroot/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/MRA.Jobs.Client/wwwroot/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +29,19 @@
       <map>
         <entry key="$PROJECT_DIR$" value="main" />
       </map>
+    </option>
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="68e2bbc9-1727-4d28-9ba7-f8c29b2a9009" />
+        <option name="url" value="https://github.com/srp-internships/MRA-Jobs.git" />
+      </UrlAndAccount>
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
@@ -57,18 +68,18 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "C:\\Users\\komiljon.najmitdinov\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\DecompilerCache",
-      "C:\\Users\\komiljon.najmitdinov\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\SourcesCache",
-      "C:\\Users\\komiljon.najmitdinov\\AppData\\Local\\Symbols\\src"
+      "C:\\Users\\ASUS\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\ASUS\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\ASUS\\AppData\\Local\\Symbols\\src"
     ]
   }
 }]]></component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.MRA.Jobs.Web: IIS Express">
+  <component name="RunManager" selected=".NET Launch Settings Profile.MRA.Jobs.Client: https">
     <configuration name="Domain.UnitTests" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/tests/Domain.UnitTests/Domain.UnitTests.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net7.0" />
@@ -172,6 +183,8 @@
       <workItem from="1691550728129" duration="4698000" />
       <workItem from="1691637245826" duration="3079000" />
       <workItem from="1691821929908" duration="1296000" />
+      <workItem from="1692336897884" duration="73000" />
+      <workItem from="1692337018041" duration="6531000" />
     </task>
     <task id="LOCAL-00001" summary="changes Header">
       <created>1691822723592</created>
