@@ -79,7 +79,7 @@
                 <div>
                     @foreach (var vacancy in _vacanciesOnPage)
                     {
-                        <a href="#">
+                        <a href="/jobdetails/@vacancy.Slug">
                             <div class="card-vacancy w-100 bg-white shadow-lg rounded mb-4">
                                 <div class="d-flex flex-column p-3">
                                     <h2 class="mb-2 text-black">@vacancy.Title</h2>
