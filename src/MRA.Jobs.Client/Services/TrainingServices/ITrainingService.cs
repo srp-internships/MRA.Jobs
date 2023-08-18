@@ -9,6 +9,7 @@ public interface ITrainingService
     Task<TrainingVacancyDetailedResponse> GetBySlug(string slug);
     Task<List<TrainingVacancyWithCategoryDto>> GetAllWithCategories();
     Task<TrainingVacancyWithCategoryDto> GetCategoriesByName(string slug);
+    Task<List<TrainingVacancyListDto>> SearchTrainings(string searchInput);
 
     Task<HttpResponseMessage> Create();
     Task<HttpResponseMessage> Update(string slug);

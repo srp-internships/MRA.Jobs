@@ -1,8 +1,7 @@
-﻿@page "/training/{searchInput}"
-
-@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+﻿@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @using Services.TrainingServices;
 @inject ITrainingService _trainingService;
+@inject NavigationManager _manager;
 
 <head>
     <meta charset="UTF-8">
@@ -56,7 +55,7 @@
             </aside>
             <div class="col-md-9">
                 <section>
-                    @if (Trainings != null)
+                    @if (Trainings != null && searchInput == null)
                     {
                         @foreach (var category in Trainings)
                         {
@@ -77,6 +76,24 @@
                             }
                         }
                     }
+                    else if (searchInput != null && SearchTrainings != null)
+                    {
+                        foreach (var training in SearchTrainings)
+                        {
+                            <div class="vacancy-card" style="margin-bottom:20px">
+                                <div class="vacancy-card-header">
+                                    <a href="/trainings/@training.Slug" class="vacancy-title">
+                                        @training.Title
+                                    </a>
+                                </div>
+                                <div class="vacancy-description">
+                                    <p>
+                                        @training.ShortDescription
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    }
                 </section>
             </div>
         </div>
@@ -94,25 +111,26 @@
     bool inAll = true;
     public int Count { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected async override Task OnParametersSetAsync()
     {
+        TrainingsWithCategories = await _trainingService.GetAllWithCategories();
+        CountTrainings();
         if (searchInput == null)
         {
-            TrainingsWithCategories = await _trainingService.GetAllWithCategories();
             Trainings = await _trainingService.GetAllWithCategories();
-            CountTrainings();
 
             inAll = true;
         }
         else
         {
-
+            GetSearchedTrainings();
         }
         loading = false;
     }
 
     void CountTrainings()
     {
+        Count = 0;
         foreach (var category in TrainingsWithCategories)
         {
             Count += category.Trainings.Count;
@@ -122,13 +140,18 @@
     private async void selectedAllCategories()
     {
         Trainings = await _trainingService.GetAllWithCategories();
-        inAll = true;
+        CountTrainings();
 
         foreach (var item in TrainingsWithCategories)
         {
             item.Selected = false;
         }
 
+        inAll = true;
+        searchInput = null;
+        SearchTrainings = new List<TrainingVacancyListDto>();
+
+        _manager.NavigateTo("/trainings");
         StateHasChanged();
     }
 
@@ -139,17 +162,22 @@
         {
             item.Selected = false;
         }
-        category.Selected = true;
-        inAll = false;
 
         Trainings = new List<TrainingVacancyWithCategoryDto>();
         Trainings.Add(await _trainingService.GetCategoriesByName(slug));
 
+        category.Selected = true;
+        inAll = false;
+        searchInput = null;
+        SearchTrainings = new List<TrainingVacancyListDto>();
+
+        _manager.NavigateTo("/trainings");
         StateHasChanged();
     }
 
     async void GetSearchedTrainings()
     {
-        
+        SearchTrainings = await _trainingService.SearchTrainings(searchInput);
+        StateHasChanged();
     }
 }

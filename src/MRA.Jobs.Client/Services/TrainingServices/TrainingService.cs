@@ -73,4 +73,10 @@ public class TrainingService : ITrainingService
         var training = await _httpClient.GetFromJsonAsync<TrainingVacancyWithCategoryDto>($"trainings/getwithcategories/{slug}");
         return training;
     }
+
+    public async Task<List<TrainingVacancyListDto>> SearchTrainings(string searchInput)
+    {
+        var trainings = await _httpClient.GetFromJsonAsync<List<TrainingVacancyListDto>>($"trainings/search/{searchInput}");
+        return trainings;
+    }
 }

@@ -1,13 +1,15 @@
-﻿<head>
+﻿@inject NavigationManager _manager;
+
+<head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <div class="container mt-5 main">
         <div class="input-group has-search">
-            <input type="text" class="form-control" placeholder="Search...">
+            <input type="text" @bind-value="@Text" class="form-control" placeholder="Search...">
             <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-primary" type="button" @onclick="SearchClicked">
                     <i class="fas fa-search"></i>
                 </button>
             </div>
@@ -16,5 +18,10 @@
 </body>
 
 @code {
+    public string Text { get; set; }
 
+    void SearchClicked()
+    {
+        _manager.NavigateTo($"trainings/{Text}");
+    }
 }
