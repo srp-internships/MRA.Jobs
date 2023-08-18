@@ -7,17 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Common\Interfaces\"/>
-        <Folder Include="Persistence\TableConfigurations\"/>
+        <Folder Include="Common\Interfaces\" />
+        <Folder Include="Persistence\TableConfigurations\" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MRA.Identity.Application\MRA.Identity.Application.csproj"/>
+        <ProjectReference Include="..\MRA.Identity.Application\MRA.Identity.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.10"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10"/>
+        <PackageReference Include="Azure.Communication.Email" Version="1.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
     </ItemGroup>
 
 </Project>
