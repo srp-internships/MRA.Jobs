@@ -1,4 +1,4 @@
-﻿@page "/vacancy"
+﻿@*@page "/vacancy"
 @layout Main
 @inject IVacancyService VacancyService
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
@@ -85,4 +85,4 @@
         VacancyService.OnChange -= StateHasChanged;
     }
 
-}
+}*@
