@@ -2168,6 +2168,38 @@
         }
       }
     },
+    "/api/trainings/search/{searchInput}": {
+      "get": {
+        "tags": [
+          "Trainings"
+        ],
+        "operationId": "Trainings_GetSearchedTrainings",
+        "parameters": [
+          {
+            "name": "searchInput",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/trainings/getwithcategories/{slug}": {
       "get": {
         "tags": [

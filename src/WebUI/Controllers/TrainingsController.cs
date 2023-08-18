@@ -18,6 +18,13 @@ public class TrainingsController : ApiControllerBase
         return Ok(training);
     }
 
+    [HttpGet("search/{searchInput}")]
+    public async Task<IActionResult> GetSearchedTrainings(string searchInput)
+    {
+        var trainings = await Mediator.Send(new GetTrainingsSearchQuery { SearchInout = searchInput });
+        return Ok(trainings);
+    }
+
     [HttpGet("getwithcategories/{slug}")]
     public async Task<ActionResult<TrainingVacancyWithCategoryDto>> GetTrainingsCategoriesWithSlug(string slug)
     {

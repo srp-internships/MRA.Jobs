@@ -1,4 +1,6 @@
-﻿@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+﻿@page "/training/{searchInput}"
+
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @using Services.TrainingServices;
 @inject ITrainingService _trainingService;
 
@@ -21,20 +23,26 @@
                                 all @Count
                             </button>
                         }
+                        else
+                        {
+                            <button class="categorybtn rounded-2" @onclick="selectedAllCategories">
+                                all @Count
+                            </button>
+                        }
                         @if (!loading)
                         {
-                            foreach (var category in Categories)
+                            foreach (var category in TrainingsWithCategories)
                             {
                                 if (category.Selected)
                                 {
-                                    <button class="selectedbtn rounded-2" @onclick="()=>CategoryButtonSelected(category.CategoryName)">
-                                        @category.CategoryName (@category.Trainings.Count)
+                                    <button class="selectedbtn rounded-2" @onclick="()=>CategoryButtonSelected(category.Category.Slug)">
+                                        @category.Category.Name (@category.Trainings.Count)
                                     </button>
                                 }
                                 else
                                 {
-                                    <button class="categorybtn rounded-2" @onclick="()=>CategoryButtonSelected(category.CategoryName)">
-                                        @category.CategoryName (@category.Trainings.Count)
+                                    <button class="categorybtn rounded-2" @onclick="()=>CategoryButtonSelected(category.Category.Slug)">
+                                        @category.Category.Name (@category.Trainings.Count)
                                     </button>
                                 }
                             }
@@ -48,7 +56,27 @@
             </aside>
             <div class="col-md-9">
                 <section>
-                    <ShowTrainings Categories="Categories" />
+                    @if (Trainings != null)
+                    {
+                        @foreach (var category in Trainings)
+                        {
+                            foreach (var training in category.Trainings)
+                            {
+                                <div class="vacancy-card" style="margin-bottom:20px">
+                                    <div class="vacancy-card-header">
+                                        <a href="/trainings/@training.Slug" class="vacancy-title">
+                                            @training.Title
+                                        </a>
+                                    </div>
+                                    <div class="vacancy-description">
+                                        <p>
+                                            @training.ShortDescription
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
                 </section>
             </div>
         </div>
@@ -56,22 +84,36 @@
 </body>
 
 @code {
-    public List<TrainingVacancyWithCategoryDto> Categories { get; set; }
-    public int MyProperty { get; set; }
+    [Parameter]
+    public string searchInput { get; set; }
+    public List<TrainingVacancyListDto> SearchTrainings { get; set; }
+
+    public List<TrainingVacancyWithCategoryDto> TrainingsWithCategories { get; set; }
+    public List<TrainingVacancyWithCategoryDto> Trainings { get; set; }
     bool loading = true;
     bool inAll = true;
     public int Count { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Categories = await _trainingService.GetAllWithCategories();
-        CountTrainings();
+        if (searchInput == null)
+        {
+            TrainingsWithCategories = await _trainingService.GetAllWithCategories();
+            Trainings = await _trainingService.GetAllWithCategories();
+            CountTrainings();
+
+            inAll = true;
+        }
+        else
+        {
+
+        }
         loading = false;
     }
 
     void CountTrainings()
     {
-        foreach (var category in Categories)
+        foreach (var category in TrainingsWithCategories)
         {
             Count += category.Trainings.Count;
         }
@@ -79,23 +121,35 @@
 
     private async void selectedAllCategories()
     {
-        Categories = await _trainingService.GetAllWithCategories();
+        Trainings = await _trainingService.GetAllWithCategories();
+        inAll = true;
+
+        foreach (var item in TrainingsWithCategories)
+        {
+            item.Selected = false;
+        }
+
         StateHasChanged();
     }
 
-    async void CategoryButtonSelected(string categoryName)
+    async void CategoryButtonSelected(string slug)
     {
-        var category = Categories.FirstOrDefault(c => c.CategoryName == categoryName);
-        foreach (var item in Categories)
+        var category = TrainingsWithCategories.FirstOrDefault(c => c.Category.Slug == slug);
+        foreach (var item in TrainingsWithCategories)
         {
             item.Selected = false;
         }
         category.Selected = true;
+        inAll = false;
 
-        Categories = new List<TrainingVacancyWithCategoryDto>();
-        var trainings = await _trainingService.GetCategoriesByName(categoryName);
-        Categories.Add(trainings);
+        Trainings = new List<TrainingVacancyWithCategoryDto>();
+        Trainings.Add(await _trainingService.GetCategoriesByName(slug));
 
         StateHasChanged();
+    }
+
+    async void GetSearchedTrainings()
+    {
+        
     }
 }

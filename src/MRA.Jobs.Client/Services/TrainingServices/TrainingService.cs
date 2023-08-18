@@ -7,9 +7,8 @@ namespace MRA.Jobs.Client.Services.TrainingServices;
 public class TrainingService : ITrainingService
 {
     private readonly HttpClient _httpClient;
-    private readonly ICategoryService _categoryService;
 
-    public TrainingService(HttpClient httpClient, ICategoryService categoryService)
+    public TrainingService(HttpClient httpClient)
     {
         _httpClient = httpClient;
         createCommand = new CreateTrainingVacancyCommand
@@ -23,8 +22,6 @@ public class TrainingService : ITrainingService
             PublishDate = DateTime.Now,
             Fees = 0
         };
-        _categoryService = categoryService;
-
     }
 
     public CreateTrainingVacancyCommand createCommand { get; set; }
@@ -65,15 +62,15 @@ public class TrainingService : ITrainingService
     {
         return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
     }
+
     public async Task<List<TrainingVacancyWithCategoryDto>> GetAllWithCategories()
     {
         var result = await _httpClient.GetFromJsonAsync<List<TrainingVacancyWithCategoryDto>>("trainings/getwithcategories");
         return result;
     }
-    public async Task<TrainingVacancyWithCategoryDto> GetCategoriesByName(string name)
+    public async Task<TrainingVacancyWithCategoryDto> GetCategoriesByName(string slug)
     {
-        var trainings = await GetAllWithCategories();
-        var training = trainings.FirstOrDefault(t => t.CategoryName == name);
+        var training = await _httpClient.GetFromJsonAsync<TrainingVacancyWithCategoryDto>($"trainings/getwithcategories/{slug}");
         return training;
     }
 }
