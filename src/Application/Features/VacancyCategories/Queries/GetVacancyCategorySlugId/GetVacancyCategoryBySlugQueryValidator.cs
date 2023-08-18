@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+﻿using MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Queries;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryById;
 

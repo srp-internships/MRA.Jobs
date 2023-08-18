@@ -2200,7 +2200,7 @@
         }
       }
     },
-    "/api/trainings/getwithcategories/{slug}": {
+    "/api/trainings/categories/{slug}": {
       "get": {
         "tags": [
           "Trainings"
@@ -2221,9 +2221,10 @@
           "200": {
             "description": "",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
-                  "$ref": "#/components/schemas/TrainingVacancyWithCategoryDto"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2231,7 +2232,7 @@
         }
       }
     },
-    "/api/trainings/getwithcategories": {
+    "/api/trainings/categories": {
       "get": {
         "tags": [
           "Trainings"
@@ -2245,7 +2246,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/TrainingVacancyWithCategoryDto"
+                    "$ref": "#/components/schemas/TrainingCategoriesResponce"
                   }
                 }
               }
@@ -3507,7 +3508,7 @@
           }
         }
       },
-      "TrainingVacancyWithCategoryDto": {
+      "TrainingCategoriesResponce": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3523,14 +3524,42 @@
               }
             ]
           },
-          "trainings": {
+          "selected": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PagedListOfTrainingVacancyListDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currentPageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/TrainingVacancyListDto"
             }
           },
-          "selected": {
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
             "type": "boolean"
           }
         }
@@ -3582,41 +3611,6 @@
           "slug": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "PagedListOfTrainingVacancyListDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "totalCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "currentPageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "items": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/TrainingVacancyListDto"
-            }
-          },
-          "hasPreviousPage": {
-            "type": "boolean"
-          },
-          "hasNextPage": {
-            "type": "boolean"
           }
         }
       },

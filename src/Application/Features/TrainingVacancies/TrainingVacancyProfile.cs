@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+using MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies;
 

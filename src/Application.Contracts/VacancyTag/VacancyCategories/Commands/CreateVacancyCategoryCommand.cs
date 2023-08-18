@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
+﻿namespace MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Commands;
 
 public class CreateVacancyCategoryCommand : IRequest<Guid>
 {

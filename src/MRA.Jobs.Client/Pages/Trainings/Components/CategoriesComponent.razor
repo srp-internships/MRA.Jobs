@@ -105,8 +105,8 @@
     public string searchInput { get; set; }
     public List<TrainingVacancyListDto> SearchTrainings { get; set; }
 
-    public List<TrainingVacancyWithCategoryDto> TrainingsWithCategories { get; set; }
-    public List<TrainingVacancyWithCategoryDto> Trainings { get; set; }
+    public List<TrainingCategoriesResponce> TrainingsWithCategories { get; set; }
+    public List<TrainingCategoriesResponce> Trainings { get; set; }
     bool loading = true;
     bool inAll = true;
     public int Count { get; set; }
@@ -163,7 +163,7 @@
             item.Selected = false;
         }
 
-        Trainings = new List<TrainingVacancyWithCategoryDto>();
+        Trainings = new List<TrainingCategoriesResponce>();
         Trainings.Add(await _trainingService.GetCategoriesByName(slug));
 
         category.Selected = true;

@@ -63,14 +63,14 @@ public class TrainingService : ITrainingService
         return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
     }
 
-    public async Task<List<TrainingVacancyWithCategoryDto>> GetAllWithCategories()
+    public async Task<List<TrainingCategoriesResponce>> GetAllWithCategories()
     {
-        var result = await _httpClient.GetFromJsonAsync<List<TrainingVacancyWithCategoryDto>>("trainings/getwithcategories");
+        var result = await _httpClient.GetFromJsonAsync<List<TrainingCategoriesResponce>>("trainings/getwithcategories");
         return result;
     }
-    public async Task<TrainingVacancyWithCategoryDto> GetCategoriesByName(string slug)
+    public async Task<TrainingCategoriesResponce> GetCategoriesByName(string slug)
     {
-        var training = await _httpClient.GetFromJsonAsync<TrainingVacancyWithCategoryDto>($"trainings/getwithcategories/{slug}");
+        var training = await _httpClient.GetFromJsonAsync<TrainingCategoriesResponce>($"trainings/getwithcategories/{slug}");
         return training;
     }
 

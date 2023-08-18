@@ -24,8 +24,8 @@ public class
     public async Task<PagedList<TrainingVacancyListDto>> Handle(PagedListQuery<TrainingVacancyListDto> request,
         CancellationToken cancellationToken)
     {
-        PagedList<TrainingVacancyListDto> result = _sieveProcessor.ApplyAdnGetPagedList(request,
-            _context.TrainingVacancies.Include(t => t.Category).AsNoTracking(), _mapper.Map<TrainingVacancyListDto>);
-        return await Task.FromResult(result);
+            PagedList<TrainingVacancyListDto> result = _sieveProcessor.ApplyAdnGetPagedList(request,
+                _context.TrainingVacancies.Include(t => t.Category).AsNoTracking(), _mapper.Map<TrainingVacancyListDto>);
+            return await Task.FromResult(result);
     }
 }

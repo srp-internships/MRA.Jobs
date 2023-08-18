@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+﻿namespace MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Responses;
 
 public class CategoryResponse
 {

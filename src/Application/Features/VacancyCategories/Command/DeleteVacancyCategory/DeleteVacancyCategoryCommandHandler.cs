@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
+using MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Commands;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Command.DeleteVacancyCategory;
 

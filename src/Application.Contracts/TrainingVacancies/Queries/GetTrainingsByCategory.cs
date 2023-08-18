@@ -3,7 +3,7 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using Sieve.Models;
 
 namespace MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
-public class GetTrainingsSearchQuery : SieveModel, IRequest<PagedList<TrainingVacancyListDto>>
+public class GetTrainingsByCategory : SieveModel, IRequest<PagedList<TrainingVacancyListDto>>
 {
-    public string SearchInout { get; set; }
+    public string CategorySlug { get; set; }
 }

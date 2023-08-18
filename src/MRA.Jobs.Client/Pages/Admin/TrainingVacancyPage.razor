@@ -1,9 +1,10 @@
 ﻿@page "/dashboard/trainings"
 @layout Dashboard
-@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-@using MRA.Jobs.Client.Services.TrainingServices;
-@using MRA.Jobs.Client.Components.Dialogs;
+@    using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+@    using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+@    using MRA.Jobs.Client.Services.TrainingServices;
+@    using MRA.Jobs.Client.Components.Dialogs;
+    using MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Responses;
 @inject ITrainingService trainingService
 @inject ICategoryService categoryService
 

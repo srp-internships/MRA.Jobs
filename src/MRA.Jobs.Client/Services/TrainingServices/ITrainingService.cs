@@ -7,8 +7,8 @@ public interface ITrainingService
 {
     Task<List<TrainingVacancyListDto>> GetAll();
     Task<TrainingVacancyDetailedResponse> GetBySlug(string slug);
-    Task<List<TrainingVacancyWithCategoryDto>> GetAllWithCategories();
-    Task<TrainingVacancyWithCategoryDto> GetCategoriesByName(string slug);
+    Task<List<TrainingCategoriesResponce>> GetAllWithCategories();
+    Task<TrainingCategoriesResponce> GetCategoriesByName(string slug);
     Task<List<TrainingVacancyListDto>> SearchTrainings(string searchInput);
 
     Task<HttpResponseMessage> Create();

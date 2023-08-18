@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+﻿namespace MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Queries;
 
 public class GetVacancyCategoryBySlugQuery : IRequest<Responses.CategoryResponse>
 {

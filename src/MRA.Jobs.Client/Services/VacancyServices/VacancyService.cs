@@ -1,8 +1,9 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+using MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Commands;
+using MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Responses;
+
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
 public class VacancyService : IVacancyService

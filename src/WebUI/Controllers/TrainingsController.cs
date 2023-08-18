@@ -25,17 +25,17 @@ public class TrainingsController : ApiControllerBase
         return Ok(trainings);
     }
 
-    [HttpGet("getwithcategories/{slug}")]
-    public async Task<ActionResult<TrainingVacancyWithCategoryDto>> GetTrainingsCategoriesWithSlug(string slug)
+    [HttpGet("categories/{slug}")]
+    public async Task<IActionResult> GetTrainingsCategoriesWithSlug(string slug)
     {
-        var result = await Mediator.Send(new GetTrainingCategoriesByCategoryNameQuery { CategorySlug = slug });
+        var result = await Mediator.Send(new GetTrainingsByCategory { CategorySlug = slug });
         return Ok(result);
     }
 
-    [HttpGet("getwithcategories")]
-    public async Task<ActionResult<List<TrainingVacancyWithCategoryDto>>> GetTrainingsWithCategories()
+    [HttpGet("categories")]
+    public async Task<ActionResult<List<TrainingCategoriesResponce>>> GetTrainingsWithCategories()
     {
-        return Ok(await Mediator.Send(new GetTrainingVacancyWithCategoriesQuery()));
+        return Ok(await Mediator.Send(new GetTrainingCategoriesQuery()));
     }
 
     [HttpGet]
