@@ -1,10 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MRA.Jobs.Application.Common.Sieve;
+using MRA.Jobs.Infrastructure.Identity;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;
@@ -26,7 +27,7 @@ public static class ConfigureServices
             options.UseSqlServer(dbConnectionString,
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-       
+
         services.AddScoped<ITestHttpClientService, TestHttpClientService>();
 
         services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
@@ -38,12 +39,9 @@ public static class ConfigureServices
 
     public static IServiceCollection AddAppIdentity(this IServiceCollection services, IConfiguration configuration)
     {
-        // services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         services.AddOptions();
 
         services.AddScoped<ICurrentUserService, CurrentUserService>();
-        // services.AddScoped<IClaimsTransformation, ClaimsTransformation>();
-        // services.AddScoped<IAuthorizationHandler, CheckCurrentUserAuthHandler>();
 
 
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -57,8 +55,20 @@ public static class ConfigureServices
         {
             auth.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
-                // .AddRequirements(new CheckCurrentUserRequirement())
                 .Build();
+
+            auth.AddPolicy(ApplicationPolicies.Administrator, op => op
+                .RequireClaim(ClaimTypes.Role, ApplicationClaimValues.Administrator)
+                .RequireClaim(ApplicationClaimsTypes.Applicaton, ApplicationClaimValues.ApplicationName));
+
+            auth.AddPolicy(ApplicationPolicies.Reviewer, op => op
+                .RequireClaim(ClaimTypes.Role, ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator)
+                .RequireClaim(ApplicationClaimsTypes.Applicaton, ApplicationClaimValues.ApplicationName));
+
+            auth.AddPolicy(ApplicationPolicies.Applicant, op => op
+                .RequireClaim(ClaimTypes.Role, ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
+                    ApplicationClaimValues.Administrator)
+                .RequireClaim(ApplicationClaimsTypes.Applicaton, ApplicationClaimValues.ApplicationName));
         });
 
         return services;
