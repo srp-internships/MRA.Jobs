@@ -6,7 +6,7 @@
 </head>
 <body>
     <div class="container mt-5 main">
-        <div class="input-group has-search">
+        <div class="input-group has-search" style="margin-top:125px">
             <input type="text" @bind-value="@Text" @oninput="OnInput" @onkeypress="@(e=>HandleKeyDown(e))" class="form-control" placeholder="Search...">
             <div class="input-group-append">
                 <button class="btn btn-primary" type="button" @onclick="SearchClicked">

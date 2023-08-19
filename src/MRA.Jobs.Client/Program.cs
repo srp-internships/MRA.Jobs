@@ -12,6 +12,7 @@ using MRA.Jobs.Client.Services.ApplicationService;
 using MRA.Jobs.Client.Services.InternshipsServices;
 using MRA.Jobs.Client.Services.TrainingServices;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
