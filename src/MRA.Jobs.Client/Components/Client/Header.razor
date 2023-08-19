@@ -1,48 +1,80 @@
-<header class="header bg-light">
-    <div class="container">
-        <div class="w-100 row flex-row p-3">
-            <div class="col-2">
-                <a class="" href="#">
-                    <img class="logo" src="./images/SRP_icon.png" alt="">
-                    <span class="logo-text">
-                        SILK ROAD<br><small>PROFESSIONALS</small>
-                    </span>
-                </a>
-            </div>
-            <!-- Menu -->
-            <div class="col-7 d-flex mx-3">
-                <div class="w-100 d-flex flex-row justify-content-between align-items-center">
-                    <div class="col">
-                        <a href="">Home</a>
-                    </div>
-                    <div class="col">
-                        <a href="jobs">Jobs</a>
-                    </div>
-                    <div class="col">
-                        <a href="internship">Internships</a>
-                    </div>
-                    <div class="col">
-                        <a href="trainings">Trainings</a>
-                    </div>
-                </div>
-            </div>
-            <!-- End Menu -->
-            <!-- Reg/Login -->
-            @*<div class="col-3 d-flex">
-            <div class="row flex-row w-100 justify-content-between align-items-center">
-            <div class="col-6">
-            <a href="">Registration</a>
-            </div>
-            <div class="col-6">
-            <a href="login">Login</a>
-            </div>
-            </div>
-            </div>*@
-        </div>
-    </div>
+﻿@inject AuthenticationStateProvider AuthProvider
+<header id="header" class="header fixed-top d-flex align-items-center">
+	<div class="container-fluid d-flex align-items-center justify-content-between">
+		<a href="header"
+		   class="logo d-flex align-items-center me-auto me-xl-0">
+			<!-- Uncomment the line below if you also wish to use an image logo -->
+			<!-- <img src="assets/img/logo.png" alt=""> -->
+			<img src="images/srp_icon.png" class="img-fluid"/>
+			@*<img src="images/bluewhite.png" style="height:30%; width:30%;margin:-40px 0" class="img-fluid"/>*@
+			<div class="col">
+				<h1></h1>
+				<h1>SILK ROAD</h1>
+				<h1 style="font-size: 15.4px">PROFESSIONALS</h1>
+			</div>
+
+			<!-- <span>.</span> -->
+		</a>
+
+		<!-- Nav Menu -->
+		<nav id="navmenu" class="navmenu">
+			<ul>
+				<li>
+					<a href="home#hero" class="active">Home</a>
+				</li>
+				<li>
+					<a href="home#about">About</a>
+				</li>
+				<li>
+					<a href="jobs">Jobs</a>
+				</li>
+				<li>
+					<a href="internships">Internships</a>
+				</li>
+				<li>
+					<a href="Trainings">Trainings</a>
+				</li>
+				<li>
+					<a href="https://www.silkroadprofessionals.com/team/team/">Team</a>
+				</li>
+				@*<li>
+				<a href="blog.html">Blog</a>
+				</li>*@
+
+				<li>
+					<a href="home#contact">Contact</a>
+				</li>
+			</ul>
+
+			<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+		</nav>
+		<!-- End Nav Menu -->
+		<nav id="navmenu" class="navmenu" style="margin-right:40px;">
+			<ul>
+				<li class="dropdown has-dropdown">
+					<a href="#">
+						<i class="bi bi-person-circle" style="font-size:150%"></i>
+					</a>
+					<ul class="dd-box-shadow" style="left:-150px; right:0px">
+						<CascadingAuthenticationState>
+							<AuthorizeView>
+								<Authorized>
+									<li><a href="ApplicantPage">Profile</a></li>
+									<li><a href="ApplicantClient"></a>Application</li>
+									<li><a href="#">Sign Out</a></li>
+								</Authorized>
+								<NotAuthorized>
+									<li><a href="SignIn">Sing In</a></li>
+									<li><a href="SignUp">Sing Up</a></li>
+								</NotAuthorized>
+							</AuthorizeView>
+						</CascadingAuthenticationState>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
 </header>
 
 
-@code {
 
-}

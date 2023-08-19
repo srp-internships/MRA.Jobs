@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MRA.Jobs.Infrastructure.Identity;
-using MRA.Jobs.Infrastructure.Identity.Entities;
+// using MRA.Jobs.Infrastructure.Identity.Entities;
 using MRA.Jobs.Infrastructure.Persistence;
 using NUnit.Framework;
 using Respawn;
@@ -63,12 +63,12 @@ public class Testing
     {
         using IServiceScope scope = _scopeFactory.CreateScope();
 
-        UserManager<ApplicationUser> userManager =
-            scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        // UserManager<ApplicationUser> userManager =
+            // scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-        ApplicationUser user = new ApplicationUser { UserName = userName, Email = userName };
+        // ApplicationUser user = new ApplicationUser { UserName = userName, Email = userName };
 
-        IdentityResult result = await userManager.CreateAsync(user, password);
+        // IdentityResult result = await userManager.CreateAsync(user, password);
 
         if (roles.Any())
         {
@@ -80,19 +80,20 @@ public class Testing
                 await roleManager.CreateAsync(new IdentityRole(role));
             }
 
-            await userManager.AddToRolesAsync(user, roles);
+            // await userManager.AddToRolesAsync(user, roles);
         }
 
-        if (result.Succeeded)
-        {
-            _currentUserId = user.Id;
+        // if (result.Succeeded)
+        // {
+            // _currentUserId = user.Id;
 
-            return _currentUserId;
-        }
+            // return _currentUserId;
+        // }
 
-        string errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
+        // string errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
 
-        throw new Exception($"Unable to create {userName}.{Environment.NewLine}{errors}");
+        throw new Exception($"Unable to create {userName}.{Environment.NewLine}{1}");
+        
     }
 
     public static async Task ResetState()

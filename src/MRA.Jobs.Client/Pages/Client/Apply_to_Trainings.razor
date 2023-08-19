@@ -1,0 +1,34 @@
+﻿@page "/ApplytoTrainings"
+@layout Main
+<div class="container">
+
+	<h1>Подать заявку на обучение</h1>
+
+	<p>Заполните форму ниже, чтобы подать заявку на обучение:</p>
+
+	<EditForm Model="@application">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<div class="form-group">
+			<label for="about">Расскажите о себе (минимум 2000 слов):</label>
+			<InputTextArea id="about" @bind-Value="application.About" class="form-control" rows="10"></InputTextArea>
+			@if (application.About != null && application.About.Split(' ').Length < 2000)
+			{
+				<p class="text-danger">Пожалуйста, напишите не менее 2000 слов.</p>
+			}
+		</div>
+
+		<button type="submit" class="btn btn-primary">Отправить</button>
+	</EditForm>
+
+</div>
+@code {
+		private Application application = new Application();
+
+		private class Application
+		{
+
+			public string About { get; set; }
+		}
+}

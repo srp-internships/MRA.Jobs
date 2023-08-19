@@ -1,0 +1,53 @@
+﻿
+
+.image1 {
+    max-width: 100%;
+    height: auto;
+}
+
+.carousel-caption {
+    bottom: 20%;
+    left: 5%;
+    right: 5%;
+    text-align: left;
+}
+
+.header {
+    background-color: transparent;
+}
+
+.class1 {
+    font-size: 72px;
+    background: -webkit-linear-gradient(skyblue, blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body {
+    background: -webkit-linear-gradient(white, skyblue);
+}
+
+.class2 {
+    text-align: center;
+}
+
+.container {
+    position: relative;
+}
+
+    .container img {
+        display: block;
+    }
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+
+.image1 {
+    opacity: 50;
+}
