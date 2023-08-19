@@ -5817,12 +5817,44 @@
         }
       }
     },
-    "/getwithif/{slug}": {
+    "/api/trainings/search/{searchInput}": {
       "get": {
         "tags": [
           "Trainings"
         ],
-        "operationId": "Trainings_GetTrainingVacancyByIdSlugSinceCheckDate",
+        "operationId": "Trainings_GetSearchedTrainings",
+        "parameters": [
+          {
+            "name": "searchInput",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trainings/categories/{slug}": {
+      "get": {
+        "tags": [
+          "Trainings"
+        ],
+        "operationId": "Trainings_GetTrainingsCategoriesWithSlug",
         "parameters": [
           {
             "name": "slug",
@@ -5842,6 +5874,29 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trainings/categories": {
+      "get": {
+        "tags": [
+          "Trainings"
+        ],
+        "operationId": "Trainings_GetTrainingsWithCategories",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TrainingCategoriesResponce"
+                  }
                 }
               }
             }
@@ -7099,6 +7154,31 @@
           "message": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "TrainingCategoriesResponce": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "categoryId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "category": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CategoryResponse"
+              }
+            ]
+          },
+          "selected": {
+            "type": "boolean"
+          },
+          "trainingsCount": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

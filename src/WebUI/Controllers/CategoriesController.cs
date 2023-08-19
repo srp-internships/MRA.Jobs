@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]

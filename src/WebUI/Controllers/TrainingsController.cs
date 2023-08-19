@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
 using MRA.Jobs.Application.Contracts.Tests.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
@@ -23,6 +22,26 @@ public class TrainingsController : ApiControllerBase
     {
         var training = await Mediator.Send(new GetTrairaingVacancyBySlugSinceCheckDate { Slug = slug });
         return Ok(training);
+    }
+
+    [HttpGet("search/{searchInput}")]
+    public async Task<IActionResult> GetSearchedTrainings(string searchInput)
+    {
+        var trainings = await Mediator.Send(new GetTrainingsSearchQuery { SearchInout = searchInput });
+        return Ok(trainings);
+    }
+
+    [HttpGet("categories/{slug}")]
+    public async Task<IActionResult> GetTrainingsCategoriesWithSlug(string slug)
+    {
+        var result = await Mediator.Send(new GetTrainingsByCategory { CategorySlug = slug });
+        return Ok(result);
+    }
+
+    [HttpGet("categories")]
+    public async Task<ActionResult<List<TrainingCategoriesResponce>>> GetTrainingsWithCategories()
+    {
+        return Ok(await Mediator.Send(new GetTrainingCategoriesQuery()));
     }
 
     [HttpGet]
