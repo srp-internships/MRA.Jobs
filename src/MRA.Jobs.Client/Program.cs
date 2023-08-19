@@ -1,10 +1,10 @@
 ﻿global using System.Net.Http.Json;
 global using MRA.Jobs.Client.Services.CategoryServices;
 global using MRA.Jobs.Client.Services.VacancyServices;
+global using Microsoft.AspNetCore.Components.Authorization;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
-global using Microsoft.AspNetCore.Components.Authorization;
 
 using MatBlazor;
 using Microsoft.AspNetCore.Components.Web;
