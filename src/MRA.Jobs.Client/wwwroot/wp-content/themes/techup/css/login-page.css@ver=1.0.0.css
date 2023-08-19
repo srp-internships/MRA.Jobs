@@ -1,0 +1,46 @@
+body.login {
+	background-color: #f5f5f5;
+}
+body.login a{
+	transition: 0.3s all ease-in-out;
+}
+
+.login #loginform {
+	border-radius: 3px;
+}
+
+.login #loginform .button {
+	text-shadow: none;
+	border: none;
+	text-transform: uppercase;
+	border-radius: 2px;
+	box-shadow: none;
+	height:auto;
+	padding: 5px 20px;
+	border: none;
+	transition: 0.3s all ease-in-out;
+}
+
+.login #login > h1 {
+	display: none;
+}
+
+.login form#loginform {
+	padding-bottom: 26px;
+}
+
+.login #login > p#backtoblog,
+.login #login > p#nav {
+	position: relative;
+	line-height: 1.35;
+	margin: 20px 0 0;
+	padding: 0;
+	width: 54%;
+	float: right;
+}
+
+.login #login > p#nav {
+	text-align: right;
+	width: 46%;
+}
+
