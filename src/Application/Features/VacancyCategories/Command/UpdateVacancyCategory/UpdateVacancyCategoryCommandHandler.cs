@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Commands;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Command.UpdateVacancyCategory;
 public class UpdateVacancyCategoryCommandHandler : IRequestHandler<UpdateVacancyCategoryCommand, Guid>

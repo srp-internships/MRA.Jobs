@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Queries;
-using MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Responses;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryById;
 public class GetVacancyCategoryBySlugQueryHandler : IRequestHandler<GetVacancyCategoryBySlugQuery, CategoryResponse>

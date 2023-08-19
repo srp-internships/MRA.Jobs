@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
-using MRA.Jobs.Application.Contracts.VacancyTag.VacancyCategories.Responses;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Queries.TrainingCategories;
 public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCategoriesQuery, List<TrainingCategoriesResponce>>
@@ -32,6 +32,7 @@ public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCate
             {
                 CategoryId = training.Key,
                 Category = _mapper.Map<CategoryResponse>(category),
+                TrainingsCount = training.Count()
             });
         }
         return trainingsWithCategory;

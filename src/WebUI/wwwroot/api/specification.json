@@ -3526,6 +3526,10 @@
           },
           "selected": {
             "type": "boolean"
+          },
+          "trainingsCount": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

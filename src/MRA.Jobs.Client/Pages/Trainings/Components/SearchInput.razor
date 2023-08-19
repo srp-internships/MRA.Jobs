@@ -7,7 +7,7 @@
 <body>
     <div class="container mt-5 main">
         <div class="input-group has-search">
-            <input type="text" @bind-value="@Text" class="form-control" placeholder="Search...">
+            <input type="text" @bind-value="@Text" @oninput="OnInput" @onkeypress="@(e=>HandleKeyDown(e))" class="form-control" placeholder="Search...">
             <div class="input-group-append">
                 <button class="btn btn-primary" type="button" @onclick="SearchClicked">
                     <i class="fas fa-search"></i>
@@ -20,8 +20,21 @@
 @code {
     public string Text { get; set; }
 
+    private void OnInput(ChangeEventArgs e)
+    {
+        Text = e.Value.ToString();
+    }
+
     void SearchClicked()
     {
         _manager.NavigateTo($"trainings/{Text}");
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            SearchClicked();
+        }
     }
 }

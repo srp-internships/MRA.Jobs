@@ -53,30 +53,30 @@ public class TrainingService : ITrainingService
         return await _httpClient.PutAsJsonAsync($"trainings/{slug}", UpdateCommand);
     }
 
-    public async Task<List<TrainingVacancyListDto>> GetAll()
+    public async Task<PagedList<TrainingVacancyListDto>> GetAll()
     {
         var result = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
-        return result.Items;
+        return result;
     }
     public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug)
     {
         return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
     }
 
-    public async Task<List<TrainingCategoriesResponce>> GetAllWithCategories()
+    public async Task<List<TrainingCategoriesResponce>> GetCategories()
     {
-        var result = await _httpClient.GetFromJsonAsync<List<TrainingCategoriesResponce>>("trainings/getwithcategories");
+        var result = await _httpClient.GetFromJsonAsync<List<TrainingCategoriesResponce>>("trainings/categories");
         return result;
     }
-    public async Task<TrainingCategoriesResponce> GetCategoriesByName(string slug)
+    public async Task<PagedList<TrainingVacancyListDto>> GetByCategoryName(string slug)
     {
-        var training = await _httpClient.GetFromJsonAsync<TrainingCategoriesResponce>($"trainings/getwithcategories/{slug}");
+        var training = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings/categories/{slug}");
         return training;
     }
 
-    public async Task<List<TrainingVacancyListDto>> SearchTrainings(string searchInput)
+    public async Task<PagedList<TrainingVacancyListDto>> SearchTrainings(string searchInput)
     {
-        var trainings = await _httpClient.GetFromJsonAsync<List<TrainingVacancyListDto>>($"trainings/search/{searchInput}");
+        var trainings = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings/search/{searchInput}");
         return trainings;
     }
 }

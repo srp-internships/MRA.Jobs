@@ -1,5 +1,9 @@
-﻿@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+﻿@using MRA.Jobs.Application.Contracts.Common;
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @using Services.TrainingServices;
+@using Blazorise;
+@using Blazorise.Bootstrap;
+@using Blazorise.Icons.FontAwesome;
 @inject ITrainingService _trainingService;
 @inject NavigationManager _manager;
 
@@ -28,20 +32,20 @@
                                 all @Count
                             </button>
                         }
-                        @if (!loading)
+                        @if (!loading && Categories != null)
                         {
-                            foreach (var category in TrainingsWithCategories)
+                            foreach (var category in Categories)
                             {
                                 if (category.Selected)
                                 {
                                     <button class="selectedbtn rounded-2" @onclick="()=>CategoryButtonSelected(category.Category.Slug)">
-                                        @category.Category.Name (@category.Trainings.Count)
+                                        @category.Category.Name (@category.TrainingsCount)
                                     </button>
                                 }
                                 else
                                 {
                                     <button class="categorybtn rounded-2" @onclick="()=>CategoryButtonSelected(category.Category.Slug)">
-                                        @category.Category.Name (@category.Trainings.Count)
+                                        @category.Category.Name (@category.TrainingsCount)
                                     </button>
                                 }
                             }
@@ -55,30 +59,9 @@
             </aside>
             <div class="col-md-9">
                 <section>
-                    @if (Trainings != null && searchInput == null)
+                    @if (DisplayedTrainings != null)
                     {
-                        @foreach (var category in Trainings)
-                        {
-                            foreach (var training in category.Trainings)
-                            {
-                                <div class="vacancy-card" style="margin-bottom:20px">
-                                    <div class="vacancy-card-header">
-                                        <a href="/trainings/@training.Slug" class="vacancy-title">
-                                            @training.Title
-                                        </a>
-                                    </div>
-                                    <div class="vacancy-description">
-                                        <p>
-                                            @training.ShortDescription
-                                        </p>
-                                    </div>
-                                </div>
-                            }
-                        }
-                    }
-                    else if (searchInput != null && SearchTrainings != null)
-                    {
-                        foreach (var training in SearchTrainings)
+                        @foreach (var training in DisplayedTrainings)
                         {
                             <div class="vacancy-card" style="margin-bottom:20px">
                                 <div class="vacancy-card-header">
@@ -100,24 +83,60 @@
     </div>
 </body>
 
+@if (Trainings != null)
+{
+    <div class="d-flex justify-content-center">
+        <Pagination>
+            <PaginationItem Disabled=@(!Trainings.HasPreviousPage) @onclick="Previous">
+                <PaginationLink>
+                    <span aria-hidden="true">«</span>
+                </PaginationLink>
+            </PaginationItem>
+            @if (Trainings != null)
+            {
+                for (int i = 1; i <= Trainings.TotalPages; i++)
+                {
+                    var pageNumberAsString = i.ToString();
+                    int currentPage = i;
+                    <PaginationItem @key="pageNumberAsString">
+                        <PaginationLink Page="@pageNumberAsString" Clicked="()=>SetActive(currentPage)">
+                            @pageNumberAsString
+                        </PaginationLink>
+                    </PaginationItem>
+                }
+            }
+            <PaginationItem Disabled=@(!Trainings.HasNextPage) @onclick="Next">
+                <PaginationLink>
+                    <span aria-hidden="true">»</span>
+                </PaginationLink>
+            </PaginationItem>
+        </Pagination>
+    </div>
+}
+
 @code {
     [Parameter]
     public string searchInput { get; set; }
-    public List<TrainingVacancyListDto> SearchTrainings { get; set; }
 
-    public List<TrainingCategoriesResponce> TrainingsWithCategories { get; set; }
-    public List<TrainingCategoriesResponce> Trainings { get; set; }
+    public List<TrainingCategoriesResponce> Categories { get; set; }
+
+    public PagedList<TrainingVacancyListDto> Trainings { get; set; }
+    public List<TrainingVacancyListDto> DisplayedTrainings { get; set; }
+
     bool loading = true;
     bool inAll = true;
     public int Count { get; set; }
 
+
     protected async override Task OnParametersSetAsync()
     {
-        TrainingsWithCategories = await _trainingService.GetAllWithCategories();
-        CountTrainings();
+        Categories = await _trainingService.GetCategories();
         if (searchInput == null)
         {
-            Trainings = await _trainingService.GetAllWithCategories();
+            Trainings = await _trainingService.GetAll();
+            Console.Out.WriteLine($"{Trainings.PageSize}, {Trainings.TotalPages}");
+            UpdateDisplayedTrainings();
+            Count = Trainings.TotalCount;
 
             inAll = true;
         }
@@ -128,28 +147,21 @@
         loading = false;
     }
 
-    void CountTrainings()
-    {
-        Count = 0;
-        foreach (var category in TrainingsWithCategories)
-        {
-            Count += category.Trainings.Count;
-        }
-    }
 
     private async void selectedAllCategories()
     {
-        Trainings = await _trainingService.GetAllWithCategories();
-        CountTrainings();
+        Trainings = await _trainingService.GetAll();
+        UpdateDisplayedTrainings();
+        Count = Trainings.TotalCount;
 
-        foreach (var item in TrainingsWithCategories)
+        foreach (var item in Categories)
         {
             item.Selected = false;
         }
 
         inAll = true;
         searchInput = null;
-        SearchTrainings = new List<TrainingVacancyListDto>();
+        Trainings = new PagedList<TrainingVacancyListDto>();
 
         _manager.NavigateTo("/trainings");
         StateHasChanged();
@@ -157,27 +169,84 @@
 
     async void CategoryButtonSelected(string slug)
     {
-        var category = TrainingsWithCategories.FirstOrDefault(c => c.Category.Slug == slug);
-        foreach (var item in TrainingsWithCategories)
+        var category = Categories.FirstOrDefault(c => c.Category.Slug == slug);
+        foreach (var item in Categories)
         {
             item.Selected = false;
         }
 
-        Trainings = new List<TrainingCategoriesResponce>();
-        Trainings.Add(await _trainingService.GetCategoriesByName(slug));
+        Trainings = await _trainingService.GetByCategoryName(slug);
+        UpdateDisplayedTrainings();
 
         category.Selected = true;
         inAll = false;
         searchInput = null;
-        SearchTrainings = new List<TrainingVacancyListDto>();
 
         _manager.NavigateTo("/trainings");
         StateHasChanged();
     }
 
+
     async void GetSearchedTrainings()
     {
-        SearchTrainings = await _trainingService.SearchTrainings(searchInput);
+        Trainings = await _trainingService.SearchTrainings(searchInput);
+        UpdateDisplayedTrainings();
         StateHasChanged();
+    }
+
+    void UpdateDisplayedTrainings()
+    {
+        var startIndex = (Trainings.CurrentPageNumber - 1) * Trainings.PageSize;
+        DisplayedTrainings = Trainings.Items.Skip(startIndex).Take(Trainings.PageSize).ToList();
+    }
+
+
+    private void Previous()
+    {
+        if (Trainings.HasPreviousPage)
+        {
+            Trainings.CurrentPageNumber--;
+            UpdateDisplayedTrainings();
+            if (Trainings.CurrentPageNumber == 1)
+                Trainings.HasPreviousPage = false;
+            Trainings.HasNextPage = true;
+        }
+    }
+
+    private void Next()
+    {
+        if (Trainings.HasNextPage)
+        {
+            Trainings.CurrentPageNumber++;
+            UpdateDisplayedTrainings();
+            if (Trainings.CurrentPageNumber == Trainings.TotalPages)
+                Trainings.HasNextPage = false;
+            Trainings.HasPreviousPage = true;
+        }
+    }
+
+    private void SetActive(int page)
+    {
+        Trainings.CurrentPageNumber = page;
+
+        if (page != Trainings.TotalPages)
+        {
+            Trainings.HasNextPage = true;
+        }
+        else if (page == Trainings.TotalPages)
+        {
+            Trainings.HasNextPage = false;
+        }
+
+        if (page != 1)
+        {
+            Trainings.HasPreviousPage = true;
+        }
+        else if (page == 1)
+        {
+            Trainings.HasPreviousPage = false;
+        }
+
+        UpdateDisplayedTrainings();
     }
 }
