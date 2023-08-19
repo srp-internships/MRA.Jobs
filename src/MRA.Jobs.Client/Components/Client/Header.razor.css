@@ -1,66 +1,67 @@
-﻿
-.logo {
-    display: block;
-    width: auto;
-    height: 100px;
-}
-
-.header {
+﻿/* Стили для кнопки бургер */
+.mobile-nav-toggle {
     position: fixed;
-    top: -20px;
-    width: 100%;
-    z-index: 9999;
-    height: 120px;
+    right: 15px;
+    top: 15px;
+    z-index: 9998;
+    border: 0;
+    background: none;
+    font-size: 24px;
+    transition: all 0.4s;
+    outline: none !important;
+    cursor: pointer;
 }
 
-a {
-    color: white;
-}
-
-nav ul {
-    float: right;
-}
-
-    nav ul li {
-        float: left;
-        list-style: none;
-        position: relative;
+    .mobile-nav-toggle.bi-list {
+        color: #fff;
     }
 
-        nav ul li a {
-            text-decoration: none;
-            font-family: sans-serif;
-            font-size: 17px;
-            padding: 0px 16px;
-            display: block;
+    .mobile-nav-toggle.bi-x {
+        color: #fff;
+    }
+
+/* Стили для мобильного меню */
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    bottom: 0;
+    z-index: 9999;
+    overflow-y: auto;
+    background: #fff;
+    transition: all ease-in-out .3s;
+}
+
+    .mobile-nav * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .mobile-nav ul {
+        list-style-type: none;
+    }
+
+    .mobile-nav a {
+        display: block;
+        padding: 10px 20px;
+        font-size: .9rem;
+        font-weight: bold;
+        color: #000000
+    }
+
+        .mobile-nav a:hover, .mobile-nav .active > a, .mobile-nav li:hover > a {
+            color: #000000
         }
 
-            nav ul li a:hover {
-                background-color: #f9f2f2;
-            }
+/* Показать мобильное меню */
+.mobile-nav-active {
+    overflow: hidden
+}
 
-        nav ul li ul {
-            position: absolute;
-            display: none;
-            background-color: #5dbfe1;
-            border-radius: 0px 0px 5px 5px;
-        }
+    .mobile-nav-active .mobile-nav-toggle {
+        color: #fff
+    }
 
-        nav ul li:hover ul {
-            display: block;
-        }
-
-        nav ul li ul li {
-            line-height: 1;
-            width: 190px;
-            border-radius: 5px;
-            padding: 6px;
-        }
-
-            nav ul li ul li a {
-                padding: 10px 16px;
-            }
-
-                nav ul li ul li a:hover {
-                    background-color: #f9f2f2;
-                }
+    .mobile-nav-active .mobile-nav {
+        right: 0
+    }
