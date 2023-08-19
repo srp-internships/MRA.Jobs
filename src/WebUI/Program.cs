@@ -1,5 +1,4 @@
 using System.Net.Mime;
-using MediatR;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
 using MRA.Jobs.Application.Common.Interfaces;
@@ -10,29 +9,26 @@ using Newtonsoft.Json;
 using Sieve.Models;
 using MRA.Jobs.Web.AzureKeyVault;
 using MRA.Jobs.Infrastructure.Persistence;
-
+using MRA.Jobs.Web.ApplicationInsights;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("dbsettings.json", true);
 if (builder.Environment.IsProduction())
 {
+    builder.AddApiApplicationInsights();
     builder.ConfigureAzureKeyVault();
 }
 
 builder.Configuration.AddJsonFile("dbsettings.json", optional: true);
-
-//builder.Services.AddControllersWithViews().AddJsonOptions(options =>
-//        {
-//            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-//        });
-
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
 builder.Services.AddWebUiServices(builder.Configuration);
+
 builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("Sieve"));
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddTransient<IEmailService, SmtpEmailService>();
-builder.Services.AddMediatR(typeof(Program));
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -40,16 +36,9 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 
-    using (var scope = app.Services.CreateScope())
-    {
-        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
-        await initialiser.InitialiseAsync();
-        await initialiser.SeedAsync();
-    }
 }
 else
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -62,9 +51,7 @@ app.UseHealthChecks("/status", new HealthCheckOptions
             Status = report.Status.ToString(),
             Checks = report.Entries.Select(entry => new
             {
-                Name = entry.Key,
-                Status = entry.Value.Status.ToString(),
-                Description = entry.Value.Description
+                Name = entry.Key, Status = entry.Value.Status.ToString(), entry.Value.Description
             })
         };
 
@@ -91,9 +78,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-app.MapGet("/", () =>
-{
-    return Results.Redirect("/api");
-});
+app.MapGet("/", () => Results.Redirect("/api"));
 
 app.Run();

@@ -6,14 +6,13 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
     where TRequest : IRequest<TResponse>
 {
     private readonly ICurrentUserService _currentUserService;
-    private readonly IIdentityService _identityService;
+    // private readonly IIdentityService _identityService;
 
     public AuthorizationBehaviour(
-        ICurrentUserService currentUserService,
-        IIdentityService identityService)
+        ICurrentUserService currentUserService)
     {
         _currentUserService = currentUserService;
-        _identityService = identityService;
+        // _identityService = identityService;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,

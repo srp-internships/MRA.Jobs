@@ -36,6 +36,13 @@ public class TrainingService : ITrainingService
     {
         await _httpClient.DeleteAsync($"trainings/{slug}");
     }
+
+
+    public async Task<TrainingVacancyDetailedResponse> GetBySlugSinceCheckDate(string slug)
+    {
+        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
+    }
+    
     public async Task<HttpResponseMessage> Update(string slug)
     {
         UpdateCommand = new UpdateTrainingVacancyCommand

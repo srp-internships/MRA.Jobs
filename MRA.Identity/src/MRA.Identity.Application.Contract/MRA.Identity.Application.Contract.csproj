@@ -7,11 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="User\Queries\"/>
+        <Folder Include="Admin\Queries\" />
+        <Folder Include="User\Queries\" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MediatR.Contracts" Version="2.0.1"/>
+        <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
     </ItemGroup>
 
 </Project>

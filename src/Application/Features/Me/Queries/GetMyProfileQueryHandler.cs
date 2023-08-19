@@ -8,13 +8,13 @@ public class GetMyProfileQueryHandler : IRequestHandler<GetMyProfileQuery, MyPro
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly ICurrentUserService _currentUser;
-    private readonly IIdentityService _identityService;
+    // private readonly IIdentityService _identityService;
 
-    public GetMyProfileQueryHandler(ICurrentUserService currentUser, IIdentityService identityService,
+    public GetMyProfileQueryHandler(ICurrentUserService currentUser,
         IApplicationDbContext applicationDbContext)
     {
         _currentUser = currentUser;
-        _identityService = identityService;
+        // _identityService = identityService;
         _applicationDbContext = applicationDbContext;
     }
 
@@ -37,8 +37,8 @@ public class GetMyProfileQueryHandler : IRequestHandler<GetMyProfileQuery, MyPro
             throw new NotFoundException(nameof(User), userId);
         }
 
-        UserIdentityResponse identityProfile =
-            await _identityService.GetUserIdentityAsync(userId.Value, cancellationToken);
+        // UserIdentityResponse identityProfile =
+            // await _identityService.GetUserIdentityAsync(userId.Value, cancellationToken);
 
         MyProfileResponse response = new MyProfileResponse
         {
@@ -49,10 +49,10 @@ public class GetMyProfileQueryHandler : IRequestHandler<GetMyProfileQuery, MyPro
             Gender = domainUser.Gender,
             Identity = new MyIdentityResponse
             {
-                IsActive = identityProfile.IsActive,
-                Permissions = identityProfile.Permissions,
-                Roles = identityProfile.Roles,
-                TwoFactorEnabled = identityProfile.TwoFactorEnabled
+                // IsActive = identityProfile.IsActive,
+                // Permissions = identityProfile.Permissions,
+                // Roles = identityProfile.Roles,
+                // TwoFactorEnabled = identityProfile.TwoFactorEnabled
             },
             LastName = domainUser.LastName,
             Patronymic = domainUser.Patronymic,

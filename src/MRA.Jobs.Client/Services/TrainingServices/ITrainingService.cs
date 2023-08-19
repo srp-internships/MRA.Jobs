@@ -12,6 +12,7 @@ public interface ITrainingService
     Task<PagedList<TrainingVacancyListDto>> GetByCategoryName(string slug);
     Task<PagedList<TrainingVacancyListDto>> SearchTrainings(string searchInput);
 
+
     Task<HttpResponseMessage> Create();
     Task<HttpResponseMessage> Update(string slug);
     Task Delete(string slug);
