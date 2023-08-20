@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +8,7 @@ using MRA.Jobs.Infrastructure.Identity;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;
+using Mra.Shared.Common.Constants;
 
 namespace MRA.Jobs.Infrastructure;
 
@@ -19,6 +19,8 @@ public static class ConfigureServices
     {
         services.AddAppIdentity(configuration);
         services.AddMediatR(typeof(ConfigureServices).Assembly);
+
+        //services.AddAzureEmailService(); //uncomment this line if necessary and add this namespace Mra.Shared.Initializer.Azure.EmailService;
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         string dbConnectionString = configuration.GetConnectionString("SqlServer");
@@ -59,18 +61,20 @@ public static class ConfigureServices
 
             auth.AddPolicy(ApplicationPolicies.Administrator, op => op
                 .RequireClaim(ClaimTypes.Role, ApplicationClaimValues.Administrator)
-                .RequireClaim(ApplicationClaimsTypes.Applicaton, ApplicationClaimValues.ApplicationName));
+                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
 
             auth.AddPolicy(ApplicationPolicies.Reviewer, op => op
                 .RequireClaim(ClaimTypes.Role, ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator)
-                .RequireClaim(ApplicationClaimsTypes.Applicaton, ApplicationClaimValues.ApplicationName));
+                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
 
             auth.AddPolicy(ApplicationPolicies.Applicant, op => op
                 .RequireClaim(ClaimTypes.Role, ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
                     ApplicationClaimValues.Administrator)
-                .RequireClaim(ApplicationClaimsTypes.Applicaton, ApplicationClaimValues.ApplicationName));
+                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
         });
-
+        
+        //todo write requirements id;
+        
         return services;
     }
 }

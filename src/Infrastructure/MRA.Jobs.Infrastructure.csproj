@@ -44,18 +44,14 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Graph" Version="5.12.0" />
+        <PackageReference Include="Mra.Shared" Version="1.0.2" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\MRA.Jobs.Infrastructure.Shared\MRA.Jobs.Infrastructure.Shared.csproj" />
         <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-
-        <Folder Include="Identity\Features\User\Events\" />
-        <Folder Include="Identity\Features\Verification\Commands\" />
-        <Folder Include="Identity\Features\Verification\Queries\" />
 
         <Folder Include="Persistence\Migrations\" />
     </ItemGroup>

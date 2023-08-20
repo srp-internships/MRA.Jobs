@@ -36,8 +36,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Client", "src\MRA.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.IntegrationTests", "Infrastructure.IntegrationTests\Infrastructure.IntegrationTests.csproj", "{29C19C4E-FBEA-44DF-88C0-29CA3645CB80}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Infrastructure.Shared", "MRA.Jobs.Infrastructure.Shared\MRA.Jobs.Infrastructure.Shared.csproj", "{FD344BAE-BEDE-43DA-826C-09E801987E55}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -252,26 +250,6 @@ Global
 		{29C19C4E-FBEA-44DF-88C0-29CA3645CB80}.Release|x64.Build.0 = Release|Any CPU
 		{29C19C4E-FBEA-44DF-88C0-29CA3645CB80}.Release|x86.ActiveCfg = Release|Any CPU
 		{29C19C4E-FBEA-44DF-88C0-29CA3645CB80}.Release|x86.Build.0 = Release|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Debug|ARM.Build.0 = Debug|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Debug|x64.Build.0 = Debug|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Debug|x86.Build.0 = Debug|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Release|ARM.ActiveCfg = Release|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Release|ARM.Build.0 = Release|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Release|ARM64.Build.0 = Release|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Release|x64.ActiveCfg = Release|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Release|x64.Build.0 = Release|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Release|x86.ActiveCfg = Release|Any CPU
-		{FD344BAE-BEDE-43DA-826C-09E801987E55}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -287,7 +265,6 @@ Global
 		{C8D144EB-C2C2-49EB-BFD2-F322F5148300} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
 		{B02B7AED-4B88-45D1-9138-158D309D50D7} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
 		{29C19C4E-FBEA-44DF-88C0-29CA3645CB80} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
-		{FD344BAE-BEDE-43DA-826C-09E801987E55} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3CB609D9-5D54-4C11-A371-DAAC8B74E430}

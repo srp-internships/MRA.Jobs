@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Infrastructure;
+using MRA.Jobs.Infrastructure.Identity;
 using MRA.Jobs.Infrastructure.Services;
 using MRA.Jobs.Web;
 using Newtonsoft.Json;
 using Sieve.Models;
-using MRA.Jobs.Web.AzureKeyVault;
-using MRA.Jobs.Web.ApplicationInsights;
-
-
+using Mra.Shared.Initializer.Azure.Insight;
+using Mra.Shared.Initializer.Azure.KeyVault;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,10 +17,8 @@ builder.Configuration.AddJsonFile("dbsettings.json", true);
 if (builder.Environment.IsProduction())
 {
     builder.AddApiApplicationInsights();
-    builder.ConfigureAzureKeyVault();
+    builder.ConfigureAzureKeyVault(projectName:ApplicationClaimValues.ApplicationName);
 }
-
-
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -31,6 +28,7 @@ builder.Services.AddWebUiServices(builder.Configuration);
 builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("Sieve"));
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddTransient<IEmailService, SmtpEmailService>();
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.

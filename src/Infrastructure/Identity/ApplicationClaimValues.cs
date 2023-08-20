@@ -1,6 +1,6 @@
 ﻿namespace MRA.Jobs.Infrastructure.Identity;
 
-public class ApplicationClaimValues
+public static class ApplicationClaimValues
 {
     public const string Administrator = "Administrator";
     public const string Reviewer = "Reviewer";
