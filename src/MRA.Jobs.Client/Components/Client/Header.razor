@@ -5,7 +5,7 @@
 		   class="logo d-flex align-items-center me-auto me-xl-0">
 			<!-- Uncomment the line below if you also wish to use an image logo -->
 			<!-- <img src="assets/img/logo.png" alt=""> -->
-			<img src="images/srp_icon.png" class="img-fluid"/>
+			<img src="images/srp_icon.png" class="img-fluid" />
 			@*<img src="images/bluewhite.png" style="height:30%; width:30%;margin:-40px 0" class="img-fluid"/>*@
 			<div class="col">
 				<h1></h1>
@@ -23,7 +23,7 @@
 					<a href="/" class="active">Home</a>
 				</li>
 				@*<li>
-					<a href="home#about">About</a>
+				<a href="home#about">About</a>
 				</li>*@
 				<li>
 					<a href="jobs">Jobs</a>
@@ -42,7 +42,7 @@
 				</li>*@
 
 				@*<li>
-					<a href="home#contact">Contact</a>
+				<a href="home#contact">Contact</a>
 				</li>*@
 			</ul>
 
@@ -59,22 +59,24 @@
 						<CascadingAuthenticationState>
 							<AuthorizeView>
 								<Authorized>
-									<li><a href="ApplicantPage">Profile</a></li>
-									<li><a href="ApplicantClient"></a>Application</li>
-									<li><a href="#">Sign Out</a></li>
+									<li><i class="fa fa-sign-in" aria-hidden="true"></i><a href="ApplicantPage">Profile</a></li>
+									<li><i class="fa fa-th-list" aria-hidden="true"></i><a href="ApplicantClient"></a>Application</li>
+									<li><i class="fa fa-sign-in" aria-hidden="true"></i><a href="#">Sign Out</a></li>
 								</Authorized>
 								<NotAuthorized>
-									<li><a href="SignIn">Sing In</a></li>
-									<li><a href="SignUp">Sing Up</a></li>
+									<li><i class="fa fa-sign-in" aria-hidden="true"></i><a href="SignIn">Sing In</a></li>
+									<li><i class="fa fa-user-plus" aria-hidden="true"></i><a href="SignUp">Sing Up</a></li>
 								</NotAuthorized>
 							</AuthorizeView>
 						</CascadingAuthenticationState>
 					</ul>
+
 				</li>
 			</ul>
 		</nav>
 	</div>
 </header>
+
 
 
 
