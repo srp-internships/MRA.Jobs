@@ -5,15 +5,18 @@ using Mra.Shared.Initializer.Azure.KeyVault;
 
 public class Program
 {
+
     private static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
         
         if (builder.Environment.IsProduction())
         {
-            builder.AddApiApplicationInsights();
-            builder.ConfigureAzureKeyVault("Mra.Identity");//set your project name
+            builder.Logging.AddApiApplicationInsights(builder.Configuration);
+            builder.Configuration.ConfigureAzureKeyVault("Mra.Identity");
         }
+
+
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

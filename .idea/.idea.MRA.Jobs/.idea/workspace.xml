@@ -15,9 +15,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1e53947-9aef-4ed5-b626-eea786f53406" name="Changes" comment="identity too">
+    <list default="true" id="d1e53947-9aef-4ed5-b626-eea786f53406" name="Changes" comment="123">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MRA.Jobs/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MRA.Jobs/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WebUI/wwwroot/api/specification.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/WebUI/wwwroot/api/specification.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/MRA.Jobs.Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/MRA.Jobs.Infrastructure.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +46,8 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/17.5.0/build/netcoreapp3.1/Microsoft.NET.Test.Sdk.Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1c1a8923fdaf4a66bdc747f047f151163600/5f/af1d8f1b/WebApplicationBuilderAzureExtension.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e18217dee296493980af2a50f433ebaf9e00/58/6a4329f0/SieveOptions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/40c4e943204dd59f5ec3303128b49ad7fa4b00dbbb78e2c647a6a537abe55/ApplicationInsightsLoggingBuilderExtensions.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -187,7 +189,7 @@
       <workItem from="1691821929908" duration="1296000" />
       <workItem from="1692336897884" duration="73000" />
       <workItem from="1692337018041" duration="6531000" />
-      <workItem from="1692547822301" duration="5003000" />
+      <workItem from="1692547822301" duration="12139000" />
     </task>
     <task id="LOCAL-00001" summary="changes Header">
       <created>1691822723592</created>
@@ -204,7 +206,15 @@
       <option name="project" value="LOCAL" />
       <updated>1692592884895</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="123">
+      <option name="closed" value="true" />
+      <created>1692593224216</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1692593224216</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -253,6 +263,7 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="changes Header" />
     <MESSAGE value="identity too" />
-    <option name="LAST_COMMIT_MESSAGE" value="identity too" />
+    <MESSAGE value="123" />
+    <option name="LAST_COMMIT_MESSAGE" value="123" />
   </component>
 </project>
