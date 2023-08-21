@@ -69,32 +69,34 @@ public class TrainingService : ITrainingService
     }
     public async Task<PagedList<TrainingVacancyListDto>> GetByCategoryName(string slug)
     {
-        var training = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings/categories/{slug}");
+        var training = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings?CategorySlug={slug}");
         return training;
     }
     public async Task<PagedList<TrainingVacancyListDto>> SearchTrainings(string searchInput)
     {
-        var trainings = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings/search/{searchInput}");
+        var trainings = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings?SearchText={searchInput}");
         return trainings;
     }
 
     public async Task<PagedList<TrainingVacancyListDto>> GetAllSinceCheckDate()
     {
-        var result = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings/GetWithIf");
+        var result = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings?CheckDate=true");
         return result;
-    }
-    public async Task<TrainingVacancyDetailedResponse> GetBySlugSinceCheckDate(string slug)
-    {
-        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
     }
     public async Task<PagedList<TrainingVacancyListDto>> GetByCategorySinceCheckDate(string slug)
     {
-        var training = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings/categories/GetWithIf/{slug}");
+        var training = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings?CategorySlug={slug}&CheckDate=true");
         return training;
     }
     public async Task<PagedList<TrainingVacancyListDto>> SearchTrainingsSinceSearchDate(string searchInput)
     {
-        var trainings = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings/search/GetWithIf/{searchInput}");
+        var trainings = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings?SearchText={searchInput}&CheckDate=true");
         return trainings;
+    }
+
+    public async Task<List<TrainingCategoriesResponce>> GetCategoriesSinceCheckDate()
+    {
+        var result = await _httpClient.GetFromJsonAsync<List<TrainingCategoriesResponce>>("trainings/categories?CheckDate=true");
+        return result;
     }
 }

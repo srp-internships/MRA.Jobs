@@ -1,4 +1,5 @@
-﻿using Sieve.Models;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+using Sieve.Models;
 
 namespace MRA.Jobs.Application.Contracts.Common;
 

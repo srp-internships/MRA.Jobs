@@ -4,7 +4,6 @@ using MRA.Jobs.Application.Contracts.Tests.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries.SinceCheckDate;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
@@ -13,64 +12,24 @@ public class TrainingsController : ApiControllerBase
 {
 
     [HttpGet("{slug}")]
-    public async Task<IActionResult> GetTrainingVacancyById(string slug)
+    public async Task<IActionResult> Get(string slug)
     {
         var training = await Mediator.Send(new GetTrainingVacancyBySlugQuery { Slug = slug });
         return Ok(training);
     }
-    [HttpGet("/GetWithIf/{slug}")]
-    public async Task<IActionResult> GetTrainingVacancyByIdSlugSinceCheckDate(string slug)
-    {
-        var training = await Mediator.Send(new GetTrairaingVacancyBySlugSinceCheckDate { Slug = slug });
-        return Ok(training);
-    }
-
-
-    [HttpGet("search/{searchInput}")]
-    public async Task<IActionResult> GetSearchedTrainings(string searchInput)
-    {
-        var trainings = await Mediator.Send(new GetTrainingsSearchQuery { SearchInout = searchInput });
-        return Ok(trainings);
-    }
-    [HttpGet("search/GetWithIf/{searchInput}")]
-    public async Task<IActionResult> GetSearchedTrainingsSinceCheckDate(string searchInput)
-    {
-        var trainings = await Mediator.Send(new GetSearchedTrainingsSinceCheckDateQuery { SearchInput = searchInput });
-        return Ok(trainings);
-    }
-
-
-    [HttpGet("categories/{slug}")]
-    public async Task<IActionResult> GetTrainingsCategoriesWithSlug(string slug)
-    {
-        var result = await Mediator.Send(new GetTrainingsByCategory { CategorySlug = slug });
-        return Ok(result);
-    }
-    [HttpGet("categories/GetWithIf/{slug}")]
-    public async Task<IActionResult> GetTrainingsCategoriesWithSlugSinceCheckDate(string slug)
-    {
-        var result = await Mediator.Send(new GetTrainingsByCategorySinceCheckDateQuery { CategorySlug = slug });
-        return Ok(result);
-    }
-
 
     [HttpGet("categories")]
-    public async Task<ActionResult<List<TrainingCategoriesResponce>>> GetTrainingsWithCategories()
+    public async Task<IActionResult> GetCategories([FromQuery] GetTrainingCategoriesQuery query)
     {
-        return Ok(await Mediator.Send(new GetTrainingCategoriesQuery()));
+        var categories = await Mediator.Send(query);
+        return Ok(categories);
     }
 
     [HttpGet]
-    public async Task<ActionResult<PagedList<TrainingVacancyListDto>>> GetTrainingVacancysWithPagination([FromQuery] PagedListQuery<TrainingVacancyListDto> query)
+    public async Task<ActionResult<PagedList<TrainingVacancyListDto>>> Get([FromQuery] GetTrainingsQueryOptions query)
     {
         return Ok(await Mediator.Send(query));
     }
-    [HttpGet("GetWithIf")]
-    public async Task<ActionResult<PagedList<TrainingVacancyListDto>>> GetTrainingVacancysWithPaginationSinceCheckDate()
-    {
-        return Ok(await Mediator.Send(new GetAllSinceCheckDateQuery()));
-    }
-
 
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateNewTrainingVacancy(CreateTrainingVacancyCommand request, CancellationToken cancellationToken)

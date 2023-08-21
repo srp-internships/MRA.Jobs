@@ -18,9 +18,8 @@ public interface ITrainingService
     Task<PagedList<TrainingVacancyListDto>> GetByCategoryName(string slug);
     Task<PagedList<TrainingVacancyListDto>> SearchTrainings(string searchInput);
 
-
+    Task<List<TrainingCategoriesResponce>> GetCategoriesSinceCheckDate();
     Task<PagedList<TrainingVacancyListDto>> GetAllSinceCheckDate();
-    Task<TrainingVacancyDetailedResponse> GetBySlugSinceCheckDate(string slug);
     Task<PagedList<TrainingVacancyListDto>> GetByCategorySinceCheckDate(string slug);
     Task<PagedList<TrainingVacancyListDto>> SearchTrainingsSinceSearchDate(string searchInput);
 

@@ -241,7 +241,7 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        Categories = await _trainingService.GetCategories();
+        Categories = await _trainingService.GetCategoriesSinceCheckDate();
         if (searchInput == null)
         {
             Trainings = await _trainingService.GetAllSinceCheckDate();

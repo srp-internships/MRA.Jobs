@@ -2058,7 +2058,7 @@
         "tags": [
           "Trainings"
         ],
-        "operationId": "Trainings_GetTrainingVacancyById",
+        "operationId": "Trainings_Get",
         "parameters": [
           {
             "name": "slug",
@@ -2168,182 +2168,30 @@
         }
       }
     },
-    "/getwithif/{slug}": {
-      "get": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_GetTrainingVacancyByIdSlugSinceCheckDate",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/trainings/search/{searchInput}": {
-      "get": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_GetSearchedTrainings",
-        "parameters": [
-          {
-            "name": "searchInput",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/trainings/search/getwithif/{searchInput}": {
-      "get": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_GetSearchedTrainingsSinceCheckDate",
-        "parameters": [
-          {
-            "name": "searchInput",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/trainings/categories/{slug}": {
-      "get": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_GetTrainingsCategoriesWithSlug",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/trainings/categories/getwithif/{slug}": {
-      "get": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_GetTrainingsCategoriesWithSlugSinceCheckDate",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/trainings/categories": {
       "get": {
         "tags": [
           "Trainings"
         ],
-        "operationId": "Trainings_GetTrainingsWithCategories",
+        "operationId": "Trainings_GetCategories",
+        "parameters": [
+          {
+            "name": "CheckDate",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TrainingCategoriesResponce"
-                  }
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2356,10 +2204,10 @@
         "tags": [
           "Trainings"
         ],
-        "operationId": "Trainings_GetTrainingVacancysWithPagination",
+        "operationId": "Trainings_Get2",
         "parameters": [
           {
-            "name": "Filters",
+            "name": "SearchText",
             "in": "query",
             "schema": {
               "type": "string",
@@ -2368,13 +2216,39 @@
             "x-position": 1
           },
           {
-            "name": "Sorts",
+            "name": "CategorySlug",
             "in": "query",
             "schema": {
               "type": "string",
               "nullable": true
             },
             "x-position": 2
+          },
+          {
+            "name": "CheckDate",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 3
+          },
+          {
+            "name": "Filters",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 4
+          },
+          {
+            "name": "Sorts",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 5
           },
           {
             "name": "Page",
@@ -2386,7 +2260,7 @@
               "minimum": 1.0,
               "nullable": true
             },
-            "x-position": 3
+            "x-position": 6
           },
           {
             "name": "PageSize",
@@ -2398,7 +2272,7 @@
               "minimum": 1.0,
               "nullable": true
             },
-            "x-position": 4
+            "x-position": 7
           }
         ],
         "responses": {
@@ -2439,26 +2313,6 @@
                 "schema": {
                   "type": "string",
                   "format": "guid"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/trainings/getwithif": {
-      "get": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_GetTrainingVacancysWithPaginationSinceCheckDate",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagedListOfTrainingVacancyListDto"
                 }
               }
             }
@@ -3621,31 +3475,6 @@
           "message": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "TrainingCategoriesResponce": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "categoryId": {
-            "type": "string",
-            "format": "guid"
-          },
-          "category": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/CategoryResponse"
-              }
-            ]
-          },
-          "selected": {
-            "type": "boolean"
-          },
-          "trainingsCount": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },

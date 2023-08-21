@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
-namespace MRA.Jobs.Application.Features.TrainingVacancies.Queries.TrainingCategories;
+namespace MRA.Jobs.Application.Features.TrainingVacancies.Queries;
 public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCategoriesQuery, List<TrainingCategoriesResponce>>
 {
     IApplicationDbContext _context;
@@ -17,12 +17,15 @@ public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCate
     {
         var trainings = await _context.TrainingVacancies.ToListAsync();
 
-        DateTime now = DateTime.UtcNow;
-        var workingTrainings = from t in trainings
-                               where t.PublishDate <= now && t.EndDate >= now
-                               select t;
+        if (request.CheckDate)
+        {
+            DateTime now = DateTime.UtcNow;
+            trainings = (from t in trainings
+                         where t.PublishDate <= now && t.EndDate >= now
+                         select t).ToList();
+        }
 
-        var sortedTrainings = (from t in workingTrainings
+        var sortedTrainings = (from t in trainings
                                group t by t.CategoryId).ToList();
 
         var trainingsWithCategory = new List<TrainingCategoriesResponce>();
