@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries.SinceCheckDate;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
-namespace MRA.Jobs.Application.Features.TrainingVacancies.Queries;
+namespace MRA.Jobs.Application.Features.TrainingVacancies.Queries.SinceCheckDate;
 internal class GetTrairaingVacancyBySlugSinceCheck : IRequestHandler<GetTrairaingVacancyBySlugSinceCheckDate, TrainingVacancyDetailedResponse>
 {
 

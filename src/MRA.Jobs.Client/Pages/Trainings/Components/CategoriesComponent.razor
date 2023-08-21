@@ -136,7 +136,7 @@
                         @if (inAll)
                         {
                             <button class="selectedbtn rounded-2" @onclick="selectedAllCategories">
-                                all @Count
+                                all (@Count)
                             </button>
                         }
                         else
@@ -195,10 +195,9 @@
         </div>
     </div>
 </body>
-
-@if (Trainings != null)
-{
-    <div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center">
+    @if (Trainings != null)
+    {
         <Pagination>
             <PaginationItem Disabled=@(!Trainings.HasPreviousPage) @onclick="Previous">
                 <PaginationLink>
@@ -224,9 +223,8 @@
                 </PaginationLink>
             </PaginationItem>
         </Pagination>
-    </div>
-}
-
+    }
+</div>
 @code {
     [Parameter]
     public string searchInput { get; set; }
@@ -246,7 +244,7 @@
         Categories = await _trainingService.GetCategories();
         if (searchInput == null)
         {
-            Trainings = await _trainingService.GetAll();
+            Trainings = await _trainingService.GetAllSinceCheckDate();
             Console.Out.WriteLine($"{Trainings.PageSize}, {Trainings.TotalPages}");
             UpdateDisplayedTrainings();
             Count = Trainings.TotalCount;
@@ -263,7 +261,7 @@
 
     private async void selectedAllCategories()
     {
-        Trainings = await _trainingService.GetAll();
+        Trainings = await _trainingService.GetAllSinceCheckDate();
         UpdateDisplayedTrainings();
         Count = Trainings.TotalCount;
 
@@ -274,7 +272,6 @@
 
         inAll = true;
         searchInput = null;
-        Trainings = new PagedList<TrainingVacancyListDto>();
 
         _manager.NavigateTo("/trainings");
         StateHasChanged();
@@ -288,7 +285,7 @@
             item.Selected = false;
         }
 
-        Trainings = await _trainingService.GetByCategoryName(slug);
+        Trainings = await _trainingService.GetByCategorySinceCheckDate(slug);
         UpdateDisplayedTrainings();
 
         category.Selected = true;
@@ -302,7 +299,7 @@
 
     async void GetSearchedTrainings()
     {
-        Trainings = await _trainingService.SearchTrainings(searchInput);
+        Trainings = await _trainingService.SearchTrainingsSinceSearchDate(searchInput);
         UpdateDisplayedTrainings();
         StateHasChanged();
     }

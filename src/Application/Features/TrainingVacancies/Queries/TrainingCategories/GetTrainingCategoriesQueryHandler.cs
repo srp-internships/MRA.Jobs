@@ -17,7 +17,12 @@ public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCate
     {
         var trainings = await _context.TrainingVacancies.ToListAsync();
 
-        var sortedTrainings = (from t in trainings
+        DateTime now = DateTime.UtcNow;
+        var workingTrainings = from t in trainings
+                               where t.PublishDate <= now && t.EndDate >= now
+                               select t;
+
+        var sortedTrainings = (from t in workingTrainings
                                group t by t.CategoryId).ToList();
 
         var trainingsWithCategory = new List<TrainingCategoriesResponce>();
