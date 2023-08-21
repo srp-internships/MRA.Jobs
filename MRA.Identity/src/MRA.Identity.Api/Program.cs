@@ -1,18 +1,18 @@
-using MRA.Identity.Api.ApplicationInsights;
-using MRA.Identity.Api.AzureKeyVault;
 using MRA.Identity.Application;
 using MRA.Identity.Infrastructure;
+using Mra.Shared.Initializer.Azure.Insight;
+using Mra.Shared.Initializer.Azure.KeyVault;
 
 public class Program
 {
     private static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
+        
         if (builder.Environment.IsProduction())
         {
             builder.AddApiApplicationInsights();
-            builder.ConfigureAzureKeyVault();
+            builder.ConfigureAzureKeyVault("Mra.Identity");//set your project name
         }
 
         builder.Services.AddControllers();
