@@ -36,13 +36,6 @@ public class TrainingService : ITrainingService
     {
         await _httpClient.DeleteAsync($"trainings/{slug}");
     }
-
-
-    public async Task<TrainingVacancyDetailedResponse> GetBySlugSinceCheckDate(string slug)
-    {
-        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
-    }
-
     public async Task<HttpResponseMessage> Update(string slug)
     {
         UpdateCommand = new UpdateTrainingVacancyCommand
@@ -58,6 +51,12 @@ public class TrainingService : ITrainingService
             Fees = createCommand.Fees
         };
         return await _httpClient.PutAsJsonAsync($"trainings/{slug}", UpdateCommand);
+    }
+
+
+    public async Task<TrainingVacancyDetailedResponse> GetBySlugSinceCheckDate(string slug)
+    {
+        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
     }
 
     public async Task<PagedList<TrainingVacancyListDto>> GetAll()
