@@ -7,12 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Common\Exceptions\" />
-        <Folder Include="Common\Models\" />
-        <Folder Include="Common\Seive\" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj" />
         <ProjectReference Include="..\MRA.Identity.Domain\MRA.Identity.Domain.csproj" />
     </ItemGroup>

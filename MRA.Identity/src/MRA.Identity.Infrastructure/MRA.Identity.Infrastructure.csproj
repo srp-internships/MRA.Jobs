@@ -7,11 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Common\Interfaces\" />
-        <Folder Include="Persistence\TableConfigurations\" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\MRA.Identity.Application\MRA.Identity.Application.csproj" />
     </ItemGroup>
 
@@ -19,6 +14,7 @@
         <PackageReference Include="Azure.Communication.Email" Version="1.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
+        <PackageReference Include="Mra.Shared" Version="1.0.2" />
     </ItemGroup>
 
 </Project>
