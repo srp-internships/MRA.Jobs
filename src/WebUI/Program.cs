@@ -15,8 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("dbsettings.json", true);
 if (builder.Environment.IsProduction())
 {
-    builder.AddApiApplicationInsights();
-    builder.ConfigureAzureKeyVault(ApplicationClaimValues.ApplicationName);
+    builder.Logging.AddApiApplicationInsights(builder.Configuration);
+    builder.Configuration.ConfigureAzureKeyVault(ApplicationClaimValues.ApplicationName);
 }
 
 
