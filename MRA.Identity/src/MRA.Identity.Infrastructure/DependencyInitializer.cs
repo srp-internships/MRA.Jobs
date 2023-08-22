@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MRA.Identity.Domain.Entities;
 using MRA.Identity.Infrastructure.Persistence;
+using Mra.Shared.Initializer.Azure.EmailService;
 
 namespace MRA.Identity.Infrastructure;
 
@@ -14,7 +15,7 @@ public static class DependencyInitializer
         string? dbConnectionString = configurations.GetConnectionString("SqlServer");
         services.AddDbContext<ApplicationDbContext>(s => s
             .UseSqlServer(dbConnectionString));
-
+        
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
@@ -25,5 +26,7 @@ public static class DependencyInitializer
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+        
+        services.AddAzureEmailService();
     }
 }

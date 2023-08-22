@@ -3,22 +3,20 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Infrastructure;
+using MRA.Jobs.Infrastructure.Identity;
 using MRA.Jobs.Infrastructure.Services;
 using MRA.Jobs.Web;
+using Mra.Shared.Initializer.Azure.Insight;
+using Mra.Shared.Initializer.Azure.KeyVault;
 using Newtonsoft.Json;
 using Sieve.Models;
-using MRA.Jobs.Web.AzureKeyVault;
-using MRA.Jobs.Web.ApplicationInsights;
-
-
-
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("dbsettings.json", true);
 if (builder.Environment.IsProduction())
 {
-    builder.AddApiApplicationInsights();
-    builder.ConfigureAzureKeyVault();
+    builder.Logging.AddApiApplicationInsights(builder.Configuration);
+    builder.Configuration.ConfigureAzureKeyVault(ApplicationClaimValues.ApplicationName);
 }
 
 
