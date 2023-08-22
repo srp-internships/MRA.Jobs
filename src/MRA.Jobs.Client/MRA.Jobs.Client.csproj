@@ -5,22 +5,24 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+    <PackageReference Include="MatBlazor" Version="2.10.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.2" PrivateAssets="all" />
+  </ItemGroup>
+
     <ItemGroup>
-        <PackageReference Include="MatBlazor" Version="2.10.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.2"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.2" PrivateAssets="all"/>
+        <ProjectReference Include="..\Application.Contracts\MRA.Jobs.Application.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Application.Contracts\MRA.Jobs.Application.Contracts.csproj"/>
+        <None Include="wwwroot\images\SRP_icon.png" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="wwwroot\images\SRP_icon.png"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Shared"/>
+        <Folder Include="Shared" />
     </ItemGroup>
 
 </Project>
