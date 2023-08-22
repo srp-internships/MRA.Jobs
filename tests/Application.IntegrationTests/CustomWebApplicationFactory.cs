@@ -8,8 +8,6 @@ using MRA.Jobs.Infrastructure.Persistence;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
-using static Testing;
-
 internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -31,7 +29,7 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
             {
                 var builderConf = builder.Configuration;
 
-                options.UseInMemoryDatabase("InMemoryDatabase");
+                //options.UseInMemoryDatabase("InMemoryDatabase");
             });
         });        
     }
