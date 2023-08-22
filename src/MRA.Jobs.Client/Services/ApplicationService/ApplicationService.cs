@@ -14,9 +14,10 @@ public class ApplicationService : IApplicationService
 
     public async Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync($"applications/{status}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"applications?status={status}");
         response.EnsureSuccessStatusCode();
         List<ApplicationListStatus> result = await response.Content.ReadFromJsonAsync<List<ApplicationListStatus>>();
         return result;
     }
+
 }

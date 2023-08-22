@@ -6,39 +6,46 @@
 @inject IApplicationService ApplicationService
 <h3>Board</h3>
 
+@if (applicationsByStatus == null || applicationsByStatus.Count == 0)
+{
+	<span>Loading</span>
+}
+else
+{
+	<main class="content">
+		<div class="container-fluid">
 
-<main class="content">
-    <div class="container-fluid">
+			<div class="mb-3">
+				<h1 class="h3 d-inline align-middle">Applications</h1>
+			</div>
 
-        <div class="mb-3">
-            <h1 class="h3 d-inline align-middle">Applications</h1>
-        </div>
+			<div class="row">
 
-        <div class="row">
+				@foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
+				{
+					<div class="col-3">
+						<ApplicationCards Title="@status.ToString()" Applications="@applicationsByStatus[status]" />
 
-            @foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
-            {
-                <div class="col-3">
-                    <ApplicationCards Title="@status.ToString()" Applications="@applicationsByStatus[status]"/>
+					</div>
+				}
+			</div>
+		</div>
+	</main>
+}
 
-                </div>
-            }
-        </div>
-    </div>
-</main>
 
 
 @code {
-    private Dictionary<ApplicationStatus, List<ApplicationListStatus>> applicationsByStatus;
+	private Dictionary<ApplicationStatus, List<ApplicationListStatus>> applicationsByStatus;
 
-    protected override async Task OnInitializedAsync()
-    {
-        applicationsByStatus = new Dictionary<ApplicationStatus, List<ApplicationListStatus>>();
-        foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
-        {
-            var applications = await ApplicationService.GetApplicationsByStatus(status);
-            applicationsByStatus[status] = applications;
-        }
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		applicationsByStatus = new Dictionary<ApplicationStatus, List<ApplicationListStatus>>();
+		foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
+		{
+			var applications = await ApplicationService.GetApplicationsByStatus(status);
+			applicationsByStatus[status] = applications;
+		}
+	}
 
 }

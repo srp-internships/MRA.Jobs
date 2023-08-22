@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
+﻿using System.Globalization;
+using MRA.Jobs.Application.Contracts.Converter.Converter;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 using Newtonsoft.Json;
 
@@ -12,6 +13,7 @@ public class ApplicationListDto
     public Guid VacancyId { get; set; }
     public string CV { get; set; }
     public int StatusId { get; set; }
+    public string Slug { get; set; }
 }
 
 public class ApplicationDetailsDto
@@ -40,9 +42,11 @@ public class ApplicationDetailsDto
 public class ApplicationListStatus
 {
     public Guid Id { get; set; }
+    public string Slug { get; set; }
     public Guid ApplicantId { get; set; }
     public string ApplicantFullName { get; set; }
     public Guid VacancyId { get; set; }
     public string VacancyTitle { get; set; }
     public ApplicationStatus Status { get; set; }
+
 }

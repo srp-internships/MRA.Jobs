@@ -8,7 +8,7 @@ using MRA.Jobs.Domain.Enums;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class  ApplicationsController : ApiControllerBase
+public class ApplicationsController : ApiControllerBase
 {
     private readonly ILogger<ApplicationsController> _logger;
 
@@ -18,11 +18,22 @@ public class  ApplicationsController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PagedList<ApplicationListDto>>> GetAll([FromQuery] PagedListQuery<ApplicationListDto> query)
+    public async Task<ActionResult<PagedList<ApplicationListDto>>> GetAll([FromQuery] PagedListQuery<ApplicationListDto> query,
+        [FromQuery] ApplicationStatus? status = null)
     {
-        var applications = await Mediator.Send(query);
-        return Ok(applications);
+        if (status.HasValue)
+        {
+            var queryS = new GetApplicationsByStatusQuery { Status = status.Value };
+            var result = await Mediator.Send(queryS);
+            return Ok(result);
+        }
+        else
+        {
+            var applications = await Mediator.Send(query);
+            return Ok(applications);
+        }
     }
+
 
     [HttpGet("{slug}")]
     public async Task<ActionResult<ApplicationDetailsDto>> Get(GetBySlugApplicationQuery request, CancellationToken cancellationToken)
@@ -69,14 +80,6 @@ public class  ApplicationsController : ApiControllerBase
     {
         request.Slug = slug;
         return await Mediator.Send(request, cancellationToken);
-    }
-
-    [HttpGet("{status}")]
-    public async Task<IActionResult> GetApplicationsByStatus(ApplicationStatus status)
-    {
-        var query = new GetApplicationsByStatusQuery { Status = status };
-        var result = await Mediator.Send(query);
-        return Ok(result);
     }
 
 }
