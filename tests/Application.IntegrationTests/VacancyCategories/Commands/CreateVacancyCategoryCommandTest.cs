@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using NUnit.Framework;
-using static MRA.Jobs.Application.IntegrationTests.Testing;
 namespace MRA.Jobs.Application.IntegrationTests.VacancyCategories.Commands;
 public class CreateVacancyCategoryCommandTest:Testing
 {
