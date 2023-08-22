@@ -15,8 +15,16 @@ public class Program
             builder.Logging.AddApiApplicationInsights(builder.Configuration);
             builder.Configuration.ConfigureAzureKeyVault("Mra.Identity");
         }
+        else
+        {
+            builder.Host.ConfigureLogging(logging =>
+            {
+                logging.ClearProviders();
+                logging.AddConsole();
+            });
+        }
 
-
+        
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
@@ -28,6 +36,7 @@ public class Program
 
         WebApplication app = builder.Build();
 
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -35,7 +44,7 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-
+        
         app.UseAuthentication();
         app.UseAuthorization();
 

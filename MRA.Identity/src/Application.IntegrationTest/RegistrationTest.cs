@@ -8,7 +8,7 @@ using MRA.Identity.Application.Contract.User.Commands;
 using MRA.Identity.Infrastructure.Persistence;
 using Newtonsoft.Json;
 
-namespace AuthController.IntegrationTest;
+namespace Application.IntegrationTest;
 
 [TestFixture]
 public class RegistrationTests:BaseTest

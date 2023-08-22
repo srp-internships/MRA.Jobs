@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MRA.Identity.Infrastructure.Persistence;
 
-namespace AuthController.IntegrationTest;
+namespace Application.IntegrationTest;
 
 [TestFixture]
 public abstract class BaseTest

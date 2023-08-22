@@ -9,7 +9,7 @@ using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Identity.Infrastructure.Persistence;
 using Newtonsoft.Json;
 
-namespace AuthController.IntegrationTest;
+namespace Application.IntegrationTest;
 
 public class LoginTest : BaseTest
 {

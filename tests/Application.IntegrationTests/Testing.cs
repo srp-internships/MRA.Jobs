@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MRA.Jobs.Infrastructure.Identity;
-using MRA.Jobs.Infrastructure.Identity.Entities;
 using MRA.Jobs.Infrastructure.Persistence;
 using NUnit.Framework;
 using Respawn;
@@ -50,50 +49,6 @@ public partial class Testing
     public static Guid GetCurrentUserId()
     {
         return _currentUserId;
-    }
-
-    public static async Task<Guid> RunAsDefaultUserAsync()
-    {
-        return await RunAsUserAsync("test@local", "Testing1234!", Array.Empty<string>());
-    }
-
-    public static async Task<Guid> RunAsAdministratorAsync()
-    {
-        return await RunAsUserAsync("administrator@local", "Administrator1234!", new[] { "Administrator" });
-    }
-
-    public static async Task<Guid> RunAsUserAsync(string userName, string password, string[] roles)
-    {
-        using var scope = _scopeFactory.CreateScope();
-
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-        var user = new ApplicationUser { UserName = userName, Email = userName };
-
-        var result = await userManager.CreateAsync(user, password);
-
-        if (roles.Any())
-        {
-            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-            foreach (var role in roles)
-            {
-                await roleManager.CreateAsync(new IdentityRole(role));
-            }
-
-            await userManager.AddToRolesAsync(user, roles);
-        }
-
-        if (result.Succeeded)
-        {
-            _currentUserId = user.Id;
-
-            return _currentUserId;
-        }
-
-        var errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
-
-        throw new Exception($"Unable to create {userName}.{Environment.NewLine}{errors}");
     }
 
     public static async Task ResetState()
