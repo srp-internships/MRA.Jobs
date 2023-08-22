@@ -10,6 +10,12 @@ using MRA.Jobs.Domain.Entities;
 
 public class ApplicationProfile: Profile
 {
+    private readonly ICurrentUserService _currentUserService;
+
+    public ApplicationProfile(ICurrentUserService currentUserService)
+    {
+        _currentUserService = currentUserService;
+    }
     public ApplicationProfile()
     {
         CreateMap<Domain.Entities.Application, ApplicationListDto>();
@@ -20,8 +26,7 @@ public class ApplicationProfile: Profile
         CreateMap<UpdateApplicationCommand, Domain.Entities.Application>();
         MappingConfiguration.ConfigureUserMap<ApplicationTimelineEvent, TimeLineDetailsDto>(this);
         CreateMap<Domain.Entities.Application, ApplicationListStatus>()
-            .ForMember(dest => dest.ApplicantFullName,
-                opt => opt.MapFrom(src => src.Applicant.FirstName + " " + src.Applicant.LastName))
             .ForMember(dest => dest.VacancyTitle, opt => opt.MapFrom(src => src.Vacancy.Title));
+
     }
 }

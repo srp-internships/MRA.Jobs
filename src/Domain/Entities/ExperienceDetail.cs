@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace MRA.Jobs.Domain.Entities;
 public class ExperienceDetail
 {
+    public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public string JobTitle { get; set; }
     public string CompanyName { get; set; }

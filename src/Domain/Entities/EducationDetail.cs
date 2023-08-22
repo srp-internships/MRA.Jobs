@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace MRA.Jobs.Domain.Entities;
 public class EducationDetail
 {
+    public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public string Major { get; set; }
     public string UniversityName { get; set; }

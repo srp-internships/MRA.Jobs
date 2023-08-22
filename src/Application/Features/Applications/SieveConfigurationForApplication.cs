@@ -6,10 +6,6 @@ public class SieveConfigurationForApplication : ISieveConfiguration
 {
     public void Configure(SievePropertyMapper mapper)
     {
-        mapper.Property<Domain.Entities.Application>(p => p.Applicant.FirstName)
-            .CanFilter()
-            .HasName(nameof(Domain.Entities.Application.Applicant));
-
         mapper.Property<Domain.Entities.Application>(p => p.ApplicantId)
             .CanFilter();
 

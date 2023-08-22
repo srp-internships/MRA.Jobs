@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
@@ -28,7 +29,7 @@ public static class ConfigureServices
 
         );
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-       
+
         services.AddScoped<ITestHttpClientService, TestHttpClientService>();
 
         services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
@@ -53,7 +54,16 @@ public static class ConfigureServices
         {
             o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer();
+        }).AddJwtBearer(op =>
+        {
+            op.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings")["SecurityKey"])),
+                ValidateIssuer = false,
+                ValidateAudience = false
+            };
+        });
 
         services.AddAuthorization(auth =>
         {
