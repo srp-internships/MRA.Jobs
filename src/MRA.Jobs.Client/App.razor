@@ -1,6 +1,6 @@
 ﻿@inject NavigationManager NavigationManager
 
-<Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="HandleNavigateAsync">
+<Router AppAssembly="@typeof(App).Assembly">
 	<Found Context="routeData">
 		<RouteView RouteData="@routeData"></RouteView>
 		<FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -14,11 +14,5 @@
 </Router>
 
 @code {
-	private async Task HandleNavigateAsync(NavigationContext args)
-	{
-		if (args.Path == "")
-		{
-			NavigationManager.NavigateTo("/home");
-		}
-	}
+	
 }
