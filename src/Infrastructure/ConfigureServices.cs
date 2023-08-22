@@ -25,22 +25,21 @@ public static class ConfigureServices
         //services.AddAzureEmailService();//uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-        string dbConnectionString = configuration.GetConnectionString("SqlServer");
 
-        bool useInMemoryDatabase = Environment.GetEnvironmentVariable("USE_IN_MEMORY_DATABASE") == "true";
-
-        if (useInMemoryDatabase)
+        services.AddDbContext<ApplicationDbContext>(options =>
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            var env = configuration["UseInMemoryDatabase"];
+            bool useInMemoryDatabase = configuration["UseInMemoryDatabase"] == "true";
+            if (useInMemoryDatabase)
             {
                 options.UseInMemoryDatabase("InMemoryDatabase");
-            });
-        }
-        else
-        {
-            services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(dbConnectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-        }
+            }
+            else
+            {
+                string dbConnectionString = configuration.GetConnectionString("SqlServer");
+                options.UseSqlServer(dbConnectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
+            }
+        });
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 

@@ -12,14 +12,11 @@ using Newtonsoft.Json;
 using Sieve.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddJsonFile("dbsettings.json", true);
 if (builder.Environment.IsProduction())
 {
     builder.Logging.AddApiApplicationInsights(builder.Configuration);
     builder.Configuration.ConfigureAzureKeyVault(ApplicationClaimValues.ApplicationName);
 }
-
-
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);

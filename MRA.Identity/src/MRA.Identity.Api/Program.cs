@@ -1,7 +1,5 @@
 using MRA.Identity.Application;
 using MRA.Identity.Infrastructure;
-using Mra.Shared.Initializer.Azure.Insight;
-using Mra.Shared.Initializer.Azure.KeyVault;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
