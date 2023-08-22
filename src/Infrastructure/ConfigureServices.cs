@@ -28,7 +28,6 @@ public static class ConfigureServices
 
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            var env = configuration["UseInMemoryDatabase"];
             bool useInMemoryDatabase = configuration["UseInMemoryDatabase"] == "true";
             if (useInMemoryDatabase)
             {
