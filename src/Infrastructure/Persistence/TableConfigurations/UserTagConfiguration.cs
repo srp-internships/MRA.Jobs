@@ -12,11 +12,6 @@ public class UserTagConfiguration : IEntityTypeConfiguration<UserTag>
             .HasForeignKey(ut => ut.TagId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(ut => ut.User)
-            .WithMany(u => u.Tags)
-            .HasForeignKey(ut => ut.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
         builder.HasIndex(ut => new { ut.TagId, ut.UserId }).IsUnique();
     }
 }

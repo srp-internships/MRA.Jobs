@@ -32,7 +32,6 @@
         <PackageReference Include="MailKit" Version="4.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="7.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
-
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -53,7 +52,6 @@
     </ItemGroup>
 
     <ItemGroup>
-
         <Folder Include="Persistence\Migrations\" />
     </ItemGroup>
 

@@ -28,13 +28,12 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
-        Applicant applicant = await _context.Applicants.FindAsync(request.ApplicantId);
-        _ = applicant ?? throw new NotFoundException(nameof(Applicant), request.ApplicantId);
         Vacancy vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
         _ = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
-
         var application = _mapper.Map<Application>(request);
-        application.Slug = GenerateSlug(applicant, vacancy);
+
+        application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
+        application.JobQuestions = request.JobQuestions;
 
         await _context.Applications.AddAsync(application, cancellationToken);
 
@@ -52,10 +51,8 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         return application.Id;
 
     }
-    private string GenerateSlug(Applicant applicant, Vacancy vacancy)
+    private string GenerateSlug(string username, Vacancy vacancy)
     {
-        //Here instead of the applicant.Firstname should be used applicnat.Username,
-        //beacuse the applicant model should be redesigned, i used Firstname temparoraly
-        return _slugService.GenerateSlug($"{applicant.Slug}-{vacancy.Slug}");
+        return _slugService.GenerateSlug($"{username}-{vacancy.Slug}");
     }
 }

@@ -1,15 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    public DbSet<Applicant> Applicants { get; }
     public DbSet<ApplicantSocialMedia> ApplicantSocialMedias { get; }
     public DbSet<VacancyTimelineEvent> VacancyTimelineEvents { get; }
-    public DbSet<User> DomainUsers { get; }
-    public DbSet<Reviewer> Reviewers { get; }
     public DbSet<JobVacancy> JobVacancies { get; }
     public DbSet<Vacancy> Vacancies { get; }
     public DbSet<VacancyCategory> Categories { get; }
@@ -24,6 +22,10 @@ public interface IApplicationDbContext
     public DbSet<ApplicationTimelineEvent> ApplicationTimelineEvents { get; }
     public DbSet<InternshipVacancy> Internships { get; }
     public DbSet<TrainingVacancy> TrainingVacancies { get; }
+    public DbSet<EducationDetail> EducationDetails { get; set; }
+    public DbSet<ExperienceDetail> ExperienceDetails { get; set; }
+    public DbSet<Skill> Skills { get; set; }
+    public DbSet<JobQuestion> JobQuestions { get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

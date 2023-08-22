@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Infrastructure.Identity;
 using MRA.Jobs.Infrastructure.Persistence;
@@ -19,16 +20,28 @@ public static class ConfigureServices
     {
         services.AddAppIdentity(configuration);
         services.AddMediatR(typeof(ConfigureServices).Assembly);
-        
-        
+
+
         //services.AddAzureEmailService();//uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
-        
+
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         string dbConnectionString = configuration.GetConnectionString("SqlServer");
 
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(dbConnectionString,
-                builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        bool useInMemoryDatabase = Environment.GetEnvironmentVariable("USE_IN_MEMORY_DATABASE") == "true";
+
+        if (useInMemoryDatabase)
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseInMemoryDatabase("InMemoryDatabase");
+            });
+        }
+        else
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(dbConnectionString, builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        }
+
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
         services.AddScoped<ITestHttpClientService, TestHttpClientService>();
@@ -52,7 +65,16 @@ public static class ConfigureServices
         {
             o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer();
+        }).AddJwtBearer(op =>
+        {
+            op.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings")["SecurityKey"])),
+                ValidateIssuer = false,
+                ValidateAudience = false
+            };
+        });
 
         services.AddAuthorization(auth =>
         {

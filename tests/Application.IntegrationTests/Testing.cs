@@ -1,27 +1,32 @@
-﻿using MediatR;
+﻿using System.Net.Http.Headers;
+using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MRA.Jobs.Application.IntegrationTests.Common.Interfaces;
+using MRA.Jobs.Application.IntegrationTests.Common.Services;
 using MRA.Jobs.Infrastructure.Identity;
 // using MRA.Jobs.Infrastructure.Identity.Entities;
 using MRA.Jobs.Infrastructure.Persistence;
 using NUnit.Framework;
+using NUnit.Framework.Internal.Execution;
 using Respawn;
 using Respawn.Graph;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
-[SetUpFixture]
 public class Testing
 {
     private static WebApplicationFactory<Program> _factory = null!;
     private static IConfiguration _configuration = null!;
     private static IServiceScopeFactory _scopeFactory = null!;
-    private static Respawner _checkpoint = null!;
     private static Guid _currentUserId;
-
+    private static IJwtTokenService _tokenService;
+    protected HttpClient _httpClient;
+    protected string token;
 
     [OneTimeSetUp]
     public void RunBeforeAnyTests()
@@ -29,19 +34,18 @@ public class Testing
         _factory = new CustomWebApplicationFactory();
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
         _configuration = _factory.Services.GetRequiredService<IConfiguration>();
-
-        _checkpoint = Respawner.CreateAsync(_configuration.GetConnectionString("DefaultConnection"),
-            new RespawnerOptions { TablesToIgnore = new Table[] { "__EFMigrationsHistory" } }).GetAwaiter().GetResult();
+        _tokenService = new JwtTokenService(_configuration);
     }
 
-
-    public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
+    [SetUp]
+    public void SetupTest()
     {
-        using IServiceScope scope = _scopeFactory.CreateScope();
+        _httpClient = _factory.CreateClient();
+    }
 
-        ISender mediator = scope.ServiceProvider.GetRequiredService<ISender>();
-
-        return await mediator.Send(request);
+    public static string CreateJwtToken(IList<Claim> claims)
+    {
+        return _tokenService.CreateTokenByClaims(claims);
     }
 
     public static Guid GetCurrentUserId()
@@ -49,58 +53,33 @@ public class Testing
         return _currentUserId;
     }
 
-    public static async Task<Guid> RunAsDefaultUserAsync()
+    public void RunAsDefaultUserAsync()
     {
-        return await RunAsUserAsync("test@local", "Testing1234!", Array.Empty<string>());
-    }
-
-    public static async Task<Guid> RunAsAdministratorAsync()
-    {
-        return await RunAsUserAsync("administrator@local", "Administrator1234!", new[] { "Administrator" });
-    }
-
-    public static async Task<Guid> RunAsUserAsync(string userName, string password, string[] roles)
-    {
-        using IServiceScope scope = _scopeFactory.CreateScope();
-
-        // UserManager<ApplicationUser> userManager =
-            // scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-        // ApplicationUser user = new ApplicationUser { UserName = userName, Email = userName };
-
-        // IdentityResult result = await userManager.CreateAsync(user, password);
-
-        if (roles.Any())
+        var claims = new List<Claim>
         {
-            RoleManager<IdentityRole> roleManager =
-                scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-            foreach (string role in roles)
-            {
-                await roleManager.CreateAsync(new IdentityRole(role));
-            }
-
-            // await userManager.AddToRolesAsync(user, roles);
-        }
-
-        // if (result.Succeeded)
-        // {
-            // _currentUserId = user.Id;
-
-            // return _currentUserId;
-        // }
-
-        // string errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
-
-        throw new Exception($"Unable to create {userName}.{Environment.NewLine}{1}");
-        
+            new Claim("role", "user")
+        };
+        token = _tokenService.CreateTokenByClaims(claims);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
+
+    public void RunAsAdministratorAsync()
+    {
+        var claims = new List<Claim>
+        {
+            new Claim("role", "admin")
+        };
+        token = _tokenService.CreateTokenByClaims(claims);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+    }
+
+    
 
     public static async Task ResetState()
     {
         try
         {
-            await _checkpoint.ResetAsync(_configuration.GetConnectionString("DefaultConnection"));
+            //await _checkpoint.ResetAsync(_configuration.GetConnectionString("DefaultConnection"));
         }
         catch (Exception) { }
 

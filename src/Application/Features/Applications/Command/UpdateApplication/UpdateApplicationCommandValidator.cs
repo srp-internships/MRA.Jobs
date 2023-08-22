@@ -9,7 +9,5 @@ public class UpdateApplicationCommandValidator : AbstractValidator<UpdateApplica
         RuleFor(v => v.CoverLetter)
             .NotEmpty()
             .MinimumLength(150);
-        RuleFor(v => v.CV)
-            .NotEmpty();
     }
 }

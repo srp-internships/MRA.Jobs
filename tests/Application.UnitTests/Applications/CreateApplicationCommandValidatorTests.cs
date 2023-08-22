@@ -28,19 +28,6 @@ public class CreateApplicationCommandValidatorTests : BaseTestFixture
     }
 
     [Test]
-    public void Validate_CVEmpty_ShouldFailValidation()
-    {
-        // Arrange
-        CreateApplicationCommand request = new CreateApplicationCommand { CV = "" };
-
-        // Act
-        TestValidationResult<CreateApplicationCommand> result = _validator.TestValidate(request);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.CV);
-    }
-
-    [Test]
     public void Validate_CoverLetterEmpty_ShouldFailValidation()
     {
         // Arrange
@@ -53,18 +40,19 @@ public class CreateApplicationCommandValidatorTests : BaseTestFixture
         result.ShouldHaveValidationErrorFor(x => x.CoverLetter);
     }
 
-    [Test]
-    public void Validate_ApplicantIdEmpty_ShouldFailValidation()
-    {
-        // Arrange
-        CreateApplicationCommand request = new CreateApplicationCommand { ApplicantId = Guid.Empty };
+    //TODO
+    //[Test]
+    //public void Validate_ApplicantIdEmpty_ShouldFailValidation()
+    //{
+    //    // Arrange
+    //    CreateApplicationCommand request = new CreateApplicationCommand ();
 
-        // Act
-        TestValidationResult<CreateApplicationCommand> result = _validator.TestValidate(request);
+    //    // Act
+    //    TestValidationResult<CreateApplicationCommand> result = _validator.TestValidate(request);
 
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.ApplicantId);
-    }
+    //    // Assert
+    //    result.ShouldHaveValidationErrorFor(x => x.ApplicantId);
+    //}
 
     [Test]
     public void Validate_VacancyIdEmpty_ShouldFailValidation()
@@ -85,9 +73,7 @@ public class CreateApplicationCommandValidatorTests : BaseTestFixture
         // Arrange
         CreateApplicationCommand request = new CreateApplicationCommand
         {
-            ApplicantId = Guid.NewGuid(),
             VacancyId = Guid.NewGuid(),
-            CV = "https://github.com/srp-internships/MRA-Jobs/pulls",
             CoverLetter =
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"
         };
