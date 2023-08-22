@@ -1,11 +1,11 @@
 ﻿@inject AuthenticationStateProvider AuthProvider
 <header id="header" class="header fixed-top d-flex align-items-center">
 	<div class="container-fluid d-flex align-items-center justify-content-between">
-		<a href="header"
+		<a href="/"
 		   class="logo d-flex align-items-center me-auto me-xl-0">
 			<!-- Uncomment the line below if you also wish to use an image logo -->
 			<!-- <img src="assets/img/logo.png" alt=""> -->
-			<img src="images/srp_icon.png" class="img-fluid"/>
+			<img src="images/srp_icon.png" class="img-fluid" />
 			@*<img src="images/bluewhite.png" style="height:30%; width:30%;margin:-40px 0" class="img-fluid"/>*@
 			<div class="col">
 				<h1></h1>
@@ -20,11 +20,11 @@
 		<nav id="navmenu" class="navmenu">
 			<ul>
 				<li>
-					<a href="home#hero" class="active">Home</a>
+					<a href="/" class="active">Home</a>
 				</li>
-				<li>
-					<a href="home#about">About</a>
-				</li>
+				@*<li>
+				<a href="home#about">About</a>
+				</li>*@
 				<li>
 					<a href="jobs">Jobs</a>
 				</li>
@@ -35,15 +35,15 @@
 					<a href="Trainings">Trainings</a>
 				</li>
 				<li>
-					<a href="https://www.silkroadprofessionals.com/team/team/">Team</a>
+					<a href="https://www.silkroadprofessionals.com/team/team/" target="_blank">Team</a>
 				</li>
 				@*<li>
 				<a href="blog.html">Blog</a>
 				</li>*@
 
-				<li>
-					<a href="home#contact">Contact</a>
-				</li>
+				@*<li>
+				<a href="home#contact">Contact</a>
+				</li>*@
 			</ul>
 
 			<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -70,11 +70,13 @@
 							</AuthorizeView>
 						</CascadingAuthenticationState>
 					</ul>
+
 				</li>
 			</ul>
 		</nav>
 	</div>
 </header>
+
 
 
 
