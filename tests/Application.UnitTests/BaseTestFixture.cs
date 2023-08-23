@@ -11,6 +11,7 @@ public abstract class BaseTestFixture
     protected Mock<IDateTime> _dateTimeMock;
     protected Mock<ICurrentUserService> _currentUserServiceMock;
     protected Mock<ISlugGeneratorService> _slugGenerator;
+    HttpClient _httpClient;
 
     [SetUp]
     public virtual void Setup()

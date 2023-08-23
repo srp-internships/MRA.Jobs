@@ -93,7 +93,6 @@ public class TrainingService : ITrainingService
         var trainings = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings?SearchText={searchInput}&CheckDate=true");
         return trainings;
     }
-
     public async Task<List<TrainingCategoriesResponce>> GetCategoriesSinceCheckDate()
     {
         var result = await _httpClient.GetFromJsonAsync<List<TrainingCategoriesResponce>>("trainings/categories?CheckDate=true");
