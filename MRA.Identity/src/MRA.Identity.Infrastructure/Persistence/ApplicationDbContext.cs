@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Domain.Entities;
 
@@ -9,5 +10,11 @@ public sealed class ApplicationDbContext : IdentityDbContext<ApplicationUser, Ap
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
         base(options)
     {
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        base.OnModelCreating(builder);
     }
 }

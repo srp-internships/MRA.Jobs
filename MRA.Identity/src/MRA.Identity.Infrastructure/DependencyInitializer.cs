@@ -27,5 +27,7 @@ public static class DependencyInitializer
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
+        services.AddTransient<ApplicationDbContextInitializer>();
     }
 }

@@ -22,7 +22,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddScoped<ApplicationDbContextInitializer>();
+//builder.Services.AddScoped<ApplicationDbContextInitializer>();
 
 
 WebApplication app = builder.Build();
@@ -33,7 +33,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-var initializer = app.Services.GetService<ApplicationDbContextInitializer>();
+var initializer = app.Services.CreateScope().ServiceProvider.GetService<ApplicationDbContextInitializer>();
 
 await initializer.SeedAsync();
 

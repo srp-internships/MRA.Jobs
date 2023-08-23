@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.User.Commands;
 using MRA.Identity.Domain.Entities;
-using Newtonsoft.Json;
+
 
 namespace MRA.Identity.Application.Features.Users.Command.RegisterUser;
 

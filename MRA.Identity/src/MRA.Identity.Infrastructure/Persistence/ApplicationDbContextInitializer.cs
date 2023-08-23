@@ -42,11 +42,10 @@ public class ApplicationDbContextInitializer
             Email = "Email",
             NormalizedEmail = "email",
             EmailConfirmed = false,
-            PhoneNumber = "phoneNumber",
-
+            PhoneNumber = "phoneNumber"
         };
 
-        await _userManager.CreateAsync(user,"123test");
+        await _userManager.CreateAsync(user,"123Test@");
         await _userManager.AddToRoleAsync(user, role.Name);
 
     }

@@ -20,7 +20,8 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Appli
             {
                 Id = Guid.NewGuid(),
                 Name = request.RoleName,
-                NormalizedName = request.RoleName.ToLower()
+                NormalizedName = request.RoleName.ToLower(),
+                Slug = request.RoleName.ToLower(),
             };
 
             var result = await _roleManager.CreateAsync(role);
@@ -37,4 +38,5 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Appli
             return new ApplicationResponseBuilder<Guid>().Success(false).SetException(e).Build();
         }
     }
+
 }
