@@ -32,7 +32,6 @@
         <PackageReference Include="MailKit" Version="4.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="7.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
-
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -44,6 +43,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Graph" Version="5.12.0" />
+        <PackageReference Include="Mra.Shared" Version="1.0.4" />
     </ItemGroup>
 
     <ItemGroup>
@@ -52,11 +52,6 @@
     </ItemGroup>
 
     <ItemGroup>
-
-        <Folder Include="Identity\Features\User\Events\" />
-        <Folder Include="Identity\Features\Verification\Commands\" />
-        <Folder Include="Identity\Features\Verification\Queries\" />
-
         <Folder Include="Persistence\Migrations\" />
     </ItemGroup>
 

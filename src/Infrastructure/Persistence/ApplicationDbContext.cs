@@ -10,7 +10,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
-    internal ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
         base(options)
     {
     }
@@ -24,11 +24,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
     }
 
-    public DbSet<Applicant> Applicants { get; set; }
     public DbSet<ApplicantSocialMedia> ApplicantSocialMedias { get; set; }
     public DbSet<VacancyTimelineEvent> VacancyTimelineEvents { get; set; }
-    public DbSet<User> DomainUsers { get; set; }
-    public DbSet<Reviewer> Reviewers { get; set; }
     public DbSet<JobVacancy> JobVacancies { get; set; }
     public DbSet<Vacancy> Vacancies { get; set; }
     public DbSet<VacancyCategory> Categories { get; set; }
@@ -43,6 +40,10 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<ApplicationTimelineEvent> ApplicationTimelineEvents { get; set; }
     public DbSet<InternshipVacancy> Internships { get; set; }
     public DbSet<TrainingVacancy> TrainingVacancies { get; set; }
+    public DbSet<EducationDetail> EducationDetails { get; set; }
+    public DbSet<ExperienceDetail> ExperienceDetails { get; set; }
+    public DbSet<Skill> Skills { get; set; }
+    public DbSet<JobQuestion> JobQuestions { get; set; }
 
     #region override
 
