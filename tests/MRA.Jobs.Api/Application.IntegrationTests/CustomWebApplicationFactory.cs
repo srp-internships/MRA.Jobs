@@ -23,7 +23,7 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
         Dictionary<string, string> inMemoryConfiguraton = new Dictionary<string, string>
             {
-                { "UseInMemoryDatabase", "true" }
+                { "UseInMemoryDatabase", "true" },
             };
         return inMemoryConfiguraton;
     }

@@ -49,7 +49,7 @@ public class CreateApplicationCommandTest:Testing
         var internshipVacancy = new InternshipVacancy
         {
             Id = Guid.NewGuid(),
-            Title = "Summer internship",
+            Title = "foobar",
             Description = RandomString(50),
             ShortDescription = RandomString(10),
             Stipend = 100,
