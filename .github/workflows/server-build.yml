@@ -21,9 +21,23 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+    
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: ./src
     - name: Build
       run: dotnet build --no-restore
+      working-directory: ./src
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      working-directory: ./src
+
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ./src/MRA.Jobs.Identity
+    - name: Build
+      run: dotnet build --no-restore
+      working-directory: ./src/MRA.Jobs.Identity
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      working-directory: ./src/MRA.Jobs.Identity
