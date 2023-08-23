@@ -5,6 +5,5 @@ public class ApplicantSocialMedia : BaseEntity
     public string ProfileUrl { get; set; }
     public SocialMediaType Type { get; set; }
 
-    public Guid ApplicantId { get; set; }
-    public Applicant Applicant { get; set; }
+    public Guid UserId { get; set; }
 }

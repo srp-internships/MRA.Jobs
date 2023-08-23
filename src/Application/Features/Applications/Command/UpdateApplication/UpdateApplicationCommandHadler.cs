@@ -29,13 +29,12 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
     public async Task<Guid> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
     {
         var application = await _context.Applications
-            .Include(a => a.Applicant)
             .Include(a => a.Vacancy)
             .FirstOrDefaultAsync(t => t.Slug == request.Slug, cancellationToken);
         _ = application ?? throw new NotFoundException(nameof(Application), request.Slug); ;
 
         _mapper.Map(request, application);
-        application.Slug = _slugService.GenerateSlug($"{application.Applicant.Slug}-{application.Vacancy.Slug}");
+        application.Slug = _slugService.GenerateSlug($"{_currentUserService.GetUserName()}-{application.Vacancy.Slug}");
 
         var timelineEvent = new ApplicationTimelineEvent
         {

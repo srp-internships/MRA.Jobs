@@ -21,5 +21,10 @@
       <ProjectReference Include="..\Domain\MRA.Jobs.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Features\Me\Commands\" />
+      <Folder Include="Features\Me\Queries\" />
+    </ItemGroup>
+
 
 </Project>

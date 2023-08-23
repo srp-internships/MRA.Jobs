@@ -10,10 +10,5 @@ public class ApplicantSocialMediaConfiguration : IEntityTypeConfiguration<Applic
         builder.Property(sm => sm.ProfileUrl).HasColumnType("nvarchar(max)").IsRequired();
         builder.Property(sm => sm.Type).HasColumnType("int").IsRequired();
 
-        // Navigation properties
-        builder.HasOne(sm => sm.Applicant)
-            .WithMany(a => a.SocialMedias)
-            .HasForeignKey(sm => sm.ApplicantId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }
