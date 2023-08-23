@@ -17,14 +17,6 @@ public class TrainingsController : ApiControllerBase
         var training = await Mediator.Send(new GetTrainingVacancyBySlugQuery { Slug = slug });
         return Ok(training);
     }
-
-    [HttpGet("categories")]
-    public async Task<IActionResult> GetCategories([FromQuery] GetTrainingCategoriesQuery query)
-    {
-        var categories = await Mediator.Send(query);
-        return Ok(categories);
-    }
-
     [HttpGet]
     public async Task<ActionResult<PagedList<TrainingVacancyListDto>>> Get([FromQuery] GetTrainingsQueryOptions query)
     {
@@ -32,28 +24,31 @@ public class TrainingsController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateNewTrainingVacancy(CreateTrainingVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> Post(CreateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpPut("{slug}")]
-    public async Task<ActionResult<Guid>> UpdateTrainingVacancy([FromRoute] string slug, [FromBody] UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> Put([FromRoute] string slug, [FromBody] UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
-            return BadRequest();
+            return NotFound();
 
         return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpDelete("{slug}")]
-    public async Task<ActionResult<bool>> DeleteTrainingVacancy([FromRoute] string slug, [FromBody] DeleteTrainingVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<bool>> Delete([FromRoute] string slug, [FromBody] DeleteTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
-            return BadRequest();
+            return NotFound();
 
         return await Mediator.Send(request, cancellationToken);
     }
+
+
+
 
     [HttpPost("{slug}/tags")]
     public async Task<IActionResult> AddTag([FromRoute] string slug, [FromBody] AddTagToTrainingVacancyCommand request, CancellationToken cancellationToken)

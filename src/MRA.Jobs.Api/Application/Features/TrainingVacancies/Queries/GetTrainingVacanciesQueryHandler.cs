@@ -25,27 +25,21 @@ public class
     public async Task<PagedList<TrainingVacancyListDto>> Handle(GetTrainingsQueryOptions request,
         CancellationToken cancellationToken)
     {
-        var trainings = await _context.TrainingVacancies.Include(t => t.Category).ToListAsync();
+        var trainings = (await _context.TrainingVacancies.Include(t => t.Category).ToListAsync()).AsEnumerable();
 
         if (request.CategorySlug is not null)
         {
-            trainings = (from t in trainings
-                         where t.Category.Slug == request.CategorySlug
-                         select t).ToList();
+            trainings = trainings.Where(t => t.Category.Slug == request.CategorySlug);
         }
         else if (request.SearchText is not null)
         {
-            trainings = (from t in trainings
-                         where t.Title.ToLower().Trim().Contains(request.SearchText.ToLower().Trim())
-                         select t).ToList();
+            trainings = trainings.Where(t => t.Title.ToLower().Trim().Contains(request.SearchText.ToLower().Trim()));
         }
 
         if (request.CheckDate)
         {
             DateTime now = DateTime.Now;
-            trainings = (from t in trainings
-                         where t.PublishDate <= now && t.EndDate >= now
-                         select t).ToList();
+            trainings = trainings.Where(t => t.PublishDate <= now && t.EndDate >= now);
         }
 
         PagedList<TrainingVacancyListDto> result = _sieveProcessor.ApplyAdnGetPagedList(request,

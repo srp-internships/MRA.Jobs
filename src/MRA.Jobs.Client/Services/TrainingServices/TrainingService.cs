@@ -62,11 +62,6 @@ public class TrainingService : ITrainingService
     {
         return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
     }
-    public async Task<List<TrainingCategoriesResponce>> GetCategories()
-    {
-        var result = await _httpClient.GetFromJsonAsync<List<TrainingCategoriesResponce>>("trainings/categories");
-        return result;
-    }
     public async Task<PagedList<TrainingVacancyListDto>> GetByCategoryName(string slug)
     {
         var training = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings?CategorySlug={slug}");
@@ -92,10 +87,5 @@ public class TrainingService : ITrainingService
     {
         var trainings = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings?SearchText={searchInput}&CheckDate=true");
         return trainings;
-    }
-    public async Task<List<TrainingCategoriesResponce>> GetCategoriesSinceCheckDate()
-    {
-        var result = await _httpClient.GetFromJsonAsync<List<TrainingCategoriesResponce>>("trainings/categories?CheckDate=true");
-        return result;
     }
 }

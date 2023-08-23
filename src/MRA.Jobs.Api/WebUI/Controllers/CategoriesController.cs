@@ -5,6 +5,7 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
@@ -20,6 +21,13 @@ public class CategoriesController : ApiControllerBase
 
     [HttpGet]
     public async Task<ActionResult<PagedList<CategoryResponse>>> GetAll([FromQuery] PagedListQuery<CategoryResponse> query)
+    {
+        var categories = await Mediator.Send(query);
+        return Ok(categories);
+    }
+
+    [HttpGet("training")]
+    public async Task<IActionResult> GetCategories([FromQuery] GetTrainingCategoriesQuery query)
     {
         var categories = await Mediator.Send(query);
         return Ok(categories);

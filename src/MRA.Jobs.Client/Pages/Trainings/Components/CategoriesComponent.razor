@@ -4,6 +4,7 @@
 @using Blazorise.Bootstrap;
 @using Blazorise.Icons.FontAwesome;
 @inject ITrainingService _trainingService;
+@inject ICategoryService _categoryService;
 @inject NavigationManager _manager;
 
 <head>
@@ -241,7 +242,7 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        Categories = await _trainingService.GetCategoriesSinceCheckDate();
+        Categories = await _categoryService.GetTrainingCategoriesSinceCheckDate();
         if (searchInput == null)
         {
             Trainings = await _trainingService.GetAllSinceCheckDate();

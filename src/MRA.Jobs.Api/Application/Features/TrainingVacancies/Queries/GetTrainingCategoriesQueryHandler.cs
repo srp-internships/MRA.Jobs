@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+using static Sieve.Extensions.MethodInfoExtended;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Queries;
 public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCategoriesQuery, List<TrainingCategoriesResponce>>
@@ -15,27 +16,24 @@ public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCate
     }
     public async Task<List<TrainingCategoriesResponce>> Handle(GetTrainingCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var trainings = await _context.TrainingVacancies.ToListAsync();
+        var trainings = (await _context.TrainingVacancies.ToListAsync()).AsEnumerable();
 
         if (request.CheckDate)
         {
             DateTime now = DateTime.UtcNow;
-            trainings = (from t in trainings
-                         where t.PublishDate <= now && t.EndDate >= now
-                         select t).ToList();
+            trainings = trainings.Where(t => t.PublishDate <= now && t.EndDate >= now);
         }
 
-        var sortedTrainings = (from t in trainings
-                               group t by t.CategoryId).ToList();
+        var sortedTrainings = from t in trainings
+                              group t by t.CategoryId;
 
         var trainingsWithCategory = new List<TrainingCategoriesResponce>();
         var categories = await _context.Categories.ToListAsync();
 
         foreach (var training in sortedTrainings)
         {
-            var category = (from c in categories
-                            where c.Id == training.Key
-                            select c).FirstOrDefault();
+            var category = categories.Where(c => c.Id == training.Key).FirstOrDefault();
+
             trainingsWithCategory.Add(new TrainingCategoriesResponce
             {
                 CategoryId = training.Key,
