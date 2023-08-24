@@ -4,8 +4,10 @@
 name: .NET
 
 on:
-  schedule:
-    - cron: "0 21 * * *"
+  #schedule:
+  #  - cron: "0 21 * * *"
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -33,7 +35,11 @@ jobs:
         sqlserver-version: 2022
         
     - name: Restore dependencies
-      run: dotnet restore src/MRA.Jobs.sln
+      run: dotnet restore
+      working-directory: ./src
+    - name: Build
+      run: dotnet build --no-restore
+      working-directory: ./src
 
     - name: Update database
       run: |
