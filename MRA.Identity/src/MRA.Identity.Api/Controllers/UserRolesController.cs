@@ -26,6 +26,7 @@ public class UserRolesController : ControllerBase
         {
             UserName = u.UserName,
             Roles = _userManager.GetRolesAsync(u).Result
+
         });
 
         return Ok(userRoles);

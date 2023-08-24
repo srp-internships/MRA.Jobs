@@ -35,8 +35,24 @@ public class RolesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateRole(CreateRoleCommand command)
+    public async Task<IActionResult> Create(CreateRoleCommand command)
     {
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpPut("{slug}")]
+    public async Task<IActionResult> Update(UpdateRoleCommand command, string slug)
+    {
+        command.Slug = slug;
+        var result= await _mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpDelete("{slug}")]
+    public async Task<IActionResult> Delete(string slug)
+    {
+        var command = new DeleteRoleCommand { Slug = slug };
         var result = await _mediator.Send(command);
         return Ok(result);
     }
