@@ -54,3 +54,16 @@ jobs:
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      working-directory: ./tests/MRA.Jobs.Api/Application.IntegrationTests
+    
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      working-directory: ./tests/MRA.Jobs.Api/Application.UnitTests
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      working-directory: ./tests/MRA.Jobs.Api/Domain.UnitTests
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      working-directory: ./tests/MRA.Jobs.Api/WebUI.AcceptanceTests
