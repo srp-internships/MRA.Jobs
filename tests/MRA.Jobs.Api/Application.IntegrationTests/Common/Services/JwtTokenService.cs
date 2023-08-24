@@ -23,8 +23,6 @@ public class JwtTokenService : IJwtTokenService
         SymmetricSecurityKey key = new(Encoding.UTF8
             .GetBytes(_configuration.GetSection("JwtSettings")["SecurityKey"]!));
 
-        var ky = _configuration.GetSection("JwtSettings")["SecurityKey"];
-
         SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha512Signature);
 
         JwtSecurityToken token = new(
