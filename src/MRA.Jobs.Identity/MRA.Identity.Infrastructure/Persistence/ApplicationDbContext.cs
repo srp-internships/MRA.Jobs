@@ -13,11 +13,5 @@ public sealed class ApplicationDbContext : IdentityDbContext<ApplicationUser, Ap
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
         base(options)
     {
-        UserClaims = Set<ApplicationUserClaim>();
-    }
-
-    public Task<int> SaveChangesAsync()
-    {
-        return base.SaveChangesAsync();
     }
 }

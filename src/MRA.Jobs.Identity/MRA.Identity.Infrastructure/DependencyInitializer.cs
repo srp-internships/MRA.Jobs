@@ -16,7 +16,7 @@ public static class DependencyInitializer
         string? dbConnectionString = configurations.GetConnectionString("SqlServer");
         services.AddDbContext<ApplicationDbContext>(s => s
             .UseSqlServer(dbConnectionString));
-        
+
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
@@ -27,9 +27,9 @@ public static class DependencyInitializer
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-        
+
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-        
+
         services.AddAzureEmailService();
     }
 }
