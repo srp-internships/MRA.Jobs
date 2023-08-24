@@ -46,9 +46,11 @@ jobs:
           dotnet tool install --global dotnet-ef
           dotnet tool restore
           dotnet ef database update -p ./MRA.Jobs.Api/Infrastructure/MRA.Jobs.Infrastructure.csproj --startup-project ./MRA.Jobs.Api/WebUI/MRA.Jobs.Web.csproj
+      working-directory: ./src
       
     - name: Build
       run: dotnet build --no-restore
+      working-directory: ./src
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
