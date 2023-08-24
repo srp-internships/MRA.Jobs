@@ -27,7 +27,7 @@ public static class ConfigureServices
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
         string dbConnectionString = configuration.GetConnectionString("SqlServer");
-
+        Console.WriteLine(dbConnectionString);
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             if (configuration["UseInMemoryDatabase"] == "true")
