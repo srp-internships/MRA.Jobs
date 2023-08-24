@@ -32,7 +32,7 @@ public class AuthController : ControllerBase
 
         if (result.Exception!=null)
         {
-            return BadRequest(result.Exception);
+            return BadRequest(result.Exception.ToString());
         }
 
         return BadRequest();
