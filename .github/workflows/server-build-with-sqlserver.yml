@@ -33,7 +33,7 @@ jobs:
         sqlserver-version: 2022
         
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore src/MRA.Jobs.sln
 
     - name: Update database
       run: |
