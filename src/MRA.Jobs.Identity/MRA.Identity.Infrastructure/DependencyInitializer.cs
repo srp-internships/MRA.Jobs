@@ -2,9 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mra.Shared.Initializer.Azure.EmailService;
+using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Domain.Entities;
 using MRA.Identity.Infrastructure.Persistence;
+using Mra.Shared.Initializer.Azure.EmailService;
 
 namespace MRA.Identity.Infrastructure;
 
@@ -26,6 +27,8 @@ public static class DependencyInitializer
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
+        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
         services.AddAzureEmailService();
     }
