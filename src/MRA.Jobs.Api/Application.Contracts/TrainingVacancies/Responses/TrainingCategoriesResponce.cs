@@ -2,7 +2,7 @@
 using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-public class TrainingCategoriesResponce
+public record TrainingCategoriesResponce
 {
     public Guid CategoryId { get; set; }
     public CategoryResponse Category { get; set; }
