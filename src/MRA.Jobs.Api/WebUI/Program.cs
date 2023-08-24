@@ -12,7 +12,6 @@ using Newtonsoft.Json;
 using Sieve.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddJsonFile("dbsettings.json", true);
 if (builder.Environment.IsProduction())
 {
     builder.Logging.AddApiApplicationInsights(builder.Configuration);
