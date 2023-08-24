@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using MRA.Jobs.Infrastructure.Persistence;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
@@ -12,25 +8,23 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-
+        var inMemoryConfiguration = GetInMemoryConfiguration();
         builder.ConfigureAppConfiguration(configurationBuilder =>
         {
-            IConfigurationRoot integrationConfig = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+            var integrationConfig = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemoryConfiguration)
+                .AddEnvironmentVariables()
                 .Build();
-
             configurationBuilder.AddConfiguration(integrationConfig);
         });
+    }
 
-        builder.ConfigureServices((builder, services) =>
-        {
-            services.RemoveAll(typeof(ApplicationDbContext));
-            services.AddDbContext<ApplicationDbContext>(options =>
+    IDictionary<string, string> GetInMemoryConfiguration()
+    {
+        Dictionary<string, string> inMemoryConfiguraton = new Dictionary<string, string>
             {
-                var builderConf = builder.Configuration;
-
-                //options.UseInMemoryDatabase("InMemoryDatabase");
-            });
-        });        
+                { "UseInMemoryDatabase", "true" },
+            };
+        return inMemoryConfiguraton;
     }
 }

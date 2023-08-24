@@ -17,7 +17,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options,
-        IMediator mediator,
         AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
         : base(options)
     {
@@ -77,21 +76,21 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     #endregion
 }
 
-public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
-{
-    public ApplicationDbContext CreateDbContext(string[] args)
-    {
-        string basePath = Directory.GetCurrentDirectory();
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(basePath)
-            .AddJsonFile("dbsettings.json", true, true)
-            .AddJsonFile("dbsettings.Development.json", true, true)
-            .Build();
+//public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+//{
+//    public ApplicationDbContext CreateDbContext(string[] args)
+//    {
+//        string basePath = Directory.GetCurrentDirectory();
+//        IConfigurationRoot configuration = new ConfigurationBuilder()
+//            .SetBasePath(basePath)
+//            .AddJsonFile("appsettings.json", true, true)
+//            .AddJsonFile("appsettings.Development.json", true, true)
+//            .Build();
 
-        DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder =
-            new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+//        DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder =
+//            new DbContextOptionsBuilder<ApplicationDbContext>();
+//        optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
 
-        return new ApplicationDbContext(optionsBuilder.Options);
-    }
-}
+//        return new ApplicationDbContext(optionsBuilder.Options);
+//    }
+//}
