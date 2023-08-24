@@ -4,10 +4,8 @@
 name: .NET
 
 on:
-  #schedule:
-  #  - cron: "0 21 * * *"
-  pull_request:
-    branches: [ "main" ]
+  schedule:
+    - cron: "0 21 * * *"
 
 jobs:
   build:
@@ -52,18 +50,18 @@ jobs:
       run: dotnet build --no-restore
       working-directory: ./src
       
-    - name: Test
+    - name: Appication Integration Tests
       run: dotnet test --no-build --verbosity normal
       working-directory: ./tests/MRA.Jobs.Api/Application.IntegrationTests
     
-    - name: Test
+    - name: Appication Unit Tests
       run: dotnet test --no-build --verbosity normal
       working-directory: ./tests/MRA.Jobs.Api/Application.UnitTests
 
-    - name: Test
+    - name: Application Domain Unit Tests
       run: dotnet test --no-build --verbosity normal
       working-directory: ./tests/MRA.Jobs.Api/Domain.UnitTests
 
-    - name: Test
+    - name: Application WebUI Acceptance Tests
       run: dotnet test --no-build --verbosity normal
       working-directory: ./tests/MRA.Jobs.Api/WebUI.AcceptanceTests
