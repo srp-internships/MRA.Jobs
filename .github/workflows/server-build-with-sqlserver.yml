@@ -45,7 +45,7 @@ jobs:
       run: |
           dotnet tool install --global dotnet-ef
           dotnet tool restore
-          dotnet ef database update -p src/MRA.Jobs.Api/Infrastructure
+          dotnet ef database update -p ./MRA.Jobs.Api/Infrastructure
       
     - name: Build
       run: dotnet build --no-restore
