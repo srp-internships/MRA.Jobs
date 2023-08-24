@@ -6,4 +6,5 @@ namespace MRA.Jobs.Client.Services.ApplicationService;
 public interface IApplicationService
 {
     Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status);
+
 }

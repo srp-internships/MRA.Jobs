@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using MRA.Jobs.Application.Contracts.Converter.Converter;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
+using MRA.Jobs.Domain.Entities;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.Applications.Responses;
@@ -19,7 +20,7 @@ public class ApplicationListDto
 public class ApplicationDetailsDto
 {
     public Guid Id { get; set; }
-
+    public string Slug { get; set; }
     public Guid ApplicantId { get; set; }
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
@@ -36,7 +37,7 @@ public class ApplicationDetailsDto
 
     public Guid? LastModifiedBy { get; set; }
 
-    public IQueryable<TimeLineDetailsDto> Histiry { get; set; }
+    public ICollection<ApplicationTimelineEventDto> History { get; set; }
 }
 
 public class ApplicationListStatus

@@ -2,41 +2,45 @@
 @inherits OwningComponentBase
 
 <div class="card">
-    <div class="card-header">
-        <h5 class="card-title">@Title</h5>
-        <h6 class="card-subtitle text-muted">Application Status</h6>
-    </div>
-    <div class="card-body">
-        <div id="tasks-backlog" style="min-height:50px;">
-            @foreach (var application in Applications)
-            {
-                <div class="card border-primary">
-                    <div class="card-header">
-                        <small>Vacancy:</small>
-                        @application.VacancyTitle
-                    </div>
-                    <div class="card-body">
-                        <small>Applicant:</small>
-                        @application.ApplicantFullName
-                    </div>
-                </div>
-                <br \>
-            }
-        </div>
+	<div class="card-header">
+		<h5 class="card-title">@Title</h5>
+		<h6 class="card-subtitle text-muted">Application Status</h6>
+	</div>
+	<div class="card-body">
+		<div id="tasks-backlog" style="min-height:50px;">
+			@foreach (var application in Applications)
+			{
+				<div class="card border-primary">
+					<div class="card-header">
+						<small>Vacancy:</small>
+						@application.VacancyTitle
+					</div>
+					<div class="card-body">
+						<small>Applicant:</small>
+						@application.ApplicantFullName
+					</div>
+					<div class="card-footer" style="text-align:end">
+						<a href="Application/{@application.Slug}" class="btn btn-primary">View</a>
+					</div>
+				</div>
+				<br \>
 
-        <div class="d-grid">
-        </div>
+			}
+		</div>
 
-    </div>
+		<div class="d-grid">
+		</div>
+
+	</div>
 </div>
 
 
-@code{
+@code {
 
-    [Parameter]
-    public List<ApplicationListStatus> Applications { get; set; }
+	[Parameter]
+	public List<ApplicationListStatus> Applications { get; set; }
 
-    [Parameter]
-    public string Title { get; set; }
+	[Parameter]
+	public string Title { get; set; }
 
 }

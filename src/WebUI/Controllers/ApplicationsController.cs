@@ -36,9 +36,10 @@ public class ApplicationsController : ApiControllerBase
 
 
     [HttpGet("{slug}")]
-    public async Task<ActionResult<ApplicationDetailsDto>> Get(GetBySlugApplicationQuery request, CancellationToken cancellationToken)
+    public async Task<ActionResult<ApplicationDetailsDto>> Get([FromRoute] string slug, CancellationToken cancellationToken)
     {
-        return await Mediator.Send(request, cancellationToken);
+        var appplication = await Mediator.Send(new GetBySlugApplicationQuery { Slug = slug }, cancellationToken);
+        return Ok(appplication);
     }
 
 

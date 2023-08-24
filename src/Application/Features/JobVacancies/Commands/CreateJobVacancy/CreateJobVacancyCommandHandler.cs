@@ -39,6 +39,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
             Note = "Job vacancy created",
             CreateBy = _currentUserService.GetId() ?? Guid.Empty
         };
+
         await _dbContext.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
         return jobVacancy.Id;

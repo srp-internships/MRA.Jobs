@@ -444,21 +444,9 @@
             "schema": {
               "type": "string"
             },
-            "x-position": 2
+            "x-position": 1
           }
         ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetBySlugApplicationQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
         "responses": {
           "200": {
             "description": "",
@@ -2680,6 +2668,10 @@
             "type": "string",
             "format": "guid"
           },
+          "slug": {
+            "type": "string",
+            "nullable": true
+          },
           "applicantId": {
             "type": "string",
             "format": "guid"
@@ -2719,34 +2711,22 @@
             "format": "guid",
             "nullable": true
           },
-          "histiry": {
+          "history": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/TimeLineDetailsDto"
+              "$ref": "#/components/schemas/ApplicationTimelineEventDto"
             }
           }
         }
       },
-      "TimeLineDetailsDto": {
+      "ApplicationTimelineEventDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "userId": {
-            "type": "string",
-            "format": "guid"
-          },
           "createBy": {
             "type": "string",
             "format": "guid"
-          },
-          "userFullName": {
-            "type": "string",
-            "nullable": true
-          },
-          "userAvatar": {
-            "type": "string",
-            "nullable": true
           },
           "note": {
             "type": "string",
@@ -2780,16 +2760,6 @@
           "Note",
           "Error"
         ]
-      },
-      "GetBySlugApplicationQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "slug": {
-            "type": "string",
-            "nullable": true
-          }
-        }
       },
       "CreateApplicationCommand": {
         "type": "object",

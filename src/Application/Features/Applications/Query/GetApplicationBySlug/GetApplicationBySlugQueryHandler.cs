@@ -19,11 +19,16 @@ public class GetApplicationBySlugQueryHandler : IRequestHandler<GetBySlugApplica
     public async Task<ApplicationDetailsDto> Handle(GetBySlugApplicationQuery request, CancellationToken cancellationToken)
     {
         // var application = await _dbContext.Applications.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
-        var application = await _dbContext.Applications
-              .Include(a => a.History)
-              .FirstOrDefaultAsync(a => a.Slug == request.Slug, cancellationToken);
-        _ = application ?? throw new NotFoundException(nameof(Application), request.Slug);
+        //var application = await _dbContext.Applications
+        //      .FirstOrDefaultAsync(a => a.Slug == request.Slug, cancellationToken);
+        //_ = application ?? throw new NotFoundException(nameof(Application), request.Slug);
 
-        return _mapper.Map<ApplicationDetailsDto>(application);
+        var application = await _dbContext.Applications
+            .Include(a => a.History)
+            .FirstOrDefaultAsync(a => a.Slug == request.Slug);
+        _ = application ?? throw new NotFoundException(nameof(Application), request.Slug);
+        var applicationDto = _mapper.Map<ApplicationDetailsDto>(application);
+        return applicationDto;
+
     }
 }
