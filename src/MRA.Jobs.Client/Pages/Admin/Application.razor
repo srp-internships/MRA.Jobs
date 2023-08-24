@@ -1,9 +1,30 @@
 ﻿@page "/Application/{slag}"
 
-<h3>Application</h3>
 
+<h3>Application</h3>
+@if (application == null)
+{
+	<span>Loading.....</span>
+}
+else
+{
+	<div class="container">
+		<div class="card">
+			<div class="card-header">
+				<h2 class="card-title">@application</h2>
+			</div>
+			<div class="card-body">
+			</div>
+			<div class="card-footer">
+			</div>
+		</div>
+	</div>
+}
 @code {
 	[Parameter]
 	public string slug { get; set; }
+
+	private ApplicationDetailsDto application = new ApplicationDetailsDto();
+
 
 }
