@@ -19,16 +19,4 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Features\Roles\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="Features\Roles\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="Features\Roles\**" />
-    </ItemGroup>
-
 </Project>
