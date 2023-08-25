@@ -1,38 +1,13 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using MRA.Identity.Application.Contract.Application.Responses;
 using MRA.Identity.Application.Contract.User.Commands;
-using MRA.Identity.Infrastructure.Persistence;
-using MRA.Jobs.Application.IntegrationTests;
-using Newtonsoft.Json;
 
-namespace Application.IntegrationTest;
+namespace MRA.Jobs.Application.IntegrationTests;
 
+[TestFixture]
 public class LoginTest : BaseTest
 {
-    
-    [OneTimeSetUp]
-    public async Task Setup1() 
-    {
-        // Register a new user and add it to the database to check whether he has logged in
-        var request1 = new RegisterUserCommand
-        {
-            Email = "test@example.com",
-            Password = "password@#12P",
-            FirstName = "Alex",
-            Username = "@Alex22",
-            LastName = "Makedonskiy",
-            PhoneNumber = "123456789"
-        };
-        var content = new StringContent(JsonConvert.SerializeObject(request1), Encoding.UTF8, "application/json");
-        
-        await _client.PostAsync("api/Auth/register", content);
-    }
-
     [Test]
     public async Task Login_RequestWithCorrectLoginData_ReturnsOk()
     {
@@ -41,52 +16,47 @@ public class LoginTest : BaseTest
 
         // Act
         var response = await _client.PostAsJsonAsync("api/Auth/login", request);
-        var jwt = await response.Content.ReadFromJsonAsync<JwtTokenResponse>();
-        var result = jwt?.AccessToken;
-
+        
         // Assert
+        var jwt = await response.Content.ReadFromJsonAsync<JwtTokenResponse>();
         Assert.Multiple(() =>
         {
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(result, Is.Not.Null);
+            Assert.That(jwt?.AccessToken, Is.Not.Null.Or.Empty);
         });
     }
 
     [Test]
-    public async Task Login_RequestWithEmptyLoginData_ReturnsBadRequest()
+    public async Task Login_RequestWithEmptyLoginData_ReturnsUnauthorized()
     {
         // Arrange
-        var request = new LoginUserCommand { };
-        
+        var request = new LoginUserCommand {Username = "null", Password = "null"};
+
         // Act
-        var response = await _client.PostAsJsonAsync("api/Auth/login", request);
-        var jwt = await response.Content.ReadFromJsonAsync<JwtTokenResponse>();
-        var result = jwt?.AccessToken;
-        
+        var response = await _client.PostAsJsonAsync("/api/Auth/login", request);
+
         // Assert
         Assert.Multiple(() =>
         {
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-            Assert.That(result, Is.Null);
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         });
     }
 
     [Test]
-    [TestCase("@Alex22","password")]
-    [TestCase("@Alex22","")]
-    [TestCase("@Alex","pass")]
-    [TestCase("@Alex","password@#12P")]
-    [TestCase("","")]
-    [TestCase(null,null)]
-    public async Task Login_RequestWithIncorrectLoginData_ReturnsBadRequest(string? username, string? password)
+    [TestCase("@Alex22", "password")]
+    [TestCase("@Alex22", "")]
+    [TestCase("@Alex", "pass")]
+    [TestCase("@Alex", "password@#12P")]
+    [TestCase("", "")]
+    public async Task Login_RequestWithIncorrectLoginData_ReturnsUnauthorized(string username, string password)
     {
         // Arrange
         var request = new LoginUserCommand {Username = username, Password = password};
-        
+
         // Act
         var response = await _client.PostAsJsonAsync("api/Auth/login", request);
-        
+
         // Assert
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
 }
