@@ -36,10 +36,7 @@ public class LoginTest : BaseTest
         var response = await _client.PostAsJsonAsync("/api/Auth/login", request);
 
         // Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-        });
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
 
     [Test]

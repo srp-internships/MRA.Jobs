@@ -1,35 +1,13 @@
 using System.Net;
 using System.Net.Http.Json;
 using MRA.Identity.Application.Contract.User.Commands;
+using MRA.Identity.Domain.Entities;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
 [TestFixture]
 public class RegistrationTests:BaseTest
 {
-    
-    [Test]
-    [Ignore("Dont need to this test. Can be removed")]
-    public async Task Register_ValidRequestWithCorrectRegisterData_ReturnsOk()
-    {
-        // Arrange
-        var request = new RegisterUserCommand
-        {
-            Email = "test@example.com",
-            Password = "password@#12P",
-            FirstName = "Alex",
-            Username = "@Alex22",
-            LastName = "Makedonskiy",
-            PhoneNumber = "123456789"
-        };
-
-        // Act
-        var response = await _client.PostAsJsonAsync("api/Auth/register", request);
-
-        // Assert
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-    }
-    
     [Test]
     public async Task Register_ValidRequestWithCorrectRegisterData_ReturnsOkAndSavesUserIntoDb()
     {
@@ -46,7 +24,11 @@ public class RegistrationTests:BaseTest
         
         // Assert
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
-       // Assert.That(_context.Users.Count(), Is.EqualTo(1));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        
+        // Assert
+        var registeredUser =await GetEntity<ApplicationUser>(u => u.Email == request.Email && u.UserName == request.Username);
+        Assert.IsNotNull(registeredUser, "Registered user not found");
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
 
@@ -64,10 +46,8 @@ public class RegistrationTests:BaseTest
             PhoneNumber = "123456789"
         };
 
-        // Act
-        var response = await _client.PostAsJsonAsync("api/Auth/register", request);
-    
         // Assert
+        var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
     
@@ -79,11 +59,9 @@ public class RegistrationTests:BaseTest
         {
            // Empty Register Data
         };
-
-        // Act
-        var response = await _client.PostAsJsonAsync("api/Auth/register", request);
-    
+        
         // Assert
+        var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
 }

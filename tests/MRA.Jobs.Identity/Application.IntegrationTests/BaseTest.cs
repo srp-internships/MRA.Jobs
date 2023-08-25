@@ -28,9 +28,8 @@ public abstract class BaseTest
         {
             Email = "test@example.com",
             UserName = "@Alex33",
-            NormalizedUserName = "@alex22",
+            NormalizedUserName = "@alex33",
             PhoneNumber = "123456789",
-            
         };
         
         await AddUser(request1,"password@#12P");
@@ -48,6 +47,13 @@ public abstract class BaseTest
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         await dbContext.Set<T>().AddAsync(entity);
        var res= await dbContext.SaveChangesAsync();
+    }
+    
+    protected Task<List<T>> GetAll<T>() where T : class
+    {
+        using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        return dbContext.Set<T>().ToListAsync();
     }
     
     protected async Task AddUser(ApplicationUser user,string password)
