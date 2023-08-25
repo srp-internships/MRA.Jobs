@@ -18,8 +18,6 @@ if (builder.Environment.IsProduction())
     builder.Configuration.ConfigureAzureKeyVault(ApplicationClaimValues.ApplicationName);
 }
 
-
-
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
@@ -30,7 +28,6 @@ builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpS
 builder.Services.AddTransient<IEmailService, SmtpEmailService>();
 WebApplication app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
