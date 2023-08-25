@@ -22,7 +22,7 @@ public class ApplicationSieveProcessor : SieveProcessor, IApplicationSieveProces
         source = Apply(model, source, applyPagination: false);
         int totalCount = source.Count();
         int pageSize = model.PageSize ?? Options.Value.DefaultPageSize;
-        pageSize = Math.Min(Options?.Value.MaxPageSize ?? int.MaxValue, pageSize);
+        pageSize = 10/*Math.Min(Options?.Value.MaxPageSize ?? int.MaxValue, pageSize)*/;
         int currentPage = model.Page ?? 1;
         int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
         List<TResult> result = ApplyPagination(model, source).ToArray().Select(converter).ToList();

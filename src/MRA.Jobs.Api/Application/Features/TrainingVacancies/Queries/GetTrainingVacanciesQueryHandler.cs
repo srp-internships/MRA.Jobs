@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Queries;
 
 public class
-    GetTrainingVacanciesQueryHandler : IRequestHandler<PagedListQuery<TrainingVacancyListDto>,
+    GetTrainingVacanciesQueryHandler : IRequestHandler<GetTrainingsQueryOptions,
         PagedList<TrainingVacancyListDto>>
 {
     private readonly IApplicationDbContext _context;
@@ -21,11 +22,28 @@ public class
         _sieveProcessor = sieveProcessor;
     }
 
-    public async Task<PagedList<TrainingVacancyListDto>> Handle(PagedListQuery<TrainingVacancyListDto> request,
+    public async Task<PagedList<TrainingVacancyListDto>> Handle(GetTrainingsQueryOptions request,
         CancellationToken cancellationToken)
     {
+        var trainings = (await _context.TrainingVacancies.Include(t => t.Category).ToListAsync()).AsEnumerable();
+
+        if (request.CategorySlug is not null)
+        {
+            trainings = trainings.Where(t => t.Category.Slug == request.CategorySlug);
+        }
+        else if (request.SearchText is not null)
+        {
+            trainings = trainings.Where(t => t.Title.ToLower().Trim().Contains(request.SearchText.ToLower().Trim()));
+        }
+
+        if (request.CheckDate)
+        {
+            DateTime now = DateTime.Now;
+            trainings = trainings.Where(t => t.PublishDate <= now && t.EndDate >= now);
+        }
+
         PagedList<TrainingVacancyListDto> result = _sieveProcessor.ApplyAdnGetPagedList(request,
-            _context.TrainingVacancies.AsNoTracking(), _mapper.Map<TrainingVacancyListDto>);
+            trainings.AsQueryable(), _mapper.Map<TrainingVacancyListDto>);
         return await Task.FromResult(result);
     }
 }
