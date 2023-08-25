@@ -5,11 +5,11 @@ using MRA.Identity.Application.Contract.User.Queries;
 namespace MRA.Identity.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class UsersController : ControllerBase
+public class UserController : ControllerBase
 {
     private readonly ISender _mediator;
 
-    public UsersController(ISender mediator)
+    public UserController(ISender mediator)
     {
         _mediator = mediator;
     }
