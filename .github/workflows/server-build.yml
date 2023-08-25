@@ -12,9 +12,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-      USE_IN_MEMORY_DATABASE: true
-
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
