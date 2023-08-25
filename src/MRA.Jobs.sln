@@ -12,6 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{384F34D2-454F-4878-A40D-69B36E9DC43B}"
+	ProjectSection(SolutionItems) = preProject
+		Commands.txt = Commands.txt
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Jobs.Application", "MRA.Jobs.Api\Application\MRA.Jobs.Application.csproj", "{0D5B59D4-BC46-4A50-91CE-932561C0F731}"
 EndProject
