@@ -14,17 +14,14 @@ public static class DependencyInitializer
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configurations)
     {
         string? dbConnectionString = configurations.GetConnectionString("SqlServer");
-        
-        if (configurations.GetValue<bool>("UseInMemoryDatabase"))
+        services.AddDbContext<ApplicationDbContext>(options =>
         {
-            services.AddDbContext<ApplicationDbContext>(builder =>
-            {
-                builder.UseInMemoryDatabase("InMemoryDatabase");
-            });
-        }
-        else
-            services.AddDbContext<ApplicationDbContext>(s => s
-                .UseSqlServer(dbConnectionString));
+            if (configurations["UseInMemoryDatabase"] == "true")
+                options.UseInMemoryDatabase("testDb");
+            else
+                options.UseSqlServer(dbConnectionString);
+        });
+
 
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {

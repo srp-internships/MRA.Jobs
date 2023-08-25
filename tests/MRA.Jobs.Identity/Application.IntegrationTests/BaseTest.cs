@@ -27,11 +27,13 @@ public abstract class BaseTest
         var request1 = new ApplicationUser()
         {
             Email = "test@example.com",
-            UserName = "@Alex22",
+            UserName = "@Alex33",
             NormalizedUserName = "@alex22",
-            PhoneNumber = "123456789"
+            PhoneNumber = "123456789",
+            
         };
-        await AddUser(request1);
+        
+        await AddUser(request1,"password@#12P");
     }
     protected async Task<T> GetEntity<T>(Expression<Func<T, bool>> query) where T : class
     {
@@ -45,15 +47,15 @@ public abstract class BaseTest
         using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         await dbContext.Set<T>().AddAsync(entity);
-        await dbContext.SaveChangesAsync();
+       var res= await dbContext.SaveChangesAsync();
     }
     
-    protected async Task AddUser(ApplicationUser user)
+    protected async Task AddUser(ApplicationUser user,string password)
     {
         using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
         scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var dbContext = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-        await dbContext.CreateAsync(user);
+        var result = await dbContext.CreateAsync(user,password);
     }
 
     [SetUp]

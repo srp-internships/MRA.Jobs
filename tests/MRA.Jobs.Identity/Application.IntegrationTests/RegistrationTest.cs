@@ -36,11 +36,11 @@ public class RegistrationTests:BaseTest
         // Arrange
         var request = new RegisterUserCommand
         {
-            Email = "test@example.com",
+            Email = "test1@example.com",
             Password = "password@#12P",
             FirstName = "Alex",
             Username = "@Alex22",
-            LastName = "Makedonskiy",
+            LastName = "Makedonsky",
             PhoneNumber = "123456789"
         };
         
@@ -56,7 +56,7 @@ public class RegistrationTests:BaseTest
         // Arrange
         var request = new RegisterUserCommand
         {
-            Email = "test@example.com",
+            Email = "test1@example.com",
             Password = "password", // incorrect password
             FirstName = "Alex",
             Username = "@Alex22",
