@@ -2,6 +2,7 @@ using MRA.Identity.Application;
 using MRA.Identity.Infrastructure;
 using Mra.Shared.Initializer.Azure.Insight;
 using Mra.Shared.Initializer.Azure.KeyVault;
+using MRA.Identity.Infrastructure.Persistence;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 
