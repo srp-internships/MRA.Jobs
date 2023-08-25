@@ -38,3 +38,35 @@ internal class ApplicationResponseBuilder<TResponse>:ApplicationResponse<TRespon
         return this;
     }
 }
+
+
+internal class ApplicationResponseBuilder:ApplicationResponse
+{
+    internal ApplicationResponseBuilder SetErrorMessage(string? errorMessage)
+    {
+        ErrorMessage = errorMessage;
+        return this;
+    }
+    
+    internal ApplicationResponseBuilder SetException(Exception? exception)
+    {
+        Exception = exception;
+        return this;
+    }
+
+    internal ApplicationResponseBuilder Success(bool success = true)
+    {
+        IsSuccess = success;
+        return this;
+    }
+
+    internal static ApplicationResponseBuilder<TResponse> GetInstance<TResponse>()
+    {
+        return new ApplicationResponseBuilder<TResponse>();
+    }
+
+    internal ApplicationResponse Build()
+    {
+        return this;
+    }
+}
