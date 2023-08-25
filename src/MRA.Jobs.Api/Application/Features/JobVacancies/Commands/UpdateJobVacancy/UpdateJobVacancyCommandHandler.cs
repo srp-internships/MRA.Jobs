@@ -24,12 +24,14 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
 
     public async Task<Guid> Handle(UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var jobVacancy = await _dbContext.JobVacancies.FirstOrDefaultAsync(j => j.Slug == request.Slug, cancellationToken);
+        var jobVacancy = await _dbContext.JobVacancies
+            .Include(j => j.Category)
+            .FirstOrDefaultAsync(j => j.Slug == request.Slug, cancellationToken);
         _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Slug);
 
-        VacancyCategory category =
-            await _dbContext.Categories.FirstOrDefaultAsync(j => j.Slug == request.Slug, cancellationToken);
-        _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
+        //VacancyCategory category =
+        //    await _dbContext.Categories.FirstOrDefaultAsync(j => j.Id == request.CategoryId, cancellationToken);
+        //_ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
 
         _mapper.Map(request, jobVacancy);

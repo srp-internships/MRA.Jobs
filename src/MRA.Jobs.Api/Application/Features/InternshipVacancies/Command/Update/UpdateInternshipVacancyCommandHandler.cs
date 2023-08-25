@@ -36,7 +36,6 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
         _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Slug);
 
         _mapper.Map(request, internship);
-        internship.Slug = _slugService.GenerateSlug($"{internship.Title}-{internship.PublishDate.Year}-{internship.PublishDate.Month}");
 
         VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
         {
