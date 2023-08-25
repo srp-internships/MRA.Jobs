@@ -21,7 +21,6 @@ public class UpdateVacancyCategoryCommandHandler : IRequestHandler<UpdateVacancy
             ?? throw new NotFoundException(nameof(VacancyCategory), request.Slug);
 
         _mapper.Map(request, entity);
-        entity.Slug = _slugService.GenerateSlug(request.Name);
         var result = _context.Categories.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
         return entity.Id;

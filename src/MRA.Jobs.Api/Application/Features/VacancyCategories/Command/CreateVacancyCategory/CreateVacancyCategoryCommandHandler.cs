@@ -24,5 +24,14 @@ public class CreateVacancyCategoryCommandHandler : IRequestHandler<CreateVacancy
         await _context.SaveChangesAsync(cancellationToken);
         return vacancyCategory.Id;
     }
-    private string GenerateSlug(VacancyCategory category) => _slugService.GenerateSlug($"{category.Name}");
+    private string GenerateSlug(VacancyCategory category)
+    {
+        var slug = _slugService.GenerateSlug($"{category.Name}");
+        var count = _context.Categories.Count(c => c.Slug == slug);
+        if (count == 0)
+            return slug;
+
+        return $"{slug}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
+    }
+
 }
