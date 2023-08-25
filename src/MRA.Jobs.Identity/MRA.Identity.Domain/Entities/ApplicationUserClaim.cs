@@ -2,7 +2,7 @@
 
 namespace MRA.Identity.Domain.Entities;
 
-public class ApplicationRole : IdentityRole<Guid>
+public class ApplicationUserClaim:IdentityUserClaim<Guid>
 {
     public string Slug { get; set; }
 }
