@@ -25,17 +25,17 @@ public class AuthController : ControllerBase
             return Ok(result.Response);
         }
 
-        if (result.ErrorMessage!=null)
+        if (result.ErrorMessage != null)
         {
-            return BadRequest(result.ErrorMessage);
+            return Unauthorized(result.ErrorMessage);
         }
 
         if (result.Exception!=null)
         {
-            return BadRequest(result.Exception);
+            return Unauthorized(result.Exception.ToString());
         }
 
-        return BadRequest();
+        return Unauthorized();
     }
 
 
@@ -50,14 +50,14 @@ public class AuthController : ControllerBase
 
         if (result.ErrorMessage!=null)
         {
-            return BadRequest(result.ErrorMessage);
+            return Unauthorized(result.ErrorMessage);
         }
 
         if (result.Exception!=null)
         {
-            return BadRequest(result.Exception);
+            return Unauthorized(result.Exception);
         }
 
-        return BadRequest();
+        return Unauthorized();
     }
 }
