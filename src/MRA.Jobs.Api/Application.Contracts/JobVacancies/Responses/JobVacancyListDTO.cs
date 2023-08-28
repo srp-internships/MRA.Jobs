@@ -19,7 +19,7 @@ public class JobVacancyListDto
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime EndDate { get; set; }
 
-    public WorkSchedule WorkSchedule { get; set; }
+    public Dtos.Enums.ApplicationStatusDto.WorkSchedule WorkSchedule { get; set; }
     public ICollection<TimeLineDetailsDto> History { get; set; }
     public ICollection<TagDto> Tags { get; set; }
     public string Slug { get; set; }

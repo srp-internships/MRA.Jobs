@@ -121,7 +121,7 @@ public class UpdateJobVacancyCommandValidatorTests
     public void Validate_WorkScheduleMustBeValidEnumValue()
     {
         // Arrange
-        var command = new UpdateJobVacancyCommand { WorkSchedule = (WorkSchedule)10 };
+        var command = new UpdateJobVacancyCommand { WorkSchedule = (Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule)10 };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -145,7 +145,7 @@ public class UpdateJobVacancyCommandValidatorTests
             EndDate = new DateTime(2023, 05, 06),
             CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 0,
-            WorkSchedule = WorkSchedule.FullTime
+            WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime
         };
 
         // Act
