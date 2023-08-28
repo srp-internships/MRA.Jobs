@@ -33,7 +33,8 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         var application = _mapper.Map<Application>(request);
 
         application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
-        application.JobQuestions = request.JobQuestions;
+        if (request.JobQuestions != null)
+            application.JobQuestions = request.JobQuestions.Select(j => _mapper.Map<JobQuestion>(j));
 
         await _context.Applications.AddAsync(application, cancellationToken);
 

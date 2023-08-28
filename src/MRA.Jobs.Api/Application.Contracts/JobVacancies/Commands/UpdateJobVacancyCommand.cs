@@ -18,5 +18,5 @@ public class UpdateJobVacancyCommand : IRequest<Guid>
 
     public Guid CategoryId { get; set; }
     public int RequiredYearOfExperience { get; set; }
-    public WorkSchedule WorkSchedule { get; set; }
+    public Dtos.Enums.ApplicationStatusDto.WorkSchedule WorkSchedule { get; set; }
 }

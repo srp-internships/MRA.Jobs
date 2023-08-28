@@ -15,5 +15,5 @@ public class NewIdentityRegisteredEvent : INotification
     public DateTime DateOfBirth { get; set; }
 
     public string PhoneNumber { get; set; }
-    public Gender Gender { get; set; }
+    public Dtos.Enums.ApplicationStatusDto.Gender Gender { get; set; }
 }

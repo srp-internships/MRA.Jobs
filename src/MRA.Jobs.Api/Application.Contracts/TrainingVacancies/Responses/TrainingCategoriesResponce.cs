@@ -1,5 +1,4 @@
 ﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 public record TrainingCategoriesResponce
