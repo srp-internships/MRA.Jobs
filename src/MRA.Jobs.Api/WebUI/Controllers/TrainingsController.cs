@@ -24,18 +24,20 @@ public class TrainingsController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> Post(CreateTrainingVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<string>> Post(CreateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        return await Mediator.Send(request, cancellationToken);
+        var result= await Mediator.Send(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
 
     [HttpPut("{slug}")]
-    public async Task<ActionResult<Guid>> Put([FromRoute] string slug, [FromBody] UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<string>> Put([FromRoute] string slug, [FromBody] UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
             return NotFound();
 
-        return await Mediator.Send(request, cancellationToken);
+        var result= await Mediator.Send(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
 
     [HttpDelete("{slug}")]

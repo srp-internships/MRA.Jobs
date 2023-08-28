@@ -812,8 +812,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }
@@ -856,8 +855,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }
@@ -897,7 +895,7 @@
         "tags": [
           "Internships"
         ],
-        "operationId": "Internships_GetInternshipById",
+        "operationId": "Internships_GetInternshipBySlug",
         "parameters": [
           {
             "name": "slug",
@@ -1734,8 +1732,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }
@@ -1896,8 +1893,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }

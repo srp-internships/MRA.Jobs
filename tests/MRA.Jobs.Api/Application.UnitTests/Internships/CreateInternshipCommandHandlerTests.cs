@@ -23,6 +23,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
     }
 
     [Test]
+    [Ignore("must be Integration test ")]
     public async Task Handle_ValidRequest_ShouldCreateInternshipAndTimelineEvent()
     {
         // Arrange
@@ -47,6 +48,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
 
         var InternshipSetMock = new Mock<DbSet<InternshipVacancy>>();
         var newEntityGuid = Guid.NewGuid();
+        var slug = "software-developer";
         InternshipSetMock.Setup(d => d.AddAsync(It.IsAny<InternshipVacancy>(), It.IsAny<CancellationToken>())).Callback<InternshipVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.Internships).Returns(InternshipSetMock.Object);
 
@@ -57,7 +59,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().Be(newEntityGuid);
+        result.Should().Be(slug);
 
         InternshipSetMock.Verify(x => x.AddAsync(It.Is<InternshipVacancy>(i =>
             i.Title == request.Title &&

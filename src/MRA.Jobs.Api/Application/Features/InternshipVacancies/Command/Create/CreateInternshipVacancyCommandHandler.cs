@@ -5,7 +5,7 @@ using Slugify;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
 
-public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInternshipVacancyCommand, Guid>
+public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInternshipVacancyCommand, string>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         _slugService = slugService;
     }
 
-    public async Task<Guid> Handle(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         VacancyCategory category = await _context.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
@@ -41,7 +41,7 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return internship.Id;
+        return internship.Slug;
     }
 
     private string GenerateSlug(InternshipVacancy internship) => _slugService.GenerateSlug($"{internship.Title}-{internship.PublishDate.Year}-{internship.PublishDate.Month}");
