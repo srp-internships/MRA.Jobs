@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
-public class CreateJobVacancyCommand : IRequest<Guid>
+public class CreateJobVacancyCommand : IRequest<string>
 {
     public string Title { get; set; }
     public string ShortDescription { get; set; }

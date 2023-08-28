@@ -1183,8 +1183,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }
@@ -1257,8 +1256,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }

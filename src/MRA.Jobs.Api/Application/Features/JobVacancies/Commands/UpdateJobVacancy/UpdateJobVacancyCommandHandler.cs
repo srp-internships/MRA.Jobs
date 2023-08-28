@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.UpdateJobVacancy;
 
-public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCommand, Guid>
+public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCommand, string>
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
@@ -22,7 +22,7 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
         _slugService = slugService;
     }
 
-    public async Task<Guid> Handle(UpdateJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         var jobVacancy = await _dbContext.JobVacancies
             .Include(j => j.Category)
@@ -35,8 +35,7 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
 
 
         _mapper.Map(request, jobVacancy);
-        jobVacancy.Slug = _slugService.GenerateSlug($"{jobVacancy.Title}-{jobVacancy.CreatedAt.Year}-{jobVacancy.CreatedAt.Month}");
-
+    
         VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
         {
             VacancyId = jobVacancy.Id,
@@ -48,6 +47,6 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
         };
         await _dbContext.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return jobVacancy.Id;
+        return jobVacancy.Slug;
     }
 }
