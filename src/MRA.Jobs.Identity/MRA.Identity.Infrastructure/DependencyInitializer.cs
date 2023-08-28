@@ -6,6 +6,8 @@ using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Domain.Entities;
 using MRA.Identity.Infrastructure.Persistence;
 using Mra.Shared.Initializer.Azure.EmailService;
+using MRA.Identity.Application.Common.Interfaces.Services;
+using MRA.Identity.Infrastructure.Account.Services;
 
 namespace MRA.Identity.Infrastructure;
 
@@ -21,6 +23,9 @@ public static class DependencyInitializer
             else
                 options.UseSqlServer(dbConnectionString);
         });
+
+        services.AddScoped<IEmailVerification, EmailVerification>();
+        services.AddScoped<IUserHttpContextAccessor, UserHttpContextAccessor>();
 
 
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
