@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 
 namespace MRA.Identity.Application.Contract.UserRoles.Commands;
-public class CreateUserRolesCommand : IRequest<ApplicationResponse<Guid>>
+public class DeleteUserRoleCommand : IRequest<ApplicationResponse<bool>>
 {
-    public string RoleName { get; set; }
+    public string Slug { get; set; }
 }
