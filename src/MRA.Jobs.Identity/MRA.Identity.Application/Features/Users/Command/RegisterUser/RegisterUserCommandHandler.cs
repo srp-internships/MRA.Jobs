@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract;
@@ -12,13 +11,11 @@ namespace MRA.Identity.Application.Features.Users.Command.RegisterUser;
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ApplicationResponse<Guid>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IEmailService _emailService;
     private readonly IEmailVerification _emailVerification;
 
-    public RegisterUserCommandHandler(UserManager<ApplicationUser> userManager, IEmailService emailService, IEmailVerification emailVerification)
+    public RegisterUserCommandHandler(UserManager<ApplicationUser> userManager , IEmailVerification emailVerification)
     {
         _userManager = userManager;
-        _emailService = emailService;
         _emailVerification = emailVerification;
     }
 
@@ -37,12 +34,10 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
                 EmailConfirmed = false
             };
             IdentityResult result = await _userManager.CreateAsync(user, request.Password);
-
             if (result.Succeeded)
             {
                 await _emailVerification.SendVerificationEmailAsync(user);
             }
-
             return result.Succeeded
                 ? new ApplicationResponseBuilder<Guid>().SetResponse(user.Id).Build()
                 : new ApplicationResponseBuilder<Guid>().SetErrorMessage(result.Errors.First().Description).Success(false).Build();
