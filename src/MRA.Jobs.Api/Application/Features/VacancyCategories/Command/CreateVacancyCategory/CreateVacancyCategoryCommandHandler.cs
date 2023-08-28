@@ -3,7 +3,7 @@ using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Command.CreateVacancyCategory;
 
-public class CreateVacancyCategoryCommandHandler : IRequestHandler<CreateVacancyCategoryCommand, Guid>
+public class CreateVacancyCategoryCommandHandler : IRequestHandler<CreateVacancyCategoryCommand, string>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -16,13 +16,13 @@ public class CreateVacancyCategoryCommandHandler : IRequestHandler<CreateVacancy
         _slugService = slugService;
     }
 
-    public async Task<Guid> Handle(CreateVacancyCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
         var vacancyCategory = _mapper.Map<VacancyCategory>(request);
         vacancyCategory.Slug = GenerateSlug(vacancyCategory);
         await _context.Categories.AddAsync(vacancyCategory, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return vacancyCategory.Id;
+        return vacancyCategory.Slug;
     }
     private string GenerateSlug(VacancyCategory category)
     {

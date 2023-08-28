@@ -6,6 +6,7 @@ using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
@@ -40,11 +41,14 @@ public class CategoriesController : ApiControllerBase
         return Ok(category);
     }
 
+
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateNewJobVacancy(CreateVacancyCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<string>> CreateNewCategoryVacancy(CreateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
-        return await Mediator.Send(request, cancellationToken);
+        var result = await Mediator.Send(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
+
 
     [HttpPut("{slug}")]
     public async Task<ActionResult<Guid>> Update([FromRoute] string slug, [FromBody] UpdateVacancyCategoryCommand request, CancellationToken cancellationToken)
