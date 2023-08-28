@@ -47,7 +47,7 @@ public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
         result.EndDate.Should().Be(jobVacancy.EndDate);
         result.CategoryId.Should().Be(jobVacancy.CategoryId);
         result.RequiredYearOfExperience.Should().Be(jobVacancy.RequiredYearOfExperience);
-        result.WorkSchedule.Should().Be(jobVacancy.WorkSchedule);
+        result.WorkSchedule.Should().Be(Mapper.Map<Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule>(jobVacancy.WorkSchedule));
     }
 
     [Test]

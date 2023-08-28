@@ -1,10 +1,9 @@
 ﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
+using MRA.Jobs.Application.Common.SlugGeneratorService;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 
-using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Domain.Entities;
 public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
 {
     private CreateJobVacancyCommandHandler _handler;
@@ -36,7 +35,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
             EndDate = DateTime.UtcNow.AddDays(30),
             CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 2,
-            WorkSchedule = WorkSchedule.FullTime
+            WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime
         };
 
         var category = new VacancyCategory { Id = request.CategoryId };
@@ -68,7 +67,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
             jv.EndDate == request.EndDate &&
             jv.CategoryId == request.CategoryId &&
             jv.RequiredYearOfExperience == request.RequiredYearOfExperience &&
-            jv.WorkSchedule == request.WorkSchedule
+            jv.WorkSchedule ==Mapper.Map<WorkSchedule>(request.WorkSchedule)
         ), It.IsAny<CancellationToken>()), Times.Once);
 
         timelineEventSetMock.Verify(x => x.AddAsync(It.Is<VacancyTimelineEvent>(te =>
@@ -94,7 +93,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
             EndDate = DateTime.UtcNow.AddDays(30),
             CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 2,
-            WorkSchedule = WorkSchedule.FullTime
+            WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime
         };
 
         _dbContextMock.Setup(x => x.Categories.FindAsync(request.CategoryId)).ReturnsAsync(() => null);

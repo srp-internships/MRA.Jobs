@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Contracts.Applications.Commands;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Domain.Enums;
+using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]

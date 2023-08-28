@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
+using MRA.Jobs.Application.Contracts.Dtos.Enums;
 
 namespace MRA.Jobs.Application.Features.Applications.Query.GetApplicationsByStatus;
 
@@ -20,7 +21,7 @@ public class GetApplicationsByStatusHandler : IRequestHandler<GetApplicationsByS
         CancellationToken cancellationToken)
     {
         List<ApplicationListStatus> applications = await _dbContext.Applications
-            .Where(a => a.Status == request.Status)
+            .Where(a => a.Status == _mapper.Map<MRA.Jobs.Domain.Enums.ApplicationStatus>(request.Status))
             .ProjectTo<ApplicationListStatus>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 

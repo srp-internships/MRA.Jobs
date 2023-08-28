@@ -1967,12 +1967,12 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/JobQuestion"
+              "$ref": "#/components/schemas/JobQuestionDto"
             }
           }
         }
       },
-      "JobQuestion": {
+      "JobQuestionDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2111,7 +2111,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/JobQuestion"
+              "$ref": "#/components/schemas/JobQuestionDto"
             }
           }
         }
@@ -2293,26 +2293,26 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/EducationDetail"
+              "$ref": "#/components/schemas/EducationDetailDto"
             }
           },
           "experienceDetails": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/ExperienceDetail"
+              "$ref": "#/components/schemas/ExperienceDetailDto"
             }
           },
           "skills": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/Skill"
+              "$ref": "#/components/schemas/SkillDto"
             }
           }
         }
       },
-      "EducationDetail": {
+      "EducationDetailDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2346,7 +2346,7 @@
           }
         }
       },
-      "ExperienceDetail": {
+      "ExperienceDetailDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2391,7 +2391,7 @@
           }
         }
       },
-      "Skill": {
+      "SkillDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
