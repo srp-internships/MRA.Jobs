@@ -3,7 +3,7 @@ using FluentAssertions;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using NUnit.Framework;
 namespace MRA.Jobs.Application.IntegrationTests.VacancyCategories.Commands;
-public class CreateVacancyCategoryCommandTest:Testing
+public class CreateVacancyCategoryCommandTest : Testing
 {
     [Test]
     public async Task CreateVacancyCategoryCommand_ShouldCreateVacancyCategory_Success()
