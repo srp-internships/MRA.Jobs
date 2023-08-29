@@ -39,8 +39,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
         application.JobQuestions = request.JobQuestions;
-        application.ApplicantId = _currentUserService.GetId() ??
-                                  throw new NullReferenceException("id of current user can not be null");
+        application.ApplicantId = _currentUserService.GetId() ?? Guid.Empty;
 
         await _context.Applications.AddAsync(application, cancellationToken);
 
