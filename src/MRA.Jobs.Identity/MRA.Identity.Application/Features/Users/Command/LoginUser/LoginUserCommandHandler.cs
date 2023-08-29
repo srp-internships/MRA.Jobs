@@ -40,7 +40,8 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Applica
             {
                 return new ApplicationResponseBuilder<JwtTokenResponse>().SetResponse(new JwtTokenResponse
                 {
-                    AccessToken = _jwtTokenService.CreateTokenByClaims(await _userManager.GetClaimsAsync(user))
+                    AccessToken = _jwtTokenService.CreateTokenByClaims(await _userManager.GetClaimsAsync(user)),
+                    RefreshToken = _jwtTokenService.CreateRefreshToken(await _userManager.GetClaimsAsync(user))
                 });
             }
 

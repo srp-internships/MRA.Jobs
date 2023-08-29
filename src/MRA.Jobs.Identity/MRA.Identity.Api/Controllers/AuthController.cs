@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.User.Commands;
-using MRA.Identity.Application.Contract.User.Responses;
 
 namespace MRA.Identity.Api.Controllers;
 
