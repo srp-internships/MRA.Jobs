@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
-using MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryById;
+using MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryBySlug;
 
 namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
 

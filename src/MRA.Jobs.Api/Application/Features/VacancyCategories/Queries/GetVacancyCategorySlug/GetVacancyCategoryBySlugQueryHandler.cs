@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
-namespace MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryById;
+namespace MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryBySlug;
 public class GetVacancyCategoryBySlugQueryHandler : IRequestHandler<GetVacancyCategoryBySlugQuery, CategoryResponse>
 {
     private readonly IApplicationDbContext _dbContext;

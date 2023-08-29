@@ -1,6 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 
-namespace MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryById;
+namespace MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryBySlug;
 
 public class GetVacancyCategoryBySlugQueryValidator : AbstractValidator<GetVacancyCategoryBySlugQuery>
 {

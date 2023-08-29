@@ -8,14 +8,14 @@ public class CreateVacancyCategoryCommandTest : Testing
     [Test]
     public async Task CreateVacancyCategoryCommand_ShouldCreateVacancyCategory_Success()
     {
-        var category = new CreateVacancyCategoryCommand { Name = "internship" };
+        var category = new CreateVacancyCategoryCommand { Name = "Programming" };
 
         var response = await _httpClient.PostAsJsonAsync("/api/categories", category);
 
         response.EnsureSuccessStatusCode();
 
-        var responseGuid = await response.Content.ReadAsStringAsync();
+        var responceSlug = await response.Content.ReadAsStringAsync();
 
-        responseGuid.Should().NotBeEmpty();
+        responceSlug.Should().NotBeEmpty();
     }
 }

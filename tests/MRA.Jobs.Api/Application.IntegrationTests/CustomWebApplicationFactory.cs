@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using MRA.Jobs.Infrastructure.Persistence;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
@@ -27,4 +30,6 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
             };
         return inMemoryConfiguraton;
     }
+
+
 }

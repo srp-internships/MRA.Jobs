@@ -58,7 +58,6 @@ public class CategoriesController : ApiControllerBase
     {
         if (slug != request.Slug)
             return BadRequest();
-
         var result = await Mediator.Send(request, cancellationToken);
         return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
