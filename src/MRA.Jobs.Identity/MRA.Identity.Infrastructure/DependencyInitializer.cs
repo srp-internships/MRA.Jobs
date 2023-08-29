@@ -25,6 +25,7 @@ public static class DependencyInitializer
         });
 
         services.AddScoped<IEmailVerification, EmailVerification>();
+
         services.AddScoped<IUserHttpContextAccessor, UserHttpContextAccessor>();
 
 

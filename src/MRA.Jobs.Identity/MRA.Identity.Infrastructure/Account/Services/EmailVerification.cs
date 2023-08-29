@@ -22,7 +22,7 @@ public class EmailVerification : IEmailVerification
     public async Task<bool> SendVerificationEmailAsync(ApplicationUser user)
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-    var emailBody = $"<p>Пожалуйста, перейдите по следующей ссылке для дальнейших действий: <a href='http://MRAJOBS.tj/auth/verify?token={token}'>Ссылка</a></p>";
+    var emailBody = $"<p>Пожалуйста, перейдите по следующей ссылке для дальнейших действий: <a href='http://MRAJOBS.tj/Auth/verify?token={token}'>Ссылка</a></p>";
     var emailSubject = "Email Verification";
     return await _emailService.SendEmailAsync(new[] { user.Email }, emailBody, emailSubject);
     }

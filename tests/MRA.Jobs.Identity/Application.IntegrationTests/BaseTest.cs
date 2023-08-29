@@ -13,7 +13,7 @@ public abstract class BaseTest
 {
     protected HttpClient _client { get; private set; } = null!;
     private CustomWebApplicationFactory _factory { get;  set; }
-    
+    protected Guid FirstUserId { get; private set; }
     /// <summary>
     /// Initializing of factory and _context. And Creating a InMemoryDB
     /// </summary>
@@ -26,6 +26,7 @@ public abstract class BaseTest
         // Register a new user and add it to the database to check whether he has logged in
         var request1 = new ApplicationUser()
         {
+            Id = Guid.NewGuid(),
             Email = "test@example.com",
             UserName = "@Alex33",
             NormalizedUserName = "@alex33",
@@ -33,6 +34,7 @@ public abstract class BaseTest
         };
         
         await AddUser(request1,"password@#12P");
+        FirstUserId = Guid.NewGuid();
     }
     protected async Task<T> GetEntity<T>(Expression<Func<T, bool>> query) where T : class
     {
