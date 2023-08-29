@@ -2,7 +2,6 @@
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-using static Sieve.Extensions.MethodInfoExtended;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Queries;
 public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCategoriesQuery, List<TrainingCategoriesResponce>>

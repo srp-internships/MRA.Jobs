@@ -1,13 +1,12 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
-using Slugify;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
-using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Application.Common.Security;
-using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Domain.Entities;
-using MRA.Jobs.Domain.Enums;
+using Common.Interfaces;
+using Common.Security;
+using Common.SlugGeneratorService;
+using Domain.Entities;
+using Domain.Enums;
 
 public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, Guid>
 {
@@ -16,14 +15,20 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
     private readonly ISlugGeneratorService _slugService;
+    private readonly Mra.Shared.Common.Interfaces.Services.IEmailService _emailService;
+    private readonly IHtmlService _htmlService;
 
-    public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService, ISlugGeneratorService slugService)
+    public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
+        ICurrentUserService currentUserService, ISlugGeneratorService slugService,
+        Mra.Shared.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService)
     {
         _context = context;
         _mapper = mapper;
         _dateTime = dateTime;
         _currentUserService = currentUserService;
         _slugService = slugService;
+        _emailService = emailService;
+        _htmlService = htmlService;
     }
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
@@ -33,11 +38,14 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         var application = _mapper.Map<Application>(request);
 
         application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
-        application.JobQuestions = request.JobQuestions;
+        if (request.JobQuestions != null)
+            application.JobQuestions = request.JobQuestions.Select(j => _mapper.Map<JobQuestion>(j));
+        
+        application.ApplicantId = _currentUserService.GetId() ?? Guid.Empty;
 
         await _context.Applications.AddAsync(application, cancellationToken);
 
-        ApplicationTimelineEvent timelineEvent = new ApplicationTimelineEvent
+        ApplicationTimelineEvent timelineEvent = new()
         {
             ApplicationId = application.Id,
             EventType = TimelineEventType.Created,
@@ -48,9 +56,14 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return application.Id;
 
+        await _emailService.SendEmailAsync(new[] { vacancy.CreatedByEmail },
+            _htmlService.GenerateApplyVacancyContent(_currentUserService.GetUserName()),
+            "New Apply");
+
+        return application.Id;
     }
+
     private string GenerateSlug(string username, Vacancy vacancy)
     {
         return _slugService.GenerateSlug($"{username}-{vacancy.Slug}");

@@ -136,7 +136,7 @@ public class CreateJobVacancyCommandValidatorTests
     public void Validate_WorkScheduleInvalid_ShouldFailValidation()
     {
         // Arrange
-        CreateJobVacancyCommand request = new CreateJobVacancyCommand { WorkSchedule = (WorkSchedule)3 };
+        CreateJobVacancyCommand request = new CreateJobVacancyCommand { WorkSchedule = (Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule)3 };
 
         // Act
         TestValidationResult<CreateJobVacancyCommand> result = _validator.TestValidate(request);
@@ -158,7 +158,7 @@ public class CreateJobVacancyCommandValidatorTests
             EndDate = DateTime.Now.AddDays(30),
             CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 0,
-            WorkSchedule = WorkSchedule.FullTime
+            WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime
         };
 
         // Act
