@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace MRA.Jobs.Domain.Entities;
 
 [Index(nameof(Slug))]
 public abstract class Vacancy : BaseAuditableEntity
 {
+    public string CreatedByEmail { get; set; }
     public string Title { get; set; }
     public string ShortDescription { get; set; }
     public string Description { get; set; }

@@ -10,6 +10,7 @@ using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;
 using Mra.Shared.Common.Constants;
+using Mra.Shared.Initializer.Azure.EmailService;
 
 namespace MRA.Jobs.Infrastructure;
 
@@ -22,7 +23,7 @@ public static class ConfigureServices
         services.AddMediatR(typeof(ConfigureServices).Assembly);
 
 
-        //services.AddAzureEmailService();//uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
+        services.AddAzureEmailService();//uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
@@ -44,7 +45,7 @@ public static class ConfigureServices
         services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<ISmsService, GenericSmsService>();
-
+        services.AddScoped<IHtmlService, HtmlService>();
         return services;
     }
 
