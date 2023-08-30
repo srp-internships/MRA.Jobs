@@ -64,10 +64,10 @@ public class AuthController : ControllerBase
     }
 
 
-    [HttpGet("accestoken")]
-    public async Task<IActionResult> Get(string refreshToken)
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh(GetAccesTokenUsingRefreshTokenQuery request)
     {
-        var responce = await _mediator.Send(new GetAccesTokenUsingRefreshTokenQuery { RefreshToken = refreshToken });
+        var responce = await _mediator.Send(request);
         if (responce.IsSuccess == false)
         {
             return BadRequest(responce.ErrorMessage);

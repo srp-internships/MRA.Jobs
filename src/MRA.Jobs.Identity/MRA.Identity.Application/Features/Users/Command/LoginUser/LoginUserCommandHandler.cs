@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.Services;
@@ -27,6 +28,11 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Applica
         {
             ApplicationUser? user =
                 await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.Username, cancellationToken);
+
+            //_userManager.AddClaimsAsync(user, new List<Claim>
+            //{
+            //    new Claim(ClaimTypes.NameIdentifier,"id")
+            //});
 
             if (user == null)
             {
