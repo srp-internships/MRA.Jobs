@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract;
@@ -27,6 +28,15 @@ public class GetUserRolesQueryHandler : IRequestHandler<GetUserRolesQuery, Appli
 
     public async Task<ApplicationResponse<List<UserRolesResponse>>> Handle(GetUserRolesQuery request, CancellationToken cancellationToken)
     {
+        var ret = new List<UserRolesResponse>();
+        var ur =await _context.UserRoles.ToListAsync();
+        foreach (ApplicationUserRole r in ur)
+        {
+            ret.Add(new UserRolesResponse
+            {
+                RoleName=r.r
+            });
+        }
 
         if (request.UserName != null)
         {
@@ -47,7 +57,9 @@ public class GetUserRolesQueryHandler : IRequestHandler<GetUserRolesQuery, Appli
                 new UserRolesResponse
                 {
                     RoleName = s,
-                    UserName = user.UserName
+                    UserName = user.UserName,
+                    
+                    
                 }).ToList());
         }
         if (request.Role != null)
