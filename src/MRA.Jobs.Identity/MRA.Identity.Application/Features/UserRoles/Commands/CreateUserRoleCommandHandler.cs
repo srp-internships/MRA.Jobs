@@ -42,8 +42,7 @@ public class CreateUserRoleCommandHandler : IRequestHandler<CreateUserRolesComma
                 return new ApplicationResponseBuilder<string>().SetErrorMessage("Role not found!").Success(false).Build();
             }
 
-            var result = await _userManager.AddToRoleAsync(user, role.Name);
-            var newUserRole = new ApplicationUserRoles
+            var newUserRole = new ApplicationUserRole
             {
                 UserId = request.UserId,
                 RoleId = request.RoleId,
