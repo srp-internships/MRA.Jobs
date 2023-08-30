@@ -1,7 +1,9 @@
-﻿using MediatR;
+﻿using Azure.Core;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.User.Commands;
-using MRA.Identity.Application.Contract.User.Responses;
+
 
 namespace MRA.Identity.Api.Controllers;
 
@@ -54,6 +56,29 @@ public class AuthController : ControllerBase
         }
 
         if (result.Exception!=null)
+        {
+            return Unauthorized(result.Exception);
+        }
+
+        return Unauthorized();
+    }
+
+
+    [HttpPost("login/external/google")]
+    public async Task<IActionResult> GoogleLogin([FromBody] GoogleAuthCommand googleAuth)
+    {
+        var result = await _mediator.Send(googleAuth);
+        if (result.IsSuccess)
+        {
+            return Ok(result.Response);
+        }
+
+        if (result.ErrorMessage != null)
+        {
+            return Unauthorized(result.ErrorMessage);
+        }
+
+        if (result.Exception != null)
         {
             return Unauthorized(result.Exception);
         }
