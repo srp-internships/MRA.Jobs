@@ -68,17 +68,11 @@
     </nav>
 </div>
 
-@code{
+@code {
     private bool collapseNavMenu = true;
-    private bool expandSubMenu;
     private bool expandSubMenu2;
-    bool panelOpenState;
 
-    protected override async Task OnInitializedAsync()
-    {
-    }
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
