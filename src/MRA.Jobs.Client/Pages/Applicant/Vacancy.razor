@@ -1,5 +1,4 @@
 ﻿@page "/vacancy"
-@layout Main
 @inject IVacancyService VacancyService
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @implements IDisposable
@@ -61,7 +60,7 @@
 @code {
 
     private List<JobVacancyListDto> _vacancies;
-    public string? Title;
+    public string Title;
 
     protected override async Task OnInitializedAsync()
     {
