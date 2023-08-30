@@ -18,26 +18,20 @@ public class GetUserRolesQueryHandler : IRequestHandler<GetUserRolesQuery, Appli
 {
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public GetUserRolesQueryHandler(UserManager<ApplicationUser> userManager, IApplicationDbContext context)
+    public GetUserRolesQueryHandler(UserManager<ApplicationUser> userManager, IApplicationDbContext context, RoleManager<ApplicationRole> roleManager)
     {
         _userManager = userManager;
         _context = context;
+        _roleManager = roleManager;
     }
 
     private readonly IApplicationDbContext _context;
+    private readonly RoleManager<ApplicationRole> _roleManager;
 
     public async Task<ApplicationResponse<List<UserRolesResponse>>> Handle(GetUserRolesQuery request, CancellationToken cancellationToken)
     {
-        var ret = new List<UserRolesResponse>();
-        var ur =await _context.UserRoles.ToListAsync();
-        foreach (ApplicationUserRole r in ur)
-        {
-            ret.Add(new UserRolesResponse
-            {
-                RoleName=r.r
-            });
-        }
-
+      
+       
         if (request.UserName != null)
         {
             var user = _userManager.Users.FirstOrDefault(s => s.UserName.Contains(request.UserName));
@@ -53,13 +47,13 @@ public class GetUserRolesQueryHandler : IRequestHandler<GetUserRolesQuery, Appli
             }
 
             return new ApplicationResponseBuilder<List<UserRolesResponse>>()
-                .SetResponse(userRoles.Select(s =>
+                .SetResponse(userRoles.Select( async s =>
                 new UserRolesResponse
                 {
                     RoleName = s,
                     UserName = user.UserName,
-                    
-                    
+                    Slug=$"{user.UserName}-{( await _roleManager.FindByNameAsync(s)).Slug }"
+
                 }).ToList());
         }
         if (request.Role != null)
@@ -74,7 +68,9 @@ public class GetUserRolesQueryHandler : IRequestHandler<GetUserRolesQuery, Appli
                 var response = new UserRolesResponse()
                 {
                     RoleName = role.Name,
-                    UserName = (await _userManager.FindByIdAsync(userRole.UserId.ToString())).UserName
+                    UserName = (await _userManager.FindByIdAsync(userRole.UserId.ToString())).UserName,
+                    Slug = $"{(await _userManager.FindByIdAsync(userRole.UserId.ToString())).UserName}-{role.Slug}"
+                    
                 };
                 responses.Add(response);
             }
@@ -83,14 +79,16 @@ public class GetUserRolesQueryHandler : IRequestHandler<GetUserRolesQuery, Appli
         var users = await _userManager.Users.ToListAsync();
 
 
-        var allResponses = new List<UserRolesResponse>();
+        var res =await _context.UserRoles.ToListAsync();
+     
 
-        foreach (var user in users)
-        {
-            var userRoles = await _userManager.GetRolesAsync(user);
-            allResponses.AddRange(userRoles.Select(s => new UserRolesResponse { RoleName = s, UserName = user.UserName }));
-        }
+        return new ApplicationResponseBuilder<List<UserRolesResponse>>().
+            SetResponse(res.Select(s => new UserRolesResponse
+            {
+                UserName = (_userManager.Users.FirstOrDefault(u=>u.Id==s.UserId)).UserName,
+                RoleName = (_roleManager.Roles.FirstOrDefault(r=>r.Id==s.RoleId)).Name,
+                Slug = s.Slug
+            }).ToList()).Success(true).Build();
 
-        return new ApplicationResponseBuilder<List<UserRolesResponse>>().SetResponse(allResponses).Build();
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MRA.Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230830092048_UserRoleSlug")]
-    partial class UserRoleSlug
+    [Migration("20230830112522_Init3")]
+    partial class Init3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,10 +161,20 @@ namespace MRA.Identity.Infrastructure.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ApplicationRoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("ApplicationRoleId");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("RoleId");
 
@@ -247,6 +257,14 @@ namespace MRA.Identity.Infrastructure.Migrations
             modelBuilder.Entity("MRA.Identity.Domain.Entities.ApplicationUserRole", b =>
                 {
                     b.HasOne("MRA.Identity.Domain.Entities.ApplicationRole", null)
+                        .WithMany("UserRoles")
+                        .HasForeignKey("ApplicationRoleId");
+
+                    b.HasOne("MRA.Identity.Domain.Entities.ApplicationUser", null)
+                        .WithMany("UserRoles")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("MRA.Identity.Domain.Entities.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -284,6 +302,16 @@ namespace MRA.Identity.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MRA.Identity.Domain.Entities.ApplicationRole", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("MRA.Identity.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }
