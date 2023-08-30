@@ -10,13 +10,8 @@ using MRA.Identity.Application.Contract.UserRoles.Response;
 namespace MRA.Identity.Application.Contract.UserRoles.Queries;
 public class GetUserRolesQuery : IRequest<ApplicationResponse<List<UserRolesResponse>>>
 {
-    public string _role = null;
-    public string _userName = null;
+    public string Role { get; set; } = null;
+    public string UserName { get; set; } = null;
 
-    //public GetUserRolesQuery(string role, string userName)
-    //{
-    //    _role = role;
-    //    _userName = userName;
-    //}
 
 }

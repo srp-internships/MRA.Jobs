@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.UserRoles.Commands;
 using MRA.Identity.Domain.Entities;
@@ -14,34 +15,38 @@ namespace MRA.Identity.Application.Features.UserRoles.Commands;
 public class CreateUserRoleCommandHandler : IRequestHandler<CreateUserRolesCommand, ApplicationResponse<Guid>>
 {
     private readonly RoleManager<ApplicationRole> _roleManager;
-    public CreateUserRoleCommandHandler(RoleManager<ApplicationRole> roleManager)
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    public CreateUserRoleCommandHandler(RoleManager<ApplicationRole> roleManager,
+        UserManager<ApplicationUser> userManager)
     {
         _roleManager = roleManager;
+        _userManager = userManager;
     }
     public async Task<ApplicationResponse<Guid>> Handle(CreateUserRolesCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var roleName = request.RoleName;
-
-            var exestingRole = await _roleManager.FindByNameAsync(roleName);
-            if (exestingRole != null)
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+            if (user == null)
             {
-                return new ApplicationResponseBuilder<Guid>().SetErrorMessage("The role already exists.").Success(false).Build();
+                return new ApplicationResponseBuilder<Guid>().SetErrorMessage("User not found!").Success(false).Build();
             }
 
-            var newRole = new ApplicationRole
+            var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id == request.RoleId);
+            if (role == null)
             {
-                Name = roleName
-            };
-            var result = await _roleManager.CreateAsync(newRole);
+                return new ApplicationResponseBuilder<Guid>().SetErrorMessage("Role not found!").Success(false).Build();
+            }
+
+            var result = await _userManager.AddToRoleAsync(user, role.Name);
 
             if (result.Succeeded)
             {
-                return new ApplicationResponseBuilder<Guid>().SetResponse(newRole.Id).Build();
+                return new ApplicationResponseBuilder<Guid>().SetResponse(user.Id).Build();
             }
+            return new ApplicationResponseBuilder<Guid>().SetErrorMessage(result.Errors.First().Description).Success(false).Build();
 
-            return new ApplicationResponseBuilder<Guid>().SetErrorMessage("Failed to create role.").Success(false).Build();
         }
         catch (Exception e)
         {

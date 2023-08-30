@@ -23,7 +23,7 @@ public class DeleteUserRoleCommandHandler : IRequestHandler<DeleteUserRoleComman
         var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Slug == request.Slug);
         if (role == null)
         {
-            return new ApplicationResponseBuilder<bool>().SetErrorMessage("role not found").Success(false).Build();
+            return new ApplicationResponseBuilder<bool>().SetErrorMessage("Role not found").Success(false).Build();
         }
 
         await _roleManager.DeleteAsync(role);

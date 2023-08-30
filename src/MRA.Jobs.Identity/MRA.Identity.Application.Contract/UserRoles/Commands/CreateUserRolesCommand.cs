@@ -8,5 +8,6 @@ using MediatR;
 namespace MRA.Identity.Application.Contract.UserRoles.Commands;
 public class CreateUserRolesCommand : IRequest<ApplicationResponse<Guid>>
 {
-    public string RoleName { get; set; }
+    public Guid RoleId { get; set; }
+    public Guid UserId { get; set; }
 }

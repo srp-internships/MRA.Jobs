@@ -7,9 +7,10 @@ using MRA.Identity.Application.Contract.ApplicationRoles.Queries;
 using MRA.Identity.Application.Contract.UserRoles.Queries;
 using MRA.Identity.Application.Contract.UserRoles.Commands;
 using MRA.Identity.Application.Contract.ApplicationRoles.Commands;
+using Azure.Identity;
 
 namespace MRA.Identity.Api.Controllers;
-[Authorize(Roles = "RoleManager")]
+//[Authorize(Roles = "RoleManager")]
 [Route("api/[controller]")]
 [ApiController]
 public class UserRolesController : ControllerBase
@@ -21,9 +22,9 @@ public class UserRolesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get(string _role = null, string userName = null)
+    public async Task<IActionResult> Get(string role = null, string userName =null)
     {
-        var query = new GetUserRolesQuery();
+        var query = new GetUserRolesQuery { Role = role, UserName = userName };
         var result = await _mediator.Send(query);
         if (result.IsSuccess)
         {
@@ -35,6 +36,7 @@ public class UserRolesController : ControllerBase
         }
         if (result.Exception != null)
             return BadRequest(result.Exception);
+
         return BadRequest();
     }
 
@@ -58,7 +60,7 @@ public class UserRolesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateUserRolesCommand command)
     {
-        var result= await _mediator.Send(command);
+        var result = await _mediator.Send(command);
         if (result.IsSuccess)
         {
             return Ok(result.Response);
@@ -74,7 +76,7 @@ public class UserRolesController : ControllerBase
     [HttpDelete("{slug}")]
     public async Task<IActionResult> Delete(string slug)
     {
-        var command = new DeleteUserRoleCommand { Slug = slug};
+        var command = new DeleteUserRoleCommand { Slug = slug };
         await _mediator.Send(command);
         return Ok();
     }

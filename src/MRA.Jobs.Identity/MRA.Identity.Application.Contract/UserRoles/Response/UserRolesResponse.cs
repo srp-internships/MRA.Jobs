@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace MRA.Identity.Application.Contract.UserRoles.Response;
 public class UserRolesResponse
 {
-    public string UserName { get; set; }
-    public string Slug { get; set; }
-    public List<string> Roles { get; set;}
+    public string UserName { get; set; }  
+    public string RoleName{ get; set; }
 }
