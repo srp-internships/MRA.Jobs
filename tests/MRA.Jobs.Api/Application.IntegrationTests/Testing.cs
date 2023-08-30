@@ -98,7 +98,7 @@ public class Testing
     }
 
     public static async Task<TEntity> FindBySlugAsync<TEntity>(string slug)
-    where TEntity : class, 
+    where TEntity : class, ISluggable
     {
         using IServiceScope scope = _scopeFactory.CreateScope();
 
@@ -132,4 +132,11 @@ public class Testing
     public void RunAfterAnyTests()
     {
     }
+
+
+}
+
+public interface ISluggable
+{
+    string Slug { get; set; }
 }

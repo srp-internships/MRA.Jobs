@@ -25,7 +25,7 @@ public class UpdateVacancyCategoryCommandTest : Testing
         Assert.AreEqual(updateCommand.Slug, updatedCategorySlug);
 
         // Получите обновленную категорию вакансий
-        var updatedCategory = await FindAsync<VacancyCategory>(updateCommand.Slug);
+        var updatedCategory = await FindBySlugAsync<VacancyCategory>(updateCommand.Slug);
 
         // Проверьте, что свойства категории вакансий были обновлены
         Assert.AreEqual(updateCommand.Name, updatedCategory.Name);
