@@ -48,14 +48,14 @@ public class GetAccesTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAcc
         {
             var jwtToken = tokenHandler.ReadJwtToken(token);
             List<Claim> claims = jwtToken.Claims.ToList();
+            
+            //string? userId = claims.Where(c => c.Type == Mra.Shared.Common.Constants.ClaimTypes.Id).Select(c => c.Value).FirstOrDefault();
 
-            string? userId = claims.Where(c => c.Type == Mra.Shared.Common.Constants.ClaimTypes.Id).Select(c => c.Value).FirstOrDefault();
-
-            if (userId != null)
-            {
-                return claims;
-            }
-            else throw new Exception("Token is not valid! This user does not exist in database anymore");
+            return claims;
+            //if (userId != null)
+            //{
+            //}
+            //else throw new Exception("Token is not valid! This user does not exist in database anymore");
         }
         else throw new Exception("Token is not valid! Can not read it");
     }

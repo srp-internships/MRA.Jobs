@@ -68,7 +68,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Get(string refreshToken)
     {
         var responce = await _mediator.Send(new GetAccesTokenUsingRefreshTokenQuery { RefreshToken = refreshToken });
-        if (responce.IsSuccess!)
+        if (responce.IsSuccess == false)
         {
             return BadRequest(responce.ErrorMessage);
         }
