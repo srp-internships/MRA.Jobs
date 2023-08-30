@@ -2,17 +2,17 @@
 
 namespace MRA.Identity.Application;
 
-internal class ApplicationResponseBuilder<TResponse>:ApplicationResponse<TResponse>
+internal class ApplicationResponseBuilder<TResponse> : ApplicationResponse<TResponse>
 {
     internal ApplicationResponseBuilder<TResponse> SetErrorMessage(string? errorMessage)
     {
         ErrorMessage = errorMessage;
         return this;
     }
-    
+
     internal ApplicationResponseBuilder<TResponse> SetResponse(TResponse? response)
     {
-        Response=response;
+        Response = response;
         return this;
     }
 
@@ -40,14 +40,14 @@ internal class ApplicationResponseBuilder<TResponse>:ApplicationResponse<TRespon
 }
 
 
-internal class ApplicationResponseBuilder:ApplicationResponse
+internal class ApplicationResponseBuilder : ApplicationResponse
 {
     internal ApplicationResponseBuilder SetErrorMessage(string? errorMessage)
     {
         ErrorMessage = errorMessage;
         return this;
     }
-    
+
     internal ApplicationResponseBuilder SetException(Exception? exception)
     {
         Exception = exception;

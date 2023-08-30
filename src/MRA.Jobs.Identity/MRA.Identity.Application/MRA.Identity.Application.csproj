@@ -17,10 +17,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.10" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Features\Users\Command\RefreshToken\" />
+        <PackageReference Include="Mra.Shared" Version="1.0.6" />
     </ItemGroup>
 
 </Project>

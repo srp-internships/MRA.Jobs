@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MRA.Identity.Application.Contract;
+using MRA.Identity.Application.Contract.Admin.Responses;
 using MRA.Identity.Application.Contract.User.Commands;
+using MRA.Identity.Application.Contract.User.Queries;
 
 namespace MRA.Identity.Api.Controllers;
 
@@ -29,7 +32,7 @@ public class AuthController : ControllerBase
             return Unauthorized(result.ErrorMessage);
         }
 
-        if (result.Exception!=null)
+        if (result.Exception != null)
         {
             return Unauthorized(result.Exception.ToString());
         }
@@ -47,16 +50,28 @@ public class AuthController : ControllerBase
             return Ok(result.Response);
         }
 
-        if (result.ErrorMessage!=null)
+        if (result.ErrorMessage != null)
         {
             return Unauthorized(result.ErrorMessage);
         }
 
-        if (result.Exception!=null)
+        if (result.Exception != null)
         {
             return Unauthorized(result.Exception);
         }
 
         return Unauthorized();
+    }
+
+
+    [HttpGet("accestoken")]
+    public async Task<IActionResult> Get(string refreshToken)
+    {
+        var responce = await _mediator.Send(new GetAccesTokenUsingRefreshTokenQuery { RefreshToken = refreshToken });
+        if (responce.IsSuccess!)
+        {
+            return BadRequest(responce.ErrorMessage);
+        }
+        else return Ok(responce);
     }
 }
