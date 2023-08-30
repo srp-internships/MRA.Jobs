@@ -1,0 +1,20 @@
+﻿@using MRA.Jobs.Client.Pages.Applicant.Trainings.Components;
+@page "/trainings/search/{searchInput}"
+@page "/trainings"
+@page "/trainings/search"
+
+<Header />
+<SearchInput />
+@if (SearchInput is null)
+{
+    <CategoriesComponent />
+}
+else
+{
+    <CategoriesComponent searchInput="@SearchInput" />
+}
+
+@code {
+    [Parameter]
+    public string SearchInput { get; set; }
+}

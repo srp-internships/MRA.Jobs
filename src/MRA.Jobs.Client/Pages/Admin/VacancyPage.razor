@@ -29,7 +29,7 @@ else
                 <MatSelectItem @bind-Value="VService.creatingNewJob.WorkSchedule" Items="@value2Items">
                 </MatSelectItem>
                 <p>
-                    Selected value: @work
+                    Selected value: 
                 </p>
 
                 <MatSelectValue @bind-Value="VService.creatingNewJob.CategoryId" Items="@_category" ValueSelector="@(i=>i.Id)">
@@ -73,7 +73,6 @@ else
 }
 
 @code {
-    WorkSchedule work;
     WorkSchedule[] value2Items = Enum.GetValues(typeof(WorkSchedule)).Cast<WorkSchedule>().ToArray();
 
     private List<CategoryResponse> _category;
