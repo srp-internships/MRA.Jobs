@@ -15,6 +15,7 @@ using NUnit.Framework;
 using NUnit.Framework.Internal.Execution;
 using Respawn;
 using Respawn.Graph;
+using Slugify;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
@@ -94,6 +95,16 @@ public class Testing
         ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         return await context.FindAsync<TEntity>(keyValues);
+    }
+
+    public static async Task<TEntity> FindBySlugAsync<TEntity>(string slug)
+    where TEntity : class, 
+    {
+        using IServiceScope scope = _scopeFactory.CreateScope();
+
+        ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        return await context.Set<TEntity>().FirstOrDefaultAsync(e => e.Slug == slug);
     }
 
     public static async Task AddAsync<TEntity>(TEntity entity)
