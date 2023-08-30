@@ -1,33 +1,41 @@
-﻿@page "/ApplytoTrainings"
+﻿@page "/ApplytoTrainings/{Slug}"
+@using Blazored.LocalStorage;
+@using MRA.Jobs.Application.Contracts.Applications.Commands;
+@using MRA.Jobs.Client.Services.ApplicationService;
+@inject HttpClient httpClient
+@inject ILocalStorageService LocalStorage;
+@inject IApplicationService ApplicationService
+
 <div class="container">
 
-	<h1>Подать заявку на обучение</h1>
+	<h1>Apply for training</h1>
 
-	<p>Заполните форму ниже, чтобы подать заявку на обучение:</p>
+	<p>Fill out the form below to apply for training:</p>
 
-	<EditForm Model="@application">
+	<EditForm Model="@createApplication" OnValidSubmit="Apply">
 		<DataAnnotationsValidator />
 		<ValidationSummary />
 
 		<div class="form-group">
-			<label for="about">Расскажите о себе (минимум 2000 слов):</label>
-			<InputTextArea id="about" @bind-Value="application.About" class="form-control" rows="10"></InputTextArea>
-			@if (application.About != null && application.About.Split(' ').Length < 2000)
+			<label for="CoverLetter">Tell us about yourself (minimum 20 words):</label>
+			<InputTextArea id="CoverLetter" @bind-Value="createApplication.CoverLetter" class="form-control" rows="10"></InputTextArea>
+			@if (createApplication.CoverLetter != null && createApplication.CoverLetter.Split(' ').Length < 20)
 			{
-				<p class="text-danger">Пожалуйста, напишите не менее 2000 слов.</p>
+				<p class="text-danger">Please write at least 20 words.</p>
 			}
 		</div>
 
-		<button type="submit" class="btn btn-primary">Отправить</button>
+		<button type="submit" class="btn btn-primary">Send</button>
 	</EditForm>
 
 </div>
 @code {
-		private Application application = new Application();
+	[Parameter]
+	public string Slug { get; set; }
 
-		private class Application
-		{
-
-			public string About { get; set; }
-		}
+	private CreateApplicationCommand createApplication = new CreateApplicationCommand();
+	private async Task Apply()
+	{
+		createApplication.VacancyId = await LocalStorage.GetItemAsync<Guid>("trainingid");
+	}
 }
