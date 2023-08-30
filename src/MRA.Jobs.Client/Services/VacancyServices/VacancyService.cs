@@ -28,6 +28,7 @@ public class VacancyService : IVacancyService
     public List<CategoryResponse> Categories { get; set; }
 
     public List<JobVacancyListDto> Vacanceies { get; set; }
+    public int FilteredVacanciesCount { get; set; } = 0;
 
     public CreateJobVacancyCommand creatingNewJob { get; set; }
 
@@ -42,6 +43,8 @@ public class VacancyService : IVacancyService
     }
 
     public CreateVacancyCategoryCommand creatingEntity { get; set; }
+    public int PagesCount { get; set; }
+    const float PageSize = 10f;
 
     public async Task<List<CategoryResponse>> GetAllCategory()
     {
@@ -50,12 +53,59 @@ public class VacancyService : IVacancyService
         return Categories;
     }
 
+    /* Modified and renamed version of the upper method name with a typo in the name and getting vacancies just the 20 first ones instead of all of them */
+    public async Task<List<JobVacancyListDto>> GetAllVacancies()
+    {
+        var result = await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?PageSize={int.MaxValue}");
+        return result.Items;
+    }
+
+
     public async Task<List<JobVacancyListDto>> GetVacancyByTitle(string title)
     {
         var result = await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Title@={title}");
         Vacanceies = result.Items;
         OnChange.Invoke();
         return Vacanceies;
+    }
+
+    /* Two upper methods optimized for Vacancy page and merged to one method with default parameters */
+    public async Task<List<JobVacancyListDto>> GetFilteredVacancies(string title = "", string categoryName = "All categories", int page = 1)
+    {
+        PagedList<JobVacancyListDto> result;
+        if (title == "")
+        {
+            if (categoryName == "All categories")
+            {
+                if (page == 1)
+                {
+                    FilteredVacanciesCount = (await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?PageSize={int.MaxValue}")).TotalCount;
+                    PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
+                }
+                result = await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?PageSize=10&Page={page}");
+            }
+            else
+            {
+                if (page == 1)
+                {
+                    FilteredVacanciesCount = (await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Category@={categoryName}&PageSize={int.MaxValue}")).TotalCount;
+                    PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
+                }
+                result = await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Category@={categoryName}&PageSize=10&Page={page}");
+            }
+        }
+        else
+        {
+            if (page == 1)
+            {
+                FilteredVacanciesCount = (await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Title@={title}&PageSize={int.MaxValue}")).TotalCount;
+                PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
+            }
+
+            result = await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Title@={title}&PageSize=10&Page={page}");
+        }
+        OnChange?.Invoke();
+        return result.Items;
     }
 
     public async Task OnSaveCreateClick()

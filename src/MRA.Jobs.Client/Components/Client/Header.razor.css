@@ -1,4 +1,4 @@
-﻿
+
 .logo {
     display: block;
     width: auto;
@@ -54,3 +54,72 @@ nav ul li ul li a:hover {
    background-color: #f9f2f2;
 
 }
+
+﻿/* Стили для кнопки бургер */
+.mobile-nav-toggle {
+    position: fixed;
+    right: 15px;
+    top: 15px;
+    z-index: 9998;
+    border: 0;
+    background: none;
+    font-size: 24px;
+    transition: all 0.4s;
+    outline: none !important;
+    cursor: pointer;
+}
+
+    .mobile-nav-toggle.bi-list {
+        color: #fff;
+    }
+
+    .mobile-nav-toggle.bi-x {
+        color: #fff;
+    }
+
+/* Стили для мобильного меню */
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    bottom: 0;
+    z-index: 9999;
+    overflow-y: auto;
+    background: #fff;
+    transition: all ease-in-out .3s;
+}
+
+    .mobile-nav * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .mobile-nav ul {
+        list-style-type: none;
+    }
+
+    .mobile-nav a {
+        display: block;
+        padding: 10px 20px;
+        font-size: .9rem;
+        font-weight: bold;
+        color: #000000
+    }
+
+        .mobile-nav a:hover, .mobile-nav .active > a, .mobile-nav li:hover > a {
+            color: #000000
+        }
+
+/* Показать мобильное меню */
+.mobile-nav-active {
+    overflow: hidden
+}
+
+    .mobile-nav-active .mobile-nav-toggle {
+        color: #fff
+    }
+
+    .mobile-nav-active .mobile-nav {
+        right: 0
+    }
+

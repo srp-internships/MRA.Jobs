@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Applications.Responses;
-using MRA.Jobs.Domain.Enums;
+using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Client.Services.ApplicationService;
 

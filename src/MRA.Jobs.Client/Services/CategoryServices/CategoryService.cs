@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
@@ -52,5 +53,17 @@ public class CategoryService : ICategoryService
         creatingEntity.Name = string.Empty;
         var result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>($"categories");
         Category = result.Items;
+    }
+
+    public async Task<List<TrainingCategoriesResponce>> GetTrainingCategories()
+    {
+        var responce = await _http.GetFromJsonAsync<List<TrainingCategoriesResponce>>("categories/training");
+        return responce;
+    }
+
+    public async Task<List<TrainingCategoriesResponce>> GetTrainingCategoriesSinceCheckDate()
+    {
+        var responce = await _http.GetFromJsonAsync<List<TrainingCategoriesResponce>>("categories/training?CheckDate=true");
+        return responce;
     }
 }
