@@ -8,6 +8,7 @@ using MRA.Identity.Infrastructure.Persistence;
 using Mra.Shared.Initializer.Azure.EmailService;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Infrastructure.Account.Services;
+using Mra.Shared.Initializer.Services;
 
 namespace MRA.Identity.Infrastructure;
 
@@ -42,6 +43,13 @@ public static class DependencyInitializer
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
-        services.AddAzureEmailService();
+        if (configurations["UseFileEmailService"] == "true")
+        {
+            services.AddFileEmailService();
+        }
+        else
+        {
+            services.AddAzureEmailService(); //uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
+        }
     }
 }

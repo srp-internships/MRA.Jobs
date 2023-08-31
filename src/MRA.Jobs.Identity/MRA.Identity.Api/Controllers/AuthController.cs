@@ -17,14 +17,12 @@ namespace MRA.Identity.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly ISender _mediator;
-    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IEmailVerification _emailVerification;
 
-    public AuthController(ISender mediator, UserManager<ApplicationUser> userManager, IEmailVerification emailVerification)
+    public AuthController(ISender mediator, IEmailVerification emailVerification)
     {
 
         _mediator = mediator;
-        _userManager = userManager;
         _emailVerification = emailVerification;
     }
 
@@ -74,8 +72,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("verify")]
-    //[Authorize]
-    public async Task<IActionResult> Verify([FromQuery] string token)
+    public async Task<IActionResult> Verify(string token)
     {
         var result = await _emailVerification.VerifyEmailAsync(token);
         if (result.Success)
@@ -89,9 +86,8 @@ public class AuthController : ControllerBase
     }
 
 
-    [HttpPost("VirifyEmail")]
-    //[Authorize]
-    public async Task<IActionResult> ResendVirificationCode()
+    [HttpPost("VerifyEmail")]
+    public async Task<IActionResult> ResendVerificationCode()
     {
         var result = await _mediator.Send(new UserEmallCommand());
         return Ok();
