@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using MRA.Identity.Application.Contract.ApplicationRoles.Responses;
+﻿using MediatR;
+using MRA.Identity.Application.Contract.UserRoles.Response;
 
 namespace MRA.Identity.Application.Contract.UserRoles.Queries;
-public class GetUserRolesBySlugQuery : IRequest<ApplicationResponse<RoleNameResponse>>
+public class GetUserRolesBySlugQuery : IRequest<ApplicationResponse<UserRolesResponse>>
 {
-    private string _slug;
-
-    public GetUserRolesBySlugQuery(string slug)
-    {
-        _slug = slug;
-    }
+    public string Slug { get; set; }
 }

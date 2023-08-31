@@ -43,7 +43,7 @@ public class UserRolesController : ControllerBase
     [HttpGet("{slug}")]
     public async Task<IActionResult> Get(string slug)
     {
-        var query = new GetUserRolesBySlugQuery(slug);
+        var query = new GetUserRolesBySlugQuery { Slug=slug };
         var result = await _mediator.Send(query);
         if (result.IsSuccess)
         {
