@@ -8,5 +8,5 @@ public class TimeLineDetailsDto
     public string UserAvatar { get; set; }
     public string Note { get; set; }
     public DateTime Time { get; set; }
-    public TimelineEventType EventType { get; set; }
+    public Dtos.Enums.ApplicationStatusDto.TimelineEventType EventType { get; set; }
 }

@@ -15,11 +15,11 @@ public class GetTrainingVacancyBySlugQueryHandler : IRequestHandler<GetTrainingV
     }
     public async Task<TrainingVacancyDetailedResponse> Handle(GetTrainingVacancyBySlugQuery request, CancellationToken cancellationToken)
     {
-        // var trainingVacancy = await _context.TrainingVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         var trainingVacancy = await _context.TrainingVacancies.Include(i => i.History)
              .Include(i => i.Tags)
              .ThenInclude(t => t.Tag)
              .FirstOrDefaultAsync(i => i.Slug == request.Slug);
+
         _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Slug);
         return _mapper.Map<TrainingVacancyDetailedResponse>(trainingVacancy);
     }

@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Contracts.Applications.Commands;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Domain.Enums;
+using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
@@ -26,9 +26,9 @@ public class  ApplicationsController : ApiControllerBase
     }
 
     [HttpGet("{slug}")]
-    public async Task<ActionResult<ApplicationDetailsDto>> Get(GetBySlugApplicationQuery request, CancellationToken cancellationToken)
+    public async Task<ActionResult<ApplicationDetailsDto>> Get(string slug, CancellationToken cancellationToken)
     {
-        return await Mediator.Send(request, cancellationToken);
+        return await Mediator.Send(new GetBySlugApplicationQuery { Slug = slug }, cancellationToken);
     }
 
     [HttpPost]

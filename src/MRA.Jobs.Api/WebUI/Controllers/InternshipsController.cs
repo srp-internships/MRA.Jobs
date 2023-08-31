@@ -17,7 +17,7 @@ public class InternshipsController : ApiControllerBase
         return Ok(internships);
     }
 
-    [HttpPost]
+    [HttpPost]  
     public async Task<ActionResult<Guid>> CreateNewInternship(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);

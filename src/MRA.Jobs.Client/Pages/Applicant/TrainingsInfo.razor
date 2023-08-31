@@ -1,8 +1,6 @@
 ﻿@page "/TrainingsInfo"
 @using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
-
-@layout Main
 @inject ITrainingService _trainingService
 
 <div class="container">
@@ -59,6 +57,6 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		_training = await _trainingService.GetBySlugSinceCheckDate(slug);
+		_training = await _trainingService.GetBySlug(slug);
 	}
 }

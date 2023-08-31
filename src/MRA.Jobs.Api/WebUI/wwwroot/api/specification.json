@@ -125,21 +125,9 @@
             "schema": {
               "type": "string"
             },
-            "x-position": 2
+            "x-position": 1
           }
         ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetBySlugApplicationQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
         "responses": {
           "200": {
             "description": "",
@@ -464,6 +452,37 @@
                 "schema": {
                   "type": "string",
                   "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories/training": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "operationId": "Categories_GetCategories",
+        "parameters": [
+          {
+            "name": "CheckDate",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -1482,12 +1501,184 @@
         }
       }
     },
+    "/api/tags/{slug}/tags": {
+      "post": {
+        "tags": [
+          "Tags"
+        ],
+        "operationId": "Tags_AddTag",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTagToTrainingVacancyCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tags"
+        ],
+        "operationId": "Tags_RemoveTags",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveTagFromTrainingVacancyCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/test/{slug}/test": {
+      "post": {
+        "tags": [
+          "Test"
+        ],
+        "operationId": "Test_SendTestCreationRequest",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTestCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestInfoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/test/{slug}/test/result": {
+      "post": {
+        "tags": [
+          "Test"
+        ],
+        "operationId": "Test_GetTestResultRequest",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTestResultCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/trainings/{slug}": {
       "get": {
         "tags": [
           "Trainings"
         ],
-        "operationId": "Trainings_GetTrainingVacancyById",
+        "operationId": "Trainings_Get",
         "parameters": [
           {
             "name": "slug",
@@ -1517,7 +1708,7 @@
         "tags": [
           "Trainings"
         ],
-        "operationId": "Trainings_UpdateTrainingVacancy",
+        "operationId": "Trainings_Put",
         "parameters": [
           {
             "name": "slug",
@@ -1559,7 +1750,7 @@
         "tags": [
           "Trainings"
         ],
-        "operationId": "Trainings_DeleteTrainingVacancy",
+        "operationId": "Trainings_Delete",
         "parameters": [
           {
             "name": "slug",
@@ -1597,47 +1788,15 @@
         }
       }
     },
-    "/getwithif/{slug}": {
-      "get": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_GetTrainingVacancyByIdSlugSinceCheckDate",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/trainings": {
       "get": {
         "tags": [
           "Trainings"
         ],
-        "operationId": "Trainings_GetTrainingVacancysWithPagination",
+        "operationId": "Trainings_Get2",
         "parameters": [
           {
-            "name": "Filters",
+            "name": "SearchText",
             "in": "query",
             "schema": {
               "type": "string",
@@ -1646,13 +1805,39 @@
             "x-position": 1
           },
           {
-            "name": "Sorts",
+            "name": "CategorySlug",
             "in": "query",
             "schema": {
               "type": "string",
               "nullable": true
             },
             "x-position": 2
+          },
+          {
+            "name": "CheckDate",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 3
+          },
+          {
+            "name": "Filters",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 4
+          },
+          {
+            "name": "Sorts",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 5
           },
           {
             "name": "Page",
@@ -1664,7 +1849,7 @@
               "minimum": 1.0,
               "nullable": true
             },
-            "x-position": 3
+            "x-position": 6
           },
           {
             "name": "PageSize",
@@ -1676,7 +1861,7 @@
               "minimum": 1.0,
               "nullable": true
             },
-            "x-position": 4
+            "x-position": 7
           }
         ],
         "responses": {
@@ -1696,7 +1881,7 @@
         "tags": [
           "Trainings"
         ],
-        "operationId": "Trainings_CreateNewTrainingVacancy",
+        "operationId": "Trainings_Post",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -1717,178 +1902,6 @@
                 "schema": {
                   "type": "string",
                   "format": "guid"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/trainings/{slug}/tags": {
-      "post": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_AddTag",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddTagToTrainingVacancyCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_RemoveTags",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemoveTagFromTrainingVacancyCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/trainings/{slug}/test": {
-      "post": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_SendTestCreationRequest",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTestCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TestInfoDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/trainings/{slug}/test/result": {
-      "post": {
-        "tags": [
-          "Trainings"
-        ],
-        "operationId": "Trainings_GetTestResultRequest",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTestResultCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TestResultDto"
                 }
               }
             }
@@ -1962,12 +1975,12 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/JobQuestion"
+              "$ref": "#/components/schemas/JobQuestionDto"
             }
           }
         }
       },
-      "JobQuestion": {
+      "JobQuestionDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2090,16 +2103,6 @@
           "Error"
         ]
       },
-      "GetBySlugApplicationQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "slug": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
       "CreateApplicationCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -2116,7 +2119,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/JobQuestion"
+              "$ref": "#/components/schemas/JobQuestionDto"
             }
           }
         }
@@ -2298,26 +2301,26 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/EducationDetail"
+              "$ref": "#/components/schemas/EducationDetailDto"
             }
           },
           "experienceDetails": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/ExperienceDetail"
+              "$ref": "#/components/schemas/ExperienceDetailDto"
             }
           },
           "skills": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/Skill"
+              "$ref": "#/components/schemas/SkillDto"
             }
           }
         }
       },
-      "EducationDetail": {
+      "EducationDetailDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2351,7 +2354,7 @@
           }
         }
       },
-      "ExperienceDetail": {
+      "ExperienceDetailDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2396,7 +2399,7 @@
           }
         }
       },
-      "Skill": {
+      "SkillDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2790,6 +2793,40 @@
           }
         }
       },
+      "AddTagToTrainingVacancyCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trainingVacancySlug": {
+            "type": "string",
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RemoveTagFromTrainingVacancyCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trainingVacancySlug": {
+            "type": "string",
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "PagedListOfTrainingVacancyListDto": {
         "type": "object",
         "additionalProperties": false,
@@ -2962,40 +2999,6 @@
           "slug": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "AddTagToTrainingVacancyCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "trainingVacancySlug": {
-            "type": "string",
-            "nullable": true
-          },
-          "tags": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "RemoveTagFromTrainingVacancyCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "trainingVacancySlug": {
-            "type": "string",
-            "nullable": true
-          },
-          "tags": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
           }
         }
       }

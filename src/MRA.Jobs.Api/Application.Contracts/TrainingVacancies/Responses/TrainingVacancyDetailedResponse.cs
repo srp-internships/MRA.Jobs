@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
-public class TrainingVacancyDetailedResponse
+public record TrainingVacancyDetailedResponse
 {
     public Guid Id { get; set; }
     public Guid CategoryId { get; set; }

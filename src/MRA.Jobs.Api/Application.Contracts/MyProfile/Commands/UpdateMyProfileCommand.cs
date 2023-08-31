@@ -14,5 +14,5 @@ public class UpdateMyProfileCommand : IRequest<MyProfileResponse>
     public DateTime DateOfBirth { get; set; }
 
     public string Avatar { get; set; }
-    public Gender Gender { get; set; }
+    public Dtos.Enums.ApplicationStatusDto.Gender Gender { get; set; }
 }

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
-public class TrainingVacancyListDto
+public record TrainingVacancyListDto
 {
     public Guid Id { get; set; }
     public string Category { get; set; }

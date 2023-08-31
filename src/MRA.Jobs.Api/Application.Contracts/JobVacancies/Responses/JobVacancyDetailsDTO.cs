@@ -20,7 +20,7 @@ public class JobVacancyDetailsDto
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime EndDate { get; set; }
 
-    public WorkSchedule WorkSchedule { get; set; }
+    public Dtos.Enums.ApplicationStatusDto.WorkSchedule WorkSchedule { get; set; }
     public int RequiredYearOfExperience { get; set; }
 
     [JsonConverter(typeof(DateTimeToUnixConverter))]
