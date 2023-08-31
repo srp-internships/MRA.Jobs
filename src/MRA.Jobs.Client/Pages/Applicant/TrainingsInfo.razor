@@ -1,5 +1,4 @@
-﻿@*@page "/trainings/{slug}"*@
-@page "/TrainingsInfo"
+﻿@page "/trainings/{slug}"
 @using Blazored.LocalStorage;
 @using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @using Microsoft.AspNetCore.Components.Authorization;
@@ -45,11 +44,11 @@
 					<div class="card w-100 bg-white shadow-lg rounded mb-4">
 						<div class="card-body">
 							<h2 class="mb-2 text-black">Interested in a trainings?</h2>
-							<a href="ApplytoTrainings/{@_training.Slug}" class="btn btn-primary">Apply</a>
+							<a href="/trainings/ApplytoTrainings/{@_training.Slug}" class="btn btn-primary">Apply</a>
 							@*<CascadingAuthenticationState>
 						<AuthorizeView>
 						<Authorized>
-						<a href="ApplytoTrainings/{@_training.Slug}/{@_training.Id}" class="btn btn-primary">Apply</a>
+						<a href="/trainings/ApplytoTrainings/{@_training.Slug}/{@_training.Id}" class="btn btn-primary">Apply</a>
 						</Authorized>
 						<NotAuthorized>
 						<a href="login" class="btn btn-primary">Apply</a>
@@ -67,8 +66,8 @@
 
 
 @code {
-	//[Parameter]
-	public string Slug = "-2023-8";
+	[Parameter]
+	public string Slug { get; set; }
 	private TrainingVacancyDetailedResponse _training { get; set; } = new TrainingVacancyDetailedResponse();
 
 	protected override async Task OnInitializedAsync()
@@ -79,6 +78,5 @@
 	protected async Task SaveAndRetrieveData()
 	{
 		await LocalStorage.SetItemAsync("Trainingid", $"{_training.Id}");
-		await LocalStorage.SetItemAsync("Applicant", $"{ApplicantId}");
 	}
 }

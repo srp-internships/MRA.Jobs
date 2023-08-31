@@ -1,10 +1,10 @@
-﻿@page "/ApplytoTrainings/{Slug}"
+﻿@page "/trainings/ApplytoTrainings/{Slug}"
 @using Blazored.LocalStorage;
 @using MRA.Jobs.Application.Contracts.Applications.Commands;
 @using MRA.Jobs.Client.Services.ApplicationService;
 @inject HttpClient httpClient
 @inject ILocalStorageService LocalStorage;
-@inject IApplicationService ApplicationService
+@inject IApplicationService ApplicationService;
 
 <div class="container">
 
@@ -30,12 +30,13 @@
 
 </div>
 @code {
-	[Parameter]
-	public string Slug { get; set; }
+    [Parameter]
+    public string Slug { get; set; }
 
-	private CreateApplicationCommand createApplication = new CreateApplicationCommand();
-	private async Task Apply()
-	{
-		createApplication.VacancyId = await LocalStorage.GetItemAsync<Guid>("trainingid");
-	}
+    private CreateApplicationCommand createApplication = new CreateApplicationCommand();
+    private async Task Apply()
+    {
+        createApplication.VacancyId = await LocalStorage.GetItemAsync<Guid>("trainingid");
+        await ApplicationService.CreateApplication(createApplication);
+    }
 }
