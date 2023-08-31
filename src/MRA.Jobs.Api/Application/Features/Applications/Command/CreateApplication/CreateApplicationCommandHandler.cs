@@ -39,7 +39,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
         if (request.JobQuestions != null)
-            application.JobQuestions = request.JobQuestions.Select(j => _mapper.Map<JobQuestion>(j));
+            application.JobQuestions = request.JobQuestions.Select(j => _mapper.Map<VacancyQuestion>(j));
         
         application.ApplicantId = _currentUserService.GetId() ?? Guid.Empty;
 

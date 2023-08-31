@@ -42,7 +42,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<EducationDetail> EducationDetails { get; set; }
     public DbSet<ExperienceDetail> ExperienceDetails { get; set; }
     public DbSet<Skill> Skills { get; set; }
-    public DbSet<JobQuestion> JobQuestions { get; set; }
+    public DbSet<VacancyQuestion> JobQuestions { get; set; }
 
     #region override
 
