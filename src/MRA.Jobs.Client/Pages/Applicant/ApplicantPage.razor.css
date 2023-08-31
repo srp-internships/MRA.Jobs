@@ -32,3 +32,33 @@ h1, h2 {
 p {
     line-height: 1.5;
 }
+
+main {
+    background-color: #0dcaf0;
+    height: 90px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.shapka {
+    color: white;
+    font-size: xx-large;
+}
+
+.container {
+    justify-content: center;
+    font-size: larger;
+}
+
+.form-horizontal {
+    justify-content: center;
+}
+
+p {
+    line-height: 1.5;
+}
+
+
+.form-group {
+    margin-bottom: 25px;
+}
