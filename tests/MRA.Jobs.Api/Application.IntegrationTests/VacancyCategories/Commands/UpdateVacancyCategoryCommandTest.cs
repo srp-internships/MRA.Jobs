@@ -12,22 +12,24 @@ public class UpdateVacancyCategoryCommandTest : Testing
     [Test]
     public async Task UpdateVacancyCategoryCommand_ShouldCreateVacancyCategory_Success()
     {
-    
-        var slug = "design";
-        await AddAsync(new VacancyCategory {
+        // new VacancyCategory
+        var newVacancyCategory = new VacancyCategory
+        {
             Name = "Design",
-            Slug = slug });
+            Slug = "design"
+        };
+        await AddAsync(newVacancyCategory);
 
-        // Обновите категорию вакансий
-        var updateCommand = new UpdateVacancyCategoryCommand { Name = "Programming 2", Slug = slug };
+        // update VacancyCaterogy
+        var updateCommand = new UpdateVacancyCategoryCommand { Name = "Programming 2", Slug = newVacancyCategory.Slug };
         var updateResponse = await _httpClient.PutAsJsonAsync($"/api/categories/{updateCommand.Slug}", updateCommand);
         var updatedCategorySlug = await updateResponse.Content.ReadAsStringAsync();
         Assert.AreEqual(updateCommand.Slug, updatedCategorySlug);
 
-        // Получите обновленную категорию вакансий
-        var updatedCategory = await FindBySlugAsync<VacancyCategory>(updateCommand.Slug);
+        // get updated VacancyCategory
+        var updatedCategory = await FindAsync<VacancyCategory>(newVacancyCategory.Id);
 
-        // Проверьте, что свойства категории вакансий были обновлены
+        // Verify the job category properties have been updated
         Assert.AreEqual(updateCommand.Name, updatedCategory.Name);
     }
 }
