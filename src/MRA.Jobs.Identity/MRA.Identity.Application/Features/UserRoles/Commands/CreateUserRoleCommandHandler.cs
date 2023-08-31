@@ -53,8 +53,6 @@ public class CreateUserRoleCommandHandler : IRequestHandler<CreateUserRolesComma
             
                 return new ApplicationResponseBuilder<string>().SetResponse(newUserRole.Slug).Build();
             
-           // return new ApplicationResponseBuilder<Guid>().SetErrorMessage(result.Errors.First().Description).Success(false).Build();
-
         }
         catch (Exception e)
         {
