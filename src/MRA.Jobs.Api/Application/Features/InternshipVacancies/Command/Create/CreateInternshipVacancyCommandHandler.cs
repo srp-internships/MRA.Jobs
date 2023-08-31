@@ -11,11 +11,11 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
     private readonly ISlugGeneratorService _slugService;
-    //private readonly IEmailService _emailService;
+    private readonly IEmailService _emailService;
     private readonly IHtmlService _htmlService;
 
     public CreateInternshipVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
-        ICurrentUserService currentUserService, ISlugGeneratorService slugService,/* IEmailService emailService,*/
+        ICurrentUserService currentUserService, ISlugGeneratorService slugService,IEmailService emailService,
         IHtmlService htmlService)
     {
         _context = context;
@@ -23,7 +23,7 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         _dateTime = dateTime;
         _currentUserService = currentUserService;
         _slugService = slugService;
-        //_emailService = emailService;
+        _emailService = emailService;
         _htmlService = htmlService;
     }
 
@@ -47,8 +47,8 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        //await _emailService.SendEmailAsync(new[] { internship.CreatedByEmail },
-        //    _htmlService.GenerateApplyVacancyContent(_currentUserService.GetUserName()), "New internship apply");
+        await _emailService.SendEmailAsync(new[] { internship.CreatedByEmail },
+            _htmlService.GenerateApplyVacancyContent(_currentUserService.GetUserName()), "New internship apply");
 
         return internship.Id;
     }
