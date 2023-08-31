@@ -1,10 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using MRA.Identity.Infrastructure.Persistence;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
@@ -25,10 +21,10 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
     IDictionary<string, string> GetInMemoryConfiguration()
     {
-        Dictionary<string, string> inMemoryConfiguraton = new Dictionary<string, string>
+        Dictionary<string, string> inMemoryConfiguration = new()
         {
-            { "UseInMemoryDatabase", "true" },
+            { "UseInMemoryDatabase", "true" }, { "UseFileEmailService", "true" }
         };
-        return inMemoryConfiguraton;
+        return inMemoryConfiguration;
     }
 }
