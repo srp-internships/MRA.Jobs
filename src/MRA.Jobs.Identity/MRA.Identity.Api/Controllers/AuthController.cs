@@ -74,7 +74,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("verify")]
-    [Authorize]
+    //[Authorize]
     public async Task<IActionResult> Verify([FromQuery] string token)
     {
         var result = await _emailVerification.VerifyEmailAsync(token);
@@ -90,7 +90,7 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("VirifyEmail")]
-    [Authorize]
+    //[Authorize]
     public async Task<IActionResult> ResendVirificationCode()
     {
         var result = await _mediator.Send(new UserEmallCommand());
