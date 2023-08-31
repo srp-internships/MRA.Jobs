@@ -11,6 +11,7 @@ using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;
 using Mra.Shared.Common.Constants;
 using Mra.Shared.Initializer.Azure.EmailService;
+using Mra.Shared.Initializer.Services;
 
 namespace MRA.Jobs.Infrastructure;
 
@@ -22,8 +23,14 @@ public static class ConfigureServices
         services.AddAppIdentity(configuration);
         services.AddMediatR(typeof(ConfigureServices).Assembly);
 
-
-        services.AddAzureEmailService();//uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
+        if (configuration["UseFileEmailService"] == "true")
+        {
+            services.AddFileEmailService();
+        }
+        else
+        {
+            services.AddAzureEmailService(); //uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
+        }
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
@@ -66,7 +73,9 @@ public static class ConfigureServices
             op.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings")["SecurityKey"])),
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(
+                        System.Text.Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings")["SecurityKey"])),
                 ValidateIssuer = false,
                 ValidateAudience = false
             };

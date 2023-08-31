@@ -1,0 +1,73 @@
+﻿@page "/ApplicantPage"
+
+@layout MainLayout
+
+<div class="container">
+    <div class="" style="padding-left:170px;">
+        <form>
+
+
+
+            <div class="form-group">
+                <label class="control-label col" for="userFullName">Full Name:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="fullname" placeholder="Victoria Davidson">
+                </div>
+            </div>
+
+            <br />
+            <div class="form-group">
+                <label class="control-label col" for="dateOfBirth">Date Of Birth:</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="date" placeholder="">
+                </div>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <label class="control-label col" for="SpecifyTheGender">Specify the gender:</label>
+                <div class="col-sm-10">
+                    <div class="row" style="border:1px solid #ced4da; margin-left:3px; margin-right:3px; padding:5px; border-radius:4px;">
+                        <div class="col">
+                            <input type="radio" value="man" checked name="gender" /> Man
+                        </div>
+                        <div class="col">
+                            <input type="radio" value="man" checked name="gender" /> Woman
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <div class="form-group">
+                <label class="control-label col" for="phoneNumber">Phone Number:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="+992-92-444-22-77"
+                           pattern="\+\d{3}-\d{3}-\d{3}-\d{3}-\d{3}" id="phone" name="phone" />
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <label class="control-label col" for="email">Email Address:</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="email" placeholder="user@gmail.com">
+                </div>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Remember me</label>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </form>
+    </div>
+    <div class="d-grid gap-2">
+        <button class="btn btn-info" type="button" style="color: white; font-size: 20px">Submit</button>
+    </div>
+
+</div>
+

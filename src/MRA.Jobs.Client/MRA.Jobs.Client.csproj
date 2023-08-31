@@ -22,10 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Shared" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\MRA.Jobs.Api\Application.Contracts\MRA.Jobs.Application.Contracts.csproj" />
     </ItemGroup>
 
