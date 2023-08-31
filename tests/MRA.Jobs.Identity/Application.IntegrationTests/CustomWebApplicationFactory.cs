@@ -21,10 +21,10 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
     IDictionary<string, string> GetInMemoryConfiguration()
     {
-        Dictionary<string, string> inMemoryConfiguraton = new Dictionary<string, string>
+        Dictionary<string, string> inMemoryConfiguration = new()
         {
-            { "UseInMemoryDatabase", "true" },
+            { "UseInMemoryDatabase", "true" }, { "UseFileEmailService", "true" }
         };
-        return inMemoryConfiguraton;
+        return inMemoryConfiguration;
     }
 }
