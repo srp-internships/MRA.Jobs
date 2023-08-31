@@ -8,6 +8,7 @@ using System.Security.Claims;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract;
 using MRA.Identity.Domain.Entities;
+using Azure.Core;
 
 namespace MRA.Identity.Application.Features.Users.Query;
 public class GetAccesTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAccesTokenUsingRefreshTokenQuery, ApplicationResponse<JwtTokenResponse>>
@@ -24,14 +25,18 @@ public class GetAccesTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAcc
     {
         try
         {
-            var claims = await ValidateToken(request.RefreshToken);
-            if (claims != null)
+            if (AreTokensRelated(request))
             {
-                return new ApplicationResponseBuilder<JwtTokenResponse>().SetResponse(new JwtTokenResponse
+                var claims = await ValidateToken(request.AccessToken);
+                if (claims != null)
                 {
-                    AccessToken = _tokenService.CreateTokenByClaims(claims),
-                    RefreshToken = _tokenService.CreateRefreshToken(claims)
-                });
+                    return new ApplicationResponseBuilder<JwtTokenResponse>().SetResponse(new JwtTokenResponse
+                    {
+                        AccessToken = _tokenService.CreateTokenByClaims(claims),
+                        RefreshToken = _tokenService.CreateRefreshToken(claims)
+                    });
+                }
+                else return new ApplicationResponseBuilder<JwtTokenResponse>().Success(false).SetErrorMessage("Could not validate token").Build();
             }
             else return new ApplicationResponseBuilder<JwtTokenResponse>().Success(false).SetErrorMessage("Could not validate token").Build();
         }
@@ -40,6 +45,20 @@ public class GetAccesTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAcc
             return new ApplicationResponseBuilder<JwtTokenResponse>().Success(false).SetErrorMessage(ex.Message).Build();
         }
     }
+
+    private bool AreTokensRelated(GetAccesTokenUsingRefreshTokenQuery query)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        var refreshClaims = tokenHandler.ReadJwtToken(query.RefreshToken);
+        string refreshUserId = refreshClaims.Claims.Where(c=>c.Type==ClaimTypes.NameIdentifier).FirstOrDefault()!.Value;
+
+        var accessClaims = tokenHandler.ReadJwtToken(query.AccessToken);
+        string accessUserId = accessClaims.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault()!.Value;
+
+        return refreshUserId == accessUserId;
+    }
+
     private async Task<List<Claim>> ValidateToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -48,14 +67,8 @@ public class GetAccesTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAcc
         {
             var jwtToken = tokenHandler.ReadJwtToken(token);
             List<Claim> claims = jwtToken.Claims.ToList();
-            
-            //string? userId = claims.Where(c => c.Type == Mra.Shared.Common.Constants.ClaimTypes.Id).Select(c => c.Value).FirstOrDefault();
 
             return claims;
-            //if (userId != null)
-            //{
-            //}
-            //else throw new Exception("Token is not valid! This user does not exist in database anymore");
         }
         else throw new Exception("Token is not valid! Can not read it");
     }
