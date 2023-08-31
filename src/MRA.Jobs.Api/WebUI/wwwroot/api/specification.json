@@ -1975,12 +1975,12 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/JobQuestionDto"
+              "$ref": "#/components/schemas/VacancyQuestionDto"
             }
           }
         }
       },
-      "JobQuestionDto": {
+      "VacancyQuestionDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1989,10 +1989,6 @@
             "format": "guid"
           },
           "question": {
-            "type": "string",
-            "nullable": true
-          },
-          "response": {
             "type": "string",
             "nullable": true
           }
@@ -2115,12 +2111,38 @@
             "type": "string",
             "format": "guid"
           },
-          "jobQuestions": {
+          "vacancyResponses": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/JobQuestionDto"
+              "$ref": "#/components/schemas/VacancyResponseDto"
             }
+          }
+        }
+      },
+      "VacancyResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "response": {
+            "type": "string",
+            "nullable": true
+          },
+          "applicationId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "question": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VacancyQuestionDto"
+              }
+            ]
           }
         }
       },
@@ -2478,7 +2500,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/JobQuestionDto"
+              "$ref": "#/components/schemas/VacancyQuestionDto"
             }
           },
           "duration": {
@@ -2698,7 +2720,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/JobQuestionDto"
+              "$ref": "#/components/schemas/VacancyQuestionDto"
             }
           },
           "workSchedule": {
@@ -2962,7 +2984,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/JobQuestionDto"
+              "$ref": "#/components/schemas/VacancyQuestionDto"
             }
           },
           "fees": {

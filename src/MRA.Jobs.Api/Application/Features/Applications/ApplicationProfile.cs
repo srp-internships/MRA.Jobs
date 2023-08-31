@@ -30,6 +30,6 @@ public class ApplicationProfile : Profile
         CreateMap<Domain.Entities.Application, ApplicationListStatus>()
             .ForMember(dest => dest.VacancyTitle, opt => opt.MapFrom(src => src.Vacancy.Title));
         CreateMap<ApplicationStatus, ApplicationStatusDto.ApplicationStatus>();
-        CreateMap<Domain.Entities.VacancyQuestion, JobQuestionDto>();
+        CreateMap<Domain.Entities.VacancyQuestion, VacancyQuestionDto>();
     }
 }

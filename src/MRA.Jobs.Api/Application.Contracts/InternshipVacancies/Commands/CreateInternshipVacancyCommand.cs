@@ -20,7 +20,7 @@ public class CreateInternshipVacancyCommand : IRequest<Guid>
 
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime ApplicationDeadline { get; set; }
-    public IEnumerable<JobQuestionDto> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
     public int Duration { get; set; }
     public int Stipend { get; set; }
 }

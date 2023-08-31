@@ -43,6 +43,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<ExperienceDetail> ExperienceDetails { get; set; }
     public DbSet<Skill> Skills { get; set; }
     public DbSet<VacancyQuestion> JobQuestions { get; set; }
+    public DbSet<VacancyQuestion> VacancyQuestions { get; set; }
+    public DbSet<VacancyResponse> VacancyResponses { get; set; }
 
     #region override
 

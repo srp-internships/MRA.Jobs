@@ -18,6 +18,6 @@ public class CreateJobVacancyCommand : IRequest<Guid>
     public DateTime EndDate { get; set; }
     public Guid CategoryId { get; set; }
     public int RequiredYearOfExperience { get; set; }
-    public IEnumerable<JobQuestionDto> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
     public WorkSchedule WorkSchedule { get; set; }
 }
