@@ -1,10 +1,8 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MRA.Jobs.Application;
-using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Infrastructure;
 using MRA.Jobs.Infrastructure.Identity;
-using MRA.Jobs.Infrastructure.Services;
 using MRA.Jobs.Web;
 using Mra.Shared.Initializer.Azure.Insight;
 using Mra.Shared.Initializer.Azure.KeyVault;
@@ -24,8 +22,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebUiServices(builder.Configuration);
 
 builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("Sieve"));
-builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
-builder.Services.AddTransient<IEmailService, SmtpEmailService>();
+
 WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())

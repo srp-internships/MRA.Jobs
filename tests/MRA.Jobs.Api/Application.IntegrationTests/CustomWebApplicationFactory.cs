@@ -24,25 +24,15 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 .Build();
             configurationBuilder.AddConfiguration(integrationConfig);
         });
-
-        builder.ConfigureTestServices(services =>
-        {
-            var serviceProvider = services.BuildServiceProvider();
-
-            var descriptor = new ServiceDescriptor(
-                typeof(IEmailService),
-                typeof(FakeEmailService),ServiceLifetime.Singleton);
-            services.Replace(descriptor);
-        });
     }
 
     IDictionary<string, string> GetInMemoryConfiguration()
     {
-        Dictionary<string, string> inMemoryConfiguraton = new Dictionary<string, string>
-            {
-                { "UseInMemoryDatabase", "true" },
-            };
-        return inMemoryConfiguraton;
+        Dictionary<string, string> inMemoryConfiguration = new()
+        {
+            { "UseInMemoryDatabase", "true" }, { "UseFileEmailService", "true" }
+        };
+        return inMemoryConfiguration;
     }
 
 
