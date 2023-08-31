@@ -26,4 +26,8 @@
       <ProjectReference Include="..\..\..\src\MRA.Jobs.Api\WebUI\MRA.Jobs.Web.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="InternshipVacancy\Command\" />
+    </ItemGroup>
+
 </Project>
