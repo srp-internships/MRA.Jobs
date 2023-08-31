@@ -1,11 +1,9 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
-using NUnit.Framework;
-using static MRA.Jobs.Application.IntegrationTests.Testing;
-using FluentAssertions;
-using MRA.Jobs.Domain.Entities;
+﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Security.Claims;
-using System.Net.Http.Headers;
+using FluentAssertions;
+using MRA.Jobs.Application.Contracts.Applications.Commands;
+using MRA.Jobs.Domain.Entities;
+using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Application;
 public class CreateApplicationCommandTest:Testing

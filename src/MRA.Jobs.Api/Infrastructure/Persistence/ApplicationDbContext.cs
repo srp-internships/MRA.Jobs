@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 
 namespace MRA.Jobs.Infrastructure.Persistence;
@@ -77,22 +74,3 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
     #endregion
 }
-
-//public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
-//{
-//    public ApplicationDbContext CreateDbContext(string[] args)
-//    {
-//        string basePath = Directory.GetCurrentDirectory();
-//        IConfigurationRoot configuration = new ConfigurationBuilder()
-//            .SetBasePath(basePath)
-//            .AddJsonFile("appsettings.json", true, true)
-//            .AddJsonFile("appsettings.Development.json", true, true)
-//            .Build();
-
-//        DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder =
-//            new DbContextOptionsBuilder<ApplicationDbContext>();
-//        optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-
-//        return new ApplicationDbContext(optionsBuilder.Options);
-//    }
-//}
