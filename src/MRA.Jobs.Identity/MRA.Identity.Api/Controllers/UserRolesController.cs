@@ -22,10 +22,15 @@ public class UserRolesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get(string role = null, string userName =null)
+    public async Task<IActionResult> Get(string role = null, string userName = null)
     {
-        var query = new GetUserRolesQuery { Role = role, UserName = userName };
-        var result = await _mediator.Send(query);
+
+        var result = await _mediator
+            .Send(new GetUserRolesQuery
+            {
+                Role = role,
+                UserName = userName
+            });
         if (result.IsSuccess)
         {
             return Ok(result.Response);
@@ -43,7 +48,7 @@ public class UserRolesController : ControllerBase
     [HttpGet("{slug}")]
     public async Task<IActionResult> Get(string slug)
     {
-        var query = new GetUserRolesBySlugQuery { Slug=slug };
+        var query = new GetUserRolesBySlugQuery { Slug = slug };
         var result = await _mediator.Send(query);
         if (result.IsSuccess)
         {
@@ -77,7 +82,7 @@ public class UserRolesController : ControllerBase
     public async Task<IActionResult> Delete(string slug)
     {
         var command = new DeleteUserRoleCommand { Slug = slug };
-      var result=  await _mediator.Send(command);
+        var result = await _mediator.Send(command);
         if (!result.IsSuccess)
             return BadRequest(result.ErrorMessage);
         return Ok(result);
