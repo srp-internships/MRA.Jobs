@@ -77,7 +77,9 @@ public class UserRolesController : ControllerBase
     public async Task<IActionResult> Delete(string slug)
     {
         var command = new DeleteUserRoleCommand { Slug = slug };
-        await _mediator.Send(command);
-        return Ok();
+      var result=  await _mediator.Send(command);
+        if (!result.IsSuccess)
+            return BadRequest(result.ErrorMessage);
+        return Ok(result);
     }
 }

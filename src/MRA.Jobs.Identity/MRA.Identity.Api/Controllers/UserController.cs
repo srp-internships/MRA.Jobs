@@ -14,9 +14,9 @@ public class UserController : ControllerBase
         _mediator = mediator;
     }
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery]GetAllUsersQuery query)
+    public async Task<IActionResult> Get()
     {
-        var users = await _mediator.Send(query);
+        var users = await _mediator.Send(new GetAllUsersQuery());
         return Ok(users);
     }
     [HttpGet("{userName}")]
