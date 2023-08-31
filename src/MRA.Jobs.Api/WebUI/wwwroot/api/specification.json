@@ -2942,6 +2942,13 @@
             "type": "integer",
             "format": "int32"
           },
+          "vacancyQuestions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VacancyQuestionDto"
+            }
+          },
           "slug": {
             "type": "string",
             "nullable": true
