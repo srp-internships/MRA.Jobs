@@ -23,7 +23,6 @@ public class DeleteVacancyCategoryCommandTest : Testing
         deleteResponse.EnsureSuccessStatusCode();
 
         // Get deleted VacancyCategory
-        //var getResponse = await _httpClient.GetAsync($"/api/categories/{newVacancyCategory.Slug}");
         var getResponse = await FindAsync<VacancyCategory>(newVacancyCategory.Id);
         Assert.IsNull(getResponse);
     }
