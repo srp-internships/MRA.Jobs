@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA.Jobs.Domain.Entities;
-public class JobQuestion
+public class VacancyQuestion
 {
     public Guid Id { get; set; }
     public string Question { get; set; }
