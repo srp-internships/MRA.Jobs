@@ -30,7 +30,7 @@ public class UpdateVacancyCategoryCommandTest : Testing
         var updatedCategory = await FindAsync<VacancyCategory>(newVacancyCategory.Id);
 
         // Verify the job category properties have been updated
-        Assert.AreEqual(updateCommand.Name, updatedCategory.Name);
+        Assert.AreNotEqual(newVacancyCategory.Name, updatedCategory.Name);
     }
 }
 

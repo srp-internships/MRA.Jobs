@@ -17,15 +17,15 @@ public class DeleteVacancyCategoryCommandTest : Testing
             Slug = "test",
         };
         await AddAsync(newVacancyCategory);
-       
 
         // Delete VacancyCategory
         var deleteResponse = await _httpClient.DeleteAsync($"/api/categories/{newVacancyCategory.Slug}");
         deleteResponse.EnsureSuccessStatusCode();
 
         // Get deleted VacancyCategory
-        var getResponse = await _httpClient.GetAsync($"/api/categories/{newVacancyCategory.Slug}");
-        Assert.AreEqual(HttpStatusCode.NotFound, getResponse.StatusCode);
+        //var getResponse = await _httpClient.GetAsync($"/api/categories/{newVacancyCategory.Slug}");
+        var getResponse = await FindAsync<VacancyCategory>(newVacancyCategory.Id);
+        Assert.IsNull(getResponse);
     }
 
 }
