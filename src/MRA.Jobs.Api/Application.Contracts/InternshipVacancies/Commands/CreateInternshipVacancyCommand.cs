@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
+using MRA.Jobs.Application.Contracts.Dtos;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
@@ -19,7 +20,7 @@ public class CreateInternshipVacancyCommand : IRequest<Guid>
 
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime ApplicationDeadline { get; set; }
-
+    public IEnumerable<JobQuestionDto> VacancyQuestions { get; set; }
     public int Duration { get; set; }
     public int Stipend { get; set; }
 }

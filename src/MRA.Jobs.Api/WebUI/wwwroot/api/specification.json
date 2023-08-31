@@ -2474,6 +2474,13 @@
             "type": "string",
             "format": "date-time"
           },
+          "vacancyQuestions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/JobQuestionDto"
+            }
+          },
           "duration": {
             "type": "integer",
             "format": "int32"
@@ -2686,6 +2693,13 @@
           "requiredYearOfExperience": {
             "type": "integer",
             "format": "int32"
+          },
+          "vacancyQuestions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/JobQuestionDto"
+            }
           },
           "workSchedule": {
             "$ref": "#/components/schemas/WorkSchedule"
@@ -2943,6 +2957,13 @@
           "duration": {
             "type": "integer",
             "format": "int32"
+          },
+          "vacancyQuestions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/JobQuestionDto"
+            }
           },
           "fees": {
             "type": "integer",
