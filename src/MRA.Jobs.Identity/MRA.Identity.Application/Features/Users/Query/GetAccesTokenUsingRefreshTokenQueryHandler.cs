@@ -27,7 +27,7 @@ public class GetAccesTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAcc
         {
             if (AreTokensRelated(request))
             {
-                var claims = await ValidateToken(request.AccessToken);
+                var claims = await GetTokenClaims(request.AccessToken);
                 if (claims != null)
                 {
                     return new ApplicationResponseBuilder<JwtTokenResponse>().SetResponse(new JwtTokenResponse
@@ -38,7 +38,7 @@ public class GetAccesTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAcc
                 }
                 else return new ApplicationResponseBuilder<JwtTokenResponse>().Success(false).SetErrorMessage("Could not validate token").Build();
             }
-            else return new ApplicationResponseBuilder<JwtTokenResponse>().Success(false).SetErrorMessage("Could not validate token").Build();
+            else return new ApplicationResponseBuilder<JwtTokenResponse>().Success(false).SetErrorMessage("Tokens are not realted").Build();
         }
         catch (Exception ex)
         {
@@ -58,8 +58,7 @@ public class GetAccesTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAcc
 
         return refreshUserId == accessUserId;
     }
-
-    private async Task<List<Claim>> ValidateToken(string token)
+    private async Task<List<Claim>> GetTokenClaims(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
 

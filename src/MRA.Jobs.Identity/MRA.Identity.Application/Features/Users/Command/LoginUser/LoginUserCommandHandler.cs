@@ -29,11 +29,14 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Applica
             ApplicationUser? user =
                 await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.Username, cancellationToken);
 
-            //if (user == null)
-            //{
-            //    return new ApplicationResponseBuilder<JwtTokenResponse>().Success(false)
-            //        .SetErrorMessage("incorrect username").Build();
-            //}
+            if ((await _userManager.GetClaimsAsync(user)).Where(c => c.Type == ClaimTypes.NameIdentifier) != null)
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+
+            if (user == null)
+            {
+                return new ApplicationResponseBuilder<JwtTokenResponse>().Success(false)
+                    .SetErrorMessage("incorrect username").Build();
+            }
 
             bool success = await _userManager.CheckPasswordAsync(user, request.Password);
 
