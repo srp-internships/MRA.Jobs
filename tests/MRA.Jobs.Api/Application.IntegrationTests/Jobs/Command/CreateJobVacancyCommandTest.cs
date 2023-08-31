@@ -5,7 +5,7 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
-namespace MRA.Jobs.Application.IntegrationTests.JobVacancy.Command;
+namespace MRA.Jobs.Application.IntegrationTests.Jobs.Command;
 public class CreateJobVacancyCommandTest : Testing
 {
 

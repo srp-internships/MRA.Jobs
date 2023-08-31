@@ -1,31 +1,32 @@
 ﻿using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Dtos;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
-namespace MRA.Jobs.Application.IntegrationTests.TrainingVacancy.Command;
-public class CreateTrainingVacancyCommandTest : Testing
+namespace MRA.Jobs.Application.IntegrationTests.Internships.Command;
+public class CreateInternshipVacancyCommandTest : Testing
 {
     [Test]
-    public async Task CreateTrainingVacancyCommand_CreatingTrainingVacancyWithVacancyQuestions_Success()
+    public async Task CreateInternshipVacancyCommand_CreatingInternshipVacancyCommandWithVacancyQuestions_Success()
     {
         RunAsAdministratorAsync();
-        var trainingVacancy = new CreateTrainingVacancyCommand
+        var internshipVacancy = new CreateInternshipVacancyCommand
         {
             Title = "Cool Job",
             Description = "Hello",
             ShortDescription = "Hi",
             PublishDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(2),
-            CategoryId = await AddVacancyCategory("jobvacancy"),
+            CategoryId = await AddVacancyCategory("internshipvacancy"),
+            ApplicationDeadline = DateTime.Now.AddDays(20),
             Duration = 10,
-            Fees = 100,
+            Stipend = 100,
             VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Id = Guid.NewGuid(), Question = "What is your English proficiency level?" } },
         };
 
-        var response = await _httpClient.PostAsJsonAsync("/api/trainings", trainingVacancy);
+        var response = await _httpClient.PostAsJsonAsync("/api/internships", internshipVacancy);
 
         response.EnsureSuccessStatusCode();
 
