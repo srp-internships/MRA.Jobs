@@ -26,6 +26,7 @@ public class GetInternshipVacanciesPagedQueryHandler : IRequestHandler<PagedList
         PagedList<InternshipVacancyListResponse> result = _sieveProcessor.ApplyAdnGetPagedList(request,
             _context.Internships
                 .Include(i => i.Category)
+                .Include(i => i.VacancyQuestions)
                 .AsNoTracking(),
             _mapper.Map<InternshipVacancyListResponse>);
         return await Task.FromResult(result);
