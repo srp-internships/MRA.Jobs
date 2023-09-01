@@ -8,7 +8,7 @@ using MRA.Identity.Domain.Entities;
 namespace MRA.Identity.Infrastructure.Persistence;
 
 public sealed class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid,
-    ApplicationUserClaim, IdentityUserRole<Guid>, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>,
+    ApplicationUserClaim, ApplicationUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>,
     IdentityUserToken<Guid>>, IApplicationDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
