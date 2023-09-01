@@ -14,5 +14,6 @@ public class ApplicationRoleConfiguration : IEntityTypeConfiguration<Application
     {
         builder.Property(r => r.Slug).IsRequired();
         builder.HasIndex(r => r.Slug).IsUnique();
+       
     }
 }

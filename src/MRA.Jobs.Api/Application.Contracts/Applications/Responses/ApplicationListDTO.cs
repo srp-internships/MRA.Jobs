@@ -13,7 +13,7 @@ public class ApplicationListDto
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
     public int StatusId { get; set; }
-    public IEnumerable<JobQuestionDto> JobQuestions { get; set; }
+    public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
 }
 
 public class ApplicationDetailsDto
@@ -36,6 +36,7 @@ public class ApplicationDetailsDto
     public Guid? LastModifiedBy { get; set; }
 
     public IQueryable<TimeLineDetailsDto> Histiry { get; set; }
+    public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
 }
 
 public class ApplicationListStatus
