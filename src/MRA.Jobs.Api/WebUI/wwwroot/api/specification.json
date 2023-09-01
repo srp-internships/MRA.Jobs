@@ -625,39 +625,6 @@
         }
       }
     },
-    "/api/emailtest": {
-      "post": {
-        "tags": [
-          "EmailTest"
-        ],
-        "operationId": "EmailTest_SendEmail",
-        "requestBody": {
-          "x-name": "emailMessage",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EmailMessage"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/file": {
       "get": {
         "tags": [
@@ -1963,16 +1930,38 @@
             "type": "integer",
             "format": "int32"
           },
-          "jobQuestions": {
+          "vacancyResponses": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/JobQuestionDto"
+              "$ref": "#/components/schemas/VacancyResponseDto"
             }
           }
         }
       },
-      "JobQuestionDto": {
+      "VacancyResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "response": {
+            "type": "string",
+            "nullable": true
+          },
+          "question": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VacancyQuestionDto"
+              }
+            ]
+          }
+        }
+      },
+      "VacancyQuestionDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1981,10 +1970,6 @@
             "format": "guid"
           },
           "question": {
-            "type": "string",
-            "nullable": true
-          },
-          "response": {
             "type": "string",
             "nullable": true
           }
@@ -2038,6 +2023,13 @@
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/TimeLineDetailsDto"
+            }
+          },
+          "vacancyResponses": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VacancyResponseDto"
             }
           }
         }
@@ -2107,11 +2099,11 @@
             "type": "string",
             "format": "guid"
           },
-          "jobQuestions": {
+          "vacancyResponses": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/JobQuestionDto"
+              "$ref": "#/components/schemas/VacancyResponseDto"
             }
           }
         }
@@ -2409,31 +2401,6 @@
           }
         }
       },
-      "EmailMessage": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "to": {
-            "type": "string",
-            "nullable": true
-          },
-          "from": {
-            "type": "string",
-            "nullable": true
-          },
-          "subject": {
-            "type": "string",
-            "nullable": true
-          },
-          "body": {
-            "type": "string",
-            "nullable": true
-          },
-          "isHtml": {
-            "type": "boolean"
-          }
-        }
-      },
       "CreateInternshipVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -2465,6 +2432,13 @@
           "applicationDeadline": {
             "type": "string",
             "format": "date-time"
+          },
+          "vacancyQuestions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VacancyQuestionDto"
+            }
           },
           "duration": {
             "type": "integer",
@@ -2678,6 +2652,13 @@
           "requiredYearOfExperience": {
             "type": "integer",
             "format": "int32"
+          },
+          "vacancyQuestions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VacancyQuestionDto"
+            }
           },
           "workSchedule": {
             "$ref": "#/components/schemas/WorkSchedule"
@@ -2898,6 +2879,13 @@
             "type": "integer",
             "format": "int32"
           },
+          "vacancyQuestions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VacancyQuestionDto"
+            }
+          },
           "slug": {
             "type": "string",
             "nullable": true
@@ -2935,6 +2923,13 @@
           "duration": {
             "type": "integer",
             "format": "int32"
+          },
+          "vacancyQuestions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VacancyQuestionDto"
+            }
           },
           "fees": {
             "type": "integer",

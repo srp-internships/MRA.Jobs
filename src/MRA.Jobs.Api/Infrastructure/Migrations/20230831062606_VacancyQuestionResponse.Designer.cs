@@ -4,6 +4,7 @@ using MRA.Jobs.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MRA.Jobs.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230831062606_VacancyQuestionResponse")]
+    partial class VacancyQuestionResponse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -401,9 +404,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("Slug")
-                        .IsUnique()
-                        .HasFilter("[Slug] IS NOT NULL");
+                    b.HasIndex("Slug");
 
                     b.ToTable("Vacancies");
 
@@ -453,7 +454,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
 
                     b.HasIndex("VacancyId");
 
-                    b.ToTable("VacancyQuestions");
+                    b.ToTable("VacancyQuestion");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyResponse", b =>
@@ -462,7 +463,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ApplicationId")
+                    b.Property<Guid>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("QuestionId")
@@ -660,7 +661,9 @@ namespace MRA.Jobs.Infrastructure.Migrations
                 {
                     b.HasOne("MRA.Jobs.Domain.Entities.Application", null)
                         .WithMany("VacancyResponses")
-                        .HasForeignKey("ApplicationId");
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MRA.Jobs.Domain.Entities.VacancyQuestion", "Question")
                         .WithMany()

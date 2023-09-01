@@ -14,7 +14,8 @@ public class JobVacancyProfile : Profile
         CreateMap<JobVacancy, JobVacancyDetailsDto>()
             .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag)));
-        CreateMap<CreateJobVacancyCommand, JobVacancy>();
+        CreateMap<CreateJobVacancyCommand, JobVacancy>()
+            .ForMember(dest => dest.VacancyQuestions, opt => opt.MapFrom(src => src.VacancyQuestions)); 
         CreateMap<UpdateJobVacancyCommand, JobVacancy>();
         CreateMap<DeleteJobVacancyCommand, JobVacancy>();
         MappingConfiguration.ConfigureVacancyMap<VacancyTimelineEvent, TimeLineDetailsDto>(this);
