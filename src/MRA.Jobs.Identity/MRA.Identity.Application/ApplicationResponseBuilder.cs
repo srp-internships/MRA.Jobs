@@ -1,4 +1,5 @@
 ﻿using MRA.Identity.Application.Contract;
+using MRA.Identity.Application.Contract.UserRoles.Response;
 
 namespace MRA.Identity.Application;
 
@@ -36,6 +37,11 @@ internal class ApplicationResponseBuilder<TResponse> : ApplicationResponse<TResp
     internal ApplicationResponse<TResponse> Build()
     {
         return this;
+    }
+
+    internal ApplicationResponse<List<UserRolesResponse>> SetResponse(List<Task<UserRolesResponse>> list)
+    {
+        throw new NotImplementedException();
     }
 }
 

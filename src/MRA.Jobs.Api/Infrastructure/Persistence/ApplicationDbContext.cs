@@ -39,7 +39,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<EducationDetail> EducationDetails { get; set; }
     public DbSet<ExperienceDetail> ExperienceDetails { get; set; }
     public DbSet<Skill> Skills { get; set; }
-    public DbSet<JobQuestion> JobQuestions { get; set; }
+    public DbSet<VacancyQuestion> VacancyQuestions { get; set; }
+    public DbSet<VacancyResponse> VacancyResponses { get; set; }
 
     #region override
 
@@ -72,22 +73,3 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
     #endregion
 }
-
-//public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
-//{
-//    public ApplicationDbContext CreateDbContext(string[] args)
-//    {
-//        string basePath = Directory.GetCurrentDirectory();
-//        IConfigurationRoot configuration = new ConfigurationBuilder()
-//            .SetBasePath(basePath)
-//            .AddJsonFile("appsettings.json", true, true)
-//            .AddJsonFile("appsettings.Development.json", true, true)
-//            .Build();
-
-//        DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder =
-//            new DbContextOptionsBuilder<ApplicationDbContext>();
-//        optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-
-//        return new ApplicationDbContext(optionsBuilder.Options);
-//    }
-//}
