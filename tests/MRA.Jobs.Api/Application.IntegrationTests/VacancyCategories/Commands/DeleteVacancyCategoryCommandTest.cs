@@ -1,7 +1,4 @@
-﻿using System.Net;
-using System.Net.Http.Json;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
-using MRA.Jobs.Domain.Entities;
+﻿using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.VacancyCategories.Commands;
