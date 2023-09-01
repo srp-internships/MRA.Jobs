@@ -1,12 +1,9 @@
-using System;
 using MRA.Identity.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
-
+//Working
 namespace MRA.Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
