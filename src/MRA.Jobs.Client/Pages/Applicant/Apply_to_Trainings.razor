@@ -1,10 +1,13 @@
 ﻿@page "/trainings/ApplytoTrainings/{Slug}"
 @using Blazored.LocalStorage;
 @using MRA.Jobs.Application.Contracts.Applications.Commands;
+@using MRA.Jobs.Application.Contracts.Dtos;
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @using MRA.Jobs.Client.Services.ApplicationService;
 @inject HttpClient httpClient
 @inject ILocalStorageService LocalStorage;
 @inject IApplicationService ApplicationService;
+@inject ITrainingService _trainingService
 
 <div class="container">
 
@@ -17,12 +20,19 @@
 		<ValidationSummary />
 
 		<div class="form-group">
-			<label for="CoverLetter">Tell us about yourself (minimum 20 words):</label>
+			<label for="CoverLetter">Tell us about yourself (minimum 10 words):</label>
 			<InputTextArea id="CoverLetter" @bind-Value="createApplication.CoverLetter" class="form-control" rows="10"></InputTextArea>
-			@if (createApplication.CoverLetter != null && createApplication.CoverLetter.Split(' ').Length < 20)
+			@if (createApplication.CoverLetter != null && createApplication.CoverLetter.Split(' ').Length < 10)
 			{
-				<p class="text-danger">Please write at least 20 words.</p>
+				<p class="text-danger">Please write at least 10 words.</p>
 			}
+		</div>
+		<div class="form-group">
+			@foreach (var que in _training.VacancyQuestions)
+			{
+				<h2 class="mb-2 text-black">@que.Question</h2>
+			}
+		
 		</div>
 
 		<button type="submit" class="btn btn-primary">Send</button>
@@ -30,13 +40,17 @@
 
 </div>
 @code {
-    [Parameter]
-    public string Slug { get; set; }
-
-    private CreateApplicationCommand createApplication = new CreateApplicationCommand();
-    private async Task Apply()
-    {
-        createApplication.VacancyId = await LocalStorage.GetItemAsync<Guid>("trainingid");
-        await ApplicationService.CreateApplication(createApplication);
-    }
+	[Parameter]
+	public string Slug { get; set; }
+	private TrainingVacancyDetailedResponse _training;
+	protected override async Task OnInitializedAsync()
+	{
+		_training = await _trainingService.GetBySlug(Slug);
+	}
+	private CreateApplicationCommand createApplication = new CreateApplicationCommand();
+	private async Task Apply()
+	{
+		createApplication.VacancyId = _training.Id;
+		await ApplicationService.CreateApplication(createApplication);
+	}
 }
