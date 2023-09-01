@@ -4,6 +4,7 @@ using MRA.Jobs.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MRA.Jobs.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230830121043_AddedJobQuestionProperty")]
+    partial class AddedJobQuestionProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,6 +162,33 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ExperienceDetails");
+                });
+
+            modelBuilder.Entity("MRA.Jobs.Domain.Entities.JobQuestion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApplicationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Question")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("VacancyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.HasIndex("VacancyId");
+
+                    b.ToTable("JobQuestions");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.Skill", b =>
@@ -435,49 +465,6 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyQuestion", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Question")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("VacancyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VacancyId");
-
-                    b.ToTable("VacancyQuestions");
-                });
-
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyResponse", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("QuestionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Response")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("VacancyResponses");
-                });
-
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyTag", b =>
                 {
                     b.Property<Guid>("Id")
@@ -595,6 +582,17 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.Navigation("Vacancy");
                 });
 
+            modelBuilder.Entity("MRA.Jobs.Domain.Entities.JobQuestion", b =>
+                {
+                    b.HasOne("MRA.Jobs.Domain.Entities.Application", null)
+                        .WithMany("JobQuestions")
+                        .HasForeignKey("ApplicationId");
+
+                    b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", null)
+                        .WithMany("VacancyQuestions")
+                        .HasForeignKey("VacancyId");
+                });
+
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.Test", b =>
                 {
                     b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", "Vacancy")
@@ -647,26 +645,6 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyQuestion", b =>
-                {
-                    b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", null)
-                        .WithMany("VacancyQuestions")
-                        .HasForeignKey("VacancyId");
-                });
-
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyResponse", b =>
-                {
-                    b.HasOne("MRA.Jobs.Domain.Entities.Application", null)
-                        .WithMany("VacancyResponses")
-                        .HasForeignKey("ApplicationId");
-
-                    b.HasOne("MRA.Jobs.Domain.Entities.VacancyQuestion", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId");
-
-                    b.Navigation("Question");
-                });
-
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyTag", b =>
                 {
                     b.HasOne("MRA.Jobs.Domain.Entities.Tag", "Tag")
@@ -712,9 +690,9 @@ namespace MRA.Jobs.Infrastructure.Migrations
                 {
                     b.Navigation("History");
 
-                    b.Navigation("TestResult");
+                    b.Navigation("JobQuestions");
 
-                    b.Navigation("VacancyResponses");
+                    b.Navigation("TestResult");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.Tag", b =>

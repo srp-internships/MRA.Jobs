@@ -19,6 +19,7 @@ public class GetJobVacancyBySlugQueryHandler : IRequestHandler<GetJobVacancyBySl
     {
         //var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         JobVacancy jobVacancy = await _dbContext.JobVacancies.Include(i => i.History)
+            .Include(i => i.VacancyQuestions)
             .Include(i => i.Tags)
             .ThenInclude(t => t.Tag)
             .FirstOrDefaultAsync(i => i.Slug == request.Slug);
