@@ -6,5 +6,6 @@ public class VacancyQuestionProfile : Profile
     public VacancyQuestionProfile()
     {
         CreateMap<VacancyQuestionDto, VacancyQuestion>();
+        CreateMap<VacancyQuestion, VacancyQuestionDto>();
     }
 }

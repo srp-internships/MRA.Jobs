@@ -2,11 +2,12 @@
 using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Applications.Commands;
+using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Application;
-public class CreateApplicationCommandTest:Testing
+public class CreateApplicationCommandTest : Testing
 {
     private static Random random = new Random();
     [Test]
@@ -19,7 +20,6 @@ public class CreateApplicationCommandTest:Testing
             VacancyId = vacancyId,
             CoverLetter = RandomString(150)
         };
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         var response = await _httpClient.PostAsJsonAsync("/api/applications", testSubmit);
 
         response.EnsureSuccessStatusCode();
@@ -28,7 +28,31 @@ public class CreateApplicationCommandTest:Testing
 
         responseGuid.Should().NotBeEmpty();
     }
-    
+
+    [Test]
+    public async Task CreateApplicationCommand_CreateApplicationWithVacancyQuestions_Success()
+    {
+        RunAsDefaultUserAsync();
+        var vacancyId = await AddJobVacancy();
+        var testSubmit = new CreateApplicationCommand
+        {
+            VacancyId = vacancyId,
+            CoverLetter = RandomString(200),
+            VacancyResponses = new List<VacancyResponseDto>
+            {
+                new VacancyResponseDto {Id = Guid.NewGuid(), Question = new VacancyQuestionDto{ Id = Guid.NewGuid(), Question = "How old are you?"}, Response = "56"},
+                new VacancyResponseDto {Id = Guid.NewGuid(), Question = new VacancyQuestionDto{ Id = Guid.NewGuid(), Question = "What is your English proficiency level?"}, Response = "Beginner"}
+            }
+        };
+        var response = await _httpClient.PostAsJsonAsync("/api/applications", testSubmit);
+
+        response.EnsureSuccessStatusCode();
+
+        var responseGuid = await response.Content.ReadAsStringAsync();
+
+        responseGuid.Should().NotBeEmpty();
+    }
+
 
     async Task<Guid> AddVacancyCategory(string name)
     {

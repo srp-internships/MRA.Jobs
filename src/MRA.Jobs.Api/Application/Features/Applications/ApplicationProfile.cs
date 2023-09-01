@@ -20,16 +20,20 @@ public class ApplicationProfile : Profile
     }
     public ApplicationProfile()
     {
-        CreateMap<Domain.Entities.Application, ApplicationListDto>();
+        CreateMap<Domain.Entities.Application, ApplicationListDto>()
+            .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses));
         CreateMap<Domain.Entities.Application, ApplicationDetailsDto>()
+            .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses))
             .ForMember(dest => dest.Histiry, opt => opt.MapFrom(src => src.History));
-        CreateMap<CreateApplicationCommand, Domain.Entities.Application>();
+        CreateMap<CreateApplicationCommand, Domain.Entities.Application>()
+            .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses));
+
         CreateMap<CreateApplicationWithoutApplicantIdCommand, Domain.Entities.Application>();
         CreateMap<UpdateApplicationCommand, Domain.Entities.Application>();
         MappingConfiguration.ConfigureUserMap<ApplicationTimelineEvent, TimeLineDetailsDto>(this);
         CreateMap<Domain.Entities.Application, ApplicationListStatus>()
             .ForMember(dest => dest.VacancyTitle, opt => opt.MapFrom(src => src.Vacancy.Title));
         CreateMap<ApplicationStatus, ApplicationStatusDto.ApplicationStatus>();
-        CreateMap<Domain.Entities.VacancyQuestion, VacancyQuestionDto>();
+        //CreateMap<Domain.Entities.VacancyQuestion, VacancyQuestionDto>();
     }
 }

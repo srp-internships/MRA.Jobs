@@ -1938,12 +1938,34 @@
             "type": "integer",
             "format": "int32"
           },
-          "jobQuestions": {
+          "vacancyResponses": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/VacancyQuestionDto"
+              "$ref": "#/components/schemas/VacancyResponseDto"
             }
+          }
+        }
+      },
+      "VacancyResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "response": {
+            "type": "string",
+            "nullable": true
+          },
+          "question": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VacancyQuestionDto"
+              }
+            ]
           }
         }
       },
@@ -2009,6 +2031,13 @@
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/TimeLineDetailsDto"
+            }
+          },
+          "vacancyResponses": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VacancyResponseDto"
             }
           }
         }
@@ -2084,32 +2113,6 @@
             "items": {
               "$ref": "#/components/schemas/VacancyResponseDto"
             }
-          }
-        }
-      },
-      "VacancyResponseDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
-          "response": {
-            "type": "string",
-            "nullable": true
-          },
-          "applicationId": {
-            "type": "string",
-            "format": "guid"
-          },
-          "question": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/VacancyQuestionDto"
-              }
-            ]
           }
         }
       },
