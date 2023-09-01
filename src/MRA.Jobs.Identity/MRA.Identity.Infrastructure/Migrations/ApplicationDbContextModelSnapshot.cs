@@ -279,3 +279,4 @@ namespace MRA.Identity.Infrastructure.Migrations
         }
     }
 }
+}
