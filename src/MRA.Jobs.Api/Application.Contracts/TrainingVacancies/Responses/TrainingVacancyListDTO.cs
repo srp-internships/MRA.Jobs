@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
+using MRA.Jobs.Application.Contracts.Dtos;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
@@ -20,5 +21,6 @@ public record TrainingVacancyListDto
 
     public int Duration { get; set; }
     public int Fees { get; set; }
+    public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
     public string Slug { get; set; }
 }

@@ -15,7 +15,7 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
     private readonly IHtmlService _htmlService;
 
     public CreateInternshipVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
-        ICurrentUserService currentUserService, ISlugGeneratorService slugService, IEmailService emailService,
+        ICurrentUserService currentUserService, ISlugGeneratorService slugService,IEmailService emailService,
         IHtmlService htmlService)
     {
         _context = context;

@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
+using MRA.Jobs.Application.Contracts.Dtos;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
@@ -17,5 +18,6 @@ public class CreateTrainingVacancyCommand : IRequest<string>
 
     public Guid CategoryId { get; set; }
     public int Duration { get; set; }
+    public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
     public int Fees { get; set; }
 }
