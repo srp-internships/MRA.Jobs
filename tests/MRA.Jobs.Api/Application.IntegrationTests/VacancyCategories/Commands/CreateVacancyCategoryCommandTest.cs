@@ -13,7 +13,6 @@ public class CreateVacancyCategoryCommandTest : Testing
 
         var response = await _httpClient.PostAsJsonAsync("/api/categories", category);
 
-        Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            
+        Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);            
     }
 }

@@ -1722,18 +1722,6 @@
             "x-position": 1
           }
         ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteTrainingVacancyCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
         "responses": {
           "200": {
             "description": "",
@@ -2976,16 +2964,6 @@
           "fees": {
             "type": "integer",
             "format": "int32"
-          }
-        }
-      },
-      "DeleteTrainingVacancyCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "slug": {
-            "type": "string",
-            "nullable": true
           }
         }
       }

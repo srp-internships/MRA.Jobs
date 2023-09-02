@@ -26,7 +26,7 @@ public class TrainingsController : ApiControllerBase
     [HttpPost]
     public async Task<ActionResult<string>> Post(CreateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        var result= await Mediator.Send(request, cancellationToken);
+        var result = await Mediator.Send(request, cancellationToken);
         return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
 
@@ -36,22 +36,19 @@ public class TrainingsController : ApiControllerBase
         if (slug != request.Slug)
             return NotFound();
 
-        var result= await Mediator.Send(request, cancellationToken);
+        var result = await Mediator.Send(request, cancellationToken);
         return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
 
     [HttpDelete("{slug}")]
-    public async Task<ActionResult<bool>> Delete([FromRoute] string slug, [FromBody] DeleteTrainingVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<bool>> Delete([FromRoute] string slug, CancellationToken cancellationToken)
     {
-        if (slug != request.Slug)
-            return NotFound();
-
-        return await Mediator.Send(request, cancellationToken);
+        return await Mediator.Send(new DeleteTrainingVacancyCommand { Slug = slug }, cancellationToken);
     }
 
 
 
 
 
-    
+
 }
