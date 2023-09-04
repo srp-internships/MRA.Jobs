@@ -71,7 +71,7 @@
                     VacancyId = internship.Id,
                     VacancyResponses = internship.VacancyQuestions.Select(q => new VacancyResponseDto
                     {
-                        Question = new VacancyQuestionDto { Question = q.Question }
+                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
                     })
                 };
             message = string.Empty;
@@ -101,8 +101,8 @@
         {
             var updatedResponse = new VacancyResponseDto
                 {
-                    Question = vr.Question,
-                    Response = questionResponses[vr.Question.Question]
+                    VacancyQuestion = vr.VacancyQuestion,
+                    Response = questionResponses[vr.VacancyQuestion.Question]
                 };
 
             updatedResponses.Add(updatedResponse);

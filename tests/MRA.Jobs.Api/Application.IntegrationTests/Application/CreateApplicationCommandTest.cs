@@ -40,8 +40,8 @@ public class CreateApplicationCommandTest : Testing
             CoverLetter = RandomString(200),
             VacancyResponses = new List<VacancyResponseDto>
             {
-                new VacancyResponseDto { Question = new VacancyQuestionDto{ Question = "How old are you?"}, Response = "56"},
-                new VacancyResponseDto {Question = new VacancyQuestionDto{ Question = "What is your English proficiency level?"}, Response = "Beginner"}
+                new VacancyResponseDto { VacancyQuestion = new VacancyQuestionDto{ Question = "How old are you?"}, Response = "56"},
+                new VacancyResponseDto {VacancyQuestion = new VacancyQuestionDto{ Question = "What is your English proficiency level?"}, Response = "Beginner"}
             }
         };
         var response = await _httpClient.PostAsJsonAsync("/api/applications", testSubmit);
