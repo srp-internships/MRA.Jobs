@@ -1,0 +1,57 @@
+﻿@page "/internships/{Slug}"
+@layout MainLayout
+@inject NavigationManager NavigationManager
+@inject IInternshipService InternshipService
+
+<div class="container">
+    @if (internship is null)
+    {
+        <h3>@message</h3>
+    }
+    else
+    {
+        <p class="fs-2">@internship.Title</p>
+        <div class="row">
+            <div class="col">
+                <ul>
+                    <li>Duration: @internship.Duration months</li>
+                    <li>Stipend: @internship.Stipend somoni</li>
+                    <li>Deadline: @internship.ApplicationDeadline.ToShortDateString()</li>
+                </ul>
+                @((MarkupString)@internship.Description)
+            </div>
+            <div class="col-4">
+                <p>Wanna work at SRP, then click the button below)</p>
+                <button type="button" class="btn btn-primary w-100" @onclick="NavigateToApplicationPage">Apply</button>
+                <br/>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private string message = "Loading";
+    private InternshipVacancyResponse internship;
+
+    [Parameter]
+    public string Slug { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("initialized");
+        var response = await InternshipService.GetBySlug(Slug);
+        if (response != null)
+        {
+            internship = response;
+            message = string.Empty;
+        }
+        else
+        {
+            message = "Internship not found or not yet published.";
+        }
+    }
+    private void NavigateToApplicationPage()
+    {
+        NavigationManager.NavigateTo($"/internships/apply/{Slug}");
+    }
+}
