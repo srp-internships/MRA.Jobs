@@ -15,7 +15,8 @@ public class TrainingVacancyProfile : Profile
         CreateMap<TrainingVacancy, TrainingVacancyDetailedResponse>()
             .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag)));
-        CreateMap<CreateTrainingVacancyCommand, TrainingVacancy>();
+        CreateMap<CreateTrainingVacancyCommand, TrainingVacancy>()
+            .ForMember(dest => dest.VacancyQuestions, opt => opt.MapFrom(src => src.VacancyQuestions));
         CreateMap<UpdateTrainingVacancyCommand, TrainingVacancy>();
         CreateMap<CategoryResponse, VacancyCategory>();
         CreateMap<TrainingVacancyListDto, TrainingVacancy>();
