@@ -12,7 +12,7 @@
     {
         <p class="fs-2">@internship.Title</p>
         <div class="row">
-            <div class="col">
+            <div class="col-md-8">
                 <ul>
                     <li>Duration: @internship.Duration months</li>
                     <li>Stipend: @internship.Stipend somoni</li>
@@ -20,7 +20,7 @@
                 </ul>
                 @((MarkupString)@internship.Description)
             </div>
-            <div class="col-4">
+            <div class="col-md-4 bg-light rounded p-3">
                 <p>Wanna work at SRP, then click the button below)</p>
                 <button type="button" class="btn btn-primary w-100" @onclick="NavigateToApplicationPage">Apply</button>
                 <br/>
@@ -30,7 +30,7 @@
 </div>
 
 @code {
-    private string message = "Loading";
+    private string message = "Loading...";
     private InternshipVacancyResponse internship;
 
     [Parameter]
