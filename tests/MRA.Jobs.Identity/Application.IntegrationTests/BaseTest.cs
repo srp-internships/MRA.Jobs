@@ -55,7 +55,13 @@ public abstract class BaseTest
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         return dbContext.Set<T>().ToListAsync();
     }
-    
+
+    protected Task<int> CountAsync<TEntity>() where TEntity : class
+    {
+        using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        return dbContext.Set<TEntity>().CountAsync();
+    }
     protected async Task AddUser(ApplicationUser user,string password)
     {
         using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
