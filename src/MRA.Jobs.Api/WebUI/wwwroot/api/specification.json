@@ -1951,10 +1951,6 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
           "response": {
             "type": "string",
             "nullable": true
@@ -1973,10 +1969,6 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
           "question": {
             "type": "string",
             "nullable": true
