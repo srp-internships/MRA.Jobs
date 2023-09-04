@@ -19,7 +19,7 @@ public class DeleteClaimCommandHandler : IRequestHandler<DeleteClaimCommand, App
     {
         try
         {
-            var claim = await _context.UserClaims.SingleOrDefaultAsync(s => s.Slug == request.Slug.Trim().ToLower(), cancellationToken: cancellationToken);
+            var claim = await _context.UserClaims.SingleOrDefaultAsync(s => String.Equals(s.Slug.Trim(), request.Slug.Trim(), StringComparison.CurrentCultureIgnoreCase), cancellationToken: cancellationToken);
             if (claim==null)
             {
                 return new ApplicationResponseBuilder().Success(false)
