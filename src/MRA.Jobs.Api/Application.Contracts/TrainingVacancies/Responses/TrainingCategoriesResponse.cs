@@ -1,7 +1,7 @@
 ﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-public record TrainingCategoriesResponce
+public record TrainingCategoriesResponse
 {
     public Guid CategoryId { get; set; }
     public CategoryResponse Category { get; set; }

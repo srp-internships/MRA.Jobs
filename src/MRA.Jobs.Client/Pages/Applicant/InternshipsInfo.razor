@@ -1,0 +1,62 @@
+﻿@page "/InternshipsInfo"
+@using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+
+@inject IInternshipService _internshipService
+
+<div class="container">
+    @if (_internship == null)
+    {
+        <span>Loading...</span>
+    }
+    else
+    {
+        <h1>@_internship.Title</h1>
+        <div class="w-100 d-flex flex-row justify-content-between">
+            <div class="Trainings w-100 bg-white shadow-lg rounded mb-4">
+                <div class="d-flex flex-column p-3">
+
+                    <h3 class="mb-2 text-black">
+                        Description:
+                    </h3>
+                    <p class="mb-2 text-black">_internship.Description</p>
+                    <h3 class="mb-2 text-black">
+                        EndDate:
+                    </h3>
+                    <p class="mb-2 text-black">@_internship.EndDate</p>
+                    <h3 class="mb-2 text-black">
+                        Duration:
+                    </h3>
+                    <p class="mb-2 text-black">@_internship.Duration</p>
+                    <h3 class="mb-2 text-black">
+                        Fees:
+                    </h3>
+                    @*<p class="mb-2 text-black">@_internship.Fees</p>*@
+                </div>
+            </div>
+            @*button*@
+            <div class="Internship">
+
+                <div class="w-100 d-flex flex-row justify-content-between">
+                    <div class="card w-100 bg-white shadow-lg rounded mb-4">
+                        <div class="card-body">
+                            <h2 class="mb-2 text-black">Interested in a internship?</h2>
+                            <a href="ApplytoTrainings/{@_internship.Slug}/{@_internship.Id}" class="btn btn-primary">Apply</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@code {
+    private string slug = "-2023-8";
+    private InternshipVacancyResponse _internship { get; set; } = new InternshipVacancyResponse();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _internship = await _internshipService.GetBySlug(slug);
+    }
+}

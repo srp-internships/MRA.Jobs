@@ -1,6 +1,8 @@
-﻿using MRA.Jobs.Application.Contracts.Common;
+﻿using System.Net.Http;
+using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
 namespace MRA.Jobs.Client.Services.InternshipsServices;
 
@@ -47,9 +49,27 @@ public class InternshipService : IInternshipService
         return result.Items;
     }
 
+    public async Task<PagedList<InternshipVacancyListResponse>> GetAllSinceCheckDate()
+    {
+        var result = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>("internships?CheckDate=true");
+        return result;
+    }
+
+    public async Task<PagedList<InternshipVacancyListResponse>> GetByCategorySinceCheckDate(string slug)
+    {
+        var result = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>($"internships?CategorySlug={slug}&CheckDate=true");
+        return result;
+    }
+
     public async Task<InternshipVacancyResponse> GetBySlug(string slug)
     {
         return await _http.GetFromJsonAsync<InternshipVacancyResponse>($"internships/{slug}");
+    }
+
+    public async Task<PagedList<InternshipVacancyListResponse>> SearchInternshipsSinceSearchDate(string searchInput)
+    {
+        var result = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>($"internships?SearchText={searchInput}&CheckDate=true");
+        return result;
     }
 
     public async Task<HttpResponseMessage> Update(string slug)

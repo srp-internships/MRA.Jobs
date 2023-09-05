@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
@@ -55,15 +56,27 @@ public class CategoryService : ICategoryService
         Category = result.Items;
     }
 
-    public async Task<List<TrainingCategoriesResponce>> GetTrainingCategories()
+    public async Task<List<TrainingCategoriesResponse>> GetTrainingCategories()
     {
-        var responce = await _http.GetFromJsonAsync<List<TrainingCategoriesResponce>>("categories/training");
+        var responce = await _http.GetFromJsonAsync<List<TrainingCategoriesResponse>>("categories/training");
         return responce;
     }
 
-    public async Task<List<TrainingCategoriesResponce>> GetTrainingCategoriesSinceCheckDate()
+    public async Task<List<TrainingCategoriesResponse>> GetTrainingCategoriesSinceCheckDate()
     {
-        var responce = await _http.GetFromJsonAsync<List<TrainingCategoriesResponce>>("categories/training?CheckDate=true");
+        var responce = await _http.GetFromJsonAsync<List<TrainingCategoriesResponse>>("categories/training?CheckDate=true");
+        return responce;
+    }
+
+    public async Task<List<InternshipCategoriesResponse>> GetInternshipCategories()
+    {
+        var responce = await _http.GetFromJsonAsync<List<InternshipCategoriesResponse>>("categories/internship");
+        return responce;
+    }
+
+    public async Task<List<InternshipCategoriesResponse>> GetInternshipCategoriesSinceCheckDate()
+    {
+        var responce = await _http.GetFromJsonAsync<List<InternshipCategoriesResponse>>("categories/internship?CheckDate=true");
         return responce;
     }
 }

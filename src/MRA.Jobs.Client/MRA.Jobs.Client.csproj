@@ -5,6 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
     <ItemGroup>
         <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
         <PackageReference Include="Blazorise" Version="1.3.0" />
@@ -18,6 +20,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Pages\Applicant\Internships\" />
+      <None Remove="Pages\Applicant\Internships\Components\" />
+    </ItemGroup>
+    <ItemGroup>
         <None Include="wwwroot\images\SRP_icon.png" />
     </ItemGroup>
 
@@ -25,4 +31,8 @@
       <ProjectReference Include="..\MRA.Jobs.Api\Application.Contracts\MRA.Jobs.Application.Contracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Pages\Applicant\Internships\" />
+      <Folder Include="Pages\Applicant\Internships\Components\" />
+    </ItemGroup>
 </Project>
