@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA.Jobs.Domain.Entities;
-public class JobQuestion
+public class VacancyResponse
 {
     public Guid Id { get; set; }
-    public string Question { get; set; }
     public string Response { get; set; }
+    public VacancyQuestion VacancyQuestion { get; set; }
 }

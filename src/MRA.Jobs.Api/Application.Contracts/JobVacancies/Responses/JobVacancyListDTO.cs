@@ -2,6 +2,8 @@
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 using MRA.Jobs.Application.Contracts.Converter.Converter;
 using Newtonsoft.Json;
+using MRA.Jobs.Application.Contracts.Dtos;
+using MRA.Jobs.Application.Contracts.Dtos.Responses;
 
 namespace MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 
@@ -22,5 +24,6 @@ public class JobVacancyListDto
     public Dtos.Enums.ApplicationStatusDto.WorkSchedule WorkSchedule { get; set; }
     public ICollection<TimeLineDetailsDto> History { get; set; }
     public ICollection<TagDto> Tags { get; set; }
+    public IEnumerable<VacancyQuestionResponseDto> VacancyQuestions { get; set; }
     public string Slug { get; set; }
 }
