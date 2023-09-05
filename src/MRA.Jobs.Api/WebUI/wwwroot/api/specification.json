@@ -1931,15 +1931,11 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
           "response": {
             "type": "string",
             "nullable": true
           },
-          "question": {
+          "vacancyQuestion": {
             "nullable": true,
             "oneOf": [
               {
@@ -1953,10 +1949,6 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
           "question": {
             "type": "string",
             "nullable": true
@@ -2871,10 +2863,24 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/VacancyQuestionDto"
+              "$ref": "#/components/schemas/VacancyQuestionResponseDto"
             }
           },
           "slug": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "VacancyQuestionResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "question": {
             "type": "string",
             "nullable": true
           }
