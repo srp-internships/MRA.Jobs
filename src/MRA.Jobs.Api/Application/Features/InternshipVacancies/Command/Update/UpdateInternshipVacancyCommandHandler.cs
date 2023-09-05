@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Update;
 
-public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInternshipVacancyCommand, Guid>
+public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInternshipVacancyCommand, string>
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
@@ -22,7 +22,7 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
         _slugService = slugService;
     }
 
-    public async Task<Guid> Handle(UpdateInternshipVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(UpdateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         //var internship = await _context.Internships.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         //_ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Id);
@@ -36,7 +36,6 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
         _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Slug);
 
         _mapper.Map(request, internship);
-        internship.Slug = _slugService.GenerateSlug($"{internship.Title}-{internship.PublishDate.Year}-{internship.PublishDate.Month}");
 
         VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
         {
@@ -48,6 +47,6 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return internship.Id;
+        return internship.Slug;
     }
 }
