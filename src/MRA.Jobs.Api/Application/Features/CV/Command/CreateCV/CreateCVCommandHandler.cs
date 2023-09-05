@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using MRA.Jobs.Application.Contracts.CV.Commands;
+﻿using MRA.Jobs.Application.Contracts.CV.Commands;
 
 namespace MRA.Jobs.Application.Features.CV.Command.CreateCV;
 public class CreateCVCommandHandler : IRequestHandler<CreateCVCommand, Guid>
