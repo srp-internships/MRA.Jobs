@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.Services;
@@ -28,6 +29,9 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Applica
             ApplicationUser? user =
                 await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.Username, cancellationToken);
 
+            if ((await _userManager.GetClaimsAsync(user)).Where(c => c.Type == ClaimTypes.NameIdentifier) != null)
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+
             if (user == null)
             {
                 return new ApplicationResponseBuilder<JwtTokenResponse>().Success(false)
@@ -40,6 +44,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Applica
             {
                 return new ApplicationResponseBuilder<JwtTokenResponse>().SetResponse(new JwtTokenResponse
                 {
+                    RefreshToken = _jwtTokenService.CreateRefreshToken(await _userManager.GetClaimsAsync(user)),
                     AccessToken = _jwtTokenService.CreateTokenByClaims(await _userManager.GetClaimsAsync(user))
                 });
             }
