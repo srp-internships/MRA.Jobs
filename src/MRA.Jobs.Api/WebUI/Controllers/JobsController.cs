@@ -38,9 +38,10 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateNewJobVacancy([FromBody] CreateJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<string>> CreateNewJobVacancy([FromBody] CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        return await Mediator.Send(request, cancellationToken);
+        var result = await Mediator.Send(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
 
     [HttpPost("{slug}/test")]
@@ -62,12 +63,13 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpPut("{slug}")]
-    public async Task<ActionResult<Guid>> Update([FromRoute] string slug, [FromBody] UpdateJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<string>> Update([FromRoute] string slug, [FromBody] UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
             return BadRequest();
 
-        return await Mediator.Send(request, cancellationToken);
+        var result= await Mediator.Send(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
 
     [HttpDelete("{slug}")]

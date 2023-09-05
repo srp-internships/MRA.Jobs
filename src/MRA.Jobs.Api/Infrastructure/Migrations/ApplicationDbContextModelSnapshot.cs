@@ -402,7 +402,9 @@ namespace MRA.Jobs.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("Slug");
+                    b.HasIndex("Slug")
+                        .IsUnique()
+                        .HasFilter("[Slug] IS NOT NULL");
 
                     b.ToTable("Vacancies");
 
@@ -464,17 +466,17 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.Property<Guid?>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("QuestionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Response")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("VacancyQuestionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationId");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("VacancyQuestionId");
 
                     b.ToTable("VacancyResponses");
                 });
@@ -661,11 +663,11 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .WithMany("VacancyResponses")
                         .HasForeignKey("ApplicationId");
 
-                    b.HasOne("MRA.Jobs.Domain.Entities.VacancyQuestion", "Question")
+                    b.HasOne("MRA.Jobs.Domain.Entities.VacancyQuestion", "VacancyQuestion")
                         .WithMany()
-                        .HasForeignKey("QuestionId");
+                        .HasForeignKey("VacancyQuestionId");
 
-                    b.Navigation("Question");
+                    b.Navigation("VacancyQuestion");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyTag", b =>
@@ -750,3 +752,4 @@ namespace MRA.Jobs.Infrastructure.Migrations
 #pragma warning restore 612, 618
         }
     }
+}

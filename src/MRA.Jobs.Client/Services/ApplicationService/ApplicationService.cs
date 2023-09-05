@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Responses;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
+using MRA.Jobs.Application.Contracts.Applications.Responses;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 
@@ -19,5 +20,11 @@ public class ApplicationService : IApplicationService
         response.EnsureSuccessStatusCode();
         List<ApplicationListStatus> result = await response.Content.ReadFromJsonAsync<List<ApplicationListStatus>>();
         return result;
+    }
+
+    public async Task CreateApplication(CreateApplicationCommand application)
+    {
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync("/api/applications", application);
+        response.EnsureSuccessStatusCode();
     }
 }

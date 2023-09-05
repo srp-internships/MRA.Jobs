@@ -22,7 +22,7 @@ public class CreateTrainingVacancyCommandTest : Testing
             CategoryId = await AddVacancyCategory("jobvacancy"),
             Duration = 10,
             Fees = 100,
-            VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Id = Guid.NewGuid(), Question = "What is your English proficiency level?" } },
+            VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
         };
 
         var response = await _httpClient.PostAsJsonAsync("/api/trainings", trainingVacancy);

@@ -6,7 +6,7 @@ public class VacancyResponseProfile : Profile
     public VacancyResponseProfile()
     {
         CreateMap<VacancyResponseDto, VacancyResponse>()
-            .ForMember(dest => dest.Question, opt => opt.MapFrom(src => src.Question));
+            .ForMember(dest => dest.VacancyQuestion, opt => opt.MapFrom(src => src.VacancyQuestion));
 
         CreateMap<VacancyResponse, VacancyResponseDto>();
     }

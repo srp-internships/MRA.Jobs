@@ -13,5 +13,6 @@ public class VacancyCategoryConfiguration : IEntityTypeConfiguration<VacancyCate
             .WithOne(v => v.Category)
             .HasForeignKey(v => v.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(v => v.Slug).IsUnique();
     }
 }

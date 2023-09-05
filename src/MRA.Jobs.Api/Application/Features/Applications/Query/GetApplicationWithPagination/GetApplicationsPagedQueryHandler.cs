@@ -25,7 +25,7 @@ public class
         CancellationToken cancellationToken)
     {
         PagedList<ApplicationListDto> result = _sieveProcessor.ApplyAdnGetPagedList(request,
-            _dbContext.Applications.AsNoTracking().Include(a => a.VacancyResponses).ThenInclude(vr => vr.Question), _mapper.Map<ApplicationListDto>);
+            _dbContext.Applications.AsNoTracking().Include(a => a.VacancyResponses).ThenInclude(vr => vr.VacancyQuestion), _mapper.Map<ApplicationListDto>);
         return Task.FromResult(result);
     }
 }

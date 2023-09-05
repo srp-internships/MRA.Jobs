@@ -1,0 +1,3 @@
+dotnet ef migrations add [NAME] --project .\MRA.Jobs.Api\Infrastructure\MRA.Jobs.Infrastructure.csproj --startup-project .\MRA.Jobs.Api\WebUI\MRA.Jobs.Web.csproj
+
+dotnet ef database update --project .\MRA.Jobs.Api\Infrastructure\MRA.Jobs.Infrastructure.csproj --startup-project .\MRA.Jobs.Api\WebUI\MRA.Jobs.Web.csproj

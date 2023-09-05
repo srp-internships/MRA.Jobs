@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Update;
 
-public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainingVacancyCommand, Guid>
+public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainingVacancyCommand, string>
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
@@ -22,7 +22,7 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
         _slugService = slugService;
     }
 
-    public async Task<Guid> Handle(UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
         //var trainingVacancy = await _context.TrainingVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         //_ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Id);
@@ -47,6 +47,6 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
         };
         await _context.VacancyTimelineEvents.AddAsync(timeLineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return trainingVacancy.Id;
+        return trainingVacancy.Slug;
     }
 }
