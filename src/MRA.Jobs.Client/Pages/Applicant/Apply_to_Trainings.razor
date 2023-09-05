@@ -60,7 +60,7 @@
 					VacancyId = _training.Id,
 					VacancyResponses = _training.VacancyQuestions.Select(q => new VacancyResponseDto
 					{
-						Question = new VacancyQuestionDto { Question = q.Question }
+						VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
 					})
 				};
 			foreach (var question in _training.VacancyQuestions)
@@ -82,8 +82,8 @@
 		{
 			var updatedResponse = new VacancyResponseDto
 				{
-					Question = vr.Question,
-					Response = questionResponses[vr.Question.Question]
+					VacancyQuestion = vr.VacancyQuestion,
+					Response = questionResponses[vr.VacancyQuestion.Question]
 				};
 
 			updatedResponses.Add(updatedResponse);
