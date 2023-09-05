@@ -29,11 +29,4 @@ public class ApplicationService : IApplicationService
         return result;
     }
 
-
-    public async Task CreateApplication(CreateApplicationCommand application)
-    {
-        HttpResponseMessage response = await _httpClient.PostAsJsonAsync("/api/applications", application);
-        response.EnsureSuccessStatusCode();
-    }
-
 }
