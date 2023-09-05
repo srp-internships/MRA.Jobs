@@ -51,7 +51,7 @@ public class ClaimsController : ControllerBase
     }
 
     [HttpDelete("{slug}")]
-    public async Task<IActionResult> Put(string slug)
+    public async Task<IActionResult> Delete(string slug)
     {
         var response = await _mediator.Send(new DeleteClaimCommand
         {

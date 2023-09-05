@@ -23,7 +23,7 @@ public class CreateInternshipVacancyCommandTest : Testing
             ApplicationDeadline = DateTime.Now.AddDays(20),
             Duration = 10,
             Stipend = 100,
-            VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Id = Guid.NewGuid(), Question = "What is your English proficiency level?" } },
+            VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
         };
 
         var response = await _httpClient.PostAsJsonAsync("/api/internships", internshipVacancy);

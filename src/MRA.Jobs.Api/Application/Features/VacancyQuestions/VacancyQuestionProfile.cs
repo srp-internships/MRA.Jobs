@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Dtos;
+using MRA.Jobs.Application.Contracts.Dtos.Responses;
 
 namespace MRA.Jobs.Application.Features.VacancyQuestions;
 public class VacancyQuestionProfile : Profile
@@ -7,5 +8,7 @@ public class VacancyQuestionProfile : Profile
     {
         CreateMap<VacancyQuestionDto, VacancyQuestion>();
         CreateMap<VacancyQuestion, VacancyQuestionDto>();
+        CreateMap<VacancyQuestionResponseDto, VacancyQuestion>();
+        CreateMap<VacancyQuestion, VacancyQuestionResponseDto>();
     }
 }
