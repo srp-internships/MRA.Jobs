@@ -8,6 +8,8 @@ using Mra.Shared.Initializer.Azure.Insight;
 using Mra.Shared.Initializer.Azure.KeyVault;
 using Newtonsoft.Json;
 using Sieve.Models;
+using FluentValidation.AspNetCore;
+using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
@@ -22,6 +24,8 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebUiServices(builder.Configuration);
 
 builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("Sieve"));
+
+
 
 WebApplication app = builder.Build();
 
