@@ -42,7 +42,7 @@ public class AuthController : ControllerBase
 
         if (result.Exception != null)
         {
-            return Unauthorized(result.Exception);
+            return Unauthorized(result.Exception.ToString());
         }
 
         return Unauthorized();
@@ -90,6 +90,9 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> ResendVerificationCode()
     {
         var result = await _mediator.Send(new UserEmallCommand());
+        if (!result.IsSuccess)
+            return BadRequest(result.Exception.ToString());
+        
         return Ok();
     }
 }

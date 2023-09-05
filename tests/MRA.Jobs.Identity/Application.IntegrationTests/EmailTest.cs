@@ -39,8 +39,9 @@ public class EmailTest : BaseTest
         var responseEmail = await _client.GetAsync($"api/Auth/verify?token={splitted}");
 
         // Assert
-
-        Assert.That(responseEmail.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        
+        responseEmail.EnsureSuccessStatusCode();
+       // Assert.That(responseEmail.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         var user = await GetEntity<ApplicationUser>(s => s.Email == request.Email);
         Assert.IsTrue(user.EmailConfirmed);
     }
