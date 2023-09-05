@@ -3,7 +3,6 @@
 @using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @using Microsoft.AspNetCore.Components.Authorization;
 @inject AuthenticationStateProvider provider
-@inject ILocalStorageService LocalStorage;
 
 @inject ITrainingService _trainingService
 
@@ -22,7 +21,8 @@
 					<h3 class="mb-2 text-black">
 						Description:
 					</h3>
-					<p class="mb-2 text-black">@_training.Description</p>
+
+					<p class="mb-2 text-black">@((MarkupString)@_training.Description)</p>
 					<h3 class="mb-2 text-black">
 						EndDate:
 					</h3>
@@ -39,22 +39,21 @@
 			</div>
 			@*button*@
 			<div class="Trainingsinfo">
-
 				<div class="w-100 d-flex flex-row justify-content-between">
 					<div class="card w-100 bg-white shadow-lg rounded mb-4">
 						<div class="card-body">
 							<h2 class="mb-2 text-black">Interested in a trainings?</h2>
-							<a href="/trainings/ApplytoTrainings/@Slug" class="btn btn-primary">Apply</a>
-							@*<CascadingAuthenticationState>
-						<AuthorizeView>
-						<Authorized>
-						<a href="/trainings/ApplytoTrainings/@Slug" class="btn btn-primary">Apply</a>
-						</Authorized>
-						<NotAuthorized>
-						<a href="login" class="btn btn-primary">Apply</a>
-						</NotAuthorized>
-						</AuthorizeView>
-						</CascadingAuthenticationState>*@
+							<a href="/trainings/ApplytoTrainings/@Slug" class="btn btn-primary w-100">Applyb</a>
+							<CascadingAuthenticationState>
+								<AuthorizeView>
+									<Authorized>
+										<a href="/trainings/ApplytoTrainings/@Slug" class="btn btn-primary w-100">Apply</a>
+									</Authorized>
+									<NotAuthorized>
+										<a href="/sign-in" class="btn btn-primary">Apply</a>
+									</NotAuthorized>
+								</AuthorizeView>
+							</CascadingAuthenticationState>
 						</div>
 					</div>
 				</div>
