@@ -43,7 +43,7 @@ public static class DependencyInitializer
             .AddDefaultTokenProviders();
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-
+        services.AddScoped<ApplicationDbContextInitializer>();
         services.AddAzureEmailService();
     }
 }
