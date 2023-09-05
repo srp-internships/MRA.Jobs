@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -115,6 +116,13 @@ public class Testing
         ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         return await context.Set<TEntity>().CountAsync();
+    }
+
+    public static async Task<TEntity> FindFirstOrDefaultAsync<TEntity>(Expression<Func<TEntity, bool>> criteria) where TEntity : class
+    {
+        using IServiceScope scope = _scopeFactory.CreateScope();
+        ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        return await context.Set<TEntity>().FirstOrDefaultAsync(criteria);
     }
 
     [OneTimeTearDown]
