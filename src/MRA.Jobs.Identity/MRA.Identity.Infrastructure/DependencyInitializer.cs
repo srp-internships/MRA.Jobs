@@ -6,6 +6,7 @@ using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Domain.Entities;
 using MRA.Identity.Infrastructure.Persistence;
 using Mra.Shared.Initializer.Azure.EmailService;
+using Mra.Shared.Initializer.Services;
 
 namespace MRA.Identity.Infrastructure;
 
@@ -22,7 +23,14 @@ public static class DependencyInitializer
                 options.UseSqlServer(dbConnectionString);
         });
 
-
+        if (configurations["UseFileEmailService"] == "true")
+        {
+            services.AddFileEmailService();
+        }
+        else
+        {
+            services.AddAzureEmailService(); //uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
+        }
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
