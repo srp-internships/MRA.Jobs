@@ -38,6 +38,9 @@ public class RolesController : ControllerBase
     public async Task<IActionResult> Create(CreateRoleCommand command)
     {
         var result = await _mediator.Send(command);
+        if (result.IsSuccess==false)
+            return BadRequest(result);
+
         return Ok(result);
     }
 
@@ -46,6 +49,8 @@ public class RolesController : ControllerBase
     {
         command.Slug = slug;
         var result= await _mediator.Send(command);
+        if (result.IsSuccess==false)
+            return BadRequest(result);
         return Ok(result);
     }
 
@@ -54,6 +59,9 @@ public class RolesController : ControllerBase
     {
         var command = new DeleteRoleCommand { Slug = slug };
         var result = await _mediator.Send(command);
+        if (result.IsSuccess==false)
+            return NotFound();
+       
         return Ok(result);
     }
 }

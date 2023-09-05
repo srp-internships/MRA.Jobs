@@ -3,7 +3,7 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 
-public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCommand, Guid>
+public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCommand, string>
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
@@ -20,7 +20,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         _slugService = slugService;
     }
 
-    public async Task<Guid> Handle(CreateJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         VacancyCategory category = await _dbContext.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
@@ -41,7 +41,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         };
         await _dbContext.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return jobVacancy.Id;
+        return jobVacancy.Slug;
     }
 
     private string GenerateSlug(JobVacancy job) => _slugService.GenerateSlug($"{job.Title}-{job.CreatedAt.Year}-{job.CreatedAt.Month}");

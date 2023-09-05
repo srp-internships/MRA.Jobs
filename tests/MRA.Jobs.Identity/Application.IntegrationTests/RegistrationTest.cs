@@ -6,7 +6,7 @@ using MRA.Identity.Domain.Entities;
 namespace MRA.Jobs.Application.IntegrationTests;
 
 [TestFixture]
-public class RegistrationTests:BaseTest
+public class RegistrationTests : BaseTest
 {
     [Test]
     public async Task Register_ValidRequestWithCorrectRegisterData_ReturnsOkAndSavesUserIntoDb()
@@ -14,20 +14,20 @@ public class RegistrationTests:BaseTest
         // Arrange
         var request = new RegisterUserCommand
         {
-            Email = "test1@example.com",
+            Email = "test3@example.com",
             Password = "password@#12P",
             FirstName = "Alex",
-            Username = "@Alex22",
+            Username = "@Alex223",
             LastName = "Makedonsky",
             PhoneNumber = "123456789"
         };
-        
+
         // Assert
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-        
+
         // Assert
-        var registeredUser =await GetEntity<ApplicationUser>(u => u.Email == request.Email && u.UserName == request.Username);
+        var registeredUser = await GetEntity<ApplicationUser>(u => u.Email == request.Email && u.UserName == request.Username);
         Assert.IsNotNull(registeredUser, "Registered user not found");
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -42,7 +42,7 @@ public class RegistrationTests:BaseTest
             Password = "password", // incorrect password
             FirstName = "Alex",
             Username = "@Alex22",
-            LastName = "Makedonskiy", 
+            LastName = "Makedonskiy",
             PhoneNumber = "123456789"
         };
 
@@ -50,16 +50,16 @@ public class RegistrationTests:BaseTest
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
-    
+
     [Test]
     public async Task Register_InvalidRequestWithEmptyRegisterData_ReturnsUnauthorized()
     {
         // Arrange
         var request = new RegisterUserCommand
         {
-           // Empty Register Data
+            // Empty Register Data
         };
-        
+
         // Assert
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
