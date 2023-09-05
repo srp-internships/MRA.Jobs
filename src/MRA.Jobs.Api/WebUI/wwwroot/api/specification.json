@@ -1148,7 +1148,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/JSObject"
                 }
               }
             }
@@ -2598,6 +2598,15 @@
           "score": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "JSObject": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isDisposed": {
+            "type": "boolean"
           }
         }
       },
