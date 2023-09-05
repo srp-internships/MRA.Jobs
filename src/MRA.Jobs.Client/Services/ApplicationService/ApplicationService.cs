@@ -14,17 +14,10 @@ public class ApplicationService : IApplicationService
         _httpClient = httpClient;
     }
 
-    //public async Task<bool> CreateApplication(CreateApplicationCommand createApplicationCommand)
-    //{
-    //    var response = await _httpClient.PostAsJsonAsync("applications/", createApplicationCommand);
-    //    response.EnsureSuccessStatusCode();
-    //    return true;
-    //}
-
     public async Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync($"applications/{status}");
-        response.EnsureSuccessStatusCode();
+        HttpResponseMessage response = await _httpClient.GetAsync($"api/applications/{status}");
+      
         List<ApplicationListStatus> result = await response.Content.ReadFromJsonAsync<List<ApplicationListStatus>>();
         return result;
     }
@@ -33,7 +26,6 @@ public class ApplicationService : IApplicationService
     public async Task CreateApplication(CreateApplicationCommand application)
     {
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync("/api/applications", application);
-        response.EnsureSuccessStatusCode();
     }
 
 }

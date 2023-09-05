@@ -7,7 +7,5 @@ namespace MRA.Jobs.Client.Services.ApplicationService;
 public interface IApplicationService
 {
     Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status);
-
-    //Task<bool> CreateApplication(CreateApplicationCommand createApplicationCommand)KC
     Task CreateApplication(CreateApplicationCommand application);
 }
