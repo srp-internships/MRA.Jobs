@@ -92,7 +92,6 @@ public class AuthController : ControllerBase
         var result = await _mediator.Send(new UserEmallCommand());
         if (!result.IsSuccess)
             return BadRequest(result.Exception.ToString());
-        
         return Ok();
     }
 }
