@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
 
-public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainingVacancyCommand, Guid>
+public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainingVacancyCommand, string>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         _slugService = slugService;
     }
 
-    public async Task<Guid> Handle(CreateTrainingVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
         VacancyCategory category = await _context.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
@@ -41,7 +41,7 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return traningModel.Id;
+        return traningModel.Slug;
     }
 
     private string GenerateSlug(TrainingVacancy vacancy) => _slugService.GenerateSlug($"{vacancy.Title}-{vacancy.PublishDate.Year}-{vacancy.PublishDate.Month}");

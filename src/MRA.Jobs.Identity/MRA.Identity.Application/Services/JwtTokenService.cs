@@ -32,4 +32,20 @@ internal class JwtTokenService : IJwtTokenService
 
         return jwt;
     }
+    public string CreateRefreshToken(IList<Claim> claims)
+    {
+         SymmetricSecurityKey key = new(Encoding.UTF8
+            .GetBytes(_configuration.GetSection("JwtSettings")["SecurityKey"]!));
+
+        SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha512Signature);
+
+        JwtSecurityToken token = new(
+            claims: claims,
+            expires: DateTime.Now.AddDays(60),
+            signingCredentials: creds);
+
+        string? jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+        return jwt;
+    }
 }

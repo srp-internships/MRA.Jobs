@@ -9,6 +9,5 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
     {
         RuleFor(s => s.Username.Length > 3);
         RuleFor(s => s.Password.Length > 7);
-        //todo validate another properties;
     }
 }

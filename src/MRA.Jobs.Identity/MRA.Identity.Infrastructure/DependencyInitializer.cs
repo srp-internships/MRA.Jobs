@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Domain.Entities;
+using MRA.Identity.Infrastructure.Identity;
 using MRA.Identity.Infrastructure.Persistence;
+using Mra.Shared.Common.Constants;
 using Mra.Shared.Initializer.Azure.EmailService;
 using Mra.Shared.Initializer.Services;
 
@@ -42,8 +46,26 @@ public static class DependencyInitializer
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+        services.AddAuthorization(auth =>
+        {
+            auth.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser()
+                .Build();
+            
+            auth.AddPolicy(ApplicationPolicies.SuperAdministrator, op => op
+                .RequireRole(ApplicationClaimValues.SuperAdministrator)
+                .RequireClaim(ClaimTypes.Application)
+                .RequireClaim(ClaimTypes.Id));
 
+            auth.AddPolicy(ApplicationPolicies.Administrator, op => op
+                .RequireRole(ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdministrator)
+                .RequireClaim(ClaimTypes.Application)
+                .RequireClaim(ClaimTypes.Id));
+        });
+        //todo add requirement for id
+        
+        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+        services.AddScoped<ApplicationDbContextInitializer>();
         services.AddAzureEmailService();
     }
 }

@@ -34,5 +34,7 @@ public class VacancyConfiguration : IEntityTypeConfiguration<Vacancy>
             .WithOne(vt => vt.Vacancy)
             .HasForeignKey(vt => vt.VacancyId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(v => v.Slug).IsUnique();
     }
 }
