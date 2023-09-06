@@ -24,7 +24,7 @@ public class GetInternshipVacanciesPagedQueryHandler : IRequestHandler<PagedList
         PagedListQuery<InternshipVacancyListResponse> request, CancellationToken cancellationToken)
     {
         PagedList<InternshipVacancyListResponse> result = _sieveProcessor.ApplyAdnGetPagedList(request,
-            _context.Internships
+            _context.InternshipVacancies
                 .Include(i => i.Category)
                 .Include(i => i.VacancyQuestions)
                 .AsNoTracking(),

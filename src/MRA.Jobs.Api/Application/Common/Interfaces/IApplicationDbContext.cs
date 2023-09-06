@@ -19,7 +19,7 @@ public interface IApplicationDbContext
     public DbSet<Tag> Tags { get; }
     public DbSet<Domain.Entities.Application> Applications { get; }
     public DbSet<ApplicationTimelineEvent> ApplicationTimelineEvents { get; }
-    public DbSet<InternshipVacancy> Internships { get; }
+    public DbSet<InternshipVacancy> InternshipVacancies { get; }
     public DbSet<TrainingVacancy> TrainingVacancies { get; }
     public DbSet<EducationDetail> EducationDetails { get; set; }
     public DbSet<ExperienceDetail> ExperienceDetails { get; set; }

@@ -34,7 +34,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Domain.Entities.Application> Applications { get; set; }
     public DbSet<ApplicationTimelineEvent> ApplicationTimelineEvents { get; set; }
-    public DbSet<InternshipVacancy> Internships { get; set; }
+    public DbSet<InternshipVacancy> InternshipVacancies{ get; set; }
     public DbSet<TrainingVacancy> TrainingVacancies { get; set; }
     public DbSet<EducationDetail> EducationDetails { get; set; }
     public DbSet<ExperienceDetail> ExperienceDetails { get; set; }

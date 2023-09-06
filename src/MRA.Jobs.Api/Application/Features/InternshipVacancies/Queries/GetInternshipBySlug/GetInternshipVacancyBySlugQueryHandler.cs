@@ -16,7 +16,7 @@ public class GetInternshipVacancyBySlugQueryHandler : IRequestHandler<GetInterns
     public async Task<InternshipVacancyResponse> Handle(GetInternshipVacancyBySlugQuery request, CancellationToken cancellationToken)
     {
         // var internship = await _context.Internships.FindAsync(new object[] { request.Id }, cancellationToken);
-        var internship = await _context.Internships
+        var internship = await _context.InternshipVacancies
             .Include(i => i.History)
             .Include(i => i.VacancyQuestions)
             .Include(i => i.Tags)
