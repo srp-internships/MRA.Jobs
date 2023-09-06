@@ -52,7 +52,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
         var newEntityGuid = Guid.NewGuid();
         var slug = "software-developer";
         InternshipSetMock.Setup(d => d.AddAsync(It.IsAny<InternshipVacancy>(), It.IsAny<CancellationToken>())).Callback<InternshipVacancy, CancellationToken>((v, ct) => v.Id = newEntityGuid);
-        _dbContextMock.Setup(x => x.Internships).Returns(InternshipSetMock.Object);
+        _dbContextMock.Setup(x => x.InternshipVacancies).Returns(InternshipSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
         _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());

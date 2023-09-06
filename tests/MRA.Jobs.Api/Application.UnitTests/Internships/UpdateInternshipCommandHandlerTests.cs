@@ -19,7 +19,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
     {
         // Arrange
         var command = new UpdateInternshipVacancyCommand { Slug = string.Empty };
-        _dbContextMock.Setup(x => x.Internships.FindAsync(command.Slug)).ReturnsAsync(null as InternshipVacancy);
+        _dbContextMock.Setup(x => x.InternshipVacancies.FindAsync(command.Slug)).ReturnsAsync(null as InternshipVacancy);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -36,7 +36,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
     {
         // Arrange
         var command = new UpdateInternshipVacancyCommand { Slug = string.Empty, CategoryId = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Slug }, CancellationToken.None)).ReturnsAsync(new InternshipVacancy());
+        _dbContextMock.Setup(x => x.InternshipVacancies.FindAsync(new object[] { command.Slug }, CancellationToken.None)).ReturnsAsync(new InternshipVacancy());
         _dbContextMock.Setup(x => x.Categories.FindAsync(new object[] { command.CategoryId }, CancellationToken.None)).ReturnsAsync(null as VacancyCategory);
 
 
@@ -69,7 +69,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
         var internshipsDbSetMock = new Mock<DbSet<InternshipVacancy>>();
         var categoryDbSetMock = new Mock<DbSet<VacancyCategory>>();
 
-        _dbContextMock.Setup(c => c.Internships).Returns(internshipsDbSetMock.Object);
+        _dbContextMock.Setup(c => c.InternshipVacancies).Returns(internshipsDbSetMock.Object);
         _dbContextMock.Setup(c => c.Categories).Returns(categoryDbSetMock.Object);
 
         var existingInternship = new InternshipVacancy { Slug = command.Slug };

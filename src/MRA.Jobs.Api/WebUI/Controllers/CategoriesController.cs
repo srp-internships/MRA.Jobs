@@ -7,6 +7,7 @@ using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using Microsoft.AspNetCore.Http.HttpResults;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
 
 namespace MRA.Jobs.Web.Controllers;
 
@@ -30,7 +31,14 @@ public class CategoriesController : ApiControllerBase
     }
 
     [HttpGet("training")]
-    public async Task<IActionResult> GetCategories([FromQuery] GetTrainingCategoriesQuery query)
+    public async Task<IActionResult> GetTrainingCategories([FromQuery] GetTrainingCategoriesQuery query)
+    {
+        var categories = await Mediator.Send(query);
+        return Ok(categories);
+    }
+
+    [HttpGet("internship")]
+    public async Task<IActionResult> GetInternshipCategories([FromQuery] GetInternshipCategoriesQuery query)
     {
         var categories = await Mediator.Send(query);
         return Ok(categories);

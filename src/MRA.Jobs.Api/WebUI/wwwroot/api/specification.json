@@ -463,7 +463,38 @@
         "tags": [
           "Categories"
         ],
-        "operationId": "Categories_GetCategories",
+        "operationId": "Categories_GetTrainingCategories",
+        "parameters": [
+          {
+            "name": "CheckDate",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories/internship": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "operationId": "Categories_GetInternshipCategories",
         "parameters": [
           {
             "name": "CheckDate",

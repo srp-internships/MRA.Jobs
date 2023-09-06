@@ -34,7 +34,7 @@ public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
             Duration = 10,
             Stipend = 100
         };
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>())).ReturnsAsync(internship);
+        _dbContextMock.Setup(x => x.InternshipVacancies.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>())).ReturnsAsync(internship);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -59,7 +59,7 @@ public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
         // Arrange
         var query = new GetInternshipVacancyBySlugQuery { Slug = "slag" };
 
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>()))
+        _dbContextMock.Setup(x => x.InternshipVacancies.FindAsync(new object[] { query.Slug }, It.IsAny<CancellationToken>()))
             .ReturnsAsync((InternshipVacancy)null);
 
         // Act + Assert

@@ -30,7 +30,7 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
         //var category = await _context.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken: cancellationToken);
         //_ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
-        InternshipVacancy internship = await _context.Internships
+        InternshipVacancy internship = await _context.InternshipVacancies
             .Include(i => i.Category)
             .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken);
         _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Slug);

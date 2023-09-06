@@ -19,7 +19,7 @@ public class DeleteInternshipCommandHandlerTests : BaseTestFixture
     {
         // Arrange
         var internship = new InternshipVacancy { Slug = string.Empty };
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { internship.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(internship);
+        _dbContextMock.Setup(x => x.InternshipVacancies.FindAsync(new object[] { internship.Id }, It.IsAny<CancellationToken>())).ReturnsAsync(internship);
 
         var command = new DeleteInternshipVacancyCommand { Slug = internship.Slug };
 
@@ -27,7 +27,7 @@ public class DeleteInternshipCommandHandlerTests : BaseTestFixture
         var result = await _handler.Handle(command, default);
 
         // Assert
-        _dbContextMock.Verify(x => x.Internships.Remove(internship), Times.Once);
+        _dbContextMock.Verify(x => x.InternshipVacancies.Remove(internship), Times.Once);
         _dbContextMock.Verify(x => x.SaveChangesAsync(default), Times.Once);
         Assert.True(result);
     }
@@ -39,12 +39,12 @@ public class DeleteInternshipCommandHandlerTests : BaseTestFixture
         // Arrange
         var command = new DeleteInternshipVacancyCommand { Slug = string.Empty };
 
-        _dbContextMock.Setup(x => x.Internships.FindAsync(new object[] { command.Slug }, It.IsAny<CancellationToken>()))
+        _dbContextMock.Setup(x => x.InternshipVacancies.FindAsync(new object[] { command.Slug }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(null as InternshipVacancy);
 
         // Act + Assert
         Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, default));
-        _dbContextMock.Verify(x => x.Internships.Remove(It.IsAny<InternshipVacancy>()), Times.Never);
+        _dbContextMock.Verify(x => x.InternshipVacancies.Remove(It.IsAny<InternshipVacancy>()), Times.Never);
         _dbContextMock.Verify(x => x.SaveChangesAsync(default), Times.Never);
     }
 }

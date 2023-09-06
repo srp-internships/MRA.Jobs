@@ -19,7 +19,7 @@ public class RemoveTagFromInternshipVacancyCommandHandler : IRequestHandler<Remo
     }
     public async Task<bool> Handle(RemoveTagFromInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
-        var internship = await _context.Internships
+        var internship = await _context.InternshipVacancies
            .Include(x => x.Tags)
            .ThenInclude(t => t.Tag)
            .FirstOrDefaultAsync(x => x.Slug == request.InernshipSlug, cancellationToken);

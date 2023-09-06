@@ -21,7 +21,7 @@ public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagsToJobVaca
 
     public async Task<bool> Handle(AddTagsToJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var jobVacancy = await _context.Internships
+        var jobVacancy = await _context.InternshipVacancies
           .Include(x => x.Tags)
           .ThenInclude(t => t.Tag)
           .FirstOrDefaultAsync(x => x.Slug == request.JobVacancySlug, cancellationToken);

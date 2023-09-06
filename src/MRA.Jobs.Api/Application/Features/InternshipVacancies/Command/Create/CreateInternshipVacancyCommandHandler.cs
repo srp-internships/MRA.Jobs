@@ -34,7 +34,7 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
 
         var internship = _mapper.Map<InternshipVacancy>(request);
         internship.Slug = GenerateSlug(internship);
-        await _context.Internships.AddAsync(internship, cancellationToken);
+        await _context.InternshipVacancies.AddAsync(internship, cancellationToken);
 
         VacancyTimelineEvent timelineEvent = new()
         {
