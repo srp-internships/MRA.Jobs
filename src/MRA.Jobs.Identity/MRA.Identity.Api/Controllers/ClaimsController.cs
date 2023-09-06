@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.Claim.Commands;
 using MRA.Identity.Application.Contract.Claim.Queries;
 using MRA.Identity.Application.Contract.Claim.Responses;
+using MRA.Identity.Infrastructure.Identity;
 
 namespace MRA.Identity.Api.Controllers;
 

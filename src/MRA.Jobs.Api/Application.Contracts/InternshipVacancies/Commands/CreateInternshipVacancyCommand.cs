@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 
-public class CreateInternshipVacancyCommand : IRequest<Guid>
+public class CreateInternshipVacancyCommand : IRequest<string>
 {
     public string Title { get; set; }
     public string ShortDescription { get; set; }
