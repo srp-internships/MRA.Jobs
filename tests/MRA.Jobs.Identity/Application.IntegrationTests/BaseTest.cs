@@ -74,5 +74,5 @@ public abstract class BaseTest
     public void Setup()
     {
         _client = _factory.CreateClient();
-    }
+    }   
 }

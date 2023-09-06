@@ -54,5 +54,10 @@ public static class ConfigureServices
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
 
+        services.AddMvc(options =>
+        {
+            options.Filters.Add(typeof(BadRequestResponseFilter));
+        });
+
     }
 }
