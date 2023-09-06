@@ -11,7 +11,7 @@ namespace MRA.Jobs.Application.IntegrationTests;
 public class EmailTest : BaseTest
 {
     [Test]
-    public async Task VerifyEmail()
+    public async Task Email_VerifyEmail_True()
     {
         // Arrange
         var request = new RegisterUserCommand
@@ -47,7 +47,7 @@ public class EmailTest : BaseTest
     }
 
     [Test]
-    public async Task Verif()
+    public async Task Email_VerifyEmail_BadRequest()
     {
         // Arrange
         var request = new RegisterUserCommand
