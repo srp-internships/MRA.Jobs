@@ -45,7 +45,7 @@ public class ClaimsTests : BaseTest
         {
             UserId = userId, ClaimType = "Application", ClaimValue = "Mra.Identity"
         };
-
+        await AddAuthorizationAsync();
         HttpResponseMessage createResponse = await _client.PostAsJsonAsync("api/claims", createCommand);
 
         Assert.That(createResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -60,6 +60,8 @@ public class ClaimsTests : BaseTest
         {
             UserId = Guid.Empty, ClaimType = "Application", ClaimValue = "Mra.Identity"
         };
+        
+        await AddAuthorizationAsync();
 
         HttpResponseMessage createResponse = await _client.PostAsJsonAsync("api/claims", createCommand);
 
@@ -84,6 +86,8 @@ public class ClaimsTests : BaseTest
         };
 
         await AddEntity(sampleClaim);
+        
+        await AddAuthorizationAsync();
 
         var putCommand = new UpdateClaimCommand { ClaimValue = "Mra.Test", Slug = "user1-application" };
         HttpResponseMessage response = await _client.PutAsJsonAsync($"api/claims/{sampleClaim.Slug}", putCommand);
@@ -111,6 +115,7 @@ public class ClaimsTests : BaseTest
             ClaimValue = "Mra.Test",
             Slug = "user1-application"
         };
+        await AddAuthorizationAsync();
 
         await AddEntity(sampleClaim);
 

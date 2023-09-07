@@ -46,13 +46,13 @@ public class GetAccesTokenIntegrationTests : BaseTest
             AccessToken = loginResponce.AccessToken,
             RefreshToken = loginResponce.RefreshToken
         };
-
+        await AddAuthorizationAsync();
         //Act
-        var responce = await _client.PostAsJsonAsync("api/Auth/refresh", request);
+        var response = await _client.PostAsJsonAsync("api/Auth/refresh", request);
 
         //Assert
-        responce.EnsureSuccessStatusCode();
-        Assert.IsNotNull(responce);
+        response.EnsureSuccessStatusCode();
+        Assert.IsNotNull(response);
     }
 
     [Test]

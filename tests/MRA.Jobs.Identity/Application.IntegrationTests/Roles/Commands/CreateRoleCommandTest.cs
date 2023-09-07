@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
-using Azure;
 using MRA.Identity.Application.Contract.ApplicationRoles.Commands;
 using MRA.Identity.Domain.Entities;
-using NUnit.Framework.Constraints;
 
 namespace MRA.Jobs.Application.IntegrationTests.Roles.Commands;
 public class CreateRoleCommandTest : BaseTest
@@ -44,7 +37,6 @@ public class CreateRoleCommandTest : BaseTest
         };
 
         var response = await _client.PostAsJsonAsync("/api/roles", command);
-        response = await _client.PostAsJsonAsync("/api/roles", command);
 
         Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
     }
