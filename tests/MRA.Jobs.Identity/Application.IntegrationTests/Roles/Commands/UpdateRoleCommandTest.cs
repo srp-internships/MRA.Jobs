@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 using MRA.Identity.Application.Contract.ApplicationRoles.Commands;
 using MRA.Identity.Domain.Entities;
 
@@ -27,6 +22,7 @@ public class UpdateRoleCommandTest : BaseTest
             Slug = role.Slug
         };
 
+        await AddAuthorizationAsync();
         var response = await _client.PutAsJsonAsync($"/api/roles/{role.Slug}", command);
 
 

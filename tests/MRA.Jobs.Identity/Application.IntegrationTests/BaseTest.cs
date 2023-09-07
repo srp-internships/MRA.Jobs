@@ -1,8 +1,9 @@
 ﻿using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MRA.Identity.Application.Contract.User.Commands;
+using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Domain.Entities;
 using MRA.Identity.Infrastructure.Persistence;
 
@@ -46,7 +47,7 @@ public abstract class BaseTest
         using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         await dbContext.Set<T>().AddAsync(entity);
-       var res= await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
     
     protected Task<List<T>> GetAll<T>() where T : class
@@ -68,6 +69,17 @@ public abstract class BaseTest
         scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var dbContext = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var result = await dbContext.CreateAsync(user,password);
+    }
+
+    protected async Task AddAuthorizationAsync()
+    {
+        using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
+        var tokenService = scope.ServiceProvider.GetRequiredService<IJwtTokenService>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var superAdmin = await userManager.Users.FirstOrDefaultAsync(s => s.NormalizedUserName == "SUPERADMIN");
+        var claims = await userManager.GetClaimsAsync(superAdmin);
+        var token = tokenService.CreateTokenByClaims(claims);
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
 
     [SetUp]
