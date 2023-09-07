@@ -1,7 +1,6 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MRA.Identity.Application.Contract;
-using MRA.Identity.Application.Contract.Admin.Responses;
 using MRA.Identity.Application.Contract.User.Commands;
 using MRA.Identity.Application.Contract.User.Queries;
 
@@ -65,13 +64,14 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("refresh")]   
-    public async Task<IActionResult> Refresh(GetAccesTokenUsingRefreshTokenQuery request)
+    public async Task<IActionResult> Refresh(GetAccessTokenUsingRefreshTokenQuery request)
     {
-        var responce = await _mediator.Send(request);
-        if (responce.IsSuccess == false)
+        var response = await _mediator.Send(request);
+        if (response.IsSuccess == false)
         {
-            return BadRequest(responce.ErrorMessage);
+            return BadRequest(response.ErrorMessage);
         }
-        else return Ok(responce);
+
+        return Ok(response);
     }
 }

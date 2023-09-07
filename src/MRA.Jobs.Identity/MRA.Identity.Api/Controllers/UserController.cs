@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.User.Queries;
 
 namespace MRA.Identity.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(ApplicationPolicies.Administrator)]
 public class UserController : ControllerBase
 {
     private readonly ISender _mediator;

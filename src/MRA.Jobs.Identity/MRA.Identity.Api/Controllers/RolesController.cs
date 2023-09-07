@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using MRA.Identity.Application.Contract.ApplicationRoles.Queries;
@@ -10,6 +7,7 @@ using MRA.Identity.Application.Contract.ApplicationRoles.Commands;
 namespace MRA.Identity.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(ApplicationPolicies.Administrator)]
 public class RolesController : ControllerBase
 {
     private readonly IMediator _mediator;

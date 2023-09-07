@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Domain.Entities;
+using Mra.Shared.Common.Constants;
 
 namespace MRA.Identity.Infrastructure.Persistence;
 
@@ -23,20 +23,7 @@ public class ApplicationDbContextInitializer
 
     public async Task SeedAsync()
     {
-        Guid superAdminRoleId = await CreateSuperAdminRoleAsync();
-        Guid superAdminId = await CreateSuperAdminAsync();
-
-        var userRole = new ApplicationUserRole
-        {
-            UserId = superAdminId, RoleId = superAdminRoleId, Slug = "superAdmin-superAdmin"
-        };
-
-        if ((await _context.UserRoles.FirstOrDefaultAsync(s =>
-                s.UserId == superAdminId && s.RoleId == superAdminRoleId)) == null)
-        {
-            await _context.UserRoles.AddAsync(userRole);
-            await _context.SaveChangesAsync();
-        }
+        await CreateSuperAdminAsync();
 
         await CreateApplicationAdmin("MraJobs", "mrajobs12@@34,.$3#A");
         await CreateApplicationAdmin("MraOnlinePlatform", "mraonline2@f@34,/.$3#A");
@@ -71,14 +58,14 @@ public class ApplicationDbContextInitializer
         await _context.RoleClaims.AddAsync(roleClaim);
         await _context.SaveChangesAsync();
 
-       
+
         //create role
 
         //create user
         var mraJobsAdminUser =
             await _userManager.Users.SingleOrDefaultAsync(u =>
                 u.NormalizedUserName == $"{applicationName}ADMIN".ToUpper());
-        
+
         if (mraJobsAdminUser == null)
         {
             mraJobsAdminUser = new ApplicationUser
@@ -96,23 +83,23 @@ public class ApplicationDbContextInitializer
             }
         }
         //create user
-        
+
         //create userRole
         var userRole = new ApplicationUserRole
         {
             UserId = mraJobsAdminUser.Id, RoleId = adminRole.Id, Slug = $"{applicationName}Admin-applicationAdmin"
         };
 
-        if (!await _context.UserRoles.AnyAsync(s=>s.RoleId == userRole.RoleId && s.UserId==userRole.UserId))
+        if (!await _context.UserRoles.AnyAsync(s => s.RoleId == userRole.RoleId && s.UserId == userRole.UserId))
         {
             await _context.UserRoles.AddAsync(userRole);
-            await _context.SaveChangesAsync();    
+            await _context.SaveChangesAsync();
         }
         //create userRole
     }
 
 
-    private async Task<Guid> CreateSuperAdminRoleAsync()
+    private async Task CreateSuperAdminAsync()
     {
         var superAdminRole = await _roleManager.Roles.SingleOrDefaultAsync(s => s.NormalizedName == "SUPERADMIN");
         if (superAdminRole == null)
@@ -128,12 +115,6 @@ public class ApplicationDbContextInitializer
             }
         }
 
-        return superAdminRole.Id;
-    }
-
-
-    private async Task<Guid> CreateSuperAdminAsync()
-    {
         var superAdmin = await _userManager.Users.SingleOrDefaultAsync(s => s.NormalizedUserName == "SUPERADMIN");
         if (superAdmin == null)
         {
@@ -151,8 +132,22 @@ public class ApplicationDbContextInitializer
             {
                 throw new Exception(superAdminResult.Errors.First().Description);
             }
-        }
 
-        return superAdmin.Id;
+            var addRoleResult = await _userManager.AddToRoleAsync(superAdmin, superAdminRole.Name!);
+            if (!addRoleResult.Succeeded)
+            {
+                throw new Exception(addRoleResult.Errors.First().Description);
+            }
+
+            var claim = new ApplicationUserClaim
+            {
+                ClaimType = ClaimTypes.Role,
+                ClaimValue = superAdminRole.Name,
+                Slug = "SuperAdmin-SuperAdmin",
+                UserId = superAdmin.Id
+            };
+            await _context.UserClaims.AddAsync(claim);
+            await _context.SaveChangesAsync();
+        }
     }
 }

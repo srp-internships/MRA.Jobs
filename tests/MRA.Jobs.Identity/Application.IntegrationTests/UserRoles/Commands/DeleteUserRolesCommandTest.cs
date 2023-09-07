@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
-using MRA.Identity.Application.Contract.UserRoles.Commands;
+﻿using System.Net;
 using MRA.Identity.Domain.Entities;
 
 namespace MRA.Jobs.Application.IntegrationTests.UserRoles.Commands;
@@ -40,6 +33,7 @@ public class DeleteUserRolesCommandTest : BaseTest
         };
         await AddEntity(userRole);
 
+        await AddAuthorizationAsync();
         var response = await _client.DeleteAsync($"/api/UserRoles/{slug}");
 
         response.EnsureSuccessStatusCode();
@@ -49,6 +43,7 @@ public class DeleteUserRolesCommandTest : BaseTest
     public async Task DeleteUserRoleCommand_ShouldDeleteUserRoleCommand_NotFound()
     {
 
+        await AddAuthorizationAsync();
         var response = await _client.DeleteAsync("/api/UserRoles/testt10");
 
         Assert.IsTrue(response.StatusCode == HttpStatusCode.BadRequest);

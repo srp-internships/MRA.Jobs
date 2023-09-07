@@ -7,6 +7,7 @@ using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.User.Commands;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Identity.Domain.Entities;
+using ClaimTypes = Mra.Shared.Common.Constants.ClaimTypes;
 
 namespace MRA.Identity.Application.Features.Users.Command.LoginUser;
 
@@ -29,14 +30,15 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Applica
             ApplicationUser? user =
                 await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.Username, cancellationToken);
 
-            if ((await _userManager.GetClaimsAsync(user)).Where(c => c.Type == ClaimTypes.NameIdentifier) != null)
-                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-
             if (user == null)
             {
                 return new ApplicationResponseBuilder<JwtTokenResponse>().Success(false)
                     .SetErrorMessage("incorrect username").Build();
             }
+            
+            if ((await _userManager.GetClaimsAsync(user)).FirstOrDefault(c => c.Type == ClaimTypes.Id) == null)
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Id, user.Id.ToString()));
+
 
             bool success = await _userManager.CheckPasswordAsync(user, request.Password);
 
