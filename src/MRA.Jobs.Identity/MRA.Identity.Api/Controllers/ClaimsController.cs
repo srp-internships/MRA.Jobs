@@ -10,6 +10,7 @@ namespace MRA.Identity.Api.Controllers;
 
 [ApiController]
 [Route("/api/[controller]/")]
+[Authorize(ApplicationPolicies.Administrator)]
 public class ClaimsController : ControllerBase
 {
     private readonly ISender _mediator;
