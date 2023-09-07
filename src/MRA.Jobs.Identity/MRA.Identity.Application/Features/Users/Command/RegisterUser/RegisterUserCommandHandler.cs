@@ -36,7 +36,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
             
             if (!result.Succeeded)
             {
-                new ApplicationResponseBuilder<Guid>().SetErrorMessage(result.Errors.First().Description).Success(false).Build();
+                return new ApplicationResponseBuilder<Guid>().SetErrorMessage(result.Errors.First().Description).Success(false).Build();
             }
 
             var idClaim = new ApplicationUserClaim
