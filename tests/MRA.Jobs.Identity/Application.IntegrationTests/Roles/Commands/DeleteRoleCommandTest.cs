@@ -14,6 +14,7 @@ public class DeleteRoleCommandTest : BaseTest
         };
         await AddEntity(role);
 
+        await AddAuthorizationAsync();
         var response = await _client.DeleteAsync($"/api/roles/{role.Slug}");
 
         response.EnsureSuccessStatusCode();
@@ -23,6 +24,7 @@ public class DeleteRoleCommandTest : BaseTest
     public async Task DeleteRoleCommand_ShouldDeleteRoleCommand_NotFound()
     {
 
+        await AddAuthorizationAsync();
         var response = await _client.DeleteAsync($"/api/roles/test7");
 
         Assert.IsTrue(response.StatusCode == HttpStatusCode.NotFound);

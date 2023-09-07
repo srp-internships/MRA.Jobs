@@ -33,6 +33,7 @@ public class DeleteUserRolesCommandTest : BaseTest
         };
         await AddEntity(userRole);
 
+        await AddAuthorizationAsync();
         var response = await _client.DeleteAsync($"/api/UserRoles/{slug}");
 
         response.EnsureSuccessStatusCode();
@@ -42,6 +43,7 @@ public class DeleteUserRolesCommandTest : BaseTest
     public async Task DeleteUserRoleCommand_ShouldDeleteUserRoleCommand_NotFound()
     {
 
+        await AddAuthorizationAsync();
         var response = await _client.DeleteAsync("/api/UserRoles/testt10");
 
         Assert.IsTrue(response.StatusCode == HttpStatusCode.BadRequest);

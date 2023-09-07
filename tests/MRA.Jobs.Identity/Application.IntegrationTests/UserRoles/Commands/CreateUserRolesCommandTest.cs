@@ -31,6 +31,7 @@ public class CreateUserRolesCommandTest : BaseTest
             RoleId = role.Id
         };
 
+        await AddAuthorizationAsync();
         var response = await _client.PostAsJsonAsync("/api/userRoles", command);
 
         response.EnsureSuccessStatusCode();

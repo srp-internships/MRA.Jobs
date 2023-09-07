@@ -41,7 +41,7 @@ public class GetAccesTokenIntegrationTests : BaseTest
     public async Task Refresh_ValidRefreshAndAccessToken_OkResult()
     {
         //Arrange
-        var request = new GetAccesTokenUsingRefreshTokenQuery()
+        var request = new GetAccessTokenUsingRefreshTokenQuery()
         {
             AccessToken = loginResponce.AccessToken,
             RefreshToken = loginResponce.RefreshToken
@@ -59,7 +59,7 @@ public class GetAccesTokenIntegrationTests : BaseTest
     public async Task Refresh_InvalidRefreshToken_BadRequestResult()
     {
         //Arrange
-        var request = new GetAccesTokenUsingRefreshTokenQuery
+        var request = new GetAccessTokenUsingRefreshTokenQuery
         {
             AccessToken = loginResponce.AccessToken,
             RefreshToken = "sdf" //invalid refreshToken
@@ -76,7 +76,7 @@ public class GetAccesTokenIntegrationTests : BaseTest
     public async Task Refresh_InvalidAccessToken_BadRequestResult()
     {
         //Arrange
-        var request = new GetAccesTokenUsingRefreshTokenQuery
+        var request = new GetAccessTokenUsingRefreshTokenQuery
         {
             AccessToken = "sdf", //invalid accessToken
             RefreshToken = loginResponce.RefreshToken
@@ -111,7 +111,7 @@ public class GetAccesTokenIntegrationTests : BaseTest
         await RegisterUser(registerCommand2);
         var loginResponce2 = await LoginUser(loginCommand2);
 
-        var request = new GetAccesTokenUsingRefreshTokenQuery()
+        var request = new GetAccessTokenUsingRefreshTokenQuery()
         {
             AccessToken = loginResponce.AccessToken,
             RefreshToken = loginResponce2.RefreshToken

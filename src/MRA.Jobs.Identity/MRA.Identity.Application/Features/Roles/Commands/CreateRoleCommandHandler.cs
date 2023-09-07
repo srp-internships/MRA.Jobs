@@ -23,9 +23,9 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Appli
                 NormalizedName = request.RoleName.ToLower(),
                 Slug = request.RoleName.ToLower(),
             };
-
+            var test = _roleManager.Roles.ToList();
             var result = await _roleManager.CreateAsync(role);
-
+            test = _roleManager.Roles.ToList();
             if (result.Succeeded)
             {
                 return new ApplicationResponseBuilder<Guid>().SetResponse(role.Id).Build();

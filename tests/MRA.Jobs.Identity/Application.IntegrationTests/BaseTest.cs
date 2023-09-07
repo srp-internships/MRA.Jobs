@@ -47,7 +47,7 @@ public abstract class BaseTest
         using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         await dbContext.Set<T>().AddAsync(entity);
-       var res= await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
     
     protected Task<List<T>> GetAll<T>() where T : class

@@ -64,8 +64,7 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("refresh")]   
-    [Authorize]
-    public async Task<IActionResult> Refresh(GetAccesTokenUsingRefreshTokenQuery request)
+    public async Task<IActionResult> Refresh(GetAccessTokenUsingRefreshTokenQuery request)
     {
         var response = await _mediator.Send(request);
         if (response.IsSuccess == false)

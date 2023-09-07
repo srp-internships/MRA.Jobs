@@ -22,6 +22,7 @@ public class UpdateRoleCommandTest : BaseTest
             Slug = role.Slug
         };
 
+        await AddAuthorizationAsync();
         var response = await _client.PutAsJsonAsync($"/api/roles/{role.Slug}", command);
 
 
