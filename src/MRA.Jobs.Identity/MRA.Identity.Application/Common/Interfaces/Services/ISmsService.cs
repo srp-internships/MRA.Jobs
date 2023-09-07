@@ -8,5 +8,5 @@ namespace MRA.Identity.Application.Common.Interfaces.Services;
 public interface ISmsService
 {
     Task<string> SendSms(string phoneNumber);
-    Task<bool> CheckCode(int code);
+    Task<bool> CheckCode(string phoneNumber, int code);
 }
