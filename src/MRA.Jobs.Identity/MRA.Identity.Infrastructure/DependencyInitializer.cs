@@ -13,8 +13,6 @@ using MRA.Identity.Infrastructure.Identity;
 using MRA.Identity.Infrastructure.Persistence;
 using Mra.Shared.Initializer.Azure.EmailService;
 using Mra.Shared.Initializer.Services;
-using MRA.Identity.Application.Common.Interfaces.Services;
-using MRA.Identity.Infrastructure.Services;
 
 namespace MRA.Identity.Infrastructure;
 
@@ -55,7 +53,6 @@ public static class DependencyInitializer
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ApplicationDbContextInitializer>();
-        services.AddScoped<ISmsService, SmsService>();
         services.AddAzureEmailService();
         services.AddHttpClient();
         

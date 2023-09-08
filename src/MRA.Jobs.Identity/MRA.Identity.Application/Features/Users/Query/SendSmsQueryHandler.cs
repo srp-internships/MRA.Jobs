@@ -10,7 +10,7 @@ public class SendSmsQueryHandler : IRequestHandler<SendSmsQuery, bool>
     private readonly IApplicationDbContext _context;
     private readonly ISmsService _smsService;
 
-    public SendSmsQueryHandler(IApplicationDbContext context, ISmsService smsService)
+    public SendSmsQueryHandler(IApplicationDbContext context,  ISmsService smsService)
     {
         _context = context;
         _smsService = smsService;
