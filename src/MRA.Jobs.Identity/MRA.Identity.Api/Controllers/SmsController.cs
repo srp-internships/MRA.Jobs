@@ -15,9 +15,16 @@ public class SmsController : ControllerBase
     }
 
     [HttpGet("send_sms")]
-    public async Task<IActionResult> SendSms([FromQuery] SendSmsQuery request)
+    public async Task<IActionResult> SendSms([FromQuery] SendSmsQuery query)
     {
-        var result = await _mediator.Send(request);
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    [HttpGet("verify_code")]
+    public async Task<IActionResult> VerifyCode([FromQuery] SmsVerificationCodeCheckQuery query)
+    {
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
 }
