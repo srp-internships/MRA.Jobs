@@ -11,6 +11,7 @@ public class CreateVacancyCategoryCommandTest : Testing
     {
         var category = new CreateVacancyCategoryCommand { Name = "internship" };
 
+        RunAsAdministratorAsync();
         var response = await _httpClient.PostAsJsonAsync("/api/categories", category);
 
         Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);            
