@@ -77,14 +77,4 @@ public class InternshipsController : ApiControllerBase
 
         return await Mediator.Send(request, cancellationToken);
     }
-
-    [HttpPost("{slug}/test/result")]
-    [AllowAnonymous]
-    public async Task<ActionResult<TestResultDto>> GetTestResultRequest([FromRoute] string slug, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
-    {
-        if (slug != request.Slug)
-            return BadRequest();
-
-        return await Mediator.Send(request, cancellationToken);
-    }
 }
