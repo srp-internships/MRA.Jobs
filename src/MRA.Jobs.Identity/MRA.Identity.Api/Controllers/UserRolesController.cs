@@ -36,7 +36,7 @@ public class UserRolesController : ControllerBase
             return BadRequest(result.ErrorMessage);
         }
         if (result.Exception != null)
-            return BadRequest(result.Exception);
+            return BadRequest(result.Exception.ToString());
 
         return BadRequest();
     }
@@ -55,7 +55,7 @@ public class UserRolesController : ControllerBase
             return BadRequest(result.ErrorMessage);
         }
         if (result.Exception != null)
-            return BadRequest(result.Exception);
+            return BadRequest(result.Exception.ToString());
         return BadRequest();
     }
     [HttpPost]
