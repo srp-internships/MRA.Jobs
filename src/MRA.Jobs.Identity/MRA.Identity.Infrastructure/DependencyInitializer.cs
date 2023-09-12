@@ -13,6 +13,7 @@ using MRA.Identity.Infrastructure.Identity;
 using MRA.Identity.Infrastructure.Persistence;
 using Mra.Shared.Initializer.Azure.EmailService;
 using Mra.Shared.Initializer.Services;
+using Mra.Shared.Initializer.OsonSms.SmsService;
 
 namespace MRA.Identity.Infrastructure;
 
@@ -38,6 +39,17 @@ public static class DependencyInitializer
             services.AddAzureEmailService(); //uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
         }
 
+        var temp = configurations["UseFileSmsService"];
+
+        if (configurations["UseFileSmsService"] == "true")
+        {
+            services.AddFileSmsService();
+        }
+        else
+        {
+            services.AddOsonSmsService();
+        }
+
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
@@ -49,13 +61,13 @@ public static class DependencyInitializer
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        
+
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ApplicationDbContextInitializer>();
         services.AddAzureEmailService();
         services.AddHttpClient();
-        
+
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication(o =>
         {
@@ -73,7 +85,7 @@ public static class DependencyInitializer
                 ValidateAudience = false
             };
         });
-        
+
         services.AddAuthorization(auth =>
         {
             auth.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
