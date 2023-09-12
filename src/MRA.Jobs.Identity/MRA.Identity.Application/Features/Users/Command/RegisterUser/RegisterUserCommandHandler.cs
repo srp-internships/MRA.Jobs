@@ -41,7 +41,10 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
 
             var idClaim = new ApplicationUserClaim
             {
-                ClaimType = ClaimTypes.Id, ClaimValue = user.Id.ToString(), Slug = user.UserName + "-id"
+                ClaimType = ClaimTypes.Id,
+                ClaimValue = user.Id.ToString(),
+                UserId = user.Id,
+                Slug = user.UserName + "-id"
             };
             await _context.UserClaims.AddAsync(idClaim, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
