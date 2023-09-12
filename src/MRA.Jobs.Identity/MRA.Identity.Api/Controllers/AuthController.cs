@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Commands;
+using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Application.Contract.User.Responses;
 
 namespace MRA.Identity.Api.Controllers;
@@ -85,6 +87,7 @@ public class AuthController : ControllerBase
             return BadRequest(result.Exception.ToString());
         return Ok();
     }
+    
     [HttpPost("refresh")]   
     public async Task<IActionResult> Refresh(GetAccessTokenUsingRefreshTokenQuery request)
     {

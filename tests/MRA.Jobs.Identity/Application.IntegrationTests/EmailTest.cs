@@ -19,8 +19,8 @@ public class EmailTest : BaseTest
             Email = "test1@example.com",
             Password = "password@#12P",
             FirstName = "Alex",
-            Username = "@Alex22",
-            LastName = "Makedonsky",
+            Username = "@Alex221",
+            LastName = "Makedonsky1",
             PhoneNumber = "123456789"
         };
 
@@ -55,17 +55,17 @@ public class EmailTest : BaseTest
             Email = "test1@example.com",
             Password = "password@#12P",
             FirstName = "Alex",
-            Username = "@Alex22",
-            LastName = "Makedonsky",
+            Username = "@Alex221",
+            LastName = "Makedonsky1",
             PhoneNumber = "123456789"
         };
         // Act
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         var splitted = "aaaa1";
-        var responseEmal = await _client.GetAsync($"api/Auth/verify?token={splitted}");
+        var responseEmail = await _client.GetAsync($"api/Auth/verify?token={splitted}");
         // Assert
 
-        Assert.That(responseEmal.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        Assert.That(responseEmail.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         var user = await GetEntity<ApplicationUser>(s => s.Email == request.Email);
         Assert.IsFalse(user.EmailConfirmed);
     }
