@@ -1,8 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,12 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using MRA.Jobs.Application.IntegrationTests.Common.Interfaces;
 using MRA.Jobs.Application.IntegrationTests.Common.Services;
 using MRA.Jobs.Infrastructure.Identity;
-// using MRA.Jobs.Infrastructure.Identity.Entities;
 using MRA.Jobs.Infrastructure.Persistence;
 using NUnit.Framework;
-using NUnit.Framework.Internal.Execution;
-using Respawn;
-using Respawn.Graph;
+using ClaimTypes = Mra.Shared.Common.Constants.ClaimTypes;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
@@ -27,7 +22,7 @@ public class Testing
     private static Guid _currentUserId;
     private static IJwtTokenService _tokenService;
     protected HttpClient _httpClient;
-    protected string token;
+    protected string jwtToken;
 
     [OneTimeSetUp]
     public void RunBeforeAnyTests()
@@ -58,20 +53,34 @@ public class Testing
     {
         var claims = new List<Claim>
         {
-            new Claim("role", "user")
+            new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
+            new(ClaimTypes.Id,Guid.NewGuid().ToString())
         };
-        token = _tokenService.CreateTokenByClaims(claims);
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        jwtToken = _tokenService.CreateTokenByClaims(claims);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+    }
+    public void RunAsReviewerAsync()
+    {
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Role, ApplicationClaimValues.Reviewer),
+            new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
+            new(ClaimTypes.Id,Guid.NewGuid().ToString())
+        };
+        jwtToken = _tokenService.CreateTokenByClaims(claims);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
     }
 
     public void RunAsAdministratorAsync()
     {
         var claims = new List<Claim>
         {
-            new Claim("role", "admin")
+            new(ClaimTypes.Role, ApplicationClaimValues.Administrator),
+            new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
+            new(ClaimTypes.Id,Guid.NewGuid().ToString())
         };
-        token = _tokenService.CreateTokenByClaims(claims);
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        jwtToken = _tokenService.CreateTokenByClaims(claims);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
     }
 
     
