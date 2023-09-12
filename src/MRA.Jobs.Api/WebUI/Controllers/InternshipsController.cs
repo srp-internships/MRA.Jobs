@@ -18,18 +18,20 @@ public class InternshipsController : ApiControllerBase
     }
 
     [HttpPost]  
-    public async Task<ActionResult<Guid>> CreateNewInternship(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<string>> CreateNewInternship(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
-        return await Mediator.Send(request, cancellationToken);
+        var result= await Mediator.Send(request, cancellationToken);
+        return CreatedAtAction(nameof(GetInternshipBySlug), new { slug = result }, result);
     }
 
     [HttpPut("{slug}")]
-    public async Task<ActionResult<Guid>> UpdateInternship([FromRoute] string slug, [FromBody] UpdateInternshipVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<string>> UpdateInternship([FromRoute] string slug, [FromBody] UpdateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
             return BadRequest();
 
-        return await Mediator.Send(request, cancellationToken);
+        var result= await Mediator.Send(request, cancellationToken);
+        return CreatedAtAction(nameof(GetInternshipBySlug), new { slug = result }, result);
     }
 
     [HttpDelete("{slug}")]
@@ -40,7 +42,7 @@ public class InternshipsController : ApiControllerBase
     }
 
     [HttpGet("{slug}")]
-    public async Task<IActionResult> GetInternshipById(string slug)
+    public async Task<IActionResult> GetInternshipBySlug(string slug)
     {
         var internship = await Mediator.Send(new GetInternshipVacancyBySlugQuery { Slug = slug });
         return Ok(internship);

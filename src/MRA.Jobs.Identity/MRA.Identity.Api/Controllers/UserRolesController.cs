@@ -1,18 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using MRA.Identity.Application.Contract.ApplicationRoles.Queries;
 using MRA.Identity.Application.Contract.UserRoles.Queries;
 using MRA.Identity.Application.Contract.UserRoles.Commands;
-using MRA.Identity.Application.Contract.ApplicationRoles.Commands;
-using Azure.Identity;
 
 namespace MRA.Identity.Api.Controllers;
-//[Authorize(Roles = "RoleManager")]
+
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(ApplicationPolicies.Administrator)]
 public class UserRolesController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -40,7 +36,7 @@ public class UserRolesController : ControllerBase
             return BadRequest(result.ErrorMessage);
         }
         if (result.Exception != null)
-            return BadRequest(result.Exception);
+            return BadRequest(result.Exception.ToString());
 
         return BadRequest();
     }
@@ -59,7 +55,7 @@ public class UserRolesController : ControllerBase
             return BadRequest(result.ErrorMessage);
         }
         if (result.Exception != null)
-            return BadRequest(result.Exception);
+            return BadRequest(result.Exception.ToString());
         return BadRequest();
     }
     [HttpPost]

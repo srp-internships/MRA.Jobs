@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Runtime.InteropServices.JavaScript;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Tests.Commands;
+using MRA.Jobs.Infrastructure.Identity;
 using AddTagsToJobVacancyCommand = MRA.Jobs.Application.Contracts.JobVacancies.Commands.AddTagsToJobVacancyCommand;
 
 namespace MRA.Jobs.Web.Controllers;
@@ -12,10 +14,9 @@ namespace MRA.Jobs.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(ApplicationPolicies.Reviewer)]
 public class JobsController : ApiControllerBase
 {
-
-
     private readonly ILogger<JobsController> _logger;
 
     public JobsController(ILogger<JobsController> logger)
@@ -24,6 +25,7 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Get([FromQuery] PagedListQuery<JobVacancyListDto> query)
     {
         var categories = await Mediator.Send(query);
@@ -31,6 +33,7 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpGet("{slug}")]
+    [Authorize]
     public async Task<IActionResult> Get([FromRoute] string slug)
     {
         var category = await Mediator.Send(new GetJobVacancyBySlugQuery { Slug = slug });
@@ -38,9 +41,10 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateNewJobVacancy([FromBody] CreateJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<JSObject>> CreateNewJobVacancy([FromBody] CreateJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        return await Mediator.Send(request, cancellationToken);
+        var result = await Mediator.Send(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
 
     [HttpPost("{slug}/test")]
@@ -62,12 +66,13 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpPut("{slug}")]
-    public async Task<ActionResult<Guid>> Update([FromRoute] string slug, [FromBody] UpdateJobVacancyCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<string>> Update([FromRoute] string slug, [FromBody] UpdateJobVacancyCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)
             return BadRequest();
 
-        return await Mediator.Send(request, cancellationToken);
+        var result= await Mediator.Send(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
 
     [HttpDelete("{slug}")]

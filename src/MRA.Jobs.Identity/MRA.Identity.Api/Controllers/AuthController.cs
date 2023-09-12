@@ -1,14 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Commands;
 using MRA.Identity.Application.Contract.User.Responses;
-using MRA.Identity.Application.Features.Users.Command.RegisterUser;
-using MRA.Identity.Domain.Entities;
-using MRA.Identity.Infrastructure.Account.Services;
 
 namespace MRA.Identity.Api.Controllers;
 
@@ -21,7 +14,6 @@ public class AuthController : ControllerBase
 
     public AuthController(ISender mediator, IEmailVerification emailVerification)
     {
-
         _mediator = mediator;
         _emailVerification = emailVerification;
     }
@@ -40,7 +32,7 @@ public class AuthController : ControllerBase
             return Unauthorized(result.ErrorMessage);
         }
 
-        if (result.Exception != null)
+        if (result.Exception!=null)
         {
             return Unauthorized(result.Exception.ToString());
         }
@@ -58,19 +50,18 @@ public class AuthController : ControllerBase
             return Ok(result.Response);
         }
 
-        if (result.ErrorMessage != null)
+        if (result.ErrorMessage!=null)
         {
             return Unauthorized(result.ErrorMessage);
         }
 
-        if (result.Exception != null)
+        if (result.Exception!=null)
         {
             return Unauthorized(result.Exception);
         }
 
         return Unauthorized();
     }
-
     [HttpGet("verify")]
     public async Task<IActionResult> Verify(string token)
     {
@@ -93,5 +84,16 @@ public class AuthController : ControllerBase
         if (!result.IsSuccess)
             return BadRequest(result.Exception.ToString());
         return Ok();
+    }
+    [HttpPost("refresh")]   
+    public async Task<IActionResult> Refresh(GetAccessTokenUsingRefreshTokenQuery request)
+    {
+        var response = await _mediator.Send(request);
+        if (response.IsSuccess == false)
+        {
+            return BadRequest(response.ErrorMessage);
+        }
+
+        return Ok(response);
     }
 }

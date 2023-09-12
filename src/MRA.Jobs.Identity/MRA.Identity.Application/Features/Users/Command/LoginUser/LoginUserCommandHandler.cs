@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.Services;
@@ -6,6 +7,7 @@ using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.User.Commands;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Identity.Domain.Entities;
+using ClaimTypes = Mra.Shared.Common.Constants.ClaimTypes;
 
 namespace MRA.Identity.Application.Features.Users.Command.LoginUser;
 
@@ -33,6 +35,10 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Applica
                 return new ApplicationResponseBuilder<JwtTokenResponse>().Success(false)
                     .SetErrorMessage("incorrect username").Build();
             }
+            
+            if ((await _userManager.GetClaimsAsync(user)).FirstOrDefault(c => c.Type == ClaimTypes.Id) == null)
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Id, user.Id.ToString()));
+
 
             bool success = await _userManager.CheckPasswordAsync(user, request.Password);
 
@@ -40,6 +46,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Applica
             {
                 return new ApplicationResponseBuilder<JwtTokenResponse>().SetResponse(new JwtTokenResponse
                 {
+                    RefreshToken = _jwtTokenService.CreateRefreshToken(await _userManager.GetClaimsAsync(user)),
                     AccessToken = _jwtTokenService.CreateTokenByClaims(await _userManager.GetClaimsAsync(user))
                 });
             }

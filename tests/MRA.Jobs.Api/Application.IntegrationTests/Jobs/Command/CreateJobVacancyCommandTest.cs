@@ -14,7 +14,7 @@ public class CreateJobVacancyCommandTest : Testing
     [Test]
     public async Task CreateJobVacancyCommand_CreatingJobVacancyWithQuestions_Success()
     {
-        RunAsAdministratorAsync();
+        RunAsReviewerAsync();
         var jobVacancy = new CreateJobVacancyCommand {            
             Title = "Cool Job",
             RequiredYearOfExperience = 5,
@@ -23,7 +23,7 @@ public class CreateJobVacancyCommandTest : Testing
             PublishDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(2),
             CategoryId = await AddVacancyCategory("jobvacancy"),
-            VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Id = Guid.NewGuid(), Question = "What is your English proficiency level?" } },
+            VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
             WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime
         };
         var response = await _httpClient.PostAsJsonAsync("/api/jobs", jobVacancy);

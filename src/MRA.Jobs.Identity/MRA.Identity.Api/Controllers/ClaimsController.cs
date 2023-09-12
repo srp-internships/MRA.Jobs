@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.Claim.Commands;
@@ -9,6 +10,7 @@ namespace MRA.Identity.Api.Controllers;
 
 [ApiController]
 [Route("/api/[controller]/")]
+[Authorize(ApplicationPolicies.Administrator)]
 public class ClaimsController : ControllerBase
 {
     private readonly ISender _mediator;
@@ -51,7 +53,7 @@ public class ClaimsController : ControllerBase
     }
 
     [HttpDelete("{slug}")]
-    public async Task<IActionResult> Put(string slug)
+    public async Task<IActionResult> Delete(string slug)
     {
         var response = await _mediator.Send(new DeleteClaimCommand
         {

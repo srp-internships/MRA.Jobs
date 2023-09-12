@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
-using MRA.Jobs.Application.Contracts.Dtos;
+using MRA.Jobs.Application.Contracts.Dtos.Responses;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
@@ -24,5 +24,5 @@ public class InternshipVacancyListResponse
     public int Duration { get; set; }
     public int Stipend { get; set; }
     public string Slug { get; set; }
-    public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyQuestionResponseDto> VacancyQuestions { get; set; }
 }

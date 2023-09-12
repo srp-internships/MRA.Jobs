@@ -1,5 +1,8 @@
-﻿@page "/TrainingsInfo"
+﻿@page "/trainings/{Slug}"
+@using Blazored.LocalStorage;
 @using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+@using Microsoft.AspNetCore.Components.Authorization;
+@inject AuthenticationStateProvider provider
 
 @inject ITrainingService _trainingService
 
@@ -18,9 +21,10 @@
 					<h3 class="mb-2 text-black">
 						Description:
 					</h3>
-					<p class="mb-2 text-black">@_training.Description</p>
+
+					<p class="mb-2 text-black">@((MarkupString)@_training.Description)</p>
 					<h3 class="mb-2 text-black">
-						EndDate: 
+						EndDate:
 					</h3>
 					<p class="mb-2 text-black">@_training.EndDate</p>
 					<h3 class="mb-2 text-black">
@@ -35,12 +39,21 @@
 			</div>
 			@*button*@
 			<div class="Trainingsinfo">
-
 				<div class="w-100 d-flex flex-row justify-content-between">
 					<div class="card w-100 bg-white shadow-lg rounded mb-4">
 						<div class="card-body">
 							<h2 class="mb-2 text-black">Interested in a trainings?</h2>
-							<a href="ApplytoTrainings/{@_training.Slug}/{@_training.Id}" class="btn btn-primary">Apply</a>
+							<a href="/trainings/ApplytoTrainings/@Slug" class="btn btn-primary w-100">Applyb</a>
+							<CascadingAuthenticationState>
+								<AuthorizeView>
+									<Authorized>
+										<a href="/trainings/ApplytoTrainings/@Slug" class="btn btn-primary w-100">Apply</a>
+									</Authorized>
+									<NotAuthorized>
+										<a href="/sign-in" class="btn btn-primary">Apply</a>
+									</NotAuthorized>
+								</AuthorizeView>
+							</CascadingAuthenticationState>
 						</div>
 					</div>
 				</div>
@@ -52,11 +65,12 @@
 
 
 @code {
-	private string slug = "-2023-8";
+	[Parameter]
+	public string Slug { get; set; }
 	private TrainingVacancyDetailedResponse _training { get; set; } = new TrainingVacancyDetailedResponse();
 
 	protected override async Task OnInitializedAsync()
 	{
-		_training = await _trainingService.GetBySlug(slug);
+		_training = await _trainingService.GetBySlug(Slug);
 	}
 }

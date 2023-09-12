@@ -431,7 +431,7 @@
         "tags": [
           "Categories"
         ],
-        "operationId": "Categories_CreateNewJobVacancy",
+        "operationId": "Categories_CreateNewCategoryVacancy",
         "requestBody": {
           "x-name": "request",
           "content": {
@@ -450,13 +450,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/categories/training": {
@@ -555,13 +559,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -591,7 +599,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/cv": {
@@ -781,8 +794,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }
@@ -825,8 +837,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }
@@ -866,7 +877,7 @@
         "tags": [
           "Internships"
         ],
-        "operationId": "Internships_GetInternshipById",
+        "operationId": "Internships_GetInternshipBySlug",
         "parameters": [
           {
             "name": "slug",
@@ -1127,7 +1138,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -1152,13 +1168,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "$ref": "#/components/schemas/JSObject"
                 }
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/jobs/{slug}": {
@@ -1190,7 +1210,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -1226,13 +1251,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -1261,7 +1290,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/jobs/{slug}/test": {
@@ -1304,7 +1338,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/jobs/{slug}/test/result": {
@@ -1347,7 +1386,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/jobs/{slug}/tags": {
@@ -1391,7 +1435,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -1433,7 +1482,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/sms": {
@@ -1705,8 +1759,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }
@@ -1729,18 +1782,6 @@
             "x-position": 1
           }
         ],
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteTrainingVacancyCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
         "responses": {
           "200": {
             "description": "",
@@ -1867,8 +1908,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "string"
                 }
               }
             }
@@ -1951,15 +1991,11 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
           "response": {
             "type": "string",
             "nullable": true
           },
-          "question": {
+          "vacancyQuestion": {
             "nullable": true,
             "oneOf": [
               {
@@ -1973,10 +2009,6 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
           "question": {
             "type": "string",
             "nullable": true
@@ -2629,6 +2661,15 @@
           }
         }
       },
+      "JSObject": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isDisposed": {
+            "type": "boolean"
+          }
+        }
+      },
       "CreateJobVacancyCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -2891,10 +2932,24 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/VacancyQuestionDto"
+              "$ref": "#/components/schemas/VacancyQuestionResponseDto"
             }
           },
           "slug": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "VacancyQuestionResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "question": {
             "type": "string",
             "nullable": true
           }
@@ -2984,16 +3039,6 @@
           "fees": {
             "type": "integer",
             "format": "int32"
-          }
-        }
-      },
-      "DeleteTrainingVacancyCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "slug": {
-            "type": "string",
-            "nullable": true
           }
         }
       }

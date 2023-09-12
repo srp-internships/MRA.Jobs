@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using MRA.Identity.Application.Contract.ApplicationRoles.Queries;
@@ -10,6 +7,7 @@ using MRA.Identity.Application.Contract.ApplicationRoles.Commands;
 namespace MRA.Identity.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(ApplicationPolicies.Administrator)]
 public class RolesController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -38,6 +36,9 @@ public class RolesController : ControllerBase
     public async Task<IActionResult> Create(CreateRoleCommand command)
     {
         var result = await _mediator.Send(command);
+        if (result.IsSuccess==false)
+            return BadRequest(result);
+
         return Ok(result);
     }
 
@@ -46,6 +47,8 @@ public class RolesController : ControllerBase
     {
         command.Slug = slug;
         var result= await _mediator.Send(command);
+        if (result.IsSuccess==false)
+            return BadRequest(result);
         return Ok(result);
     }
 
@@ -54,9 +57,9 @@ public class RolesController : ControllerBase
     {
         var command = new DeleteRoleCommand { Slug = slug };
         var result = await _mediator.Send(command);
+        if (result.IsSuccess==false)
+            return NotFound();
+       
         return Ok(result);
     }
 }
-
-
-

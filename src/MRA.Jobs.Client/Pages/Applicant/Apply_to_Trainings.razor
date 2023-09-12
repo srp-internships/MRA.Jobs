@@ -1,33 +1,95 @@
-﻿@page "/ApplytoTrainings"
+﻿@page "/trainings/ApplytoTrainings/{Slug}"
+@using MRA.Jobs.Application.Contracts.Applications.Commands;
+@using MRA.Jobs.Application.Contracts.Dtos;
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+@using MRA.Jobs.Client.Services.ApplicationService;
+@inject HttpClient httpClient
+@inject IApplicationService ApplicationService;
+@inject ITrainingService _trainingService
+@inject NavigationManager NavigationManager
+
 <div class="container">
 
-	<h1>Подать заявку на обучение</h1>
+	<h1>Apply for training - @_training.Title</h1>
 
-	<p>Заполните форму ниже, чтобы подать заявку на обучение:</p>
+	<p>Fill out the form below to apply for training:</p>
 
-	<EditForm Model="@application">
-		<DataAnnotationsValidator />
-		<ValidationSummary />
-
+	<EditForm Model="@createApplication" OnValidSubmit="Apply">
 		<div class="form-group">
-			<label for="about">Расскажите о себе (минимум 2000 слов):</label>
-			<InputTextArea id="about" @bind-Value="application.About" class="form-control" rows="10"></InputTextArea>
-			@if (application.About != null && application.About.Split(' ').Length < 2000)
+			<label for="CoverLetter">Tell us about yourself (minimum 50 words):</label>
+			<InputTextArea id="CoverLetter" @bind-Value="createApplication.CoverLetter" class="form-control" rows="10"></InputTextArea>
+			@if (createApplication.CoverLetter != null && createApplication.CoverLetter.Split(' ').Length < 50)
 			{
-				<p class="text-danger">Пожалуйста, напишите не менее 2000 слов.</p>
+				<p class="text-danger">Please write at least 50 words.</p>
 			}
 		</div>
-
-		<button type="submit" class="btn btn-primary">Отправить</button>
+		@if (_training != null)
+		{
+			@if (_training.VacancyQuestions.Count() > 0)
+			{
+				<div>
+					<p class="fs-3">Questions</p>
+					@foreach (var question in _training.VacancyQuestions)
+					{
+						<label for="question" class="form-label"><span class="text-danger">*</span>@question.Question</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="question_@question.Id" required
+							@bind="questionResponses[question.Question]">
+						</div>
+					}
+				</div>
+			}
+		}
+		<button type="submit" class="btn btn-primary">Send</button>
 	</EditForm>
 
 </div>
 @code {
-		private Application application = new Application();
-
-		private class Application
+	private CreateApplicationCommand createApplication=new  CreateApplicationCommand();
+	private TrainingVacancyDetailedResponse _training;
+	[Parameter]
+	public string Slug { get; set; }
+	private Dictionary<string, string> questionResponses = new Dictionary<string, string>();
+	protected override async Task OnInitializedAsync()
+	{
+		_training = await _trainingService.GetBySlug(Slug);
+		if (_training != null)
 		{
-
-			public string About { get; set; }
+			createApplication = new CreateApplicationCommand
+				{
+					VacancyId = _training.Id,
+					VacancyResponses = _training.VacancyQuestions.Select(q => new VacancyResponseDto
+					{
+						VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+					})
+				};
+			foreach (var question in _training.VacancyQuestions)
+			{
+				questionResponses[question.Question] = "";
+			}
 		}
+	}
+	private async Task Apply()
+	{
+		createApplication.VacancyId = _training.Id;
+		if (string.IsNullOrWhiteSpace(createApplication.CoverLetter) || questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)))
+		{
+			return; // Do not proceed with submission if any required fields are empty.
+		}
+		var updatedResponses = new List<VacancyResponseDto>();
+
+		foreach (var vr in createApplication.VacancyResponses)
+		{
+			var updatedResponse = new VacancyResponseDto
+				{
+					VacancyQuestion = vr.VacancyQuestion,
+					Response = questionResponses[vr.VacancyQuestion.Question]
+				};
+
+			updatedResponses.Add(updatedResponse);
+		}
+		createApplication.VacancyResponses = updatedResponses;
+		await ApplicationService.CreateApplication(createApplication);
+		NavigationManager.NavigateTo("/");
+	}
 }

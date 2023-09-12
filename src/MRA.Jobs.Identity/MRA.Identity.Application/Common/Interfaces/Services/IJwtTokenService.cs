@@ -4,5 +4,6 @@ namespace MRA.Identity.Application.Common.Interfaces.Services;
 
 public interface IJwtTokenService
 {
-    internal string CreateTokenByClaims(IList<Claim> user);
+    public string CreateTokenByClaims(IList<Claim> user);
+    public string CreateRefreshToken(IList<Claim> user);
 }
