@@ -9,6 +9,7 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class  ApplicationsController : ApiControllerBase
 {
     private readonly ILogger<ApplicationsController> _logger;
@@ -19,6 +20,7 @@ public class  ApplicationsController : ApiControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<PagedList<ApplicationListDto>>> GetAll([FromQuery] PagedListQuery<ApplicationListDto> query)
     {
         var applications = await Mediator.Send(query);
@@ -26,12 +28,14 @@ public class  ApplicationsController : ApiControllerBase
     }
 
     [HttpGet("{slug}")]
+    [AllowAnonymous]
     public async Task<ActionResult<ApplicationDetailsDto>> Get(string slug, CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetBySlugApplicationQuery { Slug = slug }, cancellationToken);
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<Guid>> CreateApplication(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
@@ -72,6 +76,7 @@ public class  ApplicationsController : ApiControllerBase
     }
 
     [HttpGet("{status}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetApplicationsByStatus(ApplicationStatus status)
     {
         var query = new GetApplicationsByStatusQuery { Status = status };
