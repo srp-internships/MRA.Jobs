@@ -44,7 +44,7 @@ public class EmailVerification : IEmailVerification
         }
         else
         {
-            return new VerifyUserEmailResponse() { ErrorMessage =$"{result.Errors}", Success = false };
+            return new VerifyUserEmailResponse() { ErrorMessage =$"{result.Errors.First().Description}", Success = false };
         }
 
     }

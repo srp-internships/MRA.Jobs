@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Commands;
@@ -64,7 +65,9 @@ public class AuthController : ControllerBase
 
         return Unauthorized();
     }
+
     [HttpGet("verify")]
+    [Authorize]
     public async Task<IActionResult> Verify(string token)
     {
         var result = await _emailVerification.VerifyEmailAsync(token);
@@ -80,6 +83,7 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("VerifyEmail")]
+    [Authorize]
     public async Task<IActionResult> ResendVerificationCode()
     {
         var result = await _mediator.Send(new UserEmallCommand());

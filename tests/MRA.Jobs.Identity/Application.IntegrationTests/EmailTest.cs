@@ -27,7 +27,7 @@ public class EmailTest : BaseTest
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         var splitted = SendEmailData.Body.Split("'")[1].Split("token=")[1];
 
-        var requestLogin = new LoginUserCommand { Username = "@Alex22", Password = "password@#12P" };
+        var requestLogin = new LoginUserCommand { Username = "@Alex221", Password = "password@#12P" };
 
         // Act
         var responseLogin = await _client.PostAsJsonAsync("api/Auth/login", requestLogin);
@@ -36,7 +36,9 @@ public class EmailTest : BaseTest
 
         _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwt.AccessToken);
 
-        var responseEmail = await _client.GetAsync($"api/Auth/verify?token={splitted}");
+        var responseEmail = await _client.GetAsync($"api/Auth/verify?token={WebUtility.UrlEncode(splitted)}");
+
+        var stringres = responseEmail.Content.ReadAsStringAsync();
 
         // Assert
         
@@ -62,7 +64,18 @@ public class EmailTest : BaseTest
         // Act
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         var splitted = "aaaa1";
-        var responseEmail = await _client.GetAsync($"api/Auth/verify?token={splitted}");
+
+        var requestLogin = new LoginUserCommand { Username = "@Alex221", Password = "password@#12P" };
+
+        // Act
+        var responseLogin = await _client.PostAsJsonAsync("api/Auth/login", requestLogin);
+        var jwt = await responseLogin.Content.ReadFromJsonAsync<JwtTokenResponse>();
+
+
+        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwt.AccessToken);
+
+
+        var responseEmail = await _client.GetAsync($"api/Auth/verify?token={WebUtility.UrlEncode(splitted)}");
         // Assert
 
         Assert.That(responseEmail.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
