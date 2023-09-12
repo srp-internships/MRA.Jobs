@@ -25,7 +25,7 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpGet]
-    [Authorize]
+    [AllowAnonymous]
     public async Task<IActionResult> Get([FromQuery] PagedListQuery<JobVacancyListDto> query)
     {
         var categories = await Mediator.Send(query);
@@ -33,7 +33,7 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpGet("{slug}")]
-    [Authorize]
+    [AllowAnonymous]
     public async Task<IActionResult> Get([FromRoute] string slug)
     {
         var category = await Mediator.Send(new GetJobVacancyBySlugQuery { Slug = slug });
