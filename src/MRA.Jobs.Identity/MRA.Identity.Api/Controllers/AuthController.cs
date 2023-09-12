@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.User.Commands;
 using MRA.Identity.Application.Contract.User.Queries;
@@ -56,7 +55,7 @@ public class AuthController : ControllerBase
 
         if (result.Exception != null)
         {
-            return Unauthorized(result.Exception);
+            return Unauthorized(result.Exception.ToString());
         }
 
         return Unauthorized();
