@@ -14,7 +14,7 @@ public class CreateJobVacancyCommandTest : Testing
     [Test]
     public async Task CreateJobVacancyCommand_CreatingJobVacancyWithQuestions_Success()
     {
-        RunAsAdministratorAsync();
+        RunAsReviewerAsync();
         var jobVacancy = new CreateJobVacancyCommand {            
             Title = "Cool Job",
             RequiredYearOfExperience = 5,

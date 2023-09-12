@@ -8,7 +8,7 @@ public class DeleteJobVacancyCommandTest : Testing
     public async Task DeleteJobVacancyCommand_ShouldDeleteJobVacancyCommand_Success()
     {
         var Jobs = new JobsContext();
-
+        RunAsReviewerAsync();
         var response = await _httpClient.DeleteAsync($"/api/jobs/{(await Jobs.GetJob("JobVacancy")).Slug}");
             
         response.EnsureSuccessStatusCode();
