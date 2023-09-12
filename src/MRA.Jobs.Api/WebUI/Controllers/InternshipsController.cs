@@ -1,23 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Tests.Commands;
+using MRA.Jobs.Infrastructure.Identity;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(ApplicationPolicies.Reviewer)]
 public class InternshipsController : ApiControllerBase
 {
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetWithPagination([FromQuery] PagedListQuery<InternshipVacancyListResponse> query)
     {
         var internships = await Mediator.Send(query);
         return Ok(internships);
     }
 
-    [HttpPost]  
+    [HttpPost]
     public async Task<ActionResult<string>> CreateNewInternship(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
     {
         var result= await Mediator.Send(request, cancellationToken);
@@ -42,6 +46,7 @@ public class InternshipsController : ApiControllerBase
     }
 
     [HttpGet("{slug}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetInternshipBySlug(string slug)
     {
         var internship = await Mediator.Send(new GetInternshipVacancyBySlugQuery { Slug = slug });
@@ -74,6 +79,7 @@ public class InternshipsController : ApiControllerBase
     }
 
     [HttpPost("{slug}/test/result")]
+    [AllowAnonymous]
     public async Task<ActionResult<TestResultDto>> GetTestResultRequest([FromRoute] string slug, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
     {
         if (slug != request.Slug)

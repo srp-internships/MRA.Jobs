@@ -8,7 +8,7 @@ public class DeleteInternshipVacancyCommandTest : Testing
     public async Task DeleteInternshipVacancyCommand_ShouldDeleteInternshipVacancyCommand_Success()
     {
         var internships = new InternshipsContext();
-
+        RunAsReviewerAsync();
         var response = await _httpClient.DeleteAsync($"/api/internships/{(await internships.GetInternship("IniternshipVacancy")).Slug}");
             
         response.EnsureSuccessStatusCode();
