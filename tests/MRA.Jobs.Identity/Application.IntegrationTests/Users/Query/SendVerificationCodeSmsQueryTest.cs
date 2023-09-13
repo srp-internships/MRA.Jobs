@@ -11,6 +11,7 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
     public async Task SendVerificationCodeSmsQueryHandler_SendingSmsWithCorrectPhoneNumber_Success()
     {
         // Arrange
+        await AddAuthorizationAsync();
         var query = new SendVerificationCodeSmsQuery { PhoneNumber = "911111111" };
 
         // Act
@@ -31,6 +32,7 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
     public async Task SmsVerificationCodeCheckQueryHandler_VerifyingSmsCode_Success()
     {
         // Arrange
+        await AddAuthorizationAsync();
         var query = new SendVerificationCodeSmsQuery { PhoneNumber = "123456789" };
         await _client.GetAsync($"api/sms/send_code?PhoneNumber={query.PhoneNumber}");
 

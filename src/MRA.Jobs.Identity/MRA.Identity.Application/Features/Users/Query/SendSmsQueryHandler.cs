@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Logging;
 using Mra.Shared.Common.Interfaces.Services;
+using Mra.Shared.OsonSms.SmsService;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract.User.Queries;
 
@@ -9,11 +11,13 @@ public class SendSmsQueryHandler : IRequestHandler<SendVerificationCodeSmsQuery,
 {
     private readonly IApplicationDbContext _context;
     private readonly ISmsService _smsService;
+    private readonly ILogger<SmsService> _logger;
 
-    public SendSmsQueryHandler(IApplicationDbContext context,  ISmsService smsService)
+    public SendSmsQueryHandler(IApplicationDbContext context,  ISmsService smsService, ILogger<SmsService> logger)
     {
         _context = context;
         _smsService = smsService;
+        _logger = logger;
     }
     public async Task<bool> Handle(SendVerificationCodeSmsQuery request, CancellationToken cancellationToken)
     {
@@ -33,6 +37,7 @@ public class SendSmsQueryHandler : IRequestHandler<SendVerificationCodeSmsQuery,
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, ex.Message);
             return false;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.User.Queries;
 
@@ -14,6 +15,7 @@ public class SmsController : ControllerBase
         _mediator = mediator;
     }
 
+    [Authorize]
     [HttpGet("send_code")]
     public async Task<IActionResult> SendSms([FromQuery] SendVerificationCodeSmsQuery query)
     {
@@ -21,6 +23,7 @@ public class SmsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize]
     [HttpGet("verify_code")]
     public async Task<IActionResult> VerifyCode([FromQuery] SmsVerificationCodeCheckQuery query)
     {
