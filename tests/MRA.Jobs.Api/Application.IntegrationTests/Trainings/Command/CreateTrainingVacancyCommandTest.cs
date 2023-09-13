@@ -11,7 +11,6 @@ public class CreateTrainingVacancyCommandTest : Testing
     [Test]
     public async Task CreateTrainingVacancyCommand_CreatingTrainingVacancyWithVacancyQuestions_Success()
     {
-        RunAsAdministratorAsync();
         var trainingVacancy = new CreateTrainingVacancyCommand
         {
             Title = "Cool Job",
@@ -25,6 +24,7 @@ public class CreateTrainingVacancyCommandTest : Testing
             VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
         };
 
+        RunAsReviewerAsync();
         var response = await _httpClient.PostAsJsonAsync("/api/trainings", trainingVacancy);
 
         response.EnsureSuccessStatusCode();

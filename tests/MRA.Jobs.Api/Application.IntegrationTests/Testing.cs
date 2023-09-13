@@ -53,6 +53,7 @@ public class Testing
     {
         var claims = new List<Claim>
         {
+            new(ClaimTypes.Role,ApplicationClaimValues.Applicant),
             new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
             new(ClaimTypes.Id,Guid.NewGuid().ToString())
         };
