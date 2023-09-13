@@ -13,6 +13,7 @@ using MRA.Jobs.Client.Services.InternshipsServices;
 using MRA.Jobs.Client.Services.TrainingServices;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using MRA.Jobs.Client.Services.Auth;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -40,5 +41,5 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
-
+builder.Services.AddScoped<IAuthService,  AuthService>();
 await builder.Build().RunAsync();

@@ -1,63 +1,75 @@
 ﻿@page "/sign-up"
+@using MRA.Identity.Application.Contract.User.Commands;
+@using MRA.Jobs.Client.Services.Auth;
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager;
 
 <div class="container">
-    <div class="col-5 m-3">
-        <MatTextField @bind-Value="name" Class="w-100" Label="Name" Outlined="true"></MatTextField>
-    </div>
-    <div class="col-5 m-3">
-        <MatTextField @bind-Value="name" Class="w-100" Label="LastName" Outlined="true"></MatTextField>
-    </div>
-    <div class="col-5 m-3">
-        <MatTextField @bind-Value="name" Class="w-100" Label="Patronymic" Outlined="true"></MatTextField>
-    </div>
-    <div class="col-5 m-3">
-        <MatTextField @bind-Value="name" Class="w-100" Label="Email" Outlined="true"></MatTextField>
-    </div>
-    <div class="col-5 m-3">
-        <MatDatePicker Label="Date of Brith" Class="w-100" Outlined="true" TValue="DateTime"></MatDatePicker>
-    </div>
-    <div class="col-5 m-3">
-        <MatSelect Label="Pick a Food Group" Class="w-100" Outlined="true" TValue="string">
-            <MatOptionString></MatOptionString>
-            <MatOptionString Value="grains">Bread, Cereal, Rice, and Pasta</MatOptionString>
-            <MatOptionString Value="vegetables">Vegetables</MatOptionString>
-            <MatOptionString Value="fruit">Fruit</MatOptionString>
-        </MatSelect>
-    </div>
-    <div class="col-5 m-3">
-        <MatTextField @bind-Value="name" Class="w-100" Label="PhoneVerificationCode" Outlined="true"></MatTextField>
-    </div>
-    <div class="col-5 m-3">
-        <MatCheckbox @bind-Value="@checked2" Label="@(getLabel(checked2))"></MatCheckbox>
-    </div>
+	<div class="row">
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<EditForm Model="user" OnInvalidSubmit="submit">
+				<FluentValidationValidator />
+				<ValidationSummary />
+				<div class="form-group">
+					<label for="email">Email:</label>
+					<InputText id="email" @bind-Value="user.Email" class="form-control" />
+					<ValidationMessage For="@(() => user.Email)" />
+				</div>
+				<div class="form-group">
+					<label for="firstName">First Name:</label>
+					<InputText id="firstName" @bind-Value="user.FirstName" class="form-control" />
+					<ValidationMessage For="@(() => user.FirstName)" />
+				</div>
+				<div class="form-group">
+					<label for="lastName">Last Name:</label>
+					<InputText id="lastName" @bind-Value="user.LastName" class="form-control" />
+					<ValidationMessage For="@(() => user.LastName)" />
 
-    <div class="col-5 m-3">
-        <MatTextField @bind-Value="name" Class="w-100" Label="Password" Outlined="true"></MatTextField>
-    </div>
+				</div>
+				<div class="form-group">
+					<label for="phoneNumber">Phone Number:</label>
+					<InputText id="phoneNumber" @bind-Value="user.PhoneNumber" class="form-control" />
+					<ValidationMessage For="@(() => user.PhoneNumber)" />
 
-    <div class="col-5 m-3">
-        <MatTextField @bind-Value="name" Class="w-100" Label="PasswordConfirmation" Outlined="true"></MatTextField>
-    </div>
+				</div>
+				<div class="form-group">
+					<label for="username">Username:</label>
+					<InputText id="username" @bind-Value="user.Username" class="form-control" />
+					<ValidationMessage For="@(() => user.Username)" />
+
+				</div>
+				<div class="form-group">
+					<label for="password">Password:</label>
+					<InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
+					<ValidationMessage For="@(() => user.Password)" />
+
+				</div>
+				<div class="form-group">
+					<label for="confirmPassword">Confirm Password:</label>
+					<InputText id="confirmPassword" @bind-Value="user.ConfirmPassword" type="password" class="form-control" />
+					<ValidationMessage For="@(() => user.ConfirmPassword)" />
+				</div>
+				<br />
+				<button type="submit" class="btn btn-primary" style="width:100%" @onclick="submit">Sign in</button>
+			</EditForm>
+		</div>
+		<div class="col-md-3"></div>
+		<br />
+	</div>
+
 </div>
 
 @code {
 
-    public string Name
-    {
-        get => Name;
-        set
-        {
-            name = value;
-            StateHasChanged();
-        }
-    }
+	RegisterUserCommand user = new RegisterUserCommand();
 
-    private string name;
+	private async void submit()
+	{
+		var result = await AuthService.RegisterUserAsync(user);
+		if (result)
+			NavigationManager.NavigateTo("../sign-in");
 
-    bool checked2;
-    string getLabel(bool val)
-    {
-        return !val ? "Check me!" : "Uncheck me?";
-    }
+	}
 
 }
