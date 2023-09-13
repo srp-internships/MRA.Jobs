@@ -10,13 +10,11 @@ namespace MRA.Identity.Application.Features.Users.Query;
 public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificationCodeCheckQuery, bool>
 {
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly ISmsService _smsService;
     private readonly IApplicationDbContext _context;
 
-    public SmsVerificationCodeCheckQueryHandler(UserManager<ApplicationUser> userManager, ISmsService smsService, IApplicationDbContext context)
+    public SmsVerificationCodeCheckQueryHandler(UserManager<ApplicationUser> userManager, IApplicationDbContext context)
     {
         _userManager = userManager;
-        _smsService = smsService;
         _context = context;
     }
     public async Task<bool> Handle(SmsVerificationCodeCheckQuery request, CancellationToken cancellationToken)

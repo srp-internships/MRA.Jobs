@@ -1,27 +1,23 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
 using Mra.Shared.Common.Interfaces.Services;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract.User.Queries;
 
 
 namespace MRA.Identity.Application.Features.Users.Query;
-public class SendSmsQueryHandler : IRequestHandler<SendSmsQuery, bool>
+public class SendSmsQueryHandler : IRequestHandler<SendVerificationCodeSmsQuery, bool>
 {
     private readonly IApplicationDbContext _context;
     private readonly ISmsService _smsService;
-    private readonly ILogger _logger;
 
-    public SendSmsQueryHandler(IApplicationDbContext context,  ISmsService smsService, ILogger logger)
+    public SendSmsQueryHandler(IApplicationDbContext context,  ISmsService smsService)
     {
         _context = context;
         _smsService = smsService;
-        _logger = logger;
     }
-    public async Task<bool> Handle(SendSmsQuery request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(SendVerificationCodeSmsQuery request, CancellationToken cancellationToken)
     {
-        int code;
-        var response = await _smsService.SendSmsAsync(request.PhoneNumber, GenerateMessage(out code));
+        var response = await _smsService.SendSmsAsync(request.PhoneNumber, GenerateMessage(out int code));
 
         if (!response) return false;
 
@@ -37,7 +33,6 @@ public class SendSmsQueryHandler : IRequestHandler<SendSmsQuery, bool>
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
             return false;
         }
     }
