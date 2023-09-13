@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
-using Microsoft.AspNetCore.Http.HttpResults;
+using MRA.Jobs.Infrastructure.Identity;
 
 namespace MRA.Jobs.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Application.Common.Security.Authorize]
 public class CategoriesController : ApiControllerBase
 {
     private readonly ILogger<CategoriesController> _logger;
@@ -44,6 +44,7 @@ public class CategoriesController : ApiControllerBase
     }
 
     [HttpPost]
+    [Authorize(ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<string>> CreateNewCategoryVacancy(CreateVacancyCategoryCommand request,
         CancellationToken cancellationToken)
     {
@@ -53,6 +54,7 @@ public class CategoriesController : ApiControllerBase
 
 
     [HttpPut("{slug}")]
+    [Authorize(ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<string>> Update([FromRoute] string slug,
         [FromBody] UpdateVacancyCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -64,6 +66,7 @@ public class CategoriesController : ApiControllerBase
     }
 
     [HttpDelete("{slug}")]
+    [Authorize(ApplicationPolicies.Reviewer)]
     public async Task<IActionResult> Delete(string slug)
     {
         var command = new DeleteVacancyCategoryCommand { Slug = slug };

@@ -26,6 +26,7 @@ public class UpdateJobVacancyCommandTest : Testing
             Slug = job.Slug,
         };
 
+        RunAsReviewerAsync();
         var response = await _httpClient.PutAsJsonAsync($"/api/Jobs/{job.Slug}", updateCommand);
 
         response.EnsureSuccessStatusCode();

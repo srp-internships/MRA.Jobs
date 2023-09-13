@@ -84,22 +84,20 @@ public static class ConfigureServices
         {
             auth.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
+                .RequireRole(ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
+                    ApplicationClaimValues.Administrator)
+                .RequireClaim(ClaimTypes.Id)
+                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName)
                 .Build();
 
             auth.AddPolicy(ApplicationPolicies.Administrator, op => op
-                .RequireClaim(ClaimTypes.Role, ApplicationClaimValues.Administrator)
+                .RequireRole(ApplicationClaimValues.Administrator)
                 .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
 
             auth.AddPolicy(ApplicationPolicies.Reviewer, op => op
-                .RequireClaim(ClaimTypes.Role, ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator)
-                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
-
-            auth.AddPolicy(ApplicationPolicies.Applicant, op => op
-                .RequireClaim(ClaimTypes.Role, ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
-                    ApplicationClaimValues.Administrator)
+                .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator)
                 .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
         });
-        //todo add requirement for id
         return services;
     }
 }

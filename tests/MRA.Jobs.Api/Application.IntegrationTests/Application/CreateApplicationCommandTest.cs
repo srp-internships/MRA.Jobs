@@ -13,13 +13,13 @@ public class CreateApplicationCommandTest : Testing
     [Test]
     public async Task CreateApplicationCommand_CreatingApplication_Success()
     {
-        RunAsDefaultUserAsync();
         var vacancyId = await AddJobVacancy();
         var testSubmit = new CreateApplicationCommand
         {
             VacancyId = vacancyId,
             CoverLetter = RandomString(150)
         };
+        RunAsDefaultUserAsync();
         var response = await _httpClient.PostAsJsonAsync("/api/applications", testSubmit);
 
         response.EnsureSuccessStatusCode();
@@ -32,7 +32,6 @@ public class CreateApplicationCommandTest : Testing
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyQuestions_Success()
     {
-        RunAsDefaultUserAsync();
         var vacancyId = await AddJobVacancy();
         var testSubmit = new CreateApplicationCommand
         {
@@ -44,6 +43,8 @@ public class CreateApplicationCommandTest : Testing
                 new VacancyResponseDto {VacancyQuestion = new VacancyQuestionDto{ Question = "What is your English proficiency level?"}, Response = "Beginner"}
             }
         };
+        
+        RunAsDefaultUserAsync();
         var response = await _httpClient.PostAsJsonAsync("/api/applications", testSubmit);
 
         response.EnsureSuccessStatusCode();
