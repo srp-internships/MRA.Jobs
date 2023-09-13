@@ -1,10 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Mra.Shared.Common.Interfaces.Services;
 
 namespace MRA.Jobs.Application.IntegrationTests;
-internal class TestSmsSenderService
+
+public static class TestSmsSandbox
 {
+    public static string PhoneNumber { get; set; }
+    public static string Text { get; set; }
+}
+public class TestSmsSenderService : ISmsService
+{
+    public Task<bool> SendSmsAsync(string phoneNumber, string text)
+    {
+        TestSmsSandbox.PhoneNumber = phoneNumber;
+        TestSmsSandbox.Text = text;
+
+        return Task.FromResult(true);
+    }
 }
