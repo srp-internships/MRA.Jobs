@@ -31,4 +31,12 @@
       <ProjectReference Include="..\..\..\src\MRA.Jobs.Identity\MRA.Identity.Api\MRA.Identity.Api.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Email\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Email\TestEmailSendbox.cs" />
+    </ItemGroup>
+
 </Project>
