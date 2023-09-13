@@ -31,7 +31,7 @@ public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificat
         if (result != null)
         {
             user.PhoneNumberConfirmed = true;
-            await _context.SaveChangesAsync();
+            await _userManager.UpdateAsync(user);
             return true;
         }
         return false;
