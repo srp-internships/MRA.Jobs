@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Infrastructure.Identity;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(ApplicationPolicies.Administrator)]
 public class TagsController : ApiControllerBase
 {
 

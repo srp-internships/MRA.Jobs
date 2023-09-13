@@ -27,6 +27,7 @@ public class UpdateTrainingVacancyCommandTest : Testing
             Slug = Training.Slug,
         };
 
+        RunAsReviewerAsync();
         var response = await _httpClient.PutAsJsonAsync($"/api/Trainings/{Training.Slug}", updateCommand);
 
         response.EnsureSuccessStatusCode();

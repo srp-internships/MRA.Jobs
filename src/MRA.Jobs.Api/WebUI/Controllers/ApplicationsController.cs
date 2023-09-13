@@ -4,11 +4,13 @@ using MRA.Jobs.Application.Contracts.Applications.Commands;
 using MRA.Jobs.Application.Contracts.Applications.Queries;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Infrastructure.Identity;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class  ApplicationsController : ApiControllerBase
 {
     private readonly ILogger<ApplicationsController> _logger;
@@ -19,6 +21,7 @@ public class  ApplicationsController : ApiControllerBase
     }
 
     [HttpGet]
+    [Authorize(ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<PagedList<ApplicationListDto>>> GetAll([FromQuery] PagedListQuery<ApplicationListDto> query)
     {
         var applications = await Mediator.Send(query);
@@ -26,6 +29,7 @@ public class  ApplicationsController : ApiControllerBase
     }
 
     [HttpGet("{slug}")]
+    [Authorize(ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<ApplicationDetailsDto>> Get(string slug, CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetBySlugApplicationQuery { Slug = slug }, cancellationToken);
@@ -72,6 +76,7 @@ public class  ApplicationsController : ApiControllerBase
     }
 
     [HttpGet("{status}")]
+    [Authorize(ApplicationPolicies.Reviewer)]
     public async Task<IActionResult> GetApplicationsByStatus(ApplicationStatus status)
     {
         var query = new GetApplicationsByStatusQuery { Status = status };
