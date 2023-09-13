@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MRA.Jobs.Web.Controllers;
 
@@ -27,6 +28,7 @@ public class FileController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public ActionResult AddFile(IFormFile file)
     {
         if (file == null)
