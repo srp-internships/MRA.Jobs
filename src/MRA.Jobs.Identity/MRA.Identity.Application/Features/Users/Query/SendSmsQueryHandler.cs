@@ -18,6 +18,9 @@ public class SendSmsQueryHandler : IRequestHandler<SendSmsQuery, bool>
     public async Task<bool> Handle(SendSmsQuery request, CancellationToken cancellationToken)
     {
         var code = await _smsService.SendSmsAsync(request.PhoneNumber);
+
+        if (code == -1) return false;
+
         _context.ConfirmationCodes.Add(new Domain.Entities.ConfirmationCode
         {
             Code = code,
