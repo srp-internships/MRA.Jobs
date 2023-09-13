@@ -8,7 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
+using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Domain.Entities;
+using MRA.Identity.Infrastructure.Account.Services;
 using MRA.Identity.Infrastructure.Identity;
 using MRA.Identity.Infrastructure.Persistence;
 using Mra.Shared.Initializer.Azure.EmailService;
@@ -29,6 +31,10 @@ public static class DependencyInitializer
                 options.UseSqlServer(dbConnectionString);
         });
 
+        services.AddScoped<IEmailVerification, EmailVerification>();
+
+        services.AddScoped<IUserHttpContextAccessor, UserHttpContextAccessor>();
+
         if (configurations["UseFileEmailService"] == "true")
         {
             services.AddFileEmailService();
@@ -37,7 +43,7 @@ public static class DependencyInitializer
         {
             services.AddAzureEmailService(); //uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
         }
-
+        
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
@@ -48,12 +54,6 @@ public static class DependencyInitializer
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-
-        
-
-        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-        services.AddScoped<ApplicationDbContextInitializer>();
-        services.AddAzureEmailService();
         
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication(o =>
@@ -85,5 +85,9 @@ public static class DependencyInitializer
             auth.AddPolicy(ApplicationPolicies.Administrator, op => op
                 .RequireRole(ApplicationClaimValues.SuperAdministrator, ApplicationClaimValues.Administrator));
         });
+        
+
+        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+        services.AddScoped<ApplicationDbContextInitializer>();
     }
 }
