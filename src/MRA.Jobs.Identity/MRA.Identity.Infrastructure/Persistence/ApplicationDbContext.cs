@@ -16,6 +16,8 @@ public sealed class ApplicationDbContext : IdentityDbContext<ApplicationUser, Ap
     {
     }
 
+    public DbSet<ConfirmationCode> ConfirmationCodes { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
