@@ -49,7 +49,7 @@ public static class DependencyInitializer
             services.AddAzureEmailService(); //uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
         }
 
-        if (configurations["UseFileSmsService"] == "false")
+        if (configurations["UseFileSmsService"] == "true")
         {
             services.AddFileSmsService();
         }
