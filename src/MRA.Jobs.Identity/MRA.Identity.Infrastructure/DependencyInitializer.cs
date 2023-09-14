@@ -34,6 +34,8 @@ public static class DependencyInitializer
                 options.UseSqlServer(dbConnectionString);
         });
 
+        services.AddHttpClient();
+
         services.AddScoped<IEmailVerification, EmailVerification>();
 
         services.AddScoped<IUserHttpContextAccessor, UserHttpContextAccessor>();
@@ -47,7 +49,7 @@ public static class DependencyInitializer
             services.AddAzureEmailService(); //uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
         }
 
-        if (configurations["UseFileSmsService"] == "true")
+        if (configurations["UseFileSmsService"] == "false")
         {
             services.AddFileSmsService();
         }
