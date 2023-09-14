@@ -15,6 +15,8 @@ using MRA.Identity.Infrastructure.Identity;
 using MRA.Identity.Infrastructure.Persistence;
 using Mra.Shared.Initializer.Azure.EmailService;
 using Mra.Shared.Initializer.Services;
+using Mra.Shared.Initializer.OsonSms.SmsService;
+using Microsoft.Extensions.Logging;
 
 namespace MRA.Identity.Infrastructure;
 
@@ -23,6 +25,7 @@ public static class DependencyInitializer
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configurations)
     {
         string? dbConnectionString = configurations.GetConnectionString("SqlServer");
+
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             if (configurations["UseInMemoryDatabase"] == "true")
@@ -30,6 +33,8 @@ public static class DependencyInitializer
             else
                 options.UseSqlServer(dbConnectionString);
         });
+
+        services.AddHttpClient();
 
         services.AddScoped<IEmailVerification, EmailVerification>();
 
@@ -43,7 +48,16 @@ public static class DependencyInitializer
         {
             services.AddAzureEmailService(); //uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
         }
-        
+
+        if (configurations["UseFileSmsService"] == "true")
+        {
+            services.AddFileSmsService();
+        }
+        else
+        {
+            services.AddOsonSmsService();
+        }
+
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
@@ -54,6 +68,11 @@ public static class DependencyInitializer
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
+        
+
+        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+        services.AddScoped<ApplicationDbContextInitializer>();
         
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication(o =>
@@ -72,7 +91,7 @@ public static class DependencyInitializer
                 ValidateAudience = false
             };
         });
-        
+
         services.AddAuthorization(auth =>
         {
             auth.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
