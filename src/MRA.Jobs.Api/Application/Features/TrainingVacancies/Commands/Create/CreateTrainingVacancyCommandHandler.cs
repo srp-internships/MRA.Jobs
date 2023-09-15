@@ -1,5 +1,4 @@
-﻿using MRA.Jobs.Application.Common.Security;
-using MRA.Jobs.Application.Common.SlugGeneratorService;
+﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
