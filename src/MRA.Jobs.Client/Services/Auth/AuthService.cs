@@ -18,7 +18,7 @@ public class AuthService : IAuthService
 
     public async Task<JwtTokenResponse> LoginUserAsync(LoginUserCommand command)
     {
-        var result = await _identityHttpClient.PostAsJsonAsync($"{IdentityURL.Auth}login", command);
+        var result = await _identityHttpClient.PostAsJsonAsync("Auth/login", command);
         if (result.IsSuccessStatusCode)
         {
             var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
@@ -33,7 +33,7 @@ public class AuthService : IAuthService
 
     public async Task<bool> RegisterUserAsync(RegisterUserCommand command)
     {
-        var result = await _identityHttpClient.PostAsJsonAsync($"{IdentityURL.Auth}register", command);
+        var result = await _identityHttpClient.PostAsJsonAsync("Auth/register", command);
         if (result.StatusCode == HttpStatusCode.OK)
             return true;
         return false;
