@@ -25,10 +25,13 @@ builder.Services
     .AddBootstrapProviders()
     .AddFontAwesomeIcons();
 
+
+
 builder.Services.AddMatBlazor();
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+builder.Services.AddScoped(sp => new IdentityHttpClient { BaseAddress = new Uri("https://localhost:7245/api/") });
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/api/") });
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -41,5 +44,5 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
-builder.Services.AddScoped<IAuthService,  AuthService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 await builder.Build().RunAsync();

@@ -8,16 +8,17 @@ namespace MRA.Jobs.Client.Services.Auth;
 
 public class AuthService : IAuthService
 {
-    private readonly HttpClient _httpClient;
+    private readonly IdentityHttpClient _identityHttpClient;
 
-    public AuthService(HttpClient httpClient)
+
+    public AuthService(IdentityHttpClient identityHttpClient)
     {
-        _httpClient = httpClient;
+        _identityHttpClient = identityHttpClient;
     }
 
     public async Task<JwtTokenResponse> LoginUserAsync(LoginUserCommand command)
     {
-        var result = await _httpClient.PostAsJsonAsync($"{IdentityURL.Auth}login", command);
+        var result = await _identityHttpClient.PostAsJsonAsync($"{IdentityURL.Auth}login", command);
         if (result.IsSuccessStatusCode)
         {
             var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
@@ -32,7 +33,7 @@ public class AuthService : IAuthService
 
     public async Task<bool> RegisterUserAsync(RegisterUserCommand command)
     {
-        var result = await _httpClient.PostAsJsonAsync($"{IdentityURL.Auth}register", command);
+        var result = await _identityHttpClient.PostAsJsonAsync($"{IdentityURL.Auth}register", command);
         if (result.StatusCode == HttpStatusCode.OK)
             return true;
         return false;
