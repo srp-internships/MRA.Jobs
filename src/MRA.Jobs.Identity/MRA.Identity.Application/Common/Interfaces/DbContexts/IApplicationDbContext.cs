@@ -11,4 +11,5 @@ public interface IApplicationDbContext
     public DbSet<ApplicationUserRole> UserRoles { get; set; }
     public DbSet<ApplicationRole> Roles { get; set; }
     public DbSet<IdentityRoleClaim<Guid>> RoleClaims { get; set; }
+    public DbSet<ConfirmationCode> ConfirmationCodes { get; set; }
 }
