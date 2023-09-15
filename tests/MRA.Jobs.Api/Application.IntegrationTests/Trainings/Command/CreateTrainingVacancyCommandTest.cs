@@ -13,15 +13,15 @@ public class CreateTrainingVacancyCommandTest : Testing
     {
         var trainingVacancy = new CreateTrainingVacancyCommand
         {
-            Title = "Cool Job",
-            Description = "Hello",
-            ShortDescription = "Hi",
+            Title = "Good Job!",
+            Description = "Hey dude!",
+            ShortDescription = "Hello",
             PublishDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(2),
             CategoryId = await AddVacancyCategory("jobvacancy"),
-            Duration = 10,
-            Fees = 100,
+            Duration = 2,
             VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
+            Fees = 5
         };
 
         RunAsReviewerAsync();

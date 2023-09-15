@@ -73,7 +73,7 @@ public class ApplicationDbContextInitializer
                 Id = Guid.NewGuid(),
                 UserName = $"{applicationName}Admin",
                 NormalizedUserName = $"{applicationName}ADMIN".ToUpper(),
-                Email = "mrajobsadmin@silcroadprofessionals.com",
+                Email = "mrajobsadmin@silkroadprofessionals.com",
             };
 
             var createMraJobsAdminResult = await _userManager.CreateAsync(mraJobsAdminUser, adminPassword);
@@ -123,8 +123,8 @@ public class ApplicationDbContextInitializer
                 Id = Guid.NewGuid(),
                 UserName = "SuperAdmin",
                 NormalizedUserName = "SUPERADMIN",
-                Email = "mraidentity@silcroadprofessionals.com",
-                NormalizedEmail = "mraidentity@silcroadprofessionals.com",
+                Email = "mraidentity@silkroadprofessionals.com",
+                NormalizedEmail = "mraidentity@silkroadprofessionals.com",
                 EmailConfirmed = false,
             };
             var superAdminResult = await _userManager.CreateAsync(superAdmin, "Mra123!!@#$AGfer4");
