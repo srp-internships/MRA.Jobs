@@ -96,7 +96,7 @@ public class UpdateInternshipCommandHandlerTests : BaseTestFixture
         timelineEvent.EventType.Should().Be(TimelineEventType.Updated);
         timelineEvent.Time.Should().Be(_dateTimeMock.Object.Now);
         timelineEvent.Note.Should().Be("Internship updated");
-        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.GetId().Value);
+        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.GetUserId().Value);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
 

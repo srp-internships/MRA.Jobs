@@ -55,7 +55,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
         _dbContextMock.Setup(x => x.Internships).Returns(InternshipSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
-        _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
+        _currentUserServiceMock.Setup(x => x.GetUserId()).Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -80,7 +80,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
             te.EventType == TimelineEventType.Created &&
             te.Note == "Internship created" &&
             te.Time == _dateTimeMock.Object.Now &&
-            te.CreateBy == _currentUserServiceMock.Object.GetId()
+            te.CreateBy == _currentUserServiceMock.Object.GetUserId()
         ), It.IsAny<CancellationToken>()), Times.Once);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);

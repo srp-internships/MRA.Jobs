@@ -75,7 +75,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
             te.EventType == TimelineEventType.Created &&
             te.Note == "Training Model created" &&
             te.Time == _dateTimeMock.Object.Now &&
-            te.CreateBy == _currentUserServiceMock.Object.GetId()
+            te.CreateBy == _currentUserServiceMock.Object.GetUserId()
         ), It.IsAny<CancellationToken>()), Times.Once);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
