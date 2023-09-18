@@ -39,7 +39,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
         
-        application.ApplicantId = _currentUserService.GetId() ?? Guid.Empty;
+        application.ApplicantId = _currentUserService.GetUserId() ?? Guid.Empty;
 
         await _context.Applications.AddAsync(application, cancellationToken);
 
