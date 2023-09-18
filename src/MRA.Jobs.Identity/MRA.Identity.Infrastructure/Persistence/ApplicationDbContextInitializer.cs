@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Domain.Entities;
+using MRA.Identity.Infrastructure.Identity;
 using Mra.Shared.Common.Constants;
 
 namespace MRA.Identity.Infrastructure.Persistence;
@@ -96,6 +97,18 @@ public class ApplicationDbContextInitializer
             await _context.SaveChangesAsync();
         }
         //create userRole
+        
+        //create role claim
+        var userRoleClaim = new ApplicationUserClaim
+        {
+            UserId = mraJobsAdminUser.Id,
+            ClaimType = ClaimTypes.Role,
+            ClaimValue = ApplicationClaimValues.Administrator,
+            Slug = $"role-{ApplicationClaimValues.Administrator}"
+        };
+        await _context.UserClaims.AddAsync(userRoleClaim);
+        await _context.SaveChangesAsync();
+        //create role claim
     }
 
 

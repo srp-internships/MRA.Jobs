@@ -33,10 +33,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Email\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Remove="Email\TestEmailSendbox.cs" />
     </ItemGroup>
 
