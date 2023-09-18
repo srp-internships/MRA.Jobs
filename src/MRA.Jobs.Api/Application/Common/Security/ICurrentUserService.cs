@@ -4,4 +4,5 @@ public interface ICurrentUserService
 {
     Guid? GetUserId();
     string GetEmail();
+    string GetUserName()
 }

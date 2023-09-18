@@ -26,4 +26,9 @@ public class CurrentUserService : ICurrentUserService
     {
         throw new NotImplementedException();
     }
+
+    public string GetUserName()
+    {
+        throw new NotImplementedException();
+    }
 }
