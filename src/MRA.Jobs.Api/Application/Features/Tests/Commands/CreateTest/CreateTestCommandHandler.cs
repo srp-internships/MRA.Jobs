@@ -26,7 +26,7 @@ public class CreateTestCommandHandler : IRequestHandler<CreateTestCommand, TestI
         Test test = new Test
         {
             CreatedAt = _dateTime.Now,
-            CreatedBy = _currentUserService.GetId() ?? Guid.Empty,
+            CreatedBy = _currentUserService.GetUserId() ?? Guid.Empty,
             Description = string.Empty,
             Duration = TimeSpan.Zero,
             Id = result.TestId,
