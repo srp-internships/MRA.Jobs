@@ -24,7 +24,7 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
         if (authorizeAttributes.Any())
         {
             // Must be authenticated user
-            if (_currentUserService.GetId().Value == Guid.Empty)
+            if (_currentUserService.GetUserId().Value == Guid.Empty)
             {
                 throw new UnauthorizedAccessException();
             }
