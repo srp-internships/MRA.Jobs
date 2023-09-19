@@ -16,6 +16,7 @@ public class RegistrationTests : BaseTest
         {
             Email = "test3@example.com",
             Password = "password@#12P",
+            ConfirmPassword = "password@#12P",
             FirstName = "Alex",
             Username = "@Alex223",
             LastName = "Makedonsky",
@@ -39,11 +40,12 @@ public class RegistrationTests : BaseTest
         var request = new RegisterUserCommand
         {
             Email = "test1@example.com",
-            Password = "password", // incorrect password
+            Password = "password", // incorrect password            
             FirstName = "Alex",
             Username = "@Alex22",
             LastName = "Makedonskiy",
-            PhoneNumber = "123456789"
+            PhoneNumber = "123456789",
+            ConfirmPassword="password"
         };
 
         // Assert
@@ -58,6 +60,8 @@ public class RegistrationTests : BaseTest
         var request = new RegisterUserCommand
         {
             // Empty Register Data
+            Password= "password",
+            ConfirmPassword= "password",
         };
 
         // Assert

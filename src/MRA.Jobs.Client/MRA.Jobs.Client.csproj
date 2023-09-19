@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\MRA.Jobs.Api\Application.Contracts\MRA.Jobs.Application.Contracts.csproj" />
+      <ProjectReference Include="..\MRA.Jobs.Identity\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj" />
     </ItemGroup>
 
 </Project>
