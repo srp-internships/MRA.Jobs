@@ -53,6 +53,8 @@ public class AuthService : IAuthService
                     case 503:
                         // Сервис недоступен
                         return "Сервер временно не работает";
+                    case 401:
+                        return "Unauthorized";
                     default:
                         // Другие ошибки
                         return "Произошла ошибка";
