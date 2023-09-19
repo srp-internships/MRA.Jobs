@@ -54,7 +54,7 @@ public class AuthService : IAuthService
                         // Service Unavailable
                         return "The server is temporarily unavailable";
                     case 401:
-                        return "Unauthorized";
+                        return "wrong login or password";
                     default:
                         // Other errors
                         return "An error occurred";
