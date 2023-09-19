@@ -45,26 +45,27 @@ public class AuthService : IAuthService
                 switch ((int)result.StatusCode)
                 {
                     case 400:
-                        // Неверный запрос
-                        return "У вас не верный пароль или логин";
+                        // Bad Request
+                        return "Your username or password is incorrect";
                     case 404:
-                        // Не найдено
-                        return "Юзер не найден";
+                        // Not Found
+                        return "User not found";
                     case 503:
-                        // Сервис недоступен
-                        return "Сервер временно не работает";
+                        // Service Unavailable
+                        return "The server is temporarily unavailable";
                     case 401:
                         return "Unauthorized";
                     default:
-                        // Другие ошибки
-                        return "Произошла ошибка";
+                        // Other errors
+                        return "An error occurred";
+
                 }
             }
 
         }
         catch (Exception)
         {
-            errorMessage = "Произошла ошибка";
+            errorMessage = "An error occurred";
         }
         return errorMessage;
     }
