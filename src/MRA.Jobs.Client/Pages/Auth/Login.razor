@@ -24,9 +24,22 @@
 					<InputText id="password" type="password" class="form-control" @bind-Value="user.Password" />
 				</div>
 
+
+
 				<button type="submit" class="btn btn-primary">Войти</button>
+
 			</EditForm>
+			@if (errorMassage != null)
+			{
+				<div class="alert alert-warning alert-dismissible fade show" role="alert">
+					@errorMassage
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			}
 		</div>
+
 	</div>
 </div>
 
@@ -34,15 +47,11 @@
 
 	LoginUserCommand user = new LoginUserCommand();
 
-	private  async Task HandleValidSubmit()
+	private string errorMassage = null;
+
+	private async Task HandleValidSubmit()
 	{
-		var result = await AuthService.LoginUserAsync(user);
-		if (result != null)
-		{
-			await LocalStorage.SetItemAsync("authToken", result.AccessToken);
-			await AuthenticationStateProvider.GetAuthenticationStateAsync();
-			NavigationManager.NavigateTo("/");
-		}
+		errorMassage = await AuthService.LoginUserAsync(user);
 	}
 
 }
