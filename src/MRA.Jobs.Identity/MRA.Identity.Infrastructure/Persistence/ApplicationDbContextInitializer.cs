@@ -26,7 +26,7 @@ public class ApplicationDbContextInitializer
     {
         await CreateSuperAdminAsync();
 
-        await CreateApplicationAdmin("MraJobs", "mrajobs12@@34,.$3#A");
+            await CreateApplicationAdmin("MraJobs", "mrajobs12@@34,.$3#A");
         await CreateApplicationAdmin("MraOnlinePlatform", "mraonline2@f@34,/.$3#A");
     }
 
@@ -104,11 +104,24 @@ public class ApplicationDbContextInitializer
             UserId = mraJobsAdminUser.Id,
             ClaimType = ClaimTypes.Role,
             ClaimValue = ApplicationClaimValues.Administrator,
-            Slug = $"role-{ApplicationClaimValues.Administrator}"
+            Slug = $"admin-{ApplicationClaimValues.Administrator}"
         };
         await _context.UserClaims.AddAsync(userRoleClaim);
         await _context.SaveChangesAsync();
         //create role claim
+        
+        
+        //create application claim
+        var userApplicationClaim = new ApplicationUserClaim
+        {
+            UserId = mraJobsAdminUser.Id,
+            ClaimType = ClaimTypes.Application,
+            ClaimValue = applicationName,
+            Slug = $"application-{applicationName}"
+        };
+        await _context.UserClaims.AddAsync(userApplicationClaim);
+        await _context.SaveChangesAsync();
+        //create application claim
     }
 
 
