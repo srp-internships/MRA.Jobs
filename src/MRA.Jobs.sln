@@ -36,6 +36,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.UnitTests", "..\test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUI.AcceptanceTests", "..\tests\MRA.Jobs.Api\WebUI.AcceptanceTests\WebUI.AcceptanceTests.csproj", "{184D66EF-AAA0-4EEE-8D76-D589CB50034F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRA.Identity.Application.Contract", "MRA.Jobs.Identity\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj", "{CEC7DDA5-EA4D-4B33-B197-6B9CD42A34C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,10 @@ Global
 		{184D66EF-AAA0-4EEE-8D76-D589CB50034F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{184D66EF-AAA0-4EEE-8D76-D589CB50034F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{184D66EF-AAA0-4EEE-8D76-D589CB50034F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEC7DDA5-EA4D-4B33-B197-6B9CD42A34C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEC7DDA5-EA4D-4B33-B197-6B9CD42A34C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEC7DDA5-EA4D-4B33-B197-6B9CD42A34C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEC7DDA5-EA4D-4B33-B197-6B9CD42A34C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{B10BE520-47A3-4C67-8F4D-17B47B9F9AC1} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
 		{0EC692C9-918A-4FF3-88C2-315E51BA56D7} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
 		{184D66EF-AAA0-4EEE-8D76-D589CB50034F} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
+		{CEC7DDA5-EA4D-4B33-B197-6B9CD42A34C1} = {384F34D2-454F-4878-A40D-69B36E9DC43B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3CB609D9-5D54-4C11-A371-DAAC8B74E430}

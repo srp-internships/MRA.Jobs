@@ -1,34 +1,57 @@
 ﻿@page "/sign-in"
+@using MRA.Identity.Application.Contract.User.Commands;
+@using MRA.Jobs.Client.Services.Auth;
+@inject IAuthService AuthService
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="container">
-    <div class="form col-6 p-4 mx-auto rounded">
-        <div class="d-flex flex-column">
+	<div class="row justify-content-center">
+		<div class="col-md-4">
+			<h2>Sign In</h2>
+			<EditForm Model="user" OnValidSubmit="HandleValidSubmit">
+				<DataAnnotationsValidator />
+				<ValidationSummary />
 
-            <div class="form-label-group mb-3">
-                <input class="form-control form-control-lg"
-                       type="text"
-                       placeholder="login"
-                       aria-label="login">
-            </div>
+				<div class="form-group">
+					<label for="username">User Name</label>
+					<InputText id="username" class="form-control" @bind-Value="user.Username" />
+				</div>
 
-            <div class="form-label-group mb-3">
-                <input class="form-control form-control-lg"
-                       type="password" placeholder="password"
-                       aria-label="password">
-            </div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<InputText id="password" type="password" class="form-control" @bind-Value="user.Password" />
+				</div>
 
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me"> Remember me
-                </label>
-            </div>
 
-            <button class="btn btn-primary" type="submit">Login</button>
 
-        </div>
-    </div>
+				<button type="submit" class="btn btn-primary">Войти</button>
+
+			</EditForm>
+			@if (errorMassage != null)
+			{
+				<div class="alert alert-warning alert-dismissible fade show" role="alert">
+					@errorMassage
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			}
+		</div>
+
+	</div>
 </div>
 
 @code {
+
+	LoginUserCommand user = new LoginUserCommand();
+
+	private string errorMassage = null;
+
+	private async Task HandleValidSubmit()
+	{
+		errorMassage = await AuthService.LoginUserAsync(user);
+	}
 
 }
