@@ -1,11 +1,12 @@
 ﻿using System.Runtime.InteropServices.JavaScript;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Tests.Commands;
+using MRA.Jobs.Infrastructure.Identity;
 using AddTagsToJobVacancyCommand = MRA.Jobs.Application.Contracts.JobVacancies.Commands.AddTagsToJobVacancyCommand;
 
 namespace MRA.Jobs.Web.Controllers;
@@ -13,6 +14,7 @@ namespace MRA.Jobs.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(ApplicationPolicies.Reviewer)]
 public class JobsController : ApiControllerBase
 {
     private readonly ILogger<JobsController> _logger;
@@ -23,6 +25,7 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> Get([FromQuery] PagedListQuery<JobVacancyListDto> query)
     {
         var categories = await Mediator.Send(query);
@@ -30,6 +33,7 @@ public class JobsController : ApiControllerBase
     }
 
     [HttpGet("{slug}")]
+    [AllowAnonymous]
     public async Task<IActionResult> Get([FromRoute] string slug)
     {
         var category = await Mediator.Send(new GetJobVacancyBySlugQuery { Slug = slug });

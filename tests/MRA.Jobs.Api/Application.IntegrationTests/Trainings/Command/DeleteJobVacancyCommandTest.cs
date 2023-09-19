@@ -13,7 +13,8 @@ public class DeleteTrainingVacancyCommandTest : Testing
         {
             Slug = training.Slug,
         };
-
+        
+        RunAsReviewerAsync();
         var response = await _httpClient.DeleteAsync($"/api/trainings/{training.Slug}");
             
         response.EnsureSuccessStatusCode();

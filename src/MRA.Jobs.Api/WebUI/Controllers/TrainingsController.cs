@@ -1,17 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.Tests.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+using MRA.Jobs.Infrastructure.Identity;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(ApplicationPolicies.Reviewer)]
 public class TrainingsController : ApiControllerBase
 {
 
     [HttpGet("{slug}")]
+    [AllowAnonymous]
     public async Task<IActionResult> Get(string slug)
     {
         var training = await Mediator.Send(new GetTrainingVacancyBySlugQuery { Slug = slug });
@@ -45,10 +48,4 @@ public class TrainingsController : ApiControllerBase
     {
         return await Mediator.Send(new DeleteTrainingVacancyCommand { Slug = slug }, cancellationToken);
     }
-
-
-
-
-
-
 }

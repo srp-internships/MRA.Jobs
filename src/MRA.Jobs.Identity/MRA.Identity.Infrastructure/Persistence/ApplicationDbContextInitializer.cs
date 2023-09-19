@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Domain.Entities;
+using MRA.Identity.Infrastructure.Identity;
 using Mra.Shared.Common.Constants;
 
 namespace MRA.Identity.Infrastructure.Persistence;
@@ -73,7 +74,7 @@ public class ApplicationDbContextInitializer
                 Id = Guid.NewGuid(),
                 UserName = $"{applicationName}Admin",
                 NormalizedUserName = $"{applicationName}ADMIN".ToUpper(),
-                Email = "mrajobsadmin@silcroadprofessionals.com",
+                Email = "mrajobsadmin@silkroadprofessionals.com",
             };
 
             var createMraJobsAdminResult = await _userManager.CreateAsync(mraJobsAdminUser, adminPassword);
@@ -96,6 +97,18 @@ public class ApplicationDbContextInitializer
             await _context.SaveChangesAsync();
         }
         //create userRole
+        
+        //create role claim
+        var userRoleClaim = new ApplicationUserClaim
+        {
+            UserId = mraJobsAdminUser.Id,
+            ClaimType = ClaimTypes.Role,
+            ClaimValue = ApplicationClaimValues.Administrator,
+            Slug = $"role-{ApplicationClaimValues.Administrator}"
+        };
+        await _context.UserClaims.AddAsync(userRoleClaim);
+        await _context.SaveChangesAsync();
+        //create role claim
     }
 
 
@@ -123,8 +136,8 @@ public class ApplicationDbContextInitializer
                 Id = Guid.NewGuid(),
                 UserName = "SuperAdmin",
                 NormalizedUserName = "SUPERADMIN",
-                Email = "mraidentity@silcroadprofessionals.com",
-                NormalizedEmail = "mraidentity@silcroadprofessionals.com",
+                Email = "mraidentity@silkroadprofessionals.com",
+                NormalizedEmail = "mraidentity@silkroadprofessionals.com",
                 EmailConfirmed = false,
             };
             var superAdminResult = await _userManager.CreateAsync(superAdmin, "Mra123!!@#$AGfer4");

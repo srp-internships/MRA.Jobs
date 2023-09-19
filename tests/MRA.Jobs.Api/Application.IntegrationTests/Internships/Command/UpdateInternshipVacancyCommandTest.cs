@@ -29,6 +29,7 @@ public class UpdateInternshipVacancyCommandTest : Testing
             Stipend=internship.Stipend,
         };
 
+        RunAsReviewerAsync();
         var response = await _httpClient.PutAsJsonAsync($"/api/internships/{internship.Slug}", updateCommand);
 
         response.EnsureSuccessStatusCode();

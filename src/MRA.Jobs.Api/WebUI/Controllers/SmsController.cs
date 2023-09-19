@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Application.Common.Models;
 
@@ -6,6 +7,7 @@ namespace MRA.Jobs.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class SmsController : ApiControllerBase
 {
     private readonly ISmsService _smsService;
