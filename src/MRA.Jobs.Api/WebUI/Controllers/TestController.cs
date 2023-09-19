@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Tests.Commands;
@@ -6,6 +6,7 @@ using MRA.Jobs.Application.Contracts.Tests.Commands;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class TestController : ApiControllerBase
 {
     [HttpPost("{slug}/test")]

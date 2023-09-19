@@ -3,6 +3,8 @@ using MRA.Identity.Infrastructure;
 using Mra.Shared.Initializer.Azure.Insight;
 using Mra.Shared.Initializer.Azure.KeyVault;
 using MRA.Identity.Infrastructure.Persistence;
+using Mra.Shared.Common.Interfaces.Services;
+using Mra.Shared.Azure.EmailService;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +18,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
 
 WebApplication app = builder.Build();
 
