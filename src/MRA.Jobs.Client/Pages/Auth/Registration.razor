@@ -11,45 +11,44 @@
 		<div class="col-md-6">
 			<EditForm Model="user" OnInvalidSubmit="submit">
 				<FluentValidationValidator />
-				<ValidationSummary />
 				<div class="form-group">
 					<label for="email">Email:</label>
 					<InputText id="email" @bind-Value="user.Email" class="form-control" />
-					<ValidationMessage For="@(() => user.Email)" />
+					<ValidationMessage For="@(() => user.Email)" class="text-bg-danger" />
 				</div>
 				<div class="form-group">
 					<label for="firstName">First Name:</label>
 					<InputText id="firstName" @bind-Value="user.FirstName" class="form-control" />
-					<ValidationMessage For="@(() => user.FirstName)" />
+					<ValidationMessage For="@(() => user.FirstName)" class="text-bg-danger" />
 				</div>
 				<div class="form-group">
 					<label for="lastName">Last Name:</label>
 					<InputText id="lastName" @bind-Value="user.LastName" class="form-control" />
-					<ValidationMessage For="@(() => user.LastName)" />
+					<ValidationMessage For="@(() => user.LastName)" class="text-bg-danger" />
 
 				</div>
 				<div class="form-group">
 					<label for="phoneNumber">Phone Number:</label>
 					<InputText id="phoneNumber" @bind-Value="user.PhoneNumber" class="form-control" />
-					<ValidationMessage For="@(() => user.PhoneNumber)" />
+					<ValidationMessage For="@(() => user.PhoneNumber)" class="text-bg-danger" />
 
 				</div>
 				<div class="form-group">
 					<label for="username">Username:</label>
 					<InputText id="username" @bind-Value="user.Username" class="form-control" />
-					<ValidationMessage For="@(() => user.Username)" />
+					<ValidationMessage For="@(() => user.Username)" class="text-bg-danger" />
 
 				</div>
 				<div class="form-group">
 					<label for="password">Password:</label>
 					<InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
-					<ValidationMessage For="@(() => user.Password)" />
+					<ValidationMessage For="@(() => user.Password)" class="text-bg-danger" />
 
 				</div>
 				<div class="form-group">
 					<label for="confirmPassword">Confirm Password:</label>
 					<InputText id="confirmPassword" @bind-Value="user.ConfirmPassword" type="password" class="form-control" />
-					<ValidationMessage For="@(() => user.ConfirmPassword)" />
+					<ValidationMessage For="@(() => user.ConfirmPassword)" class="text-bg-danger" />
 				</div>
 				<br />
 				<button type="submit" class="btn btn-primary" style="width:100%" @onclick="submit">Sign in</button>
