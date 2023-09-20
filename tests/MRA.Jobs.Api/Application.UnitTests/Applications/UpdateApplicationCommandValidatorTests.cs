@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplication;
 using MRA.Jobs.Application.Features.Applications.Command.UpdateApplication;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;

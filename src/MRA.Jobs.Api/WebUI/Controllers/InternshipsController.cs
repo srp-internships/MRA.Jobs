@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Delete;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Tags;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
-using MRA.Jobs.Application.Contracts.Tests.Commands;
+using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTest;
 using MRA.Jobs.Infrastructure.Identity;
 
 namespace MRA.Jobs.Web.Controllers;

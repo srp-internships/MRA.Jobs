@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Delete;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Delete;
 public class DeleteInternshipVacancyCommandHandler : IRequestHandler<DeleteInternshipVacancyCommand, bool>

@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
 

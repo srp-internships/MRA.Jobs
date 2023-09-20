@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
+﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategoryWithPagination;
 using MRA.Jobs.Application.Features.VacancyCategories.Queries.GetVacancyCategoryById;
 
 namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
@@ -18,7 +18,7 @@ public class GetVacancyCategoryBySlugQueryHandlerTests : BaseTestFixture
     [Ignore("Slug")]
     public async Task Handle_GivenValidQuery_ShouldReturnVacancyCategoryDetailsDTO()
     {
-        var query = new GetVacancyCategoryBySlugQuery { Slug = "categories-softwaredevelopment" };
+        var query = new GetVacancyCategoryBySlugQuery { Slug = "categories-software development" };
 
         var VacancyCategory = new VacancyCategory
         {

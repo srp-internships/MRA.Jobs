@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.Tags;
 

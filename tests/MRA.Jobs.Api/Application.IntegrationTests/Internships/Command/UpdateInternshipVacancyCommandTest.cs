@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Json;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
-using MRA.Jobs.Application.IntegrationTests.VacancyCategories.GetCreate;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
 using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 

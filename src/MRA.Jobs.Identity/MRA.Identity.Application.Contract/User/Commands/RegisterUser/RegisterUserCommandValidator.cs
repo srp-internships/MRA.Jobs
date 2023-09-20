@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 
-namespace MRA.Identity.Application.Features.Users.Command.RegisterUser;
+namespace MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 
 public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {

@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Json;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 

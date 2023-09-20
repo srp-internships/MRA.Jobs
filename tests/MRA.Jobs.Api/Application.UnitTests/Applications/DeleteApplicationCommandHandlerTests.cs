@@ -1,10 +1,8 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
-using MRA.Jobs.Application.Features.Applications.Command.DeleteApplication;
+﻿using MRA.Jobs.Application.Features.Applications.Command.DeleteApplication;
+using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;
 using MRA.Jobs.Domain.Entities;
-
-
 public class DeleteApplicationCommandHandlerTests : BaseTestFixture
 {
     private DeleteApplicationCommandHandler _handler;

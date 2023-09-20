@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.Tests.Commands;
+using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTest;
 
 namespace MRA.Jobs.Application.Features.Tests.Commands.CreateTest;
 

@@ -5,6 +5,8 @@ using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.Admin.Responses;
 using MRA.Identity.Application.Contract.User.Commands;
 using Blazored.LocalStorage;
+using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
+using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 
 namespace MRA.Jobs.Client.Services.Auth;
 

@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Infrastructure.Identity;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.UpdateVacancyCategory;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategoryWithPagination;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.DeleteVacancyCategory;
 
 namespace MRA.Jobs.Web.Controllers;
 
