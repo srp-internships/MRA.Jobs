@@ -37,6 +37,7 @@ public class ApplicationDetailsDto
     public Guid? LastModifiedBy { get; set; }
 
     public IQueryable<TimeLineDetailsDto> Histiry { get; set; }
+    public string Slug { get; set; }
     public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
 }
 

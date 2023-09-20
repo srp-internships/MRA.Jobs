@@ -75,13 +75,13 @@ public class  ApplicationsController : ApiControllerBase
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpGet("{status}")]
-    [Authorize(ApplicationPolicies.Reviewer)]
-    public async Task<IActionResult> GetApplicationsByStatus(ApplicationStatus status)
-    {
-        var query = new GetApplicationsByStatusQuery { Status = status };
-        var result = await Mediator.Send(query);
-        return Ok(result);
-    }
+    //[HttpGet("{status}")]
+    //[Authorize(ApplicationPolicies.Reviewer)]
+    //public async Task<IActionResult> GetApplicationsByStatus(ApplicationStatus status)
+    //{
+    //    var query = new GetApplicationsByStatusQuery { Status = status };
+    //    var result = await Mediator.Send(query);
+    //    return Ok(result);
+    //}
 
 }
