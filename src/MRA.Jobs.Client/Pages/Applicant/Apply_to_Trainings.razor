@@ -15,11 +15,10 @@
 	<p>Fill out the form below to apply for training:</p>
 
 	<EditForm Model="@createApplication" OnValidSubmit="Apply">
-	<DataAnnotationsValidator />
-    <ValidationSummary />
+		<FluentValidationValidator />
 		<div class="form-group">
 			<label for="CoverLetter">Tell us about yourself (minimum 50 words):</label>
-			<InputTextArea id="CoverLetter" @bind-Value="createApplication.CoverLetter" class="form-control" rows="10"></InputTextArea>
+			<InputTextArea id="CoverLetter" @bind-Value="createApplication.CoverLetter" class="form-control" rows="10" required minlength="50"></InputTextArea>
 			<ValidationMessage For="@(() =>createApplication.CoverLetter)" />
 
 			@if (createApplication.CoverLetter != null && createApplication.CoverLetter.Split(' ').Length < 50)
@@ -39,6 +38,7 @@
 						<div class="input-group">
 							<input type="text" class="form-control" id="question_@question.Id" required
 							@bind="questionResponses[question.Question]">
+							<ValidationMessage For="@(()=> questionResponses[question.Question])" />
 						</div>
 					}
 				</div>

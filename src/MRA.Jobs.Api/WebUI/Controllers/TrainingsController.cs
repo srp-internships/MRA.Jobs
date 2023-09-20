@@ -9,7 +9,7 @@ using MRA.Jobs.Infrastructure.Identity;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(ApplicationPolicies.Reviewer)]
+//[Authorize(ApplicationPolicies.Reviewer)]
 public class TrainingsController : ApiControllerBase
 {
 
