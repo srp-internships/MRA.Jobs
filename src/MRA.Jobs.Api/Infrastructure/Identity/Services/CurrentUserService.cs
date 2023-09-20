@@ -29,6 +29,6 @@ public class CurrentUserService : ICurrentUserService
 
     public string GetUserName()
     {
-        return "Test";
+        return "";
     }
 }
