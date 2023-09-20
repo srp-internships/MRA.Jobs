@@ -1,5 +1,6 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 using MRA.Jobs.Application.Features.JobVacancies.Commands.UpdateJobVacancy;
+using UpdateJobVacancyCommandValidator = MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update.UpdateJobVacancyCommandValidator;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 

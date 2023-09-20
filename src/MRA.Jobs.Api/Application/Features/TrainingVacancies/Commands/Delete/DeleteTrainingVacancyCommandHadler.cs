@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Delete;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Delete;
 

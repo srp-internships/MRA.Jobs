@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
 
@@ -36,7 +36,7 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Training Model created",
-            CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

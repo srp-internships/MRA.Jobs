@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.Tests.Commands;
+using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTest;
 
 namespace MRA.Jobs.Application.Features.Tests.Commands.CreateTest;
 
@@ -26,7 +26,7 @@ public class CreateTestCommandHandler : IRequestHandler<CreateTestCommand, TestI
         Test test = new Test
         {
             CreatedAt = _dateTime.Now,
-            CreatedBy = _currentUserService.GetId() ?? Guid.Empty,
+            CreatedBy = _currentUserService.GetUserId() ?? Guid.Empty,
             Description = string.Empty,
             Duration = TimeSpan.Zero,
             Id = result.TestId,

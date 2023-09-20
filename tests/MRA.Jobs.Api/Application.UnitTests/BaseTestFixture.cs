@@ -27,6 +27,6 @@ public abstract class BaseTestFixture
         _htmlServiceMock = new Mock<IHtmlService>();
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
         _currentUserServiceMock = new Mock<ICurrentUserService>();
-        _currentUserServiceMock.Setup(r => r.GetId()).Returns(Guid.Empty);
+        _currentUserServiceMock.Setup(r => r.GetUserId()).Returns(Guid.Empty);
     }
 }

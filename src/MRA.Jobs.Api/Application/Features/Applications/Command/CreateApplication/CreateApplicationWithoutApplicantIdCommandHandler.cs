@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
@@ -40,7 +40,7 @@ public class
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Job vacancy created",
-            CreateBy = _currentUserService.GetId().Value
+            CreateBy = _currentUserService.GetUserId().Value
         };
 
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);

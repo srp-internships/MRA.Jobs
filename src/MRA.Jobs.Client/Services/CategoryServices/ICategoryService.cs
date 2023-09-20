@@ -1,5 +1,7 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.DeleteVacancyCategory;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.UpdateVacancyCategory;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Client.Services.CategoryServices;

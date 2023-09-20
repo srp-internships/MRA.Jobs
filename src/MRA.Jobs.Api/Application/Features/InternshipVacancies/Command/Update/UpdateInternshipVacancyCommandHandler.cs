@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Update;
 
@@ -43,7 +43,7 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Internship updated",
-            CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

@@ -1,5 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
-using MRA.Jobs.Application.Features.JobVacancies.Commands.DeleteJobVacancy;
+﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands.DeleteJobVacancy;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 

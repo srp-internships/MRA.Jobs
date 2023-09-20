@@ -1,5 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
-using MRA.Jobs.Application.Features.Applications.Command.DeleteApplication;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
+using DeleteApplicationCommandValidator = MRA.Jobs.Application.Contracts.Applications.Commands.Delete.DeleteApplicationCommandValidator;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;
 public class DeleteApplicationCommandValidatorTests : BaseTestFixture

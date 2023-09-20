@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Tags;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Tags;
 public class AddTagToInternshipVacancyCommandHandler : IRequestHandler<AddTagToInternshipVacancyCommand, bool>
@@ -49,7 +49,7 @@ public class AddTagToInternshipVacancyCommandHandler : IRequestHandler<AddTagToI
                     EventType = TimelineEventType.Created,
                     Time = _dateTime.Now,
                     Note = $"Added '{tag.Name}' tag",
-                    CreateBy = _currentUserService.GetId() ?? Guid.Empty
+                    CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
                 };
                 await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
             }

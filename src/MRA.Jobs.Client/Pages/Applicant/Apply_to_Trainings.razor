@@ -1,8 +1,6 @@
 ﻿@page "/trainings/ApplytoTrainings/{Slug}"
-@using MRA.Jobs.Application.Contracts.Applications.Commands;
-@using MRA.Jobs.Application.Contracts.Dtos;
+@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 @using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-@using MRA.Jobs.Client.Services.ApplicationService;
 @inject HttpClient httpClient
 @inject IApplicationService ApplicationService;
 @inject ITrainingService _trainingService

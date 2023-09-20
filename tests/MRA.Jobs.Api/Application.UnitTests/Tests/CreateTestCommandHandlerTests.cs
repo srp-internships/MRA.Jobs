@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.Tests.Commands;
+using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTest;
 using MRA.Jobs.Application.Features.Tests.Commands.CreateTest;
 
 namespace MRA.Jobs.Application.UnitTests.Tests;
@@ -44,7 +44,7 @@ public class CreateTestCommandHandlerTests : BaseTestFixture
         testDbSetMock.Setup(d => d.AddAsync(It.IsAny<Test>(), It.IsAny<CancellationToken>())).Callback<Test, CancellationToken>((t, ct) => t.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.Tests).Returns(testDbSetMock.Object);
 
-        _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
+        _currentUserServiceMock.Setup(x => x.GetUserId()).Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

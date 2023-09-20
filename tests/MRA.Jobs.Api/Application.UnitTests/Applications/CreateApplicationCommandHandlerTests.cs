@@ -1,11 +1,9 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿
+using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;
-
-using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Domain.Entities;
-
 public class CreateApplicationCommandHandlerTests : BaseTestFixture
 {
     private CreateApplicationCommandHandler _handler;
@@ -50,7 +48,7 @@ public class CreateApplicationCommandHandlerTests : BaseTestFixture
         _dbContextMock.Setup(x => x.Applications).Returns(applicationSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
-        _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
+        _currentUserServiceMock.Setup(x => x.GetUserId()).Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

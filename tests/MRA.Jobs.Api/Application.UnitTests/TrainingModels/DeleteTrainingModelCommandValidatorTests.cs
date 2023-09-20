@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Delete;
 using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Delete;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;

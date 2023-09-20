@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.DeleteJobVacancy;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.DeleteJobVacancy;
 
@@ -31,7 +31,7 @@ public class DeleteJobVacancyCommandHandler : IRequestHandler<DeleteJobVacancyCo
             EventType = TimelineEventType.Deleted,
             Time = _dateTime.Now,
             Note = "Job vacancy deleted",
-            CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
 
         _dbContext.JobVacancies.Remove(jobVacancy);

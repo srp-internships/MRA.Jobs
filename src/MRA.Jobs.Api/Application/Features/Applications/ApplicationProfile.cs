@@ -1,10 +1,11 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
-using MRA.Jobs.Application.Contracts.Applications.Responses;
+﻿using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 
 namespace MRA.Jobs.Application.Features.Applications;
 
 using MRA.Jobs.Application;
+using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
+using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplication;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;

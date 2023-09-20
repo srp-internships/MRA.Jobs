@@ -1,9 +1,7 @@
-﻿namespace MRA.Jobs.Application.UnitTests.TrainingModels;
-
-using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
-using MRA.Jobs.Domain.Entities;
+
+namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
 {
     private CreateTrainingVacancyCommandHandler _handler;
@@ -51,7 +49,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
         _dbContextMock.Setup(x => x.TrainingVacancies).Returns(trainingModelSetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
-        _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
+        _currentUserServiceMock.Setup(x => x.GetUserId()).Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -75,7 +73,7 @@ public class CreateTrainingModelCommandHandlerTests : BaseTestFixture
             te.EventType == TimelineEventType.Created &&
             te.Note == "Training Model created" &&
             te.Time == _dateTimeMock.Object.Now &&
-            te.CreateBy == _currentUserServiceMock.Object.GetId()
+            te.CreateBy == _currentUserServiceMock.Object.GetUserId()
         ), It.IsAny<CancellationToken>()), Times.Once);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);

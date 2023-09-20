@@ -1,7 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
-using MRA.Jobs.Application.Contracts.Applications.Queries;
+using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
+using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
+using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
+using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplication;
+using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
+using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug;
+using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationsByStatus;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Infrastructure.Identity;

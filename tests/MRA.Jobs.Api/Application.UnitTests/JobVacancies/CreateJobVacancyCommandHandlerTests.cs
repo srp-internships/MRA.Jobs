@@ -1,6 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
-using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
-using MRA.Jobs.Application.Common.SlugGeneratorService;
+﻿using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 
@@ -51,7 +50,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
         _dbContextMock.Setup(x => x.JobVacancies).Returns(jobVacancySetMock.Object);
 
         _dateTimeMock.Setup(x => x.Now).Returns(DateTime.UtcNow);
-        _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
+        _currentUserServiceMock.Setup(x => x.GetUserId()).Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -75,7 +74,7 @@ public class CreateJobVacancyCommandHandlerTests : BaseTestFixture
             te.EventType == TimelineEventType.Created &&
             te.Note == "Job vacancy created" &&
             te.Time == _dateTimeMock.Object.Now &&
-            te.CreateBy == _currentUserServiceMock.Object.GetId()
+            te.CreateBy == _currentUserServiceMock.Object.GetUserId()
         ), It.IsAny<CancellationToken>()), Times.Once);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.UpdateVacancyCategory;
 using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 

@@ -1,6 +1,7 @@
 ﻿using MRA.Jobs.Application.Contracts.TagDTO;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
