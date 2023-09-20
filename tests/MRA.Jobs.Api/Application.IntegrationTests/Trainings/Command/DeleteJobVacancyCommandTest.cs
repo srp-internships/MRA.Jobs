@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Delete;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Trainings.Command;

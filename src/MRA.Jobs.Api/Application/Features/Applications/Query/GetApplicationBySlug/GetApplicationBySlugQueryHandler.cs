@@ -1,9 +1,9 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Queries;
-using MRA.Jobs.Application.Contracts.Applications.Responses;
+﻿using MRA.Jobs.Application.Contracts.Applications.Responses;
 
 namespace MRA.Jobs.Application.Features.Applications.Query.GetApplicationBySlug;
 
 using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug;
 using MRA.Jobs.Domain.Entities;
 public class GetApplicationBySlugQueryHandler : IRequestHandler<GetBySlugApplicationQuery, ApplicationDetailsDto>
 {

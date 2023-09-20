@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.UpdateJobVacancy;
 

@@ -1,7 +1,7 @@
 ﻿
+
 using System.Net.Http.Json;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
-using MRA.Jobs.Application.IntegrationTests;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Update;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Trainings.Command;

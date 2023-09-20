@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract;
-using MRA.Identity.Application.Contract.User.Commands;
+using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Identity.Domain.Entities;
 using ClaimTypes = Mra.Shared.Common.Constants.ClaimTypes;

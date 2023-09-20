@@ -1,5 +1,6 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Queries;
-namespace MRA.Jobs.Application.UnitTests.Applications;
+﻿namespace MRA.Jobs.Application.UnitTests.Applications;
+
+using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug;
 using MRA.Jobs.Application.Features.Applications.Query.GetApplicationBySlug;
 using MRA.Jobs.Domain.Entities;
 public class GetApplicationBySlugQueryHandlerTests : BaseTestFixture

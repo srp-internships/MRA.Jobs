@@ -1,7 +1,7 @@
 ﻿namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplicationStatus;
 
 using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
+using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Domain.Enums;
 
 public class UpdateApplicationStatusCommandHandler : IRequestHandler<UpdateApplicationStatus, bool>

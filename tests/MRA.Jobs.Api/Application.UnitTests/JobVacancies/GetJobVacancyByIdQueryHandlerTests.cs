@@ -1,7 +1,8 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
-using MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
+﻿using MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
+
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Domain.Entities;
 public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
 {

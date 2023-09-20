@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
+using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.AddNote;
 

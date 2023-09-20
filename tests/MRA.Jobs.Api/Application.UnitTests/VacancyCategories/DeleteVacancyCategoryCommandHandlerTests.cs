@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Features.VacancyCategories.Command.DeleteVacancyCategory;
-using DeleteVacancyCategoryCommand = MRA.Jobs.Application.Contracts.VacancyCategories.Commands.DeleteVacancyCategoryCommand;
+using DeleteVacancyCategoryCommand = MRA.Jobs.Application.Contracts.VacancyCategories.Commands.DeleteVacancyCategory.DeleteVacancyCategoryCommand;
 
 namespace MRA.Jobs.Application.UnitTests.VacancyCategories;
 public class DeleteVacancyCategoryCommandHandlerTests : BaseTestFixture

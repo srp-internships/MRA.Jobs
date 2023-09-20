@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
+using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.DeleteApplication;
 

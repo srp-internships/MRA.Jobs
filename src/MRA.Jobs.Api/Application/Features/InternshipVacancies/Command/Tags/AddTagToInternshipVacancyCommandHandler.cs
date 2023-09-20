@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Tags;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Tags;
 public class AddTagToInternshipVacancyCommandHandler : IRequestHandler<AddTagToInternshipVacancyCommand, bool>

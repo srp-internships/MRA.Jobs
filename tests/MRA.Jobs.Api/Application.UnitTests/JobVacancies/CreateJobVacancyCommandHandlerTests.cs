@@ -1,6 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
-using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
-using MRA.Jobs.Application.Common.SlugGeneratorService;
+﻿using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 
