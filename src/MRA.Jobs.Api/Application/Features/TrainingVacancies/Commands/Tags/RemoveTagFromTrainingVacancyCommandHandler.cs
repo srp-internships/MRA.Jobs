@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Tags;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Tags;
 
@@ -49,7 +49,7 @@ public class RemoveTagFromTrainingVacancyCommandHandler : IRequestHandler<Remove
                 EventType = TimelineEventType.Deleted,
                 Time = _dateTime.Now,
                 Note = $"Removed '{tagName}' tag",
-                CreateBy = _currentUserService.GetId() ?? Guid.Empty
+                CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
             };
             await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         }

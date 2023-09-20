@@ -2,7 +2,8 @@
 using System.Text.Json;
 using FluentAssertions;
 using MRA.Identity.Application.Contract.Application.Responses;
-using MRA.Identity.Application.Contract.User.Commands;
+using MRA.Identity.Application.Contract.User.Commands.LoginUser;
+using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Queries;
 
 namespace MRA.Jobs.Application.IntegrationTests;

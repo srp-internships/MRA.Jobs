@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Update;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Update;
 
@@ -43,7 +43,7 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Training Model updated",
-            CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
         await _context.VacancyTimelineEvents.AddAsync(timeLineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

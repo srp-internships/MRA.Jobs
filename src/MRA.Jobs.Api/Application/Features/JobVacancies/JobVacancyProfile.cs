@@ -1,4 +1,6 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.DeleteJobVacancy;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TagDTO;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;

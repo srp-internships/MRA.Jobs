@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
+using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.DeleteApplication;
 
@@ -27,7 +27,7 @@ public class DeleteApplicationCommandHandler : IRequestHandler<DeleteApplication
             EventType = TimelineEventType.Deleted,
             Time = _dateTime.Now,
             Note = "Application vacancy deleted",
-            CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
 
         _context.Applications.Remove(entity);

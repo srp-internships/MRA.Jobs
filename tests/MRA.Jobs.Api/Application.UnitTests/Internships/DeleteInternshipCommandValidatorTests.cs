@@ -1,5 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
-using MRA.Jobs.Application.Features.InternshipVacancies.Command.Delete;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Delete;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
 public class DeleteInternshipCommandValidatorTests

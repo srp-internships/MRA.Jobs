@@ -1,7 +1,8 @@
 ﻿using MRA.Jobs.Application.Features.Applications.Command.UpdateApplication;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;
+
+using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplication;
 using MRA.Jobs.Domain.Entities;
 public class UpdateApplicationCommandHandlerTests : BaseTestFixture
 {

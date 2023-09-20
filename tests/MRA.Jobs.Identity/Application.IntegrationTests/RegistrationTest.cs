@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
-using MRA.Identity.Application.Contract.User.Commands;
+using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Domain.Entities;
 
 namespace MRA.Jobs.Application.IntegrationTests;

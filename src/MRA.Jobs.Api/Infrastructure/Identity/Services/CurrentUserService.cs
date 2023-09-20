@@ -1,39 +1,34 @@
-﻿namespace MRA.Jobs.Infrastructure.Identity.Services;
+﻿using Mra.Shared.Common.Constants;
+using Microsoft.AspNetCore.Http;
+
+namespace MRA.Jobs.Infrastructure.Identity.Services;
 
 public class CurrentUserService : ICurrentUserService
 {
-    internal Guid? Id { get; set; }
-    internal string UserName { get; set; }
-    internal string Email { get; set; }
-    internal string[] Roles { get; set; }
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public async Task<Guid?> GetIdAsync(CancellationToken cancellationToken)
+    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
     {
-        return await Task.FromResult(Id);
+        _httpContextAccessor = httpContextAccessor;
     }
 
-    public Guid? GetId()
+    public Guid? GetUserId()
     {
-        return Id;
+        var user = _httpContextAccessor.HttpContext?.User;
+        if (user != null)
+        {
+            return Guid.Parse(user.FindFirst(ClaimTypes.Id).Value);
+        }
+        return Guid.Empty;
     }
 
-    public async Task<string> GetUserNameAsync(CancellationToken cancellationToken)
+    public string GetEmail()
     {
-        return await Task.FromResult(UserName);
+        throw new NotImplementedException();
     }
 
     public string GetUserName()
     {
-        return UserName;
-    }
-
-    public Task<bool> HasPermissionAsync(string role, CancellationToken cancellationToken)
-    {
-        return Task.FromResult(true);
-    }
-
-    public bool HasPermission(string permission)
-    {
-        return true;
+        return "";
     }
 }

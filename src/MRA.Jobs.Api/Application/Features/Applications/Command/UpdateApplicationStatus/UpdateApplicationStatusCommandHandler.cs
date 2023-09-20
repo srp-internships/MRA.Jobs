@@ -1,7 +1,7 @@
 ﻿namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplicationStatus;
 
 using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.Applications.Commands;
+using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Domain.Enums;
 
 public class UpdateApplicationStatusCommandHandler : IRequestHandler<UpdateApplicationStatus, bool>
@@ -32,7 +32,7 @@ public class UpdateApplicationStatusCommandHandler : IRequestHandler<UpdateAppli
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Application updated",
-            CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent);
         await _context.SaveChangesAsync(cancellationToken);

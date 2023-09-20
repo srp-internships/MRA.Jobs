@@ -17,7 +17,7 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
     public async Task Process(TRequest request, CancellationToken cancellationToken)
     {
         string requestName = typeof(TRequest).Name;
-        Guid? userId = _currentUserService.GetId();
+        Guid? userId = _currentUserService.GetUserId();
         string userName = _currentUserService.GetUserName() ?? "";
         await Task.CompletedTask;
 

@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 
@@ -37,7 +37,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Job vacancy created",
-            CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
         await _dbContext.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);

@@ -1,8 +1,7 @@
-﻿namespace MRA.Jobs.Application.UnitTests.TrainingModels;
-
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Delete;
 using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Delete;
-using MRA.Jobs.Domain.Entities;
+
+namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 public class DeleteTrainingModelCommandHandlerTests : BaseTestFixture
 {
     private DeleteTrainingVacancyCommandHadler _handler;

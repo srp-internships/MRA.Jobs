@@ -1,11 +1,10 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
-
-namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplication;
+﻿namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplication;
 
 using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Common.SlugGeneratorService;
+using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplication;
 using MRA.Jobs.Domain.Entities;
 using MRA.Jobs.Domain.Enums;
 
@@ -42,7 +41,7 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Application vacancy updated",
-            CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent);
         await _context.SaveChangesAsync(cancellationToken);

@@ -1,5 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.JobVacancies.Queries;
-using MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
+﻿using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 
 namespace MRA.Jobs.Application.UnitTests.JobVacancies;
 

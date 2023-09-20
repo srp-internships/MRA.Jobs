@@ -1,7 +1,8 @@
-﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
-using MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
+﻿using MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
+
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug;
 using MRA.Jobs.Domain.Entities;
 public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
 {

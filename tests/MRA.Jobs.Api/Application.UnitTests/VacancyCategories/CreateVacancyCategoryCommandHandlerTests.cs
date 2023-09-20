@@ -1,5 +1,4 @@
-﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
+﻿using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory;
 using MRA.Jobs.Application.Features.VacancyCategories.Command.CreateVacancyCategory;
 
 namespace MRA.Jobs.Application.UnitTests.VacancyCategories;

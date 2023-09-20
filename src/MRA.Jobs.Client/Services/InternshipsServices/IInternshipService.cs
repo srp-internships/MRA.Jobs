@@ -1,4 +1,6 @@
-﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Delete;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 
 namespace MRA.Jobs.Client.Services.InternshipsServices;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.UpdateJobVacancy;
 
@@ -43,7 +43,7 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Job vacancy updated",
-            CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
         await _dbContext.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);

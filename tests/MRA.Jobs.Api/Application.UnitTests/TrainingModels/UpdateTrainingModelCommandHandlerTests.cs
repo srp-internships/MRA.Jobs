@@ -1,8 +1,7 @@
-﻿namespace MRA.Jobs.Application.UnitTests.TrainingModels;
-
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Update;
 using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Update;
-using MRA.Jobs.Domain.Entities;
+
+namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
 {
     private UpdateTrainingVacancyCommandHandler _handler;
@@ -100,7 +99,7 @@ public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
         timelineEvent.EventType.Should().Be(TimelineEventType.Updated);
         timelineEvent.Time.Should().Be(_dateTimeMock.Object.Now);
         timelineEvent.Note.Should().Be("Training Model updated");
-        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.GetId().Value);
+        timelineEvent.CreateBy.Should().Be(_currentUserServiceMock.Object.GetUserId().Value);
 
         _dbContextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
 

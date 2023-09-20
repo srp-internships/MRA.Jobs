@@ -1,5 +1,5 @@
 ﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
 using IEmailService = Mra.Shared.Common.Interfaces.Services.IEmailService;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
@@ -42,7 +42,7 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Internship created",
-            CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

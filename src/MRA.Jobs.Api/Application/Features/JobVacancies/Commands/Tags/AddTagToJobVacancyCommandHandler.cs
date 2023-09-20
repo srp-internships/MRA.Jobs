@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.Tags;
 
@@ -52,7 +52,7 @@ public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagsToJobVaca
                     EventType = TimelineEventType.Created,
                     Time = _dateTime.Now,
                     Note = $"Added '{tag.Name}' tag",
-                    CreateBy = _currentUserService.GetId() ?? Guid.Empty
+                    CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
                 };
                 await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
             }

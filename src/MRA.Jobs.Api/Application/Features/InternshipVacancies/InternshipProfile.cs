@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TagDTO;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
