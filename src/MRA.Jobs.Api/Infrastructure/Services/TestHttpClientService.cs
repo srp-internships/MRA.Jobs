@@ -2,7 +2,8 @@
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.Tests.Commands;
+using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTest;
+using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTestResult;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Infrastructure.Services;

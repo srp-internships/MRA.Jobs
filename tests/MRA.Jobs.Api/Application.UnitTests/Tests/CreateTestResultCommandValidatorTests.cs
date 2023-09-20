@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Tests.Commands;
+﻿using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTestResult;
 using MRA.Jobs.Application.Features.Tests.Commands.CreateTestResult;
 
 namespace MRA.Jobs.Application.UnitTests.Tests;

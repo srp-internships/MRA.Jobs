@@ -1,8 +1,7 @@
-﻿namespace MRA.Jobs.Application.UnitTests.TrainingModels;
-
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Update;
 using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Update;
-using MRA.Jobs.Domain.Entities;
+
+namespace MRA.Jobs.Application.UnitTests.TrainingModels;
 public class UpdateTrainingModelCommandHandlerTests : BaseTestFixture
 {
     private UpdateTrainingVacancyCommandHandler _handler;

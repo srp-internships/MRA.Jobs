@@ -1,12 +1,11 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
-
-namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
+﻿namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
 using Common.Interfaces;
 using Common.Security;
 using Common.SlugGeneratorService;
 using Domain.Entities;
 using Domain.Enums;
+using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 
 public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, Guid>
 {

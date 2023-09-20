@@ -1,11 +1,9 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿
+using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;
-
-using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Domain.Entities;
-
 public class CreateApplicationCommandHandlerTests : BaseTestFixture
 {
     private CreateApplicationCommandHandler _handler;

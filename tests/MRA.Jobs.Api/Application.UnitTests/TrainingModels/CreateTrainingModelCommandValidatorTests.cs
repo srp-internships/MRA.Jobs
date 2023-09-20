@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands;
+﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
 
 namespace MRA.Jobs.Application.UnitTests.TrainingModels;

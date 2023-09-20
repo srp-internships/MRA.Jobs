@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.DeleteJobVacancy;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.DeleteJobVacancy;
 

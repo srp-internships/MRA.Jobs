@@ -1,10 +1,7 @@
-﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
-using MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
+﻿using MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
-
-using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Domain.Entities;
 public class CreateInternshipCommandHandlerTests : BaseTestFixture
 {
     private CreateInternshipVacancyCommandHandler _handler;

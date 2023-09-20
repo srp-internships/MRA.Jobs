@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Dtos;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
 using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 

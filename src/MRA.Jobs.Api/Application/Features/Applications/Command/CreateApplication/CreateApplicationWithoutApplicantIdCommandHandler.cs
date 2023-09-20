@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 

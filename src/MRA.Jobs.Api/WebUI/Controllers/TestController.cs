@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.Tests.Commands;
+using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTest;
+using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTestResult;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
