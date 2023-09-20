@@ -54,7 +54,7 @@ public class AddTagToTrainingVacancyCommandHandler : IRequestHandler<AddTagToTra
                     EventType = TimelineEventType.Created,
                     Time = _dateTime.Now,
                     Note = $"Added '{tag.Name}' tag",
-                    CreateBy = _currentUserService.GetId() ?? Guid.Empty
+                    CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
                 };
                 await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
             }

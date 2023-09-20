@@ -31,7 +31,7 @@ public class AddNoteToApplicationCommandHandler : IRequestHandler<AddNoteToAppli
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = request.Note,
-            CreateBy = _currentUserService.GetId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent);
         await _context.SaveChangesAsync(cancellationToken);

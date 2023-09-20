@@ -40,7 +40,7 @@ public class CreateTestResultCommandHandlerTests : BaseTestFixture
             .Callback<TestResult, CancellationToken>((t, ct) => t.Id = newEntityGuid);
         _dbContextMock.Setup(x => x.TestResults).Returns(testResultDbSetMock.Object);
 
-        _currentUserServiceMock.Setup(x => x.GetId()).Returns(Guid.NewGuid());
+        _currentUserServiceMock.Setup(x => x.GetUserId()).Returns(Guid.NewGuid());
 
         // Act
         TestResultDto result = await _handler.Handle(request, CancellationToken.None);

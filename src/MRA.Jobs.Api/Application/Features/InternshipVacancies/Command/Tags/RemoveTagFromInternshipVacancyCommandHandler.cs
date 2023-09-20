@@ -42,7 +42,7 @@ public class RemoveTagFromInternshipVacancyCommandHandler : IRequestHandler<Remo
                 EventType = TimelineEventType.Deleted,
                 Time = _dateTime.Now,
                 Note = $"Removed '{tagName}' tag",
-                CreateBy = _currentUserService.GetId() ?? Guid.Empty
+                CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
             };
             await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
 
