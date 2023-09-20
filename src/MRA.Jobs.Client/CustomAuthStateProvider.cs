@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
 using Blazored.LocalStorage;
+using MRA.Identity.Application.Contract.Admin.Responses;
 
 namespace MRA.Jobs.Client;
 
@@ -19,18 +20,18 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        string authToken = await _localStorageService.GetItemAsStringAsync("authToken");
+        var authToken = await _localStorageService.GetItemAsync<JwtTokenResponse>("authToken");
 
         var identity = new ClaimsIdentity();
         _http.DefaultRequestHeaders.Authorization = null;
 
-        if (!string.IsNullOrEmpty(authToken))
+        if (!string.IsNullOrEmpty(authToken.AccessToken))
         {
             try
             {
-                identity = new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt");
+                identity = new ClaimsIdentity(ParseClaimsFromJwt(authToken.AccessToken), "jwt");
                 _http.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", authToken.Replace("\"", ""));
+                    new AuthenticationHeaderValue("Bearer", authToken.AccessToken.Replace("\"", ""));
             }
             catch
             {
