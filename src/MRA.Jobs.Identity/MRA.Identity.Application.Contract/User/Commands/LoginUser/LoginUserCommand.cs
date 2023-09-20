@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using MRA.Identity.Application.Contract.User.Responses;
 
-namespace MRA.Identity.Application.Contract.User.Commands;
+namespace MRA.Identity.Application.Contract.User.Commands.LoginUser;
 
 public class LoginUserCommand : IRequest<ApplicationResponse<JwtTokenResponse>>
 {
