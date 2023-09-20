@@ -13,6 +13,7 @@ public class ApplicationListDto
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
     public int StatusId { get; set; }
+    public string Slug { get; set; }
     public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
 }
 

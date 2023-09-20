@@ -2055,6 +2055,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "slug": {
+            "type": "string",
+            "nullable": true
+          },
           "vacancyResponses": {
             "type": "array",
             "nullable": true,
