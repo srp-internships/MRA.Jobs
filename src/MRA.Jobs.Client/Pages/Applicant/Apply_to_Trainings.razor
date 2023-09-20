@@ -13,9 +13,11 @@
 	<p>Fill out the form below to apply for training:</p>
 
 	<EditForm Model="@createApplication" OnValidSubmit="Apply">
+		<FluentValidationValidator />
 		<div class="form-group">
 			<label for="CoverLetter">Tell us about yourself (minimum 50 words):</label>
 			<InputTextArea id="CoverLetter" @bind-Value="createApplication.CoverLetter" class="form-control" rows="10"></InputTextArea>
+			<small><ValidationMessage For="@(() =>createApplication.CoverLetter)" class="text-bg-danger" /></small>
 			@if (createApplication.CoverLetter != null && createApplication.CoverLetter.Split(' ').Length < 50)
 			{
 				<p class="text-danger">Please write at least 50 words.</p>
