@@ -33,6 +33,11 @@ if (app.Environment.IsDevelopment())
 var applicationDbContextInitializer = app.Services.CreateAsyncScope().ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
 await applicationDbContextInitializer.SeedAsync();
 
+app.UseCors(config =>
+{
+    config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+});
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

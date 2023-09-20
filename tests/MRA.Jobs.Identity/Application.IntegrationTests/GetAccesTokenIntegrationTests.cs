@@ -21,6 +21,7 @@ public class GetAccesTokenIntegrationTests : BaseTest
             {
                 Email = "test1@example.com",
                 Password = "password@#12P",
+                ConfirmPassword = "password@#12P",
                 FirstName = "Alex",
                 Username = "@Alex22",
                 LastName = "Makedonsky",
@@ -97,6 +98,7 @@ public class GetAccesTokenIntegrationTests : BaseTest
         {
             Email = "test2@example.com",
             Password = "password@#12P2",
+            ConfirmPassword = "password@#12P2",
             FirstName = "Alex",
             Username = "@Alex222",
             LastName = "Makedonsky",
