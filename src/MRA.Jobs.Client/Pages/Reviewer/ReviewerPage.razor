@@ -1,0 +1,22 @@
+﻿@page "/reviewer"
+@inject IApplicationService applicationService
+
+<h3>Reviewer Page</h3>
+
+<h1>@message</h1>
+
+@code {
+    string message = "";
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await applicationService.GetAllApplications();
+        if (response != null)
+        {
+            message = "Success";
+        }
+        else
+        {
+            message = "Application not found.";
+        }
+    }
+}

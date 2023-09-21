@@ -8,4 +8,5 @@ public interface IApplicationService
 {
     Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status);
     Task CreateApplication(CreateApplicationCommand application);
+    Task<List<ApplicationListDto>> GetAllApplications();
 }

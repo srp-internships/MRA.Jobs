@@ -28,4 +28,10 @@ public class ApplicationService : IApplicationService
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync("/api/applications", application);
     }
 
+    public async Task<List<ApplicationListDto>> GetAllApplications()
+    {
+        HttpResponseMessage response = await _httpClient.GetAsync("/api/applications/");
+        List<ApplicationListDto> result = await response.Content.ReadFromJsonAsync<List<ApplicationListDto>>();
+        return result;
+    }
 }
