@@ -2102,7 +2102,7 @@
             "format": "guid",
             "nullable": true
           },
-          "histiry": {
+          "history": {
             "type": "array",
             "nullable": true,
             "items": {

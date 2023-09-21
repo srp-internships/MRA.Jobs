@@ -25,7 +25,7 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses));
         CreateMap<Domain.Entities.Application, ApplicationDetailsDto>()
             .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses))
-            .ForMember(dest => dest.Histiry, opt => opt.MapFrom(src => src.History));
+            .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History));
         CreateMap<CreateApplicationCommand, Domain.Entities.Application>()
             .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses));
 
