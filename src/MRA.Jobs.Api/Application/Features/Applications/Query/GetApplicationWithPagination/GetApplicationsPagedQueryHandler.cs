@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections;
+using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
@@ -24,8 +25,9 @@ public class
     public Task<PagedList<ApplicationListDto>> Handle(PagedListQuery<ApplicationListDto> request,
         CancellationToken cancellationToken)
     {
+        var applications = _dbContext.Applications.AsNoTracking().Include(a => a.VacancyResponses).ThenInclude(vr => vr.VacancyQuestion);
         PagedList<ApplicationListDto> result = _sieveProcessor.ApplyAdnGetPagedList(request,
-            _dbContext.Applications.AsNoTracking().Include(a => a.VacancyResponses).ThenInclude(vr => vr.VacancyQuestion), _mapper.Map<ApplicationListDto>);
+            applications, _mapper.Map<ApplicationListDto>);
         return Task.FromResult(result);
     }
 }
