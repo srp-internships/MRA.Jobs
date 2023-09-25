@@ -12,16 +12,14 @@
     }
     else
     {
+		<EditForm Model="@application" OnValidSubmit="CreateApplication">
+		<FluentValidationValidator />
         <div class="row">
             <div class="col-8">
                 <p class="fs-2">@internship.Title</p>
                 <label for="cover-letter"><span class="text-danger">*</span>Cover Letter</label>
-                <textarea class="form-control" id="cover-letter" rows="10" @bind="application.CoverLetter" required></textarea>
-
-                @if (application.CoverLetter != null && application.CoverLetter.Length < 150)
-                {
-                    <div class="text-danger">Cover letter must be at least 150 characters.</div>
-                }
+					<InputTextArea class="form-control" id="cover-letter" rows="10" @bind="application.CoverLetter" required></InputTextArea>
+					<small><ValidationMessage For="@(() =>application.CoverLetter)" class="text-bg-danger" /></small>
 
                 @if (internship.VacancyQuestions.Count() > 0)
                 {
@@ -44,9 +42,10 @@
                         Please fill in all required fields.
                     </div>
                 }
-                <button type="button" class="btn btn-primary mt-3" @onclick="CreateApplication">Apply</button>
+					<button type="submit" class="btn btn-primary mt-3" @onclick="CreateApplication">Apply</button>
             </div>
         </div>
+		</EditForm>
     }
 </div>
 
