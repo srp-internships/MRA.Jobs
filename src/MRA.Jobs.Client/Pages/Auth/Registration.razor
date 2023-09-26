@@ -23,24 +23,30 @@
 				<div class="form-group">
 					<label for="firstName">First Name:</label>
 					<InputText id="firstName" @bind-Value="user.FirstName" class="form-control" />
+
 					<small>	<ValidationMessage For="@(() => user.FirstName)" class="text-danger" /></small>
 				</div>
 				<div class="form-group">
 					<label for="lastName">Last Name:</label>
 					<InputText id="lastName" @bind-Value="user.LastName" class="form-control" />
+
 					<small><ValidationMessage For="@(() => user.LastName)" class="text-danger" /></small>
 
 				</div>
 				<div class="form-group">
 					<label for="phoneNumber">Phone Number:</label>
 					<InputText id="phoneNumber" @bind-Value="user.PhoneNumber" class="form-control" />
+
 					<small><ValidationMessage For="@(() => user.PhoneNumber)" class="text-danger" /></small>
+
 
 				</div>
 				<div class="form-group">
 					<label for="username">Username:</label>
 					<InputText id="username" @bind-Value="user.Username" class="form-control" />
+
 					<small>	<ValidationMessage For="@(() => user.Username)" class="text-danger" /></small>
+
 
 				</div>
 				<div class="form-group">
@@ -48,11 +54,14 @@
 					<InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
 					<small>	<ValidationMessage For="@(() => user.Password)" class="text-danger" /></small>
 
+
 				</div>
 				<div class="form-group">
 					<label for="confirmPassword">Confirm Password:</label>
 					<InputText id="confirmPassword" @bind-Value="user.ConfirmPassword" type="password" class="form-control" />
+
 					<small>	<ValidationMessage For="@(() => user.ConfirmPassword)" class="text-danger" /></small>
+
 				</div>
 				<br />
 				<button type="submit" class="btn btn-primary" style="width:100%" @onclick="submit">Sign un</button>
