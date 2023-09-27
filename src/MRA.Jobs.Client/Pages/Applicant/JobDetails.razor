@@ -1,0 +1,42 @@
+﻿@page "/jobdetails/{Slug}"
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses
+@inject IVacancyService VacancyService
+@inject NavigationManager NavigationManager
+
+<div class="container">
+    @if (_vacancy == null)
+    {
+        <p>Fetching...</p>
+    }
+    else
+    {
+        <h2>@_vacancy.Title</h2>
+        <div class="vacancy-info">
+            <p class="d-inline-block vacancy-info__description">@_vacancy.Description</p>
+            <p>Application Deadline: @_vacancy.EndDate</p>
+        </div>
+        <div class="vacancy-apply">
+            <p class="vacancy-apply__text">Interesting ? Then give it a try!</p>
+            <button class="btn btn-primary" @onclick="CompleteTest">
+                <i class="oi oi-briefcase"></i>&nbsp;&nbsp;Complete Test
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Slug { get; set; }
+
+    JobVacancyDetailsDto _vacancy;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _vacancy = await VacancyService.GetBySlug(Slug);
+    }
+
+    private void CompleteTest()
+    {
+        NavigationManager.NavigateTo($"/job/applytojob/{Slug}");
+    }
+}
