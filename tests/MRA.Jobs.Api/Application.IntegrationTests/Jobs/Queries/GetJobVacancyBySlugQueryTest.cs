@@ -7,8 +7,14 @@ using NUnit.Framework;
 namespace MRA.Jobs.Application.IntegrationTests.Jobs.Queries;
 public class GetJobVacancyBySlugQueryTest : Testing
 {
-   
 
+    private JobsContext _context;
+
+    [SetUp]
+    public void SetUp()
+    {
+        _context = new JobsContext();
+    }
 
     [Test]
     public async Task GetJobVacancyBySlugQuery_IfNotFound_ReturnNotFoundJobVacancySlug()
@@ -27,8 +33,7 @@ public class GetJobVacancyBySlugQueryTest : Testing
     public async Task GetJobVacancyBySlug_IfFound_ReturnJobVacancy()
     {
         //Arrange 
-        var context = new JobsContext();
-        var query = new GetJobVacancyBySlugQuery { Slug = (await context.GetJob("Backend Developer")).Slug };
+        var query = new GetJobVacancyBySlugQuery { Slug = (await _context.GetJob("Backend Developer")).Slug };
 
         //Act
         var response = await _httpClient.GetAsync($"/api/jobs/{query.Slug}");
