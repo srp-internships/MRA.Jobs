@@ -2006,6 +2006,10 @@
             "type": "string",
             "format": "guid"
           },
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
           "coverLetter": {
             "type": "string",
             "nullable": true
@@ -2014,9 +2018,17 @@
             "type": "string",
             "format": "guid"
           },
+          "vacancyTitle": {
+            "type": "string",
+            "nullable": true
+          },
           "statusId": {
             "type": "integer",
             "format": "int32"
+          },
+          "statusName": {
+            "type": "string",
+            "nullable": true
           },
           "slug": {
             "type": "string",

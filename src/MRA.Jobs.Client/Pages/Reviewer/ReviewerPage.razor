@@ -1,22 +1,50 @@
 ﻿@page "/reviewer"
 @inject IApplicationService applicationService
 
-<h3>Reviewer Page</h3>
+<h3 class="m-3">Applications</h3>
+@if (applications is not null && applications.TotalCount > 0)
+{
+    @foreach (var application in applications.Items)
+    {
+        <div class="card m-3">
+            <div class="card-header">
+                Applicant: @application.ApplicantId <br>
+                Vacancy: @application.VacancyTitle
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Cover letter</h5>
+                <p class="card-text">@application.CoverLetter</p>
 
-<h1>@message</h1>
+                <ol class="list-group list-group-numbered">
+                    @foreach (var response in application.VacancyResponses)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">@response.VacancyQuestion.Question</div>
+                                @response.Response
+                            </div>
+                        </li>
+                    }
+                </ol>
 
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    }
+} else
+{
+    <h5>There are no applications. You can go and take a nap!</h5>
+}
 @code {
-    string message="";
+    string message="Loading...";
+    private PagedList<ApplicationListDto> applications;
     protected override async Task OnInitializedAsync()
     {
         var response = await applicationService.GetAllApplications();
-        if (response != null)
+        if (response is not null)
         {
-            message = "Success";
-        }
-        else
-        {
-            message = "Applications not found.";
+            applications = response;
+            message = string.Empty;
         }
     }
 }

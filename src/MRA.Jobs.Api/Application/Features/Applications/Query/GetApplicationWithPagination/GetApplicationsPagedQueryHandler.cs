@@ -25,7 +25,7 @@ public class
     public Task<PagedList<ApplicationListDto>> Handle(PagedListQuery<ApplicationListDto> request,
         CancellationToken cancellationToken)
     {
-        var applications = _dbContext.Applications.AsNoTracking().Include(a => a.VacancyResponses).ThenInclude(vr => vr.VacancyQuestion);
+        var applications = _dbContext.Applications.AsNoTracking().Include(a => a.Vacancy).Include(a => a.VacancyResponses).ThenInclude(vr => vr.VacancyQuestion);
         PagedList<ApplicationListDto> result = _sieveProcessor.ApplyAdnGetPagedList(request,
             applications, _mapper.Map<ApplicationListDto>);
         return Task.FromResult(result);
