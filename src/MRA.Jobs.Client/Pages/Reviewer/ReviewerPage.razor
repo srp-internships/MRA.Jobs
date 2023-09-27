@@ -6,7 +6,7 @@
 <h1>@message</h1>
 
 @code {
-    string message = "";
+    string message="";
     protected override async Task OnInitializedAsync()
     {
         var response = await applicationService.GetAllApplications();
@@ -16,7 +16,7 @@
         }
         else
         {
-            message = "Application not found.";
+            message = "Applications not found.";
         }
     }
 }
