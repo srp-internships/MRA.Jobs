@@ -17,4 +17,19 @@ public class CategoryContext : Testing
         await AddAsync(newCategory);
         return newCategory.Id;
     }
+
+    public async Task<VacancyCategory> GetCategory(string name)
+    {
+        var catogy = await FindFirstOrDefaultAsync<VacancyCategory>(c => c.Name == name);
+        if (catogy != null)
+            return catogy;
+
+        var newCategory = new VacancyCategory
+        {
+            Name = name,
+            Slug = name.ToLower().Replace(" ", "-")
+        };
+        await AddAsync(newCategory);
+        return newCategory;
+    }
 }

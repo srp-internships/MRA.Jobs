@@ -4,6 +4,11 @@ using MRA.Jobs.Domain.Entities;
 namespace MRA.Jobs.Application.IntegrationTests.Jobs;
 public class JobsContext : Testing
 {
+   /// <summary>
+   /// Возвращает job, если его нет то сначало создаёт в InMemory и возвращает 
+   /// </summary>
+   /// <param name="title"></param>
+   /// <returns></returns>
     public async Task<JobVacancy> GetJob(string title)
     {
         var category = new CategoryContext();
