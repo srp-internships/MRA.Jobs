@@ -5,8 +5,7 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyWithPagination;
 
-public class
-    GetJobVacanciesPagedQueryHandler : IRequestHandler<PagedListQuery<JobVacancyListDto>, PagedList<JobVacancyListDto>>
+public class GetJobVacanciesPagedQueryHandler : IRequestHandler<PagedListQuery<JobVacancyListDto>, PagedList<JobVacancyListDto>>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
