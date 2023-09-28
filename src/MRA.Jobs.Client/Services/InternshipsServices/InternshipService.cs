@@ -1,8 +1,11 @@
-﻿using MRA.Jobs.Application.Contracts.Common;
+﻿using System.Net.Http;
+using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Delete;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+using MRA.Jobs.Client.Pages.Applicant.Internshippage;
 
 namespace MRA.Jobs.Client.Services.InternshipsServices;
 
@@ -71,6 +74,32 @@ public class InternshipService : IInternshipService
         };
 
         return await _http.PutAsJsonAsync($"internships/{slug}", updateCommand);
+    }
+    public async Task<PagedList<TrainingVacancyListDto>> GetByCategoryName(string slug)
+    {
+        var internship = await _http.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"internship?CategorySlug={slug}");
+        return internship;
+    }
+    public async Task<PagedList<TrainingVacancyListDto>> SearchInternship(string searchInput)
+    {
+        var internship = await _http.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"internship?SearchText={searchInput}");
+        return internship;
+    }
+
+    public async Task<PagedList<TrainingVacancyListDto>> GetAllSinceCheckDate()
+    {
+        var result = await _http.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("internship?CheckDate=true");
+        return result;
+    }
+    public async Task<PagedList<TrainingVacancyListDto>> GetByCategorySinceCheckDate(string slug)
+    {
+        var internship = await _http.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"internship?CategorySlug={slug}&CheckDate=true");
+        return internship;
+    }
+    public async Task<PagedList<TrainingVacancyListDto>> SearchInternshipSinceSearchDate(string searchInput)
+    {
+        var internship = await _http.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"internship?SearchText={searchInput}&CheckDate=true");
+        return internship;
     }
 
 }
