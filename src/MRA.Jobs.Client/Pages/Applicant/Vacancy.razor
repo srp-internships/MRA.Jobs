@@ -70,13 +70,8 @@
 
     void BtnSearch(string text)
     {
-        // Console.WriteLine(text);
         VacancyService.GetVacancyByTitle(text);
         VacancyService.OnChange += StateHasChanged;
-        // foreach (var vacancey in VacancyService.Vacanceies)
-        // {
-            // Console.WriteLine("title: " + vacancey.Title);
-        // }
     }
 
     public void Dispose()
