@@ -29,8 +29,7 @@
                         {
                             <label for="question" class="form-label"><span class="text-danger">*</span>@question.Question</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="question_@question.Id" required
-                                @bind-Value="questionResponses[question.Question]">
+                                <input type="text" class="form-control" id="question_@question.Id" required="required" @bind="questionResponses[question.Question]">
                             </div>
                         }
                     </div>
