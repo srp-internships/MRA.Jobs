@@ -5,7 +5,7 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Internships.Queries;
-public class GetAllInternshipVacancyQuery : Testing
+public class GetAllInternshipVacancyQueryTest : Testing
 {
 
     private InternshipsContext _context;
