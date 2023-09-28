@@ -15,7 +15,7 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class  ApplicationsController : ApiControllerBase
 {
     private readonly ILogger<ApplicationsController> _logger;
