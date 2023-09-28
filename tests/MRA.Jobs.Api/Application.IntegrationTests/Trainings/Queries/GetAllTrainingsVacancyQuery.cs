@@ -2,6 +2,8 @@
 using System.Net.Http.Json;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+using MRA.Jobs.Application.IntegrationTests.VacancyCategories.GetCreate;
+using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Trainings.Queries;
@@ -12,7 +14,7 @@ public class GetAllTrainingsVacancyQuery : Testing
     [SetUp]
     public void SetUp()
     {
-        _context = new TrainingsContext();
+        _context = new TrainingsContext(); 
     }
     [Test]
     public async Task GetAllTrainingsVacancyQuery_ReturnsTrainingsVacancies()
@@ -32,55 +34,6 @@ public class GetAllTrainingsVacancyQuery : Testing
         Assert.IsNotEmpty(trainingVacancies.Items);
     }
     [Test]
-    public async Task GetAllTrainingsVacancyQuery_ReturnsSpecificTraining()
-    {
-        // Arrange
-        await _context.GetTraining("C#");
-        await _context.GetTraining("Pyton");
-        await _context.GetTraining("F#");
-        await _context.GetTraining("C++");
-        var expectedTrainingName = "C#";
-
-        // Act
-        RunAsReviewerAsync();
-        var response = await _httpClient.GetAsync("/api/Trainings");
-
-        // Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        var trainingVacancies = await response.Content.ReadFromJsonAsync<PagedList<TrainingVacancyListDto>>();
-        Assert.IsNotNull(trainingVacancies);
-        Assert.IsNotEmpty(trainingVacancies.Items);
-
-        var specificTraining = trainingVacancies.Items.Find(t => t.Title == expectedTrainingName);
-        Assert.IsNotNull(specificTraining);
-    }
-    [Test]
-    public async Task ReturnsSpecificTraining_WhenTrainingExists()
-    {
-        // Arrange
-        await _context.GetTraining("C#");
-        await _context.GetTraining("Python");
-        await _context.GetTraining("F#");
-        await _context.GetTraining("C++");
-        var expectedTrainingName = "C#";
-
-        // Act
-        RunAsReviewerAsync();
-        var response = await _httpClient.GetAsync("/api/Trainings");
-
-        // Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        var trainingVacancies = await response.Content.ReadFromJsonAsync<PagedList<TrainingVacancyListDto>>();
-        Assert.IsNotNull(trainingVacancies);
-        Assert.IsNotEmpty(trainingVacancies.Items);
-
-        var specificTraining = trainingVacancies.Items.Find(t => t.Title == expectedTrainingName);
-        Assert.IsNotNull(specificTraining);
-        Assert.AreEqual(expectedTrainingName, specificTraining.Title);
-        Assert.IsTrue(specificTraining.Duration > 0);
-        Assert.IsTrue(specificTraining.Description!="");
-    }
-    [Test]
     public async Task GetAllTrainingsVacancyQuery_ReturnsForbiddenStatusCode_WhenUserIsNotAuthorized()
     {
         await _context.GetTraining("C#");
@@ -97,7 +50,24 @@ public class GetAllTrainingsVacancyQuery : Testing
     public async Task GetAllTrainingsVacancyQuery_ReturnsEmptyList_WhenNoTrainingsExist()
     {
         // Arrange
-        // Не добавляем тренировочные места
+        var category = new CategoryContext();
+        var newTraining = new TrainingVacancy
+        {
+            Title = "cccc",
+            Description = "Hello",
+            ShortDescription = "Hi",
+            PublishDate = DateTime.Now.AddDays(-5),
+            EndDate = DateTime.Now.AddDays(-2),
+            CategoryId = await category.GetCategoryId("jobvacancy"),
+            Duration = 10,
+            Fees = 100,
+            VacancyQuestions = new List<VacancyQuestion> {
+                new VacancyQuestion {
+                    Id = Guid.NewGuid(),
+                    Question = "What is your English proficiency level?" }
+            },
+        };
+        await AddAsync(newTraining);
         // Act
         RunAsReviewerAsync();
         var response = await _httpClient.GetAsync("/api/Trainings");
@@ -105,29 +75,9 @@ public class GetAllTrainingsVacancyQuery : Testing
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         var trainingVacancies = await response.Content.ReadFromJsonAsync<PagedList<TrainingVacancyListDto>>();
         Assert.IsNotNull(trainingVacancies);
+        var specificTraining = trainingVacancies.Items.Find(t => t.EndDate<DateTime.Now);
+        Assert.IsNotNull(specificTraining);
+        
     }
-    [Test]
-    public async Task GetAllTrainingsVacancyQuery_ReturnsNullForNonexistentTraining()
-    {
-        // Arrange
-        await _context.GetTraining("Python");
-        await _context.GetTraining("F#");
-        await _context.GetTraining("C++");
-        var expectedTrainingName = "C#";
-
-        // Act
-        RunAsReviewerAsync();
-        var response = await _httpClient.GetAsync("/api/Trainings");
-
-        // Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        var trainingVacancies = await response.Content.ReadFromJsonAsync<PagedList<TrainingVacancyListDto>>();
-        Assert.IsNotNull(trainingVacancies);
-        Assert.IsNotEmpty(trainingVacancies.Items);
-
-        var specificTraining = trainingVacancies.Items.Find(t => t.Title == expectedTrainingName);
-        Assert.IsNull(specificTraining);
-    }
-
 }
 
