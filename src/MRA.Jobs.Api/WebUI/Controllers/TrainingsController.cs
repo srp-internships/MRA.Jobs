@@ -17,7 +17,6 @@ public class TrainingsController : ApiControllerBase
 {
 
     [HttpGet("{slug}")]
-    [AllowAnonymous]
     public async Task<IActionResult> Get(string slug)
     {
         var training = await Mediator.Send(new GetTrainingVacancyBySlugQuery { Slug = slug });
