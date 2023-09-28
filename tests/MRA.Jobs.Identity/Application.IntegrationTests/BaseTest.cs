@@ -58,6 +58,12 @@ public abstract class BaseTest
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         return dbContext.Set<T>().ToListAsync();
     }
+    protected Task<List<T>> GetWhere<T>(Expression<Func<T, bool>> query) where T : class
+    {
+        using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        return dbContext.Set<T>().Where(query).ToListAsync();
+    }
 
     protected Task<int> CountAsync<TEntity>() where TEntity : class
     {

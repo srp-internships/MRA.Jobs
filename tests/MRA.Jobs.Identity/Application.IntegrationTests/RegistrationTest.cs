@@ -1,7 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
+using FluentAssertions;
+using Microsoft.AspNetCore.Http.HttpResults;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Domain.Entities;
+using Mra.Shared.Common.Constants;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
@@ -16,11 +19,12 @@ public class RegistrationTests : BaseTest
         {
             Email = "test3@example.com",
             Password = "password@#12P",
-            ConfirmPassword = "password@#12P",
             FirstName = "Alex",
             Username = "@Alex223",
             LastName = "Makedonsky",
-            PhoneNumber = "123456789"
+            PhoneNumber = "123456789",
+            Role = "asdfffssdesasfasefa",
+            Application = "43wtruigjklf"
         };
 
         // Assert
@@ -28,7 +32,8 @@ public class RegistrationTests : BaseTest
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
         // Assert
-        var registeredUser = await GetEntity<ApplicationUser>(u => u.Email == request.Email && u.UserName == request.Username);
+        var registeredUser =
+            await GetEntity<ApplicationUser>(u => u.Email == request.Email && u.UserName == request.Username);
         Assert.IsNotNull(registeredUser, "Registered user not found");
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -45,7 +50,6 @@ public class RegistrationTests : BaseTest
             Username = "@Alex22",
             LastName = "Makedonskiy",
             PhoneNumber = "123456789",
-            ConfirmPassword="password"
         };
 
         // Assert
@@ -60,12 +64,74 @@ public class RegistrationTests : BaseTest
         var request = new RegisterUserCommand
         {
             // Empty Register Data
-            Password= "password",
-            ConfirmPassword= "password",
+            Password = "password",
         };
 
         // Assert
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized),await response.Content.ReadAsStringAsync());
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized),
+            await response.Content.ReadAsStringAsync());
+    }
+
+    [Test]
+    public async Task Register_WhenRoleDoesNotExist_CreateRole()
+    {
+        var request = new RegisterUserCommand
+        {
+            Email = "test3@easdxa123123mple.com",
+            Password = "passdsword@#12P",
+            FirstName = "Ale123x",
+            Username = "@Alsdex223123",
+            LastName = "Makesddonsky",
+            PhoneNumber = "12sd3123456789",
+            Role = "Role1",
+            Application = "mra.Test"
+        };
+
+        var response = await _client.PostAsJsonAsync("api/Auth/register", request);
+        response.IsSuccessStatusCode.Should().BeTrue();
+
+        var role = await GetEntity<ApplicationRole>(s => s.Name == request.Role);
+
+        var userRole = await GetEntity<ApplicationUserRole>(a => a.RoleId == role.Id);
+
+        Assert.That(role, Is.Not.Null);
+        Assert.That(userRole, Is.Not.Null);
+    }
+
+    [Test]
+    public async Task Register_WhenCall_CreateRequiredClaims()
+    {
+        var role = new ApplicationRole
+        {
+            Id = Guid.NewGuid(), Name = "TestRole2", NormalizedName = "testrole2", Slug = "testrole2-claim"
+        };
+
+        await AddEntity(role);
+
+        var request = new RegisterUserCommand
+        {
+            Email = "test3@rrrexample.com",
+            Password = "passworrrrd@#12P",
+            FirstName = "Alerrx",
+            Username = "@Alerrrx223",
+            LastName = "Makerradonsky",
+            PhoneNumber = "123456789",
+            Role = role.Name,
+            Application = "mra.Test"
+        };
+
+        var response = await _client.PostAsJsonAsync("api/Auth/register", request);
+        response.IsSuccessStatusCode.Should().BeTrue();
+
+        var user = await GetEntity<ApplicationUser>(s => s.UserName == request.Username);
+
+        var userClaims = await GetWhere<ApplicationUserClaim>(s => s.UserId == user.Id);
+        
+        Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Application && s.ClaimValue==request.Application));
+        Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Id && s.ClaimValue==user.Id.ToString()));
+        Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Role && s.ClaimValue==request.Role));
+        Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Email && s.ClaimValue==request.Email));
+        Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Username && s.ClaimValue==request.Username));
     }
 }

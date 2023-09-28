@@ -14,11 +14,15 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IApplicationDbContext _context;
     private readonly IEmailVerification _emailVerification;
-    public RegisterUserCommandHandler(UserManager<ApplicationUser> userManager, IApplicationDbContext context, IEmailVerification emailVerification)
+    private readonly RoleManager<ApplicationRole> _roleManager;
+
+    public RegisterUserCommandHandler(UserManager<ApplicationUser> userManager, IApplicationDbContext context,
+        IEmailVerification emailVerification, RoleManager<ApplicationRole> roleManager)
     {
         _userManager = userManager;
         _context = context;
         _emailVerification = emailVerification;
+        _roleManager = roleManager;
     }
 
     public async Task<ApplicationResponse<Guid>> Handle(RegisterUserCommand request,
@@ -37,31 +41,83 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
                 PhoneNumber = request.PhoneNumber
             };
             IdentityResult result = await _userManager.CreateAsync(user, request.Password);
-            
+
             if (!result.Succeeded)
             {
-                return new ApplicationResponseBuilder<Guid>().SetErrorMessage(result.Errors.First().Description).Success(false).Build();
+                return new ApplicationResponseBuilder<Guid>().SetErrorMessage(result.Errors.First().Description)
+                    .Success(false).Build();
             }
 
-            if (result.Succeeded)
+            await _emailVerification.SendVerificationEmailAsync(user);
+
+            if (!await _roleManager.RoleExistsAsync(request.Role))
             {
-                await _emailVerification.SendVerificationEmailAsync(user);
+                var role = new ApplicationRole
+                {
+                    Id = Guid.NewGuid(),
+                    Name = request.Role,
+                    NormalizedName = _roleManager.NormalizeKey(request.Role),
+                    Slug = $"{request.Username}-{request.Role}",
+                };
+                var roleResult = await _roleManager.CreateAsync(role);
+                if (!roleResult.Succeeded)
+                {
+                    throw new Exception(roleResult.Errors.First().Description);
+                }
             }
 
-            var idClaim = new ApplicationUserClaim
+            var userRoleResult = await _userManager.AddToRoleAsync(user, request.Role);
+
+            if (!userRoleResult.Succeeded)
             {
-                ClaimType = ClaimTypes.Id,
-                ClaimValue = user.Id.ToString(),
-                UserId = user.Id,
-                Slug = user.UserName + "-id"
-            };
-            await _context.UserClaims.AddAsync(idClaim, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+                throw new Exception(userRoleResult.Errors.First().Description);
+            }
+
+            await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
+                cancellationToken);
+
             return new ApplicationResponseBuilder<Guid>().SetResponse(user.Id).Build();
         }
         catch (Exception e)
         {
             return new ApplicationResponseBuilder<Guid>().SetException(e).Success(false).Build();
         }
+    }
+
+
+    private async Task CreateClaimAsync(string role, string username, Guid id, string email, string phone,
+        string application, CancellationToken cancellationToken = default)
+    {
+        var userClaims = new[]
+        {
+            new ApplicationUserClaim
+            {
+                UserId = id, ClaimType = ClaimTypes.Role, ClaimValue = role, Slug = $"{username}-role"
+            },
+            new ApplicationUserClaim
+            {
+                UserId = id, ClaimType = ClaimTypes.Id, ClaimValue = id.ToString(), Slug = $"{username}-id"
+            },
+            new ApplicationUserClaim
+            {
+                UserId = id,
+                ClaimType = ClaimTypes.Username,
+                ClaimValue = username,
+                Slug = $"{username}-username"
+            },
+            new ApplicationUserClaim
+            {
+                UserId = id, ClaimType = ClaimTypes.Email, ClaimValue = email, Slug = $"{username}-email"
+            },
+            new ApplicationUserClaim
+            {
+                UserId = id,
+                ClaimType = ClaimTypes.Application,
+                ClaimValue = application,
+                Slug = $"{username}-application"
+            }
+        };
+        await _context.UserClaims.AddRangeAsync(userClaims,cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }
