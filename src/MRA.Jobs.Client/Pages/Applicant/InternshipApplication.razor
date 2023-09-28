@@ -18,7 +18,7 @@
             <div class="col-8">
                 <p class="fs-2">@internship.Title</p>
                 <label for="cover-letter"><span class="text-danger">*</span>Cover Letter</label>
-					<InputTextArea class="form-control" id="cover-letter" rows="10" @bind="application.CoverLetter" required></InputTextArea>
+					<InputTextArea class="form-control" id="cover-letter" rows="10" @bind-Value="application.CoverLetter" required="required"></InputTextArea>
 					<small><ValidationMessage For="@(() =>application.CoverLetter)" class="text-bg-danger" /></small>
 
                 @if (internship.VacancyQuestions.Count() > 0)
@@ -29,8 +29,7 @@
                         {
                             <label for="question" class="form-label"><span class="text-danger">*</span>@question.Question</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="question_@question.Id" required
-                                @bind="questionResponses[question.Question]">
+                                <input type="text" class="form-control" id="question_@question.Id" required="required" @bind="questionResponses[question.Question]">
                             </div>
                         }
                     </div>
