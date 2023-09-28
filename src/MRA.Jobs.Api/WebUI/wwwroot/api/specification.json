@@ -342,43 +342,6 @@
         }
       }
     },
-    "/api/applications/{status}": {
-      "get": {
-        "tags": [
-          "Applications"
-        ],
-        "operationId": "Applications_GetApplicationsByStatus",
-        "parameters": [
-          {
-            "name": "status",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ApplicationStatus"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
     "/api/categories": {
       "get": {
         "tags": [
@@ -2018,6 +1981,10 @@
             "type": "string",
             "format": "guid"
           },
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
           "coverLetter": {
             "type": "string",
             "nullable": true
@@ -2026,9 +1993,21 @@
             "type": "string",
             "format": "guid"
           },
+          "vacancyTitle": {
+            "type": "string",
+            "nullable": true
+          },
           "statusId": {
             "type": "integer",
             "format": "int32"
+          },
+          "statusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "slug": {
+            "type": "string",
+            "nullable": true
           },
           "vacancyResponses": {
             "type": "array",
@@ -2110,12 +2089,16 @@
             "format": "guid",
             "nullable": true
           },
-          "histiry": {
+          "history": {
             "type": "array",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/TimeLineDetailsDto"
             }
+          },
+          "slug": {
+            "type": "string",
+            "nullable": true
           },
           "vacancyResponses": {
             "type": "array",
@@ -2259,38 +2242,6 @@
             "nullable": true
           }
         }
-      },
-      "ApplicationStatus": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Submitted",
-          "TestCompleted",
-          "Verified",
-          "InterviewPassed",
-          "Approved",
-          "Hired",
-          "Reserved",
-          "Expired",
-          "Refused",
-          "TestFailed",
-          "InterviewFailed",
-          "Rejected"
-        ],
-        "enum": [
-          "Submitted",
-          "TestCompleted",
-          "Verified",
-          "InterviewPassed",
-          "Approved",
-          "Hired",
-          "Reserved",
-          "Expired",
-          "Refused",
-          "TestFailed",
-          "InterviewFailed",
-          "Rejected"
-        ]
       },
       "PagedListOfCategoryResponse": {
         "type": "object",
