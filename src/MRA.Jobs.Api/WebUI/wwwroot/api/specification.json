@@ -113,7 +113,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/applications/{slug}": {
@@ -191,7 +196,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -220,7 +230,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/applications/withoutapplicantid": {
@@ -253,7 +268,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/applications/{slug}/update-status": {
@@ -296,7 +316,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/applications/{slug}/add-note": {
@@ -339,7 +364,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/categories": {
@@ -2180,10 +2210,6 @@
             "items": {
               "$ref": "#/components/schemas/VacancyResponseDto"
             }
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
           }
         }
       },
