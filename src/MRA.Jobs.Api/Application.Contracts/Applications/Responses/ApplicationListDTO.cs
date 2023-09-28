@@ -10,9 +10,13 @@ public class ApplicationListDto
 {
     public Guid Id { get; set; }
     public Guid ApplicantId { get; set; }
+    public string Username { get; set; }
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
+    public string VacancyTitle { get; set; }
     public int StatusId { get; set; }
+    public string StatusName { get; set; }
+    public string Slug { get; set; }
     public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
 }
 
@@ -35,7 +39,8 @@ public class ApplicationDetailsDto
 
     public Guid? LastModifiedBy { get; set; }
 
-    public IQueryable<TimeLineDetailsDto> Histiry { get; set; }
+    public IEnumerable<TimeLineDetailsDto> History { get; set; }
+    public string Slug { get; set; }
     public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
 }
 
