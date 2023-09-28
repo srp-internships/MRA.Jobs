@@ -1,0 +1,41 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h5">
+            Cover letter
+        </MudText>
+        @CoverLetter
+
+        <MudList>
+            @if (VacancyResponses.Count() > 0)
+            {
+                <MudListSubheader>
+                    Questions
+                </MudListSubheader>
+
+
+                @foreach (var response in VacancyResponses)
+                {
+                    <MudListItem Icon="@Icons.Material.Filled.QuestionMark" Text="@response.VacancyQuestion.Question">
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.QuestionAnswer">
+                        @response.Response
+                    </MudListItem>
+                }
+            }
+        </MudList>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public string CoverLetter { get; set; }
+    [Parameter] public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+}

@@ -1,42 +1,34 @@
 ﻿@page "/reviewer"
+@attribute [Authorize]
 @inject IApplicationService applicationService
 
 <h3 class="m-3">Applications</h3>
 @if (applications is not null && applications.TotalCount > 0)
 {
-    @foreach (var application in applications.Items)
-    {
-        <div class="card m-3">
-            <div class="card-header">
-                Applicant: @application.ApplicantId <br>
-                Vacancy: @application.VacancyTitle
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">Cover letter</h5>
-                <p class="card-text">@application.CoverLetter</p>
-
-                <ol class="list-group list-group-numbered">
-                    @foreach (var response in application.VacancyResponses)
-                    {
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">@response.VacancyQuestion.Question</div>
-                                @response.Response
-                            </div>
-                        </li>
-                    }
-                </ol>
-
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-    }
-} else
+    <MudGrid Spacing="@spacing">
+        @foreach (var application in applications.Items)
+        {
+            <MudItem>
+                <MudCard>
+                    <MudCardContent>
+                        <MudText>Applicant: @application.ApplicantId</MudText>
+                        <MudText Typo="Typo.body2">Vacancy: @application.VacancyTitle</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton OnClick="@((e) => OpenDialog(maxWidth, application.CoverLetter, application.VacancyResponses))">Show more</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+else
 {
     <h5>There are no applications. You can go and take a nap!</h5>
 }
 @code {
-    string message="Loading...";
+    string message = "Loading...";
+    public int spacing { get; set; } = 2;
     private PagedList<ApplicationListDto> applications;
     protected override async Task OnInitializedAsync()
     {
@@ -46,5 +38,12 @@
             applications = response;
             message = string.Empty;
         }
+    }
+
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+
+    private void OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses)
+    {
+        Dialog.Show<MyDialog>("Applicant response", new DialogParameters { { "CoverLetter", coverLetter }, {"VacancyResponses", vacancyResponses } }, options);
     }
 }

@@ -14,6 +14,7 @@ using MRA.Jobs.Client.Services.TrainingServices;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using MRA.Jobs.Client.Services.Auth;
+using MudBlazor.Services;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -26,7 +27,7 @@ builder.Services
     .AddFontAwesomeIcons();
 
 
-
+builder.Services.AddMudServices();
 builder.Services.AddMatBlazor();
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
