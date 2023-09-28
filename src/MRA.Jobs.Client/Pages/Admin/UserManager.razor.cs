@@ -18,7 +18,7 @@ public partial class UserManager
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine(_client.BaseAddress);
+        // Console.WriteLine(_client.BaseAddress);
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
             (await _localStorageService.GetItemAsync<JwtTokenResponse>("authToken")).AccessToken);
         _applicationUsers = await _client.GetFromJsonAsync<List<UserResponse>>("user");
