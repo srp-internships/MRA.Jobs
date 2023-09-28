@@ -1,7 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug;
 using System.Net;
 using NUnit.Framework;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Domain.Entities;
 using System.Net.Http.Json;
 
@@ -22,6 +21,7 @@ public class GetTrainingVacancyBySlugQueryTest : Testing
         var query = new GetTrainingsVacancyBySlugQuery { Slug = "summer-Trainings" };
 
         // Act
+        RunAsReviewerAsync();
         var response = await _httpClient.GetAsync($"/api/Trainings/{query.Slug}");
 
         // Assert
@@ -35,6 +35,7 @@ public class GetTrainingVacancyBySlugQueryTest : Testing
         var query = new GetInternshipVacancyBySlugQuery { Slug = (await _context.GetTraining("Autumn Trainings")).Slug };
 
         //Act
+        RunAsReviewerAsync();
         var response = await _httpClient.GetAsync($"/api/Trainings/{query.Slug}");
 
         //Assert
