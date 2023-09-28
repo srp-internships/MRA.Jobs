@@ -1,0 +1,40 @@
+﻿@inject NavigationManager _manager;
+
+<head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+	<div class="container mt-5 main">
+		<div class="input-group has-search" style="margin-top:125px">
+			<input type="text" @bind-value="@Text" @oninput="OnInput" @onkeypress="@(e=>HandleKeyDown(e))" class="form-control" placeholder="Search...">
+			<div class="input-group-append">
+				<button class="btn btn-primary" type="button" @onclick="SearchClicked">
+					<i class="fas fa-search"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+</body>
+
+@code {
+	public string Text { get; set; }
+
+	private void OnInput(ChangeEventArgs e)
+	{
+		Text = e.Value.ToString();
+	}
+
+	void SearchClicked()
+	{
+		_manager.NavigateTo($"/internships/search/{Text}");
+	}
+
+	private void HandleKeyDown(KeyboardEventArgs e)
+	{
+		if (e.Key == "Enter")
+		{
+			SearchClicked();
+		}
+	}
+}

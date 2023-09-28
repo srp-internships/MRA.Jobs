@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.DeleteVacancyCategory;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.UpdateVacancyCategory;
@@ -19,4 +20,6 @@ public interface ICategoryService
     void OnUpdateClick(CategoryResponse updateEntity);
     Task<List<TrainingCategoriesResponce>> GetTrainingCategories();
     Task<List<TrainingCategoriesResponce>> GetTrainingCategoriesSinceCheckDate();
+    Task<List<InternshipCategoriesResponce>> GetInternshipCategories();
+    Task<List<InternshipCategoriesResponce>> GetInternshipCategoriesSinceCheckDate();
 }
