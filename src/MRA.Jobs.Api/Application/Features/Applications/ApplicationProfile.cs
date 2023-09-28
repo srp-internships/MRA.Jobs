@@ -23,7 +23,8 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses))
             .ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => src.Status))
             .ForMember(dest => dest.VacancyTitle, opt => opt.MapFrom(src => src.Vacancy.Title))
-            .ForMember(dest => dest.StatusName, opt => opt.MapFrom(src => src.Status.ToString()));
+            .ForMember(dest => dest.StatusName, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.ApplicantUsername));
 
         CreateMap<Application, ApplicationDetailsDto>()
             .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses))
