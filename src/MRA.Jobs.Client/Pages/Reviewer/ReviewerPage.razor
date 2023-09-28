@@ -14,8 +14,11 @@
                         <MudText>Applicant: @application.Username</MudText>
                         <MudText Typo="Typo.body2">Vacancy: @application.VacancyTitle</MudText>
                     </MudCardContent>
+
+                    <MudText Typo="Typo.subtitle1" class="ml-4 text-primary">@application.StatusName</MudText>
+
                     <MudCardActions>
-                        <MudButton OnClick="@((e) => OpenDialog(maxWidth, application.CoverLetter, application.VacancyResponses))">Show more</MudButton>
+                        <MudButton OnClick="@((e) => OpenDialog(maxWidth, application.CoverLetter, application.VacancyResponses, application.Slug, application.StatusName))">Show more</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
@@ -42,8 +45,8 @@ else
 
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
-    private void OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses)
+    private void OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
     {
-        Dialog.Show<MyDialog>("Applicant response", new DialogParameters { { "CoverLetter", coverLetter }, {"VacancyResponses", vacancyResponses } }, options);
+        Dialog.Show<MyDialog>("Applicant response", new DialogParameters { { "CoverLetter", coverLetter }, {"VacancyResponses", vacancyResponses }, { "Slug", slug}, { "StatusName", statusName} }, options);
     }
 }

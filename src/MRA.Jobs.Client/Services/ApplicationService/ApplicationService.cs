@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
+using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
@@ -35,9 +36,16 @@ public class ApplicationService : IApplicationService
     public async Task<PagedList<ApplicationListDto>> GetAllApplications()
     {
         await _authenticationState.GetAuthenticationStateAsync();
-        var header = _httpClient.DefaultRequestHeaders.Authorization;
         HttpResponseMessage response = await _httpClient.GetAsync("/api/applications/");
         PagedList<ApplicationListDto> result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
+        return result;
+    }
+
+    public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
+    {
+        await _authenticationState.GetAuthenticationStateAsync();
+        HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/applications/{updateApplicationStatus.Slug}/update-status", updateApplicationStatus);
+        bool result = await response.Content.ReadFromJsonAsync<bool>();
         return result;
     }
 }
