@@ -39,7 +39,6 @@ public class VacancyService : IVacancyService
     {
         var result = await _http.GetFromJsonAsync<PagedList<JobVacancyListDto>>("jobs");
         Vacanceies = result.Items;
-        Console.WriteLine(Vacanceies.Count);
         return Vacanceies;
     }
 
@@ -111,10 +110,7 @@ public class VacancyService : IVacancyService
 
     public async Task OnSaveCreateClick()
     {
-        Console.WriteLine(creatingNewJob.CategoryId);
         await _http.PostAsJsonAsync("jobs", creatingNewJob);
-
-        Console.WriteLine(creatingNewJob.Title);
     }
 
     public async Task<List<JobVacancyListDto>> GetJobs()

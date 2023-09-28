@@ -52,24 +52,7 @@ builder.Services.AddScoped(sp =>
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddOptions();
-builder.Services.AddAuthorizationCore(auth =>
-{
-    auth.DefaultPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .RequireRole(ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
-            ApplicationClaimValues.Administrator)
-        .RequireClaim(ClaimTypes.Id)
-        .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName)
-        .Build();
-
-    auth.AddPolicy(ApplicationPolicies.Administrator, op => op
-        .RequireRole(ApplicationClaimValues.Administrator)
-        .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
-
-    auth.AddPolicy(ApplicationPolicies.Reviewer, op => op
-        .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator)
-        .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
-});
+builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
