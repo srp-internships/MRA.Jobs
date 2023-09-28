@@ -19,7 +19,6 @@ public class EmailTest : BaseTest
         {
             Email = "test1@example.com",
             Password = "password@#12P",
-            ConfirmPassword = "password@#12P",
             FirstName = "Alex",
             Username = "@Alex221",
             LastName = "Makedonsky1",
@@ -58,7 +57,6 @@ public class EmailTest : BaseTest
         {
             Email = "test1@example.com",
             Password = "password@#12P",
-            ConfirmPassword = "password@#12P",
             FirstName = "Alex",
             Username = "@Alex221",
             LastName = "Makedonsky1",
