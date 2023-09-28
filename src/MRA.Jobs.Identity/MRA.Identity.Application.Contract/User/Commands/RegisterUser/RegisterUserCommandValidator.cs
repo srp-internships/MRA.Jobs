@@ -13,6 +13,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         RuleFor(s => s.PhoneNumber).Matches(@"^\+992\d{9}$").WithMessage("Invalid phone number. Example : +992921234567");
         RuleFor(s => s.Username.Length > 3);
         RuleFor(s => s.Password.Length > 7);
-        RuleFor(user => user.ConfirmPassword).Equal(user => user.Password).WithMessage("Passwords must match.");
+        RuleFor(s => !string.IsNullOrEmpty(s.Role));
+        RuleFor(s => !string.IsNullOrEmpty(s.Application));
     }
 }

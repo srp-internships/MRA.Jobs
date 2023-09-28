@@ -12,7 +12,9 @@ using MRA.Jobs.Client.Services.ApplicationService;
 using MRA.Jobs.Client.Services.InternshipsServices;
 using MRA.Jobs.Client.Services.TrainingServices;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
+using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.Auth;
 using MudBlazor.Services;
 
@@ -32,15 +34,8 @@ builder.Services.AddMatBlazor();
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-//builder.Services.AddScoped(sp => new IdentityHttpClient { BaseAddress = new Uri("https://localhost:7245/api/") });
-//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/api/") });
 
-
-
-var http = new HttpClient
-{
-    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
-};
+var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
 
 using var response = await http.GetAsync("appsettings.json");
 using var stream = await response.Content.ReadAsStreamAsync();
@@ -48,16 +43,33 @@ using var stream = await response.Content.ReadAsStreamAsync();
 builder.Configuration.AddJsonStream(stream);
 
 
-
-builder.Services.AddScoped(sp => new IdentityHttpClient { BaseAddress = new Uri(builder.Configuration["IdentityHttpClient:BaseAddress"]) });
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["HttpClient:BaseAddress"]) });
-
+builder.Services.AddScoped(sp =>
+    new IdentityHttpClient { BaseAddress = new Uri(builder.Configuration["IdentityHttpClient:BaseAddress"]) });
+builder.Services.AddScoped(sp =>
+    new HttpClient { BaseAddress = new Uri(builder.Configuration["HttpClient:BaseAddress"]) });
 
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddOptions();
-builder.Services.AddAuthorizationCore();
+builder.Services.AddAuthorizationCore(auth =>
+{
+    auth.DefaultPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .RequireRole(ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
+            ApplicationClaimValues.Administrator)
+        .RequireClaim(ClaimTypes.Id)
+        .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName)
+        .Build();
+
+    auth.AddPolicy(ApplicationPolicies.Administrator, op => op
+        .RequireRole(ApplicationClaimValues.Administrator)
+        .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
+
+    auth.AddPolicy(ApplicationPolicies.Reviewer, op => op
+        .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator)
+        .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
+});
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();

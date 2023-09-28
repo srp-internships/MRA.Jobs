@@ -17,6 +17,7 @@ using Mra.Shared.Initializer.Azure.EmailService;
 using Mra.Shared.Initializer.Services;
 using Mra.Shared.Initializer.OsonSms.SmsService;
 using Microsoft.Extensions.Logging;
+using Mra.Shared.Common.Constants;
 
 namespace MRA.Identity.Infrastructure;
 
@@ -65,6 +66,10 @@ public static class DependencyInitializer
                 options.Password.RequireUppercase = true;
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
+                options.ClaimsIdentity.EmailClaimType = ClaimTypes.Email;
+                options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role;
+                options.ClaimsIdentity.UserIdClaimType = ClaimTypes.Id;
+                options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Username;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();

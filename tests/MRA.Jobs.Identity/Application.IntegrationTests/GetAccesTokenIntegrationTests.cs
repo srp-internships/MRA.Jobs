@@ -22,17 +22,14 @@ public class GetAccesTokenIntegrationTests : BaseTest
             {
                 Email = "test1@example.com",
                 Password = "password@#12P",
-                ConfirmPassword = "password@#12P",
                 FirstName = "Alex",
-                Username = "@Alex22",
+                Username = "@Alex111122",
                 LastName = "Makedonsky",
-                PhoneNumber = "123456789"
+                PhoneNumber = "123456789",
+                Application = "32wrgoi;l;",
+                Role = "wqu;k65"
             };
-            var loginCommand1 = new LoginUserCommand
-            {
-                Username = "@Alex22",
-                Password = "password@#12P"
-            };
+            var loginCommand1 = new LoginUserCommand { Username = "@Alex111122", Password = "password@#12P" };
 
             await RegisterUser(registerCommand1);
             loginResponce = await LoginUser(loginCommand1);
@@ -45,8 +42,7 @@ public class GetAccesTokenIntegrationTests : BaseTest
         //Arrange
         var request = new GetAccessTokenUsingRefreshTokenQuery()
         {
-            AccessToken = loginResponce.AccessToken,
-            RefreshToken = loginResponce.RefreshToken
+            AccessToken = loginResponce.AccessToken, RefreshToken = loginResponce.RefreshToken
         };
         await AddAuthorizationAsync();
         //Act
@@ -63,8 +59,7 @@ public class GetAccesTokenIntegrationTests : BaseTest
         //Arrange
         var request = new GetAccessTokenUsingRefreshTokenQuery
         {
-            AccessToken = loginResponce.AccessToken,
-            RefreshToken = "sdf" //invalid refreshToken
+            AccessToken = loginResponce.AccessToken, RefreshToken = "sdf" //invalid refreshToken
         };
 
         //Act
@@ -99,25 +94,21 @@ public class GetAccesTokenIntegrationTests : BaseTest
         {
             Email = "test2@example.com",
             Password = "password@#12P2",
-            ConfirmPassword = "password@#12P2",
             FirstName = "Alex",
             Username = "@Alex222",
             LastName = "Makedonsky",
-            PhoneNumber = "123456789"
+            PhoneNumber = "123456789",
+            Application = "32wrgoi;l;",
+            Role = "wqu;k65"
         };
-        var loginCommand2 = new LoginUserCommand
-        {
-            Username = "@Alex222",
-            Password = "password@#12P2"
-        };
+        var loginCommand2 = new LoginUserCommand { Username = "@Alex222", Password = "password@#12P2" };
 
         await RegisterUser(registerCommand2);
         var loginResponce2 = await LoginUser(loginCommand2);
 
         var request = new GetAccessTokenUsingRefreshTokenQuery()
         {
-            AccessToken = loginResponce.AccessToken,
-            RefreshToken = loginResponce2.RefreshToken
+            AccessToken = loginResponce.AccessToken, RefreshToken = loginResponce2.RefreshToken
         };
         //Act
         var responce = await _client.PostAsJsonAsync("api/Auth/refresh", request);
@@ -133,6 +124,7 @@ public class GetAccesTokenIntegrationTests : BaseTest
         string stringResponce = await response.Content.ReadAsStringAsync();
         response.EnsureSuccessStatusCode();
     }
+
     private async Task<JwtTokenResponse> LoginUser(LoginUserCommand command)
     {
         var response = await _client.PostAsJsonAsync("api/Auth/login", command);
