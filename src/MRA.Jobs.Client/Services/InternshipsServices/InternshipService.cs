@@ -75,30 +75,30 @@ public class InternshipService : IInternshipService
 
         return await _http.PutAsJsonAsync($"internships/{slug}", updateCommand);
     }
-    public async Task<PagedList<TrainingVacancyListDto>> GetByCategoryName(string slug)
+    public async Task<PagedList<InternshipVacancyListDto>> GetByCategoryName(string slug)
     {
-        var internship = await _http.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"internship?CategorySlug={slug}");
+        var internship = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListDto>>($"internship?CategorySlug={slug}");
         return internship;
     }
-    public async Task<PagedList<TrainingVacancyListDto>> SearchInternship(string searchInput)
+    public async Task<PagedList<InternshipVacancyListDto>> SearchInternship(string searchInput)
     {
-        var internship = await _http.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"internship?SearchText={searchInput}");
+        var internship = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListDto>>($"internship?SearchText={searchInput}");
         return internship;
     }
 
-    public async Task<PagedList<TrainingVacancyListDto>> GetAllSinceCheckDate()
+    public async Task<PagedList<InternshipVacancyListDto>> GetAllSinceCheckDate()
     {
-        var result = await _http.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("internship?CheckDate=true");
+        var result = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListDto>>("internship?CheckDate=true");
         return result;
     }
-    public async Task<PagedList<TrainingVacancyListDto>> GetByCategorySinceCheckDate(string slug)
+    public async Task<PagedList<InternshipVacancyListDto>> GetByCategorySinceCheckDate(string slug)
     {
-        var internship = await _http.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"internship?CategorySlug={slug}&CheckDate=true");
+        var internship = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListDto>>($"internship?CategorySlug={slug}&CheckDate=true");
         return internship;
     }
-    public async Task<PagedList<TrainingVacancyListDto>> SearchInternshipSinceSearchDate(string searchInput)
+    public async Task<PagedList<InternshipVacancyListDto>> SearchInternshipSinceSearchDate(string searchInput)
     {
-        var internship = await _http.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"internship?SearchText={searchInput}&CheckDate=true");
+        var internship = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListDto>>($"internship?SearchText={searchInput}&CheckDate=true");
         return internship;
     }
 
