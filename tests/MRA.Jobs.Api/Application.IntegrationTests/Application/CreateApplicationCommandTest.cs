@@ -12,7 +12,8 @@ public class CreateApplicationCommandTest : Testing
     [Test]
     public async Task CreateApplicationCommand_CreatingApplication_Success()
     {
-        var vacancyId = await AddJobVacancy();
+       
+        var vacancyId = await AddJobVacancy("foobar2");
         var testSubmit = new CreateApplicationCommand
         {
             VacancyId = vacancyId,
@@ -31,7 +32,8 @@ public class CreateApplicationCommandTest : Testing
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyQuestions_Success()
     {
-        var vacancyId = await AddJobVacancy();
+        
+        var vacancyId = await AddJobVacancy("foobar");
         var testSubmit = new CreateApplicationCommand
         {
             VacancyId = vacancyId,
@@ -65,19 +67,20 @@ public class CreateApplicationCommandTest : Testing
         return vacancyCategory.Id;
     }
 
-    async Task<Guid> AddJobVacancy()
+    async Task<Guid> AddJobVacancy(string title)
     {
         var internshipVacancy = new InternshipVacancy
         {
             Id = Guid.NewGuid(),
-            Title = "foobar",
+            Title =  title,
             Description = RandomString(50),
             ShortDescription = RandomString(10),
             Stipend = 100,
             Duration = 3,
             PublishDate = DateTime.Now,
             ApplicationDeadline = DateTime.Now.AddDays(2),
-            CategoryId = await AddVacancyCategory("internship")
+            CategoryId = await AddVacancyCategory("internship"),
+            Slug=title.ToLower().Replace(" ","-")
         };
         await AddAsync(internshipVacancy);
         return internshipVacancy.Id;
