@@ -119,6 +119,18 @@ public class Testing
         await context.SaveChangesAsync();
     }
 
+    public static async Task RemoveAsync<TEntity>(TEntity entity)
+       where TEntity : class
+    {
+        using IServiceScope scope = _scopeFactory.CreateScope();
+
+        ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        context.Remove(entity);
+
+        await context.SaveChangesAsync();
+    }
+
     public static async Task<int> CountAsync<TEntity>() where TEntity : class
     {
         using IServiceScope scope = _scopeFactory.CreateScope();

@@ -6,6 +6,7 @@
 @inject ITrainingService _trainingService
 @inject NavigationManager NavigationManager
 
+
 <div class="container">
 
 	<h1>Apply for training - @_training.Title</h1>
@@ -15,9 +16,9 @@
 	<EditForm Model="@createApplication" OnValidSubmit="Apply">
 		<FluentValidationValidator />
 		<div class="form-group">
-			<label for="CoverLetter">Tell us about yourself (minimum 50 words):</label>
+			<label for="CoverLetter">Tell us about yourself (minimum 150 characters):</label>
 			<InputTextArea id="CoverLetter" @bind-Value="createApplication.CoverLetter" class="form-control" rows="10"></InputTextArea>
-			<small><ValidationMessage For="@(() =>createApplication.CoverLetter)" class="text-bg-danger" /></small>
+			<small><ValidationMessage For="@(() =>createApplication.CoverLetter)" class="text-danger" /></small>
 		</div>
 		@if (_training != null)
 		{
@@ -41,7 +42,7 @@
 
 </div>
 @code {
-	private CreateApplicationCommand createApplication=new  CreateApplicationCommand();
+	private CreateApplicationCommand createApplication = new CreateApplicationCommand();
 	private TrainingVacancyDetailedResponse _training;
 	[Parameter]
 	public string Slug { get; set; }
@@ -65,6 +66,9 @@
 			}
 		}
 	}
+
+
+
 	private async Task Apply()
 	{
 		createApplication.VacancyId = _training.Id;
@@ -88,4 +92,5 @@
 		await ApplicationService.CreateApplication(createApplication);
 		NavigationManager.NavigateTo("/");
 	}
+	
 }
