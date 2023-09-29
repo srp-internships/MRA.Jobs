@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.UnitTests", "..\test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUI.AcceptanceTests", "..\tests\MRA.Jobs.Api\WebUI.AcceptanceTests\WebUI.AcceptanceTests.csproj", "{184D66EF-AAA0-4EEE-8D76-D589CB50034F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRA.Identity.Application.Contract", "MRA.Jobs.Identity\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj", "{CEC7DDA5-EA4D-4B33-B197-6B9CD42A34C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRA.Identity.Application.Contract", "MRA.Jobs.Identity\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj", "{CEC7DDA5-EA4D-4B33-B197-6B9CD42A34C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

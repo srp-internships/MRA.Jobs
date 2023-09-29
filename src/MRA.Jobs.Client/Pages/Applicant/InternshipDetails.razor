@@ -38,7 +38,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("initialized");
         var response = await InternshipService.GetBySlug(Slug);
         if (response != null)
         {

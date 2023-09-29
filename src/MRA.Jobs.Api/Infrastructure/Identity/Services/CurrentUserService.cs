@@ -34,6 +34,15 @@ public class CurrentUserService : ICurrentUserService
 
     public string GetUserName()
     {
-        return "";
+        var user = _httpContextAccessor.HttpContext?.User;
+        if (user != null)
+        {
+            var claim = user.FindFirst(ClaimTypes.Username);
+            if (claim != null)
+            {
+                return claim.Value;
+            }
+        }
+        return string.Empty;
     }
 }

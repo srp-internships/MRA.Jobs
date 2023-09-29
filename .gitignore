@@ -419,3 +419,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/src/.idea/.idea.MRA.Jobs/.idea

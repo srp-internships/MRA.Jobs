@@ -6,6 +6,7 @@
 @inject IApplicationService ApplicationService
 <h3>Board</h3>
 
+<link href="/_content/MatBlazor/dist/matBlazor.css" rel="stylesheet"/>
 
 <main class="content">
     <div class="container-fluid">
@@ -19,7 +20,7 @@
             @foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
             {
                 <div class="col-3">
-                    <ApplicationCards Title="@status.ToString()" Applications="@applicationsByStatus[status]" />
+                    <ApplicationCards Title="@status.ToString()" Applications="@applicationsByStatus[status]"/>
 
                 </div>
             }

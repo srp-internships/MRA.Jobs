@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MRA.Jobs.Application.Contracts.Dtos.Enums;
 using MRA.Jobs.Application.Contracts.TagDTO;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 
@@ -11,9 +12,9 @@ public class MappingConfiguration
 {
     public static void ConfigureUserMap<TSource, TDestination>(Profile profile)
     {
-        if (typeof(TSource) == typeof(UserTimelineEvent) && typeof(TDestination) == typeof(TimeLineDetailsDto))
+        if (typeof(TSource) == typeof(ApplicationTimelineEvent) && typeof(TDestination) == typeof(TimeLineDetailsDto))
         {
-            profile.CreateMap<UserTimelineEvent, TimeLineDetailsDto>();
+            profile.CreateMap<ApplicationTimelineEvent, TimeLineDetailsDto>();
         }
         else if (typeof(TSource) == typeof(Tag) && typeof(TDestination) == typeof(TagDto))
         {
