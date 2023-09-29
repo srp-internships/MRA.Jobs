@@ -28,4 +28,8 @@
       <ProjectReference Include="..\MRA.Jobs.Identity\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Pages\Reviewer\" />
+    </ItemGroup>
+
 </Project>
