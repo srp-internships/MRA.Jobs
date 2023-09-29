@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿using System.Security.AccessControl;
+using Microsoft.AspNetCore.Components.Authorization;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
@@ -22,7 +23,7 @@ public class ApplicationService : IApplicationService
     public async Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status)
     {
         HttpResponseMessage response = await _httpClient.GetAsync($"api/applications/{status}");
-      
+
         List<ApplicationListStatus> result = await response.Content.ReadFromJsonAsync<List<ApplicationListStatus>>();
         return result;
     }
@@ -47,5 +48,27 @@ public class ApplicationService : IApplicationService
         HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/applications/{updateApplicationStatus.Slug}/update-status", updateApplicationStatus);
         bool result = await response.Content.ReadFromJsonAsync<bool>();
         return result;
+    }
+
+    public async Task<ApplicationDetailsDto> GetApplicationDetails(string ApplicationSlug)
+    {
+        await _authenticationState.GetAuthenticationStateAsync();
+        HttpResponseMessage response = await _httpClient.GetAsync($"/api/applications/{ApplicationSlug}");
+        if(response.StatusCode==System.Net.HttpStatusCode.OK)
+        {
+            var application = await response.Content.ReadFromJsonAsync<ApplicationDetailsDto>();
+            return application;
+        }
+
+        return null;
+      
+    }
+
+    public async Task<bool> ApplicationExist(string userName, string vacancySlug)
+    {
+        var ApplicationSlug = ($"{userName}-{vacancySlug}").ToLower().Trim();
+        if ((await GetApplicationDetails(ApplicationSlug)) != null)
+            return true;
+        return false;
     }
 }
