@@ -3,7 +3,7 @@
 @using Blazorise;
 @using Blazorise.Bootstrap;
 @using Blazorise.Icons.FontAwesome;
-@inject ITrainingService _trainingService;
+@inject IInternshipService _internshipService;
 @inject ICategoryService _categoryService;
 @inject NavigationManager _manager;
 
@@ -41,13 +41,13 @@
 								if (category.Selected)
 								{
 									<button class="selectedbtn rounded-2" @onclick="()=>CategoryButtonSelected(category.Category.Slug)">
-										@category.Category.Name (@category.TrainingsCount)
+										@category.Category.Name (@category.InternshipCount)
 									</button>
 								}
 								else
 								{
 									<button class="categorybtn rounded-2" @onclick="()=>CategoryButtonSelected(category.Category.Slug)">
-										@category.Category.Name (@category.TrainingsCount)
+										@category.Category.Name (@category.InternshipCount)
 									</button>
 								}
 							}
@@ -61,9 +61,9 @@
 			</aside>
 			<div class="col-md-9">
 				<section>
-					@if (DisplayedTrainings != null)
+					@if (DisplayedInternships != null)
 					{
-						@foreach (var training in DisplayedTrainings)
+						@foreach (var training in DisplayedInternships)
 						{
 							<div class="vacancy-card" style="margin-bottom:20px">
 								<div class="vacancy-card-header">
@@ -85,17 +85,17 @@
 	</div>
 </body>
 <div class="d-flex justify-content-center">
-	@if (Trainings != null)
+	@if (Internships != null)
 	{
 		<Pagination>
-			<PaginationItem Disabled=@(!Trainings.HasPreviousPage) @onclick="Previous">
+			<PaginationItem Disabled=@(!Internships.HasPreviousPage) @onclick="Previous">
 				<PaginationLink>
 					<span aria-hidden="true">«</span>
 				</PaginationLink>
 			</PaginationItem>
-			@if (Trainings != null)
+			@if (Internships != null)
 			{
-				for (int i = 1; i <= Trainings.TotalPages; i++)
+				for (int i = 1; i <= Internships.TotalPages; i++)
 				{
 					var pageNumberAsString = i.ToString();
 					int currentPage = i;
@@ -106,7 +106,7 @@
 					</PaginationItem>
 				}
 			}
-			<PaginationItem Disabled=@(!Trainings.HasNextPage) @onclick="Next">
+			<PaginationItem Disabled=@(!Internships.HasNextPage) @onclick="Next">
 				<PaginationLink>
 					<span aria-hidden="true">»</span>
 				</PaginationLink>
@@ -118,10 +118,10 @@
 	[Parameter]
 	public string searchInput { get; set; }
 
-	public List<TrainingCategoriesResponce> Categories { get; set; }
+	public List<InternshipCategoriesResponce> Categories { get; set; }
 
-	public PagedList<TrainingVacancyListDto> Trainings { get; set; }
-	public List<TrainingVacancyListDto> DisplayedTrainings { get; set; }
+	public PagedList<InternshipVacancyListDto> Internships { get; set; }
+	public List<InternshipVacancyListDto> DisplayedInternships { get; set; }
 
 	bool loading = true;
 	bool inAll = true;
@@ -130,13 +130,13 @@
 
 	protected async override Task OnParametersSetAsync()
 	{
-		Categories = await _categoryService.GetTrainingCategoriesSinceCheckDate();
+		Categories = await _categoryService.GetInternshipCategoriesSinceCheckDate();
 		if (searchInput == null)
 		{
-			Trainings = await _trainingService.GetAllSinceCheckDate();
-			Console.Out.WriteLine($"{Trainings.PageSize}, {Trainings.TotalPages}");
+			Internships = await _internshipService.GetAllSinceCheckDate();
+			Console.Out.WriteLine($"{Internships.PageSize}, {Internships.TotalPages}");
 			UpdateDisplayedTrainings();
-			Count = Trainings.TotalCount;
+			Count = Internships.TotalCount;
 
 			inAll = true;
 		}
@@ -150,9 +150,9 @@
 
 	private async void selectedAllCategories()
 	{
-		Trainings = await _trainingService.GetAllSinceCheckDate();
+		Internships = await _internshipService.GetAllSinceCheckDate();
 		UpdateDisplayedTrainings();
-		Count = Trainings.TotalCount;
+		Count = Internships.TotalCount;
 
 		foreach (var item in Categories)
 		{
@@ -173,7 +173,7 @@
 			item.Selected = false;
 		}
 
-		Trainings = await _trainingService.GetByCategorySinceCheckDate(slug);
+		Internships = await _internshipService.GetByCategorySinceCheckDate(slug);
 		UpdateDisplayedTrainings();
 
 		category.Selected = true;
@@ -186,62 +186,62 @@
 
 	async void GetSearchedTrainings()
 	{
-		Trainings = await _trainingService.SearchTrainingsSinceSearchDate(searchInput);
+		Internships = await _trainingService.SearchTrainingsSinceSearchDate(searchInput);
 		UpdateDisplayedTrainings();
 		StateHasChanged();
 	}
 
 	void UpdateDisplayedTrainings()
 	{
-		var startIndex = (Trainings.CurrentPageNumber - 1) * Trainings.PageSize;
-		DisplayedTrainings = Trainings.Items.Skip(startIndex).Take(Trainings.PageSize).ToList();
+		var startIndex = (Internships.CurrentPageNumber - 1) * Internships.PageSize;
+		DisplayedInternships = Internships.Items.Skip(startIndex).Take(Internships.PageSize).ToList();
 	}
 
 
 	private void Previous()
 	{
-		if (Trainings.HasPreviousPage)
+		if (Internships.HasPreviousPage)
 		{
-			Trainings.CurrentPageNumber--;
+			Internships.CurrentPageNumber--;
 			UpdateDisplayedTrainings();
-			if (Trainings.CurrentPageNumber == 1)
-				Trainings.HasPreviousPage = false;
-			Trainings.HasNextPage = true;
+			if (Internships.CurrentPageNumber == 1)
+				Internships.HasPreviousPage = false;
+			Internships.HasNextPage = true;
 		}
 	}
 
 	private void Next()
 	{
-		if (Trainings.HasNextPage)
+		if (Internships.HasNextPage)
 		{
-			Trainings.CurrentPageNumber++;
+			Internships.CurrentPageNumber++;
 			UpdateDisplayedTrainings();
-			if (Trainings.CurrentPageNumber == Trainings.TotalPages)
-				Trainings.HasNextPage = false;
-			Trainings.HasPreviousPage = true;
+			if (Internships.CurrentPageNumber == Internships.TotalPages)
+				Internships.HasNextPage = false;
+			Internships.HasPreviousPage = true;
 		}
 	}
 
 	private void SetActive(int page)
 	{
-		Trainings.CurrentPageNumber = page;
+		Internships.CurrentPageNumber = page;
 
-		if (page != Trainings.TotalPages)
+		if (page != Internships.TotalPages)
 		{
-			Trainings.HasNextPage = true;
+			Internships.HasNextPage = true;
 		}
-		else if (page == Trainings.TotalPages)
+		else if (page == Internships.TotalPages)
 		{
-			Trainings.HasNextPage = false;
+			Internships.HasNextPage = false;
 		}
 
 		if (page != 1)
 		{
-			Trainings.HasPreviousPage = true;
+			Internships.HasPreviousPage = true;
 		}
 		else if (page == 1)
 		{
-			Trainings.HasPreviousPage = false;
+			Internships.HasPreviousPage = false;
 		}
 
 		UpdateDisplayedTrainings();
