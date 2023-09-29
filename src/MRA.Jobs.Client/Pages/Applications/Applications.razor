@@ -1,0 +1,51 @@
+﻿@page "/applications"
+
+@using System.Net.Http.Json
+@inject HttpClient httpClient
+@inject IApplicationService applicationService
+
+<MudContainer Class="text-center" style="width: 70%;">
+    <MudTable Items="@applications.Items" Class="text-center">
+        <ColGroup>
+            <col style="width: 30%;" />
+            <col style="width: 30%;" />
+            <col style="width: 40%" />
+            <col />
+        </ColGroup>
+        <HeaderContent>
+            <MudTh>Appliant username</MudTh>
+            <MudTh>Vacancy title</MudTh>
+            <MudTh>Status name</MudTh>
+            <MudTh>Action</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Nr">@context.Username</MudTd>
+            <MudTd DataLabel="Sign">@context.VacancyTitle</MudTd>
+            <MudTd DataLabel="Name">@context.StatusName</MudTd>
+            <MudTd DataLabel="Name"><MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton></MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+
+</MudContainer>
+
+@code {
+
+    private PagedList<ApplicationListDto> applications;
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await applicationService.GetAllApplications();
+        if (response is not null)
+        {
+            applications = response;
+        }
+    }
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+
+    private void OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
+    {
+        Dialog.Show<MyDialog>("Applicant response", new DialogParameters { { "CoverLetter", coverLetter }, { "VacancyResponses", vacancyResponses }, { "Slug", slug }, { "StatusName", statusName } }, options);
+    }
+}
