@@ -16,12 +16,12 @@ public interface IInternshipService
     Task<List<InternshipVacancyListResponse>> GetAll();
     Task<InternshipVacancyResponse> GetBySlug(string slug);
 
-    Task<PagedList<InternshipVacancyListDto>> GetByCategoryName(string slug);
-    Task<PagedList<InternshipVacancyListDto>> SearchInternship(string searchInput);
+    Task<PagedList<InternshipVacancyListResponse>> GetByCategoryName(string slug);
+    Task<PagedList<InternshipVacancyListResponse>> SearchInternship(string searchInput);
 
-    Task<PagedList<InternshipVacancyListDto>> GetAllSinceCheckDate();
-    Task<PagedList<InternshipVacancyListDto>> GetByCategorySinceCheckDate(string slug);
-    Task<PagedList<InternshipVacancyListDto>> SearchInternshipSinceSearchDate(string searchInput);
+    Task<PagedList<InternshipVacancyListResponse>> GetAllSinceCheckDate();
+    Task<PagedList<InternshipVacancyListResponse>> GetByCategorySinceCheckDate(string slug);
+    Task<PagedList<InternshipVacancyListResponse>> SearchInternshipSinceSearchDate(string searchInput);
     CreateInternshipVacancyCommand createCommand { get; set; }
     UpdateInternshipVacancyCommand UpdateCommand { get; set; }
     DeleteInternshipVacancyCommand DeleteCommand { get; set; }

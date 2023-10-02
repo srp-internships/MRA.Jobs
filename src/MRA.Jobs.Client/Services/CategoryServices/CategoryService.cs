@@ -72,13 +72,13 @@ public class CategoryService : ICategoryService
 
     public async Task<List<InternshipCategoriesResponce>> GetInternshipCategories()
     {
-        var responce = await _http.GetFromJsonAsync<List<InternshipCategoriesResponce>>("categories/internship");
+        var responce = await _http.GetFromJsonAsync<List<InternshipCategoriesResponce>>("categories/internships");
         return responce;
     }
 
     public async Task<List<InternshipCategoriesResponce>> GetInternshipCategoriesSinceCheckDate()
     {
-        var responce = await _http.GetFromJsonAsync<List<InternshipCategoriesResponce>>("categories/internship?CheckDate=true");
+        var responce = await _http.GetFromJsonAsync<List<InternshipCategoriesResponce>>("categories/internships?CheckDate=true");
         return responce;
     }
 }
