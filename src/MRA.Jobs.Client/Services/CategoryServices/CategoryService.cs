@@ -78,7 +78,7 @@ public class CategoryService : ICategoryService
 
     public async Task<List<JobCategoriesResponse>> GetJobCategoriesSinceCheckDate()
     {
-        var responce = await _http.GetFromJsonAsync<List<JobCategoriesResponse>>("categories/training?CheckDate=true");
+        var responce = await _http.GetFromJsonAsync<List<JobCategoriesResponse>>("categories/job?CheckDate=true");
         return responce;
     }
 }
