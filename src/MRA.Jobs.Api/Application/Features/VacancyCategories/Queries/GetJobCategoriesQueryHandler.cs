@@ -18,6 +18,7 @@ public class GetJobCategoriesQueryHandler : IRequestHandler<GetJobCategoriesQuer
     public async Task<List<JobCategoriesResponse>> Handle(GetJobCategoriesQuery request, CancellationToken cancellationToken)
     {
         var jobs = (await _context.JobVacancies.ToListAsync()).AsEnumerable();
+
         if (request.CheckDate)
         {
             DateTime now = DateTime.UtcNow;
