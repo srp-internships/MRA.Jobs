@@ -12,43 +12,51 @@
 @if (jobs is null)
 {
     <MudText Typo="Typo.h5">@message</MudText>
-    
-}else
+
+}
+else
 {
     <MudContainer>
-    <MudGrid>
-        <MudItem xs="12" md="3" lg="2">
-            <MudPaper Width="250px" Height="500px" Elevation="0" Class="py-0">
-                <MudTabs Outlined="true" MinimumTabWidth="200px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
-                    <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Jobs" />
-                    @foreach (var jobCats in jobCategories)
-                    {
-                        <MudTabPanel Text="@jobCats.Category.Name" BadgeData="@GetJobCategoryCount(jobCats.Category.Name)"/>
-                    }
-                </MudTabs>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="12" md="9" lg="10">
-            <MudGrid>
-                @foreach (var job in filteredJobs)
-                {
-                    <MudItem xs="12" md="12" lg="12">
-                        <MudCard Class="job-card">
-                            <MudCardHeader>
-                                <MudCardTitle>
-                                    <a href="/job/@job.Slug">@job.Title</a>
-                                </MudCardTitle>
-                            </MudCardHeader>
-                            <MudCardContent>
-                                @job.ShortDescription
-                            </MudCardContent>
-                        </MudCard>
-                    </MudItem>
-                }
-            </MudGrid>
-        </MudItem>
-    </MudGrid>
-</MudContainer>
+        <MudGrid>
+            <MudItem xs="12" md="3" lg="2">
+                <MudPaper Width="250px" Height="500px" Elevation="0" Class="py-0">
+                    <MudTabs Outlined="true" MinimumTabWidth="200px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+                        <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Jobs" />
+                        @foreach (var jobCats in jobCategories)
+                        {
+                            <MudTabPanel Text="@jobCats.Category.Name" BadgeData="@GetJobCategoryCount(jobCats.Category.Name)" />
+                        }
+                    </MudTabs>
+                </MudPaper>
+            </MudItem>
+            @if (jobCategories.Count == 0)
+            {
+                <MudText Typo="Typo.h5">There are currently no job vacancies available. Please check back later)</MudText>
+            }
+            else
+            {
+                <MudItem xs="12" md="9" lg="10">
+                    <MudGrid>
+                        @foreach (var job in filteredJobs)
+                        {
+                            <MudItem xs="12" md="12" lg="12">
+                                <a href="/job/@job.Slug">
+                                    <MudCard Class="job-card">
+                                        <MudCardHeader>
+                                            <MudText Color="Color.Primary" Typo="Typo.h5">@job.Title</MudText>
+                                        </MudCardHeader>
+                                        <MudCardContent>
+                                            @job.ShortDescription
+                                        </MudCardContent>
+                                    </MudCard>
+                                </a>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudContainer>
 
 }
 
@@ -84,7 +92,7 @@
         }
         else if (index > 0 && index <= jobCategories.Count)
         {
-            selectedCategoryText = jobCategories[index-1].Category.Name;
+            selectedCategoryText = jobCategories[index - 1].Category.Name;
             filteredJobs = jobs.Where(j => j.Category == selectedCategoryText).ToList();
         }
     }
