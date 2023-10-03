@@ -1,10 +1,13 @@
 ﻿namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
+using System.Reflection.Metadata.Ecma335;
 using Common.Interfaces;
 using Common.Security;
 using Common.SlugGeneratorService;
 using Domain.Entities;
 using Domain.Enums;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 
 public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, Guid>
@@ -32,13 +35,18 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
+
         Vacancy vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
         _ = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
         var application = _mapper.Map<Application>(request);
 
         application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
-        
+
+        if ((await ApplicationExits(application.Slug)) == true)
+            throw new DuplicateWaitObjectException("Duplicate Apply. You have already submitted your application!");
+
         application.ApplicantId = _currentUserService.GetUserId() ?? Guid.Empty;
+        application.ApplicantUsername = _currentUserService.GetUserName() ?? string.Empty;
 
         await _context.Applications.AddAsync(application, cancellationToken);
 
@@ -59,6 +67,14 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
             "New Apply");
 
         return application.Id;
+    }
+
+    private async Task<bool> ApplicationExits(string ApplicationSlug)
+    {
+        var application = await _context.Applications.FirstOrDefaultAsync(a => a.Slug.Equals(ApplicationSlug));
+        if (application == null)
+            return false;
+        return true;
     }
 
     private string GenerateSlug(string username, Vacancy vacancy)
