@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
@@ -146,5 +147,11 @@ public class VacancyService : IVacancyService
         };
         await _http.PutAsJsonAsync($"jobs/{slug}", update);
 
+    }
+
+    public async Task<List<InternshipVacancyListResponse>> GetInternship()
+    {
+        var result = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>("internships");
+        return result.Items;
     }
 }
