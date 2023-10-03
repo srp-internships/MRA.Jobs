@@ -1,8 +1,30 @@
 ﻿@page "/UserManager"
-
-@foreach (var user in _applicationUsers)
-{
-    <MatCard>
+<style>
+    .user-card {
+        margin: 15px;
+        padding: 20px;
+        display: flex;
+        width: 100%;
         
-    </MatCard>
-}
+    }
+    
+    .user-property {
+        color: -webkit-activelink;
+        font-size: 15px !important;
+    }
+</style>
+<div style="width: 90%;align-self: center;justify-self: center">
+    @foreach (var user in _applicationUsers)
+    {
+        <MatCard class="col user-card .mat-elevation-z24">
+            <h3>@user.UserName</h3>
+            @{
+                var userRolesLink = $"/UserRoles/{user.UserName}";
+                var userHistoryLink = $"/UserHistory/{user.UserName}";
+                var userClaimsLink = $"/UserClaims/{user.UserName}";
+            }
+            <MatButton class="user-property" Link="@userRolesLink">Roles</MatButton>
+            <MatButton class="user-property" Link="@userHistoryLink">History</MatButton>
+        </MatCard>
+    }
+</div>

@@ -36,17 +36,23 @@ public class CreateUserRoleCommandHandler : IRequestHandler<CreateUserRolesComma
                     .Build();
             }
 
-            var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id == request.RoleId,
+            var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.NormalizedName == request.RoleName.ToUpper(),
                 cancellationToken: cancellationToken);
             if (role == null)
             {
-                return new ApplicationResponseBuilder<string>().SetErrorMessage("Role not found!").Success(false)
-                    .Build();
+                role = new ApplicationRole
+                {
+                    Id = Guid.NewGuid(),
+                    Name = request.RoleName,
+                    NormalizedName = request.RoleName.ToUpper(),
+                    Slug = request.RoleName.ToLower(),
+                };
+                await _roleManager.CreateAsync(role);//todo check identity result
             }
-
+            
             var newUserRole = new ApplicationUserRole
             {
-                UserId = request.UserId, RoleId = request.RoleId, Slug = $"{user.UserName}-{role.Slug}"
+                UserId = request.UserId, RoleId = role.Id, Slug = $"{user.UserName}-{role.Slug}"
             };
             await _applicationDbContext.UserRoles.AddAsync(newUserRole, cancellationToken);
             await _applicationDbContext.SaveChangesAsync(cancellationToken);

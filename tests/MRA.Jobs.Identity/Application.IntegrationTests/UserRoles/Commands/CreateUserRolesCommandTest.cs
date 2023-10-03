@@ -19,7 +19,7 @@ public class CreateUserRolesCommandTest : BaseTest
 
         await AddEntity(role);
 
-        var command = new CreateUserRolesCommand { UserId = user.Id, RoleId = role.Id };
+        var command = new CreateUserRolesCommand { UserId = user.Id, RoleName = role.Name };
 
         await AddAuthorizationAsync();
         var response = await _client.PostAsJsonAsync("/api/userRoles", command);
@@ -39,7 +39,7 @@ public class CreateUserRolesCommandTest : BaseTest
 
         await AddEntity(role);
 
-        var command = new CreateUserRolesCommand { UserId = user.Id, RoleId = role.Id };
+        var command = new CreateUserRolesCommand { UserId = user.Id, RoleName = role.Name };
 
         await AddAuthorizationAsync();
         var response = await _client.PostAsJsonAsync("/api/userRoles", command);

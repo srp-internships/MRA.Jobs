@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract;
@@ -47,14 +41,13 @@ public class GetUserRolesQueryHandler : IRequestHandler<GetUserRolesQuery, Appli
             }
 
             return new ApplicationResponseBuilder<List<UserRolesResponse>>()
-                .SetResponse(userRoles.Select( async s =>
-                new UserRolesResponse
-                {
-                    RoleName = s,
-                    UserName = user.UserName,
-                    Slug=$"{user.UserName}-{( await _roleManager.FindByNameAsync(s)).Slug }"
-
-                }).ToList());
+                .SetResponse((await Task.WhenAll(userRoles.Select(async s =>
+                    new UserRolesResponse
+                    {
+                        RoleName = s,
+                        UserName = user.UserName,
+                        Slug = $"{user.UserName}-{(await _roleManager.FindByNameAsync(s)).Slug}"
+                    }))).ToList());
         }
         if (request.Role != null)
         {
