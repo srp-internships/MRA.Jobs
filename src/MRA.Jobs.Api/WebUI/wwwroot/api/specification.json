@@ -502,7 +502,7 @@
         }
       }
     },
-    "/api/categories/internships": {
+    "/api/categories/job": {
       "get": {
         "tags": [
           "Categories"

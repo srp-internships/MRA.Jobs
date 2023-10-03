@@ -1,5 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.DeleteVacancyCategory;
@@ -79,6 +80,18 @@ public class CategoryService : ICategoryService
     public async Task<List<InternshipCategoriesResponce>> GetInternshipCategoriesSinceCheckDate()
     {
         var responce = await _http.GetFromJsonAsync<List<InternshipCategoriesResponce>>("categories/internships?CheckDate=true");
+        return responce;
+    }
+
+    public async Task<List<JobCategoriesResponse>> GetJobCategories()
+    {
+        var responce = await _http.GetFromJsonAsync<List<JobCategoriesResponse>>("categories/job");
+        return responce;
+    }
+
+    public async Task<List<JobCategoriesResponse>> GetJobCategoriesSinceCheckDate()
+    {
+        var responce = await _http.GetFromJsonAsync<List<JobCategoriesResponse>>("categories/job?CheckDate=true");
         return responce;
     }
 }

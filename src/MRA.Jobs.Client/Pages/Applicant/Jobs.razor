@@ -1,302 +1,104 @@
 ﻿@page "/jobs"
-@using MRA.Jobs.Application.Contracts.JobVacancies.Responses
-@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-@inject IVacancyService VacancyService
-@inject ICategoryService CategoryService
-@implements IDisposable
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+@inject ICategoryService categoryService
+@inject IVacancyService vacancyService
 
-<head>
-    <style>
-        .categories {
-            width: 38%;
-            margin-right: 20px;
-        }
+<style>
+    .job-card:hover {
+        background-color: #F5F5F5; /* Change to desired hover color */
+    }
+</style>
 
-        .vacancy {
-            width: 100%;
-        }
+@if (jobs is null)
+{
+    <MudText Typo="Typo.h5">@message</MudText>
 
-        .card-vacancy:hover {
-            box-shadow: 2px 5px 10px 8px rgb(242 242 242 / 69%) !important;
-            transition: .2s;
-        }
-
-        .card-vacancy {
-            transition: all .2s ease-in-out;
-        }
-
-            .card-vacancy:hover h2 {
-                color: #0e6df9 !important;
+}
+else
+{
+    <MudContainer>
+        <MudGrid>
+            <MudItem xs="12" md="3" lg="2">
+                <MudPaper Width="250px" Height="500px" Elevation="0" Class="py-0">
+                    <MudTabs Outlined="true" MinimumTabWidth="200px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+                        <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Jobs" />
+                        @foreach (var jobCats in jobCategories)
+                        {
+                            <MudTabPanel Text="@jobCats.Category.Name" BadgeData="@GetJobCategoryCount(jobCats.Category.Name)" />
+                        }
+                    </MudTabs>
+                </MudPaper>
+            </MudItem>
+            @if (jobCategories.Count == 0)
+            {
+                <MudText Typo="Typo.h5" Style="margin:50px;">There are currently no job vacancies available. Please check back later :)</MudText>
             }
-
-        .category {
-            transition: all .2s ease-in-out;
-        }
-
-        .selectedCategory {
-            background-color: #7aaffc;
-        }
-
-        .category:hover {
-            background-color: #7aaffc;
-        }
-
-        .category {
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .category-vacancies-value {
-            color: gray;
-        }
-
-        .page-index-selection {
-            margin-left: 0.5rem;
-            margin-right: 0.5rem;
-        }
-
-        .page-rel-selection {
-            margin-left: 0.3rem;
-            margin-right: 0.3rem;
-        }
-
-        .reset-input-btn {
-            border: none;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <h3>Jobs</h3>
-    </div>
-    <!-- Vacancy page -->
-    <div class="container">
-        <!-- Search -->
-        <div class="w-100">
-            <div class="p-1 d-flex bg-white shadow rounded mb-5">
-                <div class="input-group">
-                    <input type="text"
-                           class="form-control border-0"
-                           placeholder="Input a vacancy title..."
-                           aria-label="SearchText"
-                    @bind-value="_tempSearchTitle"
-                    @bind-value:event="oninput"
-                           aria-describedby=""
-                    @onkeyup="HandleSearch">
-                    @if (_tempSearchTitle != "")
-                    {
-                        <button class="btn reset-input-btn" @onclick="ResetInput">X</button>
-                    }
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-primary"
-                        @onclick="(async () => { SetSearchTitle(); await BtnSearch(); })"
-                                type="button">
-                            Search
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Search -->
-
-        <div class="w-100 d-flex flex-row justify-content-between">
-            <div class="categories bg-white shadow-lg rounded p-4">
-                <!-- Categories -->
-                <div id="category">
-                    <div class="w-100">
-                        <h4 class="mb-2 text-dark">Category</h4>
-                        @if (_categories is null || _categories.Count == 0)
+            else
+            {
+                <MudItem xs="12" md="9" lg="10">
+                    <MudGrid>
+                        @foreach (var job in filteredJobs)
                         {
-                            <div></div>
+                            <MudItem xs="12" md="12" lg="12">
+                                <a href="/job/@job.Slug">
+                                    <MudCard Class="job-card">
+                                        <MudCardHeader>
+                                            <MudText Color="Color.Primary" Typo="Typo.h5">@job.Title</MudText>
+                                        </MudCardHeader>
+                                        <MudCardContent>
+                                            @job.ShortDescription
+                                        </MudCardContent>
+                                    </MudCard>
+                                </a>
+                            </MudItem>
                         }
-                        else
-                        {
-                            <div class="d-flex flex-column">
-                                <div class="p-2 m-2 d-flex category @(_currentCategory == "All categories" ? "selectedCategory" : "")"
-                                @onclick="(() => CategorySearch())">
-                                    All categories <span class="category-vacancies-value">&nbsp;@VacanciesCountPerCategory("All categories")</span>
-                                </div>
-                                @foreach (var c in _categories)
-                                {
-                                    <div class="p-2 m-2 d-flex category @(_currentCategory == c.Name ? "selectedCategory" : "")"
-                                    @onclick="(() => CategorySearch(c.Name))">
-                                        @c.Name <span class="category-vacancies-value">&nbsp;@VacanciesCountPerCategory(c.Name)</span>
-                                    </div>
-                                }
-                            </div>
-                        }
-                    </div>
-                </div>
-                <!-- End Categories -->
-            </div>
-            <!-- Vacancies -->
-            <div class="vacancy">
-                @if (_vacanciesOnPage is null || _vacanciesOnPage.Count == 0)
-                {
-                    @if (_searchTitle != "" || _currentCategory != "All categories")
-                    {
-                        <div>No vacancies at the moment.</div>
-                        <a @onclick="OtherVacancies">See other vacancies</a>
-                    }
-                }
-                else
-                {
-                    <div>
-                        @foreach (var vacancy in _vacanciesOnPage)
-                        {
-                            <a href="/jobdetails/@vacancy.Slug">
-                                <div class="card-vacancy w-100 bg-white shadow-lg rounded mb-4">
-                                    <div class="d-flex flex-column p-3">
-                                        <h2 class="mb-2 text-black">@vacancy.Title</h2>
-                                        <p class="mb-2 text-black">@vacancy.ShortDescription</p>
-                                    </div>
-                                </div>
-                            </a>
-                        }
-                    </div>
-                    @if (_currentPage == VacancyService.PagesCount)
-                    {
-                        <p>
-                            Results @(
-                        (_currentPage - 1) * 10 + 1
-                        ) - @VacancyService.FilteredVacanciesCount shown from @VacancyService.FilteredVacanciesCount
-                        </p>
-                    }
-                    else
-                    {
-                        <p>
-                            Results @(
-                        (_currentPage - 1) * 10 + 1
-                        ) - @(
-                            _currentPage * 10
-                            ) shown from @VacancyService.FilteredVacanciesCount
-                        </p>
-                    }
-                    @if (_currentPage == 1)
-                    {
-                        <button class="btn btn-outline-info disabled page-selection page-rel-selection">&lt;&lt;</button>
-                        <button class="btn btn-outline-info disabled page-selection page-rel-selection">&lt;</button>
-                    }
-                    else
-                    {
-                        <button class="btn btn-outline-info page-selection page-rel-selection" @onclick="(() => GoToPage(1))">&lt;&lt;</button>
-                        <button class="btn btn-outline-info page-selection page-rel-selection" @onclick="(() => GoToPage(_currentPage - 1))">&lt;</button>
-                    }
-                    if (VacancyService.PagesCount != 0)
-                    {
-                        @for (int i = 1; i <= VacancyService.PagesCount; i++)
-                        {
-                            int pageNumber = i;
-                            if (i == _currentPage)
-                            {
-                                <button class="btn btn-info page-selection page-index-selection disabled">@i</button>
-                            }
-                            else
-                            {
-                                <button class="btn btn-outline-info page-selection page-index-selection" @onclick="(() => GoToPage(pageNumber))">@i</button>
-                            }
-                        }
-                    }
-                    @if (_currentPage == VacancyService.PagesCount)
-                    {
-                        <button class="btn btn-outline-info disabled page-selection page-rel-selection">&gt;</button>
-                        <button class="btn btn-outline-info disabled page-selection page-rel-selection">&gt;&gt;</button>
-                    }
-                    else
-                    {
-                        <button class="btn btn-outline-info page-selection page-rel-selection" @onclick="(() => GoToPage(_currentPage + 1))">&gt;</button>
-                        <button class="btn btn-outline-info page-selection page-rel-selection" @onclick="(() => GoToPage(VacancyService.PagesCount))">&gt;&gt;</button>
-                    }
-                }
-            </div>
-            <!-- End Vacancies -->
+                    </MudGrid>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudContainer>
 
-        </div>
-
-    </div>
-    <!-- End Vacancy page -->
-</body>
+}
 
 @code {
-    List<CategoryResponse> _categories = new();
-    string _currentCategory = "All categories";
-    List<JobVacancyListDto> _vacanciesOnPage;
-    List<JobVacancyListDto> _allVacancies;
-    string _searchTitle = "";
-    string _tempSearchTitle = "";
-    int _currentPage = 1;
+    private string message = "Loading...";
+    private List<JobCategoriesResponse> jobCategories;
+    private List<JobVacancyListDto> jobs;
+    private List<JobVacancyListDto> filteredJobs;
+    private int activeIndex = 0;
+    private string selectedCategoryText = "";
 
     protected override async Task OnInitializedAsync()
     {
-        _vacanciesOnPage = await VacancyService.GetFilteredVacancies();
-        _allVacancies = await VacancyService.GetAllVacancies();
-        _categories = await CategoryService.GetAllCategory();
-    }
-
-    async Task BtnSearch(int pageNumber = 1)
-    {
-        _currentCategory = "All categories";
-        _currentPage = pageNumber;
-        _vacanciesOnPage = await VacancyService.GetFilteredVacancies(_searchTitle, page: pageNumber);
-        VacancyService.OnChange += StateHasChanged;
-    }
-
-    void SetSearchTitle()
-    {
-        _searchTitle = _tempSearchTitle;
-    }
-
-    async Task ResetInput()
-    {
-        _tempSearchTitle = "";
-        _searchTitle = "";
-        _currentCategory = "All categories";
-        _vacanciesOnPage = await VacancyService.GetFilteredVacancies(categoryName: "All categories");
-    }
-
-    async Task CategorySearch(string categoryName = "All categories", int pageNumber = 1)
-    {
-        _searchTitle = "";
-        _currentCategory = categoryName;
-        _currentPage = pageNumber;
-        _vacanciesOnPage = await VacancyService.GetFilteredVacancies(categoryName: categoryName, page: pageNumber);
-    }
-
-    int VacanciesCountPerCategory(string categoryName)
-    {
-        return categoryName == "All categories" ? _allVacancies.Count : _allVacancies.Count(v => v.Category.Equals(categoryName));
-    }
-
-    async Task GoToPage(int pageNumber)
-    {
-        _currentPage = pageNumber;
-        if (_searchTitle == "")
+        var result = await categoryService.GetJobCategoriesSinceCheckDate();
+        var allJobs = await vacancyService.GetJobs();
+        if (result is not null && allJobs is not null)
         {
-            await CategorySearch(_currentCategory, pageNumber);
-        }
-        else
-            await BtnSearch(pageNumber);
-    }
-
-    async Task OtherVacancies()
-    {
-        _currentCategory = "All categories";
-        _searchTitle = "";
-        await CategorySearch();
-    }
-
-    public async Task HandleSearch(KeyboardEventArgs args)
-    {
-        if (args.Key == null || args.Key.Equals("Enter"))
-        {
-            SetSearchTitle();
-            await BtnSearch();
+            jobCategories = result;
+            jobs = allJobs;
+            filteredJobs = allJobs;
+            message = string.Empty;
         }
     }
 
-    public void Dispose()
+    private async Task HandleTabSelection(int index)
     {
-        VacancyService.OnChange -= StateHasChanged;
+        activeIndex = index;
+
+        if (index == 0)
+        {
+            selectedCategoryText = "All Jobs";
+            filteredJobs = jobs;
+        }
+        else if (index > 0 && index <= jobCategories.Count)
+        {
+            selectedCategoryText = jobCategories[index - 1].Category.Name;
+            filteredJobs = jobs.Where(j => j.Category == selectedCategoryText).ToList();
+        }
+    }
+
+    private int GetJobCategoryCount(string category)
+    {
+        return jobs.Count(j => j.Category == category);
     }
 }

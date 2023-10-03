@@ -10,6 +10,7 @@ using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.UpdateVacancyCat
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategoryWithPagination;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.DeleteVacancyCategory;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobCategories;
 
 namespace MRA.Jobs.Web.Controllers;
 
@@ -47,6 +48,14 @@ public class CategoriesController : ApiControllerBase
         return Ok(categories);
     }
 
+
+
+    [HttpGet("job")]
+    public async Task<IActionResult> GetCategories([FromQuery] GetJobCategoriesQuery query)
+    {
+        var categories = await Mediator.Send(query);
+        return Ok(categories);
+    } 
 
     [HttpGet("{slug}")]
     public async Task<IActionResult> Get(string slug)
