@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
@@ -26,6 +27,7 @@ public interface IVacancyService
     Task OnSaveCreateClick();
     Task OnDelete(string slug);
     Task<List<JobVacancyListDto>> GetJobs();
+    Task<List<InternshipVacancyListResponse>> GetInternship();
     Task UpdateJobVacancy(string slug);
     Task<JobVacancyDetailsDto> GetBySlug(string slug);
 }

@@ -1,0 +1,104 @@
+﻿@page "/Internships"
+@using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+@inject ICategoryService categoryService
+@inject IVacancyService vacancyService
+
+<style>
+	.job-card:hover {
+		background-color: #F5F5F5; /* Change to desired hover color */
+	}
+</style>
+
+@if (Internships is null)
+{
+	<MudText Typo="Typo.h5">@message</MudText>
+
+}
+else
+{
+	<MudContainer>
+		<MudGrid>
+			<MudItem xs="12" md="3" lg="2">
+				<MudPaper Width="250px" Height="500px" Elevation="0" Class="py-0">
+					<MudTabs Outlined="true" MinimumTabWidth="200px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+						<MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Jobs" />
+						@foreach (var jobCats in InternshipCategories)
+						{
+							<MudTabPanel Text="@jobCats.Category.Name" BadgeData="@GetInternshipCategoryCount(jobCats.Category.Name)" />
+						}
+					</MudTabs>
+				</MudPaper>
+			</MudItem>
+			@if (InternshipCategories.Count == 0)
+			{
+				<MudText Typo="Typo.h5" Style="margin:50px;">There are currently no job vacancies available. Please check back later :)</MudText>
+			}
+			else
+			{
+				<MudItem xs="12" md="9" lg="10">
+					<MudGrid>
+						@foreach (var Internship in filteredInternship)
+						{
+							<MudItem xs="12" md="12" lg="12">
+								<a href="/internships/@Internship.Slug">
+									<MudCard Class="job-card">
+										<MudCardHeader>
+											<MudText Color="Color.Primary" Typo="Typo.h5">@Internship.Title</MudText>
+										</MudCardHeader>
+										<MudCardContent>
+											@Internship.ShortDescription
+										</MudCardContent>
+									</MudCard>
+								</a>
+							</MudItem>
+						}
+					</MudGrid>
+				</MudItem>
+			}
+		</MudGrid>
+	</MudContainer>
+
+}
+
+@code {
+	private string message = "Loading...";
+	private List<InternshipCategoriesResponce> InternshipCategories;
+	private List<InternshipVacancyListResponse> Internships;
+	private List<InternshipVacancyListResponse> filteredInternship;
+	private int activeIndex = 0;
+	private string selectedCategoryText = "";
+
+	protected override async Task OnInitializedAsync()
+	{
+		var result = await categoryService.GetInternshipCategoriesSinceCheckDate();
+		var allJobs = await vacancyService.GetInternship();
+		if (result is not null && allJobs is not null)
+		{
+			InternshipCategories = result;
+			Internships = allJobs;
+			filteredInternship = allJobs;
+			message = string.Empty;
+		}
+	}
+
+	private async Task HandleTabSelection(int index)
+	{
+		activeIndex = index;
+
+		if (index == 0)
+		{
+			selectedCategoryText = "All Jobs";
+			filteredInternship = Internships;
+		}
+		else if (index > 0 && index <= InternshipCategories.Count)
+		{
+			selectedCategoryText = InternshipCategories[index - 1].Category.Name;
+			filteredInternship = Internships.Where(j => j.Category == selectedCategoryText).ToList();
+		}
+	}
+
+	private int GetInternshipCategoryCount(string category)
+	{
+		return Internships.Count(j => j.Category == category);
+	}
+}

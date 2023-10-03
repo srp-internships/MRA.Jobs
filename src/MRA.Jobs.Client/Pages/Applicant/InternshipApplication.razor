@@ -1,114 +1,107 @@
 ﻿@page "/internships/apply/{Slug}"
-@using  MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
+@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 @layout MainLayout
 @inject NavigationManager NavigationManager
 @inject IInternshipService InternshipService
 @inject IApplicationService ApplicationService
 
 <div class="container">
-    @if (internship is null)
-    {
-        <h3>@message</h3>
-    }
-    else
-    {
+	@if (internship is null)
+	{
+		<h3>@message</h3>
+	}
+	else
+	{
 		<EditForm Model="@application" OnValidSubmit="CreateApplication">
-		<FluentValidationValidator />
-        <div class="row">
-            <div class="col-8">
-                <p class="fs-2">@internship.Title</p>
-                <label for="cover-letter"><span class="text-danger">*</span>Cover Letter</label>
+			<FluentValidationValidator />
+			<div class="row">
+				<div class="col-8">
+					<p class="fs-2">@internship.Title</p>
+					<label for="cover-letter"><span class="text-danger">*</span>Cover Letter</label>
 					<InputTextArea class="form-control" id="cover-letter" rows="10" @bind-Value="application.CoverLetter" required="required"></InputTextArea>
-					<small><ValidationMessage For="@(() =>application.CoverLetter)" class="text-bg-danger" /></small>
+					<small><ValidationMessage For="@(() =>application.CoverLetter)" class="text-danger" /></small>
 
-                @if (internship.VacancyQuestions.Count() > 0)
-                {
-                    <div>
-                        <p class="fs-3">Questions</p>
-                        @foreach (var question in internship.VacancyQuestions)
-                        {
-                            <label for="question" class="form-label"><span class="text-danger">*</span>@question.Question</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="question_@question.Id" required="required" @bind="questionResponses[question.Question]">
-                            </div>
-                        }
-                    </div>
-                }
-
-                @if (string.IsNullOrWhiteSpace(application.CoverLetter) || questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)))
-                {
-                    <div class="alert alert-danger mt-3">
-                        Please fill in all required fields.
-                    </div>
-                }
+					@if (internship.VacancyQuestions.Count() > 0)
+					{
+						<div>
+							<p class="fs-3">Questions</p>
+							@foreach (var question in internship.VacancyQuestions)
+							{
+								<label for="question" class="form-label"><span class="text-danger">*</span>@question.Question</label>
+								<div class="input-group">
+									<input type="text" class="form-control" id="question_@question.Id" required="required" @bind="questionResponses[question.Question]">
+								</div>
+							}
+						</div>
+					}
 					<button type="submit" class="btn btn-primary mt-3" @onclick="CreateApplication">Apply</button>
-            </div>
-        </div>
+				</div>
+			</div>
 		</EditForm>
-    }
+	}
 </div>
 
 @code {
-    private string message = "Loading...";
-    private InternshipVacancyResponse internship;
-    private CreateApplicationCommand application;
+	private string message = "Loading...";
+	private InternshipVacancyResponse internship;
+	private CreateApplicationCommand application;
 
-    [Parameter]
-    public string Slug { get; set; }
-    private Dictionary<string, string> questionResponses = new Dictionary<string, string>();
+	[Parameter]
+	public string Slug { get; set; }
+	private Dictionary<string, string> questionResponses = new Dictionary<string, string>();
 
-    protected override async Task OnInitializedAsync()
-    {
-        var response = await InternshipService.GetBySlug(Slug);
+	protected override async Task OnInitializedAsync()
+	{
+		var response = await InternshipService.GetBySlug(Slug);
 
-        if (response != null)
-        {
-            internship = response;
+		if (response != null)
+		{
+			internship = response;
 			application = new CreateApplicationCommand
-                {
-                    VacancyId = internship.Id,
-                    VacancyResponses = internship.VacancyQuestions.Select(q => new VacancyResponseDto
-                    {
-                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
-                    })
-                };
-            message = string.Empty;
+				{
+					VacancyId = internship.Id,
+					VacancyResponses = internship.VacancyQuestions.Select(q => new VacancyResponseDto
+					{
+						VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+					})
+				};
+			message = string.Empty;
 
-            foreach (var question in internship.VacancyQuestions)
-            {
-                questionResponses[question.Question] = "";
-            }
-        }
-        else
-        {
-            message = "Internship not found or not yet published.";
-        }
-    }
+			foreach (var question in internship.VacancyQuestions)
+			{
+				questionResponses[question.Question] = "";
+			}
+		}
+		else
+		{
+			message = "Internship not found or not yet published.";
+		}
+	}
 
-    private async Task CreateApplication()
-    {
+	private async Task CreateApplication()
+	{
 
-        if (string.IsNullOrWhiteSpace(application.CoverLetter) || questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)))
-        {
-            return; // Do not proceed with submission if any required fields are empty.
-        }
+		if (string.IsNullOrWhiteSpace(application.CoverLetter) || questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)))
+		{
+			return; // Do not proceed with submission if any required fields are empty.
+		}
 
-        var updatedResponses = new List<VacancyResponseDto>();
+		var updatedResponses = new List<VacancyResponseDto>();
 
-        foreach (var vr in application.VacancyResponses)
-        {
-            var updatedResponse = new VacancyResponseDto
-                {
-                    VacancyQuestion = vr.VacancyQuestion,
-                    Response = questionResponses[vr.VacancyQuestion.Question]
-                };
+		foreach (var vr in application.VacancyResponses)
+		{
+			var updatedResponse = new VacancyResponseDto
+				{
+					VacancyQuestion = vr.VacancyQuestion,
+					Response = questionResponses[vr.VacancyQuestion.Question]
+				};
 
-            updatedResponses.Add(updatedResponse);
-        }
+			updatedResponses.Add(updatedResponse);
+		}
 
-        application.VacancyResponses = updatedResponses;
+		application.VacancyResponses = updatedResponses;
 
-        await ApplicationService.CreateApplication(application);
-        NavigationManager.NavigateTo("/");
-    }
+		await ApplicationService.CreateApplication(application);
+		NavigationManager.NavigateTo("/");
+	}
 }
