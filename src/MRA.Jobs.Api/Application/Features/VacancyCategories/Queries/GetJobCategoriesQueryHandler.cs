@@ -17,17 +17,19 @@ public class GetJobCategoriesQueryHandler : IRequestHandler<GetJobCategoriesQuer
 
     public async Task<List<JobCategoriesResponse>> Handle(GetJobCategoriesQuery request, CancellationToken cancellationToken)
     {
-      
-        var jobs = (await _context.JobVacancies.ToListAsync()).AsEnumerable();
+
+        IEnumerable<JobVacancy> jobsQuery = _context.JobVacancies;
 
         if (request.CheckDate)
         {
             DateTime now = DateTime.UtcNow;
-            jobs = jobs.Where(j => j.PublishDate <= now && j.EndDate >= now);
+            jobsQuery = _context.JobVacancies.Where(j => j.PublishDate <= now && j.EndDate >= now);
         }
 
-        var sortredJobs = from j in jobs
-                          group j by j.CategoryId;
+        var sortredJobs = (from j in jobsQuery
+                           group j by j.CategoryId).ToList();
+
+        var jobs = jobsQuery.ToList();
 
         var jobsWithCategory = new List<JobCategoriesResponse>();
         var categories = await _context.Categories.ToListAsync();
