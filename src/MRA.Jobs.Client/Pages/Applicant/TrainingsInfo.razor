@@ -85,25 +85,9 @@
 
 	private async Task<bool> ApplicationExits()
 	{
-		var username = await GetCurrentUserName();
-		return await ApplicationService.ApplicationExist(username, Slug);
+		return await ApplicationService.ApplicationExist(Slug);
 	}
 
 
-
-	private async Task<string> GetCurrentUserName()
-	{
-		var authState = await provider.GetAuthenticationStateAsync();
-		var user = authState.User;
-
-		if (user.Identity.IsAuthenticated)
-		{
-			var userNameClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Username);
-			if (userNameClaim != null)
-				return userNameClaim.Value;
-		}
-
-		return null;
-	}
 
 }
