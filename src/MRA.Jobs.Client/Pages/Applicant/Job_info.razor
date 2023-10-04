@@ -1,36 +1,33 @@
 ﻿@page "/jobs/infojob/{Slug}"
-@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 @using MRA.Jobs.Client.Identity;
-@using Microsoft.AspNetCore.Components.Authorization;
-@inject AuthenticationStateProvider provider
-@inject ITrainingService _trainingService
+@inject IVacancyService VacancyService
 @inject IApplicationService ApplicationService
 
 <div class="container">
-	@if (_training == null)
+	@if (_vacancy == null)
 	{
 		<span>Loading...</span>
 	}
 	else
 	{
-		<h1>@_training.Title</h1>
+		<h1>@_vacancy.Title</h1>
 		<div class="w-100 d-flex flex-row justify-content-between">
-			<div class="Trainings w-100 bg-white shadow-lg rounded mb-4">
+			<div class="Jobs w-100 bg-white shadow-lg rounded mb-4">
 				<div class="d-flex flex-column p-3">
 
 					<h3 class="mb-2 text-black">
 						Description:
 					</h3>
-
-					<p class="mb-2 text-black">@((MarkupString)@_training.Description)</p>
+					<p class="mb-2 text-black">@((MarkupString)@_vacancy.Description)</p>
 				</div>
 			</div>
 			@*button*@
-			<div class="Trainingsinfo">
+			<div class="Jobsinfo">
 				<div class="w-100 d-flex flex-row justify-content-between">
 					<div class="card w-100 bg-white shadow-lg rounded mb-4">
 						<div class="card-body">
-							<h2 class="mb-2 text-black">Interested in a trainings?</h2>
+							<h2 class="mb-2 text-black">Interested in a Job?</h2>
 							@if (applied)
 							{
 								<span class="text-success"> <i class="fa fa-check" aria-hidden="true"></i>Applied</span>
@@ -52,12 +49,12 @@
 @code {
 	[Parameter]
 	public string Slug { get; set; }
-	private TrainingVacancyDetailedResponse _training { get; set; } = new TrainingVacancyDetailedResponse();
+	JobVacancyDetailsDto _vacancy;
 	private bool applied = false;
 
 	protected override async Task OnInitializedAsync()
 	{
-		_training = await _trainingService.GetBySlug(Slug);
+		_vacancy = await VacancyService.GetBySlug(Slug);
 		applied = await ApplicationExits();
 	}
 
@@ -65,7 +62,4 @@
 	{
 		return await ApplicationService.ApplicationExist(Slug);
 	}
-
-
-
 }
