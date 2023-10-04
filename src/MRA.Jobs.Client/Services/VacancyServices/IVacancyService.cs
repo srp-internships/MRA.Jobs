@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
@@ -28,6 +29,7 @@ public interface IVacancyService
     Task OnDelete(string slug);
     Task<List<JobVacancyListDto>> GetJobs();
     Task<List<InternshipVacancyListResponse>> GetInternship();
+    Task<List<TrainingVacancyListDto>> GetTrainings();
     Task UpdateJobVacancy(string slug);
     Task<JobVacancyDetailsDto> GetBySlug(string slug);
 }

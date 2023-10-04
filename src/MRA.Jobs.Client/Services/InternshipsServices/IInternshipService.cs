@@ -16,12 +16,6 @@ public interface IInternshipService
     Task<List<InternshipVacancyListResponse>> GetAll();
     Task<InternshipVacancyResponse> GetBySlug(string slug);
 
-    Task<PagedList<InternshipVacancyListResponse>> GetByCategoryName(string slug);
-    Task<PagedList<InternshipVacancyListResponse>> SearchInternship(string searchInput);
-
-    Task<PagedList<InternshipVacancyListResponse>> GetAllSinceCheckDate();
-    Task<PagedList<InternshipVacancyListResponse>> GetByCategorySinceCheckDate(string slug);
-    Task<PagedList<InternshipVacancyListResponse>> SearchInternshipSinceSearchDate(string searchInput);
     CreateInternshipVacancyCommand createCommand { get; set; }
     UpdateInternshipVacancyCommand UpdateCommand { get; set; }
     DeleteInternshipVacancyCommand DeleteCommand { get; set; }
