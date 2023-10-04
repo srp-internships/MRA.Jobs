@@ -1,0 +1,27 @@
+﻿@page "/UserRoles/{Username}"
+<h2>@Username</h2>
+
+<MatAccordion>
+    <MatExpansionPanel @bind-Expanded="_isOpened">
+        <MatExpansionPanelSummary>
+            <MatExpansionPanelHeader>Add role</MatExpansionPanelHeader>
+
+        </MatExpansionPanelSummary>
+        <MatExpansionPanelDetails>
+            <MatTextField Label="Role" @bind-Value="NewRoleName"></MatTextField>
+            <MatButton OnClick="@OnAddClick" Style="color:#2094CC" Icon="edit" Label="Add"></MatButton>
+        </MatExpansionPanelDetails>
+    </MatExpansionPanel>
+</MatAccordion>
+<MatTable Items="@Roles" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
+    <MatTableHeader>
+        <th>Role</th>
+        <th></th>
+    </MatTableHeader>
+    <MatTableRow>
+        <td>@context.RoleName</td>
+        <td>
+            <MatButton @onclick="() => OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MatButton>
+        </td>
+    </MatTableRow>
+</MatTable>
