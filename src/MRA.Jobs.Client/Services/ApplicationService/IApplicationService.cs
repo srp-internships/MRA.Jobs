@@ -13,5 +13,5 @@ public interface IApplicationService
     Task<PagedList<ApplicationListDto>> GetAllApplications();
     Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus);
     Task<ApplicationDetailsDto> GetApplicationDetails(string ApplicationSlug);
-    Task<bool> ApplicationExist(string userName, string vacancySlug);
+    Task<bool> ApplicationExist(string vacancySlug);
 }

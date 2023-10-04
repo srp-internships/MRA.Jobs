@@ -4,6 +4,7 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Client.Identity;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 
@@ -64,11 +65,28 @@ public class ApplicationService : IApplicationService
       
     }
 
-    public async Task<bool> ApplicationExist(string userName, string vacancySlug)
+    public async Task<bool> ApplicationExist(string vacancySlug)
     {
-        var ApplicationSlug = ($"{userName}-{vacancySlug}").ToLower().Trim();
+        var ApplicationSlug = ($"{(await GetCurrentUserName())}-{vacancySlug}").ToLower().Trim();
         if ((await GetApplicationDetails(ApplicationSlug)) != null)
             return true;
         return false;
     }
+
+    
+
+	private async Task<string> GetCurrentUserName()
+	{
+		var authState = await _authenticationState.GetAuthenticationStateAsync();
+		var user = authState.User;
+
+		if (user.Identity.IsAuthenticated)
+		{
+			var userNameClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Username);
+			if (userNameClaim != null)
+				return userNameClaim.Value;
+		}
+
+		return null;
+	}
 }

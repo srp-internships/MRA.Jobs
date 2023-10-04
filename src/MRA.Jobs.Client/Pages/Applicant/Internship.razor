@@ -21,7 +21,7 @@ else
 			<MudItem xs="12" md="3" lg="2">
 				<MudPaper Width="250px" Height="500px" Elevation="0" Class="py-0">
 					<MudTabs Outlined="true" MinimumTabWidth="200px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
-						<MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Jobs" />
+						<MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Internships" />
 						@foreach (var jobCats in InternshipCategories)
 						{
 							<MudTabPanel Text="@jobCats.Category.Name" BadgeData="@GetInternshipCategoryCount(jobCats.Category.Name)" />
@@ -87,7 +87,7 @@ else
 
 		if (index == 0)
 		{
-			selectedCategoryText = "All Jobs";
+			selectedCategoryText = "All Internships";
 			filteredInternship = Internships;
 		}
 		else if (index > 0 && index <= InternshipCategories.Count)
