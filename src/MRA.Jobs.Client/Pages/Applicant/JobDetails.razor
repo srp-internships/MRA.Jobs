@@ -1,4 +1,4 @@
-﻿@page "/job/{Slug}"
+﻿@page "/jobs/{Slug}"
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @inject IVacancyService VacancyService
 @inject NavigationManager NavigationManager
@@ -37,6 +37,6 @@
 
     private void CompleteTest()
     {
-        NavigationManager.NavigateTo($"/job/applytojob/{Slug}");
+        NavigationManager.NavigateTo($"/jobs/infojob/{Slug}");
     }
 }

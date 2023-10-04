@@ -1,0 +1,71 @@
+﻿@page "/jobs/infojob/{Slug}"
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+@using MRA.Jobs.Client.Identity;
+@using Microsoft.AspNetCore.Components.Authorization;
+@inject AuthenticationStateProvider provider
+@inject ITrainingService _trainingService
+@inject IApplicationService ApplicationService
+
+<div class="container">
+	@if (_training == null)
+	{
+		<span>Loading...</span>
+	}
+	else
+	{
+		<h1>@_training.Title</h1>
+		<div class="w-100 d-flex flex-row justify-content-between">
+			<div class="Trainings w-100 bg-white shadow-lg rounded mb-4">
+				<div class="d-flex flex-column p-3">
+
+					<h3 class="mb-2 text-black">
+						Description:
+					</h3>
+
+					<p class="mb-2 text-black">@((MarkupString)@_training.Description)</p>
+				</div>
+			</div>
+			@*button*@
+			<div class="Trainingsinfo">
+				<div class="w-100 d-flex flex-row justify-content-between">
+					<div class="card w-100 bg-white shadow-lg rounded mb-4">
+						<div class="card-body">
+							<h2 class="mb-2 text-black">Interested in a trainings?</h2>
+							@if (applied)
+							{
+								<span class="text-success"> <i class="fa fa-check" aria-hidden="true"></i>Applied</span>
+							}
+							else
+							{
+								<a href="/jobs/infojob/Applytojobs/@Slug" class="btn btn-primary w-100">Apply</a>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+
+
+@code {
+	[Parameter]
+	public string Slug { get; set; }
+	private TrainingVacancyDetailedResponse _training { get; set; } = new TrainingVacancyDetailedResponse();
+	private bool applied = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_training = await _trainingService.GetBySlug(Slug);
+		applied = await ApplicationExits();
+	}
+
+	private async Task<bool> ApplicationExits()
+	{
+		return await ApplicationService.ApplicationExist(Slug);
+	}
+
+
+
+}
