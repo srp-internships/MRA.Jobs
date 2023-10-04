@@ -1,83 +1,85 @@
-﻿@inject AuthenticationStateProvider AuthProvider
+﻿@inject AuthenticationStateProvider authProvider
 @inject ILocalStorageService localStorage
+@inject NavigationManager navigationManager
+@using Microsoft.AspNetCore.Components.Authorization
 
 <header id="header" class="header fixed-top d-flex align-items-center">
-	<div class="container-fluid d-flex align-items-center justify-content-between">
-		<a href="/"
-		   class="logo d-flex align-items-center me-auto me-xl-0">
-			<!-- Uncomment the line below if you also wish to use an image logo -->
-			<!-- <img src="assets/img/logo.png" alt=""> -->
-			<img src="images/srp_icon.png" class="img-fluid" />
-			@*<img src="images/bluewhite.png" style="height:30%; width:30%;margin:-40px 0" class="img-fluid"/>*@
-			<div class="col">
-				<h1></h1>
-				<h1>SILK ROAD</h1>
-				<h1 style="font-size: 15.4px">PROFESSIONALS</h1>
-			</div>
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+        <a href="/"
+           class="logo d-flex align-items-center me-auto me-xl-0">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="assets/img/logo.png" alt=""> -->
+            <img src="images/srp_icon.png" class="img-fluid" />
+            @*<img src="images/bluewhite.png" style="height:30%; width:30%;margin:-40px 0" class="img-fluid"/>*@
+            <div class="col">
+                <h1></h1>
+                <h1>SILK ROAD</h1>
+                <h1 style="font-size: 15.4px">PROFESSIONALS</h1>
+            </div>
 
-			<!-- <span>.</span> -->
-		</a>
+            <!-- <span>.</span> -->
+        </a>
 
-		<!-- Nav Menu -->
-		<nav id="navmenu" class="navmenu">
-			<ul>
-				<li>
-					<a href="/" class="active">Home</a>
-				</li>
-				@*<li>
-				<a href="home#about">About</a>
-				</li>*@
-				<li>
-					<a href="jobs">Jobs</a>
-				</li>
-				<li>
-					<a href="internships">Internships</a>
-				</li>
-				<li>
-					<a href="trainings">Trainings</a>
-				</li>
-				<li>
-					<a href="https://www.silkroadprofessionals.com/team/team/" target="_blank">Team</a>
-				</li>
-				@*<li>
-				<a href="blog.html">Blog</a>
-				</li>*@
+        <!-- Nav Menu -->
+        <nav id="navmenu" class="navmenu">
+            <ul>
+                <li>
+                    <a href="/" class="active">Home</a>
+                </li>
+                @*<li>
+                <a href="home#about">About</a>
+                </li>*@
+                <li>
+                    <a href="jobs">Jobs</a>
+                </li>
+                <li>
+                    <a href="internships">Internships</a>
+                </li>
+                <li>
+                    <a href="trainings">Trainings</a>
+                </li>
+                <li>
+                    <a href="https://www.silkroadprofessionals.com/team/team/" target="_blank">Team</a>
+                </li>
+                @*<li>
+                <a href="blog.html">Blog</a>
+                </li>*@
 
-				@*<li>
-				<a href="home#contact">Contact</a>
-				</li>*@
-			</ul>
+                @*<li>
+                <a href="home#contact">Contact</a>
+                </li>*@
+            </ul>
 
-			<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-		</nav>
-		<!-- End Nav Menu -->
-		<nav id="navmenu" class="navmenu" style="margin-right:40px;">
-			<ul>
-				<li class="dropdown has-dropdown">
-					<a href="#">
-						<i class="bi bi-person-circle" style="font-size:150%"></i>
-					</a>
-					<ul class="dd-box-shadow" style="left:-150px; right:0px">
-						<CascadingAuthenticationState>
-							<AuthorizeView>
-                                <Authorized>
-									<li><a href="ApplicantPage">Profile</a></li>
-									<li><a href="ApplicantClient">Application</a></li>
-									<li><a href="#">Sign Out</a></li>
-								</Authorized>
-								<NotAuthorized>
-									<li><a href="sign-in">Sing In</a></li>
-									<li><a href="sign-up">Sing Up</a></li>
-								</NotAuthorized>
-							</AuthorizeView>
-						</CascadingAuthenticationState>
-					</ul>
-
-				</li>
-			</ul>
-		</nav>
-	</div>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+        <!-- End Nav Menu -->
+        <CascadingAuthenticationState>
+            <AuthorizeView>
+                <Authorized>
+                    <MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Info">
+                        <MudNavLink Href="/applicant">Profile</MudNavLink>
+                        <MudNavLink Href="/applications">Applications</MudNavLink>
+                        <MudNavLink OnClick="Logout">Logout</MudNavLink>
+                    </MudMenu>
+                </Authorized>
+                <NotAuthorized>
+                    <MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Info">
+                        <MudNavLink Href="/sign-in">Sign In</MudNavLink>
+                        <MudNavLink Href="/sign-up">Sign Up</MudNavLink>
+                    </MudMenu>
+                </NotAuthorized>
+            </AuthorizeView>
+        </CascadingAuthenticationState>
+    </div>
 </header>
 
 
 
+@code {
+    private async Task Logout()
+    {
+        await localStorage.RemoveItemAsync("authToken");
+        await authProvider.GetAuthenticationStateAsync();
+        navigationManager.NavigateTo("/");
+    }
+}
