@@ -7,8 +7,6 @@ using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Client.Identity;
 
 namespace MRA.Jobs.Client.Pages.Admin;
-
-[Authorize(ApplicationPolicies.Administrator)]
 public partial class UserManager
 {
     private List<UserResponse> _applicationUsers = null!;
