@@ -21,7 +21,7 @@ else
 			<MudItem xs="12" md="3" lg="2">
 				<MudPaper Width="250px" Height="500px" Elevation="0" Class="py-0">
 					<MudTabs Outlined="true" MinimumTabWidth="200px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
-						<MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Jobs" />
+						<MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Trainings" />
 						@foreach (var trainingCats in TrainingCategories)
 						{
 							<MudTabPanel Text="@trainingCats.Category.Name" BadgeData="@GetTrainingsCategoryCount(trainingCats.Category.Name)" />
