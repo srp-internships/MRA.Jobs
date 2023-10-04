@@ -22,16 +22,16 @@ else
 				<MudPaper Width="250px" Height="500px" Elevation="0" Class="py-0">
 					<MudTabs Outlined="true" MinimumTabWidth="200px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
 						<MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Jobs" />
-						@foreach (var jobCats in TrainingCategories)
+						@foreach (var trainingCats in TrainingCategories)
 						{
-							<MudTabPanel Text="@jobCats.Category.Name" BadgeData="@GetJobCategoryCount(jobCats.Category.Name)" />
+							<MudTabPanel Text="@trainingCats.Category.Name" BadgeData="@GetTrainingsCategoryCount(trainingCats.Category.Name)" />
 						}
 					</MudTabs>
 				</MudPaper>
 			</MudItem>
 			@if (TrainingCategories.Count == 0)
 			{
-				<MudText Typo="Typo.h5" Style="margin:50px;">There are currently no job vacancies available. Please check back later :)</MudText>
+				<MudText Typo="Typo.h5" Style="margin:50px;">There are currently no trainings vacancies available. Please check back later :)</MudText>
 			}
 			else
 			{
@@ -87,7 +87,7 @@ else
 
 		if (index == 0)
 		{
-			selectedCategoryText = "All Jobs";
+			selectedCategoryText = "All Trainings";
 			filteredtrainings = trainings;
 		}
 		else if (index > 0 && index <= TrainingCategories.Count)
@@ -97,7 +97,7 @@ else
 		}
 	}
 
-	private int GetJobCategoryCount(string category)
+	private int GetTrainingsCategoryCount(string category)
 	{
 		return trainings.Count(j => j.Category == category);
 	}
