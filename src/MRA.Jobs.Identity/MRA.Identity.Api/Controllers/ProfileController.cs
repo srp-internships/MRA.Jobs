@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Skills.Command;
+using MRA.Identity.Application.Contract.Skills.Queries;
 
 namespace MRA.Identity.Api.Controllers;
 [Route("api/[controller]")]
@@ -30,6 +31,16 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> AddSkill([FromBody] AddSkillCommand command)
     {
         var result = await _mediator.Send(command);
+        if (result.IsSuccess == false)
+            return BadRequest(result.Exception + result.ErrorMessage);
+        return Ok(result);
+    }
+
+
+    [HttpGet("GetUserSkills")]
+    public async Task<IActionResult> GetUserSkills([FromQuery] GetUserSkillsQuery query)
+    {
+        var result = await _mediator.Send(query);
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);

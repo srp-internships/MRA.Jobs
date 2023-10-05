@@ -32,4 +32,12 @@ public class UserHttpContextAccessor : IUserHttpContextAccessor
 
         return userNameClaim != null ? userNameClaim.Value : string.Empty;
     }
+
+    public List<string> GetUserRoles()
+    {
+        var user = _httpContextAccessor.HttpContext?.User;
+        var roleClaims = user?.FindAll(ClaimTypes.Role);
+
+        return roleClaims?.Select(rc => rc.Value).ToList() ?? new List<string>();
+    }
 }
