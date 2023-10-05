@@ -11,7 +11,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      UseInMemoryDatabase: false
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -19,6 +20,7 @@ jobs:
       with:
         dotnet-version: 7.0.x
     
+
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./src
