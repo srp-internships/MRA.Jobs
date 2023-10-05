@@ -42,8 +42,6 @@ public static class ConfigureServices
             else
                 options.UseSqlServer(dbConnectionString);
         });
-
-
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
         services.AddTransient<IDateTime, DateTimeService>();
