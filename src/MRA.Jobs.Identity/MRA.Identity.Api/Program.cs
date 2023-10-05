@@ -30,6 +30,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var migration = app.Services.GetRequiredService<IMigration>();
+migration.Migrate();
+
 var applicationDbContextInitializer = app.Services.CreateAsyncScope().ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
 await applicationDbContextInitializer.SeedAsync();
 

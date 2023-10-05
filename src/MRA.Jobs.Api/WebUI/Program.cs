@@ -41,6 +41,9 @@ else
     app.UseHsts();
 }
 
+var migration = app.Services.GetRequiredService<IMigration>();
+migration.Migrate();
+
 app.UseHealthChecks("/status", new HealthCheckOptions
 {
     ResponseWriter = async (context, report) =>
