@@ -10,4 +10,10 @@ public class ApplicationUser : IdentityUser<Guid>
     public List<ApplicationUserRole> UserRoles { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
+
+    public string AboutMyself {  get; set; }
+
+    public List<EducationDetail> Educations { get; set; }
+    public List<ExperienceDetail> Experiences { get; set; }
+    public List<Skill> Skills { get; set; }
 }
