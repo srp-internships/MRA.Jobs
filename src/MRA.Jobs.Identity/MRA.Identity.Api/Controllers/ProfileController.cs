@@ -21,7 +21,7 @@ public class ProfileController : ControllerBase
     {
         var result = await _mediator.Send(command);
         if (result.IsSuccess == false)
-            return BadRequest(result);
+            return BadRequest(result.Exception+result.ErrorMessage);
         return Ok(result);
     }
 }

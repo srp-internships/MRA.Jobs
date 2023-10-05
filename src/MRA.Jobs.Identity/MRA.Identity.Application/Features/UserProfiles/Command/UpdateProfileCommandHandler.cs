@@ -1,5 +1,4 @@
-﻿using System.Data;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract;
