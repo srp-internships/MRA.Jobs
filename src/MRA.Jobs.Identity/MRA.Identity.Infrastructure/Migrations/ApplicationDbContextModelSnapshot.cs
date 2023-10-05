@@ -290,14 +290,24 @@ namespace MRA.Identity.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasKey("Id");
+
+                    b.ToTable("Skills");
+                });
+
+            modelBuilder.Entity("MRA.Identity.Domain.Entities.UserSkill", b =>
+                {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("SkillId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId", "SkillId");
 
-                    b.ToTable("Skills");
+                    b.HasIndex("SkillId");
+
+                    b.ToTable("UserSkill");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -418,13 +428,21 @@ namespace MRA.Identity.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MRA.Identity.Domain.Entities.Skill", b =>
+            modelBuilder.Entity("MRA.Identity.Domain.Entities.UserSkill", b =>
                 {
+                    b.HasOne("MRA.Identity.Domain.Entities.Skill", "Skill")
+                        .WithMany("UserSkills")
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MRA.Identity.Domain.Entities.ApplicationUser", "User")
-                        .WithMany("Skills")
+                        .WithMany("UserSkills")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Skill");
 
                     b.Navigation("User");
                 });
@@ -467,9 +485,14 @@ namespace MRA.Identity.Infrastructure.Migrations
 
                     b.Navigation("Experiences");
 
-                    b.Navigation("Skills");
-
                     b.Navigation("UserRoles");
+
+                    b.Navigation("UserSkills");
+                });
+
+            modelBuilder.Entity("MRA.Identity.Domain.Entities.Skill", b =>
+                {
+                    b.Navigation("UserSkills");
                 });
 #pragma warning restore 612, 618
         }

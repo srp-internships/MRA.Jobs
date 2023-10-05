@@ -15,5 +15,5 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public List<EducationDetail> Educations { get; set; }
     public List<ExperienceDetail> Experiences { get; set; }
-    public List<Skill> Skills { get; set; }
+    public List<UserSkill> UserSkills { get; set; }
 }
