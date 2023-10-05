@@ -43,7 +43,7 @@ public static class ConfigureServices
                 options.UseSqlServer(dbConnectionString);
         });
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-        services.AddTransient<IMigration, DbMigration>();
+        services.AddScoped<DbMigration>();
         services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<ISmsService, GenericSmsService>();
