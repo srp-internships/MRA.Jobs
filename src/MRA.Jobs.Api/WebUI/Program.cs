@@ -35,20 +35,19 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
-
-    using (var scope = app.Services.CreateScope())
-    {
-        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        if (initialiser.Database.IsSqlServer())
-        {
-            await initialiser.Database.MigrateAsync();
-        }
-    }
-
 }
 else
 {
     app.UseHsts();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    if (initialiser.Database.IsSqlServer())
+    {
+        await initialiser.Database.MigrateAsync();
+    }
 }
 
 app.UseHealthChecks("/status", new HealthCheckOptions
