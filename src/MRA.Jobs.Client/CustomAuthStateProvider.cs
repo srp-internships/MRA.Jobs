@@ -28,7 +28,7 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
         var identity = new ClaimsIdentity();
         _http.DefaultRequestHeaders.Authorization = null;
 
-        if (!string.IsNullOrEmpty(authToken.AccessToken))
+        if (authToken!=null && !string.IsNullOrEmpty(authToken.AccessToken))
         {
             try
             {
