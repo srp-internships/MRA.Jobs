@@ -40,7 +40,6 @@ if (app.Environment.IsDevelopment())
     {
         var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         await initialiser.Database.MigrateAsync();
-
     }
 
 }
