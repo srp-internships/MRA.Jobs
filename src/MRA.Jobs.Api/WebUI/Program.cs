@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using Sieve.Models;
 using FluentValidation.AspNetCore;
 using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
+using MRA.Jobs.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
@@ -33,6 +35,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await initialiser.Database.MigrateAsync();
+
+    }
 
 }
 else
