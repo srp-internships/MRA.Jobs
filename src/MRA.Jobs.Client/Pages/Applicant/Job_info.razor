@@ -12,39 +12,38 @@
 	else
 	{
 		<h1>@_vacancy.Title</h1>
-		<div class="w-100 d-flex flex-row justify-content-between">
-			<div class="Jobs w-100 bg-white shadow-lg rounded mb-4">
-				<div class="d-flex flex-column p-3">
-
-					<h3 class="mb-2 text-black">
-						Description:
-					</h3>
-					<p class="mb-2 text-black">@((MarkupString)@_vacancy.Description)</p>
-				</div>
+		<div class="row">
+			<div class="col-md-8">
+				<h3 class="mb-2 text-black">
+					Short Descriptio:
+				</h3>
+				<p class="mb-2 text-black"> Test Result </p>
 			</div>
-			@*button*@
-			<div class="Jobsinfo">
-				<div class="w-100 d-flex flex-row justify-content-between">
-					<div class="card w-100 bg-white shadow-lg rounded mb-4">
-						<div class="card-body">
-							<h2 class="mb-2 text-black">Interested in a Job?</h2>
+			<div class="col-md-4 bg-light rounded p-3">
+				<p>Interested in a Job?</p>
+				<CascadingAuthenticationState>
+					<AuthorizeView>
+						<Authorized>
 							@if (applied)
 							{
 								<span class="text-success"> <i class="fa fa-check" aria-hidden="true"></i>Applied</span>
+
 							}
 							else
 							{
-								<a href="/jobs/infojob/Applytojobs/@Slug" class="btn btn-primary w-100">Apply</a>
+								<a href="/jobs/Applytojobs/@Slug" class="btn btn-primary w-100">Apply</a>
 							}
-						</div>
-					</div>
-				</div>
+						</Authorized>
+						<NotAuthorized>
+							<a href="/sign-in" class="btn btn-primary w-100">Apply</a>
+						</NotAuthorized>
+					</AuthorizeView>
+				</CascadingAuthenticationState>
+				<br />
 			</div>
 		</div>
 	}
 </div>
-
-
 
 @code {
 	[Parameter]
