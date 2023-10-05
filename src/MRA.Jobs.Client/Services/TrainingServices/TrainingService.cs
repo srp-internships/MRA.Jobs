@@ -76,46 +76,4 @@ public class TrainingService : ITrainingService
         await _authenticationStateProvider.GetAuthenticationStateAsync();
         return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
     }
-
-    public async Task<PagedList<TrainingVacancyListDto>> GetByCategoryName(string slug)
-    {
-        await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var training =
-            await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>($"trainings?CategorySlug={slug}");
-        return training;
-    }
-
-    public async Task<PagedList<TrainingVacancyListDto>> SearchTrainings(string searchInput)
-    {
-        await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var trainings =
-            await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>(
-                $"trainings?SearchText={searchInput}");
-        return trainings;
-    }
-
-    public async Task<PagedList<TrainingVacancyListDto>> GetAllSinceCheckDate()
-    {
-        await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var result = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings?CheckDate=true");
-        return result;
-    }
-
-    public async Task<PagedList<TrainingVacancyListDto>> GetByCategorySinceCheckDate(string slug)
-    {
-        await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var training =
-            await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>(
-                $"trainings?CategorySlug={slug}&CheckDate=true");
-        return training;
-    }
-
-    public async Task<PagedList<TrainingVacancyListDto>> SearchTrainingsSinceSearchDate(string searchInput)
-    {
-        await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var trainings =
-            await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>(
-                $"trainings?SearchText={searchInput}&CheckDate=true");
-        return trainings;
-    }
 }

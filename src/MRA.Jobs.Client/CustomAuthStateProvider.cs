@@ -11,11 +11,14 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 {
     private readonly ILocalStorageService _localStorageService;
     private readonly HttpClient _http;
+    private readonly IdentityHttpClient _identityHttp;
 
-    public CustomAuthStateProvider(ILocalStorageService localStorageService, HttpClient http)
+    public CustomAuthStateProvider(ILocalStorageService localStorageService, HttpClient http,
+        IdentityHttpClient identityHttp)
     {
         _localStorageService = localStorageService;
         _http = http;
+        _identityHttp = identityHttp;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -25,12 +28,14 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
         var identity = new ClaimsIdentity();
         _http.DefaultRequestHeaders.Authorization = null;
 
-        if (!string.IsNullOrEmpty(authToken.AccessToken))
+        if (authToken!=null && !string.IsNullOrEmpty(authToken.AccessToken))
         {
             try
             {
                 identity = new ClaimsIdentity(ParseClaimsFromJwt(authToken.AccessToken), "jwt");
                 _http.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", authToken.AccessToken.Replace("\"", ""));
+                _identityHttp.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", authToken.AccessToken.Replace("\"", ""));
             }
             catch
@@ -52,9 +57,14 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
     {
         switch (base64.Length % 4)
         {
-            case 2: base64 += "=="; break;
-            case 3: base64 += "="; break;
+            case 2:
+                base64 += "==";
+                break;
+            case 3:
+                base64 += "=";
+                break;
         }
+
         return Convert.FromBase64String(base64);
     }
 

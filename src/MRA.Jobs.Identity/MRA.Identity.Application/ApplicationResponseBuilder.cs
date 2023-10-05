@@ -38,11 +38,6 @@ internal class ApplicationResponseBuilder<TResponse> : ApplicationResponse<TResp
     {
         return this;
     }
-
-    internal ApplicationResponse<List<UserRolesResponse>> SetResponse(List<Task<UserRolesResponse>> list)
-    {
-        throw new NotImplementedException();
-    }
 }
 
 

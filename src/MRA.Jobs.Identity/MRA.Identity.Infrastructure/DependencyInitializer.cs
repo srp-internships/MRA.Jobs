@@ -34,7 +34,7 @@ public static class DependencyInitializer
             else
                 options.UseSqlServer(dbConnectionString);
         });
-
+        services.AddScoped<IMigration, DbMigration>();
         services.AddHttpClient();
 
         services.AddScoped<IEmailVerification, EmailVerification>();
@@ -70,6 +70,7 @@ public static class DependencyInitializer
                 options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role;
                 options.ClaimsIdentity.UserIdClaimType = ClaimTypes.Id;
                 options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Username;
+                options.User.RequireUniqueEmail = false;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();

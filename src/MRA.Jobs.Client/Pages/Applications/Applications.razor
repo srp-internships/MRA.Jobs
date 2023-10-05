@@ -1,6 +1,7 @@
 ﻿@page "/applications"
-
+@attribute [Authorize(ApplicationPolicies.Administrator)]
 @using System.Net.Http.Json
+@using MRA.Jobs.Client.Identity;
 @inject HttpClient httpClient
 @inject IApplicationService applicationService
 
