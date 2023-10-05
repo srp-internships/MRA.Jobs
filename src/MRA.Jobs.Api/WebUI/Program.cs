@@ -39,7 +39,10 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await initialiser.Database.MigrateAsync();
+        if (initialiser.Database.IsSqlServer())
+        {
+            await initialiser.Database.MigrateAsync();
+        }
     }
 
 }
