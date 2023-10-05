@@ -8,7 +8,8 @@
 
     <ItemGroup>
         <Folder Include="Admin\Queries\" />
-        <Folder Include="Profile\Commands\" />
+        <Folder Include="Profile\Responses\" />
+        <Folder Include="Profile\Queries\" />
     </ItemGroup>
 
     <ItemGroup>

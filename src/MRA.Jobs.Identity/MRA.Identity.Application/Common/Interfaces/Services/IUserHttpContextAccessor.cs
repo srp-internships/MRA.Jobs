@@ -2,4 +2,5 @@
 public interface IUserHttpContextAccessor
 {
     Guid GetUserId();
+    String GetUserName();
 }

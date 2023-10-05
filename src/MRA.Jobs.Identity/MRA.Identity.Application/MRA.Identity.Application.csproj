@@ -21,4 +21,8 @@
         <PackageReference Include="RestSharp" Version="110.2.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Features\UserProfiles\Query\" />
+    </ItemGroup>
+
 </Project>
