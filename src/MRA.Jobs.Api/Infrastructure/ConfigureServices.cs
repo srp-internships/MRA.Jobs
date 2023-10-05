@@ -44,9 +44,6 @@ public static class ConfigureServices
         });
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<IMigration, DbMigration>();
-
-        services.AddScoped<ITestHttpClientService, TestHttpClientService>();
-
         services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<ISmsService, GenericSmsService>();
