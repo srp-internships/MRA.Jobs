@@ -24,6 +24,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{984DFDD2-D59A-44CA-8609-FD095F1DFA12}"
 	ProjectSection(SolutionItems) = preProject
 		Commands.txt = Commands.txt
+		SlugStandarts.txt = SlugStandarts.txt
 	EndProjectSection
 EndProject
 Global
