@@ -20,8 +20,8 @@ else
         <MudGrid Spacing="4">
             <MudItem xs="12" md="3">
                 <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
-                    <MudTabs MinimumTabWidth="200px" Rounded="true" Elevation="4" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
-                        <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Internships" Style="color: #129fd7;" />
+                    <MudTabs Color="Color.Info" MinimumTabWidth="200px" Rounded="true" Elevation="4" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+                        <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Internships" />
                         @foreach (var jobCats in VacancyCategories)
                         {
                             <MudTabPanel Text="@jobCats" BadgeData="@GetVacancyCategoryCount(jobCats)" BadgeColor="Color.Info"/>
@@ -29,7 +29,7 @@ else
                     </MudTabs>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.Sm" Invert="true">
-                    <MudTabs MinimumTabWidth="200px" Rounded="true" Elevation="4" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+                    <MudTabs Color="Color.Info" MinimumTabWidth="200px" Rounded="true" Elevation="4" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
                         <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Internships" />
                         @foreach (var jobCats in VacancyCategories)
                         {
@@ -38,7 +38,7 @@ else
                     </MudTabs>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.Md" Invert="true">
-                    <MudTabs Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+                    <MudTabs Color="Color.Info" Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
                         <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Internships" />
                         @foreach (var jobCats in VacancyCategories)
                         {
@@ -47,7 +47,7 @@ else
                     </MudTabs>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.Lg" Invert="true">
-                    <MudTabs Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+                    <MudTabs Color="Color.Info" Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
                         <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Internships" />
                         @foreach (var jobCats in VacancyCategories)
                         {
@@ -56,7 +56,7 @@ else
                     </MudTabs>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.Xl" Invert="true">
-                    <MudTabs Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+                    <MudTabs Color="Color.Info" Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
                         <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Internships" />
                         @foreach (var jobCats in VacancyCategories)
                         {
@@ -65,7 +65,7 @@ else
                     </MudTabs>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.Xxl" Invert="true">
-                    <MudTabs Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+                    <MudTabs Color="Color.Info" Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
                         <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Internships" />
                         @foreach (var jobCats in VacancyCategories)
                         {
