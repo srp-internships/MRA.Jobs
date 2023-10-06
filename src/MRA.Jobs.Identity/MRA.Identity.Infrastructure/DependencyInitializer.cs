@@ -34,7 +34,7 @@ public static class DependencyInitializer
             else
                 options.UseSqlServer(dbConnectionString);
         });
-        services.AddScoped<IMigration, DbMigration>();
+        services.AddScoped<DbMigration>();
         services.AddHttpClient();
 
         services.AddScoped<IEmailVerification, EmailVerification>();
