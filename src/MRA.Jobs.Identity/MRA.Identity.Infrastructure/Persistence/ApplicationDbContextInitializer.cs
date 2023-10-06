@@ -12,6 +12,8 @@ public class ApplicationDbContextInitializer
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IApplicationDbContext _context;
+    private ApplicationRole _superAdminRole = null!;
+    private ApplicationRole _applicationRole = null!;
 
     public ApplicationDbContextInitializer(RoleManager<ApplicationRole> roleManager,
         UserManager<ApplicationUser> userManager, IApplicationDbContext context)
@@ -24,44 +26,16 @@ public class ApplicationDbContextInitializer
 
     public async Task SeedAsync()
     {
+        await CreateRolesAsync();
+
         await CreateSuperAdminAsync();
 
-            await CreateApplicationAdmin("MraJobs", "mrajobs12@@34,.$3#A");
+        await CreateApplicationAdmin("MraJobs", "mrajobs12@@34,.$3#A");
         await CreateApplicationAdmin("MraOnlinePlatform", "mraonline2@f@34,/.$3#A");
     }
 
     private async Task CreateApplicationAdmin(string applicationName, string adminPassword)
     {
-        //create role
-        var adminRole = await _context.Roles.FirstOrDefaultAsync(s => s.NormalizedName == "APPLICATIONADMIN");
-
-        if (adminRole == null)
-        {
-            adminRole = new ApplicationRole
-            {
-                Id = Guid.NewGuid(),
-                Name = "ApplicationAdmin",
-                NormalizedName = "APPLICATIONADMIN",
-                Slug = "ApplicationAdmin"
-            };
-
-            var createRoleResult = await _roleManager.CreateAsync(adminRole);
-            if (!createRoleResult.Succeeded)
-            {
-                throw new Exception(createRoleResult.Errors.First().Description);
-            }
-        }
-
-        var roleClaim = new IdentityRoleClaim<Guid>
-        {
-            Id = 0, RoleId = adminRole.Id, ClaimType = "Application", ClaimValue = applicationName
-        };
-        await _context.RoleClaims.AddAsync(roleClaim);
-        await _context.SaveChangesAsync();
-
-
-        //create role
-
         //create user
         var mraJobsAdminUser =
             await _userManager.Users.SingleOrDefaultAsync(u =>
@@ -78,17 +52,14 @@ public class ApplicationDbContextInitializer
             };
 
             var createMraJobsAdminResult = await _userManager.CreateAsync(mraJobsAdminUser, adminPassword);
-            if (!createMraJobsAdminResult.Succeeded)
-            {
-                throw new Exception(createMraJobsAdminResult.Errors.First().Description);
-            }
+            ThrowExceptionFromIdentityResult(createMraJobsAdminResult);
         }
         //create user
 
         //create userRole
         var userRole = new ApplicationUserRole
         {
-            UserId = mraJobsAdminUser.Id, RoleId = adminRole.Id, Slug = $"{applicationName}Admin-applicationAdmin"
+            UserId = mraJobsAdminUser.Id, RoleId = _applicationRole.Id, Slug = $"role-{mraJobsAdminUser.UserName}"
         };
 
         if (!await _context.UserRoles.AnyAsync(s => s.RoleId == userRole.RoleId && s.UserId == userRole.UserId))
@@ -97,50 +68,79 @@ public class ApplicationDbContextInitializer
             await _context.SaveChangesAsync();
         }
         //create userRole
-        
+
         //create role claim
-        var userRoleClaim = new ApplicationUserClaim
+        if (!await _context.UserClaims.AnyAsync(s =>
+                s.UserId == mraJobsAdminUser.Id &&
+                s.ClaimType == ClaimTypes.Role))
         {
-            UserId = mraJobsAdminUser.Id,
-            ClaimType = ClaimTypes.Role,
-            ClaimValue = ApplicationClaimValues.Administrator,
-            Slug = $"admin-{ApplicationClaimValues.Administrator}"
-        };
-        await _context.UserClaims.AddAsync(userRoleClaim);
-        await _context.SaveChangesAsync();
+            var userRoleClaim = new ApplicationUserClaim
+            {
+                UserId = mraJobsAdminUser.Id,
+                ClaimType = ClaimTypes.Role,
+                ClaimValue = ApplicationClaimValues.Administrator,
+                Slug = $"{mraJobsAdminUser.UserName}-role"
+            };
+            await _context.UserClaims.AddAsync(userRoleClaim);
+        }
         //create role claim
-        
-        
+
+
         //create application claim
-        var userApplicationClaim = new ApplicationUserClaim
+        if (!await _context.UserClaims.AnyAsync(s =>
+                s.UserId == mraJobsAdminUser.Id &&
+                s.ClaimType == ClaimTypes.Application))
         {
-            UserId = mraJobsAdminUser.Id,
-            ClaimType = ClaimTypes.Application,
-            ClaimValue = applicationName,
-            Slug = $"application-{applicationName}"
-        };
-        await _context.UserClaims.AddAsync(userApplicationClaim);
-        await _context.SaveChangesAsync();
+            var userApplicationClaim = new ApplicationUserClaim
+            {
+                UserId = mraJobsAdminUser.Id,
+                ClaimType = ClaimTypes.Application,
+                ClaimValue = applicationName,
+                Slug = $"{mraJobsAdminUser.UserName}-application"
+            };
+            await _context.UserClaims.AddAsync(userApplicationClaim);
+        }
+
         //create application claim
+
+        //create username claim
+        if (!await _context.UserClaims.AnyAsync(s =>
+                s.UserId == mraJobsAdminUser.Id &&
+                s.ClaimType == ClaimTypes.Username))
+        {
+            var userApplicationClaim = new ApplicationUserClaim
+            {
+                UserId = mraJobsAdminUser.Id,
+                ClaimType = ClaimTypes.Username,
+                ClaimValue = mraJobsAdminUser.UserName,
+                Slug = $"{mraJobsAdminUser.UserName}-username"
+            };
+            await _context.UserClaims.AddAsync(userApplicationClaim);
+        }
+        //create username claim
+
+        //create id claim
+        if (!await _context.UserClaims.AnyAsync(s =>
+                s.UserId == mraJobsAdminUser.Id &&
+                s.ClaimType == ClaimTypes.Id))
+        {
+            var userApplicationClaim = new ApplicationUserClaim
+            {
+                UserId = mraJobsAdminUser.Id,
+                ClaimType = ClaimTypes.Id,
+                ClaimValue = mraJobsAdminUser.Id.ToString(),
+                Slug = $"{mraJobsAdminUser.UserName}-id"
+            };
+            await _context.UserClaims.AddAsync(userApplicationClaim);
+        }
+        //create id claim
+        
+        await _context.SaveChangesAsync();
     }
 
 
     private async Task CreateSuperAdminAsync()
     {
-        var superAdminRole = await _roleManager.Roles.SingleOrDefaultAsync(s => s.NormalizedName == "SUPERADMIN");
-        if (superAdminRole == null)
-        {
-            superAdminRole = new ApplicationRole
-            {
-                Id = Guid.NewGuid(), Name = "SuperAdmin", NormalizedName = "SUPERADMIN", Slug = "SuperAdmin",
-            };
-            var createRoleResult = await _roleManager.CreateAsync(superAdminRole);
-            if (!createRoleResult.Succeeded)
-            {
-                throw new Exception(createRoleResult.Errors.First().Description);
-            }
-        }
-
         var superAdmin = await _userManager.Users.SingleOrDefaultAsync(s => s.NormalizedUserName == "SUPERADMIN");
         if (superAdmin == null)
         {
@@ -154,26 +154,82 @@ public class ApplicationDbContextInitializer
                 EmailConfirmed = false,
             };
             var superAdminResult = await _userManager.CreateAsync(superAdmin, "Mra123!!@#$AGfer4");
-            if (!superAdminResult.Succeeded)
-            {
-                throw new Exception(superAdminResult.Errors.First().Description);
-            }
+            ThrowExceptionFromIdentityResult(superAdminResult);
 
-            var addRoleResult = await _userManager.AddToRoleAsync(superAdmin, superAdminRole.Name!);
-            if (!addRoleResult.Succeeded)
-            {
-                throw new Exception(addRoleResult.Errors.First().Description);
-            }
+            var addRoleResult = await _userManager.AddToRoleAsync(superAdmin, _superAdminRole.Name!);
+            ThrowExceptionFromIdentityResult(addRoleResult);
 
             var claim = new ApplicationUserClaim
             {
                 ClaimType = ClaimTypes.Role,
-                ClaimValue = superAdminRole.Name,
-                Slug = "SuperAdmin-SuperAdmin",
+                ClaimValue = _superAdminRole.Name,
+                Slug = $"{superAdmin.UserName}-role",
                 UserId = superAdmin.Id
             };
             await _context.UserClaims.AddAsync(claim);
             await _context.SaveChangesAsync();
+        }
+    }
+
+    private async Task CreateRolesAsync()
+    {
+        _context.Roles.RemoveRange(await _context.Roles.ToListAsync());
+        await _context.SaveChangesAsync();
+        
+        //superAdmin
+        var role = new ApplicationRole
+        {
+            Id = Guid.NewGuid(),
+            Name = ApplicationClaimValues.SuperAdministrator,
+            NormalizedName = ApplicationClaimValues.SuperAdministrator.ToUpper(),
+            Slug = ApplicationClaimValues.SuperAdministrator
+        };
+        var createRoleResult = await _roleManager.CreateAsync(role);
+        ThrowExceptionFromIdentityResult(createRoleResult);
+        _superAdminRole = role;
+        //superAdmin
+
+        //applicationAdmin
+        role = new ApplicationRole
+        {
+            Id = Guid.NewGuid(),
+            Name = ApplicationClaimValues.Administrator,
+            NormalizedName = ApplicationClaimValues.Administrator.ToUpper(),
+            Slug = ApplicationClaimValues.Administrator
+        };
+        createRoleResult = await _roleManager.CreateAsync(role);
+        ThrowExceptionFromIdentityResult(createRoleResult);
+        _applicationRole = role;
+        //applicationAdmin
+
+        //reviewer
+        var roleString = "Reviewer";
+        role = new ApplicationRole
+        {
+            Id = Guid.NewGuid(), Name = roleString, NormalizedName = roleString.ToUpper(), Slug = roleString
+        };
+
+        createRoleResult = await _roleManager.CreateAsync(role);
+        ThrowExceptionFromIdentityResult(createRoleResult);
+        //reviewer
+
+        //applicant
+        roleString = "Applicant";
+        role = new ApplicationRole
+        {
+            Id = Guid.NewGuid(), Name = roleString, NormalizedName = roleString.ToUpper(), Slug = roleString
+        };
+
+        createRoleResult = await _roleManager.CreateAsync(role);
+        ThrowExceptionFromIdentityResult(createRoleResult);
+        //applicant
+    }
+
+    private static void ThrowExceptionFromIdentityResult(IdentityResult result,[System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
+    {
+        if (!result.Succeeded)
+        {
+            throw new Exception($"{result.Errors.First().Description}\n exception was thrown at line {sourceLineNumber}");
         }
     }
 }
