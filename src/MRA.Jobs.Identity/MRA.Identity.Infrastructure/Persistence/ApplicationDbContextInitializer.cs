@@ -155,9 +155,18 @@ public class ApplicationDbContextInitializer
             };
             var superAdminResult = await _userManager.CreateAsync(superAdmin, "Mra123!!@#$AGfer4");
             ThrowExceptionFromIdentityResult(superAdminResult);
+            
+            var userRole = new ApplicationUserRole
+            {
+                UserId = superAdmin.Id, RoleId = _superAdminRole.Id, Slug = $"role-{superAdmin.UserName}"
+            };
 
-            var addRoleResult = await _userManager.AddToRoleAsync(superAdmin, _superAdminRole.Name!);
-            ThrowExceptionFromIdentityResult(addRoleResult);
+            if (!await _context.UserRoles.AnyAsync(s => s.RoleId == userRole.RoleId && s.UserId == userRole.UserId))
+            {
+                await _context.UserRoles.AddAsync(userRole);
+                await _context.SaveChangesAsync();
+            }
+            
 
             var claim = new ApplicationUserClaim
             {
@@ -177,20 +186,20 @@ public class ApplicationDbContextInitializer
         await _context.SaveChangesAsync();
         
         //superAdmin
-        var role = new ApplicationRole
+        var roleSuper = new ApplicationRole
         {
             Id = Guid.NewGuid(),
             Name = ApplicationClaimValues.SuperAdministrator,
             NormalizedName = ApplicationClaimValues.SuperAdministrator.ToUpper(),
             Slug = ApplicationClaimValues.SuperAdministrator
         };
-        var createRoleResult = await _roleManager.CreateAsync(role);
+        var createRoleResult = await _roleManager.CreateAsync(roleSuper);
         ThrowExceptionFromIdentityResult(createRoleResult);
-        _superAdminRole = role;
+        _superAdminRole = roleSuper;
         //superAdmin
 
         //applicationAdmin
-        role = new ApplicationRole
+        var role = new ApplicationRole
         {
             Id = Guid.NewGuid(),
             Name = ApplicationClaimValues.Administrator,

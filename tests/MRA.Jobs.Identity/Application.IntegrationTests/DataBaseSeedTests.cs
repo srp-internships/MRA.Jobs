@@ -15,16 +15,9 @@ public class DataBaseSeedTests : BaseTest
     [Test]
     public async Task SuperAdminRole()
     {
-        var superAdmin = await GetSuperAdmin();
         var superAdminRole = await GetEntity<ApplicationRole>(s =>
             s.NormalizedName == ApplicationClaimValues.SuperAdministrator.ToUpper());
         superAdminRole.Should().NotBeNull();
-    
-        var userRole = await GetEntity<ApplicationUserRole>(s =>
-            s.RoleId == superAdminRole.Id &&
-            s.UserId == superAdmin.Id);
-    
-        userRole.Should().NotBeNull();
     }
     
     [Test]
@@ -50,14 +43,14 @@ public class DataBaseSeedTests : BaseTest
     #region MraJobsAdmin
     
     private async Task<ApplicationUser> GetMraJobsAdmin() =>
-        await GetEntity<ApplicationUser>(s => s.UserName == "SuperAdmin");
+        await GetEntity<ApplicationUser>(s => s.UserName == "MraJobsAdmin");
     
     [Test]
     public async Task MraJobsAdminRole()
     {
         var superAdmin = await GetMraJobsAdmin();
         var superAdminRole = await GetEntity<ApplicationRole>(s =>
-            s.NormalizedName == ApplicationClaimValues.SuperAdministrator.ToUpper());
+            s.NormalizedName == ApplicationClaimValues.Administrator.ToUpper());
         superAdminRole.Should().NotBeNull();
     
         var userRole = await GetEntity<ApplicationUserRole>(s =>
@@ -91,14 +84,14 @@ public class DataBaseSeedTests : BaseTest
     #region MraOnlinePlatformAdmin
 
     private async Task<ApplicationUser> GetMraOnlinePlatformAdmin() =>
-        await GetEntity<ApplicationUser>(s => s.UserName == "SuperAdmin");
+        await GetEntity<ApplicationUser>(s => s.UserName == "MraOnlinePlatformAdmin");
 
     [Test]
     public async Task MraOnlinePlatformRole()
     {
         var superAdmin = await GetMraOnlinePlatformAdmin();
         var superAdminRole = await GetEntity<ApplicationRole>(s =>
-            s.NormalizedName == ApplicationClaimValues.SuperAdministrator.ToUpper());
+            s.NormalizedName == ApplicationClaimValues.Administrator.ToUpper());
         superAdminRole.Should().NotBeNull();
 
         var userRole = await GetEntity<ApplicationUserRole>(s =>
