@@ -45,4 +45,13 @@ public class ProfileController : ControllerBase
             return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
     }
+
+    [HttpDelete("RemoveUserSkill")]
+    public async Task<IActionResult> RemoveUserSkill([FromBody] RemoveUserSkillCommand command)
+    {
+        var result = await _mediator.Send(command);
+        if (result.IsSuccess == false)
+            return BadRequest(result.Exception + result.ErrorMessage);
+        return Ok(result);
+    }
 }
