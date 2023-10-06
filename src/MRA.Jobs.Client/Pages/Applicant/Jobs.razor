@@ -1,70 +1,17 @@
 ﻿@page "/jobs"
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+@using MRA.Jobs.Application.Contracts.VacancyClient;
 @inject ICategoryService categoryService
 @inject IVacancyService vacancyService
+@using MRA.Jobs.Client.Components.Vacancies
 
-<style>
-    .job-card:hover {
-        background-color: #F5F5F5; /* Change to desired hover color */
-    }
-</style>
-
-@if (jobs is null)
-{
-    <MudText Typo="Typo.h5">@message</MudText>
-
-}
-else
-{
-    <MudContainer>
-        <MudGrid>
-            <MudItem xs="12" md="3" lg="2">
-                <MudPaper Width="250px" Height="500px" Elevation="0" Class="py-0">
-                    <MudTabs Outlined="true" MinimumTabWidth="200px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
-                        <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Jobs" />
-                        @foreach (var jobCats in jobCategories)
-                        {
-                            <MudTabPanel Text="@jobCats.Category.Name" BadgeData="@GetJobCategoryCount(jobCats.Category.Name)" />
-                        }
-                    </MudTabs>
-                </MudPaper>
-            </MudItem>
-            @if (jobCategories.Count == 0)
-            {
-                <MudText Typo="Typo.h5" Style="margin:50px;">There are currently no job vacancies available. Please check back later :)</MudText>
-            }
-            else
-            {
-                <MudItem xs="12" md="9" lg="10">
-                    <MudGrid>
-                        @foreach (var job in filteredJobs)
-                        {
-                            <MudItem xs="12" md="12" lg="12">
-                                <a href="/jobs/@job.Slug">
-                                    <MudCard Class="job-card">
-                                        <MudCardHeader>
-                                            <MudText Color="Color.Primary" Typo="Typo.h5">@job.Title</MudText>
-                                        </MudCardHeader>
-                                        <MudCardContent>
-                                            @job.ShortDescription
-                                        </MudCardContent>
-                                    </MudCard>
-                                </a>
-                            </MudItem>
-                        }
-                    </MudGrid>
-                </MudItem>
-            }
-        </MudGrid>
-    </MudContainer>
-
-}
+<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-family: 'Poppins', sans-serif;">Jobs</MudText>
+<VacanciesList  filteredVacancies="filteredJobs" Vacancies="jobs" Route="jobs" VacancyCategories="jobCategories"/>
 
 @code {
-    private string message = "Loading...";
-    private List<JobCategoriesResponse> jobCategories;
-    private List<JobVacancyListDto> jobs;
-    private List<JobVacancyListDto> filteredJobs;
+    private List<string> jobCategories;
+    private List<VacancyClientResponse> jobs;
+    private List<VacancyClientResponse> filteredJobs;
     private int activeIndex = 0;
     private string selectedCategoryText = "";
 
@@ -74,31 +21,21 @@ else
         var allJobs = await vacancyService.GetJobs();
         if (result is not null && allJobs is not null)
         {
-            jobCategories = result;
-            jobs = allJobs;
-            filteredJobs = allJobs;
-            message = string.Empty;
+            jobCategories = result.Select(r => r.Category.Name).ToList();
+            jobs = allJobs.Select(r => new VacancyClientResponse
+                {
+                    Category = r.Category,
+                    Title = r.Title,
+                    ShortDescription = r.ShortDescription,
+                    Slug = r.Slug
+                }).ToList(); ;
+            filteredJobs = allJobs.Select(r => new VacancyClientResponse
+                {
+                    Category = r.Category,
+                    Title = r.Title,
+                    ShortDescription = r.ShortDescription,
+                    Slug = r.Slug
+                }).ToList(); ;
         }
-    }
-
-    private async Task HandleTabSelection(int index)
-    {
-        activeIndex = index;
-
-        if (index == 0)
-        {
-            selectedCategoryText = "All Jobs";
-            filteredJobs = jobs;
-        }
-        else if (index > 0 && index <= jobCategories.Count)
-        {
-            selectedCategoryText = jobCategories[index - 1].Category.Name;
-            filteredJobs = jobs.Where(j => j.Category == selectedCategoryText).ToList();
-        }
-    }
-
-    private int GetJobCategoryCount(string category)
-    {
-        return jobs.Count(j => j.Category == category);
     }
 }

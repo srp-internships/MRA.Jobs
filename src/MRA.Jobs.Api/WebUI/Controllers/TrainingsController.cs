@@ -15,13 +15,14 @@ namespace MRA.Jobs.Web.Controllers;
 [Authorize(ApplicationPolicies.Reviewer)]
 public class TrainingsController : ApiControllerBase
 {
-
+    [AllowAnonymous]
     [HttpGet("{slug}")]
     public async Task<IActionResult> Get(string slug)
     {
         var training = await Mediator.Send(new GetTrainingVacancyBySlugQuery { Slug = slug });
         return Ok(training);
     }
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<PagedList<TrainingVacancyListDto>>> Get([FromQuery] GetTrainingsQueryOptions query)
     {
