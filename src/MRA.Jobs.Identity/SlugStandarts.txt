@@ -1,0 +1,7 @@
+UserRoles{
+    {username}-role
+}
+
+user or roleClaims{
+    {UserName}-{ClaimType}
+}
