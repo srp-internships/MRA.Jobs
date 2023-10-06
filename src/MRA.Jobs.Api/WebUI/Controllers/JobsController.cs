@@ -8,8 +8,6 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTest;
-using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTestResult;
 using MRA.Jobs.Infrastructure.Identity;
 using AddTagsToJobVacancyCommand = MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags.AddTagsToJobVacancyCommand;
 
@@ -49,24 +47,6 @@ public class JobsController : ApiControllerBase
     {
         var result = await Mediator.Send(request, cancellationToken);
         return CreatedAtAction(nameof(Get), new { slug = result }, result);
-    }
-
-    [HttpPost("{slug}/test")]
-    public async Task<ActionResult<TestInfoDto>> SendTestCreationRequest([FromRoute] string slug, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
-    {
-        if (slug != request.Slug)
-            return BadRequest();
-
-        return await Mediator.Send(request, cancellationToken);
-    }
-
-    [HttpPost("{slug}/test/result")]
-    public async Task<ActionResult<TestResultDto>> GetTestResultRequest([FromRoute] string slug, [FromBody] CreateTestResultCommand request, CancellationToken cancellationToken)
-    {
-        if (slug != request.Slug)
-            return BadRequest();
-
-        return await Mediator.Send(request, cancellationToken);
     }
 
     [HttpPut("{slug}")]

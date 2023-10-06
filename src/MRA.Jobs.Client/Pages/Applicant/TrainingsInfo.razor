@@ -14,58 +14,50 @@
 	}
 	else
 	{
-		<h1>@_training.Title</h1>
-		<div class="w-100 d-flex flex-row justify-content-between">
-			<div class="Trainings w-100 bg-white shadow-lg rounded mb-4">
-				<div class="d-flex flex-column p-3">
-
-					<h3 class="mb-2 text-black">
-						Description:
-					</h3>
-
-					<p class="mb-2 text-black">@((MarkupString)@_training.Description)</p>
-					<h3 class="mb-2 text-black">
-						EndDate:
-					</h3>
-					<p class="mb-2 text-black">@_training.EndDate</p>
-					<h3 class="mb-2 text-black">
-						Duration:
-					</h3>
-					<p class="mb-2 text-black">@_training.Duration</p>
-					<h3 class="mb-2 text-black">
-						Fees:
-					</h3>
-					<p class="mb-2 text-black">@_training.Fees</p>
-				</div>
+		<h2>@_training.Title</h2>
+		<div class="row">
+			<div class="col-md-8">
+				<h3 class="mb-2 text-black">
+					Description:
+				</h3>
+				<p class="mb-2 text-black">@((MarkupString)@_training.Description)</p>
+				<h3 class="mb-2 text-black">
+					EndDate:
+				</h3>
+				<p class="mb-2 text-black">@_training.EndDate</p>
+				<h3 class="mb-2 text-black">
+					Duration:
+				</h3>
+				<p class="mb-2 text-black">@_training.Duration</p>
+				<h3 class="mb-2 text-black">
+					Fees:
+				</h3>
+				<p class="mb-2 text-black">@_training.Fees</p>
 			</div>
 			@*button*@
-			<div class="Trainingsinfo">
-				<div class="w-100 d-flex flex-row justify-content-between">
-					<div class="card w-100 bg-white shadow-lg rounded mb-4">
-						<div class="card-body">
-							<h2 class="mb-2 text-black">Interested in a trainings?</h2>
-							<CascadingAuthenticationState>
-								<AuthorizeView>
-									<Authorized>
-										@if (applied)
-										{
-											<span class="text-success"> <i class="fa fa-check" aria-hidden="true"></i>Applied</span>
-										}
-										else
-										{
-											<a href="/trainings/ApplytoTrainings/@Slug" class="btn btn-primary w-100">Apply</a>
-										}
-									</Authorized>
-									<NotAuthorized>
-										<a href="/sign-in" class="btn btn-primary w-100">Apply</a>
-									</NotAuthorized>
-								</AuthorizeView>
-							</CascadingAuthenticationState>
-						</div>
-					</div>
-				</div>
+			<div class="col-md-4 bg-light rounded p-3">
+				<p>Interested in a trainings?</p>
+				<CascadingAuthenticationState>
+					<AuthorizeView>
+						<Authorized>
+							@if (applied)
+							{
+								<span class="text-success"> <i class="fa fa-check" aria-hidden="true"></i>Applied</span>
+							}
+							else
+							{
+								<a href="/trainings/ApplytoTrainings/@Slug" class="btn btn-primary w-100">Apply</a>
+							}
+						</Authorized>
+						<NotAuthorized>
+							<a href="/sign-in" class="btn btn-primary w-100">Apply</a>
+						</NotAuthorized>
+					</AuthorizeView>
+				</CascadingAuthenticationState>
+
 			</div>
 		</div>
+
 	}
 </div>
 

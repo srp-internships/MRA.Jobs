@@ -7,7 +7,6 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Tags;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
-using MRA.Jobs.Application.Contracts.Tests.Commands.CreateTest;
 using MRA.Jobs.Infrastructure.Identity;
 
 namespace MRA.Jobs.Web.Controllers;
@@ -70,14 +69,5 @@ public class InternshipsController : ApiControllerBase
         request.InernshipSlug = slug;
         await Mediator.Send(request, cancellationToken);
         return Ok();
-    }
-
-    [HttpPost("{slug}/test")]
-    public async Task<ActionResult<TestInfoDto>> SendTestCreationRequest([FromRoute] string slug, [FromBody] CreateTestCommand request, CancellationToken cancellationToken)
-    {
-        if (slug != request.Slug)
-            return BadRequest();
-
-        return await Mediator.Send(request, cancellationToken);
     }
 }
