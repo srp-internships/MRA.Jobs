@@ -12,6 +12,7 @@ using FluentValidation.AspNetCore;
 using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using static System.Formats.Asn1.AsnWriter;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
@@ -39,6 +40,12 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseHsts();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var initialiser = scope.ServiceProvider.GetRequiredService<DbMigration>();
+    await initialiser.InitialiseAsync();
 }
 
 app.UseHealthChecks("/status", new HealthCheckOptions
