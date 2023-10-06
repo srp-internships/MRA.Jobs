@@ -21,7 +21,7 @@ else
             <MudItem xs="12" md="3">
                 <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                     <MudTabs MinimumTabWidth="200px" Rounded="true" Elevation="4" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
-                        <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Internships" />
+                        <MudTabPanel Icon="@Icons.Material.Filled.Category" Text="All Internships" BadgeColor="Color.Info" />
                         @foreach (var jobCats in VacancyCategories)
                         {
                             <MudTabPanel Text="@jobCats" BadgeData="@GetVacancyCategoryCount(jobCats)" BadgeColor="Color.Info"/>
