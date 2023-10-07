@@ -1,10 +1,8 @@
 ﻿using MediatR;
 
-namespace MRA.Identity.Application.Contract.Educations.Command.Update;
-
-public class UpdateEducationDetailCommand : IRequest<ApplicationResponse<Guid>>
+namespace MRA.Identity.Application.Contract.Educations.Command.Create;
+public class CreateEducationDetailCommand: IRequest<ApplicationResponse<Guid>>
 {
-    public Guid Id { get; set; }
     public string University { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }

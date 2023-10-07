@@ -6,6 +6,7 @@ public class UpdateEducationDetailCommandValidator: AbstractValidator<UpdateEduc
 {
     public UpdateEducationDetailCommandValidator()
     {
+        RuleFor(e => e.Id).NotEmpty();
         RuleFor(e => e.University).NotEmpty().MinimumLength(3);
         RuleFor(e => e.Speciality).NotEmpty().MinimumLength(5);
         RuleFor(e => e.StartDate).NotEmpty();

@@ -7,6 +7,7 @@ using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Queries;
+using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Api.Controllers;
 
