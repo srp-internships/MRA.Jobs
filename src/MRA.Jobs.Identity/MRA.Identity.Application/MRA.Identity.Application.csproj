@@ -22,7 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Educations\Queries\" />
       <Folder Include="Features\UserProfiles\Query\" />
     </ItemGroup>
 

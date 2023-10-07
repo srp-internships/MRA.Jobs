@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Delete;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
+using MRA.Identity.Application.Contract.Educations.Query;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Queries;
@@ -82,6 +83,15 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> UpdateEducationDetail([FromBody] UpdateEducationDetailCommand command)
     {
         var result = await _mediator.Send(command);
+        if (result.IsSuccess == false)
+            return BadRequest(result.Exception + result.ErrorMessage);
+        return Ok(result);
+    }
+
+    [HttpGet("GetEducationsByUser")]
+    public async Task<IActionResult> GetEducationsByUser([FromQuery] GetEducationsByUserQuery query)
+    {
+        var result = await _mediator.Send(query);
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
