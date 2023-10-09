@@ -11,8 +11,10 @@
 
 @if (Vacancies is null)
 {
-    <MudText Typo="Typo.h5">@message</MudText>
-
+    if (showLoader)
+    {
+        <div class="loader"></div>
+    }
 }
 else
 {
@@ -91,7 +93,7 @@ else
                                 <a href="/@Route/@Vacancy.Slug">
                                     <MudCard Class="job-card">
                                         <MudCardHeader>
-                                            <MudText Style="color: #129fd7;" Typo="Typo.h5">@Vacancy.Title</MudText>
+                                            <MudText Style="color: #129fd7; text-decoration: underline;" Typo="Typo.h5">@Vacancy.Title</MudText>
                                         </MudCardHeader>
                                         <MudCardContent>
                                             @Vacancy.ShortDescription
@@ -113,8 +115,8 @@ else
 
 @code {
     private int _selected = 1;
-    private string message = "Loading...";
     public string Search { get; set; }
+    private bool showLoader = false;
     [Parameter]
     public List<string> VacancyCategories { get; set; }
 
@@ -129,6 +131,16 @@ else
     private int activeIndex = 0;
     private string selectedCategoryText = "All Internships";
     private int ItemsPerPage = 5;
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(1000);
+            showLoader = true;
+            StateHasChanged();
+        }
+    }
 
     private async Task HandleTabSelection(int index)
     {
