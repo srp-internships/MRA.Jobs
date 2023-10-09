@@ -53,7 +53,7 @@ public abstract class BaseTest
         };
 
         await AddUser(request2, "password@#12P");
-        Applicant = request2;
+        Reviewer = request2;
     }
     protected async Task<T> GetEntity<T>(Expression<Func<T, bool>> query) where T : class
     {
