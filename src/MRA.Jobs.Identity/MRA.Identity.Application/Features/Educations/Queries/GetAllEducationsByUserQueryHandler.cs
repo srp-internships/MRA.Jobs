@@ -44,6 +44,7 @@ public class GetAllEducationsByUserQueryHandler : IRequestHandler<GetEducationsB
                 return new ApplicationResponseBuilder<List<UserEducationResponse>>()
                     .SetErrorMessage("user not found")
                     .Success(false).Build();
+
             var userEducationResponses = user.Educations
                 .Select(e => _mapper.Map<UserEducationResponse>(e)).ToList();
            

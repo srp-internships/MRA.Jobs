@@ -47,10 +47,10 @@ public class ProfileController : ControllerBase
     }
 
 
-    [HttpGet("GetUserSkills")]
-    public async Task<IActionResult> GetUserSkills([FromQuery] GetUserSkillsQuery query)
+    [HttpGet("GetUserSkills/{userName}")]
+    public async Task<IActionResult> GetUserSkills([FromRoute] string userName = null)
     {
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(new GetUserSkillsQuery { UserName = userName });
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);

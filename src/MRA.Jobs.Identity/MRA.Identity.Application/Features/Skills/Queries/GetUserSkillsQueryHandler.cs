@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract;
+using MRA.Identity.Application.Contract.Educations.Responses;
 using MRA.Identity.Application.Contract.Skills.Queries;
 using MRA.Identity.Application.Contract.Skills.Responses;
 using MRA.Identity.Domain.Entities;
@@ -23,35 +24,27 @@ public class GetUserSkillsQueryHandler : IRequestHandler<GetUserSkillsQuery, App
     {
         try
         {
-            ApplicationUser user;
+            var roles = _userHttpContextAccessor.GetUserRoles();
+            var userName = _userHttpContextAccessor.GetUserName();
+            if (request.UserName != null && roles.Any(role => role == "Applicant" && userName != request.UserName))
+                return new ApplicationResponseBuilder<UserSkillsResponse>()
+                    .SetErrorMessage("Access is denied")
+                    .Success(false).Build();
 
-            if (string.IsNullOrEmpty(request.UserName))
-            {
-                user = await _context.Users.Include(u => u.UserSkills)
-                  .ThenInclude(us => us.Skill)
-                  .FirstOrDefaultAsync(u => u.UserName.Equals(_userHttpContextAccessor.GetUserName()),
-                  cancellationToken);
-            }
-            else
-            {
-                var userRoles = _userHttpContextAccessor.GetUserRoles();
-
-                if (userRoles.Contains("Applicant"))
-                {
-                    return new ApplicationResponseBuilder<UserSkillsResponse>().SetErrorMessage("Access denied").Success(false).Build();
-                }
-                user = await _context.Users.Include(u => u.UserSkills).ThenInclude(us => us.Skill).FirstOrDefaultAsync(u => u.UserName == request.UserName, cancellationToken);
-            }
+            var user = await _context.Users
+                .Include(u => u.UserSkills)
+                .ThenInclude(us=>us.Skill)
+                .FirstOrDefaultAsync(u => u.UserName == userName);
 
             if (user == null)
-            {
-                return new ApplicationResponseBuilder<UserSkillsResponse>().SetErrorMessage("User not found").Success(false).Build();
-            }
+                return new ApplicationResponseBuilder<UserSkillsResponse>()
+                    .SetErrorMessage("user not found")
+                    .Success(false).Build();
 
             var response = new UserSkillsResponse
             {
                 Skills = user.UserSkills.Select(us => us.Skill.Name).ToList()
-            };
+            };                  
 
             return new ApplicationResponseBuilder<UserSkillsResponse>().SetResponse(response).Build();
         }
