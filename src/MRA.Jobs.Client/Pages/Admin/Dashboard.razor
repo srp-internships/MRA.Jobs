@@ -1,6 +1,5 @@
 ﻿@using MRA.Jobs.Client.Identity
 @inherits LayoutComponentBase
-
 <div class="page">
     <div>
         <div class="top-row ps-3 navbar">
@@ -165,10 +164,24 @@
                         </AuthorizeView>
                     </CascadingAuthenticationState>
 
+                    <div class="nav-item px-3">
+                        <button @onclick="LogOut">Log out</button>
+                    </div>
+
                 </nav>
             </div>
 
             @code {
+
+                [Inject]
+                private NavigationManager _navigationManager { get; set; }
+
+                [Inject]
+                private ILocalStorageService _localStorageService { get; set; }
+
+                [Inject]
+                private AuthenticationStateProvider _authStateProvider { get; set; }
+
                 private bool collapseNavMenu = true;
                 private bool expandSubMenu2;
 
@@ -177,6 +190,13 @@
                 private void ToggleNavMenu()
                 {
                     collapseNavMenu = !collapseNavMenu;
+                }
+
+                private async Task LogOut()
+                {
+                    await _localStorageService.RemoveItemAsync("authToken");
+                    await _authStateProvider.GetAuthenticationStateAsync();
+                    _navigationManager.NavigateTo("/");
                 }
 
             }
