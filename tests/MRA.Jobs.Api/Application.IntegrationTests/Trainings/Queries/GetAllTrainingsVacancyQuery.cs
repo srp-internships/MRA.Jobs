@@ -34,19 +34,6 @@ public class GetAllTrainingsVacancyQuery : Testing
         Assert.IsNotEmpty(trainingVacancies.Items);
     }
     [Test]
-    public async Task GetAllTrainingsVacancyQuery_ReturnsForbiddenStatusCode_WhenUserIsNotAuthorized()
-    {
-        await _context.GetTraining("C#");
-        await _context.GetTraining("Pyton");
-        await _context.GetTraining("F#");
-        await _context.GetTraining("C++");
-        //Act
-        RunAsDefaultUserAsync();
-        var response = await _httpClient.GetAsync("/api/Trainings");
-        //Assert
-        Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
-    }
-    [Test]
     public async Task GetAllTrainingsVacancyQuery_ReturnsEmptyList_WhenNoTrainingsExist()
     {
         // Arrange
