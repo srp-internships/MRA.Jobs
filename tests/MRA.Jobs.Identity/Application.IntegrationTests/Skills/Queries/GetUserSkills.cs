@@ -1,4 +1,5 @@
-﻿using MRA.Identity.Application.Contract.Skills.Queries;
+﻿using System.Net;
+using Microsoft.OpenApi.Writers;
 
 namespace MRA.Jobs.Application.IntegrationTests.Skills.Queries;
 public class GetUserSkills
@@ -8,21 +9,40 @@ public class GetUserSkills
         [Test]
         public async Task GetUserSkills_ShouldReturnUserSkills_Success()
         {
-           
-            var request = new GetUserSkillsQuery
-            {
-                UserName = "@Alex33"
-            };
-
-          
             await AddApplicantAuthorizationAsync();
-
-            
-            var response = await _client.GetAsync($"/api/Profile/GetUserSkills/{request.UserName}");
-
-            
+            var response = await _client.GetAsync($"/api/Profile/GetUserSkills");
             response.EnsureSuccessStatusCode();
         }
+
+        [Test]
+        public async Task GetUserSkill_ShouldReturnUserSkills_AccessIsDenied()
+        {
+            await AddApplicantAuthorizationAsync();
+            var response = await _client.GetAsync($"/api/Profile/GetUserSkills?userName=amir");
+
+            var message = await response.Content.ReadAsStringAsync();
+
+            Assert.AreEqual("Access is denied", message);
+        }
+
+        [Test]
+        public async Task GetUserSkillByUserName_ShouldReturnUserSkillsByUserName_Success()
+        {
+            await AddReviewerAuthorizationAsync();
+            var response = await _client.GetAsync($"/api/Profile/GetUserSkills?userName=@Alex33");
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        [Test]
+        public async Task GetUserSkillByUserName_ShouldReturnUserSkillsByUserName_NotFound()
+        {
+            await AddReviewerAuthorizationAsync();
+            var response = await _client.GetAsync($"/api/Profile/GetUserSkills?userName=@Alex34");
+
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
     }
 
 }

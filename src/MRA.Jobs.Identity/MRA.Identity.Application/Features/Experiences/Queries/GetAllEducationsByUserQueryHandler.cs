@@ -36,13 +36,16 @@ public class GetAllExperiencesByUserQueryHandler : IRequestHandler<GetExperience
                     .SetErrorMessage("Access is denied")
                     .Success(false).Build();
 
+            if (request.UserName != null)
+                userName = request.UserName;
+
             var user = await _context.Users
                 .Include(u => u.Experiences)
                 .FirstOrDefaultAsync(u => u.UserName == userName);
 
             if (user == null)
                 return new ApplicationResponseBuilder<List<UserExperienceResponse>>()
-                    .SetErrorMessage("user not found")
+                    .SetErrorMessage("User not found")
                     .Success(false).Build();
             var userExperiencesResponses = user.Experiences
                 .Select(e => _mapper.Map<UserExperienceResponse>(e)).ToList();

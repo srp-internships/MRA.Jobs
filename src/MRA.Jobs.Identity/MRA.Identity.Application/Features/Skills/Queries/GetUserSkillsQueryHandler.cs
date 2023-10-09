@@ -26,10 +26,13 @@ public class GetUserSkillsQueryHandler : IRequestHandler<GetUserSkillsQuery, App
         {
             var roles = _userHttpContextAccessor.GetUserRoles();
             var userName = _userHttpContextAccessor.GetUserName();
-            if (request.UserName != null && roles.Any(role => role == "Applicant" && userName != request.UserName))
+            if (request.UserName != null && roles.Any(role => role == "Applicant") && userName != request.UserName)
                 return new ApplicationResponseBuilder<UserSkillsResponse>()
                     .SetErrorMessage("Access is denied")
                     .Success(false).Build();
+
+           if (request.UserName!= null)
+                userName= request.UserName;
 
             var user = await _context.Users
                 .Include(u => u.UserSkills)
@@ -38,7 +41,7 @@ public class GetUserSkillsQueryHandler : IRequestHandler<GetUserSkillsQuery, App
 
             if (user == null)
                 return new ApplicationResponseBuilder<UserSkillsResponse>()
-                    .SetErrorMessage("user not found")
+                    .SetErrorMessage("User not found")
                     .Success(false).Build();
 
             var response = new UserSkillsResponse

@@ -31,10 +31,13 @@ public class GetAllEducationsByUserQueryHandler : IRequestHandler<GetEducationsB
         {
             var roles = _userHttpContextAccessor.GetUserRoles();
             var userName = _userHttpContextAccessor.GetUserName();
-            if (request.UserName != null && roles.Any(role => role == "Applicant" && userName != request.UserName))
+            if (request.UserName != null && roles.Any(role => role == "Applicant") && userName != request.UserName)
                 return new ApplicationResponseBuilder<List<UserEducationResponse>>()
                     .SetErrorMessage("Access is denied")
                     .Success(false).Build();
+
+            if (request.UserName != null)
+                userName = request.UserName;
 
             var user = await _context.Users
                 .Include(u => u.Educations)
@@ -42,12 +45,12 @@ public class GetAllEducationsByUserQueryHandler : IRequestHandler<GetEducationsB
 
             if (user == null)
                 return new ApplicationResponseBuilder<List<UserEducationResponse>>()
-                    .SetErrorMessage("user not found")
+                    .SetErrorMessage("User not found")
                     .Success(false).Build();
 
             var userEducationResponses = user.Educations
                 .Select(e => _mapper.Map<UserEducationResponse>(e)).ToList();
-           
+
             return new ApplicationResponseBuilder<List<UserEducationResponse>>()
                 .SetResponse(userEducationResponses).Build();
         }

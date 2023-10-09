@@ -47,12 +47,18 @@ public class ProfileController : ControllerBase
     }
 
 
-    [HttpGet("GetUserSkills/{userName}")]
-    public async Task<IActionResult> GetUserSkills([FromRoute] string userName = null)
+    [HttpGet("GetUserSkills")]
+    public async Task<IActionResult> GetUserSkills([FromQuery] string? userName = null)
     {
         var result = await _mediator.Send(new GetUserSkillsQuery { UserName = userName });
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
+        if (!result.IsSuccess)
+        {
+            if (result.ErrorMessage == "User not found")
+            {
+                return NotFound(result.ErrorMessage);
+            }
+            return BadRequest(result.ErrorMessage + result.Exception);
+        }
         return Ok(result);
     }
 
