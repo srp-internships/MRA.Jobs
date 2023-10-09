@@ -11,14 +11,14 @@ public class RemoveUserSkillCommandTest : BaseTest
     {
         var skill = new UserSkill()
         {
-            Skill = new Skill { Name = "Sklil3" },
-            UserId = ApplicationId
+            Skill = new Skill { Name = "Skill2" },
+            UserId = Applicant.Id,
         };
-        await AddEntity(skill);
+        await AddEntity<UserSkill>(skill);
 
         var command = new RemoveUserSkillCommand()
         {
-            Skill = "Sklil3"
+            Skill = "Skill2"
         };
 
         await AddApplicantAuthorizationAsync();

@@ -9,7 +9,7 @@ public class AddUserSkillsCommandTest : BaseTest
     {
         var command = new AddSkillCommand()
         {
-            Skills = new List<string>() { "Sklill1", "Skill2" }
+            Skills = new List<string>() { "Skill1", "Skill2" }
         };
 
         await AddApplicantAuthorizationAsync();

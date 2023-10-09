@@ -17,7 +17,7 @@ public abstract class BaseTest
     protected HttpClient _client { get; private set; } = null!;
     private CustomWebApplicationFactory _factory { get; set; }
     protected Guid FirstUserId { get; private set; }
-    protected Guid ApplicationId { get; private set; }
+    protected ApplicationUser Applicant { get; private set; }
     /// <summary>
     /// Initializing of factory and _context. And Creating a InMemoryDB
     /// </summary>
@@ -38,7 +38,7 @@ public abstract class BaseTest
         };
 
         await AddUser(request1, "password@#12P");
-        ApplicationId = request1.Id;
+        Applicant = request1;
         FirstUserId = Guid.NewGuid();
     }
     protected async Task<T> GetEntity<T>(Expression<Func<T, bool>> query) where T : class
