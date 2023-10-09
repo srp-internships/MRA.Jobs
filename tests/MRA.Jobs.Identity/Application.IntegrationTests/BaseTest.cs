@@ -14,7 +14,6 @@ public abstract class BaseTest
 {
     protected HttpClient _client { get; private set; } = null!;
     private CustomWebApplicationFactory _factory { get;  set; }
-    protected Guid FirstUserId { get; private set; }
     /// <summary>
     /// Initializing of factory and _context. And Creating a InMemoryDB
     /// </summary>
@@ -35,7 +34,6 @@ public abstract class BaseTest
         };
         
         await AddUser(request1,"password@#12P");
-        FirstUserId = Guid.NewGuid();
     }
     protected async Task<T> GetEntity<T>(Expression<Func<T, bool>> query) where T : class
     {
@@ -76,7 +74,7 @@ public abstract class BaseTest
         using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
         scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var dbContext = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-        var result = await dbContext.CreateAsync(user,password);
+        await dbContext.CreateAsync(user,password);
     }
 
     protected async Task AddAuthorizationAsync()
@@ -86,7 +84,7 @@ public abstract class BaseTest
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var superAdmin = await userManager.Users.FirstOrDefaultAsync(s => s.NormalizedUserName == "SUPERADMIN");
         var claims = await userManager.GetClaimsAsync(superAdmin);
-        var token = tokenService.CreateTokenByClaims(claims);
+        var token = tokenService.CreateTokenByClaims(claims, out _);
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
 
