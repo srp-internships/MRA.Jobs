@@ -56,10 +56,10 @@ public class ProfileController : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("RemoveUserSkill")]
-    public async Task<IActionResult> RemoveUserSkill([FromBody] RemoveUserSkillCommand command)
+    [HttpDelete("RemoveUserSkill/{skill}")]
+    public async Task<IActionResult> RemoveUserSkill([FromRoute] string skill)
     {
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new RemoveUserSkillCommand { Skill = skill });
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);

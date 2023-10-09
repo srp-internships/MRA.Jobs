@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 
 namespace MRA.Identity.Application.Contract.Skills.Command;
-public class RemoveUserSkillCommandValidaTor : AbstractValidator<RemoveUserSkillCommand>
+public class RemoveUserSkillCommandValidator : AbstractValidator<RemoveUserSkillCommand>
 {
-    public RemoveUserSkillCommandValidaTor()
+    public RemoveUserSkillCommandValidator()
     {
         RuleFor(us => us.Skill).NotEmpty();
     }
