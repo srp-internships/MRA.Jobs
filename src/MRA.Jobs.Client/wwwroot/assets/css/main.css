@@ -12,11 +12,9 @@
 --------------------------------------------------------------*/
 /* Fonts */
 :root {
-  --font-default: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-primary: "Montserrat", sans-serif;
-  --font-secondary: "Lato", sans-serif;
+    --font-default: "Poppins", sans-serif;
+    --font-primary: "Poppins", sans-serif;
+    --font-secondary: "Poppins", sans-serif;
 }
 
 /* Global Colors */
@@ -78,6 +76,7 @@ h5,
 h6 {
   font-family: var(--font-primary);
 }
+
 
 section {
   color: var(--color-default);
@@ -272,12 +271,22 @@ section {
   --color-nav-hover: #1261d7;
 }
 
+.mud-typography {
+    font-family: "Poppins", sans-serif;
+}
+.mud-tab {
+    color: var(--color-primary);
+}
+
+.active {
+    color: var(--color-primary) !important;
+}
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
 /* Desktop Navigation */
 @media (min-width: 1200px) {
-  .navmenu {
+    .navmenu {
     padding: 0;
   }
 
@@ -319,11 +328,8 @@ section {
     padding-right: 0;
   }
 
-  .navmenu li:hover > a,
-  .navmenu .active,
-  .navmenu .active:focus {
-    color: var(--color-nav-hover);
-  }
+
+
 
   .navmenu .dropdown ul {
     margin: 0;

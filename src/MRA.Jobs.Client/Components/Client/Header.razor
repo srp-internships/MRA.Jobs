@@ -14,16 +14,31 @@
         text-align: center;
     }
 
+    h3 {
+        font-weight: bold;
+    }
+
     #navbarSupportedContent {
         text-align: center;
     }
-    button:focus {
+
+    .navbar-toggler,
+    .navbar-toggler:focus,
+    .navbar-toggler:active,
+    .navbar-toggler-icon:focus {
         outline: none;
+        box-shadow: none;
+        border: none;
     }
-    button {
-        outline: none;
-        border: white;
-        color: white;
+
+    ul {
+        margin: 0 auto;
+        display: flex;
+        align-content: space-around;
+    }
+
+    .active {
+        color: #129fd7;
     }
 </style>
 
@@ -44,19 +59,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/internships">Internships</a>
+                    <NavLink class="nav-link" href="/internships">Internships</NavLink>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/jobs">Jobs</a>
+                    <NavLink class="nav-link" href="/jobs">Jobs</NavLink>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/trainings">Trainings</a>
+                    <NavLink class="nav-link" href="/trainings">Trainings</NavLink>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Team</a>
+                    <a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/">Team</a>
                 </li>
             </ul>
             <CascadingAuthenticationState>
