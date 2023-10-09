@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace MRA.Identity.Application.Contract.Experiences.Commands;
+namespace MRA.Identity.Application.Contract.Experiences.Commands.Create;
 public class CreateExperienceDetailCommand : IRequest<ApplicationResponse<Guid>>
 {
     public string JobTitle { get; set; }
@@ -9,5 +9,5 @@ public class CreateExperienceDetailCommand : IRequest<ApplicationResponse<Guid>>
     public DateTime StartDate { get; set; }
     public bool IsCurrentJob { get; set; }
     public string Description { get; set; }
-    public string Address { get; set; } 
+    public string Address { get; set; }
 }

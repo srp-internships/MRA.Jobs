@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MRA.Identity.Application.Contract.Experiences.Commands;
+namespace MRA.Identity.Application.Contract.Experiences.Commands.Create;
 
 public class CreateExperienceDetailCommandValidator : AbstractValidator<CreateExperienceDetailCommand>
 {

@@ -4,17 +4,16 @@ using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract;
-using MRA.Identity.Application.Contract.Experiences.Commands.Create;
-using MRA.Identity.Domain.Entities;
+using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 
 namespace MRA.Identity.Application.Features.Experiences.Commands;
-public class CreateExperienceDetailCommandHandler : IRequestHandler<CreateExperienceDetailCommand, ApplicationResponse<Guid>>
+public class UpdateExperienceDetailCommandHandler : IRequestHandler<UpdateExperienceDetailCommand, ApplicationResponse<Guid>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IUserHttpContextAccessor _userHttpContextAccessor;
     private readonly IMapper _mapper;
 
-    public CreateExperienceDetailCommandHandler(IApplicationDbContext context,
+    public UpdateExperienceDetailCommandHandler(IApplicationDbContext context,
         IUserHttpContextAccessor userHttpContextAccessor,
         IMapper mapper)
     {
@@ -22,7 +21,7 @@ public class CreateExperienceDetailCommandHandler : IRequestHandler<CreateExperi
         _userHttpContextAccessor = userHttpContextAccessor;
         _mapper = mapper;
     }
-    public async Task<ApplicationResponse<Guid>> Handle(CreateExperienceDetailCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<Guid>> Handle(UpdateExperienceDetailCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -37,9 +36,12 @@ public class CreateExperienceDetailCommandHandler : IRequestHandler<CreateExperi
                   .Success(false).Build();
             }
 
-            var experienceDetail = _mapper.Map<ExperienceDetail>(request);
+            var experienceDetail = user.Experiences.FirstOrDefault(e => e.Id == request.Id);
+            if (experienceDetail == null)
+                return new ApplicationResponseBuilder<Guid>().SetErrorMessage("experience not exits")
+                    .Success(false).Build();
 
-            user.Experiences.Add(experienceDetail);
+            _mapper.Map(request, experienceDetail);
 
             await _context.SaveChangesAsync();
             return new ApplicationResponseBuilder<Guid>()

@@ -5,7 +5,8 @@ using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Delete;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Educations.Query;
-using MRA.Identity.Application.Contract.Experiences.Commands;
+using MRA.Identity.Application.Contract.Experiences.Commands.Create;
+using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Queries;
@@ -100,6 +101,15 @@ public class ProfileController : ControllerBase
 
     [HttpPost("СreateExperienceDetail")]
     public async Task<IActionResult> CreateExperienceDetail([FromBody] CreateExperienceDetailCommand command)
+    {
+        var result = await _mediator.Send(command);
+        if (result.IsSuccess == false)
+            return BadRequest(result.Exception + result.ErrorMessage);
+        return Ok(result);
+    }
+
+    [HttpPut("UpdateExperienceDetail")]
+    public async Task<IActionResult> UpdateExperienceDetail([FromBody] UpdateExperienceDetailCommand command)
     {
         var result = await _mediator.Send(command);
         if (result.IsSuccess == false)
