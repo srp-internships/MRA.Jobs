@@ -8,6 +8,8 @@
 
     <ItemGroup>
         <Folder Include="Admin\Queries\" />
+        <Folder Include="Experiences\Responses\" />
+        <Folder Include="Experiences\Queries\" />
         <Folder Include="Profile\Responses\" />
         <Folder Include="Profile\Queries\" />
     </ItemGroup>
