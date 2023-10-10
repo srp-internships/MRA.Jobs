@@ -1,10 +1,209 @@
-﻿@page "/dashboard"
+﻿@using MRA.Jobs.Client.Identity
 @inherits LayoutComponentBase
-
 <div class="page">
-    <div class="sidebar">
-        <NavMenu/>
+    <div>
+        <div class="top-row ps-3 navbar">
+            @* <div class="image"> <img src="images/SRP_icon.png" class="img" /></div> *@
+            <a class="navbar-brand" href="">MRA Jobs</a>
+            <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="sidebar">
+            <style>
+                .nav-link{
+                    color: white;
+                }
+                .page {
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                }
+                
+                main {
+                    flex: 1;
+                }
+                
+                .sidebar {
+                    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+                }
+                
+                .top-row {
+                    background-color: #f7f7f7;
+                    border-bottom: 1px solid #d6d5d5;
+                    justify-content: flex-start;
+                    height: 3.5rem;
+                    display: flex;
+                    align-items: center;
+                    color:black;
+                }
+                
+                .top-row ::deep a, .top-row ::deep .btn-link {
+                    white-space: nowrap;
+                    margin-left: 1.5rem;
+                    text-decoration: none;
+                }
+                
+                .top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
+                    text-decoration: underline;
+                }
+                
+                .top-row ::deep a:first-child {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                
+                @@media (max-width: 640.98px) {
+                    .top-row:not(.auth) {
+                        display: none;
+                    }
+                
+                    .top-row.auth {
+                        justify-content: space-between;
+                    }
+                
+                    .top-row ::deep a, .top-row ::deep .btn-link {
+                        margin-left: 0;
+                    }
+                }
+                
+                @@media (min-width: 641px) {
+                    .page {
+                        flex-direction: row;
+                    }
+                
+                    .sidebar {
+                        width: 250px;
+                        height: 100vh;
+                        position: sticky;
+                        top: 0;
+                    }
+                
+                    .top-row {
+                        position: sticky;
+                        top: 0;
+                        z-index: 1;
+                    }
+                
+                    .top-row.auth ::deep a:first-child {
+                        flex: 1;
+                        text-align: right;
+                        width: 0;
+                    }
+                
+                    .top-row, article {
+                        padding-left: 2rem !important;
+                        padding-right: 1.5rem !important;
+                    }
+                }
+                
+                
+                </style>
+
+
+            <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+
+                <nav class="flex-column">
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="dashboard/categories">
+                            <span class="oi oi-project" aria-hidden="true"></span>Category
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="user" @onclick="() => expandSubMenu2 = !expandSubMenu2">
+                            <span class="oi oi-person" aria-hidden="true"></span>User
+                        </NavLink>
+                        @if (expandSubMenu2)
+                        {
+                            <ul class="nav flex-column">
+                                <li class="nav-item px-3">
+                                    <NavLink class="nav-link" href="user/1">
+                                        <span class="oi oi-tags" aria-hidden="true"></span>Applicants
+                                    </NavLink>
+                                </li>
+                                <li class="nav-item px-3">
+                                    <NavLink class="nav-link" href="user/2">
+                                        <span class=" oi oi-dial" aria-hidden="true"></span>Reviewers
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="dashboard/jobs">
+                            <span class="oi oi-briefcase" aria-hidden="true"></span>Vacancy
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="dashboard/internship">
+                            <span class="oi oi-briefcase" aria-hidden="true"></span>internship
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="dashboard/trainings">
+                            <span class="oi oi-briefcase" aria-hidden="true"></span>trainings
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="board">
+                            <span class="oi oi-briefcase" aria-hidden="true"></span>board
+                        </NavLink>
+                    </div>
+
+                    <CascadingAuthenticationState>
+                        <AuthorizeView Roles="@ApplicationClaimValues.Administrator">
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="userManager">
+                                    <span class="oi oi-briefcase" aria-hidden="true"></span>Users manager
+                                </NavLink>
+                            </div>
+                        </AuthorizeView>
+                    </CascadingAuthenticationState>
+
+                    <div class="nav-item px-3">
+                        <button @onclick="LogOut">Log out</button>
+                    </div>
+
+                </nav>
+            </div>
+
+            @code {
+
+                [Inject]
+                private NavigationManager _navigationManager { get; set; }
+
+                [Inject]
+                private ILocalStorageService _localStorageService { get; set; }
+
+                [Inject]
+                private AuthenticationStateProvider _authStateProvider { get; set; }
+
+                private bool collapseNavMenu = true;
+                private bool expandSubMenu2;
+
+                private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+                private void ToggleNavMenu()
+                {
+                    collapseNavMenu = !collapseNavMenu;
+                }
+
+                private async Task LogOut()
+                {
+                    await _localStorageService.RemoveItemAsync("authToken");
+                    await _authStateProvider.GetAuthenticationStateAsync();
+                    _navigationManager.NavigateTo("/");
+                }
+
+            }
+
+        </div>
     </div>
+
 
     <main>
         <div class="top-row px-4">

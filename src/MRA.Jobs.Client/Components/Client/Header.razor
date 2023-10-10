@@ -2,6 +2,7 @@
 @inject ILocalStorageService localStorage
 @inject NavigationManager navigationManager
 @using Microsoft.AspNetCore.Components.Authorization
+@using MRA.Jobs.Client.Identity
 
 <style>
     @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
@@ -70,38 +71,42 @@
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/trainings">Trainings</NavLink>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/">Team</a>
+                <li>
+                    <a href="https://www.silkroadprofessionals.com/team/team/" target="_blank">Team</a>
                 </li>
             </ul>
-            <CascadingAuthenticationState>
-                <AuthorizeView>
-                    <Authorized>
-                        <MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Info">
-                            <MudNavLink Href="/applicant">Profile</MudNavLink>
-                            <MudNavLink Href="/applications">Applications</MudNavLink>
-                            <MudNavLink OnClick="Logout">Logout</MudNavLink>
-                        </MudMenu>
-                    </Authorized>
-                    <NotAuthorized>
-                        <MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Info">
-                            <MudNavLink Href="/sign-in">Sign In</MudNavLink>
-                            <MudNavLink Href="/sign-up">Sign Up</MudNavLink>
-                        </MudMenu>
-                    </NotAuthorized>
-                </AuthorizeView>
-            </CascadingAuthenticationState>
-        </div>
-    </div>
-</nav>
 
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+        <!-- End Nav Menu -->
+        <CascadingAuthenticationState>
+            <AuthorizeView>
+                <Authorized>
+                    <MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Info">
+                        <MudNavLink Href="/applicant">Profile</MudNavLink>
+                        <MudNavLink Href="/applications">Applications</MudNavLink>
+                        <MudNavLink OnClick="Logout">Logout</MudNavLink>
+                    </MudMenu>
+                </Authorized>
+                <NotAuthorized>
+                    <MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Info">
+                        <MudNavLink Href="/sign-in">Sign In</MudNavLink>
+                        <MudNavLink Href="/sign-up">Sign Up</MudNavLink>
+                    </MudMenu>
+                </NotAuthorized>
+            </AuthorizeView>
+        </CascadingAuthenticationState>
+    </div>
+</header>
 
 
 @code {
+
     private async Task Logout()
     {
         await localStorage.RemoveItemAsync("authToken");
         await authProvider.GetAuthenticationStateAsync();
         navigationManager.NavigateTo("/");
     }
+
 }
