@@ -3,27 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace MRA.Jobs.Infrastructure.Persistence;
-public class DbMigration : IMigration
+public class DbMigration
 {
-    private readonly ApplicationDbContext context;
+    private readonly ApplicationDbContext _context;
 
     public DbMigration(ApplicationDbContext context)
     {
-        this.context = context;
+        _context = context;
     }
 
-    public void Migrate()
+    public async Task InitialiseAsync()
     {
-        if (context.Database.IsRelational())
+        if (_context.Database.IsSqlServer())
         {
-            context.Database.Migrate();
+            await _context.Database.MigrateAsync();
         }
     }
-}
-
-public interface IMigration
-{
-    void Migrate();
 }
