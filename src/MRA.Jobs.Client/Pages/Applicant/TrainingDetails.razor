@@ -8,7 +8,7 @@
 @inject IApplicationService ApplicationService
 @using MRA.Jobs.Client.Components.Vacancies
 
-<VacancyDetails Slug="@Slug" vacancyDetails="@details"/>
+<VacancyDetails Slug="@Slug" vacancyDetails="@details" vacancy="trainings"/>
 
 
 @code {
@@ -27,7 +27,8 @@
                     Description = response.Description,
                     Duration = response.Duration,
                     EndDate = response.EndDate,
-                    PublishDate = response.PublishDate
+                    PublishDate = response.PublishDate,
+                    Fees = response.Fees
                 };
         }
     }

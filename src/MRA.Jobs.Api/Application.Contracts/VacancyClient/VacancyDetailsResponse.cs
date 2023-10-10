@@ -12,4 +12,6 @@ public class VacancyDetailsResponse
     public DateTime PublishDate { get; set; }
     public DateTime EndDate { get; set; }
     public string Description { get; set; }
+    public int RequiredYearOfExperience { get; set; } = 0;
+    public int Fees { get; set; } = 0;
 }

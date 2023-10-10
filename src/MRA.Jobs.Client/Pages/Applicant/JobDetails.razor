@@ -7,7 +7,7 @@
 
 @using MRA.Jobs.Client.Components.Vacancies
 
-<VacancyDetails Slug="@Slug" vacancyDetails="@details" />
+<VacancyDetails Slug="@Slug" vacancyDetails="@details" vacancy="jobs"/>
 
 
 @code {
@@ -25,7 +25,8 @@
                     Title = response.Title,
                     Description = response.Description,
                     EndDate = response.EndDate,
-                    PublishDate = response.PublishDate
+                    PublishDate = response.PublishDate,
+                    RequiredYearOfExperience = response.RequiredYearOfExperience
                 };
         }
     }

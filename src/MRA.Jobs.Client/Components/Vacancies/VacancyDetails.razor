@@ -15,6 +15,14 @@
                 <MudText Typo="Typo.h6">Duration: @vacancyDetails.Duration month(s)</MudText>
                 <MudText Typo="Typo.h6">Published at: @vacancyDetails.PublishDate.Day/@vacancyDetails.PublishDate.Month/@vacancyDetails.PublishDate.Year</MudText>
                 <MudText Typo="Typo.h6">Deadline: @vacancyDetails.EndDate.Date.Day/@vacancyDetails.EndDate.Date.Month/@vacancyDetails.EndDate.Date.Year</MudText>
+                @if (vacancyDetails.RequiredYearOfExperience != 0)
+                {
+                    <MudText Typo="Typo.h6">Required year(s) of experience: @vacancyDetails.RequiredYearOfExperience</MudText>
+                }
+                @if (vacancyDetails.Fees != 0)
+                {
+                    <MudText Typo="Typo.h6">Fees: @vacancyDetails.Fees s</MudText>
+                }
                 <MudDivider />
                 <MudText Typo="Typo.h5">Description</MudText>
                 <MudText Typo="Typo.body1">@((MarkupString)@vacancyDetails.Description)</MudText>
@@ -36,7 +44,7 @@
                                 }
                                 else
                                 {
-                                    <a href="/trainings/ApplytoTrainings/@Slug" class="btn btn-primary w-100">Apply</a>
+                                    <a href="/@vacancy/apply/@Slug" class="btn btn-primary w-100">Apply</a>
                                 }
                             </Authorized>
                             <NotAuthorized>
@@ -58,6 +66,10 @@
 
     [Parameter]
     public VacancyDetailsResponse vacancyDetails { get; set; }
+
+    [Parameter]
+    public string vacancy { get; set; }
+
     private bool applied = false;
 
     private async Task<bool> ApplicationExits()
