@@ -10,6 +10,7 @@ using MRA.Identity.Application.Contract.Experiences.Commands.Create;
 using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 using MRA.Identity.Application.Contract.Experiences.Query;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
+using MRA.Identity.Application.Contract.Profile.Queries;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Queries;
 
@@ -33,6 +34,21 @@ public class ProfileController : ControllerBase
         var result = await _mediator.Send(command);
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetProfileByUserName([FromQuery] string? userName = null)
+    {
+        var result = await _mediator.Send(new GetPofileQuery { UserName = userName });
+        if (!result.IsSuccess)
+        {
+            if (result.ErrorMessage == "User not found")
+            {
+                return NotFound(result.ErrorMessage);
+            }
+            return BadRequest(result.ErrorMessage+result.Exception);
+        }
         return Ok(result);
     }
 

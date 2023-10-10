@@ -12,7 +12,7 @@ public class GetUserExperiencesTest : BaseTest
     }
 
     [Test]
-    public async Task GetUserSkill_ShouldReturnUserExperiences_AccessIsDenied()
+    public async Task GetUserExperiences_ShouldReturnUserExperiences_AccessIsDenied()
     {
         await AddApplicantAuthorizationAsync();
         var response = await _client.GetAsync($"/api/Profile/GetExperiencesByUser?userName=amir");
@@ -23,7 +23,7 @@ public class GetUserExperiencesTest : BaseTest
     }
 
     [Test]
-    public async Task GetUserSkillByUserName_ShouldReturnUserExperiencesByUserName_Success()
+    public async Task GetUserExperiencesByUserName_ShouldReturnUserExperiencesByUserName_Success()
     {
         await AddReviewerAuthorizationAsync();
         var response = await _client.GetAsync($"/api/Profile/GetExperiencesByUser?userName=@Alex33");
@@ -32,7 +32,7 @@ public class GetUserExperiencesTest : BaseTest
     }
 
     [Test]
-    public async Task GetUserSkillByUserName_ShouldReturnUserExperiencesByUserName_NotFound()
+    public async Task GetUserExperiencesByUserName_ShouldReturnUserExperiencesByUserName_NotFound()
     {
         await AddReviewerAuthorizationAsync();
         var response = await _client.GetAsync($"/api/Profile/GetExperiencesByUser?userName=@Alex34");

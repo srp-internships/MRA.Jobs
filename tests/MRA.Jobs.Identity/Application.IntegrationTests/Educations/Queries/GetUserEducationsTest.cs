@@ -12,7 +12,7 @@ public class GetUserEducationsTest : BaseTest
     }
 
     [Test]
-    public async Task GetUserSkill_ShouldReturnUserEducations_AccessIsDenied()
+    public async Task GetUserEducations_ShouldReturnUserEducations_AccessIsDenied()
     {
         await AddApplicantAuthorizationAsync();
         var response = await _client.GetAsync($"/api/Profile/GetEducationsByUser?userName=amir");
@@ -23,7 +23,7 @@ public class GetUserEducationsTest : BaseTest
     }
 
     [Test]
-    public async Task GetUserSkillByUserName_ShouldReturnUserEducationsByUserName_Success()
+    public async Task GetUserEducationsByUserName_ShouldReturnUserEducationsByUserName_Success()
     {
         await AddReviewerAuthorizationAsync();
         var response = await _client.GetAsync($"/api/Profile/GetEducationsByUser?userName=@Alex33");
@@ -32,7 +32,7 @@ public class GetUserEducationsTest : BaseTest
     }
 
     [Test]
-    public async Task GetUserSkillByUserName_ShouldReturnUserEducationsByUserName_NotFound()
+    public async Task GetUserEducationsByUserName_ShouldReturnUserEducationsByUserName_NotFound()
     {
         await AddReviewerAuthorizationAsync();
         var response = await _client.GetAsync($"/api/Profile/GetEducationsByUser?userName=@Alex34");
