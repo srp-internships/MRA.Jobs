@@ -12,7 +12,7 @@
 @code {
     [Parameter]
     public string Slug { get; set; }
-    private VacancyDetailsResponse details = new();
+    private VacancyDetailsResponse details;
 
     protected override async Task OnInitializedAsync()
     {
