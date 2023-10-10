@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Domain.Entities;
-using MRA.Identity.Domain.Enumes;
 
 namespace MRA.Identity.Application.Features.UserProfiles.Command;
 
@@ -12,11 +12,15 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserHttpContextAccessor _userHttpContextAccessor;
+    private readonly IMapper _mapper;
 
-    public UpdateProfileCommandHandler(UserManager<ApplicationUser> userManager, IUserHttpContextAccessor userHttpContextAccessor)
+    public UpdateProfileCommandHandler(UserManager<ApplicationUser> userManager,
+        IUserHttpContextAccessor userHttpContextAccessor,
+        IMapper mapper)
     {
         _userManager = userManager;
         _userHttpContextAccessor = userHttpContextAccessor;
+        _mapper = mapper;
     }
     public async Task<ApplicationResponse<bool>> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
     {
@@ -29,12 +33,7 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
                 return new ApplicationResponseBuilder<bool>().SetErrorMessage("User not found").Success(false).Build();
             }
 
-            user.DateOfBirth = request.DateOfBirth;
-            user.PhoneNumber = request.PhoneNumber;
-            user.LastName = request.LastName;
-            user.FirstName = request.FirstName;
-            user.Gender = (Gender)request.Gender;
-            user.Email = request.Email;
+            _mapper.Map(request, user);
 
             var result = await _userManager.UpdateAsync(user);
             return result.Succeeded
