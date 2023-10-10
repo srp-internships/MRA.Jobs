@@ -1,42 +1,33 @@
 ﻿@page "/jobs/{Slug}"
-@using MRA.Jobs.Application.Contracts.JobVacancies.Responses
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+@using MRA.Jobs.Application.Contracts.VacancyClient;
+@using MRA.Jobs.Client.Identity;
 @inject IVacancyService VacancyService
-@inject NavigationManager NavigationManager
+@inject IApplicationService ApplicationService
 
-<div class="container">
-    @if (_vacancy == null)
-    {
-        <p>Fetching...</p>
-    }
-    else
-    {
-        <h2>@_vacancy.Title</h2>
-        <div class="vacancy-info">
-            <p class="d-inline-block vacancy-info__description">@_vacancy.Description</p>
-            <p>Application Deadline: @_vacancy.EndDate</p>
-        </div>
-        <div class="vacancy-apply">
-            <p class="vacancy-apply__text">Interesting ? Then give it a try!</p>
-            <button class="btn btn-primary" @onclick="CompleteTest">
-                <i class="oi oi-briefcase"></i>&nbsp;&nbsp;Complete Test
-            </button>
-        </div>
-    }
-</div>
+@using MRA.Jobs.Client.Components.Vacancies
+
+<VacancyDetails Slug="@Slug" vacancyDetails="@details" vacancy="jobs"/>
+
 
 @code {
     [Parameter]
     public string Slug { get; set; }
-
-    JobVacancyDetailsDto _vacancy;
+    private VacancyDetailsResponse details;
 
     protected override async Task OnInitializedAsync()
     {
-        _vacancy = await VacancyService.GetBySlug(Slug);
-    }
-
-    private void CompleteTest()
-    {
-        NavigationManager.NavigateTo($"/jobs/infojob/{Slug}");
+        var response = await VacancyService.GetBySlug(Slug);
+        if (response is not null)
+        {
+            details = new VacancyDetailsResponse
+                {
+                    Title = response.Title,
+                    Description = response.Description,
+                    EndDate = response.EndDate,
+                    PublishDate = response.PublishDate,
+                    RequiredYearOfExperience = response.RequiredYearOfExperience
+                };
+        }
     }
 }

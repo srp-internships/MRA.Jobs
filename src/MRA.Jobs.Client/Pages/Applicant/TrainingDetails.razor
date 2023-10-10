@@ -1,12 +1,14 @@
-﻿@page "/internships/{Slug}"
+﻿@page "/trainings/{Slug}"
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
-@layout MainLayout
-@inject NavigationManager NavigationManager
-@inject IInternshipService InternshipService
+@using MRA.Jobs.Client.Identity;
+@using Microsoft.AspNetCore.Components.Authorization;
+@inject AuthenticationStateProvider provider
+@inject ITrainingService _trainingService
 @inject IApplicationService ApplicationService
 @using MRA.Jobs.Client.Components.Vacancies
 
-<VacancyDetails Slug="@Slug" vacancyDetails="@details" vacancy="internships"/>
+<VacancyDetails Slug="@Slug" vacancyDetails="@details" vacancy="trainings"/>
 
 
 @code {
@@ -16,7 +18,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await InternshipService.GetBySlug(Slug);
+        var response = await _trainingService.GetBySlug(Slug);
         if (response is not null)
         {
             details = new VacancyDetailsResponse
@@ -25,7 +27,8 @@
                     Description = response.Description,
                     Duration = response.Duration,
                     EndDate = response.EndDate,
-                    PublishDate = response.PublishDate
+                    PublishDate = response.PublishDate,
+                    Fees = response.Fees
                 };
         }
     }
