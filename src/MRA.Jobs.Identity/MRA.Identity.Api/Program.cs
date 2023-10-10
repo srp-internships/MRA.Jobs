@@ -5,6 +5,7 @@ using Mra.Shared.Initializer.Azure.KeyVault;
 using MRA.Identity.Infrastructure.Persistence;
 using Mra.Shared.Common.Interfaces.Services;
 using Mra.Shared.Azure.EmailService;
+using System.Text.Json.Serialization;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
