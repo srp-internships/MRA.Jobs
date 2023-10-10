@@ -1,0 +1,37 @@
+﻿@page "/internships"
+@using MRA.Jobs.Application.Contracts.VacancyClient;
+@using MRA.Jobs.Client.Components.Vacancies
+@inject ICategoryService categoryService
+@inject IVacancyService vacancyService
+
+<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Internships</MudText>
+<VacanciesList VacancyCategories="internshipCategories" Vacancies="internships" filteredVacancies="filteredInternships" Route="internships"/>
+
+@code {
+    public List<string> internshipCategories { get; set; }
+    public List<VacancyClientResponse> internships { get; set; }
+    private List<VacancyClientResponse> filteredInternships;
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await categoryService.GetInternshipCategoriesSinceCheckDate();
+        var allJobs = await vacancyService.GetInternship();
+        if (result is not null && allJobs is not null)
+        {
+            internshipCategories = result.Select(r => r.Category.Name).ToList();
+            internships = allJobs.Select(r => new VacancyClientResponse
+                {
+                    Category = r.Category,
+                    Title = r.Title,
+                    ShortDescription = r.ShortDescription,
+                    Slug = r.Slug
+                }).ToList();
+            filteredInternships = allJobs.Select(r => new VacancyClientResponse
+                {
+                    Category = r.Category,
+                    Title = r.Title,
+                    ShortDescription = r.ShortDescription,
+                    Slug = r.Slug
+                }).ToList();
+        }
+    }
+}
