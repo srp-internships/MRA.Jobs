@@ -12,14 +12,12 @@ public class UpdateUserEducationDetailCommandTest : BaseTest
 
         var education = new EducationDetail()
         {
-            Speciality = "test2",
-            University = "test2",
+            Speciality = "test",
+            University = "test",
             StartDate = DateTime.Now.AddYears(-5),
             EndDate = DateTime.Now.AddYears(-1),
             UntilNow = false,
-            User = Applicant,
             UserId = Applicant.Id,
-
         };
 
         await AddEntity(education);

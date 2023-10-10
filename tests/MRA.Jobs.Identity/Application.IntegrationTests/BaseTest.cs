@@ -4,11 +4,9 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Mra.Shared.Common.Constants;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Domain.Entities;
 using MRA.Identity.Infrastructure.Persistence;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
@@ -40,7 +38,6 @@ public abstract class BaseTest
         };
 
         await AddUser(request1, "password@#12P");
-        Applicant = request1;
         FirstUserId = Guid.NewGuid();
 
         var request2 = new ApplicationUser()
@@ -53,7 +50,6 @@ public abstract class BaseTest
         };
 
         await AddUser(request2, "password@#12P");
-        Reviewer = request2;
     }
     protected async Task<T> GetEntity<T>(Expression<Func<T, bool>> query) where T : class
     {
@@ -121,7 +117,7 @@ public abstract class BaseTest
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
         var user = await userManager.FindByNameAsync("@Alex33");
-
+        Applicant = user;
         var prefics = "http://schemas.microsoft.com/ws/2008/06/identity/claims/";
 
         var claims = new List<Claim>
@@ -144,7 +140,7 @@ public abstract class BaseTest
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var reviewer = await userManager.Users.FirstOrDefaultAsync(s => s.UserName == "@Reviewer");
         var prefics = "http://schemas.microsoft.com/ws/2008/06/identity/claims/";
-
+        Reviewer = reviewer;
         var claims = new List<Claim>
         {
             new Claim($"{prefics}role", "Reviewer"),
