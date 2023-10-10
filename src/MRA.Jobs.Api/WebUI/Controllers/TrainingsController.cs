@@ -12,23 +12,22 @@ using MRA.Jobs.Infrastructure.Identity;
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(ApplicationPolicies.Reviewer)]
 public class TrainingsController : ApiControllerBase
 {
-    [AllowAnonymous]
+    
     [HttpGet("{slug}")]
     public async Task<IActionResult> Get(string slug)
     {
         var training = await Mediator.Send(new GetTrainingVacancyBySlugQuery { Slug = slug });
         return Ok(training);
     }
-    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<PagedList<TrainingVacancyListDto>>> Get([FromQuery] GetTrainingsQueryOptions query)
     {
         return Ok(await Mediator.Send(query));
     }
 
+    [Authorize(ApplicationPolicies.Reviewer)]
     [HttpPost]
     public async Task<ActionResult<string>> Post(CreateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
@@ -36,6 +35,7 @@ public class TrainingsController : ApiControllerBase
         return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
 
+    [Authorize(ApplicationPolicies.Reviewer)]
     [HttpPut("{slug}")]
     public async Task<ActionResult<string>> Put([FromRoute] string slug, [FromBody] UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
@@ -46,6 +46,7 @@ public class TrainingsController : ApiControllerBase
         return CreatedAtAction(nameof(Get), new { slug = result }, result);
     }
 
+    [Authorize(ApplicationPolicies.Reviewer)]
     [HttpDelete("{slug}")]
     public async Task<ActionResult<bool>> Delete([FromRoute] string slug, CancellationToken cancellationToken)
     {

@@ -1,5 +1,19 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+/* Mud blazor styles */
+
+@media (max-width: 576px) {
+    .mud-typography-h2 {
+        font-size: 36px;
+    }
+    .mud-typography-h6 {
+        font-size: 18px;
+    }
+    .pa-16 {
+        padding: 20px !important;
+    }
+}
+
 html, body {
     font-family: 'Roboto', sans-serif;
     /* font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/

@@ -1,28 +1,26 @@
-﻿@page "/trainings/{Slug}"
-
-@using Blazored.LocalStorage;
+﻿@using Blazored.LocalStorage;
 @using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+@using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Identity;
 @using Microsoft.AspNetCore.Components.Authorization;
 @inject AuthenticationStateProvider provider
-@inject ITrainingService _trainingService
 @inject IApplicationService ApplicationService
 
 
 <div class="container">
     <div class="row align-items-center">
-        <div class="col-8">
-            <MudPaper Class="pa-16 ma-2">
-                <MudText Typo="Typo.h2" Style="color: #129fd7; font-weight: 900;">@_training.Title</MudText>
-                <MudText Typo="Typo.h6">Duration: @_training.Duration month(s)</MudText>
-                <MudText Typo="Typo.h6">Published at: @_training.PublishDate.Date.Date</MudText>
-                <MudText Typo="Typo.h6">Deadline: @_training.EndDate.Date.Date</MudText>
+        <div class="col-md-8 col-sm-12">
+            <MudPaper Class="pa-16 ma-2 details">
+                <MudText Typo="Typo.h2" Style="color: #129fd7; font-weight: 900;">@vacancyDetails.Title</MudText>
+                <MudText Typo="Typo.h6">Duration: @vacancyDetails.Duration month(s)</MudText>
+                <MudText Typo="Typo.h6">Published at: @vacancyDetails.PublishDate.Day/@vacancyDetails.PublishDate.Month/@vacancyDetails.PublishDate.Year</MudText>
+                <MudText Typo="Typo.h6">Deadline: @vacancyDetails.EndDate.Date.Day/@vacancyDetails.EndDate.Date.Month/@vacancyDetails.EndDate.Date.Year</MudText>
                 <MudDivider />
                 <MudText Typo="Typo.h5">Description</MudText>
-                <MudText Typo="Typo.body1">@((MarkupString)@_training.Description)</MudText>
+                <MudText Typo="Typo.body1">@((MarkupString)@vacancyDetails.Description)</MudText>
                 </MudPaper>
             </div>
-            <div class="col-4">
+            <div class="col-md-4 col-sm-12">
                 <MudCard>
                     <MudCardContent>
                         <MudText Typo="Typo.h5" Color="Color.Info">Do You want to work at Silk Road Professionals?</MudText>
@@ -57,14 +55,10 @@
 @code {
     [Parameter]
     public string Slug { get; set; }
-    private TrainingVacancyDetailedResponse _training { get; set; } = new TrainingVacancyDetailedResponse();
-    private bool applied = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        _training = await _trainingService.GetBySlug(Slug);
-        applied = await ApplicationExits();
-    }
+    [Parameter]
+    public VacancyDetailsResponse vacancyDetails { get; set; }
+    private bool applied = false;
 
     private async Task<bool> ApplicationExits()
     {
