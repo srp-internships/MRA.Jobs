@@ -131,10 +131,10 @@ public class ProfileController : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("DeleteExperienceDetail")]
-    public async Task<IActionResult> DeleteExperienceDetail([FromQuery] DeleteExperienceCommand command)
+    [HttpDelete("DeleteExperienceDetail/{id}")]
+    public async Task<IActionResult> DeleteExperienceDetail([FromRoute] Guid id)
     {
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new DeleteExperienceCommand { Id = id });
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
@@ -145,7 +145,13 @@ public class ProfileController : ControllerBase
     {
         var result = await _mediator.Send(query);
         if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
+        {
+            if (result.ErrorMessage == "User not found")
+            {
+                return NotFound(result.ErrorMessage);
+            }
+            return BadRequest(result.ErrorMessage + result.Exception);
+        }
         return Ok(result);
     }
 }

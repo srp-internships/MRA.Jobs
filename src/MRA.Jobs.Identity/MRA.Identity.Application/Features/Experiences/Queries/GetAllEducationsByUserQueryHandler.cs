@@ -31,7 +31,7 @@ public class GetAllExperiencesByUserQueryHandler : IRequestHandler<GetExperience
         {
             var roles = _userHttpContextAccessor.GetUserRoles();
             var userName = _userHttpContextAccessor.GetUserName();
-            if (request.UserName != null && roles.Any(role => role == "Applicant" && userName != request.UserName))
+            if (request.UserName != null && roles.Any(role => role == "Applicant" ) && userName != request.UserName)
                 return new ApplicationResponseBuilder<List<UserExperienceResponse>>()
                     .SetErrorMessage("Access is denied")
                     .Success(false).Build();
