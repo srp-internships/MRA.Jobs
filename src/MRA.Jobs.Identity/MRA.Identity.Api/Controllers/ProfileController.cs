@@ -103,7 +103,13 @@ public class ProfileController : ControllerBase
     {
         var result = await _mediator.Send(query);
         if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
+        {
+            if (result.ErrorMessage == "User not found")
+            {
+                return NotFound(result.ErrorMessage);
+            }
+            return BadRequest(result.ErrorMessage + result.Exception);
+        }
         return Ok(result);
     }
 
