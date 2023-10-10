@@ -9,19 +9,20 @@ public class RemoveUserSkillCommandTest : BaseTest
     [Test]
     public async Task RemoveUserSkill_ShouldRemoveUserSkill_Success()
     {
+        await AddApplicantAuthorizationAsync();
+
         var skill = new UserSkill()
         {
-            Skill = new Skill { Name = "Skill2" },
+            Skill = new Skill { Name = "Skill3" },
             UserId = Applicant.Id,
         };
-        await AddEntity<UserSkill>(skill);
+        await AddEntity(skill);
 
         var command = new RemoveUserSkillCommand()
         {
-            Skill = "Skill2"
+            Skill = "Skill3"
         };
-
-        await AddApplicantAuthorizationAsync();
+       
 
         var response = await _client.DeleteAsync($"/api/Profile/RemoveUserSkill/{command.Skill}");
 

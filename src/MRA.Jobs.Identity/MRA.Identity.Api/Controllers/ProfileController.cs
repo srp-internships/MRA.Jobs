@@ -80,10 +80,10 @@ public class ProfileController : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("DeleteEducationDetail")]
-    public async Task<IActionResult> DeleteEducationDetail([FromQuery] DeleteEducationCommand command)
+    [HttpDelete("DeleteEducationDetail/{id}")]
+    public async Task<IActionResult> DeleteEducationDetail([FromRoute] Guid id)
     {
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new DeleteEducationCommand { Id = id });
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
