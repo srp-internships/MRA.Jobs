@@ -11,7 +11,6 @@
 <VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" vacancy="@training" />
 
 @code {
-    private string message = "Loading...";
     private VacancyApplicationResponse training;
     private CreateApplicationCommand application;
     public Dictionary<string, string> questionResponses = new();
@@ -39,16 +38,11 @@
                         VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
                     })
                 };
-            message = string.Empty;
 
             foreach (var question in training.VacancyQuestions)
             {
                 questionResponses[question.Question] = "";
             }
-        }
-        else
-        {
-            message = "Internship not found or not yet published.";
         }
     }
 }
