@@ -8,7 +8,10 @@
 <div class="container w-75 mt-4">
     @if (vacancy is null)
     {
-        <h3>@message</h3>
+        if (showLoader)
+        {
+            <div class="loader"></div>
+        }
     }
     else
     {
@@ -39,6 +42,7 @@
 
 @code {
     private string message = "Loading...";
+    private bool showLoader = false;
 
     [Parameter]
     public VacancyApplicationResponse vacancy { get; set; }
@@ -51,6 +55,16 @@
 
     [Parameter]
     public Dictionary<string, string> questionResponses { get; set; }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(1000);
+            showLoader = true;
+            StateHasChanged();
+        }
+    }
 
     private async Task CreateApplication()
     {
