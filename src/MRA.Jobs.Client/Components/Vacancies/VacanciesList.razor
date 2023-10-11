@@ -85,7 +85,7 @@ else
                 <MudItem xs="12" md="9">
                     <MudGrid>
                         <MudItem xs="12">
-                            <MudTextField @bind-Value="Search" TextChanged="SearchVacancy" Label="Search" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Info" />
+                            <MudTextField @bind-Value="Search" TextChanged="SearchVacancy" Label="Search" Variant="Variant.Outlined" OnAdornmentClick="SearchVacancy" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Info" />
                         </MudItem>
                         @foreach (var Vacancy in GetVisibleVacancies())
                         {
