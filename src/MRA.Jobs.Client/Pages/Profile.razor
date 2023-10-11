@@ -1,35 +1,326 @@
 ﻿@page "/profile"
-@using MatBlazor
+@using MRA.Identity.Application.Contract.Educations.Responses;
+@using MRA.Identity.Application.Contract.Experiences.Responses;
+@using MRA.Identity.Application.Contract.Profile.Responses;
+@using MRA.Jobs.Client.Components.Dialogs;
+@using MudBlazor;
+@inject IDialogService DialogService
 
-<MatTabGroup>
-	<MatTab Label="Personal Information">
-		<EditForm Model="PersonalInformation">
-			<MatTextField Label="First Name" @bind-Value="PersonalInformation.FirstName"></MatTextField>
-			<MatTextField Label="Last Name" @bind-Value="PersonalInformation.LastName"></MatTextField>
-			<!-- Добавьте больше полей по мере необходимости -->
-			<MatButton Type="submit">Save</MatButton>
-		</EditForm>
-	</MatTab>
+<MudGrid>
+	<MudItem xs="2" Class="col-2">
+		<MudPaper Width="250px" Class="py-3" Elevation="0">
+			<MudNavMenu>
+				<MudText Typo="Typo.h6" Class="px-4">My Profile</MudText>
+				<MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Secondary Text</MudText>
+				<MudDivider Class="my-2" />
 
-	<MatTab Label="Education">
-		<!-- Здесь можно добавить форму редактирования образования -->
-	</MatTab>
+				<MudNavLink Class="@((Active == 0) ? "active" : "")" OnClick="()=> Active=0">Personal Information</MudNavLink>
+				<MudNavLink Class="@((Active == 1) ? "active" : "")" OnClick="()=> Active=1">Educations </MudNavLink>
+				<MudNavLink Class="@((Active == 2) ? "active" : "")" OnClick="()=> Active=2">Experience </MudNavLink>
+				<MudNavLink Class="@((Active == 3) ? "active" : "")" OnClick="()=> Active=3">Skills</MudNavLink>
 
-	<MatTab Label="Experience">
-		<!-- Здесь можно добавить форму редактирования опыта -->
-	</MatTab>
+			</MudNavMenu>
+		</MudPaper>
+	</MudItem>
+	<MudItem xs="8" Class="col-8">
 
-	<MatTab Label="Skills">
-		<!-- Здесь можно добавить форму редактирования навыков -->
-	</MatTab>
-</MatTabGroup>
+		<MudContainer Style="padding:10px;padding-left:50px;">
+			@switch (Active)
+			{
+				case 0:
+					<MudText Typo="Typo.h4"> Personal Information</MudText> <br />
+					if (profile == null)
+					{
+						<MudCard>
+							<MudCardHeader>
+
+							</MudCardHeader>
+							<MudCardContent>
+								<MudSkeleton Width="30%" />
+								<MudSkeleton Width="40%" Height="42px;" />
+								<MudSkeleton Width="30%" />
+								<MudSkeleton Width="60%" Height="42px;" />
+								<MudSkeleton Width="30%" />
+								<MudSkeleton Width="50%" Height="42px;" />
+								<MudSkeleton Width="30%" />
+								<MudSkeleton Width="100%" Height="42px;" />
+								<MudSkeleton Width="100%" Height="42px;" />
+								<MudSkeleton Width="100%" Height="42px;" />
+								<MudSkeleton Width="50%" Height="42px;" />
+								<MudCardActions>
+									<MudSkeleton Width="50px" Class="ml-1" />
+									<MudSkeleton Width="40px" Height="42px" Class="ml-2" />
+								</MudCardActions>
+							</MudCardContent>
+							<MudCardActions>
+								<MudSkeleton Width="64px" Height="40px" Class="ml-2" />
+								<MudSkeleton Width="105px" Height="40px" Class="ml-3" />
+							</MudCardActions>
+						</MudCard>
+					}
+					else
+					{
+						<MudCard>
+							<MudCardHeader>
+								<MudText Typo="Typo.h4"> Personal Information</MudText>
+							</MudCardHeader>
+							<MudCardContent>
+								<MudText Typo="Typo.body2" Class="mud-text-secondary">First Name</MudText>
+								<MudText>@profile.FirstName</MudText>
+								<MudText Typo="Typo.body2" Class="mud-text-secondary">Lust Name</MudText>
+								<MudText>@profile.LastName</MudText>
+								<MudText Typo="Typo.body2" Class="mud-text-secondary">UserName</MudText>
+								<MudText>@profile.UserName</MudText>
+								<MudText Typo="Typo.body2" Class="mud-text-secondary">Email</MudText>
+								<MudText>@profile.Email</MudText>
+								<MudText Typo="Typo.body2" Class="mud-text-secondary">Date Of Birth</MudText>
+								<MudText>@profile.DateOfBirth</MudText>
+								<MudText Typo="Typo.body2" Class="mud-text-secondary">Phone Number</MudText>
+								<MudText>@profile.PhoneNumber</MudText>
+								<MudText Typo="Typo.body2" Class="mud-text-secondary">About Myself</MudText>
+								<MudText>@profile.AboutMyself</MudText>
+								<MudText Typo="Typo.body2" Class="mud-text-secondary">Gender</MudText>
+								<MudText>@profile.Gender</MudText>
+							</MudCardContent>
+							<MudCardActions>
+								<MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+							</MudCardActions>
+						</MudCard>
+					}
+					break;
+				case 1:
+					<MudText Typo="Typo.h4"> Educations</MudText>
+
+					<br />
+					<MudGrid>
+						@if (educations.Count == 0)
+						{
+							@for (int i = 0; i < 5; i++)
+							{
+								<MudItem xs="6">
+									<MudCard>
+										<MudCardHeader>
+											<MudSkeleton Width="40%" Height="50px" />
+										</MudCardHeader>
+										<MudCardContent>
+											<MudSkeleton Width="100%" />
+											<MudSkeleton Width="100%" />
+											<MudSkeleton Width="70%" />
+										</MudCardContent>
+										<MudCardActions>
+											<MudSkeleton Width="36px" Height="36px" Class="ml-2" />
+											<MudSkeleton Width="36px" Height="36px" Class="ml-3" />
+										</MudCardActions>
+									</MudCard>
+								</MudItem>
+							}
+						}
+						else
+						{
+							@foreach (UserEducationResponse education in educations)
+							{
+								<MudItem xs="6">
+									<MudCard>
+										<MudCardHeader>
+											<CardHeaderContent>
+												<MudText Typo="Typo.h6"><strong>@education.Speciality</strong></MudText>
+											</CardHeaderContent>
+											<CardHeaderActions>
+												<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" />
+												<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="Delete" />
+											</CardHeaderActions>
+										</MudCardHeader>
+										<MudCardContent>
+											<MudText>@education.University</MudText>
+											@if (education.UntilNow == false)
+											{
+												<MudText>
+													@education.StartDate.ToString("MMM. yyyy") - @education.EndDate.ToString("MMM. yyyy")
+												</MudText>
+											}
+											else
+											{
+												<MudText>
+													@education.StartDate.ToString("MMM. yyyy")  - <MudChip Icon="@Icons.Material.Filled.School" Disabled="true" Color="Color.Success">Present</MudChip>
+												</MudText>
+											}
+
+
+										</MudCardContent>
+
+									</MudCard>
+								</MudItem>
+							}
+						}
+					</MudGrid>
+					break;
+				case 2:
+					<MudText Typo="Typo.h4"> Experiences</MudText>
+
+					<br />
+					<MudGrid>
+						@if (experiences.Count == 0)
+						{
+							@for (int i = 0; i < 5; i++)
+							{
+								<MudItem xs="6">
+									<MudCard>
+										<MudCardHeader>
+											<MudSkeleton Width="40%" Height="50px" />
+										</MudCardHeader>
+										<MudCardContent>
+											<MudSkeleton Width="100%" />
+											<MudSkeleton Width="100%" />
+											<MudSkeleton Width="70%" />
+										</MudCardContent>
+										<MudCardActions>
+											<MudSkeleton Width="36px" Height="36px" Class="ml-2" />
+											<MudSkeleton Width="36px" Height="36px" Class="ml-3" />
+										</MudCardActions>
+									</MudCard>
+								</MudItem>
+							}
+						}
+						else
+						{
+							@foreach (UserExperienceResponse experience in experiences)
+							{
+								<MudItem xs="6">
+									<MudCard>
+										<MudCardHeader>
+											<CardHeaderContent>
+												<MudText Typo="Typo.h6"><strong>@experience.JobTitle</strong></MudText>
+											</CardHeaderContent>
+											<CardHeaderActions>
+												<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" />
+												<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="Delete" />
+											</CardHeaderActions>
+										</MudCardHeader>
+										<MudCardContent>
+											<MudText><MudIcon Icon="@Icons.Material.Filled.Work"></MudIcon>@experience.CompanyName</MudText>
+											@if (experience.IsCurrentJob == false)
+											{
+												<MudText>
+													<MudIcon Icon="@Icons.Material.Filled.CalendarMonth"></MudIcon>
+													@experience.StartDate.ToString("MMM. yyyy") - @experience.EndDate.ToString("MMM. yyyy")
+												</MudText>
+											}
+											else
+											{
+												<MudText>
+													<MudIcon Icon="@Icons.Material.Filled.CalendarMonth"></MudIcon>
+													@experience.StartDate.ToString("MMM. yyyy")  - <MudChip Icon="@Icons.Material.Filled.WorkHistory" Disabled="true" Color="Color.Success">Current Job</MudChip>
+												</MudText>
+											}
+											<MudText><MudIcon Icon="@Icons.Material.Filled.Map"></MudIcon>@experience.Address</MudText>
+											<MudText style="text-align: justify;"><MudIcon Icon="@Icons.Material.Filled.TextFields"></MudIcon>@experience.Description</MudText>
+
+										</MudCardContent>
+
+									</MudCard>
+								</MudItem>
+							}
+						}
+					</MudGrid>
+					break;
+				case 3:
+					<MudText Typo="Typo.h4"> Skills</MudText>
+
+					<br />
+					<MudGrid>
+
+						@for (int i = 0; i < 10; i++)
+						{
+							<MudItem xs="3">
+								<MudCard>
+									<MudCardHeader>
+										<CardHeaderContent>
+											<MudSkeleton Width="40%" Height="50px" />
+										</CardHeaderContent>
+										<CardHeaderActions>
+											<MudSkeleton Width="25px" Height="25px" />
+										</CardHeaderActions>
+									</MudCardHeader>
+									<MudCardContent>
+										<MudSkeleton Width="70%" />
+									</MudCardContent>
+								</MudCard>
+							</MudItem>
+						}
+
+					</MudGrid>
+					break;
+			}
+		</MudContainer>
+
+	</MudItem>
+</MudGrid>
 
 @code {
-	private PersonalInformationModel PersonalInformation = new PersonalInformationModel();
+	private int Active = 0;
+	UserProfileResponse profile = null;
+	List<UserEducationResponse> educations = new List<UserEducationResponse>();
+	List<UserExperienceResponse> experiences = new List<UserExperienceResponse>();
 
-	public class PersonalInformationModel
+	protected override async void OnInitialized()
 	{
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
+		await Task.Delay(3000);
+		educations = new List<UserEducationResponse>() {
+			new UserEducationResponse()
+				{
+					StartDate = DateTime.Now.AddYears(-5),
+					EndDate = DateTime.Now.AddYears(-1),
+					University="DPDTTX",
+					Speciality="Management",
+					UntilNow = false,
+				},
+				new UserEducationResponse()
+					{
+						StartDate = DateTime.Now.AddYears(-5),
+						EndDate = DateTime.Now.AddYears(-1),
+						UntilNow = false,
+					},
+					new UserEducationResponse()
+				{
+					StartDate = DateTime.Now.AddYears(-3),
+					UntilNow = true,
+				}
+		};
+		experiences = new List<UserExperienceResponse>()
+		{
+			new UserExperienceResponse()
+			{
+				CompanyName="IO",
+				JobTitle="Front-end Developer",
+				Address="Ismoili Somoli Street",
+				Description="w djajdawd awjndaj d edkajhd ejeefnsejfse fesfseljfsejfnesfjeskfjseekjf sekfjf eslfjsefsefj slkfjbsfkjsf jsefseflsfljhf flksfs fksjbfskejf sfsj sjfhsufhhfbsf ;akjdjs flesehe sbnfjhliuese fa eufh efbksajfhiuwhdkjbfquwefq fqiufhqkehfbqliuiefq eflqeufh qefqli uehfquef  ",
+				StartDate=DateTime.Now.AddYears(-3),
+				EndDate=DateTime.Now.AddYears(-1),
+				IsCurrentJob=false,
+			},
+			new UserExperienceResponse()
+			{
+				CompanyName="Alif",
+				JobTitle="Back-end Developer",
+				Address="Ismoili Somoli Street",
+				Description="w djajdawd awjndaj d edkajhd ejeefnsejfse fesfseljfsejfnesfjeskfjseekjf sekfjf eslfjsefsefj slkfjbsfkjsf jsefseflsfljhf flksfs fksjbfskejf sfsj sjfhsufhhfbsf ;akjdjs flesehe sbnfjhliuese fa eufh efbksajfhiuwhdkjbfquwefq fqiufhqkehfbqliuiefq eflqeufh qefqli uehfquef  ",
+				StartDate=DateTime.Now.AddYears(-1),
+				IsCurrentJob=true,
+			}
+		};
+
+		StateHasChanged();
+	}
+
+	private void Delete()
+	{
+		var parameters = new DialogParameters<DialogMudBlazor>();
+		parameters.Add(x => x.ContentText, "Do you really want to delete these records? This process cannot be undone.");
+		parameters.Add(x => x.ButtonText, "Delete");
+		parameters.Add(x => x.Color, Color.Error);
+
+		var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+		DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
 	}
 }
