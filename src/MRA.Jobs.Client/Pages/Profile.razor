@@ -1,0 +1,35 @@
+﻿@page "/profile"
+@using MatBlazor
+
+<MatTabGroup>
+	<MatTab Label="Personal Information">
+		<EditForm Model="PersonalInformation">
+			<MatTextField Label="First Name" @bind-Value="PersonalInformation.FirstName"></MatTextField>
+			<MatTextField Label="Last Name" @bind-Value="PersonalInformation.LastName"></MatTextField>
+			<!-- Добавьте больше полей по мере необходимости -->
+			<MatButton Type="submit">Save</MatButton>
+		</EditForm>
+	</MatTab>
+
+	<MatTab Label="Education">
+		<!-- Здесь можно добавить форму редактирования образования -->
+	</MatTab>
+
+	<MatTab Label="Experience">
+		<!-- Здесь можно добавить форму редактирования опыта -->
+	</MatTab>
+
+	<MatTab Label="Skills">
+		<!-- Здесь можно добавить форму редактирования навыков -->
+	</MatTab>
+</MatTabGroup>
+
+@code {
+	private PersonalInformationModel PersonalInformation = new PersonalInformationModel();
+
+	public class PersonalInformationModel
+	{
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+	}
+}
