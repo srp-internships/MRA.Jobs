@@ -37,8 +37,9 @@ public class GetAccessTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAc
                 return Task.FromResult<ApplicationResponse<JwtTokenResponse>>(
                     new ApplicationResponseBuilder<JwtTokenResponse>().SetResponse(new JwtTokenResponse
                     {
-                        AccessToken = _tokenService.CreateTokenByClaims(claims),
-                        RefreshToken = _tokenService.CreateRefreshToken(claims)
+                        AccessToken = _tokenService.CreateTokenByClaims(claims, out var expireDate),
+                        RefreshToken = _tokenService.CreateRefreshToken(claims),
+                        RefreshTokenValidTo = expireDate
                     }));
             }
 

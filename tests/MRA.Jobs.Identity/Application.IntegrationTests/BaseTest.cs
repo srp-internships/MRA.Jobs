@@ -18,6 +18,7 @@ public abstract class BaseTest
     protected Guid FirstUserId { get; private set; }
     protected ApplicationUser Applicant { get; private set; }
     protected ApplicationUser Reviewer { get; private set; }
+
     /// <summary>
     /// Initializing of factory and _context. And Creating a InMemoryDB
     /// </summary>
@@ -51,6 +52,7 @@ public abstract class BaseTest
 
         await AddUser(request2, "password@#12P");
     }
+
     protected async Task<T> GetEntity<T>(Expression<Func<T, bool>> query) where T : class
     {
         using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
@@ -72,6 +74,7 @@ public abstract class BaseTest
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         return dbContext.Set<T>().ToListAsync();
     }
+
     protected Task<List<T>> GetWhere<T>(Expression<Func<T, bool>> query) where T : class
     {
         using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
@@ -85,6 +88,7 @@ public abstract class BaseTest
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         return dbContext.Set<TEntity>().CountAsync();
     }
+
     protected async Task AddUser(ApplicationUser user, string password)
     {
         using var scope = _factory.Services.GetService<IServiceScopeFactory>().CreateScope();
@@ -100,7 +104,7 @@ public abstract class BaseTest
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var superAdmin = await userManager.Users.FirstOrDefaultAsync(s => s.NormalizedUserName == "SUPERADMIN");
         var claims = await userManager.GetClaimsAsync(superAdmin);
-        var token = tokenService.CreateTokenByClaims(claims);
+        var token = tokenService.CreateTokenByClaims(claims, out _);
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
 
@@ -128,7 +132,7 @@ public abstract class BaseTest
             new Claim($"{prefics}email", user.Email),
             new Claim($"{prefics}application", "MraJobs")
         };
-        var token = tokenService.CreateTokenByClaims(claims);
+        var token = tokenService.CreateTokenByClaims(claims, out _);
 
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
@@ -149,7 +153,7 @@ public abstract class BaseTest
             new Claim($"{prefics}email", reviewer.Email),
             new Claim($"{prefics}application", "MraJobs")
         };
-        var token = tokenService.CreateTokenByClaims(claims);
+        var token = tokenService.CreateTokenByClaims(claims, out _);
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
 }
