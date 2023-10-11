@@ -17,7 +17,10 @@ public sealed class ApplicationDbContext : IdentityDbContext<ApplicationUser, Ap
     }
 
     public DbSet<ConfirmationCode> ConfirmationCodes { get; set; }
-
+    public DbSet<Skill> Skills { get; set; }
+    public DbSet<EducationDetail> Educations { get; set; }
+    public DbSet<ExperienceDetail> Experiences { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
