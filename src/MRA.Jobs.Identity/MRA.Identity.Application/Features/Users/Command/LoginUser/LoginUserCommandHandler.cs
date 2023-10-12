@@ -47,7 +47,8 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Applica
                 return new ApplicationResponseBuilder<JwtTokenResponse>().SetResponse(new JwtTokenResponse
                 {
                     RefreshToken = _jwtTokenService.CreateRefreshToken(await _userManager.GetClaimsAsync(user)),
-                    AccessToken = _jwtTokenService.CreateTokenByClaims(await _userManager.GetClaimsAsync(user))
+                    AccessToken = _jwtTokenService.CreateTokenByClaims(await _userManager.GetClaimsAsync(user), out var expireDate),
+                    AccessTokenValidTo = expireDate
                 });
             }
 

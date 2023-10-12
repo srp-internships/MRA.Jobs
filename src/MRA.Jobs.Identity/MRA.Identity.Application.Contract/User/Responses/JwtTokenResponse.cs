@@ -8,5 +8,5 @@ public class JwtTokenResponse
     public string AccessToken { get; set; }
     [JsonPropertyName("RefreshToken")]
     public string RefreshToken { get; set; }
-    public DateTime RefreshTokenValidTo { get; set; }
+    public DateTime AccessTokenValidTo { get; set; }
 }
