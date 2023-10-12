@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.ApplicationRoles.Commands;
-using MRA.Identity.Application.Contract.ApplicationRoles.Queries;
 using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Roles.Commands;

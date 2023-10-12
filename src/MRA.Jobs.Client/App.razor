@@ -1,12 +1,46 @@
-﻿@using Shared;
-
+﻿@using MRA.Jobs.Client.Identity
+@{
+    const string roles = $"{ApplicationClaimValues.Administrator}, {ApplicationClaimValues.Reviewer}";
+}
 <Router AppAssembly="typeof(Program).Assembly" Context="routeData">
     <Found>
-        <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)" />
+        <CascadingAuthenticationState>
+
+            <AuthorizeView>
+                <Authorized>
+                    <AuthorizeView Roles="@roles" Context="_">
+                        <Authorized>
+                            <RouteView RouteData="routeData" DefaultLayout="typeof(Dashboard)"/>
+                        </Authorized>
+
+                        <NotAuthorized>
+                            <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)"/>
+                        </NotAuthorized>
+                    </AuthorizeView>
+
+                </Authorized>
+                <NotAuthorized>
+                    <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)"/>
+                </NotAuthorized>
+            </AuthorizeView>
+
+        </CascadingAuthenticationState>
     </Found>
     <NotFound>
-        <LayoutView Layout="typeof(MainLayout)">
-            <div class="main">Sorry, there's nothing at this address.</div>
-        </LayoutView>
+        <CascadingAuthenticationState>
+            <AuthorizeView Roles="@roles" Context="_">
+                <Authorized>
+                    <LayoutView Layout="typeof(Dashboard)">
+                        <div class="main">Sorry, there's nothing at this address.</div>
+                    </LayoutView>
+                </Authorized>
+
+                <NotAuthorized>
+                    <LayoutView Layout="typeof(MainLayout)">
+                        <div class="main">Sorry, there's nothing at this address.</div>
+                    </LayoutView>
+                </NotAuthorized>
+            </AuthorizeView>
+        </CascadingAuthenticationState>
     </NotFound>
 </Router>

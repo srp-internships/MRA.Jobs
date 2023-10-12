@@ -1,0 +1,47 @@
+﻿@page "/jobs/apply/{Slug}"
+@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+@inject HttpClient httpClient
+@inject IApplicationService ApplicationService;
+@inject IVacancyService VacancyService
+@inject NavigationManager NavigationManager
+@using MRA.Jobs.Application.Contracts.VacancyClient;
+@using MRA.Jobs.Client.Components.Vacancies
+
+<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" vacancy="@job" />
+
+@code {
+    private VacancyApplicationResponse job;
+    private CreateApplicationCommand application;
+    public Dictionary<string, string> questionResponses = new();
+
+    [Parameter]
+    public string Slug { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await VacancyService.GetBySlug(Slug);
+
+        if (response != null)
+        {
+            job = new VacancyApplicationResponse
+                {
+                    Id = response.Id,
+                    Title = response.Title,
+                    VacancyQuestions = response.VacancyQuestions
+                };
+            application = new CreateApplicationCommand
+                {
+                    VacancyId = job.Id,
+                    VacancyResponses = job.VacancyQuestions.Select(q => new VacancyResponseDto
+                    {
+                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+                    })
+                };
+            foreach (var question in job.VacancyQuestions)
+            {
+                questionResponses[question.Question] = "";
+            }
+        }
+    }
+}

@@ -1,17 +1,56 @@
-﻿@page "/dashboard"
+﻿@using MRA.Jobs.Client.Identity
 @inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-    <main>
-        <div class="top-row px-4">
+
+<div class="container m-0">
+    <div class="row">
+        <div class="col-md-4">
+            <MudPaper Width="250px" Elevation="0" Class="py-3">
+                <MudNavMenu Bordered="true">
+                    <MudNavLink Href="/dashboard">Dashboard</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
+                    <MudNavGroup Title="User" Expanded="true">
+                        <MudNavLink Href="/applications">Applications</MudNavLink>
+                        <MudNavLink Href="/">Reviewers</MudNavLink>
+                    </MudNavGroup>
+                    <MudNavLink Href="/dashboard/jobs">Jobs</MudNavLink>
+                    <MudNavLink Href="/dashboard/internship">Internships</MudNavLink>
+                    <MudNavLink Href="/dashboard/trainings">Trainings</MudNavLink>
+                    <CascadingAuthenticationState>
+                        <AuthorizeView Roles="@ApplicationClaimValues.Administrator">
+                            <MudNavLink Href="/userManager">Users manager</MudNavLink>
+                        </AuthorizeView>
+                    </CascadingAuthenticationState>
+                    <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="@LogOut">Log out</MudNavLink>
+                </MudNavMenu>
+            </MudPaper>
         </div>
-
-        <article class="content px-4">
+        <div class="col-md-8">
             @Body
-        </article>
-    </main>
+        </div>
+    </div>
 </div>
+
+@code {
+
+    [Inject]
+    private NavigationManager _navigationManager { get; set; }
+
+    [Inject]
+    private ILocalStorageService _localStorageService { get; set; }
+
+    [Inject]
+    private AuthenticationStateProvider _authStateProvider { get; set; }
+
+
+    private async Task LogOut()
+    {
+        await _localStorageService.RemoveItemAsync("authToken");
+        await _authStateProvider.GetAuthenticationStateAsync();
+        _navigationManager.NavigateTo("/");
+    }
+}

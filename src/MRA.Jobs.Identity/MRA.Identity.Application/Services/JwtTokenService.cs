@@ -16,7 +16,24 @@ internal class JwtTokenService : IJwtTokenService
         _configuration = configuration;
     }
 
-    public string CreateTokenByClaims(IList<Claim> claims)
+    public string CreateTokenByClaims(IList<Claim> claims, out DateTime expireDate)
+    {
+        SymmetricSecurityKey key = new(Encoding.UTF8
+            .GetBytes(_configuration.GetSection("JwtSettings")["SecurityKey"]!));
+
+        SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha512Signature);
+        expireDate = DateTime.Now.AddDays(int.Parse(_configuration.GetSection("JwtSettings")["ExpireDayFromNow"]!));
+        JwtSecurityToken token = new(
+            claims: claims,
+            expires: expireDate,
+            signingCredentials: creds);
+
+        string? jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+        return jwt;
+    }
+
+    public string CreateRefreshToken(IList<Claim> claims)
     {
         SymmetricSecurityKey key = new(Encoding.UTF8
             .GetBytes(_configuration.GetSection("JwtSettings")["SecurityKey"]!));
@@ -25,23 +42,8 @@ internal class JwtTokenService : IJwtTokenService
 
         JwtSecurityToken token = new(
             claims: claims,
-            expires: DateTime.Now.AddDays(int.Parse(_configuration.GetSection("JwtSettings")["ExpireDayFromNow"]!)),
-            signingCredentials: creds);
-
-        string? jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-        return jwt;
-    }
-    public string CreateRefreshToken(IList<Claim> claims)
-    {
-         SymmetricSecurityKey key = new(Encoding.UTF8
-            .GetBytes(_configuration.GetSection("JwtSettings")["SecurityKey"]!));
-
-        SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha512Signature);
-
-        JwtSecurityToken token = new(
-            claims: claims,
-            expires: DateTime.Now.AddDays(60),
+            expires: DateTime.Now.AddDays(
+                int.Parse(_configuration.GetSection("JwtSettings")["RefreshTokenExpireDayFromNow"]!)),
             signingCredentials: creds);
 
         string? jwt = new JwtSecurityTokenHandler().WriteToken(token);

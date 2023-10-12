@@ -1,0 +1,100 @@
+﻿@using Blazored.LocalStorage;
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+@using MRA.Jobs.Application.Contracts.VacancyClient;
+@using MRA.Jobs.Client.Identity;
+@using Microsoft.AspNetCore.Components.Authorization;
+@inject AuthenticationStateProvider provider
+@inject IApplicationService ApplicationService
+
+@if (vacancyDetails is null)
+{
+    if (showLoader)
+    {
+        <div class="loader"></div>
+    }
+}
+else
+{
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8 col-sm-12">
+                <MudPaper Class="pa-16 ma-2 details">
+                    <MudText Typo="Typo.h2" Style="color: #129fd7; font-weight: 900;">@vacancyDetails.Title</MudText>
+                    <MudText Typo="Typo.h6">Duration: @vacancyDetails.Duration month(s)</MudText>
+                    <MudText Typo="Typo.h6">Published at: @vacancyDetails.PublishDate.Day/@vacancyDetails.PublishDate.Month/@vacancyDetails.PublishDate.Year</MudText>
+                    <MudText Typo="Typo.h6">Deadline: @vacancyDetails.EndDate.Date.Day/@vacancyDetails.EndDate.Date.Month/@vacancyDetails.EndDate.Date.Year</MudText>
+                    @if (vacancyDetails.RequiredYearOfExperience != 0)
+                    {
+                        <MudText Typo="Typo.h6">Required year(s) of experience: @vacancyDetails.RequiredYearOfExperience</MudText>
+                    }
+                    @if (vacancyDetails.Fees != 0)
+                    {
+                        <MudText Typo="Typo.h6">Fees: @vacancyDetails.Fees s</MudText>
+                    }
+                    <MudDivider />
+                    <MudText Typo="Typo.h5">Description</MudText>
+                    <MudText Typo="Typo.body1">@((MarkupString)@vacancyDetails.Description)</MudText>
+                    </MudPaper>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudText Typo="Typo.h5" Color="Color.Info">Do You want to work at Silk Road Professionals?</MudText>
+                            <MudText Typo="Typo.body2">Write a cover letter, answer few questions and send yout application!</MudText>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <CascadingAuthenticationState>
+                                <AuthorizeView>
+                                    <Authorized>
+                                        @if (applied)
+                                    {
+                                        <span class="text-success"> <i class="fa fa-check" aria-hidden="true"></i>Applied</span>
+                                    }
+                                    else
+                                    {
+                                        <a href="/@vacancy/apply/@Slug" class="btn btn-primary w-100">Apply</a>
+                                    }
+                                </Authorized>
+                                <NotAuthorized>
+                                    <a href="/sign-in" class="btn btn-primary w-100">Apply</a>
+                                </NotAuthorized>
+                            </AuthorizeView>
+                        </CascadingAuthenticationState>
+                    </MudCardActions>
+                </MudCard>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+
+@code {
+    private bool showLoader = false;
+    [Parameter]
+    public string Slug { get; set; }
+
+    [Parameter]
+    public VacancyDetailsResponse vacancyDetails { get; set; }
+
+    [Parameter]
+    public string vacancy { get; set; }
+
+    private bool applied = false;
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(1000);
+            showLoader = true;
+            StateHasChanged();
+        }
+    }
+
+    private async Task<bool> ApplicationExits()
+    {
+        return await ApplicationService.ApplicationExist(Slug);
+    }
+}
