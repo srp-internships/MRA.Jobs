@@ -20,25 +20,12 @@ public class UserRolesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get(string role = null, string userName = null)
     {
-
-        var result = await _mediator
-            .Send(new GetUserRolesQuery
-            {
-                Role = role,
-                UserName = userName
-            });
-        if (result.IsSuccess)
+        return Ok(await _mediator
+        .Send(new GetUserRolesQuery
         {
-            return Ok(result.Response);
-        }
-        if (result.ErrorMessage != null)
-        {
-            return BadRequest(result.ErrorMessage);
-        }
-        if (result.Exception != null)
-            return BadRequest(result.Exception.ToString());
-
-        return BadRequest();
+            Role = role,
+            UserName = userName
+        }));  
     }
 
     [HttpGet("{slug}")]

@@ -6,10 +6,11 @@ using MRA.Identity.Application.Contract;
 using MRA.Identity.Domain.Entities;
 using Mra.Shared.Common.Constants;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
+using MRA.Identity.Application.Common.Exceptions;
 
 namespace MRA.Identity.Application.Features.Users.Command.RegisterUser;
 
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ApplicationResponse<Guid>>
+public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Guid>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IApplicationDbContext _context;
@@ -25,63 +26,55 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
         _roleManager = roleManager;
     }
 
-    public async Task<ApplicationResponse<Guid>> Handle(RegisterUserCommand request,
+    public async Task<Guid> Handle(RegisterUserCommand request,
         CancellationToken cancellationToken)
     {
-        try
+
+        ApplicationUser user = new()
         {
-            ApplicationUser user = new()
+            Id = Guid.NewGuid(),
+            UserName = request.Username,
+            NormalizedUserName = request.Username.ToLower(),
+            Email = request.Email,
+            NormalizedEmail = request.Email.ToLower(),
+            EmailConfirmed = false,
+            PhoneNumber = request.PhoneNumber
+        };
+        IdentityResult result = await _userManager.CreateAsync(user, request.Password);
+
+        if (!result.Succeeded)
+        {
+            throw new ValidationException(result.Errors.First().Description);
+        }
+
+        await _emailVerification.SendVerificationEmailAsync(user);
+
+        if (!await _roleManager.RoleExistsAsync(request.Role))
+        {
+            var role = new ApplicationRole
             {
                 Id = Guid.NewGuid(),
-                UserName = request.Username,
-                NormalizedUserName = request.Username.ToLower(),
-                Email = request.Email,
-                NormalizedEmail = request.Email.ToLower(),
-                EmailConfirmed = false,
-                PhoneNumber = request.PhoneNumber
+                Name = request.Role,
+                NormalizedName = _roleManager.NormalizeKey(request.Role),
+                Slug = $"{request.Username}-{request.Role}",
             };
-            IdentityResult result = await _userManager.CreateAsync(user, request.Password);
-
-            if (!result.Succeeded)
+            var roleResult = await _roleManager.CreateAsync(role);
+            if (!roleResult.Succeeded)
             {
-                return new ApplicationResponseBuilder<Guid>().SetErrorMessage(result.Errors.First().Description)
-                    .Success(false).Build();
+                throw new ValidationException(roleResult.Errors.First().Description);
+
             }
-
-            await _emailVerification.SendVerificationEmailAsync(user);
-
-            if (!await _roleManager.RoleExistsAsync(request.Role))
-            {
-                var role = new ApplicationRole
-                {
-                    Id = Guid.NewGuid(),
-                    Name = request.Role,
-                    NormalizedName = _roleManager.NormalizeKey(request.Role),
-                    Slug = $"{request.Username}-{request.Role}",
-                };
-                var roleResult = await _roleManager.CreateAsync(role);
-                if (!roleResult.Succeeded)
-                {
-                    throw new Exception(roleResult.Errors.First().Description);
-                }
-            }
-
-            var userRoleResult = await _userManager.AddToRoleAsync(user, request.Role);
-
-            if (!userRoleResult.Succeeded)
-            {
-                throw new Exception(userRoleResult.Errors.First().Description);
-            }
-
-            await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
-                cancellationToken);
-
-            return new ApplicationResponseBuilder<Guid>().SetResponse(user.Id).Build();
         }
-        catch (Exception e)
+
+        var userRoleResult = await _userManager.AddToRoleAsync(user, request.Role);
+        if (!userRoleResult.Succeeded)
         {
-            return new ApplicationResponseBuilder<Guid>().SetException(e).Success(false).Build();
+            
+            throw new ValidationException(userRoleResult.Errors.First().Description);
         }
+        await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
+            cancellationToken);
+        return user.Id;
     }
 
 
@@ -117,7 +110,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
                 Slug = $"{username}-application"
             }
         };
-        await _context.UserClaims.AddRangeAsync(userClaims,cancellationToken);
+        await _context.UserClaims.AddRangeAsync(userClaims, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
     }
 }

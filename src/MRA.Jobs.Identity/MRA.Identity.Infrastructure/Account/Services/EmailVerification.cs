@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Mra.Shared.Common.Interfaces.Services;
+using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Identity.Domain.Entities;
@@ -26,26 +27,23 @@ public class EmailVerification : IEmailVerification
     var emailSubject = "Email Verification";
     return await _emailService.SendEmailAsync(new[] { user.Email }, emailBody, emailSubject);
     }
-    public async Task<VerifyUserEmailResponse> VerifyEmailAsync(string token)
+    public async Task VerifyEmailAsync(string token)
     {
         var userId=_user.GetUserId();
         var user = await _userManager.Users.FirstOrDefaultAsync(s => s.Id == userId);
 
         if (user == null)
         {
-            return new VerifyUserEmailResponse() { ErrorMessage = "user can not be null", Success = false };
+            throw new NotFoundException("user not found");
         }
 
         var result = await _userManager.ConfirmEmailAsync(user, token);
 
-        if (result.Succeeded)
+        if (!result.Succeeded)
         {
-            return new VerifyUserEmailResponse() { Success = true };
+            throw new ValidationException("token is not valid");
         }
-        else
-        {
-            return new VerifyUserEmailResponse() { ErrorMessage =$"{result.Errors.First().Description}", Success = false };
-        }
+        
 
     }
 

@@ -4,13 +4,12 @@ using MediatR;
 using MRA.Identity.Application.Contract.Admin.Responses;
 using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Application.Common.Interfaces.Services;
-using MRA.Identity.Application.Contract;
 using ClaimTypes = Mra.Shared.Common.Constants.ClaimTypes;
+using MRA.Identity.Application.Common.Exceptions;
 
 namespace MRA.Identity.Application.Features.Users.Query;
 
-public class GetAccessTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAccessTokenUsingRefreshTokenQuery,
-    ApplicationResponse<JwtTokenResponse>>
+public class GetAccessTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAccessTokenUsingRefreshTokenQuery, JwtTokenResponse>
 {
     private readonly IJwtTokenService _tokenService;
 
@@ -18,63 +17,44 @@ public class GetAccessTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAc
     {
         _tokenService = tokenService;
     }
-
-    Task<ApplicationResponse<JwtTokenResponse>>
-        IRequestHandler<GetAccessTokenUsingRefreshTokenQuery, ApplicationResponse<JwtTokenResponse>>.Handle(
+    Task<JwtTokenResponse>
+        IRequestHandler<GetAccessTokenUsingRefreshTokenQuery, JwtTokenResponse>.Handle(
             GetAccessTokenUsingRefreshTokenQuery request, CancellationToken cancellationToken)
     {
-        try
+        if (!AreTokensRelated(request))
         {
-            if (!AreTokensRelated(request))
-            {
-                return Task.FromResult(new ApplicationResponseBuilder<JwtTokenResponse>().Success(false)
-                    .SetErrorMessage("Tokens are not related").Build());
-            }
-
-            var claims = GetTokenClaims(request.AccessToken);
-            if (claims.Count != 0)
-            {
-                return Task.FromResult<ApplicationResponse<JwtTokenResponse>>(
-                    new ApplicationResponseBuilder<JwtTokenResponse>().SetResponse(new JwtTokenResponse
-                    {
-                        AccessToken = _tokenService.CreateTokenByClaims(claims),
-                        RefreshToken = _tokenService.CreateRefreshToken(claims)
-                    }));
-            }
-
-            return Task.FromResult(new ApplicationResponseBuilder<JwtTokenResponse>().Success(false)
-                .SetErrorMessage("Could not validate token").Build());
+            throw new ValidationException("Tokens are not related");
         }
-        catch (Exception ex)
+        var claims = GetTokenClaims(request.AccessToken);
+        if (claims.Count != 0)
         {
-            return Task.FromResult(new ApplicationResponseBuilder<JwtTokenResponse>().Success(false)
-                .SetErrorMessage(ex.Message)
-                .Build());
+            return Task.FromResult(new JwtTokenResponse
+                {
+                    AccessToken = _tokenService.CreateTokenByClaims(claims),
+                    RefreshToken = _tokenService.CreateRefreshToken(claims)
+                });
         }
+        throw new ValidationException("Could not validate token");
     }
-
     private bool AreTokensRelated(GetAccessTokenUsingRefreshTokenQuery query)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var refreshClaims = tokenHandler.ReadJwtToken(query.RefreshToken);
         var refreshUserId = refreshClaims.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Id);
-
         var accessClaims = tokenHandler.ReadJwtToken(query.AccessToken);
         var accessUserId = accessClaims.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Id);
-
         return refreshUserId != null &&
                accessUserId != null &&
                refreshUserId.Value == accessUserId.Value;
     }
-
     private List<Claim> GetTokenClaims(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
 
         if (!tokenHandler.CanReadToken(token))
         {
-            throw new Exception("Token is not valid! Can not read it");
+            throw new ValidationException("Token is not valid! Can not read it");
         }
 
         var jwtToken = tokenHandler.ReadJwtToken(token);
