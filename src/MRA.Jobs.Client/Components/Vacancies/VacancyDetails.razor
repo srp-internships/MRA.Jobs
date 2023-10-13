@@ -48,7 +48,7 @@ else
                                     <Authorized>
                                         @if (applied)
                                     {
-                                        <span class="text-success"> <i class="fa fa-check" aria-hidden="true"></i>Applied</span>
+                                        <a href="#" class="btn btn-secondary w-100 disabled">Applied</a>
                                     }
                                     else
                                     {
@@ -81,20 +81,16 @@ else
     [Parameter]
     public string vacancy { get; set; }
 
-    private bool applied = false;
+    public bool applied { get; set; }
 
     protected override async void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
+            applied = await ApplicationService.ApplicationExist(Slug);
             await Task.Delay(1000);
             showLoader = true;
             StateHasChanged();
         }
-    }
-
-    private async Task<bool> ApplicationExits()
-    {
-        return await ApplicationService.ApplicationExist(Slug);
     }
 }
