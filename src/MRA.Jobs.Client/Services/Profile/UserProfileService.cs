@@ -1,15 +1,16 @@
 ﻿using System.Net.Http.Json;
 using MatBlazor;
+using MRA.Identity.Application.Contract.Educations.Responses;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Responses;
 
 namespace MRA.Jobs.Client.Services.Profile;
 
-public class UserProfile : IUserProfile
+public class UserProfileService : IUserProfileService
 {
     private readonly IdentityHttpClient _identityHttpClient;
 
-    public UserProfile(IdentityHttpClient identityHttpClient)
+    public UserProfileService(IdentityHttpClient identityHttpClient)
     {
         _identityHttpClient = identityHttpClient;
     }
@@ -22,6 +23,12 @@ public class UserProfile : IUserProfile
     public async Task<UserProfileResponse> Get()
     {
         var result = await _identityHttpClient.GetJsonAsync<UserProfileResponse>("Profile");
+        return result;
+    }
+
+    public async Task<List<UserEducationResponse>> GetEducations()
+    {
+        var result = await _identityHttpClient.GetJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
         return result;
     }
 }

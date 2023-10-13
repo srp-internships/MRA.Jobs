@@ -62,5 +62,5 @@ builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUserProfile, UserProfile>();
+builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 await builder.Build().RunAsync();

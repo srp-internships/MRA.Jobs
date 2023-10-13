@@ -92,7 +92,7 @@ public class ProfileController : ControllerBase
         var result = await _mediator.Send(command);
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpDelete("DeleteEducationDetail/{id}")]
@@ -125,7 +125,7 @@ public class ProfileController : ControllerBase
             }
             return BadRequest(result.ErrorMessage + result.Exception);
         }
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpPost("СreateExperienceDetail")]

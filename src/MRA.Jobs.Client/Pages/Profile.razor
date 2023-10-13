@@ -9,7 +9,7 @@
 @using FluentValidation;
 
 @inject IDialogService DialogService;
-@inject IUserProfile UserProfile;
+@inject IUserProfileService UserProfileService;
 
 <div class="container m-0">
 	<div class="row">
@@ -298,32 +298,10 @@
 
 	protected override async void OnInitialized()
 	{
-		profile = await UserProfile.Get();
+		profile = await UserProfileService.Get();
 
-		educations = new List<UserEducationResponse>() {
-			new UserEducationResponse()
-				{
-					Id=Guid.NewGuid(),
-					StartDate = DateTime.Now.AddYears(-5),
-					EndDate = DateTime.Now.AddYears(-1),
-					University="DPDTTX",
-					Speciality="Management",
-					UntilNow = false,
-				},
-				new UserEducationResponse()
-					{
-						Id=Guid.NewGuid(),
-						StartDate = DateTime.Now.AddYears(-5),
-						EndDate = DateTime.Now.AddYears(-1),
-						UntilNow = false,
-					},
-					new UserEducationResponse()
-				{
-					Id=Guid.NewGuid(),
-					StartDate = DateTime.Now.AddYears(-3),
-					UntilNow = true,
-				}
-		};
+		educations = await UserProfileService.GetEducations();
+
 		experiences = new List<UserExperienceResponse>()
 		{
 			new UserExperienceResponse()
@@ -375,6 +353,6 @@
 				AboutMyself = profile.AboutMyself
 			};
 
-		var result = await UserProfile.Update(command);
+		var result = await UserProfileService.Update(command);
 	}
 }
