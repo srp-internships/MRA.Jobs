@@ -26,13 +26,16 @@
                 }
             }
         </MudList>
-        <MudSelect T="string" Label="Select status" AnchorOrigin="Origin.BottomCenter" @bind-Value="@selectedStatus">
-            @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
-            {
-                <MudSelectItem Value="@status.ToString()" />
-            }
-        </MudSelect>
-        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ChangeStatus">Change status</MudButton>
+        @if (!isApplicant)
+        {
+            <MudSelect T="string" Label="Select status" AnchorOrigin="Origin.BottomCenter" @bind-Value="@selectedStatus">
+                @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                {
+                    <MudSelectItem Value="@status.ToString()" />
+                }
+            </MudSelect>
+            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ChangeStatus">Change status</MudButton>
+        }
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -49,6 +52,7 @@
     [Parameter] public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
     [Parameter] public string Slug { get; set; }
     [Parameter] public string StatusName { get; set; }
+    [Parameter] public bool isApplicant { get; set; }
 
     private UpdateApplicationStatus applicationStatus;
 
