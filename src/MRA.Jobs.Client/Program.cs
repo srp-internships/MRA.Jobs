@@ -12,11 +12,11 @@ using MRA.Jobs.Client.Services.ApplicationService;
 using MRA.Jobs.Client.Services.InternshipsServices;
 using MRA.Jobs.Client.Services.TrainingServices;
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
-using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.Auth;
 using MudBlazor.Services;
+using MRA.Jobs.Client.Services.Profile;
+using System.Reflection;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -33,6 +33,8 @@ builder.Services.AddMudServices();
 builder.Services.AddMatBlazor();
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
+
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 
 var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
@@ -60,4 +62,5 @@ builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserProfile, UserProfile>();
 await builder.Build().RunAsync();

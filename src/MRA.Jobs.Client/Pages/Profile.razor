@@ -1,30 +1,34 @@
 ﻿@page "/profile"
 @using MRA.Identity.Application.Contract.Educations.Responses;
 @using MRA.Identity.Application.Contract.Experiences.Responses;
+@using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 @using MRA.Identity.Application.Contract.Profile.Responses;
 @using MRA.Jobs.Client.Components.Dialogs;
+@using MRA.Jobs.Client.Services.Profile;
 @using MudBlazor;
-@inject IDialogService DialogService
+@using FluentValidation;
 
-<MudGrid>
-	<MudItem xs="2" Class="col-2">
-		<MudPaper Width="250px" Class="py-3" Elevation="0">
-			<MudNavMenu>
-				<MudText Typo="Typo.h6" Class="px-4">My Profile</MudText>
-				<MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Secondary Text</MudText>
-				<MudDivider Class="my-2" />
+@inject IDialogService DialogService;
+@inject IUserProfile UserProfile;
 
-				<MudNavLink Class="@((Active == 0) ? "active" : "")" OnClick="()=> Active=0">Personal Information</MudNavLink>
-				<MudNavLink Class="@((Active == 1) ? "active" : "")" OnClick="()=> Active=1">Educations </MudNavLink>
-				<MudNavLink Class="@((Active == 2) ? "active" : "")" OnClick="()=> Active=2">Experience </MudNavLink>
-				<MudNavLink Class="@((Active == 3) ? "active" : "")" OnClick="()=> Active=3">Skills</MudNavLink>
+<div class="container m-0">
+	<div class="row">
+		<div class="col-md-4">
+			<MudPaper Width="250px" Class="py-3" Elevation="0">
+				<MudNavMenu>
+					<MudText Typo="Typo.h6" Class="px-4">My Profile</MudText>
+					<MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Secondary Text</MudText>
+					<MudDivider Class="my-2" />
 
-			</MudNavMenu>
-		</MudPaper>
-	</MudItem>
-	<MudItem xs="8" Class="col-8">
+					<MudNavLink Class="@((Active == 0) ? "active" : "")" OnClick="()=> Active=0">Personal Information</MudNavLink>
+					<MudNavLink Class="@((Active == 1) ? "active" : "")" OnClick="()=> Active=1">Educations </MudNavLink>
+					<MudNavLink Class="@((Active == 2) ? "active" : "")" OnClick="()=> Active=2">Experience </MudNavLink>
+					<MudNavLink Class="@((Active == 3) ? "active" : "")" OnClick="()=> Active=3">Skills</MudNavLink>
 
-		<MudContainer Style="padding:10px;padding-left:50px;">
+				</MudNavMenu>
+			</MudPaper>
+		</div>
+		<div class="col-md-8">
 			@switch (Active)
 			{
 				case 0:
@@ -60,32 +64,41 @@
 					}
 					else
 					{
-						<MudCard>
-							<MudCardHeader>
-								<MudText Typo="Typo.h4"> Personal Information</MudText>
-							</MudCardHeader>
-							<MudCardContent>
-								<MudText Typo="Typo.body2" Class="mud-text-secondary">First Name</MudText>
-								<MudText>@profile.FirstName</MudText>
-								<MudText Typo="Typo.body2" Class="mud-text-secondary">Lust Name</MudText>
-								<MudText>@profile.LastName</MudText>
-								<MudText Typo="Typo.body2" Class="mud-text-secondary">UserName</MudText>
-								<MudText>@profile.UserName</MudText>
-								<MudText Typo="Typo.body2" Class="mud-text-secondary">Email</MudText>
-								<MudText>@profile.Email</MudText>
-								<MudText Typo="Typo.body2" Class="mud-text-secondary">Date Of Birth</MudText>
-								<MudText>@profile.DateOfBirth</MudText>
-								<MudText Typo="Typo.body2" Class="mud-text-secondary">Phone Number</MudText>
-								<MudText>@profile.PhoneNumber</MudText>
-								<MudText Typo="Typo.body2" Class="mud-text-secondary">About Myself</MudText>
-								<MudText>@profile.AboutMyself</MudText>
-								<MudText Typo="Typo.body2" Class="mud-text-secondary">Gender</MudText>
-								<MudText>@profile.Gender</MudText>
-							</MudCardContent>
-							<MudCardActions>
-								<MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
-							</MudCardActions>
-						</MudCard>
+						<EditForm Model="@profile" OnValidSubmit="UpdateProfile">
+							<FluentValidationValidator />
+
+							<MudCard>
+								<MudCardContent>
+									<MudText Typo="Typo.body2" Class="mud-text-secondary">First Name</MudText>
+									<MudTextField @bind-Value="@profile.FirstName" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => profile.FirstName)" />
+
+									<br />
+									<MudText Typo="Typo.body2" Class="mud-text-secondary">Last Name</MudText>
+									<MudTextField @bind-Value="@profile.LastName" Variant="Variant.Outlined" Margin="Margin.Dense" />
+									<br />
+									<MudText Typo="Typo.body2" Class="mud-text-secondary">UserName</MudText>
+									<MudTextField @bind-Value="@profile.UserName" Variant="Variant.Outlined" Margin="Margin.Dense" Disabled="true" />
+									<br />
+									<MudText Typo="Typo.body2" Class="mud-text-secondary">Email</MudText>
+									<MudTextField @bind-Value="@profile.Email" Variant="Variant.Outlined" Margin="Margin.Dense" />
+									<br />
+									<MudText Typo="Typo.body2" Class="mud-text-secondary">Date Of Birth</MudText>
+									<MudDatePicker @bind-Date="@profile.DateOfBirth" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+									<br />
+									<MudText Typo="Typo.body2" Class="mud-text-secondary">Phone Number</MudText>
+									<MudTextField @bind-Value="@profile.PhoneNumber" Variant="Variant.Outlined" Margin="Margin.Dense" />
+									<br />
+									<MudText Typo="Typo.body2" Class="mud-text-secondary">About Myself</MudText>
+									<MudTextField T="string" @bind-Value="@profile.AboutMyself" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="5" />
+									<br />
+									<MudText Typo="Typo.body2" Class="mud-text-secondary">Gender</MudText>
+									<MudText>@profile.Gender</MudText>
+								</MudCardContent>
+								<MudCardActions>
+									<MudButton Color="Color.Primary" Type="submit" OnClick="UpdateProfile">Update Profile</MudButton>
+								</MudCardActions>
+							</MudCard>
+						</EditForm>
 					}
 					break;
 				case 1:
@@ -119,18 +132,33 @@
 						{
 							@foreach (UserEducationResponse education in educations)
 							{
+								Guid cardId = education.Id;
 								<MudItem xs="6">
 									<MudCard>
-										<MudCardHeader>
-											<CardHeaderContent>
-												<MudText Typo="Typo.h6"><strong>@education.Speciality</strong></MudText>
-											</CardHeaderContent>
-											<CardHeaderActions>
-												<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" />
-												<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="Delete" />
-											</CardHeaderActions>
-										</MudCardHeader>
-										<MudCardContent>
+										@if (editingCardId == cardId)
+										{
+											<MudCardHeader>
+												<CardHeaderContent>
+													<MudTextField @bind-Value="@education.Speciality" Variant="Variant.Outlined" Margin="Margin.Dense" />
+												</CardHeaderContent>
+												<CardHeaderActions>
+													<MudIconButton Icon="@Icons.Material.Filled.Save" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" />
+													<MudIconButton Icon="@Icons.Material.Filled.Cancel" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="Delete" />
+												</CardHeaderActions>
+											</MudCardHeader>
+										}
+										else
+										{
+											<MudCardHeader>
+												<CardHeaderContent>
+													<MudText Typo="Typo.h6"><strong>@education.Speciality</strong></MudText>
+												</CardHeaderContent>
+												<CardHeaderActions>
+													<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" OnClick="() => EditButtonClicked(cardId)" />
+													<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="Delete" />
+												</CardHeaderActions>
+											</MudCardHeader>
+										}<MudCardContent>
 											<MudText>@education.University</MudText>
 											@if (education.UntilNow == false)
 											{
@@ -251,23 +279,31 @@
 					</MudGrid>
 					break;
 			}
-		</MudContainer>
-
-	</MudItem>
-</MudGrid>
+		</div>
+	</div>
+</div>
 
 @code {
 	private int Active = 0;
+	Guid editingCardId = new Guid();
+
+	public void EditButtonClicked(Guid cardId)
+	{
+		editingCardId = cardId;
+	}
+
 	UserProfileResponse profile = null;
 	List<UserEducationResponse> educations = new List<UserEducationResponse>();
 	List<UserExperienceResponse> experiences = new List<UserExperienceResponse>();
 
 	protected override async void OnInitialized()
 	{
-		await Task.Delay(3000);
+		profile = await UserProfile.Get();
+
 		educations = new List<UserEducationResponse>() {
 			new UserEducationResponse()
 				{
+					Id=Guid.NewGuid(),
 					StartDate = DateTime.Now.AddYears(-5),
 					EndDate = DateTime.Now.AddYears(-1),
 					University="DPDTTX",
@@ -276,12 +312,14 @@
 				},
 				new UserEducationResponse()
 					{
+						Id=Guid.NewGuid(),
 						StartDate = DateTime.Now.AddYears(-5),
 						EndDate = DateTime.Now.AddYears(-1),
 						UntilNow = false,
 					},
 					new UserEducationResponse()
 				{
+					Id=Guid.NewGuid(),
 					StartDate = DateTime.Now.AddYears(-3),
 					UntilNow = true,
 				}
@@ -322,5 +360,21 @@
 		var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
 		DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+	}
+
+	private async void UpdateProfile()
+	{
+		var command = new UpdateProfileCommand
+			{
+				DateOfBirth = profile.DateOfBirth.HasValue ? profile.DateOfBirth.Value : default(DateTime),
+				FirstName = profile.FirstName,
+				LastName = profile.LastName,
+				Email = profile.Email,
+				PhoneNumber = profile.PhoneNumber,
+				Gender = profile.Gender,
+				AboutMyself = profile.AboutMyself
+			};
+
+		var result = await UserProfile.Update(command);
 	}
 }

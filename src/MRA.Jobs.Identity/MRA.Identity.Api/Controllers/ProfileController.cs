@@ -49,7 +49,7 @@ public class ProfileController : ControllerBase
             }
             return BadRequest(result.ErrorMessage+result.Exception);
         }
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpPost("AddSkills")]
