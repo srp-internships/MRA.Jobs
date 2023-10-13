@@ -69,7 +69,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
         var userRoleResult = await _userManager.AddToRoleAsync(user, request.Role);
         if (!userRoleResult.Succeeded)
         {
-            
+
             throw new ValidationException(userRoleResult.Errors.First().Description);
         }
         await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,

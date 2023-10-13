@@ -25,7 +25,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserCommand request)
     {
-        var result = await _mediator.Send(request); 
+        var result = await _mediator.Send(request);
         return Ok(result);
     }
 
@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterUserCommand request)
     {
         var result = await _mediator.Send(request);
-            return Ok(result);
+        return Ok(result);
     }
 
     [HttpGet("verify")]
@@ -53,8 +53,8 @@ public class AuthController : ControllerBase
         await _mediator.Send(new UserEmailCommand());
         return Ok();
     }
-    
-    [HttpPost("refresh")]   
+
+    [HttpPost("refresh")]
     public async Task<IActionResult> Refresh(GetAccessTokenUsingRefreshTokenQuery request)
     {
         var response = await _mediator.Send(request);

@@ -29,10 +29,11 @@ public class GetAccessTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAc
         if (claims.Count != 0)
         {
             return Task.FromResult(new JwtTokenResponse
-                {
-                    AccessToken = _tokenService.CreateTokenByClaims(claims),
-                    RefreshToken = _tokenService.CreateRefreshToken(claims)
-                });
+            {
+                AccessToken = _tokenService.CreateTokenByClaims(claims, out var expireDate),
+                RefreshToken = _tokenService.CreateRefreshToken(claims),
+                RefreshTokenValidTo = expireDate
+            });
         }
         throw new ValidationException("Could not validate token");
     }

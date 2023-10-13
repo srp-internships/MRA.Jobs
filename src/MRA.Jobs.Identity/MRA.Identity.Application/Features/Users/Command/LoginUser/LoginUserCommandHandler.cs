@@ -29,7 +29,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, JwtToke
         _ = user ?? throw new NotFoundException(nameof(user), request.Username);
 
         bool success = await _userManager.CheckPasswordAsync(user, request.Password);
-      
+
         if (success)
         {
             return new JwtTokenResponse
