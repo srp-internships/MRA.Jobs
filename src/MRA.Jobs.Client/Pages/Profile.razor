@@ -147,6 +147,23 @@
 													<MudIconButton Icon="@Icons.Material.Filled.Cancel" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="Delete" />
 												</CardHeaderActions>
 											</MudCardHeader>
+											<MudCardContent>
+												<MudTextField @bind-Value="@education.University" Variant="Variant.Outlined" Label="University" Margin="Margin.Dense" />
+												<MudDatePicker Label="Start Date" @bind-Date="education.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+												@if (education.UntilNow == false)
+												{
+													<MudDatePicker Label="End Date" @bind-Date="education.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+												}
+												<MudCheckBox @bind-Checked="@education.UntilNow" Label="Until Now" Color="Color.Primary"></MudCheckBox>
+											</MudCardContent>
+											<MudCardActions>
+												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateEducationHandle">
+													Save
+												</MudButton>
+												<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_UpdateEducation">
+													Cancel
+												</MudButton>
+											</MudCardActions>
 										}
 										else
 										{
@@ -159,28 +176,32 @@
 													<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="Delete" />
 												</CardHeaderActions>
 											</MudCardHeader>
-										}<MudCardContent>
-											<MudText>@education.University</MudText>
-											@if (education.UntilNow == false)
-											{
-												<MudText>
-													@education.StartDate.ToString("MMM. yyyy") - @education.EndDate.ToString("MMM. yyyy")
-												</MudText>
-											}
-											else
-											{
-												<MudText>
-													@education.StartDate.ToString("MMM. yyyy")  - <MudChip Icon="@Icons.Material.Filled.School" Disabled="true" Color="Color.Success">Present</MudChip>
-												</MudText>
-											}
+											<MudCardContent>
+												<MudText>@education.University</MudText>
+												@if (education.UntilNow == false)
+												{
+													<MudText>
+														@education.StartDate?.ToString("MMM. yyyy") - @education.EndDate?.ToString("MMM. yyyy")
+													</MudText>
+												}
+												else
+												{
+													<MudText>
+														@education.StartDate?.ToString("MMM. yyyy")  - <MudChip Icon="@Icons.Material.Filled.School" Disabled="true" Color="Color.Success">Present</MudChip>
+													</MudText>
+												}
 
 
-										</MudCardContent>
+											</MudCardContent>
+										}
+
+
 
 									</MudCard>
 								</div>
 							}
-							<div class="col-md-6 mb-3" >
+							<!--Add new Education-->
+							<div class="col-md-6 mb-3">
 								<MudCard>
 									@if (addEducation == false)
 									{
@@ -225,6 +246,7 @@
 									}
 								</MudCard>
 							</div>
+							<!--------------------->
 						}
 					</div>
 					break;
@@ -362,6 +384,11 @@
 		addEducation = false;
 		createEducation = new CreateEducationDetailCommand();
 	}
+
+	private void CancelButtonClicked_UpdateEducation(){}
+
+	private void UpdateEducationHandle(){}
+
 
 	#endregion
 
