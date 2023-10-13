@@ -30,9 +30,18 @@ public class ApplicationService : IApplicationService
     }
 
 
-    public async Task CreateApplication(CreateApplicationCommand application)
+    public async Task<bool> CreateApplication(CreateApplicationCommand application)
     {
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync("/api/applications", application);
+        try
+        {
+            response.EnsureSuccessStatusCode();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public async Task<PagedList<ApplicationListDto>> GetAllApplications()
@@ -68,7 +77,8 @@ public class ApplicationService : IApplicationService
     public async Task<bool> ApplicationExist(string vacancySlug)
     {
         var ApplicationSlug = ($"{(await GetCurrentUserName())}-{vacancySlug}").ToLower().Trim();
-        if ((await GetApplicationDetails(ApplicationSlug)) != null)
+        var apps = (await GetAllApplications()).Items;
+        if (apps.Any(a => a.Slug == ApplicationSlug))
             return true;
         return false;
     }
