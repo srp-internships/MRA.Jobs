@@ -47,6 +47,6 @@
 
     private void OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
     {
-        Dialog.Show<MyDialog>("Applicant response", new DialogParameters { { "CoverLetter", coverLetter }, { "VacancyResponses", vacancyResponses }, { "Slug", slug }, { "StatusName", statusName } }, options);
+        Dialog.Show<MyDialog>("Applicant response", new DialogParameters { { "CoverLetter", coverLetter }, { "VacancyResponses", vacancyResponses }, { "Slug", slug }, { "StatusName", statusName }, { "isApplicant", false } }, options);
     }
 }
