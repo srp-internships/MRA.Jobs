@@ -33,10 +33,9 @@ public class UserProfileService : IUserProfileService
         return result;
     }
 
-    public async Task<Guid> CreateEducationAsуnc(CreateEducationDetailCommand command)
+    public async Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command)
     {
         var response = await _identityHttpClient.PostAsJsonAsync("Profile/CreateEducationDetail", command);
-        var result = response.Content.ReadAsStringAsync().Result;
-        return Guid.Parse(result);
+        return response;
     }
 }

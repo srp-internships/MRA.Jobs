@@ -134,7 +134,7 @@
 							@foreach (UserEducationResponse education in educations)
 							{
 								Guid cardId = education.Id;
-								<div class="col-md-6" xs="6">
+								<div class="col-md-6 mb-3">
 									<MudCard>
 										@if (editingCardId == cardId)
 										{
@@ -180,7 +180,7 @@
 									</MudCard>
 								</div>
 							}
-							<div class="col-md-6">
+							<div class="col-md-6 mb-3" >
 								<MudCard>
 									@if (addEducation == false)
 									{
@@ -217,7 +217,7 @@
 												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateEducationHandle">
 													Save
 												</MudButton>
-												<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="(()=>addEducation=false)">
+												<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_CreateEducation">
 													Cancel
 												</MudButton>
 											</MudCardActions>
@@ -349,10 +349,19 @@
 			createEducation.EndDate = default(DateTime);
 
 		var response = await UserProfileService.CreateEducationAsуnc(createEducation);
-		if (response != null)
+		if (response.IsSuccessStatusCode)
+		{
 			addEducation = false;
+			createEducation = new CreateEducationDetailCommand();
+			educations = await UserProfileService.GetEducations();
+		}
 	}
 
+	private void CancelButtonClicked_CreateEducation()
+	{
+		addEducation = false;
+		createEducation = new CreateEducationDetailCommand();
+	}
 
 	#endregion
 

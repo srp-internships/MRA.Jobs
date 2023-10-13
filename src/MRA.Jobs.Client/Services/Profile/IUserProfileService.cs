@@ -12,5 +12,5 @@ public interface IUserProfileService
 
     Task<List<UserEducationResponse>> GetEducations();
 
-    Task<Guid> CreateEducationAsуnc(CreateEducationDetailCommand command); 
+    Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command); 
 }

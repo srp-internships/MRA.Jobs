@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
@@ -39,8 +40,8 @@ public class
             {
                 University = request.University,
                 Speciality = request.Speciality,
-                StartDate = request.StartDate,
-                EndDate = request.EndDate,
+                StartDate = request.StartDate.HasValue ? request.StartDate.Value : default(DateTime),
+                EndDate = request.EndDate.HasValue ? request.EndDate.Value : default(DateTime),
                 UntilNow = request.UntilNow
             };
 
