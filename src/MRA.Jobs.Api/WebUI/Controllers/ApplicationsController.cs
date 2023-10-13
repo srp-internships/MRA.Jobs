@@ -26,7 +26,6 @@ public class  ApplicationsController : ApiControllerBase
     }
 
     [HttpGet]
-    [Authorize(ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<PagedList<ApplicationListDto>>> GetAll([FromQuery] PagedListQuery<ApplicationListDto> query)
     {
         var applications = await Mediator.Send(query);
