@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Exceptions;
@@ -28,13 +29,14 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, JwtToke
         _ = user ?? throw new NotFoundException(nameof(user), request.Username);
 
         bool success = await _userManager.CheckPasswordAsync(user, request.Password);
-
+      
         if (success)
         {
             return new JwtTokenResponse
             {
                 RefreshToken = _jwtTokenService.CreateRefreshToken(await _userManager.GetClaimsAsync(user)),
-                AccessToken = _jwtTokenService.CreateTokenByClaims(await _userManager.GetClaimsAsync(user))
+                AccessToken = _jwtTokenService.CreateTokenByClaims(await _userManager.GetClaimsAsync(user), out var expireDate),
+                AccessTokenValidTo = expireDate
             };
         }
         throw new UnauthorizedAccessException("incorrect password");
