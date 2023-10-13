@@ -16,7 +16,9 @@ public class UpdateUserProfileTest : BaseTest
             Email = Applicant.Email,
             Gender = Gender.Male,
             DateOfBirth = DateTime.Now,
-            PhoneNumber = "+992123456789"
+            PhoneNumber = "+992123456789",
+            AboutMyself="ekmden ehfisuhfshfsfehf fjshefsjhf slufh self"
+            
         };
         var response = await _client.PutAsJsonAsync("/api/Profile", profile);
 
