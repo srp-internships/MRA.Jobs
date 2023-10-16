@@ -134,7 +134,7 @@ public class ProfileController : ControllerBase
         var result = await _mediator.Send(command);
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpPut("UpdateExperienceDetail")]
@@ -167,6 +167,6 @@ public class ProfileController : ControllerBase
             }
             return BadRequest(result.ErrorMessage + result.Exception);
         }
-        return Ok(result);
+        return Ok(result.Response);
     }
 }

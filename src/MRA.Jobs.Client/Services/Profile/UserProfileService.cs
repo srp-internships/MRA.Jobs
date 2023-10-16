@@ -3,6 +3,8 @@ using MatBlazor;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Educations.Responses;
+using MRA.Identity.Application.Contract.Experiences.Commands.Create;
+using MRA.Identity.Application.Contract.Experiences.Responses;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Responses;
 
@@ -50,5 +52,23 @@ public class UserProfileService : IUserProfileService
     {
         var respose= await _identityHttpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
         return respose;
+    }
+
+    public async Task<HttpResponseMessage> DeleteExperienceAync(Guid id)
+    {
+        var respose = await _identityHttpClient.DeleteAsync($"Profile/DeleteExperienceDetail/{id}");
+        return respose;
+    }
+
+    public async Task<List<UserExperienceResponse>> GetExperiences()
+    {
+        var result = await _identityHttpClient.GetJsonAsync<List<UserExperienceResponse>>("Profile/GetExperiencesByUser");
+        return result;
+    }
+
+    public async Task<HttpResponseMessage> CreateExperienceAsycn(CreateExperienceDetailCommand command)
+    {
+        var response = await _identityHttpClient.PostAsJsonAsync("Profile/СreateExperienceDetail", command);
+        return response;
     }
 }

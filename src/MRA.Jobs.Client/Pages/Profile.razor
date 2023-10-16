@@ -2,6 +2,7 @@
 @using MRA.Identity.Application.Contract.Educations.Command.Create;
 @using MRA.Identity.Application.Contract.Educations.Command.Update;
 @using MRA.Identity.Application.Contract.Educations.Responses;
+@using MRA.Identity.Application.Contract.Experiences.Commands.Create;
 @using MRA.Identity.Application.Contract.Experiences.Responses;
 @using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 @using MRA.Identity.Application.Contract.Profile.Responses;
@@ -195,54 +196,55 @@
 									</MudCard>
 								</div>
 							}
-							<!--Add new Education-->
-							<div class="col-md-6 mb-3">
-								<MudCard>
-									@if (addEducation == false)
-									{
+
+						}
+						<!--Add new Education-->
+						<div class="col-md-6 mb-3">
+							<MudCard>
+								@if (addEducation == false)
+								{
+									<MudCardHeader>
+										<CardHeaderContent>
+											<MudText Typo="Typo.h6"><strong>Add New Education</strong></MudText>
+
+										</CardHeaderContent>
+									</MudCardHeader>
+									<MatCardContent>
+										<div class="d-flex align-center justify-center mud-width-full py-8">
+											<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="@(()=>addEducation=true)" />
+										</div>
+									</MatCardContent>
+								}
+								else
+								{
+									<EditForm Model="createEducation" OnInvalidSubmit="CreateEducationHandle">
 										<MudCardHeader>
 											<CardHeaderContent>
-												<MudText Typo="Typo.h6"><strong>Add New Education</strong></MudText>
-
+												<MudTextField @bind-Value="@createEducation.Speciality" Variant="Variant.Outlined" Label="Specialty" Margin="Margin.Dense" />
 											</CardHeaderContent>
 										</MudCardHeader>
-										<MatCardContent>
-											<div class="d-flex align-center justify-center mud-width-full py-8">
-												<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="@(()=>addEducation=true)" />
-											</div>
-										</MatCardContent>
-									}
-									else
-									{
-										<EditForm Model="createEducation" OnInvalidSubmit="CreateEducationHandle">
-											<MudCardHeader>
-												<CardHeaderContent>
-													<MudTextField @bind-Value="@createEducation.Speciality" Variant="Variant.Outlined" Label="Specialty" Margin="Margin.Dense" />
-												</CardHeaderContent>
-											</MudCardHeader>
-											<MudCardContent>
-												<MudTextField @bind-Value="@createEducation.University" Variant="Variant.Outlined" Label="University" Margin="Margin.Dense" />
-												<MudDatePicker Label="Start Date" @bind-Date="createEducation.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
-												@if (createEducation.UntilNow == false)
-												{
-													<MudDatePicker Label="End Date" @bind-Date="createEducation.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
-												}
-												<MudCheckBox @bind-Checked="@createEducation.UntilNow" Label="Until Now" Color="Color.Primary"></MudCheckBox>
-											</MudCardContent>
-											<MudCardActions>
-												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateEducationHandle">
-													Save
-												</MudButton>
-												<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_CreateEducation">
-													Cancel
-												</MudButton>
-											</MudCardActions>
-										</EditForm>
-									}
-								</MudCard>
-							</div>
-							<!--------------------->
-						}
+										<MudCardContent>
+											<MudTextField @bind-Value="@createEducation.University" Variant="Variant.Outlined" Label="University" Margin="Margin.Dense" />
+											<MudDatePicker Label="Start Date" @bind-Date="createEducation.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+											@if (createEducation.UntilNow == false)
+											{
+												<MudDatePicker Label="End Date" @bind-Date="createEducation.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+											}
+											<MudCheckBox @bind-Checked="@createEducation.UntilNow" Label="Until Now" Color="Color.Primary"></MudCheckBox>
+										</MudCardContent>
+										<MudCardActions>
+											<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateEducationHandle">
+												Save
+											</MudButton>
+											<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_CreateEducation">
+												Cancel
+											</MudButton>
+										</MudCardActions>
+									</EditForm>
+								}
+							</MudCard>
+						</div>
+						<!--------------------->
 					</div>
 					break;
 				case 2:
@@ -250,7 +252,7 @@
 
 					<br />
 					<MudGrid>
-						@if (experiences.Count == 0)
+						@if (experiences == null)
 						{
 							@for (int i = 0; i < 5; i++)
 							{
@@ -311,7 +313,57 @@
 									</MudCard>
 								</MudItem>
 							}
+
 						}
+						<!--Add new Experience-->
+						<div class="col-md-6 mb-3">
+							<MudCard>
+								@if (addExperience == false)
+								{
+									<MudCardHeader>
+										<CardHeaderContent>
+											<MudText Typo="Typo.h6"><strong>Add New Experience</strong></MudText>
+
+										</CardHeaderContent>
+									</MudCardHeader>
+									<MatCardContent>
+										<div class="d-flex align-center justify-center mud-width-full py-8">
+											<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="@(()=>addExperience=true)" />
+										</div>
+									</MatCardContent>
+								}
+								else
+								{
+									<EditForm Model="createExperience" OnInvalidSubmit="CreateExperienceHandle">
+										<MudCardHeader>
+											<CardHeaderContent>
+												<MudTextField @bind-Value="@createExperience.JobTitle" Variant="Variant.Outlined" Label="Job Title" Margin="Margin.Dense" />
+											</CardHeaderContent>
+										</MudCardHeader>
+										<MudCardContent>
+											<MudTextField @bind-Value="@createExperience.CompanyName" Variant="Variant.Outlined" Label="Company Name" Margin="Margin.Dense" />
+											<MudDatePicker Label="Start Date" @bind-Date="createExperience.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+											@if (createExperience.IsCurrentJob == false)
+											{
+												<MudDatePicker Label="End Date" @bind-Date="createExperience.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+											}
+											<MudCheckBox @bind-Checked="@createExperience.IsCurrentJob" Label="Is Current Job" Color="Color.Primary"></MudCheckBox>
+											<MudTextField @bind-Value="@createExperience.Address" Label="Address" Variant="Variant.Outlined"></MudTextField>
+											<MudTextField T="string" @bind-Value="@createExperience.Description" Label="Description" Lines="5" Variant="Variant.Outlined"></MudTextField>
+										</MudCardContent>
+										<MudCardActions>
+											<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateExperienceHandle">
+												Save
+											</MudButton>
+											<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_CreateExperience">
+												Cancel
+											</MudButton>
+										</MudCardActions>
+									</EditForm>
+								}
+							</MudCard>
+						</div>
+						<!--------------------->
 					</MudGrid>
 					break;
 				case 3:
@@ -348,20 +400,26 @@
 
 @code {
 	private int Active = 0;
-	Guid editingCardId = new Guid();
-
-	public void EditButtonClicked(Guid cardId)
-	{
-		editingCardId = cardId;
-	}
 
 	#region education
-
+	List<UserEducationResponse> educations = new List<UserEducationResponse>();
 	private bool addEducation = false;
 	CreateEducationDetailCommand createEducation = new CreateEducationDetailCommand();
 	UserEducationResponse originalEducation;
 
-	public async Task CreateEducationHandle()
+	Guid editingCardId = new Guid();
+
+	private async Task GetEducations()
+	{
+		educations = await UserProfileService.GetEducations();
+	}
+
+	private void EditButtonClicked(Guid cardId)
+	{
+		editingCardId = cardId;
+	}
+
+	private async Task CreateEducationHandle()
 	{
 		if (createEducation.EndDate == null)
 			createEducation.EndDate = default(DateTime);
@@ -371,7 +429,7 @@
 		{
 			addEducation = false;
 			createEducation = new CreateEducationDetailCommand();
-			educations = await UserProfileService.GetEducations();
+			await GetEducations();
 		}
 	}
 
@@ -384,7 +442,7 @@
 	private async void CancelButtonClicked_UpdateEducation()
 	{
 		editingCardId = Guid.NewGuid();
-		educations = await UserProfileService.GetEducations();
+		await GetEducations();
 		StateHasChanged();
 	}
 
@@ -408,58 +466,62 @@
 		}
 	}
 
+	#endregion
+
+	#region Experience
+
+	List<UserExperienceResponse> experiences = new List<UserExperienceResponse>();
+	private bool addExperience = false;
+	CreateExperienceDetailCommand createExperience = new CreateExperienceDetailCommand();
+
+	private async Task GetExperiences()
+	{
+		experiences = await UserProfileService.GetExperiences();
+	}
+
+	private async Task CreateExperienceHandle()
+	{
+		if (createExperience.EndDate == null)
+			createExperience.EndDate = default(DateTime);
+
+		var response = await UserProfileService.CreateExperienceAsycn(createExperience);
+		if (response.IsSuccessStatusCode)
+		{
+			addExperience = false;
+			createExperience = new CreateExperienceDetailCommand();
+			await GetExperiences();
+		}
+	}
+
+	private async void CancelButtonClicked_CreateExperience()
+	{
+		addExperience = false;
+		createExperience = new CreateExperienceDetailCommand();
+		await GetExperiences();
+	}
 
 
 	#endregion
 
-
 	UserProfileResponse profile = null;
-	List<UserEducationResponse> educations = new List<UserEducationResponse>();
-	List<UserExperienceResponse> experiences = new List<UserExperienceResponse>();
+
+
 
 	protected override async void OnInitialized()
 	{
 		profile = await UserProfileService.Get();
 
-		educations = await UserProfileService.GetEducations();
 
-		experiences = new List<UserExperienceResponse>()
-		{
-			new UserExperienceResponse()
-			{
-				CompanyName="IO",
-				JobTitle="Front-end Developer",
-				Address="Ismoili Somoli Street",
-				Description="w djajdawd awjndaj d edkajhd ejeefnsejfse fesfseljfsejfnesfjeskfjseekjf sekfjf eslfjsefsefj slkfjbsfkjsf jsefseflsfljhf flksfs fksjbfskejf sfsj sjfhsufhhfbsf ;akjdjs flesehe sbnfjhliuese fa eufh efbksajfhiuwhdkjbfquwefq fqiufhqkehfbqliuiefq eflqeufh qefqli uehfquef  ",
-				StartDate=DateTime.Now.AddYears(-3),
-				EndDate=DateTime.Now.AddYears(-1),
-				IsCurrentJob=false,
-			},
-			new UserExperienceResponse()
-			{
-				CompanyName="Alif",
-				JobTitle="Back-end Developer",
-				Address="Ismoili Somoli Street",
-				Description="w djajdawd awjndaj d edkajhd ejeefnsejfse fesfseljfsejfnesfjeskfjseekjf sekfjf eslfjsefsefj slkfjbsfkjsf jsefseflsfljhf flksfs fksjbfskejf sfsj sjfhsufhhfbsf ;akjdjs flesehe sbnfjhliuese fa eufh efbksajfhiuwhdkjbfquwefq fqiufhqkehfbqliuiefq eflqeufh qefqli uehfquef  ",
-				StartDate=DateTime.Now.AddYears(-1),
-				IsCurrentJob=true,
-			}
-		};
+		await GetEducations();
+
+		await GetExperiences();
 
 		StateHasChanged();
 	}
 
-	// private void Delete()
-	// {
-	// 	var parameters = new DialogParameters<DialogMudBlazor>();
-	// 	parameters.Add(x => x.ContentText, "Do you really want to delete these records? This process cannot be undone.");
-	// 	parameters.Add(x => x.ButtonText, "Delete");
-	// 	parameters.Add(x => x.Color, Color.Error);
 
-	// 	var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-	// 	DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
-	// }
+
 
 	private async Task ConfirmDelete<T>(IList<T> collection, T item)
 	{
