@@ -192,9 +192,6 @@
 
 											</MudCardContent>
 										}
-
-
-
 									</MudCard>
 								</div>
 							}
@@ -362,6 +359,7 @@
 
 	private bool addEducation = false;
 	CreateEducationDetailCommand createEducation = new CreateEducationDetailCommand();
+	UserEducationResponse originalEducation;
 
 	public async Task CreateEducationHandle()
 	{
@@ -383,7 +381,12 @@
 		createEducation = new CreateEducationDetailCommand();
 	}
 
-	private void CancelButtonClicked_UpdateEducation() { }
+	private async void CancelButtonClicked_UpdateEducation()
+	{
+		editingCardId = Guid.NewGuid();
+		educations = await UserProfileService.GetEducations();
+		StateHasChanged();
+	}
 
 	private async void UpdateEducationHandle(UserEducationResponse education)
 	{
