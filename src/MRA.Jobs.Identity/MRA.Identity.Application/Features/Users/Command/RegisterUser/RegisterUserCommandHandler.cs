@@ -44,7 +44,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
 
         if (!result.Succeeded)
         {
-            throw new ValidationException(result.Errors.First().Description);
+            throw new UnauthorizedAccessException(result.Errors.First().Description);
         }
 
         await _emailVerification.SendVerificationEmailAsync(user);

@@ -26,7 +26,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, JwtToke
     {
         ApplicationUser? user =
             await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.Username, cancellationToken);
-        _ = user ?? throw new NotFoundException(nameof(user), request.Username);
+        _ = user ?? throw new UnauthorizedAccessException(request.Username);
 
         bool success = await _userManager.CheckPasswordAsync(user, request.Password);
 

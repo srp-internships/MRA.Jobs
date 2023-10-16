@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace MRA.Jobs.Web;
+namespace MRA.Identity.Api.Filters;
 public class BadRequestResponseFilter : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext context)
