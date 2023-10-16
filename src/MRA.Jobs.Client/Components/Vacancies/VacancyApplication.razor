@@ -1,6 +1,7 @@
 ﻿@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @layout MainLayout
+@inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 @inject IInternshipService InternshipService
 @inject IApplicationService ApplicationService
@@ -89,7 +90,16 @@
 
         application.VacancyResponses = updatedResponses;
 
-        await ApplicationService.CreateApplication(application);
-        NavigationManager.NavigateTo("/");
+        var success = await ApplicationService.CreateApplication(application);
+
+        if (success)
+        {
+            Snackbar.Add("Applications sent successfully!", Severity.Success);
+            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        }
+        else
+        {
+            Snackbar.Add("Something went wrong", Severity.Error);
+        }
     }
 }
