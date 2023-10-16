@@ -3,6 +3,7 @@
 @using MRA.Identity.Application.Contract.Educations.Command.Update;
 @using MRA.Identity.Application.Contract.Educations.Responses;
 @using MRA.Identity.Application.Contract.Experiences.Commands.Create;
+@using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 @using MRA.Identity.Application.Contract.Experiences.Responses;
 @using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 @using MRA.Identity.Application.Contract.Profile.Responses;
@@ -278,40 +279,72 @@
 						{
 							@foreach (UserExperienceResponse experience in experiences)
 							{
-								<MudItem xs="6">
+								Guid cardExperienceId = experience.Id;
+								<div class="col-md-6 mb-3">
 									<MudCard>
-										<MudCardHeader>
-											<CardHeaderContent>
-												<MudText Typo="Typo.h6"><strong>@experience.JobTitle</strong></MudText>
-											</CardHeaderContent>
-											<CardHeaderActions>
-												<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" />
-												<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="(()=>ConfirmDelete(experiences,experience))" />
-											</CardHeaderActions>
-										</MudCardHeader>
-										<MudCardContent>
-											<MudText><MudIcon Icon="@Icons.Material.Filled.Work"></MudIcon>@experience.CompanyName</MudText>
-											@if (experience.IsCurrentJob == false)
-											{
-												<MudText>
-													<MudIcon Icon="@Icons.Material.Filled.CalendarMonth"></MudIcon>
-													@experience.StartDate.ToString("MMM. yyyy") - @experience.EndDate.ToString("MMM. yyyy")
-												</MudText>
-											}
-											else
-											{
-												<MudText>
-													<MudIcon Icon="@Icons.Material.Filled.CalendarMonth"></MudIcon>
-													@experience.StartDate.ToString("MMM. yyyy")  - <MudChip Icon="@Icons.Material.Filled.WorkHistory" Disabled="true" Color="Color.Success">Current Job</MudChip>
-												</MudText>
-											}
-											<MudText><MudIcon Icon="@Icons.Material.Filled.Map"></MudIcon>@experience.Address</MudText>
-											<MudText style="text-align: justify;"><MudIcon Icon="@Icons.Material.Filled.TextFields"></MudIcon>@experience.Description</MudText>
+										<!-- Edit Education -->
+										@if (editingCardExperienceId == cardExperienceId)
+										{
+											<MudCardHeader>
+												<CardHeaderContent>
+													<MudTextField @bind-Value="@experience.JobTitle" Variant="Variant.Outlined" Label="Job Title" Margin="Margin.Dense" />
+												</CardHeaderContent>
+											</MudCardHeader>
+											<MudCardContent>
+												<MudTextField @bind-Value="@experience.CompanyName" Variant="Variant.Outlined" Label="Company Name" Margin="Margin.Dense" />
+												<MudDatePicker Label="Start Date" @bind-Date="experience.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+												@if (experience.IsCurrentJob == false)
+												{
+													<MudDatePicker Label="End Date" @bind-Date="experience.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+												}
+												<MudCheckBox @bind-Checked="@experience.IsCurrentJob" Label="Until Now" Color="Color.Primary"></MudCheckBox>
+												<MudTextField @bind-Value="@experience.Address" Label="Address" Variant="Variant.Outlined"></MudTextField>
+												<MudTextField T="string" @bind-Value="@experience.Description" Label="Description" Lines="5" Variant="Variant.Outlined"></MudTextField>
 
-										</MudCardContent>
+											</MudCardContent>
+											<MudCardActions>
+												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(()=>UpdateExperienceHandle(experience))">
+													Update
+												</MudButton>
+												<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_UpdateExperience">
+													Cancel
+												</MudButton>
+											</MudCardActions>
+										}
+										else
+										{
+											<MudCardHeader>
+												<CardHeaderContent>
+													<MudText Typo="Typo.h6"><strong>@experience.JobTitle</strong></MudText>
+												</CardHeaderContent>
+												<CardHeaderActions>
+													<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" OnClick="(() => EditCardExperienceButtonClicked(cardExperienceId))"/>
+													<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="(()=>ConfirmDelete(experiences,experience))" />
+												</CardHeaderActions>
+											</MudCardHeader>
+											<MudCardContent>
+												<MudText><MudIcon Icon="@Icons.Material.Filled.Work"></MudIcon>@experience.CompanyName</MudText>
+												@if (experience.IsCurrentJob == false)
+												{
+													<MudText>
+														<MudIcon Icon="@Icons.Material.Filled.CalendarMonth"></MudIcon>
+														@experience.StartDate?.ToString("MMM. yyyy") - @experience.EndDate?.ToString("MMM. yyyy")
+													</MudText>
+												}
+												else
+												{
+													<MudText>
+														<MudIcon Icon="@Icons.Material.Filled.CalendarMonth"></MudIcon>
+														@experience.StartDate?.ToString("MMM. yyyy")  - <MudChip Icon="@Icons.Material.Filled.WorkHistory" Disabled="true" Color="Color.Success">Current Job</MudChip>
+													</MudText>
+												}
+												<MudText><MudIcon Icon="@Icons.Material.Filled.Map"></MudIcon>@experience.Address</MudText>
+												<MudText style="text-align: justify;"><MudIcon Icon="@Icons.Material.Filled.TextFields"></MudIcon>@experience.Description</MudText>
 
+											</MudCardContent>
+										}
 									</MudCard>
-								</MudItem>
+								</div>
 							}
 
 						}
@@ -405,7 +438,6 @@
 	List<UserEducationResponse> educations = new List<UserEducationResponse>();
 	private bool addEducation = false;
 	CreateEducationDetailCommand createEducation = new CreateEducationDetailCommand();
-	UserEducationResponse originalEducation;
 
 	Guid editingCardId = new Guid();
 
@@ -473,6 +505,7 @@
 	List<UserExperienceResponse> experiences = new List<UserExperienceResponse>();
 	private bool addExperience = false;
 	CreateExperienceDetailCommand createExperience = new CreateExperienceDetailCommand();
+	private Guid editingCardExperienceId;
 
 	private async Task GetExperiences()
 	{
@@ -499,6 +532,41 @@
 		createExperience = new CreateExperienceDetailCommand();
 		await GetExperiences();
 	}
+
+	private async void CancelButtonClicked_UpdateExperience()
+	{
+		editingCardExperienceId = Guid.NewGuid();
+		await GetExperiences();
+		StateHasChanged();
+	}
+
+	private void EditCardExperienceButtonClicked(Guid cardExperienceId)
+	{
+		editingCardExperienceId = cardExperienceId;
+	}
+
+	private async void UpdateExperienceHandle(UserExperienceResponse experience)
+	{
+		var updateExperience = new UpdateExperienceDetailCommand()
+			{
+				Id = experience.Id,
+				StartDate = experience.StartDate.HasValue ? experience.StartDate.Value : default(DateTime),
+				EndDate = experience.EndDate.HasValue ? experience.EndDate.Value : default(DateTime),
+				CompanyName = experience.CompanyName,
+				JobTitle = experience.JobTitle,
+				IsCurrentJob = experience.IsCurrentJob,
+				Description = experience.Description,
+				Address = experience.Address
+			};
+
+		var result = await UserProfileService.UpdateExperienceAsync(updateExperience);
+		if (result.IsSuccessStatusCode)
+		{
+			editingCardExperienceId = Guid.NewGuid();
+			StateHasChanged();
+		}
+	}
+
 
 
 	#endregion
@@ -556,6 +624,9 @@
 				{
 					case "UserEducationResponse":
 						result = await UserProfileService.DeleteEducationAync(id);
+						break;
+					case "UserExperienceResponse":
+						result = await UserProfileService.DeleteExperienceAync(id);
 						break;
 					default:
 						break;

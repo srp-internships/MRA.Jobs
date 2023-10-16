@@ -1,8 +1,8 @@
-﻿using System.Runtime.CompilerServices;
-using MRA.Identity.Application.Contract.Educations.Command.Create;
+﻿using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Educations.Responses;
 using MRA.Identity.Application.Contract.Experiences.Commands.Create;
+using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 using MRA.Identity.Application.Contract.Experiences.Responses;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Responses;
@@ -25,4 +25,6 @@ public interface IUserProfileService
     Task<List<UserExperienceResponse>> GetExperiences();
 
     Task<HttpResponseMessage> CreateExperienceAsycn(CreateExperienceDetailCommand command);
+
+    Task<HttpResponseMessage> UpdateExperienceAsync(UpdateExperienceDetailCommand command);
 }

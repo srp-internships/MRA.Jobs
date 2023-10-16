@@ -4,6 +4,7 @@ using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Educations.Responses;
 using MRA.Identity.Application.Contract.Experiences.Commands.Create;
+using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 using MRA.Identity.Application.Contract.Experiences.Responses;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Responses;
@@ -69,6 +70,12 @@ public class UserProfileService : IUserProfileService
     public async Task<HttpResponseMessage> CreateExperienceAsycn(CreateExperienceDetailCommand command)
     {
         var response = await _identityHttpClient.PostAsJsonAsync("Profile/СreateExperienceDetail", command);
+        return response;
+    }
+
+    public async Task<HttpResponseMessage> UpdateExperienceAsync(UpdateExperienceDetailCommand command)
+    {
+        var response = await _identityHttpClient.PutAsJsonAsync("Profile/UpdateExperienceDetail", command);
         return response;
     }
 }
