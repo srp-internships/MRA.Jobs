@@ -171,7 +171,7 @@
 												</CardHeaderContent>
 												<CardHeaderActions>
 													<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" OnClick="() => EditButtonClicked(cardId)" />
-													<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="Delete" />
+													<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="(()=>ConfirmDelete(educations,education))" />
 												</CardHeaderActions>
 											</MudCardHeader>
 											<MudCardContent>
@@ -284,7 +284,7 @@
 											</CardHeaderContent>
 											<CardHeaderActions>
 												<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" />
-												<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="Delete" />
+												<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="(()=>ConfirmDelete(experiences,experience))" />
 											</CardHeaderActions>
 										</MudCardHeader>
 										<MudCardContent>
@@ -409,6 +409,7 @@
 	}
 
 
+
 	#endregion
 
 
@@ -448,7 +449,19 @@
 		StateHasChanged();
 	}
 
-	private void Delete()
+	// private void Delete()
+	// {
+	// 	var parameters = new DialogParameters<DialogMudBlazor>();
+	// 	parameters.Add(x => x.ContentText, "Do you really want to delete these records? This process cannot be undone.");
+	// 	parameters.Add(x => x.ButtonText, "Delete");
+	// 	parameters.Add(x => x.Color, Color.Error);
+
+	// 	var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+	// 	DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+	// }
+
+	private async Task ConfirmDelete<T>(IList<T> collection, T item)
 	{
 		var parameters = new DialogParameters<DialogMudBlazor>();
 		parameters.Add(x => x.ContentText, "Do you really want to delete these records? This process cannot be undone.");
@@ -457,8 +470,47 @@
 
 		var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-		DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+		var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+		var result = await dialog.Result;
+
+		if (!result.Cancelled)
+		{
+			Delete(collection, item);
+		}
 	}
+
+	private async void Delete<T>(ICollection<T> collection, T item)
+	{
+		if (collection.Contains(item))
+		{
+			Type itemType = item.GetType();
+			// Получение свойства id
+			var idProperty = itemType.GetProperty("Id");
+			if (idProperty != null)
+			{
+				Guid id = (Guid)idProperty.GetValue(item);
+				var result = new HttpResponseMessage();
+				switch (itemType.Name)
+				{
+					case "UserEducationResponse":
+						result = await UserProfileService.DeleteEducationAync(id);
+						break;
+					default:
+						break;
+				}
+				if (result.IsSuccessStatusCode)
+				{
+					collection.Remove(item);
+					StateHasChanged();
+				}
+
+			}
+		}
+
+	}
+
+
+
 
 	private async void UpdateProfile()
 	{

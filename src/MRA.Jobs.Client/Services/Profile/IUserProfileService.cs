@@ -16,4 +16,5 @@ public interface IUserProfileService
     Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command);
 
     Task<HttpResponseMessage> UpdateEducationAsync(UpdateEducationDetailCommand command);
+    Task<HttpResponseMessage> DeleteEducationAync(Guid id); 
 }

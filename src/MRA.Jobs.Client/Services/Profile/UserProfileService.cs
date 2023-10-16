@@ -45,4 +45,10 @@ public class UserProfileService : IUserProfileService
         var response = await _identityHttpClient.PutAsJsonAsync("Profile/UpdateEducationDetail", command);
         return response;
     }
+
+    public async Task<HttpResponseMessage> DeleteEducationAync(Guid id)
+    {
+        var respose= await _identityHttpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
+        return respose;
+    }
 }
