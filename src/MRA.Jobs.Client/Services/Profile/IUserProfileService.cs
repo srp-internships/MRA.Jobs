@@ -1,4 +1,5 @@
 ﻿using MRA.Identity.Application.Contract.Educations.Command.Create;
+using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Educations.Responses;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Responses;
@@ -12,5 +13,7 @@ public interface IUserProfileService
 
     Task<List<UserEducationResponse>> GetEducations();
 
-    Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command); 
+    Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command);
+
+    Task<HttpResponseMessage> UpdateEducationAsync(UpdateEducationDetailCommand command);
 }

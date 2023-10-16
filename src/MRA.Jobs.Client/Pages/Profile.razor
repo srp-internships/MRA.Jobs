@@ -1,5 +1,6 @@
 ﻿@page "/profile"
 @using MRA.Identity.Application.Contract.Educations.Command.Create;
+@using MRA.Identity.Application.Contract.Educations.Command.Update;
 @using MRA.Identity.Application.Contract.Educations.Responses;
 @using MRA.Identity.Application.Contract.Experiences.Responses;
 @using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
@@ -136,16 +137,13 @@
 								Guid cardId = education.Id;
 								<div class="col-md-6 mb-3">
 									<MudCard>
+										<!-- Edit Education -->
 										@if (editingCardId == cardId)
 										{
 											<MudCardHeader>
 												<CardHeaderContent>
 													<MudTextField @bind-Value="@education.Speciality" Variant="Variant.Outlined" Margin="Margin.Dense" />
 												</CardHeaderContent>
-												<CardHeaderActions>
-													<MudIconButton Icon="@Icons.Material.Filled.Save" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" />
-													<MudIconButton Icon="@Icons.Material.Filled.Cancel" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="Delete" />
-												</CardHeaderActions>
 											</MudCardHeader>
 											<MudCardContent>
 												<MudTextField @bind-Value="@education.University" Variant="Variant.Outlined" Label="University" Margin="Margin.Dense" />
@@ -157,8 +155,8 @@
 												<MudCheckBox @bind-Checked="@education.UntilNow" Label="Until Now" Color="Color.Primary"></MudCheckBox>
 											</MudCardContent>
 											<MudCardActions>
-												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateEducationHandle">
-													Save
+												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(()=>UpdateEducationHandle(education))">
+													Update
 												</MudButton>
 												<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_UpdateEducation">
 													Cancel
@@ -385,9 +383,27 @@
 		createEducation = new CreateEducationDetailCommand();
 	}
 
-	private void CancelButtonClicked_UpdateEducation(){}
+	private void CancelButtonClicked_UpdateEducation() { }
 
-	private void UpdateEducationHandle(){}
+	private async void UpdateEducationHandle(UserEducationResponse education)
+	{
+		var updateEducation = new UpdateEducationDetailCommand()
+			{
+				Id = education.Id,
+				StartDate = education.StartDate.HasValue ? education.StartDate.Value : default(DateTime),
+				EndDate = education.EndDate.HasValue ? education.EndDate.Value : default(DateTime),
+				Speciality = education.Speciality,
+				University = education.University,
+				UntilNow = education.UntilNow
+			};
+
+		var result = await UserProfileService.UpdateEducationAsync(updateEducation);
+		if (result.IsSuccessStatusCode)
+		{
+			editingCardId = Guid.NewGuid();
+			StateHasChanged();
+		}
+	}
 
 
 	#endregion

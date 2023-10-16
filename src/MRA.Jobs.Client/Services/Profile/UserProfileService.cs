@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using MatBlazor;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
+using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Educations.Responses;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Responses;
@@ -36,6 +37,12 @@ public class UserProfileService : IUserProfileService
     public async Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command)
     {
         var response = await _identityHttpClient.PostAsJsonAsync("Profile/CreateEducationDetail", command);
+        return response;
+    }
+
+    public async Task<HttpResponseMessage> UpdateEducationAsync(UpdateEducationDetailCommand command)
+    {
+        var response = await _identityHttpClient.PutAsJsonAsync("Profile/UpdateEducationDetail", command);
         return response;
     }
 }
