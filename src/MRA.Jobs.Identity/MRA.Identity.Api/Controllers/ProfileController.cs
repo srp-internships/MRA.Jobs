@@ -58,7 +58,7 @@ public class ProfileController : ControllerBase
         var result = await _mediator.Send(command);
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result);
+        return Ok(result.Response);
     }
 
 
@@ -74,7 +74,7 @@ public class ProfileController : ControllerBase
             }
             return BadRequest(result.ErrorMessage + result.Exception);
         }
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpDelete("RemoveUserSkill/{skill}")]
@@ -83,7 +83,7 @@ public class ProfileController : ControllerBase
         var result = await _mediator.Send(new RemoveUserSkillCommand { Skill = skill });
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpPost("CreateEducationDetail")]

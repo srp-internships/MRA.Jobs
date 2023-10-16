@@ -6,6 +6,7 @@ using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 using MRA.Identity.Application.Contract.Experiences.Responses;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Responses;
+using MRA.Identity.Application.Contract.Skills.Responses;
 
 namespace MRA.Jobs.Client.Services.Profile;
 
@@ -27,4 +28,7 @@ public interface IUserProfileService
     Task<HttpResponseMessage> CreateExperienceAsycn(CreateExperienceDetailCommand command);
 
     Task<HttpResponseMessage> UpdateExperienceAsync(UpdateExperienceDetailCommand command);
+
+    Task<UserSkillsResponse> GetSkills();
+    Task<HttpResponseMessage> RemoveSkillAync(string skill);
 }

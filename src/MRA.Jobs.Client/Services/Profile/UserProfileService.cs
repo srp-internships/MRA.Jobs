@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Json;
-using MatBlazor;
+﻿using MatBlazor;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Educations.Responses;
@@ -8,6 +7,7 @@ using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 using MRA.Identity.Application.Contract.Experiences.Responses;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Responses;
+using MRA.Identity.Application.Contract.Skills.Responses;
 
 namespace MRA.Jobs.Client.Services.Profile;
 
@@ -51,7 +51,7 @@ public class UserProfileService : IUserProfileService
 
     public async Task<HttpResponseMessage> DeleteEducationAync(Guid id)
     {
-        var respose= await _identityHttpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
+        var respose = await _identityHttpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
         return respose;
     }
 
@@ -76,6 +76,18 @@ public class UserProfileService : IUserProfileService
     public async Task<HttpResponseMessage> UpdateExperienceAsync(UpdateExperienceDetailCommand command)
     {
         var response = await _identityHttpClient.PutAsJsonAsync("Profile/UpdateExperienceDetail", command);
+        return response;
+    }
+
+    public async Task<UserSkillsResponse> GetSkills()
+    {
+        var response = await _identityHttpClient.GetJsonAsync<UserSkillsResponse>("Profile/GetUserSkills");
+        return response;
+    }
+
+    public async Task<HttpResponseMessage> RemoveSkillAync(string skill)
+    {
+       var response =await _identityHttpClient.DeleteAsync($"Profile/RemoveUserSkill/{skill}");
         return response;
     }
 }

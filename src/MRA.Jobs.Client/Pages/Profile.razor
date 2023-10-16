@@ -7,6 +7,7 @@
 @using MRA.Identity.Application.Contract.Experiences.Responses;
 @using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 @using MRA.Identity.Application.Contract.Profile.Responses;
+@using MRA.Identity.Application.Contract.Skills.Responses;
 @using MRA.Jobs.Client.Components.Dialogs;
 @using MRA.Jobs.Client.Services.Profile;
 @using MudBlazor;
@@ -318,7 +319,7 @@
 													<MudText Typo="Typo.h6"><strong>@experience.JobTitle</strong></MudText>
 												</CardHeaderContent>
 												<CardHeaderActions>
-													<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" OnClick="(() => EditCardExperienceButtonClicked(cardExperienceId))"/>
+													<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" OnClick="(() => EditCardExperienceButtonClicked(cardExperienceId))" />
 													<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="(()=>ConfirmDelete(experiences,experience))" />
 												</CardHeaderActions>
 											</MudCardHeader>
@@ -404,6 +405,19 @@
 
 					<br />
 					<MudGrid>
+
+						<div class="col-md-12 mb-6">
+							<MudCard>
+								<MudCardContent>
+									<div>
+										@foreach (string skill in UserSkills.Skills)
+										{
+											<MudChip Color="Color.Default" OnClose="Closed" Text="@skill">@skill</MudChip>
+										}
+									</div>
+								</MudCardContent>
+							</MudCard>
+						</div>
 
 						@for (int i = 0; i < 10; i++)
 						{
@@ -571,10 +585,23 @@
 
 	#endregion
 
+	#region Skills
+
+	private UserSkillsResponse UserSkills;
+
+	private async Task GetSkills()
+	{
+		UserSkills = await UserProfileService.GetSkills();
+	}
+
+	async void Closed(MudChip chip)
+	{
+		await ConfirmDelete(UserSkills.Skills, chip.Text);
+	}
+
+	#endregion
+
 	UserProfileResponse profile = null;
-
-
-
 	protected override async void OnInitialized()
 	{
 		profile = await UserProfileService.Get();
@@ -583,6 +610,8 @@
 		await GetEducations();
 
 		await GetExperiences();
+
+		await GetSkills();
 
 		StateHasChanged();
 	}
@@ -616,31 +645,39 @@
 			Type itemType = item.GetType();
 			// Получение свойства id
 			var idProperty = itemType.GetProperty("Id");
-			if (idProperty != null)
+			var result = new HttpResponseMessage();
+			if (idProperty != null || itemType.Name == "String") // Используйте "String", а не "string"
 			{
-				Guid id = (Guid)idProperty.GetValue(item);
-				var result = new HttpResponseMessage();
-				switch (itemType.Name)
+				if (itemType.Name == "String")
 				{
-					case "UserEducationResponse":
-						result = await UserProfileService.DeleteEducationAync(id);
-						break;
-					case "UserExperienceResponse":
-						result = await UserProfileService.DeleteExperienceAync(id);
-						break;
-					default:
-						break;
+					result = await UserProfileService.RemoveSkillAync(item.ToString());
+				}
+				else
+				{
+					Guid id = (Guid)idProperty.GetValue(item);
+					
+					switch (itemType.Name)
+					{
+						case "UserEducationResponse":
+							result = await UserProfileService.DeleteEducationAync(id);
+							break;
+						case "UserExperienceResponse":
+							result = await UserProfileService.DeleteExperienceAync(id);
+							break;
+						default:
+							break;
+					}
+				
 				}
 				if (result.IsSuccessStatusCode)
 				{
 					collection.Remove(item);
 					StateHasChanged();
 				}
-
 			}
 		}
-
 	}
+
 
 
 
