@@ -7,6 +7,7 @@
 @using MRA.Identity.Application.Contract.Experiences.Responses;
 @using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 @using MRA.Identity.Application.Contract.Profile.Responses;
+@using MRA.Identity.Application.Contract.Profile;
 @using MRA.Identity.Application.Contract.Skills.Command;
 @using MRA.Identity.Application.Contract.Skills.Responses;
 @using MRA.Jobs.Client.Components.Dialogs;
@@ -23,7 +24,7 @@
 			<MudPaper Width="250px" Class="py-3" Elevation="0">
 				<MudNavMenu>
 					<MudText Typo="Typo.h6" Class="px-4">My Profile</MudText>
-				
+
 					<MudDivider Class="my-2" />
 
 					<MudNavLink Class="@((Active == 0) ? "active" : "")" OnClick="()=> Active=0">Personal Information</MudNavLink>
@@ -97,11 +98,13 @@
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">About Myself</MudText>
 									<MudTextField T="string" @bind-Value="@profile.AboutMyself" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="5" />
 									<br />
-									<MudText Typo="Typo.body2" Class="mud-text-secondary">Gender</MudText>
-									<MudText>@profile.Gender</MudText>
+									<MudSelect T="Gender" Label="Select Gender" @bind-Value="@profile.Gender" Variant="Variant.Outlined">
+										<MudSelectItem Value="Gender.Male" />
+										<MudSelectItem Value="Gender.Female" />
+									</MudSelect>
 								</MudCardContent>
 								<MudCardActions>
-									<MudButton Color="Color.Primary" Type="submit" OnClick="UpdateProfile">Update Profile</MudButton>
+									<MudButton Color="Color.Primary" Variant="Variant.Filled" Type="submit" OnClick="UpdateProfile">Update Profile</MudButton>
 								</MudCardActions>
 							</MudCard>
 						</EditForm>
@@ -580,7 +583,7 @@
 	private UserSkillsResponse UserSkills;
 	bool isEditing = false;
 	string newSkills = "";
-	 bool isAdding = false;
+	bool isAdding = false;
 
 	private async Task GetSkills()
 	{
@@ -595,7 +598,7 @@
 	private async Task KeyDown(KeyboardEventArgs e)
 	{
 		if (e.Key == "Enter")
-		{			
+		{
 			await Task.Delay(1);
 			if (!isAdding)
 			{
@@ -629,7 +632,7 @@
 				StateHasChanged();
 			}
 			isAdding = false;
-		}		
+		}
 	}
 
 	#endregion
