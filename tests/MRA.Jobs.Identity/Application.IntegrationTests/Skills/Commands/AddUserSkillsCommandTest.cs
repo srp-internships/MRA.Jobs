@@ -7,7 +7,7 @@ public class AddUserSkillsCommandTest : BaseTest
     [Test]
     public async Task AddUserSkills_ShouldAddUserSkills_Success()
     {
-        var command = new AddSkillCommand()
+        var command = new AddSkillsCommand()
         {
             Skills = new List<string>() { "Skill1", "Skill2" }
         };

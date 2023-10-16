@@ -7,7 +7,9 @@ using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 using MRA.Identity.Application.Contract.Experiences.Responses;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Responses;
+using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Responses;
+using Newtonsoft.Json;
 
 namespace MRA.Jobs.Client.Services.Profile;
 
@@ -89,5 +91,17 @@ public class UserProfileService : IUserProfileService
     {
        var response =await _identityHttpClient.DeleteAsync($"Profile/RemoveUserSkill/{skill}");
         return response;
+    }
+
+    public async Task<UserSkillsResponse> AddSkills(AddSkillsCommand command)
+    {
+        var response = await _identityHttpClient.PostAsJsonAsync("Profile/AddSkills", command);
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<UserSkillsResponse>(content);
+            return result;
+        }
+        return null;
     }
 }

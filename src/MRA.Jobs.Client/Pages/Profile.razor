@@ -7,6 +7,7 @@
 @using MRA.Identity.Application.Contract.Experiences.Responses;
 @using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 @using MRA.Identity.Application.Contract.Profile.Responses;
+@using MRA.Identity.Application.Contract.Skills.Command;
 @using MRA.Identity.Application.Contract.Skills.Responses;
 @using MRA.Jobs.Client.Components.Dialogs;
 @using MRA.Jobs.Client.Services.Profile;
@@ -414,29 +415,18 @@
 										{
 											<MudChip Color="Color.Default" OnClose="Closed" Text="@skill">@skill</MudChip>
 										}
+										@if (isEditing)
+										{
+											<MudTextField @onkeydown="KeyDown" @onblur="AddSkills" @bind-Value="newSkills" Variant="Variant.Outlined" Label="Skills" Class="form-control" />
+										}
+										else
+										{
+											<MudFab Color="Color.Primary" Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" OnClick="()=> isEditing = true" />
+										}
 									</div>
 								</MudCardContent>
 							</MudCard>
 						</div>
-
-						@for (int i = 0; i < 10; i++)
-						{
-							<MudItem xs="3">
-								<MudCard>
-									<MudCardHeader>
-										<CardHeaderContent>
-											<MudSkeleton Width="40%" Height="50px" />
-										</CardHeaderContent>
-										<CardHeaderActions>
-											<MudSkeleton Width="25px" Height="25px" />
-										</CardHeaderActions>
-									</MudCardHeader>
-									<MudCardContent>
-										<MudSkeleton Width="70%" />
-									</MudCardContent>
-								</MudCard>
-							</MudItem>
-						}
 
 					</MudGrid>
 					break;
@@ -588,6 +578,9 @@
 	#region Skills
 
 	private UserSkillsResponse UserSkills;
+	bool isEditing = false;
+	string newSkills = "";
+	 bool isAdding = false;
 
 	private async Task GetSkills()
 	{
@@ -597,6 +590,46 @@
 	async void Closed(MudChip chip)
 	{
 		await ConfirmDelete(UserSkills.Skills, chip.Text);
+	}
+
+	private async Task KeyDown(KeyboardEventArgs e)
+	{
+		if (e.Key == "Enter")
+		{			
+			await Task.Delay(1);
+			if (!isAdding)
+			{
+				isAdding = true;
+				AddSkills();
+			}
+		}
+	}
+
+
+	private async void AddSkills()
+	{
+		if (!string.IsNullOrWhiteSpace(newSkills))
+		{
+			var userSkillsCommand = new AddSkillsCommand();
+			var skills = newSkills.Split(',', StringSplitOptions.RemoveEmptyEntries);
+			foreach (var skill in skills)
+			{
+				var trimmedSkill = skill.Trim();
+				if (!string.IsNullOrWhiteSpace(trimmedSkill))
+				{
+					userSkillsCommand.Skills.Add(trimmedSkill);
+				}
+			}
+			var result = await UserProfileService.AddSkills(userSkillsCommand);
+			if (result != null)
+			{
+				newSkills = "";
+				isEditing = false;
+				UserSkills = result;
+				StateHasChanged();
+			}
+			isAdding = false;
+		}		
 	}
 
 	#endregion
@@ -643,10 +676,9 @@
 		if (collection.Contains(item))
 		{
 			Type itemType = item.GetType();
-			// Получение свойства id
 			var idProperty = itemType.GetProperty("Id");
 			var result = new HttpResponseMessage();
-			if (idProperty != null || itemType.Name == "String") // Используйте "String", а не "string"
+			if (idProperty != null || itemType.Name == "String")
 			{
 				if (itemType.Name == "String")
 				{
@@ -655,7 +687,7 @@
 				else
 				{
 					Guid id = (Guid)idProperty.GetValue(item);
-					
+
 					switch (itemType.Name)
 					{
 						case "UserEducationResponse":
@@ -667,7 +699,7 @@
 						default:
 							break;
 					}
-				
+
 				}
 				if (result.IsSuccessStatusCode)
 				{
