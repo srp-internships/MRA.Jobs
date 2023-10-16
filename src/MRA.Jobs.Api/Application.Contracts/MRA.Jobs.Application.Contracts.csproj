@@ -8,7 +8,6 @@
     <ItemGroup>
         <PackageReference Include="FluentValidation" Version="11.7.1" />
         <PackageReference Include="MediatR" Version="11.1.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Sieve" Version="2.5.5" />
     </ItemGroup>
