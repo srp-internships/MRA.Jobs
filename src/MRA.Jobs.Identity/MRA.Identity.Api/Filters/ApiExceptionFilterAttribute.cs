@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MRA.Identity.Application.Common.Exceptions;
 
-namespace MRA.Jobs.Web.Filters;
+namespace MRA.Identity.Api.Filters;
 
 public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 {
@@ -62,7 +63,9 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
         ValidationProblemDetails details = new ValidationProblemDetails(exception.Errors)
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Status = StatusCodes.Status400BadRequest,
+            Title=exception.Message
         };
 
         context.Result = new BadRequestObjectResult(details);
