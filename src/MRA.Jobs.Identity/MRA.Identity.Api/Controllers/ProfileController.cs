@@ -75,8 +75,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> DeleteEducationDetail([FromRoute] Guid id)
     {
         var result = await _mediator.Send(new DeleteEducationCommand { Id = id });
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
     }
 
@@ -84,8 +82,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> UpdateEducationDetail([FromBody] UpdateEducationDetailCommand command)
     {
         var result = await _mediator.Send(command);
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
     }
 
@@ -93,14 +89,7 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> GetEducationsByUser([FromQuery] GetEducationsByUserQuery query)
     {
         var result = await _mediator.Send(query);
-        if (result.IsSuccess == false)
-        {
-            if (result.ErrorMessage == "User not found")
-            {
-                return NotFound(result.ErrorMessage);
-            }
-            return BadRequest(result.ErrorMessage + result.Exception);
-        }
+       
         return Ok(result);
     }
 
