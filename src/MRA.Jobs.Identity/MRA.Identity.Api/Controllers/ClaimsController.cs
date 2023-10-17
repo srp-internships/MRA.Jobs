@@ -23,13 +23,8 @@ public class ClaimsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateClaimCommand request)
     {
-        ApplicationResponse<Guid> response = await _mediator.Send(request);
-        if (response.IsSuccess)
-        {
-            return Ok();
-        }
-
-        return BadRequest($"{response.Exception}   {response.ErrorMessage}");
+          var response = await _mediator.Send(request);
+        return Ok();
     }
 
 
@@ -73,14 +68,8 @@ public class ClaimsController : ControllerBase
     public async Task<IActionResult> Get([FromQuery] GetAllQuery query)
     {
         
-        ApplicationResponse<List<UserClaimsResponse>> response = await _mediator.Send(query);
-        
-        if (response.IsSuccess)
-        {
-            return Ok(response.Response);
-        }
-        
-        return BadRequest($"{response.Exception}   {response.ErrorMessage}");
+        List<UserClaimsResponse> response = await _mediator.Send(query);
+        return Ok(response);
     }    
     
     [HttpGet("{slug}")]
@@ -88,12 +77,6 @@ public class ClaimsController : ControllerBase
     {
 
         var response = await _mediator.Send(new GetBySlugQuery { Slug = slug });
-        
-        if (response.IsSuccess)
-        {
-            return Ok(response.Response);
-        }
-        
-        return BadRequest($"{response.Exception}   {response.ErrorMessage}");
+        return Ok(response);
     }
 }
