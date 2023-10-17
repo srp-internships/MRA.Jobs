@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.ApplicationRoles.Commands;
 using MRA.Identity.Domain.Entities;
 
@@ -23,6 +24,7 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Guid>
             NormalizedName = request.RoleName.ToLower(),
             Slug = request.RoleName.ToLower(),
         };
+
         var result = await _roleManager.CreateAsync(role);
         return role.Id;
     }
