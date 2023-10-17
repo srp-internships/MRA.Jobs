@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using System.ComponentModel.DataAnnotations;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
-using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.ApplicationRoles.Commands;
 using MRA.Identity.Domain.Entities;
 
@@ -26,6 +26,10 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Guid>
         };
 
         var result = await _roleManager.CreateAsync(role);
-        return role.Id;
+        if (result.Succeeded)
+        {
+            return role.Id; 
+        }
+         throw new ValidationException();
     }
 }
