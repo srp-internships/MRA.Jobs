@@ -14,6 +14,7 @@
 @using MRA.Jobs.Client.Services.Profile;
 @using MudBlazor;
 @using FluentValidation;
+@inject ISnackbar Snackbar
 
 @inject IDialogService DialogService;
 @inject IUserProfileService UserProfileService;
@@ -439,55 +440,55 @@
 </div>
 
 @code {
-	private int Active = 0;
+    private int Active = 0;
 
-	#region education
-	List<UserEducationResponse> educations = new List<UserEducationResponse>();
-	private bool addEducation = false;
-	CreateEducationDetailCommand createEducation = new CreateEducationDetailCommand();
+    #region education
+    List<UserEducationResponse> educations = new List<UserEducationResponse>();
+    private bool addEducation = false;
+    CreateEducationDetailCommand createEducation = new CreateEducationDetailCommand();
 
-	Guid editingCardId = new Guid();
+    Guid editingCardId = new Guid();
 
-	private async Task GetEducations()
-	{
-		educations = await UserProfileService.GetEducations();
-	}
+    private async Task GetEducations()
+    {
+        educations = await UserProfileService.GetEducations();
+    }
 
-	private void EditButtonClicked(Guid cardId)
-	{
-		editingCardId = cardId;
-	}
+    private void EditButtonClicked(Guid cardId)
+    {
+        editingCardId = cardId;
+    }
 
-	private async Task CreateEducationHandle()
-	{
-		if (createEducation.EndDate == null)
-			createEducation.EndDate = default(DateTime);
+    private async Task CreateEducationHandle()
+    {
+        if (createEducation.EndDate == null)
+            createEducation.EndDate = default(DateTime);
 
-		var response = await UserProfileService.CreateEducationAsуnc(createEducation);
-		if (response.IsSuccessStatusCode)
-		{
-			addEducation = false;
-			createEducation = new CreateEducationDetailCommand();
-			await GetEducations();
-		}
-	}
+        var response = await UserProfileService.CreateEducationAsуnc(createEducation);
+        if (response.IsSuccessStatusCode)
+        {
+            addEducation = false;
+            createEducation = new CreateEducationDetailCommand();
+            await GetEducations();
+        }
+    }
 
-	private void CancelButtonClicked_CreateEducation()
-	{
-		addEducation = false;
-		createEducation = new CreateEducationDetailCommand();
-	}
+    private void CancelButtonClicked_CreateEducation()
+    {
+        addEducation = false;
+        createEducation = new CreateEducationDetailCommand();
+    }
 
-	private async void CancelButtonClicked_UpdateEducation()
-	{
-		editingCardId = Guid.NewGuid();
-		await GetEducations();
-		StateHasChanged();
-	}
+    private async void CancelButtonClicked_UpdateEducation()
+    {
+        editingCardId = Guid.NewGuid();
+        await GetEducations();
+        StateHasChanged();
+    }
 
-	private async void UpdateEducationHandle(UserEducationResponse education)
-	{
-		var updateEducation = new UpdateEducationDetailCommand()
+    private async void UpdateEducationHandle(UserEducationResponse education)
+    {
+        var updateEducation = new UpdateEducationDetailCommand()
 			{
 				Id = education.Id,
 				StartDate = education.StartDate.HasValue ? education.StartDate.Value : default(DateTime),
@@ -497,64 +498,64 @@
 				UntilNow = education.UntilNow
 			};
 
-		var result = await UserProfileService.UpdateEducationAsync(updateEducation);
-		if (result.IsSuccessStatusCode)
-		{
-			editingCardId = Guid.NewGuid();
-			StateHasChanged();
-		}
-	}
+        var result = await UserProfileService.UpdateEducationAsync(updateEducation);
+        if (result.IsSuccessStatusCode)
+        {
+            editingCardId = Guid.NewGuid();
+            StateHasChanged();
+        }
+    }
 
-	#endregion
+    #endregion
 
-	#region Experience
+    #region Experience
 
-	List<UserExperienceResponse> experiences = new List<UserExperienceResponse>();
-	private bool addExperience = false;
-	CreateExperienceDetailCommand createExperience = new CreateExperienceDetailCommand();
-	private Guid editingCardExperienceId;
+    List<UserExperienceResponse> experiences = new List<UserExperienceResponse>();
+    private bool addExperience = false;
+    CreateExperienceDetailCommand createExperience = new CreateExperienceDetailCommand();
+    private Guid editingCardExperienceId;
 
-	private async Task GetExperiences()
-	{
-		experiences = await UserProfileService.GetExperiences();
-	}
+    private async Task GetExperiences()
+    {
+        experiences = await UserProfileService.GetExperiences();
+    }
 
-	private async Task CreateExperienceHandle()
-	{
-		if (createExperience.EndDate == null)
-			createExperience.EndDate = default(DateTime);
+    private async Task CreateExperienceHandle()
+    {
+        if (createExperience.EndDate == null)
+            createExperience.EndDate = default(DateTime);
 
-		var response = await UserProfileService.CreateExperienceAsycn(createExperience);
-		if (response.IsSuccessStatusCode)
-		{
-			addExperience = false;
-			createExperience = new CreateExperienceDetailCommand();
-			await GetExperiences();
-		}
-	}
+        var response = await UserProfileService.CreateExperienceAsycn(createExperience);
+        if (response.IsSuccessStatusCode)
+        {
+            addExperience = false;
+            createExperience = new CreateExperienceDetailCommand();
+            await GetExperiences();
+        }
+    }
 
-	private async void CancelButtonClicked_CreateExperience()
-	{
-		addExperience = false;
-		createExperience = new CreateExperienceDetailCommand();
-		await GetExperiences();
-	}
+    private async void CancelButtonClicked_CreateExperience()
+    {
+        addExperience = false;
+        createExperience = new CreateExperienceDetailCommand();
+        await GetExperiences();
+    }
 
-	private async void CancelButtonClicked_UpdateExperience()
-	{
-		editingCardExperienceId = Guid.NewGuid();
-		await GetExperiences();
-		StateHasChanged();
-	}
+    private async void CancelButtonClicked_UpdateExperience()
+    {
+        editingCardExperienceId = Guid.NewGuid();
+        await GetExperiences();
+        StateHasChanged();
+    }
 
-	private void EditCardExperienceButtonClicked(Guid cardExperienceId)
-	{
-		editingCardExperienceId = cardExperienceId;
-	}
+    private void EditCardExperienceButtonClicked(Guid cardExperienceId)
+    {
+        editingCardExperienceId = cardExperienceId;
+    }
 
-	private async void UpdateExperienceHandle(UserExperienceResponse experience)
-	{
-		var updateExperience = new UpdateExperienceDetailCommand()
+    private async void UpdateExperienceHandle(UserExperienceResponse experience)
+    {
+        var updateExperience = new UpdateExperienceDetailCommand()
 			{
 				Id = experience.Id,
 				StartDate = experience.StartDate.HasValue ? experience.StartDate.Value : default(DateTime),
@@ -566,160 +567,160 @@
 				Address = experience.Address
 			};
 
-		var result = await UserProfileService.UpdateExperienceAsync(updateExperience);
-		if (result.IsSuccessStatusCode)
-		{
-			editingCardExperienceId = Guid.NewGuid();
-			StateHasChanged();
-		}
-	}
+        var result = await UserProfileService.UpdateExperienceAsync(updateExperience);
+        if (result.IsSuccessStatusCode)
+        {
+            editingCardExperienceId = Guid.NewGuid();
+            StateHasChanged();
+        }
+    }
 
 
 
-	#endregion
+    #endregion
 
-	#region Skills
+    #region Skills
 
-	private UserSkillsResponse UserSkills;
-	bool isEditing = false;
-	string newSkills = "";
-	bool isAdding = false;
+    private UserSkillsResponse UserSkills;
+    bool isEditing = false;
+    string newSkills = "";
+    bool isAdding = false;
 
-	private async Task GetSkills()
-	{
-		UserSkills = await UserProfileService.GetSkills();
-	}
+    private async Task GetSkills()
+    {
+        UserSkills = await UserProfileService.GetSkills();
+    }
 
-	async void Closed(MudChip chip)
-	{
-		await ConfirmDelete(UserSkills.Skills, chip.Text);
-	}
+    async void Closed(MudChip chip)
+    {
+        await ConfirmDelete(UserSkills.Skills, chip.Text);
+    }
 
-	private async Task KeyDown(KeyboardEventArgs e)
-	{
-		if (e.Key == "Enter")
-		{
-			await Task.Delay(1);
-			if (!isAdding)
-			{
-				isAdding = true;
-				AddSkills();
-			}
-		}
-	}
-
-
-	private async void AddSkills()
-	{
-		if (!string.IsNullOrWhiteSpace(newSkills))
-		{
-			var userSkillsCommand = new AddSkillsCommand();
-			var skills = newSkills.Split(',', StringSplitOptions.RemoveEmptyEntries);
-			foreach (var skill in skills)
-			{
-				var trimmedSkill = skill.Trim();
-				if (!string.IsNullOrWhiteSpace(trimmedSkill))
-				{
-					userSkillsCommand.Skills.Add(trimmedSkill);
-				}
-			}
-			var result = await UserProfileService.AddSkills(userSkillsCommand);
-			if (result != null)
-			{
-				newSkills = "";
-				isEditing = false;
-				UserSkills = result;
-				StateHasChanged();
-			}
-			isAdding = false;
-		}
-	}
-
-	#endregion
-
-	UserProfileResponse profile = null;
-	protected override async void OnInitialized()
-	{
-		profile = await UserProfileService.Get();
+    private async Task KeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await Task.Delay(1);
+            if (!isAdding)
+            {
+                isAdding = true;
+                AddSkills();
+            }
+        }
+    }
 
 
-		await GetEducations();
+    private async void AddSkills()
+    {
+        if (!string.IsNullOrWhiteSpace(newSkills))
+        {
+            var userSkillsCommand = new AddSkillsCommand();
+            var skills = newSkills.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            foreach (var skill in skills)
+            {
+                var trimmedSkill = skill.Trim();
+                if (!string.IsNullOrWhiteSpace(trimmedSkill))
+                {
+                    userSkillsCommand.Skills.Add(trimmedSkill);
+                }
+            }
+            var result = await UserProfileService.AddSkills(userSkillsCommand);
+            if (result != null)
+            {
+                newSkills = "";
+                isEditing = false;
+                UserSkills = result;
+                StateHasChanged();
+            }
+            isAdding = false;
+        }
+    }
 
-		await GetExperiences();
+    #endregion
 
-		await GetSkills();
-
-		StateHasChanged();
-	}
-
-
+    UserProfileResponse profile = null;
+    protected override async void OnInitialized()
+    {
+        profile = await UserProfileService.Get();
 
 
+        await GetEducations();
 
-	private async Task ConfirmDelete<T>(IList<T> collection, T item)
-	{
-		var parameters = new DialogParameters<DialogMudBlazor>();
-		parameters.Add(x => x.ContentText, "Do you really want to delete these records? This process cannot be undone.");
-		parameters.Add(x => x.ButtonText, "Delete");
-		parameters.Add(x => x.Color, Color.Error);
+        await GetExperiences();
 
-		var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+        await GetSkills();
 
-		var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
-		var result = await dialog.Result;
-
-		if (!result.Cancelled)
-		{
-			Delete(collection, item);
-		}
-	}
-
-	private async void Delete<T>(ICollection<T> collection, T item)
-	{
-		if (collection.Contains(item))
-		{
-			Type itemType = item.GetType();
-			var idProperty = itemType.GetProperty("Id");
-			var result = new HttpResponseMessage();
-			if (idProperty != null || itemType.Name == "String")
-			{
-				if (itemType.Name == "String")
-				{
-					result = await UserProfileService.RemoveSkillAync(item.ToString());
-				}
-				else
-				{
-					Guid id = (Guid)idProperty.GetValue(item);
-
-					switch (itemType.Name)
-					{
-						case "UserEducationResponse":
-							result = await UserProfileService.DeleteEducationAync(id);
-							break;
-						case "UserExperienceResponse":
-							result = await UserProfileService.DeleteExperienceAync(id);
-							break;
-						default:
-							break;
-					}
-
-				}
-				if (result.IsSuccessStatusCode)
-				{
-					collection.Remove(item);
-					StateHasChanged();
-				}
-			}
-		}
-	}
+        StateHasChanged();
+    }
 
 
 
 
 
-	private async void UpdateProfile()
-	{
-		var command = new UpdateProfileCommand
+    private async Task ConfirmDelete<T>(IList<T> collection, T item)
+    {
+        var parameters = new DialogParameters<DialogMudBlazor>();
+        parameters.Add(x => x.ContentText, "Do you really want to delete these records? This process cannot be undone.");
+        parameters.Add(x => x.ButtonText, "Delete");
+        parameters.Add(x => x.Color, Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            Delete(collection, item);
+        }
+    }
+
+    private async void Delete<T>(ICollection<T> collection, T item)
+    {
+        if (collection.Contains(item))
+        {
+            Type itemType = item.GetType();
+            var idProperty = itemType.GetProperty("Id");
+            var result = new HttpResponseMessage();
+            if (idProperty != null || itemType.Name == "String")
+            {
+                if (itemType.Name == "String")
+                {
+                    result = await UserProfileService.RemoveSkillAync(item.ToString());
+                }
+                else
+                {
+                    Guid id = (Guid)idProperty.GetValue(item);
+
+                    switch (itemType.Name)
+                    {
+                        case "UserEducationResponse":
+                            result = await UserProfileService.DeleteEducationAync(id);
+                            break;
+                        case "UserExperienceResponse":
+                            result = await UserProfileService.DeleteExperienceAync(id);
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+                if (result.IsSuccessStatusCode)
+                {
+                    collection.Remove(item);
+                    StateHasChanged();
+                }
+            }
+        }
+    }
+
+
+
+
+
+    private async void UpdateProfile()
+    {
+        var command = new UpdateProfileCommand
 			{
 				DateOfBirth = profile.DateOfBirth.HasValue ? profile.DateOfBirth.Value : default(DateTime),
 				FirstName = profile.FirstName,
@@ -730,6 +731,10 @@
 				AboutMyself = profile.AboutMyself
 			};
 
-		var result = await UserProfileService.Update(command);
-	}
+        var result = await UserProfileService.Update(command);
+        if (result.IsSuccessStatusCode)
+        {
+            Snackbar.Add("Profile updated successfully.", MudBlazor.Severity.Success);
+        }
+    }
 }
