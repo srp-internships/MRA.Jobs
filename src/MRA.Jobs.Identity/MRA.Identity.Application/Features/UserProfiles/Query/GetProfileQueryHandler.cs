@@ -1,12 +1,9 @@
-﻿using System.Data;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
-using MRA.Identity.Application.Contract;
-using MRA.Identity.Application.Contract.Experiences.Responses;
 using MRA.Identity.Application.Contract.Profile.Queries;
 using MRA.Identity.Application.Contract.Profile.Responses;
 

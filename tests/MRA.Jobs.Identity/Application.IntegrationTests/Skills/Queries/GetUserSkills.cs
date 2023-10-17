@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using Microsoft.OpenApi.Writers;
 
 namespace MRA.Jobs.Application.IntegrationTests.Skills.Queries;
 public class GetUserSkills

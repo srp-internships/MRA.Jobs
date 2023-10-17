@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
-using MRA.Identity.Application.Contract;
 using MRA.Identity.Domain.Entities;
 using Mra.Shared.Common.Constants;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;

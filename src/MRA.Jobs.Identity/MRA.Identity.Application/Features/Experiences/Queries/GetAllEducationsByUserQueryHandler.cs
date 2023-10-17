@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
-using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.Experiences.Query;
 using MRA.Identity.Application.Contract.Experiences.Responses;
 

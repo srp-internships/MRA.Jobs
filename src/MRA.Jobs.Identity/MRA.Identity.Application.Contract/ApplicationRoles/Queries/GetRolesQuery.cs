@@ -3,6 +3,6 @@ using MRA.Identity.Application.Contract.ApplicationRoles.Responses;
 
 namespace MRA.Identity.Application.Contract.ApplicationRoles.Queries;
 
-public class GetRolesQuery : IRequest<ApplicationResponse<List<RoleNameResponse>>>
+public class GetRolesQuery : IRequest<List<RoleNameResponse>>
 {
 }

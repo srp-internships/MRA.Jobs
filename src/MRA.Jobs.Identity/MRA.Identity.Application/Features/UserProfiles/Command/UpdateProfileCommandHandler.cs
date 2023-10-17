@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.Services;
-using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Domain.Entities;
 
@@ -25,12 +24,12 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
     }
     public async Task<bool> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
     {
-            var user = await _userManager.FindByNameAsync(_userHttpContextAccessor.GetUserName());
-            _ = user ?? throw new NotFoundException("user is not found");
+        var user = await _userManager.FindByNameAsync(_userHttpContextAccessor.GetUserName());
+        _ = user ?? throw new NotFoundException("user is not found");
 
-            _mapper.Map(request, user);
+        _mapper.Map(request, user);
 
-            return (await _userManager.UpdateAsync(user)).Succeeded;
-         
+        return (await _userManager.UpdateAsync(user)).Succeeded;
+
     }
 }

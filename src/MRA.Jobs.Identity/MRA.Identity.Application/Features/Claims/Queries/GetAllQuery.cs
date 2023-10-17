@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
+using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.Claim.Queries;
 using MRA.Identity.Application.Contract.Claim.Responses;
 using MRA.Identity.Domain.Entities;
