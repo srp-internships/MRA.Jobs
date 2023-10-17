@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
 namespace MRA.Identity.Application.Contract.Experiences.Commands.Update;
-public class UpdateExperienceDetailCommand : IRequest<ApplicationResponse<Guid>>
+public class UpdateExperienceDetailCommand : IRequest<Guid>
 {
     public Guid Id { get; set; }
     public string JobTitle { get; set; }

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
 namespace MRA.Identity.Application.Contract.Experiences.Commands.Create;
-public class CreateExperienceDetailCommand : IRequest<ApplicationResponse<Guid>>
+public class CreateExperienceDetailCommand : IRequest<Guid>
 {
     public string JobTitle { get; set; }
     public string CompanyName { get; set; }
