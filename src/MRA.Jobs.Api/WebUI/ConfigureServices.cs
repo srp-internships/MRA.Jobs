@@ -6,7 +6,6 @@ using Microsoft.IdentityModel.Tokens;
 using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Web.Filters;
-using MRA.Jobs.Web.Services;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 
@@ -17,8 +16,6 @@ public static class ConfigureServices
     public static void AddWebUiServices(this IServiceCollection services,IConfiguration configuration)
     {
         services.AddDatabaseDeveloperPageExceptionFilter();
-
-        services.AddScoped<IFileService, FileService>();
 
         services.AddHttpContextAccessor();
 
