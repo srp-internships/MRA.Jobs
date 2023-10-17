@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
-using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.Claim.Commands;
 
 namespace MRA.Identity.Application.Features.Claims.Commands;
 
-public class DeleteClaimCommandHandler : IRequestHandler<DeleteClaimCommand, ApplicationResponse>
+public class DeleteClaimCommandHandler : IRequestHandler<DeleteClaimCommand, Unit>
 {
     private readonly IApplicationDbContext _context;
 
@@ -15,26 +15,15 @@ public class DeleteClaimCommandHandler : IRequestHandler<DeleteClaimCommand, App
         _context = context;
     }
 
-    public async Task<ApplicationResponse> Handle(DeleteClaimCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteClaimCommand request, CancellationToken cancellationToken)
     {
-        try
-        {
-            var claim = await _context.UserClaims.SingleOrDefaultAsync(s => String.Equals(s.Slug.Trim(), request.Slug.Trim(), StringComparison.CurrentCultureIgnoreCase), cancellationToken: cancellationToken);
-            if (claim==null)
-            {
-                return new ApplicationResponseBuilder().Success(false)
-                    .SetErrorMessage($"claim with slug {request.Slug} not found").Build();
-            }
+        var claim = await _context.UserClaims.SingleOrDefaultAsync(s => String.Equals(s.Slug.Trim(), request.Slug.Trim(), StringComparison.CurrentCultureIgnoreCase), cancellationToken: cancellationToken);
+        _ = claim ?? throw new NotFoundException($"claim with slug {request.Slug} not found");
 
-            _context.UserClaims.Remove(claim);
-            
-            await _context.SaveChangesAsync(cancellationToken);
-            
-            return new ApplicationResponseBuilder().Build();
-        }
-        catch (Exception e)
-        {
-            return new ApplicationResponseBuilder().Success(false).SetException(e).Build();
-        }
+        _context.UserClaims.Remove(claim);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return Unit.Value;
     }
 }
