@@ -32,8 +32,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileCommand command)
     {
         var result = await _mediator.Send(command);
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
     }
 
@@ -41,14 +39,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> GetProfileByUserName([FromQuery] string? userName = null)
     {
         var result = await _mediator.Send(new GetPofileQuery { UserName = userName });
-        if (!result.IsSuccess)
-        {
-            if (result.ErrorMessage == "User not found")
-            {
-                return NotFound(result.ErrorMessage);
-            }
-            return BadRequest(result.ErrorMessage+result.Exception);
-        }
         return Ok(result);
     }
 
