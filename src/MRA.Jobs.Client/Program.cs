@@ -17,6 +17,7 @@ using MRA.Jobs.Client.Services.Auth;
 using MudBlazor.Services;
 using MRA.Jobs.Client.Services.Profile;
 using System.Reflection;
+using MRA.Identity.Application.Contract.Skills.Command;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -35,6 +36,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+builder.Services.AddValidatorsFromAssembly(typeof(RemoveUserSkillCommand).Assembly);
 
 
 var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
