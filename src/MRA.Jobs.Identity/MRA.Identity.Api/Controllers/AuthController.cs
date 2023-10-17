@@ -6,7 +6,6 @@ using MRA.Identity.Application.Contract.User.Commands;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Queries;
-using MRA.Identity.Application.Contract.User.Responses;
 
 namespace MRA.Identity.Api.Controllers;
 
@@ -27,60 +26,23 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginUserCommand request)
     {
         var result = await _mediator.Send(request);
-        if (result.IsSuccess)
-        {
-            return Ok(result.Response);
-        }
-
-        if (result.ErrorMessage != null)
-        {
-            return Unauthorized(result.ErrorMessage);
-        }
-
-        if (result.Exception!=null)
-        {
-            return Unauthorized(result.Exception.ToString());
-        }
-
-        return Unauthorized();
+        return Ok(result);
     }
-
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserCommand request)
     {
         var result = await _mediator.Send(request);
-        if (result.IsSuccess)
-        {
-            return Ok(result.Response);
-        }
-
-        if (result.ErrorMessage!=null)
-        {
-            return Unauthorized(result.ErrorMessage);
-        }
-
-        if (result.Exception!=null)
-        {
-            return Unauthorized(result.Exception);
-        }
-
-        return Unauthorized();
+        return Ok(result);
     }
 
     [HttpGet("verify")]
     [Authorize]
     public async Task<IActionResult> Verify(string token)
     {
-        var result = await _emailVerification.VerifyEmailAsync(token);
-        if (result.Success)
-        {
-            return Content("<h1>Thank you!</h1><p>Your email address has been successfully confirmed.</p>");
-        }
-        else
-        {
-            return BadRequest(result.ErrorMessage);
-        }
+        await _emailVerification.VerifyEmailAsync(token);
+
+        return Content("<h1>Thank you!</h1><p>Your email address has been successfully confirmed.</p>");
     }
 
 
@@ -88,21 +50,14 @@ public class AuthController : ControllerBase
     [Authorize]
     public async Task<IActionResult> ResendVerificationCode()
     {
-        var result = await _mediator.Send(new UserEmallCommand());
-        if (!result.IsSuccess)
-            return BadRequest(result.Exception.ToString());
+        await _mediator.Send(new UserEmailCommand());
         return Ok();
     }
-    
-    [HttpPost("refresh")]   
+
+    [HttpPost("refresh")]
     public async Task<IActionResult> Refresh(GetAccessTokenUsingRefreshTokenQuery request)
     {
         var response = await _mediator.Send(request);
-        if (response.IsSuccess == false)
-        {
-            return BadRequest(response.ErrorMessage);
-        }
-
         return Ok(response);
     }
 }
