@@ -5,26 +5,33 @@
 
 <MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Applications</MudText>
 
-<MudContainer Class="text-center">
-    <MudTable Items="@applications.Items" Class="text-center" Breakpoint="Breakpoint.Md">
-        <HeaderContent>
-            <MudTh>Appliant username</MudTh>
-            <MudTh>Vacancy title</MudTh>
-            <MudTh>Status name</MudTh>
-            <MudTh>Action</MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Username">@context.Username</MudTd>
-            <MudTd DataLabel="Vacancy title">@context.VacancyTitle</MudTd>
-            <MudTd DataLabel="Status">@context.StatusName</MudTd>
-            <MudTd DataLabel="Action"><MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton></MudTd>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager />
-        </PagerContent>
-    </MudTable>
+@if (applications.Items.Count == 0)
+{
+    <MudText Typo="Typo.h5" Style="margin:50px;">You do not have any active applications</MudText>
+}
+else
+{
+    <MudContainer Class="text-center">
+        <MudTable Items="@applications.Items" Class="text-center" Breakpoint="Breakpoint.Md">
+            <HeaderContent>
+                <MudTh>Appliant username</MudTh>
+                <MudTh>Vacancy title</MudTh>
+                <MudTh>Status name</MudTh>
+                <MudTh>Action</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Username">@context.Username</MudTd>
+                <MudTd DataLabel="Vacancy title">@context.VacancyTitle</MudTd>
+                <MudTd DataLabel="Status">@context.StatusName</MudTd>
+                <MudTd DataLabel="Action"><MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton></MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
 
-</MudContainer>
+    </MudContainer>
+}
 
 @code {
 
