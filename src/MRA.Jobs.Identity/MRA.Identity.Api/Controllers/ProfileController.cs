@@ -49,16 +49,16 @@ public class ProfileController : ControllerBase
             }
             return BadRequest(result.ErrorMessage+result.Exception);
         }
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpPost("AddSkills")]
-    public async Task<IActionResult> AddSkill([FromBody] AddSkillCommand command)
+    public async Task<IActionResult> AddSkill([FromBody] AddSkillsCommand command)
     {
         var result = await _mediator.Send(command);
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result);
+        return Ok(result.Response);
     }
 
 
@@ -74,7 +74,7 @@ public class ProfileController : ControllerBase
             }
             return BadRequest(result.ErrorMessage + result.Exception);
         }
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpDelete("RemoveUserSkill/{skill}")]
@@ -83,7 +83,7 @@ public class ProfileController : ControllerBase
         var result = await _mediator.Send(new RemoveUserSkillCommand { Skill = skill });
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpPost("CreateEducationDetail")]
@@ -92,7 +92,7 @@ public class ProfileController : ControllerBase
         var result = await _mediator.Send(command);
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpDelete("DeleteEducationDetail/{id}")]
@@ -125,7 +125,7 @@ public class ProfileController : ControllerBase
             }
             return BadRequest(result.ErrorMessage + result.Exception);
         }
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpPost("СreateExperienceDetail")]
@@ -134,7 +134,7 @@ public class ProfileController : ControllerBase
         var result = await _mediator.Send(command);
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpPut("UpdateExperienceDetail")]
@@ -143,7 +143,7 @@ public class ProfileController : ControllerBase
         var result = await _mediator.Send(command);
         if (result.IsSuccess == false)
             return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result);
+        return Ok(result.Response);
     }
 
     [HttpDelete("DeleteExperienceDetail/{id}")]
@@ -167,6 +167,8 @@ public class ProfileController : ControllerBase
             }
             return BadRequest(result.ErrorMessage + result.Exception);
         }
-        return Ok(result);
+        return Ok(result.Response);
     }
+
+
 }
