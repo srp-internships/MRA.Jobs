@@ -46,8 +46,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> AddSkill([FromBody] AddSkillCommand command)
     {
         var result = await _mediator.Send(command);
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
     }
 
@@ -56,14 +54,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> GetUserSkills([FromQuery] string? userName = null)
     {
         var result = await _mediator.Send(new GetUserSkillsQuery { UserName = userName });
-        if (!result.IsSuccess)
-        {
-            if (result.ErrorMessage == "User not found")
-            {
-                return NotFound(result.ErrorMessage);
-            }
-            return BadRequest(result.ErrorMessage + result.Exception);
-        }
         return Ok(result);
     }
 
@@ -71,8 +61,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> RemoveUserSkill([FromRoute] string skill)
     {
         var result = await _mediator.Send(new RemoveUserSkillCommand { Skill = skill });
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
     }
 
@@ -80,8 +68,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> CreateEducationDetail([FromBody] CreateEducationDetailCommand command)
     {
         var result = await _mediator.Send(command);
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
     }
 

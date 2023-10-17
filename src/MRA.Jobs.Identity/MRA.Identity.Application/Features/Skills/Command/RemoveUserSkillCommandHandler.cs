@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract;
@@ -10,7 +11,7 @@ using MRA.Identity.Application.Contract.Skills.Responses;
 using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Skills.Command;
-public class RemoveUserSkillCommandHandler : IRequestHandler<RemoveUserSkillCommand, ApplicationResponse<UserSkillsResponse>>
+public class RemoveUserSkillCommandHandler : IRequestHandler<RemoveUserSkillCommand, UserSkillsResponse>
 {
     private readonly IApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -24,47 +25,30 @@ public class RemoveUserSkillCommandHandler : IRequestHandler<RemoveUserSkillComm
         _userManager = userManager;
         _userHttpContextAccessor = userHttpContextAccessor;
     }
-    public async Task<ApplicationResponse<UserSkillsResponse>> Handle(RemoveUserSkillCommand request, CancellationToken cancellationToken)
+    public async Task<UserSkillsResponse> Handle(RemoveUserSkillCommand request, CancellationToken cancellationToken)
     {
-        try
+        var userName = _userHttpContextAccessor.GetUserName();
+        var user = await _context.Users.Include(u => u.UserSkills)
+            .ThenInclude(us => us.Skill)
+            .FirstOrDefaultAsync(u => u.UserName.Equals(_userHttpContextAccessor.GetUserName()),
+            cancellationToken);
+
+        _ = user ?? throw new NotFoundException("user is not found");
+
+        var specificSkill = user.UserSkills
+            .FirstOrDefault(us => us.Skill.Name == request.Skill);
+        _ = specificSkill ?? throw new NotFoundException($"Skill '{request.Skill}' not found for this user");
+
+        user.UserSkills.Remove(specificSkill);
+
+        await _context.SaveChangesAsync();
+
+        var response = new UserSkillsResponse
         {
-            var userName = _userHttpContextAccessor.GetUserName();
-            var user = await _context.Users.Include(u => u.UserSkills)
-                .ThenInclude(us => us.Skill)
-                .FirstOrDefaultAsync(u => u.UserName.Equals(_userHttpContextAccessor.GetUserName()),
-                cancellationToken);
+            Skills = user.UserSkills.Select(us => us.Skill.Name).ToList()
+        };
 
-            if (user == null)
-                return new ApplicationResponseBuilder<UserSkillsResponse>()
-                .SetErrorMessage("User not found")
-                .Success(false).Build();
-
-
-            var specificSkill = user.UserSkills
-                .FirstOrDefault(us => us.Skill.Name == request.Skill);
-
-            if (specificSkill == null)
-                return new ApplicationResponseBuilder<UserSkillsResponse>()
-                    .SetErrorMessage($"Skill '{request.Skill}' not found for this user")
-                    .Success(false).Build();
-
-            user.UserSkills.Remove(specificSkill);
-
-            await _context.SaveChangesAsync();
-
-            var response = new UserSkillsResponse
-            {
-                Skills = user.UserSkills.Select(us => us.Skill.Name).ToList()
-            };
-
-            return new ApplicationResponseBuilder<UserSkillsResponse>()
-                .SetResponse(response).Build();
-        }
-        catch (Exception ex)
-        {
-            return new ApplicationResponseBuilder<UserSkillsResponse>().SetException(ex)
-                .SetErrorMessage(ex.Message.ToString())
-                .Success(false).Build();
-        }
+        return response;
     }
+       
 }
