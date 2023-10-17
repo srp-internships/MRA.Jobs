@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 
 namespace MRA.Identity.Application.Contract.User.Commands;
-public class UserEmallCommand :IRequest<ApplicationResponse<Guid>>
+public class UserEmailCommand :IRequest<Guid>
 {
     
 }

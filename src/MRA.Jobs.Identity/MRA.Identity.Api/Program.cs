@@ -3,9 +3,7 @@ using MRA.Identity.Infrastructure;
 using Mra.Shared.Initializer.Azure.Insight;
 using Mra.Shared.Initializer.Azure.KeyVault;
 using MRA.Identity.Infrastructure.Persistence;
-using Mra.Shared.Common.Interfaces.Services;
-using Mra.Shared.Azure.EmailService;
-using System.Text.Json.Serialization;
+using MRA.Identity.Api.Filters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +12,10 @@ if (builder.Environment.IsProduction())
     builder.Logging.AddApiApplicationInsights(builder.Configuration);
     builder.Configuration.ConfigureAzureKeyVault("Mra.Identity");
 }
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ApiExceptionFilterAttribute>();
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
