@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.Claim.Commands;
 using MRA.Identity.Application.Contract.Claim.Queries;
 using MRA.Identity.Application.Contract.Claim.Responses;
@@ -23,13 +22,8 @@ public class ClaimsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateClaimCommand request)
     {
-        ApplicationResponse<Guid> response = await _mediator.Send(request);
-        if (response.IsSuccess)
-        {
-            return Ok();
-        }
-
-        return BadRequest($"{response.Exception}   {response.ErrorMessage}");
+        var response = await _mediator.Send(request);
+        return Ok();
     }
 
 
@@ -37,18 +31,12 @@ public class ClaimsController : ControllerBase
     public async Task<IActionResult> Put([FromBody] UpdateClaimCommand command, string slug)
     {
 
-        if (slug!=command.Slug)
+        if (slug != command.Slug)
         {
             return BadRequest();
         }
-        ApplicationResponse response = await _mediator.Send(command);
-
-        if (response.IsSuccess)
-        {
-            return Ok();
-        }
-
-        return BadRequest($"{response.Exception}   {response.ErrorMessage}");
+        var response = _mediator.Send(command);
+        return Ok();
 
     }
 
@@ -58,42 +46,23 @@ public class ClaimsController : ControllerBase
         var response = await _mediator.Send(new DeleteClaimCommand
         {
             Slug = slug
-        }); 
-        
-        if (response.IsSuccess)
-        {
-            return Ok();
-        }
-        
-        return BadRequest($"{response.Exception}   {response.ErrorMessage}");
+        });
+        return Ok();
     }
-    
-    
+
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] GetAllQuery query)
     {
-        
-        ApplicationResponse<List<UserClaimsResponse>> response = await _mediator.Send(query);
-        
-        if (response.IsSuccess)
-        {
-            return Ok(response.Response);
-        }
-        
-        return BadRequest($"{response.Exception}   {response.ErrorMessage}");
-    }    
-    
+
+        List<UserClaimsResponse> response = await _mediator.Send(query);
+        return Ok(response);
+    }
+
     [HttpGet("{slug}")]
     public async Task<IActionResult> Get(string slug)
     {
 
         var response = await _mediator.Send(new GetBySlugQuery { Slug = slug });
-        
-        if (response.IsSuccess)
-        {
-            return Ok(response.Response);
-        }
-        
-        return BadRequest($"{response.Exception}   {response.ErrorMessage}");
+        return Ok(response);
     }
 }

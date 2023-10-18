@@ -1,15 +1,13 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
-using MRA.Identity.Application.Contract;
-using MRA.Identity.Application.Contract.Educations.Responses;
 using MRA.Identity.Application.Contract.Skills.Queries;
 using MRA.Identity.Application.Contract.Skills.Responses;
-using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Skills.Queries;
-public class GetUserSkillsQueryHandler : IRequestHandler<GetUserSkillsQuery, ApplicationResponse<UserSkillsResponse>>
+public class GetUserSkillsQueryHandler : IRequestHandler<GetUserSkillsQuery, UserSkillsResponse>
 {
     private readonly IApplicationDbContext _context;
     private readonly IUserHttpContextAccessor _userHttpContextAccessor;
@@ -20,41 +18,27 @@ public class GetUserSkillsQueryHandler : IRequestHandler<GetUserSkillsQuery, App
         _userHttpContextAccessor = userHttpContextAccessor;
     }
 
-    public async Task<ApplicationResponse<UserSkillsResponse>> Handle(GetUserSkillsQuery request, CancellationToken cancellationToken)
+    public async Task<UserSkillsResponse> Handle(GetUserSkillsQuery request, CancellationToken cancellationToken)
     {
-        try
+        var roles = _userHttpContextAccessor.GetUserRoles();
+        var userName = _userHttpContextAccessor.GetUserName();
+        if (request.UserName != null && roles.Any(role => role == "Applicant") && userName != request.UserName)
+            throw new ForbiddenAccessException("Access is denied");
+        if (request.UserName != null)
+            userName = request.UserName;
+
+        var user = await _context.Users
+            .Include(u => u.UserSkills)
+            .ThenInclude(us => us.Skill)
+            .FirstOrDefaultAsync(u => u.UserName == userName);
+        _ = user ?? throw new NotFoundException("user is not found");
+
+        var response = new UserSkillsResponse
         {
-            var roles = _userHttpContextAccessor.GetUserRoles();
-            var userName = _userHttpContextAccessor.GetUserName();
-            if (request.UserName != null && roles.Any(role => role == "Applicant") && userName != request.UserName)
-                return new ApplicationResponseBuilder<UserSkillsResponse>()
-                    .SetErrorMessage("Access is denied")
-                    .Success(false).Build();
+            Skills = user.UserSkills.Select(us => us.Skill.Name).ToList()
+        };
 
-           if (request.UserName!= null)
-                userName= request.UserName;
-
-            var user = await _context.Users
-                .Include(u => u.UserSkills)
-                .ThenInclude(us=>us.Skill)
-                .FirstOrDefaultAsync(u => u.UserName == userName);
-
-            if (user == null)
-                return new ApplicationResponseBuilder<UserSkillsResponse>()
-                    .SetErrorMessage("User not found")
-                    .Success(false).Build();
-
-            var response = new UserSkillsResponse
-            {
-                Skills = user.UserSkills.Select(us => us.Skill.Name).ToList()
-            };                  
-
-            return new ApplicationResponseBuilder<UserSkillsResponse>().SetResponse(response).Build();
-        }
-        catch (Exception ex)
-        {
-            return new ApplicationResponseBuilder<UserSkillsResponse>().SetException(ex).Success(false).Build();
-        }
+        return response;
     }
 }
 

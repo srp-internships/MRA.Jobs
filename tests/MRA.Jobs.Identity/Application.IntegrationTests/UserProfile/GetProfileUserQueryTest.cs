@@ -1,7 +1,4 @@
 ﻿using System.Net;
-using MRA.Identity.Application.Contract.Profile.Responses;
-using MRA.Identity.Application.Contract;
-using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.IntegrationTests.UserProfile;
 public class GetProfileUserQueryTest : BaseTest
@@ -20,9 +17,8 @@ public class GetProfileUserQueryTest : BaseTest
         await AddApplicantAuthorizationAsync();
         var response = await _client.GetAsync($"/api/Profile?userName=amir");
 
-        var message = await response.Content.ReadAsStringAsync();
 
-        Assert.AreEqual("Access is denied", message);
+        Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
     [Test]

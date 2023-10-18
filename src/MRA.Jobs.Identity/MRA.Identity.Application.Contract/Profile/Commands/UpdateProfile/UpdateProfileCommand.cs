@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
 namespace MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
-public class UpdateProfileCommand : IRequest<ApplicationResponse<bool>>
+public class UpdateProfileCommand : IRequest<bool>
 {
     public string Email { get; set; }
     public string FirstName { get; set; }

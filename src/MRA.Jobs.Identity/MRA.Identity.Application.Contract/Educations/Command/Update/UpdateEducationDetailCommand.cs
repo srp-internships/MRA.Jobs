@@ -2,7 +2,7 @@
 
 namespace MRA.Identity.Application.Contract.Educations.Command.Update;
 
-public class UpdateEducationDetailCommand : IRequest<ApplicationResponse<Guid>>
+public class UpdateEducationDetailCommand : IRequest<Guid>
 {
     public Guid Id { get; set; }
     public string University { get; set; }

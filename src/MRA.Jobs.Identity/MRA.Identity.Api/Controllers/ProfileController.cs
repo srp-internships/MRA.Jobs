@@ -32,8 +32,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileCommand command)
     {
         var result = await _mediator.Send(command);
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
     }
 
@@ -41,24 +39,14 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> GetProfileByUserName([FromQuery] string? userName = null)
     {
         var result = await _mediator.Send(new GetPofileQuery { UserName = userName });
-        if (!result.IsSuccess)
-        {
-            if (result.ErrorMessage == "User not found")
-            {
-                return NotFound(result.ErrorMessage);
-            }
-            return BadRequest(result.ErrorMessage+result.Exception);
-        }
-        return Ok(result.Response);
+        return Ok(result);
     }
 
     [HttpPost("AddSkills")]
     public async Task<IActionResult> AddSkill([FromBody] AddSkillsCommand command)
     {
         var result = await _mediator.Send(command);
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result.Response);
+        return Ok(result);
     }
 
 
@@ -66,41 +54,27 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> GetUserSkills([FromQuery] string? userName = null)
     {
         var result = await _mediator.Send(new GetUserSkillsQuery { UserName = userName });
-        if (!result.IsSuccess)
-        {
-            if (result.ErrorMessage == "User not found")
-            {
-                return NotFound(result.ErrorMessage);
-            }
-            return BadRequest(result.ErrorMessage + result.Exception);
-        }
-        return Ok(result.Response);
+        return Ok(result);
     }
 
     [HttpDelete("RemoveUserSkill/{skill}")]
     public async Task<IActionResult> RemoveUserSkill([FromRoute] string skill)
     {
         var result = await _mediator.Send(new RemoveUserSkillCommand { Skill = skill });
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result.Response);
+        return Ok(result);
     }
 
     [HttpPost("CreateEducationDetail")]
     public async Task<IActionResult> CreateEducationDetail([FromBody] CreateEducationDetailCommand command)
     {
         var result = await _mediator.Send(command);
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result.Response);
+        return Ok(result);
     }
 
     [HttpDelete("DeleteEducationDetail/{id}")]
     public async Task<IActionResult> DeleteEducationDetail([FromRoute] Guid id)
     {
         var result = await _mediator.Send(new DeleteEducationCommand { Id = id });
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
     }
 
@@ -108,8 +82,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> UpdateEducationDetail([FromBody] UpdateEducationDetailCommand command)
     {
         var result = await _mediator.Send(command);
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
     }
 
@@ -117,41 +89,28 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> GetEducationsByUser([FromQuery] GetEducationsByUserQuery query)
     {
         var result = await _mediator.Send(query);
-        if (result.IsSuccess == false)
-        {
-            if (result.ErrorMessage == "User not found")
-            {
-                return NotFound(result.ErrorMessage);
-            }
-            return BadRequest(result.ErrorMessage + result.Exception);
-        }
-        return Ok(result.Response);
+       
+        return Ok(result);
     }
 
     [HttpPost("СreateExperienceDetail")]
     public async Task<IActionResult> CreateExperienceDetail([FromBody] CreateExperienceDetailCommand command)
     {
         var result = await _mediator.Send(command);
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result.Response);
+        return Ok(result);
     }
 
     [HttpPut("UpdateExperienceDetail")]
     public async Task<IActionResult> UpdateExperienceDetail([FromBody] UpdateExperienceDetailCommand command)
     {
         var result = await _mediator.Send(command);
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
-        return Ok(result.Response);
+        return Ok(result);
     }
 
     [HttpDelete("DeleteExperienceDetail/{id}")]
     public async Task<IActionResult> DeleteExperienceDetail([FromRoute] Guid id)
     {
         var result = await _mediator.Send(new DeleteExperienceCommand { Id = id });
-        if (result.IsSuccess == false)
-            return BadRequest(result.Exception + result.ErrorMessage);
         return Ok(result);
     }
 
@@ -159,15 +118,7 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> GetExperiencesByUser([FromQuery] GetExperiencesByUserQuery query)
     {
         var result = await _mediator.Send(query);
-        if (result.IsSuccess == false)
-        {
-            if (result.ErrorMessage == "User not found")
-            {
-                return NotFound(result.ErrorMessage);
-            }
-            return BadRequest(result.ErrorMessage + result.Exception);
-        }
-        return Ok(result.Response);
+        return Ok(result);
     }
 
 
