@@ -9,7 +9,6 @@ using MRA.Jobs.Client.Identity;
 
 namespace MRA.Jobs.Client.Services.Auth;
 
-
 public class AuthService : IAuthService
 {
     private readonly IdentityHttpClient _identityHttpClient;
@@ -45,7 +44,6 @@ public class AuthService : IAuthService
             {
                 errorMessage = (await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail;
             }
-
         }
         catch (HttpRequestException ex)
         {
@@ -57,18 +55,35 @@ public class AuthService : IAuthService
             Console.WriteLine(e);
             errorMessage = "An error occurred";
         }
-        
+
         return errorMessage;
     }
 
-    public async Task<bool> RegisterUserAsync(RegisterUserCommand command)
+    public async Task<string> RegisterUserAsync(RegisterUserCommand command)
     {
-        var result = await _identityHttpClient.PostAsJsonAsync("Auth/register", command);
-        if (result.StatusCode == HttpStatusCode.OK)
-            return true;
-        return false;
+        try
+        {
+            var result = await _identityHttpClient.PostAsJsonAsync("Auth/register", command);
+            if (result.IsSuccessStatusCode)
+            {
+                _navigationManager.NavigateTo("/sign-in");
+                return "";
+            }
+            if (result.StatusCode is not (HttpStatusCode.Unauthorized or HttpStatusCode.BadRequest))
+                return "server error, please try again later";
+            
+            var response = await result.Content.ReadFromJsonAsync<CustomProblemDetails>();
+            return response.Detail;
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine(ex);
+            return "Server is not responding, please try later";
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return "An error occurred";
+        }
     }
 }
-
-
-

@@ -1,89 +1,106 @@
 ﻿@page "/sign-up"
 
-@using MRA.Identity.Application.Contract.User.Commands;
-@using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
-@using MRA.Jobs.Client.Identity
-@using MRA.Jobs.Client.Services.Auth;
+@using System.ComponentModel.DataAnnotations
+@using MRA.Identity.Application.Contract.User.Commands.RegisterUser
+@using MRA.Jobs.Client.Services.Auth
 @inject IAuthService AuthService
-@inject NavigationManager NavigationManager;
 
-<div class="container">
-	<div class="row">
-		<div class="col-md-3"></div>
-		<div class="col-md-6">
-			<EditForm Model="user" OnInvalidSubmit="submit">
-				<FluentValidationValidator />
+<div style="width: 100%;height: 100%;align-items: center;justify-content: center; display: flex;flex: 100%">
+    <EditForm Model="@_model" OnValidSubmit="OnValidSubmit" style="margin-top: 10%;margin-bottom: 10%">
+        <DataAnnotationsValidator/>
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudCardContent>
+                        <MudTextField Label="First name" HelperText="Enter your first name"
+                                      @bind-Value="_model.FirstName" For="@(() => _model.FirstName)" InputType="InputType.Text"/>
 
+                        <MudTextField Label="Last name" HelperText="Enter your last name"
+                                      @bind-Value="_model.LastName" For="@(() => _model.LastName)" InputType="InputType.Text"/>
 
-				<div class="form-group">
-					<label for="email">Email:</label>
-					<InputText id="email" @bind-Value="user.Email" class="form-control" />
-					<small><ValidationMessage For="@(() => user.Email)" class="text-danger" /></small>
-				</div>
+                        <MudTextField Label="Email" Class="mt-3"
+                                      @bind-Value="_model.Email" For="@(() => _model.Email)" InputType="InputType.Email"/>
 
-				<div class="form-group">
-					<label for="firstName">First Name:</label>
-					<InputText id="firstName" @bind-Value="user.FirstName" class="form-control" />
+                        <MudTextField Label="Phone" HelperText="Enter your phone number" Class="mt-3"
+                                      @bind-Value="_model.PhoneNumber" For="@(() => _model.PhoneNumber)" InputType="InputType.Telephone"/>
 
-					<small>	<ValidationMessage For="@(() => user.FirstName)" class="text-danger" /></small>
-				</div>
-				<div class="form-group">
-					<label for="lastName">Last Name:</label>
-					<InputText id="lastName" @bind-Value="user.LastName" class="form-control" />
+                        <MudTextField Label="Username" HelperText="Think out your username"
+                                      @bind-Value="_model.Username" For="@(() => _model.Username)"/>
 
-					<small><ValidationMessage For="@(() => user.LastName)" class="text-danger" /></small>
+                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                      @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
 
-				</div>
-				<div class="form-group">
-					<label for="phoneNumber">Phone Number:</label>
-					<InputText id="phoneNumber" @bind-Value="user.PhoneNumber" class="form-control" />
-
-					<small><ValidationMessage For="@(() => user.PhoneNumber)" class="text-danger" /></small>
-
-
-				</div>
-				<div class="form-group">
-					<label for="username">Username:</label>
-					<InputText id="username" @bind-Value="user.Username" class="form-control" />
-
-					<small>	<ValidationMessage For="@(() => user.Username)" class="text-danger" /></small>
-
-
-				</div>
-				<div class="form-group">
-					<label for="password">Password:</label>
-					<InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
-					<small>	<ValidationMessage For="@(() => user.Password)" class="text-danger" /></small>
-
-
-				</div>
-				<div class="form-group">
-					<label for="confirmPassword">Confirm Password:</label>
-					<InputText id="confirmPassword" @bind-Value="user.ConfirmPassword" type="password" class="form-control" />
-
-					<small>	<ValidationMessage For="@(() => user.ConfirmPassword)" class="text-danger" /></small>
-
-				</div>
-				<br />
-				<button type="submit" class="btn btn-primary" style="width:100%" @onclick="submit">Sign un</button>
-			</EditForm>
-		</div>
-		<div class="col-md-3"></div>
-		<br />
-	</div>
-
+                        <MudTextField Label="Confirm password" HelperText="Repeat the password" Class="mt-3"
+                                      @bind-Value="_model.Confirmation" For="@(() => _model.Confirmation)" InputType="InputType.Password"/>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Sign-up</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" sm="5">
+                <MudPaper Class="pa-4 mud-height-full">
+                    <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+                    <MudText Color="@Color.Error">
+                        <ValidationSummary/>
+                    </MudText>
+                    <MudText Color="@Color.Error">
+                        @_loginResultError
+                    </MudText>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
 </div>
 
 @code {
+    private readonly LoginForm _model = new();
+    private string _loginResultError;
 
-	CustomRegisterCommand user = new CustomRegisterCommand();
 
-	private async void submit()
-	{
-		var result = await AuthService.RegisterUserAsync(user);
-		if (result)
-			NavigationManager.NavigateTo("../sign-in");
+    public class LoginForm
+    {
+        [Required]
+        public string FirstName { get; set; }
 
-	}
+        [Required]
+        public string LastName { get; set; }
+
+        [Required]
+        public string Username { get; set; }
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+        public string Password { get; set; }
+
+        [Required]
+        [Compare(nameof(Password))]
+        public string Confirmation { get; set; }
+
+        [Required]
+        [Phone]
+        public string PhoneNumber { get; set; }
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var registerMessage = await AuthService.RegisterUserAsync(new RegisterUserCommand
+        {
+            Email = _model.Email,
+            FirstName = _model.FirstName,
+            LastName = _model.LastName,
+            PhoneNumber = _model.PhoneNumber,
+            Username = _model.Username,
+            Password = _model.Password,
+            Application = "MraJobs",
+            Role = "Applicant",
+        });
+        _loginResultError = registerMessage;
+        StateHasChanged();
+    }
 
 }
