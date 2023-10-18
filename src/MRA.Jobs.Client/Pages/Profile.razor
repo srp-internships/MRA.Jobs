@@ -147,28 +147,31 @@
 										<!-- Edit Education -->
 										@if (editingCardId == cardId)
 										{
-											<MudCardHeader>
-												<CardHeaderContent>
-													<MudTextField @bind-Value="@education.Speciality" Variant="Variant.Outlined" Margin="Margin.Dense" />
-												</CardHeaderContent>
-											</MudCardHeader>
-											<MudCardContent>
-												<MudTextField @bind-Value="@education.University" Variant="Variant.Outlined" Label="University" Margin="Margin.Dense" />
-												<MudDatePicker Label="Start Date" @bind-Date="education.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
-												@if (education.UntilNow == false)
-												{
-													<MudDatePicker Label="End Date" @bind-Date="education.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
-												}
-												<MudCheckBox @bind-Checked="@education.UntilNow" Label="Until Now" Color="Color.Primary"></MudCheckBox>
-											</MudCardContent>
-											<MudCardActions>
-												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(()=>UpdateEducationHandle(education))">
-													Update
-												</MudButton>
-												<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_UpdateEducation">
-													Cancel
-												</MudButton>
-											</MudCardActions>
+											<EditForm Model="educationUpdate" OnInvalidSubmit="(()=>UpdateEducationHandle())">
+												<FluentValidationValidator />
+												<MudCardHeader>
+													<CardHeaderContent>
+														<MudTextField @bind-Value="@educationUpdate.Speciality" Variant="Variant.Outlined" Label="Specialty" Margin="Margin.Dense" For="(()=>educationUpdate.Speciality)" />
+													</CardHeaderContent>
+												</MudCardHeader>
+												<MudCardContent>
+													<MudTextField @bind-Value="@educationUpdate.University" Variant="Variant.Outlined" Label="University" Margin="Margin.Dense" For="(()=>educationUpdate.University)" />
+													<MudDatePicker Label="Start Date" @bind-Date="@educationUpdate.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>educationUpdate.StartDate)" />
+													@if (educationUpdate.UntilNow == false)
+													{
+														<MudDatePicker Label="End Date" @bind-Date="@educationUpdate.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>educationUpdate.EndDate)" />
+													}
+													<MudCheckBox @bind-Checked="@educationUpdate.UntilNow" Label="Until Now" Color="Color.Primary"></MudCheckBox>
+												</MudCardContent>
+												<MudCardActions>
+													<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(()=>UpdateEducationHandle())">
+														Update
+													</MudButton>
+													<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_UpdateEducation">
+														Cancel
+													</MudButton>
+												</MudCardActions>
+											</EditForm>
 										}
 										else
 										{
@@ -224,17 +227,20 @@
 								else
 								{
 									<EditForm Model="createEducation" OnInvalidSubmit="CreateEducationHandle">
+										<FluentValidationValidator />
 										<MudCardHeader>
 											<CardHeaderContent>
-												<MudTextField @bind-Value="@createEducation.Speciality" Variant="Variant.Outlined" Label="Specialty" Margin="Margin.Dense" />
+												<MudTextField @bind-Value="@createEducation.Speciality" Variant="Variant.Outlined" Label="Specialty" Margin="Margin.Dense" For="(()=>createEducation.Speciality)" />
 											</CardHeaderContent>
 										</MudCardHeader>
 										<MudCardContent>
-											<MudTextField @bind-Value="@createEducation.University" Variant="Variant.Outlined" Label="University" Margin="Margin.Dense" />
-											<MudDatePicker Label="Start Date" @bind-Date="createEducation.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+											<MudTextField @bind-Value="@createEducation.University" Variant="Variant.Outlined" Label="University" Margin="Margin.Dense" For="(()=>createEducation.University)" />
+											<MudDatePicker Label="Start Date" @bind-Date="createEducation.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>createEducation.StartDate)" />
+											<small><ValidationMessage For="(()=>createEducation.StartDate)" class="text-danger"></ValidationMessage></small>
 											@if (createEducation.UntilNow == false)
 											{
-												<MudDatePicker Label="End Date" @bind-Date="createEducation.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+												<MudDatePicker Label="End Date" @bind-Date="createEducation.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>createEducation.EndDate)" />
+												<small><ValidationMessage For="(()=>createEducation.StartDate)" class="text-danger"></ValidationMessage></small>
 											}
 											<MudCheckBox @bind-Checked="@createEducation.UntilNow" Label="Until Now" Color="Color.Primary"></MudCheckBox>
 										</MudCardContent>
@@ -495,19 +501,9 @@
 		StateHasChanged();
 	}
 
-	private async void UpdateEducationHandle(UserEducationResponse education)
+	private async Task UpdateEducationHandle()
 	{
-		var updateEducation = new UpdateEducationDetailCommand()
-			{
-				Id = education.Id,
-				StartDate = education.StartDate.HasValue ? education.StartDate.Value : default(DateTime),
-				EndDate = education.EndDate.HasValue ? education.EndDate.Value : default(DateTime),
-				Speciality = education.Speciality,
-				University = education.University,
-				UntilNow = education.UntilNow
-			};
-
-		var result = await UserProfileService.UpdateEducationAsync(updateEducation);
+		var result = await UserProfileService.UpdateEducationAsync(educationUpdate);
 		if (result.IsSuccessStatusCode)
 		{
 			editingCardId = Guid.NewGuid();
