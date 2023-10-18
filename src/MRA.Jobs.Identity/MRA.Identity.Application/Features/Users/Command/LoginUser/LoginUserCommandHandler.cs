@@ -26,7 +26,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, JwtToke
     {
         ApplicationUser? user =
             await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.Username, cancellationToken);
-        _ = user ?? throw new UnauthorizedAccessException(request.Username);
+        _ = user ?? throw new UnauthorizedAccessException("Username is not found.");
 
         bool success = await _userManager.CheckPasswordAsync(user, request.Password);
 
@@ -39,6 +39,6 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, JwtToke
                 AccessTokenValidTo = expireDate
             };
         }
-        throw new UnauthorizedAccessException("incorrect password");
+        throw new UnauthorizedAccessException("Incorrect password.");
     }
 }

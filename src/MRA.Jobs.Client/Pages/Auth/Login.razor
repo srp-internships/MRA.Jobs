@@ -1,72 +1,67 @@
 ﻿@page "/sign-in"
+@using System.ComponentModel.DataAnnotations
+@using Blazorise.Extensions
 @using MRA.Identity.Application.Contract.User.Commands.LoginUser
-@using MRA.Jobs.Client.Services.Auth;
-@using Microsoft.AspNetCore.WebUtilities;
+@using MRA.Jobs.Client.Services.Auth
 @inject IAuthService AuthService
-@inject ILocalStorageService LocalStorage
-@inject NavigationManager NavigationManager
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
-
-<div class="container">
-	<div class="row justify-content-center">
-		<div class="col-md-4">
-			<h2>Sign In</h2>
-			<EditForm Model="user" OnValidSubmit="HandleValidSubmit">
-				<FluentValidationValidator />
-
-				<div class="form-group">
-					<label for="username">User Name</label>
-					<InputText id="username" class="form-control" @bind-Value="user.Username" />
-
-					<small><ValidationMessage For="@(()=>user.Username)" class="text-danger" /></small>
-
-				</div>
-
-				<div class="form-group">
-					<label for="password">Password</label>
-					<InputText id="password" type="password" class="form-control" @bind-Value="user.Password" />
-
-					<small><ValidationMessage For="@(()=>user.Password)" class="text-danger" /></small>
-
-				</div>
-
-				<button type="submit" class="btn btn-primary" style="width:100%">Sign In</button>
-
-			</EditForm>
-			@if (errorMassage != null)
-			{
-				<div class="alert alert-warning alert-dismissible fade show" role="alert">
-					@errorMassage
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-			}
-		</div>
-
-	</div>
+<div style="width: 100%;height: 100%;align-items: center;justify-content: center; display: flex;flex: 100%">
+    <EditForm Model="@_model" OnValidSubmit="OnValidSubmit" style="margin-top: 10%;margin-bottom: 10%">
+        <DataAnnotationsValidator/>
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudCardContent>
+                        <MudTextField Label="First name" HelperText="Max. 8 characters"
+                                      @bind-Value="_model.Username" For="@(() => _model.Username)"/>
+                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                      @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Sign-in</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" sm="5">
+                <MudPaper Class="pa-4 mud-height-full">
+                    <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+                    <MudText Color="@Color.Error">
+                        <ValidationSummary/>
+                    </MudText>
+                    <MudText Color="@Color.Error">
+                        @_loginResultError
+                    </MudText>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
 </div>
 
 @code {
-    private string returnUrl = string.Empty;
-    LoginUserCommand user = new LoginUserCommand();
+    private readonly LoginForm _model = new();
+    private bool _success;
+    private string _loginResultError;
 
-    private string errorMassage = null;
-
-    protected override void OnInitialized()
+    public class LoginForm
     {
-        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("returnUrl", out var url))
-        {
-            var routes = url.ToString().Split("|");
-            returnUrl = $"{routes[0]}/{routes[1]}";
-        }
+        [Required]
+        public string Username { get; set; }
+
+        [Required]
+        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+        public string Password { get; set; }
     }
 
-	private async Task HandleValidSubmit()
-	{
-		errorMassage = await AuthService.LoginUserAsync(user);
-        NavigationManager.NavigateTo(returnUrl);
-	}
+    private async Task OnValidSubmit(EditContext context)
+    {
+        Console.WriteLine("debug");
+        var loginMessage = await AuthService.LoginUserAsync(new LoginUserCommand
+        {
+            Username = _model.Username, Password = _model.Password
+        });
+        _loginResultError = loginMessage;
+        Console.WriteLine(loginMessage);
+        StateHasChanged();
+    }
+
 }

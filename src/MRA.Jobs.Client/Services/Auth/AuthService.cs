@@ -1,12 +1,11 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
-using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.Admin.Responses;
-using MRA.Identity.Application.Contract.User.Commands;
 using Blazored.LocalStorage;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
+using MRA.Jobs.Client.Identity;
 
 namespace MRA.Jobs.Client.Services.Auth;
 
@@ -36,39 +35,29 @@ public class AuthService : IAuthService
             if (result.IsSuccessStatusCode)
             {
                 var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
-                await _localStorage.SetItemAsync<JwtTokenResponse>("authToken", response);
+                await _localStorage.SetItemAsync("authToken", response);
                 await _authenticationStateProvider.GetAuthenticationStateAsync();
                 _navigationManager.NavigateTo("/");
                 return null;
             }
-            else
-            {
-                // Обработка ошибок, которые возвращает сервер
-                switch ((int)result.StatusCode)
-                {
-                    case 400:
-                        // Bad Request
-                        return "Your username or password is incorrect";
-                    case 404:
-                        // Not Found
-                        return "User not found";
-                    case 503:
-                        // Service Unavailable
-                        return "The server is temporarily unavailable";
-                    case 401:
-                        return "wrong login or password";
-                    default:
-                        // Other errors
-                        return "An error occurred";
 
-                }
+            if (result.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                errorMessage = (await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail;
             }
 
         }
-        catch (Exception)
+        catch (HttpRequestException ex)
         {
+            Console.WriteLine(ex);
+            errorMessage = "Server is not responding, please try later";
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
             errorMessage = "An error occurred";
         }
+        
         return errorMessage;
     }
 
