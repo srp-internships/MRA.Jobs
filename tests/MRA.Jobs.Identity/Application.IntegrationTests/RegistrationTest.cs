@@ -22,7 +22,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Alex",
             Username = "@Alex223",
             LastName = "Makedonsky",
-            PhoneNumber = "123456789",
+            PhoneNumber = "+992123456789",
             Role = "asdfffssdesasfasefa",
             Application = "43wtruigjklf"
         };
@@ -49,7 +49,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Alex",
             Username = "@Alex22",
             LastName = "Makedonskiy",
-            PhoneNumber = "123456789",
+            PhoneNumber = "+992123456789",
         };
 
         // Assert
@@ -58,18 +58,18 @@ public class RegistrationTests : BaseTest
     }
 
     [Test]
-    public async Task Register_InvalidRequestWithEmptyRegisterData_ReturnsUnauthorized()
+    public async Task Register_InvalidRequestWithEmptyRegisterData_ReturnsBadRequest()
     {
         // Arrange
         var request = new RegisterUserCommand
         {
             // Empty Register Data
-            Password = "password",
+            Password = "password@1",
         };
 
         // Assert
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized),
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest),
             await response.Content.ReadAsStringAsync());
     }
 
@@ -83,7 +83,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Ale123x",
             Username = "@Alsdex223123",
             LastName = "Makesddonsky",
-            PhoneNumber = "12sd3123456789",
+            PhoneNumber = "+992123456789",
             Role = "Role1",
             Application = "mra.Test"
         };
@@ -116,7 +116,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Alerrx",
             Username = "@Alerrrx223",
             LastName = "Makerradonsky",
-            PhoneNumber = "123456789",
+            PhoneNumber = "+992123456789",
             Role = role.Name,
             Application = "mra.Test"
         };

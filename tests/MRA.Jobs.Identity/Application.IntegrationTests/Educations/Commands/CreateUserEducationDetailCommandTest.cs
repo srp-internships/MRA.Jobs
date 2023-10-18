@@ -11,7 +11,7 @@ public class CreateUserEducationDetailCommandTest : BaseTest
 
         var command = new CreateEducationDetailCommand()
         {
-            Speciality = "test",
+            Speciality = "test test",
             University = "test",
             StartDate = DateTime.Now.AddYears(-5),
             EndDate = DateTime.Now.AddYears(-1),

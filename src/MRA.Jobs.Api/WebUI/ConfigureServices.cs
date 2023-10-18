@@ -1,9 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Reflection;
+using System.Text.Json.Serialization;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MRA.Jobs.Application.Common.Interfaces;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Web.Filters;
 using NSwag;
@@ -30,6 +33,8 @@ public static class ConfigureServices
 
         services.AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters();
+
+        //services.AddValidatorsFromAssembly(typeof(CreateVacancyCategoryCommand).Assembly);
 
         services.AddRouting(options => options.LowercaseUrls = true);
         services.AddEndpointsApiExplorer();
