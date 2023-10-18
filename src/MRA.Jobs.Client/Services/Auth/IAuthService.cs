@@ -5,6 +5,6 @@ namespace MRA.Jobs.Client.Services.Auth;
 
 public interface IAuthService
 {
-    Task<bool> RegisterUserAsync(RegisterUserCommand command);
+    Task<string> RegisterUserAsync(RegisterUserCommand command);
     Task<string> LoginUserAsync(LoginUserCommand command);
 }
