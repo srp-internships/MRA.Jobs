@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Contract.ApplicationRoles.Commands;
 using MRA.Identity.Domain.Entities;
+using ValidationException = MRA.Identity.Application.Common.Exceptions.ValidationException;
 
 namespace MRA.Identity.Application.Features.Roles.Commands;
 
@@ -32,7 +34,7 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Guid>
         }
         else
         {
-         throw new ValidationException();
+            throw new ValidationException();
         }
     }
 }
