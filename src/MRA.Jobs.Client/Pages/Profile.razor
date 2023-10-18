@@ -78,7 +78,7 @@
 							<MudCard>
 								<MudCardContent>
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">First Name</MudText>
-									<MudTextField @bind-Value="@updateProfileCommand.FirstName" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.FirstName)" />						
+									<MudTextField @bind-Value="@updateProfileCommand.FirstName" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.FirstName)" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Last Name</MudText>
 									<MudTextField @bind-Value="@updateProfileCommand.LastName" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.LastName)" />
@@ -87,16 +87,16 @@
 									<MudTextField @bind-Value="@profile.UserName" Variant="Variant.Outlined" Margin="Margin.Dense" Disabled="true" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Email</MudText>
-									<MudTextField @bind-Value="@updateProfileCommand.Email" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.Email)"/>
+									<MudTextField @bind-Value="@updateProfileCommand.Email" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.Email)" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Date Of Birth</MudText>
-									<MudDatePicker @bind-Value="@updateProfileCommand.DateOfBirth" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.DateOfBirth)"/>
+									<MudDatePicker @bind-Value="@updateProfileCommand.DateOfBirth" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.DateOfBirth)" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Phone Number</MudText>
 									<MudTextField @bind-Value="@updateProfileCommand.PhoneNumber" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.PhoneNumber)" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">About Myself</MudText>
-									<MudTextField T="string" @bind-Value="@updateProfileCommand.AboutMyself" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="5" For="@(() => updateProfileCommand.AboutMyself)"/>
+									<MudTextField T="string" @bind-Value="@updateProfileCommand.AboutMyself" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="5" For="@(() => updateProfileCommand.AboutMyself)" />
 									<br />
 									<MudSelect T="Gender" Label="Select Gender" @bind-Value="@updateProfileCommand.Gender" Variant="Variant.Outlined" For="@(() => updateProfileCommand.Gender)">
 										<MudSelectItem Value="Gender.Male" />
@@ -177,7 +177,7 @@
 													<MudText Typo="Typo.h6"><strong>@education.Speciality</strong></MudText>
 												</CardHeaderContent>
 												<CardHeaderActions>
-													<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" OnClick="() => EditButtonClicked(cardId)" />
+													<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" OnClick="() => EditButtonClicked(cardId, education)" />
 													<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="(()=>ConfirmDelete(educations,education))" />
 												</CardHeaderActions>
 											</MudCardHeader>
@@ -447,15 +447,25 @@
 	CreateEducationDetailCommand createEducation = new CreateEducationDetailCommand();
 
 	Guid editingCardId = new Guid();
+	UpdateEducationDetailCommand educationUpdate = null;
 
 	private async Task GetEducations()
 	{
 		educations = await UserProfileService.GetEducations();
 	}
 
-	private void EditButtonClicked(Guid cardId)
+	private void EditButtonClicked(Guid cardId, UserEducationResponse educationResponse)
 	{
 		editingCardId = cardId;
+		educationUpdate = new UpdateEducationDetailCommand()
+			{
+				EndDate = educationResponse.EndDate.HasValue ? educationResponse.EndDate.Value : default(DateTime),
+				StartDate = educationResponse.StartDate.HasValue ? educationResponse.StartDate.Value : default(DateTime),
+				University = educationResponse.University,
+				Speciality = educationResponse.Speciality,
+				Id = educationResponse.Id,
+				UntilNow = educationResponse.UntilNow
+			};
 	}
 
 	private async Task CreateEducationHandle()
