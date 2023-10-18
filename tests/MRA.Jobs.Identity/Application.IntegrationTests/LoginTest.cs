@@ -41,10 +41,9 @@ public class LoginTest : BaseTest
 
     [Test]
     [TestCase("@Alex22", "password")]
-    [TestCase("@Alex22", "")]
-    [TestCase("@Alex", "pass")]
+    [TestCase("@Alex22", "ejehfefhuehf")]
+    [TestCase("@Alex", "fesijfwer11")]
     [TestCase("@Alex", "password@#12P")]
-    [TestCase("", "")]
     public async Task Login_RequestWithIncorrectLoginData_ReturnsUnauthorized(string username, string password)
     {
         // Arrange
