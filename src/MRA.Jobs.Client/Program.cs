@@ -36,19 +36,10 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-
-var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
-
-using var response = await http.GetAsync("appsettings.json");
-using var stream = await response.Content.ReadAsStreamAsync();
-
-builder.Configuration.AddJsonStream(stream);
-
-
-builder.Services.AddScoped(sp =>
-    new IdentityHttpClient { BaseAddress = new Uri(builder.Configuration["IdentityHttpClient:BaseAddress"]) });
-builder.Services.AddScoped(sp =>
-    new HttpClient { BaseAddress = new Uri(builder.Configuration["HttpClient:BaseAddress"]) });
+builder.Services.AddScoped(_ =>
+    new IdentityHttpClient { BaseAddress = new Uri(builder.Configuration["IdentityHttpClient:BaseAddress"]!) });
+builder.Services.AddScoped(_ =>
+    new HttpClient { BaseAddress = new Uri(builder.Configuration["HttpClient:BaseAddress"]!) });
 
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
