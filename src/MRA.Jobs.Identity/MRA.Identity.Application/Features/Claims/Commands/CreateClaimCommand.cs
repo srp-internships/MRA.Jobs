@@ -20,7 +20,7 @@ public class CreateClaimCommandHandler : IRequestHandler<CreateClaimCommand, Gui
     public async Task<Guid> Handle(CreateClaimCommand request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByIdAsync(request.UserId.ToString());
-        _ = user ?? throw new NotFoundException("user is not found");
+        _ = user ?? throw new ValidationException("user is not found");
         var claim = new ApplicationUserClaim
         {
             UserId = user.Id,

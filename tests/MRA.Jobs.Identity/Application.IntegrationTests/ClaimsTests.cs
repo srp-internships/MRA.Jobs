@@ -65,7 +65,7 @@ public class ClaimsTests : BaseTest
 
         HttpResponseMessage createResponse = await _client.PostAsJsonAsync("api/claims", createCommand);
 
-        Assert.That(createResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        Assert.That(createResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         Assert.That(await createResponse.Content.ReadAsStringAsync(), Does.Contain("user is not found"));
     }
     //create claim
