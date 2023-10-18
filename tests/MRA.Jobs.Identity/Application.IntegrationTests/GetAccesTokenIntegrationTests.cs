@@ -25,7 +25,7 @@ public class GetAccesTokenIntegrationTests : BaseTest
                 FirstName = "Alex",
                 Username = "@Alex111122",
                 LastName = "Makedonsky",
-                PhoneNumber = "123456789",
+                PhoneNumber = "+992123456789",
                 Application = "32wrgoi;l;",
                 Role = "wqu;k65"
             };
@@ -97,7 +97,7 @@ public class GetAccesTokenIntegrationTests : BaseTest
             FirstName = "Alex",
             Username = "@Alex222",
             LastName = "Makedonsky",
-            PhoneNumber = "123456789",
+            PhoneNumber = "+992123456789",
             Application = "32wrgoi;l;",
             Role = "wqu;k65"
         };
