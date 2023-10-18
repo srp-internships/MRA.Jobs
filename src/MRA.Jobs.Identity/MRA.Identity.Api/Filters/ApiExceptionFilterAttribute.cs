@@ -105,6 +105,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
         ProblemDetails details = new ProblemDetails
         {
+            Detail = context.Exception.Message,
             Status = StatusCodes.Status401Unauthorized,
             Title = "Unauthorized",
             Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
