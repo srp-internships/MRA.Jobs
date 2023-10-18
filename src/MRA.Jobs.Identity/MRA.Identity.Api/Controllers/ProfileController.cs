@@ -61,6 +61,12 @@ public class ProfileController : ControllerBase
         return Ok(result.Response);
     }
 
+    [HttpGet("GetSkills")]
+    public async Task<IActionResult> GetUserSkills()
+    {
+        var result = await _mediator.Send(new GetSkillsQuery());
+        return Ok(result);
+    }
 
     [HttpGet("GetUserSkills")]
     public async Task<IActionResult> GetUserSkills([FromQuery] string? userName = null)
