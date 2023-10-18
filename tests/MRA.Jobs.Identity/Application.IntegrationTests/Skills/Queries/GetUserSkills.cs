@@ -19,9 +19,7 @@ public class GetUserSkills
             await AddApplicantAuthorizationAsync();
             var response = await _client.GetAsync($"/api/Profile/GetUserSkills?userName=amir");
 
-            var message = await response.Content.ReadAsStringAsync();
-
-            Assert.AreEqual("Access is denied", message);
+            Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
         }
 
         [Test]

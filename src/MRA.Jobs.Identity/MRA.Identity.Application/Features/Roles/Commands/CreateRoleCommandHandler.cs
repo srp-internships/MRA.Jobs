@@ -30,6 +30,9 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Guid>
         {
             return role.Id; 
         }
+        else
+        {
          throw new ValidationException();
+        }
     }
 }

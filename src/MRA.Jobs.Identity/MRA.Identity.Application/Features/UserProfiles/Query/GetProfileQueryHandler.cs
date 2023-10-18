@@ -28,7 +28,7 @@ public class GetProfileQueryHandler : IRequestHandler<GetPofileQuery, UserProfil
         var userName = _userHttpContextAccessor.GetUserName();
 
         if (request.UserName != null && userRoles.Any(role => role == "Applicant") && userName != request.UserName)
-            throw new ValidationException("Access is denied");
+            throw new ForbiddenAccessException("Access is denied");
 
         if (request.UserName != null)
             userName = request.UserName;
