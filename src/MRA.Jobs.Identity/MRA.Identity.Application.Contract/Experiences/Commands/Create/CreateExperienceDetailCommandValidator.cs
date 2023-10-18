@@ -10,5 +10,6 @@ public class CreateExperienceDetailCommandValidator : AbstractValidator<CreateEx
         RuleFor(e => e.Description).NotEmpty();
         RuleFor(e => e.CompanyName).NotEmpty();
         RuleFor(e => e.StartDate).NotEmpty();
+        RuleFor(e => e.JobTitle).NotEmpty();
     }
 }

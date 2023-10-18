@@ -41,7 +41,7 @@
 			{
 				case 0:
 					<MudText Typo="Typo.h4"> Personal Information</MudText> <br />
-					if (updateProfileCommand == null)
+					if (profile == null)
 					{
 						<MudCard>
 							<MudCardHeader>
@@ -263,12 +263,12 @@
 					<MudText Typo="Typo.h4"> Experiences</MudText>
 
 					<br />
-					<MudGrid>
+					<div class="row">
 						@if (experiences == null)
 						{
 							@for (int i = 0; i < 5; i++)
 							{
-								<MudItem xs="6">
+								<div class="col-md-6 mb-3">
 									<MudCard>
 										<MudCardHeader>
 											<MudSkeleton Width="40%" Height="50px" />
@@ -283,7 +283,7 @@
 											<MudSkeleton Width="36px" Height="36px" Class="ml-3" />
 										</MudCardActions>
 									</MudCard>
-								</MudItem>
+								</div>
 							}
 						}
 						else
@@ -293,34 +293,37 @@
 								Guid cardExperienceId = experience.Id;
 								<div class="col-md-6 mb-3">
 									<MudCard>
-										<!-- Edit Education -->
+										<!-- Edit Experience -->
 										@if (editingCardExperienceId == cardExperienceId)
 										{
-											<MudCardHeader>
-												<CardHeaderContent>
-													<MudTextField @bind-Value="@experience.JobTitle" Variant="Variant.Outlined" Label="Job Title" Margin="Margin.Dense" />
-												</CardHeaderContent>
-											</MudCardHeader>
-											<MudCardContent>
-												<MudTextField @bind-Value="@experience.CompanyName" Variant="Variant.Outlined" Label="Company Name" Margin="Margin.Dense" />
-												<MudDatePicker Label="Start Date" @bind-Date="experience.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
-												@if (experience.IsCurrentJob == false)
-												{
-													<MudDatePicker Label="End Date" @bind-Date="experience.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
-												}
-												<MudCheckBox @bind-Checked="@experience.IsCurrentJob" Label="Until Now" Color="Color.Primary"></MudCheckBox>
-												<MudTextField @bind-Value="@experience.Address" Label="Address" Variant="Variant.Outlined"></MudTextField>
-												<MudTextField T="string" @bind-Value="@experience.Description" Label="Description" Lines="5" Variant="Variant.Outlined"></MudTextField>
+											<EditForm Model="experienceUpdate" OnInvalidSubmit="(()=>UpdateExperienceHandle())">
+												<FluentValidationValidator />
+												<MudCardHeader>
+													<CardHeaderContent>
+														<MudTextField @bind-Value="@experienceUpdate.JobTitle" Variant="Variant.Outlined" Label="Job Title" Margin="Margin.Dense" For="(()=>experienceUpdate.JobTitle)" />
+													</CardHeaderContent>
+												</MudCardHeader>
+												<MudCardContent>
+													<MudTextField @bind-Value="@experienceUpdate.CompanyName" Variant="Variant.Outlined" Label="Company Name" Margin="Margin.Dense" For="(()=>experienceUpdate.CompanyName)" />
+													<MudDatePicker Label="Start Date" @bind-Date="experienceUpdate.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>experienceUpdate.StartDate)" />
+													@if (experienceUpdate.IsCurrentJob == false)
+													{
+														<MudDatePicker Label="End Date" @bind-Date="experienceUpdate.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>experienceUpdate.EndDate)" />
+													}
+													<MudCheckBox @bind-Checked="@experienceUpdate.IsCurrentJob" Label="Until Now" Color="Color.Primary"></MudCheckBox>
+													<MudTextField @bind-Value="@experienceUpdate.Address" Label="Address" Variant="Variant.Outlined" For="(()=>experienceUpdate.Address)"></MudTextField>
+													<MudTextField T="string" @bind-Value="@experienceUpdate.Description" Label="Description" Lines="5" Variant="Variant.Outlined" For="(()=>experienceUpdate.Description)"></MudTextField>
 
-											</MudCardContent>
-											<MudCardActions>
-												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(()=>UpdateExperienceHandle(experience))">
-													Update
-												</MudButton>
-												<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_UpdateExperience">
-													Cancel
-												</MudButton>
-											</MudCardActions>
+												</MudCardContent>
+												<MudCardActions>
+													<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(()=>UpdateExperienceHandle())">
+														Update
+													</MudButton>
+													<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_UpdateExperience">
+														Cancel
+													</MudButton>
+												</MudCardActions>
+											</EditForm>
 										}
 										else
 										{
@@ -329,7 +332,7 @@
 													<MudText Typo="Typo.h6"><strong>@experience.JobTitle</strong></MudText>
 												</CardHeaderContent>
 												<CardHeaderActions>
-													<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" OnClick="(() => EditCardExperienceButtonClicked(cardExperienceId))" />
+													<MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small" OnClick="(() => EditCardExperienceButtonClicked(cardExperienceId, experience))" />
 													<MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="(()=>ConfirmDelete(experiences,experience))" />
 												</CardHeaderActions>
 											</MudCardHeader>
@@ -379,21 +382,22 @@
 								else
 								{
 									<EditForm Model="createExperience" OnInvalidSubmit="CreateExperienceHandle">
+										<FluentValidationValidator />
 										<MudCardHeader>
 											<CardHeaderContent>
-												<MudTextField @bind-Value="@createExperience.JobTitle" Variant="Variant.Outlined" Label="Job Title" Margin="Margin.Dense" />
+												<MudTextField @bind-Value="@createExperience.JobTitle" Variant="Variant.Outlined" Label="Job Title" Margin="Margin.Dense" For="(()=>createExperience.JobTitle)" />
 											</CardHeaderContent>
 										</MudCardHeader>
 										<MudCardContent>
-											<MudTextField @bind-Value="@createExperience.CompanyName" Variant="Variant.Outlined" Label="Company Name" Margin="Margin.Dense" />
-											<MudDatePicker Label="Start Date" @bind-Date="createExperience.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+											<MudTextField @bind-Value="@createExperience.CompanyName" Variant="Variant.Outlined" Label="Company Name" Margin="Margin.Dense" For="(()=>createExperience.CompanyName)" />
+											<MudDatePicker Label="Start Date" @bind-Date="createExperience.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>createExperience.StartDate)" />
 											@if (createExperience.IsCurrentJob == false)
 											{
-												<MudDatePicker Label="End Date" @bind-Date="createExperience.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" />
+												<MudDatePicker Label="End Date" @bind-Date="createExperience.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>createExperience.EndDate)" />
 											}
 											<MudCheckBox @bind-Checked="@createExperience.IsCurrentJob" Label="Is Current Job" Color="Color.Primary"></MudCheckBox>
-											<MudTextField @bind-Value="@createExperience.Address" Label="Address" Variant="Variant.Outlined"></MudTextField>
-											<MudTextField T="string" @bind-Value="@createExperience.Description" Label="Description" Lines="5" Variant="Variant.Outlined"></MudTextField>
+											<MudTextField @bind-Value="@createExperience.Address" Label="Address" Variant="Variant.Outlined" For="(()=>createExperience.Address)"></MudTextField>
+											<MudTextField T="string" @bind-Value="@createExperience.Description" Label="Description" Lines="5" Variant="Variant.Outlined" For="(()=>createExperience.Description)"></MudTextField>
 										</MudCardContent>
 										<MudCardActions>
 											<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateExperienceHandle">
@@ -408,7 +412,7 @@
 							</MudCard>
 						</div>
 						<!--------------------->
-					</MudGrid>
+					</div>
 					break;
 				case 3:
 					<MudText Typo="Typo.h4"> Skills</MudText>
@@ -518,6 +522,8 @@
 	List<UserExperienceResponse> experiences = new List<UserExperienceResponse>();
 	private bool addExperience = false;
 	CreateExperienceDetailCommand createExperience = new CreateExperienceDetailCommand();
+	UpdateExperienceDetailCommand experienceUpdate = null;
+
 	private Guid editingCardExperienceId;
 
 	private async Task GetExperiences()
@@ -553,26 +559,24 @@
 		StateHasChanged();
 	}
 
-	private void EditCardExperienceButtonClicked(Guid cardExperienceId)
+	private void EditCardExperienceButtonClicked(Guid cardExperienceId, UserExperienceResponse experienceResponse)
 	{
 		editingCardExperienceId = cardExperienceId;
+		experienceUpdate = new UpdateExperienceDetailCommand()
+			{
+				Id = experienceResponse.Id,
+				JobTitle = experienceResponse.JobTitle,
+				CompanyName = experienceResponse.CompanyName,
+				Address = experienceResponse.Address,
+				IsCurrentJob = experienceResponse.IsCurrentJob,
+				StartDate = experienceResponse.StartDate,
+				EndDate = experienceResponse.EndDate
+			};
 	}
 
-	private async void UpdateExperienceHandle(UserExperienceResponse experience)
+	private async void UpdateExperienceHandle()
 	{
-		var updateExperience = new UpdateExperienceDetailCommand()
-			{
-				Id = experience.Id,
-				StartDate = experience.StartDate.HasValue ? experience.StartDate.Value : default(DateTime),
-				EndDate = experience.EndDate.HasValue ? experience.EndDate.Value : default(DateTime),
-				CompanyName = experience.CompanyName,
-				JobTitle = experience.JobTitle,
-				IsCurrentJob = experience.IsCurrentJob,
-				Description = experience.Description,
-				Address = experience.Address
-			};
-
-		var result = await UserProfileService.UpdateExperienceAsync(updateExperience);
+		var result = await UserProfileService.UpdateExperienceAsync(experienceUpdate);
 		if (result.IsSuccessStatusCode)
 		{
 			editingCardExperienceId = Guid.NewGuid();
