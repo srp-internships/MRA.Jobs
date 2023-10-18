@@ -8,7 +8,7 @@ using MRA.Identity.Application.Contract.Skills.Responses;
 using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Skills.Command;
-public class AddSkillsCommandHandler : IRequestHandler<AddSkillCommand, UserSkillsResponse>
+public class AddSkillsCommandHandler : IRequestHandler<AddSkillsCommand, UserSkillsResponse>
 {
     private readonly IApplicationDbContext _context;
     private readonly IUserHttpContextAccessor _userHttpContextAccessor;
@@ -20,7 +20,7 @@ public class AddSkillsCommandHandler : IRequestHandler<AddSkillCommand, UserSkil
         _userHttpContextAccessor = userHttpContextAccessor;
 
     }
-    public async Task<UserSkillsResponse> Handle(AddSkillCommand request, CancellationToken cancellationToken)
+    public async Task<UserSkillsResponse> Handle(AddSkillsCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users.Include(u => u.UserSkills)
             .ThenInclude(us => us.Skill)
