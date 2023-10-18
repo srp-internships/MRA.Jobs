@@ -23,7 +23,7 @@ else
             <RowTemplate>
                 <MudTd DataLabel="Username">@context.Username</MudTd>
                 <MudTd DataLabel="Vacancy title">@context.VacancyTitle</MudTd>
-                <MudTd DataLabel="Applied at">@context.CreatedAt.ToShortDateString()</MudTd>
+                <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
                 <MudTd DataLabel="Status">@context.StatusName</MudTd>
                 <MudTd DataLabel="Action"><MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton></MudTd>
             </RowTemplate>
