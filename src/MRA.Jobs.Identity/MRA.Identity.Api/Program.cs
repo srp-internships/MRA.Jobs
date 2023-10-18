@@ -5,6 +5,7 @@ using Mra.Shared.Initializer.Azure.KeyVault;
 using MRA.Identity.Infrastructure.Persistence;
 using MRA.Identity.Api.Filters;
 
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsProduction())

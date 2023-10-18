@@ -5,24 +5,29 @@
 @inject HttpClient httpClient
 @inject IApplicationService applicationService
 
-<MudContainer Class="text-center" style="width: 70%;">
+<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Applications</MudText>
+
+<MudContainer Class="text-center">
     <MudTable Items="@applications.Items" Class="text-center">
         <ColGroup>
-            <col style="width: 30%;" />
-            <col style="width: 30%;" />
-            <col style="width: 40%" />
+            <col style="width: 25%;" />
+            <col style="width: 25%;" />
+            <col style="width: 25%;" />
+            <col style="width: 25%" />
             <col />
         </ColGroup>
         <HeaderContent>
             <MudTh>Appliant username</MudTh>
             <MudTh>Vacancy title</MudTh>
+            <MudTh>Applied at</MudTh>
             <MudTh>Status name</MudTh>
             <MudTh>Action</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Nr">@context.Username</MudTd>
-            <MudTd DataLabel="Sign">@context.VacancyTitle</MudTd>
-            <MudTd DataLabel="Name">@context.StatusName</MudTd>
+            <MudTd DataLabel="Username">@context.Username</MudTd>
+            <MudTd DataLabel="Title">@context.VacancyTitle</MudTd>
+            <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
+            <MudTd DataLabel="StatusName">@context.StatusName</MudTd>
             <MudTd DataLabel="Name"><MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton></MudTd>
         </RowTemplate>
         <PagerContent>

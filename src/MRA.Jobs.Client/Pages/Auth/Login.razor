@@ -1,10 +1,12 @@
 ﻿@page "/sign-in"
 @using MRA.Identity.Application.Contract.User.Commands.LoginUser
 @using MRA.Jobs.Client.Services.Auth;
+@using Microsoft.AspNetCore.WebUtilities;
 @inject IAuthService AuthService
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+
 
 <div class="container">
 	<div class="row justify-content-center">
@@ -47,13 +49,24 @@
 </div>
 
 @code {
+    private string returnUrl = string.Empty;
+    LoginUserCommand user = new LoginUserCommand();
 
-	LoginUserCommand user = new LoginUserCommand();
+    private string errorMassage = null;
 
-	private string errorMassage = null;
+    protected override void OnInitialized()
+    {
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("returnUrl", out var url))
+        {
+            var routes = url.ToString().Split("|");
+            returnUrl = $"{routes[0]}/{routes[1]}";
+        }
+    }
 
 	private async Task HandleValidSubmit()
 	{
 		errorMassage = await AuthService.LoginUserAsync(user);
+        NavigationManager.NavigateTo(returnUrl);
 	}
 }

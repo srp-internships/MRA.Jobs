@@ -43,7 +43,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpPost("AddSkills")]
-    public async Task<IActionResult> AddSkill([FromBody] AddSkillCommand command)
+    public async Task<IActionResult> AddSkill([FromBody] AddSkillsCommand command)
     {
         var result = await _mediator.Send(command);
         return Ok(result);
@@ -120,4 +120,6 @@ public class ProfileController : ControllerBase
         var result = await _mediator.Send(query);
         return Ok(result);
     }
+
+
 }

@@ -17,6 +17,7 @@ public class ApplicationListDto
     public int StatusId { get; set; }
     public string StatusName { get; set; }
     public string Slug { get; set; }
+    public DateTime CreatedAt { get; set; }
     public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
 }
 

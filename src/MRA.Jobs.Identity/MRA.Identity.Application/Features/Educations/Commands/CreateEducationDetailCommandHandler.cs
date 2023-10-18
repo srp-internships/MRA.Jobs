@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
