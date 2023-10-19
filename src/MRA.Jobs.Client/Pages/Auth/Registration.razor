@@ -4,103 +4,105 @@
 @using MRA.Identity.Application.Contract.User.Commands.RegisterUser
 @using MRA.Jobs.Client.Services.Auth
 @inject IAuthService AuthService
+@inject ISnackbar Snackbar
 
-<div style="width: 100%;height: 100%;align-items: center;justify-content: center; display: flex;flex: 100%">
-    <EditForm Model="@_model" OnValidSubmit="OnValidSubmit" style="margin-top: 10%;margin-bottom: 10%">
-        <DataAnnotationsValidator/>
-        <MudGrid>
-            <MudItem xs="12" sm="7">
-                <MudCard>
-                    <MudCardContent>
-                        <MudTextField Label="First name" HelperText="Enter your first name"
-                                      @bind-Value="_model.FirstName" For="@(() => _model.FirstName)" InputType="InputType.Text"/>
 
-                        <MudTextField Label="Last name" HelperText="Enter your last name"
-                                      @bind-Value="_model.LastName" For="@(() => _model.LastName)" InputType="InputType.Text"/>
+<div class="container">
+	<div class="row">
+		<div Class="d-flex align-center justify-center mud-width-full py-8">
+			<div class="col-md-6 mb-3">
+				<EditForm Model="@_model" OnValidSubmit="OnValidSubmit" style="margin-top: 10%;margin-bottom: 10%">
+					<DataAnnotationsValidator />
+					<MudCard>
+						<MudCardHeader>
+							<CardHeaderContent>
 
-                        <MudTextField Label="Email" Class="mt-3"
-                                      @bind-Value="_model.Email" For="@(() => _model.Email)" InputType="InputType.Email"/>
+								<MudText Typo="Typo.h4"><b>Sign Up</b></MudText>
+								<small>Do you have an account? Go to <a href="sign-in" style="color: #1c92c8;">Sign In</a></small>
 
-                        <MudTextField Label="Phone" HelperText="Enter your phone number" Class="mt-3"
-                                      @bind-Value="_model.PhoneNumber" For="@(() => _model.PhoneNumber)" InputType="InputType.Telephone"/>
+							</CardHeaderContent>
+						</MudCardHeader>
+						<MudCardContent>
+							<MudTextField Label="First name" HelperText="Enter your first name"
+							@bind-Value="_model.FirstName" For="@(() => _model.FirstName)" InputType="InputType.Text" />
 
-                        <MudTextField Label="Username" HelperText="Think out your username"
-                                      @bind-Value="_model.Username" For="@(() => _model.Username)"/>
+							<MudTextField Label="Last name" HelperText="Enter your last name"
+							@bind-Value="_model.LastName" For="@(() => _model.LastName)" InputType="InputType.Text" />
 
-                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-                                      @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
+							<MudTextField Label="Email" Class="mt-3"
+							@bind-Value="_model.Email" For="@(() => _model.Email)" InputType="InputType.Email" />
 
-                        <MudTextField Label="Confirm password" HelperText="Repeat the password" Class="mt-3"
-                                      @bind-Value="_model.Confirmation" For="@(() => _model.Confirmation)" InputType="InputType.Password"/>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Sign-up</MudButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudItem>
-            <MudItem xs="12" sm="5">
-                <MudPaper Class="pa-4 mud-height-full">
-                    <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
-                    <MudText Color="@Color.Error">
-                        <ValidationSummary/>
-                    </MudText>
-                    <MudText Color="@Color.Error">
-                        @_loginResultError
-                    </MudText>
-                </MudPaper>
-            </MudItem>
-        </MudGrid>
-    </EditForm>
+							<MudTextField Label="Phone" HelperText="Enter your phone number" Class="mt-3"
+							@bind-Value="_model.PhoneNumber" For="@(() => _model.PhoneNumber)" InputType="InputType.Telephone" />
+
+							<MudTextField Label="Username" HelperText="Think out your username"
+							@bind-Value="_model.Username" For="@(() => _model.Username)" />
+
+							<MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+							@bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password" />
+
+							<MudTextField Label="Confirm password" HelperText="Repeat the password" Class="mt-3"
+							@bind-Value="_model.Confirmation" For="@(() => _model.Confirmation)" InputType="InputType.Password" />
+						</MudCardContent>
+						<MudCardActions>
+							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="background-color: #1c92c8;color: #fff" Class="ml-auto">Sign-up</MudButton>
+						</MudCardActions>
+					</MudCard>
+				</EditForm>
+			</div>
+		</div>
+	</div>
 </div>
 
 @code {
-    private readonly LoginForm _model = new();
-    private string _loginResultError;
+	private readonly LoginForm _model = new();
 
 
-    public class LoginForm
-    {
-        [Required]
-        public string FirstName { get; set; }
+	public class LoginForm
+	{
+		[Required]
+		public string FirstName { get; set; }
 
-        [Required]
-        public string LastName { get; set; }
+		[Required]
+		public string LastName { get; set; }
 
-        [Required]
-        public string Username { get; set; }
+		[Required]
+		public string Username { get; set; }
 
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+		[Required]
+		[EmailAddress]
+		public string Email { get; set; }
 
-        [Required]
-        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
-        public string Password { get; set; }
+		[Required]
+		[StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+		public string Password { get; set; }
 
-        [Required]
-        [Compare(nameof(Password))]
-        public string Confirmation { get; set; }
+		[Required]
+		[Compare(nameof(Password))]
+		public string Confirmation { get; set; }
 
-        [Required]
-        [Phone]
-        public string PhoneNumber { get; set; }
-    }
+		[Required]
+		[Phone]
+		public string PhoneNumber { get; set; }
+	}
 
-    private async Task OnValidSubmit(EditContext context)
-    {
-        var registerMessage = await AuthService.RegisterUserAsync(new RegisterUserCommand
-        {
-            Email = _model.Email,
-            FirstName = _model.FirstName,
-            LastName = _model.LastName,
-            PhoneNumber = _model.PhoneNumber,
-            Username = _model.Username,
-            Password = _model.Password,
-            Application = "MraJobs",
-            Role = "Applicant",
-        });
-        _loginResultError = registerMessage;
-        StateHasChanged();
-    }
+	private async Task OnValidSubmit(EditContext context)
+	{
+		var registerMessage = await AuthService.RegisterUserAsync(new RegisterUserCommand
+			{
+				Email = _model.Email,
+				FirstName = _model.FirstName,
+				LastName = _model.LastName,
+				PhoneNumber = _model.PhoneNumber,
+				Username = _model.Username,
+				Password = _model.Password,
+				Application = "MraJobs",
+				Role = "Applicant",
+			});
+		if (registerMessage != "" || registerMessage != null)
+			Snackbar.Add(registerMessage, MudBlazor.Severity.Error);
+
+		StateHasChanged();
+	}
 
 }

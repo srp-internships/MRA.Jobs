@@ -6,17 +6,18 @@
 @inject ISnackbar Snackbar
 
 <div class="container">
-	<MudGrid class="row" style="margin-top:20px;">
+	<div class="row" style="margin-top:20px;">
 		<div Class="d-flex align-center justify-center mud-width-full py-8">
-			<div class="col-4">
+			<div class="col-md-4 mb-3">
 
 				<EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
 					<DataAnnotationsValidator />
 					<MudCard Style="padding-top:15px;">
 						<MudCardHeader>
 							<CardHeaderContent>
-								<center><MudImage Src="./images/SRP_icon.png" Width="100" /><br />
-									<MudText Typo="Typo.h4"><strong>SING IN</strong></MudText>
+								<center>
+									<MudImage Src="./images/SRP_icon.png" Width="100" /><br />
+									<MudText Typo="Typo.h4"><strong>Sign In</strong></MudText>
 								</center>
 							</CardHeaderContent>
 						</MudCardHeader>
@@ -28,8 +29,16 @@
 							@bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password" />
 						</MudCardContent>
 						<MudCardActions>
-							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Sign-in</MudButton>
+
+							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="background-color: #1c92c8; color: #fff"  Class="ml-auto">Sign-in</MudButton>
 						</MudCardActions>
+						<div style="padding:5px">
+						<center>
+							<small>
+								Don't have an account? Go to <a href="sign-up" style="color : #1c92c8;">Sign Up</a>
+							</small>
+						</center> <br />
+						</div>
 					</MudCard>
 				</EditForm>
 			</div>
@@ -37,12 +46,10 @@
 		</div>
 
 
-	</MudGrid>
+	</div>
 </div>
 @code {
 	private readonly LoginForm _model = new();
-	private bool _success;
-	private string _loginResultError;
 
 	public class LoginForm
 	{
@@ -67,7 +74,6 @@
 				Username = _model.Username,
 				Password = _model.Password
 			});
-		_loginResultError = loginMessage;
 		if (loginMessage != "" || loginMessage != null)
 			Snackbar.Add(loginMessage, MudBlazor.Severity.Error);
 
