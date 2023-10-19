@@ -37,7 +37,11 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
             Email = request.Email,
             NormalizedEmail = request.Email.ToLower(),
             EmailConfirmed = false,
-            PhoneNumber = request.PhoneNumber
+            PhoneNumber = request.PhoneNumber,
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            DateOfBirth = new DateTime(2000, 1, 1)
+
         };
         IdentityResult result = await _userManager.CreateAsync(user, request.Password);
 
