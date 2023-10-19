@@ -16,55 +16,58 @@
 }
 else
 {
-    <MatAccordion>
-        <MatExpansionPanel @bind-Expanded="@panelOpenState">
-            <MatExpansionPanelSummary>
-                <MatExpansionPanelHeader>Inserting a new Job</MatExpansionPanelHeader>
-            </MatExpansionPanelSummary>
-            <MatExpansionPanelDetails Style="display: flex;flex-direction: column;">
-                <MatTextField @bind-Value="@trainingService.createCommand.Title" Label="Title"></MatTextField>
-                <MatTextField @bind-Value="@trainingService.createCommand.ShortDescription" Label="ShortDescription" TextArea></MatTextField>
-                <MatTextField @bind-Value="@trainingService.createCommand.Description" Label="Description" TextArea></MatTextField>
-                <MatTextField @bind-Value="@trainingService.createCommand.Duration" Label="Duration"></MatTextField>
-                <MatTextField @bind-Value="@trainingService.createCommand.Fees" Label="Fees"></MatTextField>
-                <MatSelectValue @bind-Value="@trainingService.createCommand.CategoryId" Items="@categories" ValueSelector="@(i=>i.Id)">
-                    <ItemTemplate>
-                        <span>@context?.Name</span>
-                    </ItemTemplate>
-                </MatSelectValue>
-                <MatDatePicker @bind-Value="trainingService.createCommand.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MatDatePicker>
-                <MatDatePicker @bind-Value="trainingService.createCommand.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MatDatePicker>
-                <MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MatButton>
-                <MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
-                <MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
-            </MatExpansionPanelDetails>
-        </MatExpansionPanel>
-    </MatAccordion>
+    <MudExpansionPanels>
+        <MudExpansionPanel Text="Create new Job" @bind-IsExpanded="@panelOpenState">
+            <MudTextField @bind-Value="@trainingService.createCommand.Title" Label="Title"></MudTextField>
+            <MudTextField Lines="5" @bind-Value="@trainingService.createCommand.ShortDescription" Label="ShortDescription"></MudTextField>
+            <MudTextField Lines="5" @bind-Value="@trainingService.createCommand.Description" Label="Description"></MudTextField>
+            <MudTextField @bind-Value="@trainingService.createCommand.Duration" Label="Duration"></MudTextField>
+            <MudTextField @bind-Value="@trainingService.createCommand.Fees" Label="Fees"></MudTextField>
+            <MudSelect T="string" Label="Select category" @bind-Value="@selectedCategory">
+                @foreach (var cat in categories)
+                {
+                    <MudSelectItem Value="@cat.Name"/>
+                }
+            </MudSelect>
+            <MudTextField @bind-Value="trainingService.createCommand.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MudTextField>
+            <MudTextField @bind-Value="trainingService.createCommand.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MudTextField>
+            <MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Create</MatButton>
+            <MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
+            <MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+
     <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem" />
-    <MatTable Items="@trainings" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
-        <MatTableHeader>
-            <th>Title</th>
-            <th>ShortDescription</th>
-            <th>Category</th>
-            <th>PublishDate</th>
-            <th>EndDate</th>
-            <th>Duration</th>
-            <th>Fees</th>
-            <th></th>
-            <th></th>
-        </MatTableHeader>
-        <MatTableRow>
-            <td>@context.Title</td>
-            <td>@context.ShortDescription</td>
-            <td>@context.Category</td>
-            <td>@context.PublishDate</td>
-            <td>@context.EndDate</td>
-            <td>@context.Duration</td>
-            <td>@context.Fees</td>
-            <td><MatButton @onclick="()=>OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MatButton></td>
-            <td><MatButton @onclick="()=>OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MatButton></td>
-        </MatTableRow>
-    </MatTable>
+    <MudTable Items="@trainings" Class="text-center" Breakpoint="Breakpoint.Md">
+        <HeaderContent>
+            <MudTh>Title</MudTh>
+            <MudTh>Short description</MudTh>
+            <MudTh>Category</MudTh>
+            <MudTh>Publish date</MudTh>
+            <MudTh>End date</MudTh>
+            <MudTh>Duration</MudTh>
+            <MudTh>Fees</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Title">@context.Title</MudTd>
+            <MudTd DataLabel="Short description">@context.ShortDescription.Substring(0, 50) ...</MudTd>
+            <MudTd DataLabel="Category">@context.Category</MudTd>
+            <MudTd DataLabel="PublishDate">@context.PublishDate.ToString("D")</MudTd>
+            <MudTd DataLabel="EndDate">@context.EndDate.ToString("D")</MudTd>
+            <MudTd DataLabel="Duration">@context.Duration</MudTd>
+            <MudTd DataLabel="Fees">@context.Fees</MudTd>
+            <MudTd DataLabel="Action">
+                <MudButton @onclick="()=>OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MudButton>
+                <MudButton @onclick="()=>OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MudButton>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+
+   
 }
 
 @code {
@@ -72,6 +75,7 @@ else
     bool isInserting;
     bool isUpdating = true;
     string UpdateSlug;
+    string selectedCategory = string.Empty;
 
     private List<CategoryResponse> categories;
     private List<TrainingVacancyListDto> trainings;
@@ -97,7 +101,7 @@ else
         await LoadData();
     }
 
-    private async Task OnEditClick(string slug)
+    private async Task OnEditClick(string slug)                     
     {
         var vacancy = await trainingService.GetBySlug(slug);
         if (vacancy != null)
@@ -132,6 +136,8 @@ else
 
     private async Task HandleUpdate()
     {
+        var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
+        trainingService.createCommand.CategoryId = catId;
         await trainingService.Update(UpdateSlug);
         await LoadData();
         Clear();

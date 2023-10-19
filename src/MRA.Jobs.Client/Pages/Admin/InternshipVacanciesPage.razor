@@ -14,59 +14,59 @@
 }
 else
 {
-    <MatAccordion>
-        <MatExpansionPanel @bind-Expanded="@panelOpenState">
-            <MatExpansionPanelSummary>
-                <MatExpansionPanelHeader>Inserting a new Job</MatExpansionPanelHeader>
-            </MatExpansionPanelSummary>
-            <MatExpansionPanelDetails Style="display: flex;flex-direction: column;">
-                <MatTextField @bind-Value="@internshipService.createCommand.Title" Label="Title"></MatTextField>
-                <MatTextField @bind-Value="@internshipService.createCommand.ShortDescription" Label="ShortDescription" TextArea></MatTextField>
-                <MatTextField @bind-Value="@internshipService.createCommand.Description" Label="Description" TextArea></MatTextField>
-                <MatTextField @bind-Value="@internshipService.createCommand.ApplicationDeadline" Format="MM/dd/yy H:mm:ss" Label="ApplicationDeadline"></MatTextField>
-                <MatTextField @bind-Value="@internshipService.createCommand.Duration" Label="Duration"></MatTextField>
-                <MatTextField @bind-Value="@internshipService.createCommand.Stipend" Label="Stipend"></MatTextField>
-                <MatSelectValue @bind-Value="@internshipService.createCommand.CategoryId" Items="@categories" ValueSelector="@(i=>i.Id)">
-                    <ItemTemplate>
-                        <span>@context?.Name</span>
-                    </ItemTemplate>
-                </MatSelectValue>
-                <MatDatePicker @bind-Value="internshipService.createCommand.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MatDatePicker>
-                <MatDatePicker @bind-Value="internshipService.createCommand.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MatDatePicker>
-                <MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MatButton>
-                <MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
-                <MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
+    <MudExpansionPanels>
+        <MudExpansionPanel Text="Create new Internship" @bind-IsExpanded="@panelOpenState">
+            <MudTextField @bind-Value="@internshipService.createCommand.Title" Label="Title"></MudTextField>
+            <MudTextField Lines="5" @bind-Value="@internshipService.createCommand.ShortDescription" Label="ShortDescription"></MudTextField>
+            <MudTextField Lines="5" @bind-Value="@internshipService.createCommand.Description" Label="Description"></MudTextField>
+            <MudTextField @bind-Value="@internshipService.createCommand.ApplicationDeadline" Label="Application deadline"></MudTextField>
+            <MudTextField @bind-Value="@internshipService.createCommand.Duration" Label="Duration"></MudTextField>
+            <MudTextField @bind-Value="@internshipService.createCommand.Stipend" Label="Stipend"></MudTextField>
+            <MudSelect T="string" Label="Select category" @bind-Value="@selectedCategory">
+                @foreach (var cat in categories)
+                {
+                    <MudSelectItem Value="@cat.Name" />
+                }
+            </MudSelect>
+            <MudTextField InputType="InputType.Date" @bind-Value="internshipService.createCommand.EndDate" Format="yyyy/MM/dd" Label="EndDate"></MudTextField>
+            <MudTextField InputType="InputType.Date" @bind-Value="internshipService.createCommand.PublishDate" Format="yyyy/MM/dd" Label="PublishDate"></MudTextField>
+            <MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Create</MatButton>
+            <MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
+            <MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
+        </MudExpansionPanel>
+    </MudExpansionPanels>
 
-            </MatExpansionPanelDetails>
-        </MatExpansionPanel>
-    </MatAccordion>
     <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem" />
-    <MatTable Items="@interships" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
-        <MatTableHeader>
-            <th>Title</th>
-            <th>ShortDescription</th>
-            <th>Category</th>
-            <th>PublishDate</th>
-            <th>EndDate</th>
-            <th>ApplicationDeadline</th>
-            <th>Duration</th>
-            <th>Stipend</th>
-            <th></th>
-            <th></th>
-        </MatTableHeader>
-        <MatTableRow>
-            <td>@context.Title</td>
-            <td>@context.ShortDescription</td>
-            <td>@context.Category</td>
-            <td>@context.PublishDate</td>
-            <td>@context.EndDate</td>
-            <td>@context.ApplicationDeadline</td>
-            <td>@context.Duration</td>
-            <td>@context.Stipend</td>
-            <td><MatButton @onclick="()=>OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MatButton></td>
-            <td><MatButton @onclick="()=>OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MatButton></td>
-        </MatTableRow>
-    </MatTable>
+    <MudTable Items="@interships" Class="text-center" Breakpoint="Breakpoint.Md">
+        <HeaderContent>
+            <MudTh>Title</MudTh>
+            <MudTh>Short description</MudTh>
+            <MudTh>Application deadline</MudTh>
+            <MudTh>Duration</MudTh>
+            <MudTh>Stipend</MudTh>
+            <MudTh>Category</MudTh>
+            <MudTh>End date</MudTh>
+            <MudTh>Publish date</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Title">@context.Title</MudTd>
+            <MudTd DataLabel="Short description">@context.ShortDescription.Substring(0, 50) ...</MudTd>
+            <MudTd DataLabel="Application deadline">@context.ApplicationDeadline</MudTd>
+            <MudTd DataLabel="Duration">@context.Duration</MudTd>
+            <MudTd DataLabel="Stipend">@context.Stipend</MudTd>
+            <MudTd DataLabel="Category">@context.Category</MudTd>
+            <MudTd DataLabel="EndDate">@context.EndDate.ToString("D")</MudTd>
+            <MudTd DataLabel="PublishDate">@context.PublishDate.ToString("D")</MudTd>
+            <MudTd DataLabel="Action">
+                <MudButton @onclick="()=>OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MudButton>
+                <MudButton @onclick="()=>OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MudButton>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
 }
 
 
@@ -75,6 +75,8 @@ else
     bool isInserting;
     bool isUpdating = true;
     string UpdateSlug;
+    private string selectedCategory = string.Empty;
+
 
     private List<CategoryResponse> categories;
     private List<InternshipVacancyListResponse> interships;
@@ -136,6 +138,8 @@ else
 
     private async Task HandleUpdate()
     {
+        var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
+        internshipService.createCommand.CategoryId = catId;
         await internshipService.Update(UpdateSlug);
         await LoadData();
         Clear();
