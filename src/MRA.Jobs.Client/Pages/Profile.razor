@@ -90,7 +90,7 @@
 									<MudTextField @bind-Value="@updateProfileCommand.Email" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.Email)" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Date Of Birth</MudText>
-									<MudDatePicker @bind-Value="@updateProfileCommand.DateOfBirth" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.DateOfBirth)" />
+									<MudDatePicker @bind-Date="@updateProfileCommand.DateOfBirth" Variant="Variant.Outlined" Margin="Margin.Dense" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Phone Number</MudText>
 									<MudTextField @bind-Value="@updateProfileCommand.PhoneNumber" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.PhoneNumber)" />
@@ -654,7 +654,7 @@
 		profile = await UserProfileService.Get();
 
 		updateProfileCommand.AboutMyself = profile.AboutMyself;
-		updateProfileCommand.DateOfBirth = profile.DateOfBirth.HasValue ? profile.DateOfBirth.Value : default(DateTime);
+		updateProfileCommand.DateOfBirth = profile.DateOfBirth;
 		updateProfileCommand.Email = profile.Email;
 		updateProfileCommand.FirstName = profile.FirstName;
 		updateProfileCommand.LastName = profile.LastName;
