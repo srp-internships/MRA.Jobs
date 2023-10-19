@@ -3,64 +3,76 @@
 @using MRA.Identity.Application.Contract.User.Commands.LoginUser
 @using MRA.Jobs.Client.Services.Auth
 @inject IAuthService AuthService
+@inject ISnackbar Snackbar
 
-<div style="width: 100%;height: 100%;align-items: center;justify-content: center; display: flex;flex: 100%">
-    <EditForm Model="@_model" OnValidSubmit="OnValidSubmit" style="margin-top: 10%;margin-bottom: 10%">
-        <DataAnnotationsValidator/>
-        <MudGrid>
-            <MudItem xs="12" sm="7">
-                <MudCard>
-                    <MudCardContent>
-                        <MudTextField Label="First name" HelperText="Max. 8 characters"
-                                      @bind-Value="_model.Username" For="@(() => _model.Username)"/>
-                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-                                      @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Sign-in</MudButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudItem>
-            <MudItem xs="12" sm="5">
-                <MudPaper Class="pa-4 mud-height-full">
-                    <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
-                    <MudText Color="@Color.Error">
-                        <ValidationSummary/>
-                    </MudText>
-                    <MudText Color="@Color.Error">
-                        @_loginResultError
-                    </MudText>
-                </MudPaper>
-            </MudItem>
-        </MudGrid>
-    </EditForm>
+<div class="container">
+	<MudGrid class="row" style="margin-top:20px;">
+		<div Class="d-flex align-center justify-center mud-width-full py-8">
+			<div class="col-4">
+
+				<EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
+					<DataAnnotationsValidator />
+					<MudCard Style="padding-top:15px;">
+						<MudCardHeader>
+							<CardHeaderContent>
+								<center><MudImage Src="./images/SRP_icon.png" Width="100" /><br />
+									<MudText Typo="Typo.h4"><strong>SING IN</strong></MudText>
+								</center>
+							</CardHeaderContent>
+						</MudCardHeader>
+						<MudCardContent>
+							<MudTextField Label="UserName" HelperText="Max. 8 characters"
+							@bind-Value="_model.Username" For="@(() => _model.Username)" />
+
+							<MudTextField Label="Password" HelperText="Choose a strong password"
+							@bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password" />
+						</MudCardContent>
+						<MudCardActions>
+							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Sign-in</MudButton>
+						</MudCardActions>
+					</MudCard>
+				</EditForm>
+			</div>
+
+		</div>
+
+
+	</MudGrid>
 </div>
-
 @code {
-    private readonly LoginForm _model = new();
-    private bool _success;
-    private string _loginResultError;
+	private readonly LoginForm _model = new();
+	private bool _success;
+	private string _loginResultError;
 
-    public class LoginForm
-    {
-        [Required]
-        public string Username { get; set; }
+	public class LoginForm
+	{
+		[Required]
+		public string Username { get; set; }
 
-        [Required]
-        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
-        public string Password { get; set; }
-    }
+		[Required]
+		[StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+		public string Password { get; set; }
+	}
 
-    private async Task OnValidSubmit(EditContext context)
-    {
-        Console.WriteLine("debug");
-        var loginMessage = await AuthService.LoginUserAsync(new LoginUserCommand
-        {
-            Username = _model.Username, Password = _model.Password
-        });
-        _loginResultError = loginMessage;
-        Console.WriteLine(loginMessage);
-        StateHasChanged();
-    }
+	protected override void OnInitialized()
+	{
+		StateHasChanged();
+	}
+
+	private async Task OnValidSubmit(EditContext context)
+	{
+		Console.WriteLine("debug");
+		var loginMessage = await AuthService.LoginUserAsync(new LoginUserCommand
+			{
+				Username = _model.Username,
+				Password = _model.Password
+			});
+		_loginResultError = loginMessage;
+		if (loginMessage != "" || loginMessage != null)
+			Snackbar.Add(loginMessage, MudBlazor.Severity.Error);
+
+		Console.WriteLine(loginMessage);
+		StateHasChanged();
+	}
 
 }
