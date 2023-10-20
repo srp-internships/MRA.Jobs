@@ -7,66 +7,63 @@
 
 @inject IVacancyService VService
 
-<h3>Vacancy</h3>
+<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Jobs</MudText>
 @if (_category == null)
 {
     <div>Loading</div>
 }
 else
 {
-    <MatAccordion>
-        <MatExpansionPanel @bind-Expanded="@panelOpenState">
-            <MatExpansionPanelSummary>
-                <MatExpansionPanelHeader>Inserting a new Job</MatExpansionPanelHeader>
-            </MatExpansionPanelSummary>
-            <MatExpansionPanelDetails Style="display: flex;flex-direction: column;">
-                <MatTextField @bind-Value="@VService.creatingNewJob.Title" Label="Title"></MatTextField>
-                <MatTextField @bind-Value="@VService.creatingNewJob.ShortDescription" Label="ShortDescription" TextArea></MatTextField>
-                <MatTextField @bind-Value="@VService.creatingNewJob.Description" Label="Description" TextArea></MatTextField>
-                <MatTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="RequiredYearOfExperience"></MatTextField>
-                <MatSelectItem @bind-Value="VService.creatingNewJob.WorkSchedule" Items="@value2Items">
-                </MatSelectItem>
-                <p>
-                    Selected value: 
-                </p>
 
-                <MatSelectValue @bind-Value="VService.creatingNewJob.CategoryId" Items="@_category" ValueSelector="@(i=>i.Id)">
-                    <ItemTemplate>
-                        <span>@context?.Name</span>
-                    </ItemTemplate>
-                </MatSelectValue>
-                <MatDatePicker @bind-Value="VService.creatingNewJob.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MatDatePicker>
-                <MatDatePicker @bind-Value="VService.creatingNewJob.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MatDatePicker>
-                <MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MatButton>
-                <MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
-                <MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
+    <MudExpansionPanels>
+        <MudExpansionPanel Text="Create new Job" @bind-IsExpanded=@panelOpenState>
 
-            </MatExpansionPanelDetails>
-        </MatExpansionPanel>
-    </MatAccordion>
+
+            <MudTextField @bind-Value="@VService.creatingNewJob.Title" Label="Title"></MudTextField>
+            <MudTextField @bind-Value="@VService.creatingNewJob.ShortDescription" Label="ShortDescription" TextArea></MudTextField>
+            <MudTextField @bind-Value="@VService.creatingNewJob.Description" Label="Description" TextArea></MudTextField>
+            <MudTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="RequiredYearOfExperience"></MudTextField>
+            <MatSelectItem @bind-Value="VService.creatingNewJob.WorkSchedule" Items="@value2Items">
+            </MatSelectItem>
+            <MudSelect T="string" Label="Select category" @bind-Value="@selectedCategory">
+                @foreach (var cat in _category)
+                {
+                    <MudSelectItem Value="@cat.Name" />
+                }
+            </MudSelect>
+            <MudTextField @bind-Value="VService.creatingNewJob.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MudTextField>
+            <MudTextField @bind-Value="VService.creatingNewJob.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MudTextField>
+            <MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MatButton>
+            <MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
+            <MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
+
+
+        </MudExpansionPanel>
+    </MudExpansionPanels>
     <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem" />
-    <MatTable Items="@vacancies" class="mat-elevation-z5" ShowPaging="true" UseSortHeaderRow="true">
-        <MatTableHeader>
-            <th>Title</th>
-            <th>ShortDescription</th>
-            <th>Category</th>
-            <th>PublishDate</th>
-            <th>EndDate</th>
-            <th>WorkSchedule</th>
-            <th></th>
-            <th></th>
-        </MatTableHeader>
-        <MatTableRow>
-            <td>@context.Title</td>
-            <td>@context.ShortDescription</td>
-            <td>@context.Category</td>
-            <td>@context.PublishDate</td>
-            <td>@context.EndDate</td>
-            <td>@context.WorkSchedule</td>
-            <td><MatButton @onclick="()=>OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MatButton></td>
-            <td>	<MatButton @onclick="()=>OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MatButton></td>
-        </MatTableRow>
-    </MatTable>
+    <MudTable Items="@vacancies" Class="text-center" Breakpoint="Breakpoint.Md">
+        <HeaderContent>
+            <MudTh>Title</MudTh>
+            <MudTh>ShortDescription</MudTh>
+            <MudTh>Category</MudTh>
+            <MudTh>PublishDate</MudTh>
+            <MudTh>EndDate</MudTh>
+            <MudTh>WorkSchedule</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Title">@context.Title</MudTd>
+            <MudTd DataLabel="Short description">@context.ShortDescription.Substring(0, 50) ...</MudTd>
+            <MudTd DataLabel="Category">@context.Category</MudTd>
+            <MudTd DataLabel="Publish date">@context.PublishDate.ToString("D")</MudTd>
+            <MudTd DataLabel="End date">@context.EndDate.ToString("D")</MudTd>
+            <MudTd DataLabel="Work schedule">@context.WorkSchedule</MudTd>
+            <MudTd DataLabel="Action">
+                <MatButton @onclick="()=>OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MatButton>
+                <MatButton @onclick="()=>OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MatButton>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
 
 }
 
@@ -81,6 +78,7 @@ else
     private bool isInserting = false;
     private bool isUpdating = true;
     private string UpdateSlug;
+    private string selectedCategory = string.Empty;
 
     void OnDeleteClick(string slug)
     {
@@ -132,6 +130,7 @@ else
             }
             VService.creatingNewJob.EndDate = vacancy.EndDate;
             VService.creatingNewJob.PublishDate = vacancy.PublishDate;
+            selectedCategory = _category.FirstOrDefault(c => c.Id == vacancy.CategoryId).Name;
             // Открытие панели формы
             panelOpenState = true;
             isInserting = true;
@@ -142,6 +141,8 @@ else
 
     private async Task HandleUpdate()
     {
+        var catId = _category.FirstOrDefault(c => c.Name == selectedCategory).Id;
+        VService.creatingNewJob.CategoryId = catId;
         await VService.UpdateJobVacancy(UpdateSlug);
         await LoadData();
         Clear();

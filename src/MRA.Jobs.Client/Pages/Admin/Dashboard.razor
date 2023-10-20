@@ -6,15 +6,15 @@
 <MudSnackbarProvider />
 
 
-<div class="container m-0">
+<div class="m-0">
     <div class="row">
-        <div class="col-md-4">
-            <MudPaper Width="250px" Elevation="0" >
+        <div class="col-md-2">
+            <MudPaper Elevation="0">
                 <MudNavMenu Bordered="true">
                     <MudNavLink Href="/dashboard">Dashboard</MudNavLink>
                     <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
                     <MudNavGroup Title="User" Expanded="true">
-                        <MudNavLink Href="/applications">Applications</MudNavLink>
+                        <MudNavLink Href="/dashboard/applications">Applications</MudNavLink>
                         <MudNavLink Href="/">Reviewers</MudNavLink>
                     </MudNavGroup>
                     <MudNavLink Href="/dashboard/jobs">Jobs</MudNavLink>
@@ -29,7 +29,7 @@
                 </MudNavMenu>
             </MudPaper>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-10" style="margin: 0 auto;">
             @Body
         </div>
     </div>

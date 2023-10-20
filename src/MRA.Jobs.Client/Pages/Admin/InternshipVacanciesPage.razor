@@ -6,7 +6,7 @@
 @inject IInternshipService internshipService
 @inject ICategoryService categoryService
 
-<h3>InternshipVacanciesPage</h3>
+<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Internships</MudText>
 
 @if (categories == null)
 {
@@ -22,14 +22,14 @@ else
             <MudTextField @bind-Value="@internshipService.createCommand.ApplicationDeadline" Label="Application deadline"></MudTextField>
             <MudTextField @bind-Value="@internshipService.createCommand.Duration" Label="Duration"></MudTextField>
             <MudTextField @bind-Value="@internshipService.createCommand.Stipend" Label="Stipend"></MudTextField>
-            <MudSelect T="string" Label="Select category" @bind-Value="@selectedCategory">
+            <MudSelect T="string" Label="@selectedCategory" @bind-Value="@selectedCategory">
                 @foreach (var cat in categories)
                 {
                     <MudSelectItem Value="@cat.Name" />
                 }
             </MudSelect>
-            <MudTextField InputType="InputType.Date" @bind-Value="internshipService.createCommand.EndDate" Format="yyyy/MM/dd" Label="EndDate"></MudTextField>
-            <MudTextField InputType="InputType.Date" @bind-Value="internshipService.createCommand.PublishDate" Format="yyyy/MM/dd" Label="PublishDate"></MudTextField>
+            <MudTextField @bind-Value="internshipService.createCommand.EndDate" Label="EndDate"></MudTextField>
+            <MudTextField @bind-Value="internshipService.createCommand.PublishDate" Label="PublishDate"></MudTextField>
             <MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Create</MatButton>
             <MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
             <MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
@@ -83,7 +83,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-
         await LoadData();
     }
 
@@ -116,6 +115,7 @@ else
             internshipService.createCommand.EndDate = vacancy.EndDate;
             internshipService.createCommand.PublishDate = vacancy.PublishDate;
             internshipService.createCommand.CategoryId = vacancy.CategoryId;
+            selectedCategory = categories.FirstOrDefault(c => c.Id == vacancy.CategoryId).Name;
             isInserting = true;
             isUpdating = false;
             panelOpenState = true;

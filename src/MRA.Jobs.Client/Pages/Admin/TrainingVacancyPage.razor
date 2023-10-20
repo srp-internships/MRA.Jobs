@@ -7,7 +7,7 @@
 @inject ICategoryService categoryService
 
 
-<h3>TrainingVacancyPage</h3>
+<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Trainings</MudText>
 
 
 @if (categories == null)
@@ -17,7 +17,7 @@
 else
 {
     <MudExpansionPanels>
-        <MudExpansionPanel Text="Create new Job" @bind-IsExpanded="@panelOpenState">
+        <MudExpansionPanel Text="Create new Training" @bind-IsExpanded="@panelOpenState">
             <MudTextField @bind-Value="@trainingService.createCommand.Title" Label="Title"></MudTextField>
             <MudTextField Lines="5" @bind-Value="@trainingService.createCommand.ShortDescription" Label="ShortDescription"></MudTextField>
             <MudTextField Lines="5" @bind-Value="@trainingService.createCommand.Description" Label="Description"></MudTextField>
