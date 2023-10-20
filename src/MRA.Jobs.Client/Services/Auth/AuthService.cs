@@ -25,7 +25,7 @@ public class AuthService : IAuthService
         _navigationManager = navigationManager;
     }
 
-    public async Task<string> LoginUserAsync(LoginUserCommand command)
+    public async Task<string> LoginUserAsync(LoginUserCommand command, bool newRegister = false)
     {
         string errorMessage = null;
         try
@@ -36,7 +36,8 @@ public class AuthService : IAuthService
                 var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
                 await _localStorage.SetItemAsync("authToken", response);
                 await _authenticationStateProvider.GetAuthenticationStateAsync();
-                _navigationManager.NavigateTo("/");
+              if (!newRegister)
+                    _navigationManager.NavigateTo("/");
                 return null;
             }
 
@@ -66,7 +67,14 @@ public class AuthService : IAuthService
             var result = await _identityHttpClient.PostAsJsonAsync("Auth/register", command);
             if (result.IsSuccessStatusCode)
             {
-                _navigationManager.NavigateTo("/sign-in");
+                await LoginUserAsync(new LoginUserCommand() 
+                { 
+                    Password = command.Password, 
+                    Username = command.Username 
+                });
+
+                _navigationManager.NavigateTo("/profile");
+
                 return "";
             }
             if (result.StatusCode is not (HttpStatusCode.Unauthorized or HttpStatusCode.BadRequest))
