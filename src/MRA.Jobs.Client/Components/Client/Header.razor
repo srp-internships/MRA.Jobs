@@ -43,6 +43,9 @@
 	.active {
 		color: #129fd7;
 	}
+	.mud-icon-root{
+	    color:white;
+	}
 </style>
 
 
@@ -61,28 +64,29 @@
 				</svg>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item">
-						<NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
-					</li>
-					<li class="nav-item">
-						<NavLink class="nav-link" href="/internships">Internships</NavLink>
-					</li>
-					<li class="nav-item">
-						<NavLink class="nav-link" href="/jobs">Jobs</NavLink>
-					</li>
-					<li class="nav-item">
-						<NavLink class="nav-link" href="/trainings">Trainings</NavLink>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/">Team</a>
-					</li>
-				</ul>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/internships">Internships</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/jobs">Jobs</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/trainings">Trainings</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/">Team</a>
+                    </li>
+                </ul>
+                
 				<CascadingAuthenticationState>
 					<AuthorizeView>
 						<Authorized>
-							<MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Info">
-
+							<MudMenu Icon="@Icons.Material.Filled.Person">
+                                
 								<MudNavLink Href="/profile">Profile</MudNavLink>
 								<MudNavLink Href="/applications">Applications</MudNavLink>
 
