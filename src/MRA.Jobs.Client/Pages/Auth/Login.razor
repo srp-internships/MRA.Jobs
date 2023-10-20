@@ -31,8 +31,7 @@
                                           @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
                         </MudCardContent>
                         <MudCardActions>
-
-                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="background-color: #1c92c8; color: #fff" Class="ml-auto">
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
                                 @if (_processing)
                                 {
                                     <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -47,13 +46,14 @@
                         <div style="padding:5px">
                             <center>
                                 <small>
-                                    Don't have an account? Go to <a href="sign-up" style="color : #1c92c8;">Sign Up</a>
+                                    Don't have an account? Go to <a href="sign-up">Sign Up</a>
                                 </small>
                             </center> <br/>
                         </div>
                     </MudCard>
                 </EditForm>
             </div>
+
 
         </div>
 
