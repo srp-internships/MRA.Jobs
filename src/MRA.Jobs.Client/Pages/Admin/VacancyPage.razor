@@ -20,8 +20,8 @@ else
 
 
             <MudTextField @bind-Value="@VService.creatingNewJob.Title" Label="Title"></MudTextField>
-            <MudTextField @bind-Value="@VService.creatingNewJob.ShortDescription" Label="ShortDescription" TextArea></MudTextField>
-            <MudTextField @bind-Value="@VService.creatingNewJob.Description" Label="Description" TextArea></MudTextField>
+            <MudTextField Lines="5" @bind-Value="@VService.creatingNewJob.ShortDescription" Label="ShortDescription" TextArea></MudTextField>
+            <MudTextField Lines="5" @bind-Value="@VService.creatingNewJob.Description" Label="Description" TextArea></MudTextField>
             <MudTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="RequiredYearOfExperience"></MudTextField>
             <MatSelectItem @bind-Value="VService.creatingNewJob.WorkSchedule" Items="@value2Items">
             </MatSelectItem>
