@@ -8,101 +8,115 @@
 
 
 <div class="container">
-	<div class="row">
-		<div Class="d-flex align-center justify-center mud-width-full py-8">
-			<div class="col-md-6 mb-3">
-				<EditForm Model="@_model" OnValidSubmit="OnValidSubmit" style="margin-top: 10%;margin-bottom: 10%">
-					<DataAnnotationsValidator />
-					<MudCard>
-						<MudCardHeader>
-							<CardHeaderContent>
+    <div class="row">
+        <div Class="d-flex align-center justify-center mud-width-full py-8">
+            <div class="col-md-6 mb-3">
+                <EditForm Model="@_model" OnValidSubmit="OnValidSubmit" style="margin-top: 10%;margin-bottom: 10%">
+                    <DataAnnotationsValidator/>
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
 
-								<MudText Typo="Typo.h4"><b>Sign Up</b></MudText>
-								<small>Do you have an account? Go to <a href="sign-in">Sign In</a></small>
+                                <MudText Typo="Typo.h4">
+                                    <b>Sign Up</b>
+                                </MudText>
+                                <small>Do you have an account? Go to <a href="sign-in">Sign In</a></small>
 
-							</CardHeaderContent>
-						</MudCardHeader>
-						<MudCardContent>
-							<MudTextField Label="First name" HelperText="Enter your first name"
-							@bind-Value="_model.FirstName" For="@(() => _model.FirstName)" InputType="InputType.Text" />
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudTextField Label="First name" HelperText="Enter your first name"
+                                          @bind-Value="_model.FirstName" For="@(() => _model.FirstName)" InputType="InputType.Text"/>
 
-							<MudTextField Label="Last name" HelperText="Enter your last name"
-							@bind-Value="_model.LastName" For="@(() => _model.LastName)" InputType="InputType.Text" />
+                            <MudTextField Label="Last name" HelperText="Enter your last name"
+                                          @bind-Value="_model.LastName" For="@(() => _model.LastName)" InputType="InputType.Text"/>
 
-							<MudTextField Label="Email" Class="mt-3"
-							@bind-Value="_model.Email" For="@(() => _model.Email)" InputType="InputType.Email" />
+                            <MudTextField Label="Email" Class="mt-3"
+                                          @bind-Value="_model.Email" For="@(() => _model.Email)" InputType="InputType.Email"/>
 
-							<MudTextField Label="Phone" HelperText="Enter your phone number" Class="mt-3"
-							@bind-Value="_model.PhoneNumber" For="@(() => _model.PhoneNumber)" InputType="InputType.Telephone" />
+                            <MudTextField Label="Phone" HelperText="Enter your phone number" Class="mt-3"
+                                          @bind-Value="_model.PhoneNumber" For="@(() => _model.PhoneNumber)" InputType="InputType.Telephone"/>
 
-							<MudTextField Label="Username" HelperText="Think out your username"
-							@bind-Value="_model.Username" For="@(() => _model.Username)" />
+                            <MudTextField Label="Username" HelperText="Think out your username"
+                                          @bind-Value="_model.Username" For="@(() => _model.Username)"/>
 
-							<MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-							@bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password" />
+                            <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                          @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
 
-							<MudTextField Label="Confirm password" HelperText="Repeat the password" Class="mt-3"
-							@bind-Value="_model.Confirmation" For="@(() => _model.Confirmation)" InputType="InputType.Password" />
-						</MudCardContent>
-						<MudCardActions>
-							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Sign-up</MudButton>
-						</MudCardActions>
-					</MudCard>
-				</EditForm>
-			</div>
-		</div>
-	</div>
+                            <MudTextField Label="Confirm password" HelperText="Repeat the password" Class="mt-3"
+                                          @bind-Value="_model.Confirmation" For="@(() => _model.Confirmation)" InputType="InputType.Password"/>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
+                                @if (_processing)
+                                {
+                                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                                    <MudText Class="ms-2">Processing</MudText>
+                                }
+                                else
+                                {
+                                    <MudText>Sign-up</MudText>
+                                }
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </EditForm>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
-	private readonly LoginForm _model = new();
+    private readonly LoginForm _model = new();
+    private bool _processing;
 
+    public class LoginForm
+    {
+        [Required]
+        public string FirstName { get; set; }
 
-	public class LoginForm
-	{
-		[Required]
-		public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
 
-		[Required]
-		public string LastName { get; set; }
+        [Required]
+        public string Username { get; set; }
 
-		[Required]
-		public string Username { get; set; }
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
 
-		[Required]
-		[EmailAddress]
-		public string Email { get; set; }
+        [Required]
+        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+        public string Password { get; set; }
 
-		[Required]
-		[StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
-		public string Password { get; set; }
+        [Required]
+        [Compare(nameof(Password))]
+        public string Confirmation { get; set; }
 
-		[Required]
-		[Compare(nameof(Password))]
-		public string Confirmation { get; set; }
+        [Required]
+        [Phone]
+        public string PhoneNumber { get; set; } = "+992";
+    }
 
-		[Required]
-		[Phone]
-		public string PhoneNumber { get; set; } = "+992";
-	}
-
-	private async Task OnValidSubmit(EditContext context)
-	{
-		var registerMessage = await AuthService.RegisterUserAsync(new RegisterUserCommand
-			{
-				Email = _model.Email,
-				FirstName = _model.FirstName,
-				LastName = _model.LastName,
-				PhoneNumber = _model.PhoneNumber,
-				Username = _model.Username,
-				Password = _model.Password,
-				Application = "MraJobs",
-				Role = "Applicant",
-			});
-		if (registerMessage != "" || registerMessage != null)
-			Snackbar.Add(registerMessage, MudBlazor.Severity.Error);
-
-		StateHasChanged();
-	}
+    private async Task OnValidSubmit(EditContext context)
+    {
+        _processing = true;
+        StateHasChanged();
+        var registerMessage = await AuthService.RegisterUserAsync(new RegisterUserCommand
+        {
+            Email = _model.Email,
+            FirstName = _model.FirstName,
+            LastName = _model.LastName,
+            PhoneNumber = _model.PhoneNumber,
+            Username = _model.Username,
+            Password = _model.Password,
+            Application = "MraJobs",
+            Role = "Applicant",
+        });
+        if (registerMessage != "" || registerMessage != null)
+            Snackbar.Add(registerMessage, MudBlazor.Severity.Error);
+        _processing = false;
+        StateHasChanged();
+    }
 
 }

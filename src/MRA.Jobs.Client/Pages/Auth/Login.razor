@@ -6,79 +6,93 @@
 @inject ISnackbar Snackbar
 
 <div class="container">
-	<div class="row" style="margin-top:20px;">
-		<div Class="d-flex align-center justify-center mud-width-full py-8">
-			<div class="col-md-4 mb-3">
+    <div class="row" style="margin-top:20px;">
+        <div Class="d-flex align-center justify-center mud-width-full py-8">
+            <div class="col-md-4 mb-3">
 
-				<EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
-					<DataAnnotationsValidator />
-					<MudCard Style="padding-top:15px;">
-						<MudCardHeader>
-							<CardHeaderContent>
-								<center>
-									<MudImage Src="./images/SRP_icon.png" Width="100" /><br />
-									<MudText Typo="Typo.h4"><strong>Sign In</strong></MudText>
-								</center>
-							</CardHeaderContent>
-						</MudCardHeader>
-						<MudCardContent>
-							<MudTextField Label="UserName" HelperText="Max. 8 characters"
-							@bind-Value="_model.Username" For="@(() => _model.Username)" />
+                <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
+                    <DataAnnotationsValidator/>
+                    <MudCard Style="padding-top:15px;">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <center>
+                                    <MudImage Src="./images/SRP_icon.png" Width="100"/><br/>
+                                    <MudText Typo="Typo.h4">
+                                        <strong>Sign In</strong>
+                                    </MudText>
+                                </center>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudTextField Label="UserName"
+                                          @bind-Value="_model.Username" For="@(() => _model.Username)"/>
 
-							<MudTextField Label="Password" HelperText="Choose a strong password"
-							@bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password" />
-						</MudCardContent>
-						<MudCardActions>
+                            <MudTextField Label="Password"
+                                          @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
+                                @if (_processing)
+                                {
+                                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                                    <MudText Class="ms-2">Processing</MudText>
+                                }
+                                else
+                                {
+                                    <MudText>Sign-in</MudText>
+                                }
+                            </MudButton>
+                        </MudCardActions>
+                        <div style="padding:5px">
+                            <center>
+                                <small>
+                                    Don't have an account? Go to <a href="sign-up">Sign Up</a>
+                                </small>
+                            </center> <br/>
+                        </div>
+                    </MudCard>
+                </EditForm>
+            </div>
 
-							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Sign-in</MudButton>
-						</MudCardActions>
-						<div style="padding:5px">
-							<center>
-								<small>
-									Don't have an account? Go to <a href="sign-up">Sign Up</a>
-								</small>
-							</center> <br />
-						</div>
-					</MudCard>
-				</EditForm>
-			</div>
 
-		</div>
+        </div>
 
 
-	</div>
+    </div>
 </div>
+
 @code {
-	private readonly LoginForm _model = new();
+    private readonly LoginForm _model = new();
+    private bool _processing;
 
-	public class LoginForm
-	{
-		[Required]
-		public string Username { get; set; }
+    public class LoginForm
+    {
+        [Required]
+        public string Username { get; set; }
 
-		[Required]
-		[StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
-		public string Password { get; set; }
-	}
+        [Required]
+        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+        public string Password { get; set; }
+    }
 
-	protected override void OnInitialized()
-	{
-		StateHasChanged();
-	}
+    protected override void OnInitialized()
+    {
+        StateHasChanged();
+    }
 
-	private async Task OnValidSubmit(EditContext context)
-	{
-		Console.WriteLine("debug");
-		var loginMessage = await AuthService.LoginUserAsync(new LoginUserCommand
-			{
-				Username = _model.Username,
-				Password = _model.Password
-			});
-		if (loginMessage != "" || loginMessage != null)
-			Snackbar.Add(loginMessage, MudBlazor.Severity.Error);
-
-		Console.WriteLine(loginMessage);
-		StateHasChanged();
-	}
+    private async Task OnValidSubmit(EditContext context)
+    {
+        _processing = true;
+        StateHasChanged();
+        var loginMessage = await AuthService.LoginUserAsync(new LoginUserCommand
+        {
+            Username = _model.Username,
+            Password = _model.Password
+        });
+        if (loginMessage != "" || loginMessage != null)
+            Snackbar.Add(loginMessage, MudBlazor.Severity.Error);
+        _processing = false;
+        StateHasChanged();
+    }
 
 }
