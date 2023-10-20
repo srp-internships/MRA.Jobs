@@ -31,9 +31,18 @@ else
             </MudSelect>
             <MudTextField @bind-Value="trainingService.createCommand.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MudTextField>
             <MudTextField @bind-Value="trainingService.createCommand.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MudTextField>
-            <MatButton Type="submit" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Create</MatButton>
-            <MatButton Type="submit" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MatButton>
-            <MatButton Type="submit" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MatButton>
+            <MudPaper Class="p-2 mb-2">
+                <MudText Typo="Typo.caption">Vacancy questions</MudText>
+                @foreach (var ques in Questions)
+                {
+                    <MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.QuestionMark" /> @ques.Question<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveQuestion(ques.Question)" aria-label="delete"></MudIconButton></MudText>
+
+                }
+                <MudTextField @bind-Value="newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
+            </MudPaper>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MudButton>
         </MudExpansionPanel>
     </MudExpansionPanels>
 
@@ -76,7 +85,9 @@ else
     bool isUpdating = true;
     string UpdateSlug;
     string selectedCategory = string.Empty;
+    private string newQuestion = string.Empty;
 
+    private List<VacancyQuestionDto> Questions = new();
     private List<CategoryResponse> categories;
     private List<TrainingVacancyListDto> trainings;
 
@@ -118,7 +129,20 @@ else
             isUpdating = false;
             panelOpenState = true;
             UpdateSlug = slug;
+            Questions = vacancy.VacancyQuestions.Select(v =>
+
+                new VacancyQuestionDto
+                    {
+                        Question = v.Question
+                    }
+            ).ToList();
         }
+    }
+
+    private void RemoveQuestion(string question)
+    {
+        var q = Questions.FirstOrDefault(t => t.Question == question);
+        Questions.Remove(q);
     }
 
     private async Task LoadData()
@@ -129,6 +153,7 @@ else
 
     private async Task HandleSubmit()
     {
+        trainingService.createCommand.VacancyQuestions = Questions;
         await trainingService.Create();
         await LoadData();
         Clear();
@@ -136,11 +161,27 @@ else
 
     private async Task HandleUpdate()
     {
+        trainingService.createCommand.VacancyQuestions = Questions;
         var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
         trainingService.createCommand.CategoryId = catId;
         await trainingService.Update(UpdateSlug);
         await LoadData();
         Clear();
+    }
+
+    public void AddQuestions()
+    {
+        Questions.Add(new VacancyQuestionDto { Question = newQuestion });
+        newQuestion = "";
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter")
+        {
+            await Task.Delay(1);
+            AddQuestions();
+        }
     }
 
     void HandleCancel()
@@ -161,6 +202,7 @@ else
         isUpdating = true;
         panelOpenState = false;
         UpdateSlug = string.Empty;
+        Questions.Clear();
     }
 
 }

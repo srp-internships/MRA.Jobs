@@ -32,6 +32,7 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
 
         InternshipVacancy internship = await _context.Internships
             .Include(i => i.Category)
+            .Include(i => i.VacancyQuestions)
             .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken);
         _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Slug);
 
