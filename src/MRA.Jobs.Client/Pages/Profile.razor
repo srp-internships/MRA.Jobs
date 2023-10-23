@@ -14,10 +14,14 @@
 @using MRA.Jobs.Client.Services.Profile;
 @using MudBlazor;
 @using FluentValidation;
+
 @inject ISnackbar Snackbar
 
+@inject NavigationManager Navigation
 @inject IDialogService DialogService;
 @inject IUserProfileService UserProfileService;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
 
 <div class="container m-0">
 	<div class="row">
@@ -449,6 +453,7 @@
 </div>
 
 @code {
+
 	private int Active = 0;
 	private void ActiveNavlink(int active)
 	{
@@ -458,6 +463,122 @@
 			return;
 		}
 		ServerNotResponding();
+	}
+
+	UserProfileResponse profile = null;
+	UpdateProfileCommand updateProfileCommand = new UpdateProfileCommand();
+	protected override async void OnInitialized()
+	{
+
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+
+		if (!user.Identity.IsAuthenticated)
+		{
+			Navigation.NavigateTo("sign-in");
+			return;
+		}
+
+		try
+		{
+			profile = await UserProfileService.Get();
+
+			updateProfileCommand.AboutMyself = profile.AboutMyself;
+			updateProfileCommand.DateOfBirth = profile.DateOfBirth;
+			updateProfileCommand.Email = profile.Email;
+			updateProfileCommand.FirstName = profile.FirstName;
+			updateProfileCommand.LastName = profile.LastName;
+			updateProfileCommand.Gender = profile.Gender;
+			updateProfileCommand.PhoneNumber = profile.PhoneNumber;
+		}
+		catch (Exception ex)
+		{
+			ServerNotResponding();
+		}
+
+
+		await GetEducations();
+
+		await GetExperiences();
+
+		await GetSkills();
+
+		StateHasChanged();
+	}
+
+	private void ServerNotResponding()
+	{
+		Snackbar.Add("Server is not responding, please try later", MudBlazor.Severity.Error);
+	}
+
+	private async Task ConfirmDelete<T>(IList<T> collection, T item)
+	{
+		var parameters = new DialogParameters<DialogMudBlazor>();
+		parameters.Add(x => x.ContentText, "Do you really want to delete these records? This process cannot be undone.");
+		parameters.Add(x => x.ButtonText, "Delete");
+		parameters.Add(x => x.Color, Color.Error);
+
+		var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+		var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+		var result = await dialog.Result;
+
+		if (!result.Cancelled)
+		{
+			Delete(collection, item);
+		}
+	}
+
+	private async void Delete<T>(ICollection<T> collection, T item)
+	{
+		if (collection.Contains(item))
+		{
+			Type itemType = item.GetType();
+			var idProperty = itemType.GetProperty("Id");
+			var result = new HttpResponseMessage();
+			if (idProperty != null || itemType.Name == "String")
+			{
+				if (itemType.Name == "String")
+				{
+					result = await UserProfileService.RemoveSkillAync(item.ToString());
+				}
+				else
+				{
+					Guid id = (Guid)idProperty.GetValue(item);
+
+					switch (itemType.Name)
+					{
+						case "UserEducationResponse":
+							result = await UserProfileService.DeleteEducationAync(id);
+							break;
+						case "UserExperienceResponse":
+							result = await UserProfileService.DeleteExperienceAync(id);
+							break;
+						default:
+							break;
+					}
+
+				}
+				if (result.IsSuccessStatusCode)
+				{
+					collection.Remove(item);
+					StateHasChanged();
+				}
+			}
+		}
+	}
+
+	private async void UpdateProfile()
+	{
+		var result = await UserProfileService.Update(updateProfileCommand);
+		if (result == "")
+		{
+			Snackbar.Add("Profile updated successfully.", MudBlazor.Severity.Success);
+		}
+		else
+		{
+			Snackbar.Add(result, MudBlazor.Severity.Error);
+		}
 	}
 
 	#region education
@@ -470,7 +591,15 @@
 
 	private async Task GetEducations()
 	{
-		educations = await UserProfileService.GetEducations();
+		try
+		{
+			educations = await UserProfileService.GetEducations();
+		}
+		catch (Exception)
+		{
+			ServerNotResponding();
+		}
+
 	}
 
 	private void EditButtonClicked(Guid cardId, UserEducationResponse educationResponse)
@@ -656,109 +785,5 @@
 
 	#endregion
 
-	UserProfileResponse profile = null;
-	UpdateProfileCommand updateProfileCommand = new UpdateProfileCommand();
-	protected override async void OnInitialized()
-	{
-		try
-		{
-			profile = await UserProfileService.Get();
 
-			updateProfileCommand.AboutMyself = profile.AboutMyself;
-			updateProfileCommand.DateOfBirth = profile.DateOfBirth;
-			updateProfileCommand.Email = profile.Email;
-			updateProfileCommand.FirstName = profile.FirstName;
-			updateProfileCommand.LastName = profile.LastName;
-			updateProfileCommand.Gender = profile.Gender;
-			updateProfileCommand.PhoneNumber = profile.PhoneNumber;
-		}
-		catch (Exception ex)
-		{
-			ServerNotResponding();
-		}
-
-
-		await GetEducations();
-
-		await GetExperiences();
-
-		await GetSkills();
-
-		StateHasChanged();
-	}
-
-	private void ServerNotResponding()
-	{
-		Snackbar.Add("Server is not responding, please try later", MudBlazor.Severity.Error);
-	}
-
-	private async Task ConfirmDelete<T>(IList<T> collection, T item)
-	{
-		var parameters = new DialogParameters<DialogMudBlazor>();
-		parameters.Add(x => x.ContentText, "Do you really want to delete these records? This process cannot be undone.");
-		parameters.Add(x => x.ButtonText, "Delete");
-		parameters.Add(x => x.Color, Color.Error);
-
-		var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-
-		var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
-		var result = await dialog.Result;
-
-		if (!result.Cancelled)
-		{
-			Delete(collection, item);
-		}
-	}
-
-	private async void Delete<T>(ICollection<T> collection, T item)
-	{
-		if (collection.Contains(item))
-		{
-			Type itemType = item.GetType();
-			var idProperty = itemType.GetProperty("Id");
-			var result = new HttpResponseMessage();
-			if (idProperty != null || itemType.Name == "String")
-			{
-				if (itemType.Name == "String")
-				{
-					result = await UserProfileService.RemoveSkillAync(item.ToString());
-				}
-				else
-				{
-					Guid id = (Guid)idProperty.GetValue(item);
-
-					switch (itemType.Name)
-					{
-						case "UserEducationResponse":
-							result = await UserProfileService.DeleteEducationAync(id);
-							break;
-						case "UserExperienceResponse":
-							result = await UserProfileService.DeleteExperienceAync(id);
-							break;
-						default:
-							break;
-					}
-
-				}
-				if (result.IsSuccessStatusCode)
-				{
-					collection.Remove(item);
-					StateHasChanged();
-				}
-			}
-		}
-	}
-
-	private async void UpdateProfile()
-	{
-		var result = await UserProfileService.Update(updateProfileCommand);
-		if (result == "")
-		{
-			Snackbar.Add("Profile updated successfully.", MudBlazor.Severity.Success);
-		}
-		else
-		{
-			Snackbar.Add(result, MudBlazor.Severity.Error);
-		}
-	}
 }
