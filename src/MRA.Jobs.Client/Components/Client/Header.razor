@@ -43,9 +43,11 @@
 	.active {
 		color: #129fd7;
 	}
-	.mud-icon-root{
-	    color:white;
-	}
+
+    #user_icon .mud-svg-icon {
+        color: white;
+    }
+
 </style>
 
 
@@ -85,7 +87,7 @@
 				<CascadingAuthenticationState>
 					<AuthorizeView>
 						<Authorized>
-							<MudMenu Icon="@Icons.Material.Filled.Person">
+							<MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
                                 
 								<MudNavLink Href="/profile">Profile</MudNavLink>
 								<MudNavLink Href="/applications">Applications</MudNavLink>
