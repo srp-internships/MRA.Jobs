@@ -14,7 +14,7 @@ namespace MRA.Jobs.Client.Services.Profile;
 public interface IUserProfileService
 {
     Task<UserProfileResponse> Get();
-    Task<HttpResponseMessage> Update(UpdateProfileCommand command);
+    Task<string> Update(UpdateProfileCommand command);
 
     Task<List<UserEducationResponse>> GetEducations();
 

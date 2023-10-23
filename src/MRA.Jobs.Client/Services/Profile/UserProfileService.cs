@@ -1,4 +1,5 @@
-﻿using MatBlazor;
+﻿using System.Net;
+using MatBlazor;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Educations.Responses;
@@ -22,9 +23,28 @@ public class UserProfileService : IUserProfileService
         _identityHttpClient = identityHttpClient;
     }
 
-    public async Task<HttpResponseMessage> Update(UpdateProfileCommand command)
+    public async Task<string> Update(UpdateProfileCommand command)
     {
-        return await _identityHttpClient.PutAsJsonAsync("Profile", command);
+        try
+        {
+            var result = await _identityHttpClient.PutAsJsonAsync("Profile", command);
+
+            if (!result.IsSuccessStatusCode)
+                return "Server is not responding, please try later";
+
+            return "";
+
+        }
+        catch(HttpRequestException ex)
+        {
+            Console.WriteLine(ex.Message);
+            return "Server is not responding, please try later";
+        }
+        catch (Exception ex)    
+        {
+            Console.WriteLine(ex);
+            return "An error occurred";
+        }
     }
 
     public async Task<UserProfileResponse> Get()
@@ -89,7 +109,7 @@ public class UserProfileService : IUserProfileService
 
     public async Task<HttpResponseMessage> RemoveSkillAync(string skill)
     {
-       var response =await _identityHttpClient.DeleteAsync($"Profile/RemoveUserSkill/{skill}");
+        var response = await _identityHttpClient.DeleteAsync($"Profile/RemoveUserSkill/{skill}");
         return response;
     }
 

@@ -28,10 +28,10 @@
 
 					<MudDivider Class="my-2" />
 
-					<MudNavLink Class="@((Active == 0) ? "active" : "")" OnClick="()=> Active=0">Personal Information</MudNavLink>
-					<MudNavLink Class="@((Active == 1) ? "active" : "")" OnClick="()=> Active=1">Educations </MudNavLink>
-					<MudNavLink Class="@((Active == 2) ? "active" : "")" OnClick="()=> Active=2">Experience </MudNavLink>
-					<MudNavLink Class="@((Active == 3) ? "active" : "")" OnClick="()=> Active=3">Skills</MudNavLink>
+					<MudNavLink Class="@((Active == 0) ? "active" : "")" OnClick="()=> ActiveNavlink(0)">Personal Information</MudNavLink>
+					<MudNavLink Class="@((Active == 1) ? "active" : "")" OnClick="()=> ActiveNavlink(1)">Educations </MudNavLink>
+					<MudNavLink Class="@((Active == 2) ? "active" : "")" OnClick="()=> ActiveNavlink(2)">Experience </MudNavLink>
+					<MudNavLink Class="@((Active == 3) ? "active" : "")" OnClick="()=> ActiveNavlink(3)">Skills</MudNavLink>
 
 				</MudNavMenu>
 			</MudPaper>
@@ -450,6 +450,15 @@
 
 @code {
 	private int Active = 0;
+	private void ActiveNavlink(int active)
+	{
+		if (profile != null)
+		{
+			Active = active;
+			return;
+		}
+		ServerNotResponding();
+	}
 
 	#region education
 	List<UserEducationResponse> educations = new List<UserEducationResponse>();
@@ -651,15 +660,23 @@
 	UpdateProfileCommand updateProfileCommand = new UpdateProfileCommand();
 	protected override async void OnInitialized()
 	{
-		profile = await UserProfileService.Get();
+		try
+		{
+			profile = await UserProfileService.Get();
 
-		updateProfileCommand.AboutMyself = profile.AboutMyself;
-		updateProfileCommand.DateOfBirth = profile.DateOfBirth;
-		updateProfileCommand.Email = profile.Email;
-		updateProfileCommand.FirstName = profile.FirstName;
-		updateProfileCommand.LastName = profile.LastName;
-		updateProfileCommand.Gender = profile.Gender;
-		updateProfileCommand.PhoneNumber = profile.PhoneNumber;
+			updateProfileCommand.AboutMyself = profile.AboutMyself;
+			updateProfileCommand.DateOfBirth = profile.DateOfBirth;
+			updateProfileCommand.Email = profile.Email;
+			updateProfileCommand.FirstName = profile.FirstName;
+			updateProfileCommand.LastName = profile.LastName;
+			updateProfileCommand.Gender = profile.Gender;
+			updateProfileCommand.PhoneNumber = profile.PhoneNumber;
+		}
+		catch (Exception ex)
+		{
+			ServerNotResponding();
+		}
+
 
 		await GetEducations();
 
@@ -670,9 +687,10 @@
 		StateHasChanged();
 	}
 
-
-
-
+	private void ServerNotResponding()
+	{
+		Snackbar.Add("Server is not responding, please try later", MudBlazor.Severity.Error);
+	}
 
 	private async Task ConfirmDelete<T>(IList<T> collection, T item)
 	{
@@ -731,16 +749,16 @@
 		}
 	}
 
-
-
-
-
 	private async void UpdateProfile()
 	{
 		var result = await UserProfileService.Update(updateProfileCommand);
-		if (result.IsSuccessStatusCode)
+		if (result == "")
 		{
 			Snackbar.Add("Profile updated successfully.", MudBlazor.Severity.Success);
+		}
+		else
+		{
+			Snackbar.Add(result, MudBlazor.Severity.Error);
 		}
 	}
 }
