@@ -9,6 +9,12 @@
 
 <MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Internships</MudText>
 
+<style>
+    .mud-input-control {
+        margin-bottom: 10px;
+    }
+</style>
+
 @if (categories == null)
 {
     <div>loading....</div>
@@ -45,7 +51,7 @@ else
                     <MudTextField @bind-Value="internshipService.createCommand.EndDate" Label="EndDate" Variant="Variant.Outlined"></MudTextField>
                 </div>
                 <div class="col-md-4">
-                    <MudTextField @bind-Value="internshipService.createCommand.PublishDate" Label="PublishDate" Variant="Variant.Outlined"></MudTextField>
+                    <MudTextField @bind-Value="internshipService.createCommand.PublishDate" Label="PublishDate"></MudTextField>
                 </div>
             </div>
             <MudPaper Class="p-2 mb-2">

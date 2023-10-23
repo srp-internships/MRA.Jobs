@@ -8,7 +8,11 @@
 
 
 <MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Trainings</MudText>
-
+<style>
+    .mud-input-control {
+        margin-bottom: 10px;
+    }
+</style>
 
 @if (categories == null)
 {
@@ -18,19 +22,33 @@ else
 {
     <MudExpansionPanels>
         <MudExpansionPanel Text="Create new Training" @bind-IsExpanded="@panelOpenState">
-            <MudTextField @bind-Value="@trainingService.createCommand.Title" Label="Title"></MudTextField>
-            <MudTextField Lines="5" @bind-Value="@trainingService.createCommand.ShortDescription" Label="ShortDescription"></MudTextField>
-            <MudTextField Lines="5" @bind-Value="@trainingService.createCommand.Description" Label="Description"></MudTextField>
-            <MudTextField @bind-Value="@trainingService.createCommand.Duration" Label="Duration"></MudTextField>
-            <MudTextField @bind-Value="@trainingService.createCommand.Fees" Label="Fees"></MudTextField>
-            <MudSelect T="string" Label="Select category" @bind-Value="@selectedCategory">
-                @foreach (var cat in categories)
-                {
-                    <MudSelectItem Value="@cat.Name"/>
-                }
-            </MudSelect>
-            <MudTextField @bind-Value="trainingService.createCommand.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MudTextField>
-            <MudTextField @bind-Value="trainingService.createCommand.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MudTextField>
+            <MudTextField @bind-Value="@trainingService.createCommand.Title" Label="Title" Variant="Variant.Outlined"></MudTextField>
+            <MudTextField Lines="5" @bind-Value="@trainingService.createCommand.ShortDescription" Variant="Variant.Outlined" Label="ShortDescription"></MudTextField>
+            <MudTextField Lines="5" @bind-Value="@trainingService.createCommand.Description" Label="Description" Variant="Variant.Outlined"></MudTextField>
+            <div class="row">
+                <div class="col-md-4">
+                    <MudTextField @bind-Value="@trainingService.createCommand.Duration" Variant="Variant.Outlined" Label="Duration"></MudTextField>
+                </div>
+                <div class="col-md-4">
+                    <MudTextField @bind-Value="@trainingService.createCommand.Fees" Label="Fees" Variant="Variant.Outlined"></MudTextField>
+                </div>
+                <div class="col-md-4">
+                    <MudSelect T="string" Label="Select category" @bind-Value="@selectedCategory" Variant="Variant.Outlined">
+                        @foreach (var cat in categories)
+                        {
+                            <MudSelectItem Value="@cat.Name" />
+                        }
+                    </MudSelect>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <MudTextField @bind-Value="trainingService.createCommand.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate" Variant="Variant.Outlined"></MudTextField>
+                </div>
+                <div class="col-md-6">
+                    <MudTextField @bind-Value="trainingService.createCommand.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate" Variant="Variant.Outlined"></MudTextField>
+                </div>
+            </div>
             <MudPaper Class="p-2 mb-2">
                 <MudText Typo="Typo.caption">Vacancy questions</MudText>
                 @foreach (var ques in Questions)

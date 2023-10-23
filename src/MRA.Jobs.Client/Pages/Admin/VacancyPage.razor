@@ -7,6 +7,12 @@
 
 @inject IVacancyService VService
 
+<style>
+    .mud-input-control {
+        margin-bottom: 10px;
+    }
+</style>
+
 <MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Jobs</MudText>
 @if (_category == null)
 {
@@ -19,20 +25,36 @@ else
         <MudExpansionPanel Text="Create new Job" @bind-IsExpanded=@panelOpenState>
 
 
-            <MudTextField @bind-Value="@VService.creatingNewJob.Title" Label="Title"></MudTextField>
-            <MudTextField Lines="5" @bind-Value="@VService.creatingNewJob.ShortDescription" Label="ShortDescription" TextArea></MudTextField>
-            <MudTextField Lines="5" @bind-Value="@VService.creatingNewJob.Description" Label="Description" TextArea></MudTextField>
-            <MudTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="RequiredYearOfExperience"></MudTextField>
-            <MatSelectItem @bind-Value="VService.creatingNewJob.WorkSchedule" Items="@value2Items">
-            </MatSelectItem>
-            <MudSelect T="string" Label="Select category" @bind-Value="@selectedCategory">
-                @foreach (var cat in _category)
-                {
-                    <MudSelectItem Value="@cat.Name" />
-                }
-            </MudSelect>
-            <MudTextField @bind-Value="VService.creatingNewJob.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate"></MudTextField>
-            <MudTextField @bind-Value="VService.creatingNewJob.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate"></MudTextField>
+            <MudTextField @bind-Value="@VService.creatingNewJob.Title" Label="Title" Variant="Variant.Outlined"></MudTextField>
+            <MudTextField Lines="5" @bind-Value="@VService.creatingNewJob.ShortDescription" Label="ShortDescription" TextArea Variant="Variant.Outlined"></MudTextField>
+            <MudTextField Lines="5" @bind-Value="@VService.creatingNewJob.Description" Label="Description" TextArea Variant="Variant.Outlined"></MudTextField>
+            <div class="row">
+                <div class="col-md-4">
+                    <MudTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="Required year(s) of experience" Variant="Variant.Outlined"></MudTextField>
+                </div>
+                <div class="col-md-4">
+                    <MatSelectItem @bind-Value="VService.creatingNewJob.WorkSchedule" Items="@value2Items">
+                    </MatSelectItem>
+                </div>
+                <div class="col-md-4">
+                    <MudSelect T="string" Label="Select category" @bind-Value="@selectedCategory" Variant="Variant.Outlined">
+                        @foreach (var cat in _category)
+                        {
+                            <MudSelectItem Value="@cat.Name" />
+                        }
+                    </MudSelect>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <MudTextField @bind-Value="VService.creatingNewJob.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate" Variant="Variant.Outlined"></MudTextField>
+                </div>
+                <div class="col-md-6">
+                    <MudTextField @bind-Value="VService.creatingNewJob.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate" Variant="Variant.Outlined"></MudTextField>
+                </div>
+            </div>
+            
+            
             <MudPaper Class="p-2 mb-2">
                 <MudText Typo="Typo.caption">Vacancy questions</MudText>
                 @foreach (var ques in Questions)
