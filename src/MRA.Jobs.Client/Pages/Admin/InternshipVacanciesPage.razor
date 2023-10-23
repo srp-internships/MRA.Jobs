@@ -2,6 +2,7 @@
 @layout Dashboard
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @using MRA.Jobs.Client.Components.Dialogs;
+@inject IJSRuntime JS
 
 @inject IInternshipService internshipService
 @inject ICategoryService categoryService
@@ -16,20 +17,37 @@ else
 {
     <MudExpansionPanels>
         <MudExpansionPanel Text="Create new Internship" @bind-IsExpanded="@panelOpenState">
-            <MudTextField @bind-Value="@internshipService.createCommand.Title" Label="Title"></MudTextField>
-            <MudTextField Lines="5" @bind-Value="@internshipService.createCommand.ShortDescription" Label="ShortDescription"></MudTextField>
-            <MudTextField Lines="5" @bind-Value="@internshipService.createCommand.Description" Label="Description"></MudTextField>
-            <MudTextField @bind-Value="@internshipService.createCommand.ApplicationDeadline" Label="Application deadline"></MudTextField>
-            <MudTextField @bind-Value="@internshipService.createCommand.Duration" Label="Duration"></MudTextField>
-            <MudTextField @bind-Value="@internshipService.createCommand.Stipend" Label="Stipend"></MudTextField>
-            <MudSelect T="string" Label="@selectedCategory" @bind-Value="@selectedCategory">
-                @foreach (var cat in categories)
-                {
-                    <MudSelectItem Value="@cat.Name" />
-                }
-            </MudSelect>
-            <MudTextField @bind-Value="internshipService.createCommand.EndDate" Label="EndDate"></MudTextField>
-            <MudTextField @bind-Value="internshipService.createCommand.PublishDate" Label="PublishDate"></MudTextField>
+            <MudTextField @bind-Value="@internshipService.createCommand.Title" Label="Title" Variant="Variant.Outlined" />
+            <MudTextField Lines="5" @bind-Value="@internshipService.createCommand.ShortDescription" Label="ShortDescription" Variant="Variant.Outlined" />
+            <MudTextField Lines="5" @bind-Value="@internshipService.createCommand.Description" Label="Description" Variant="Variant.Outlined" />
+            <div class="row">
+                <div class="col-md-4">
+                    <MudTextField @bind-Value="@internshipService.createCommand.ApplicationDeadline" Label="Application deadline" Variant="Variant.Outlined" />
+                </div>
+                <div class="col-md-4">
+                    <MudTextField @bind-Value="@internshipService.createCommand.Duration" Label="Duration" Variant="Variant.Outlined" />
+                </div>
+                <div class="col-md-4">
+                    <MudTextField @bind-Value="@internshipService.createCommand.Stipend" Label="Stipend" Variant="Variant.Outlined" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <MudSelect T="string" Label="@selectedCategory" @bind-Value="@selectedCategory" Variant="Variant.Outlined">
+                        @foreach (var cat in categories)
+                        {
+                            <MudSelectItem Value="@cat.Name" />
+                        }
+                    </MudSelect>
+                </div>
+                <div class="col-md-4">
+                    <MudTextField @bind-Value="internshipService.createCommand.EndDate" Label="EndDate" Variant="Variant.Outlined"></MudTextField>
+                </div>
+                <div class="col-md-4">
+                    <MudTextField @bind-Value="internshipService.createCommand.PublishDate" Label="PublishDate" Variant="Variant.Outlined"></MudTextField>
+                </div>
+            </div>
             <MudPaper Class="p-2 mb-2">
                 <MudText Typo="Typo.caption">Vacancy questions</MudText>
                 @foreach (var ques in Questions)
