@@ -109,7 +109,7 @@ else
     bool isInserting;
     bool isUpdating = true;
     string UpdateSlug;
-    private string selectedCategory = string.Empty;
+    private string selectedCategory { get; set; } = "Select category";
     private string newQuestion = string.Empty;
 
     private List<VacancyQuestionDto> Questions = new();
@@ -179,6 +179,8 @@ else
 
     private async Task HandleSubmit()
     {
+        var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
+        internshipService.createCommand.CategoryId = catId;
         internshipService.createCommand.VacancyQuestions = Questions;
         await internshipService.Create();
         await LoadData();
