@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using Blazored.LocalStorage;
 using MRA.Identity.Application.Contract.Admin.Responses;
+using MRA.Identity.Application.Contract.User.Queries;
 
 namespace MRA.Jobs.Client;
 
@@ -23,12 +24,11 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var authToken = await _localStorageService.GetItemAsync<JwtTokenResponse>("authToken");
-
+        var authToken = await GetTokenAsync();
         var identity = new ClaimsIdentity();
         _http.DefaultRequestHeaders.Authorization = null;
 
-        if (authToken!=null && !string.IsNullOrEmpty(authToken.AccessToken))
+        if (authToken != null && !string.IsNullOrEmpty(authToken.AccessToken))
         {
             try
             {
@@ -51,6 +51,33 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
         NotifyAuthenticationStateChanged(Task.FromResult(state));
 
         return state;
+    }
+
+    private async Task<JwtTokenResponse> GetTokenAsync()
+    {
+        var token = await _localStorageService.GetItemAsync<JwtTokenResponse>("authToken");
+        if (token == null)
+        {
+            return null;
+        }
+
+        if (token.AccessTokenValidateTo <= DateTime.Now)
+        {
+            var refreshResponse = await _identityHttp.PostAsJsonAsync("auth/refresh",
+                new GetAccessTokenUsingRefreshTokenQuery
+                {
+                    RefreshToken = token.RefreshToken, AccessToken = token.AccessToken
+                });
+            if (!refreshResponse.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            token = await refreshResponse.Content.ReadFromJsonAsync<JwtTokenResponse>();
+            await _localStorageService.SetItemAsync("authToken", token);
+        }
+
+        return token;
     }
 
     private byte[] ParseBase64WithoutPadding(string base64)
