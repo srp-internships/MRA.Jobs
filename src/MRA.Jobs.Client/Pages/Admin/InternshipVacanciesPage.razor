@@ -155,13 +155,6 @@ else
             isUpdating = false;
             panelOpenState = true;
             UpdateSlug = slug;
-            Questions = vacancy.VacancyQuestions.Select(v =>
-
-                new VacancyQuestionDto
-                    {
-                        Question = v.Question
-                    }
-            ).ToList();
         }
     }
 
