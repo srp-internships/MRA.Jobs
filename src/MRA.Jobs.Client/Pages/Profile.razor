@@ -15,6 +15,7 @@
 @using MudBlazor;
 @using FluentValidation;
 @using System.Net;
+@using Newtonsoft.Json;
 
 @inject ISnackbar Snackbar
 
@@ -24,7 +25,34 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
-<div class="container m-0">
+
+@if (_tryButton)
+{
+	<div class="row" style="margin-top:20px;">
+		<div Class="d-flex align-center justify-center mud-width-full py-8">
+			<div class="col mb-3" style="padding-top:50px;">
+				<center>
+
+					<MudText Typo="Typo.h4" Color="Color.Error"><b>Server is not responding</b></MudText><br />
+
+					<MudButton Variant="Variant.Filled" OnClick="Load">
+						@if (_processing)
+						{
+							<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" Style="color:#fff" />
+						}
+						else
+						{
+							<MudIcon Icon="@Icons.Material.Filled.Refresh" />
+							<MudText>Try Again</MudText>
+						}
+					</MudButton>
+				</center>
+			</div>
+		</div>
+	</div>
+}
+else
+{
 	<div class="row">
 		<div class="col-md-4">
 			<MudPaper Width="250px" Class="py-3" Elevation="0">
@@ -187,7 +215,6 @@
 														{
 															<MudText>Update</MudText>
 														}
-
 													</MudButton>
 													<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_UpdateEducation">
 														Cancel
@@ -291,7 +318,6 @@
 					break;
 				case 2:
 					<MudText Typo="Typo.h4"> Experiences</MudText>
-
 					<br />
 					<div class="row">
 						@if (experiences == null)
@@ -347,7 +373,14 @@
 												</MudCardContent>
 												<MudCardActions>
 													<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(()=>UpdateExperienceHandle())">
-														Update
+														@if (_processing)
+														{
+															<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+														}
+														else
+														{
+															<MudText>Update</MudText>
+														}
 													</MudButton>
 													<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_UpdateExperience">
 														Cancel
@@ -415,6 +448,7 @@
 										<FluentValidationValidator />
 										<MudCardHeader>
 											<CardHeaderContent>
+												<MudText Typo="Typo.h6"><strong>New Experience</strong></MudText>
 												<MudTextField @bind-Value="@createExperience.JobTitle" Variant="Variant.Outlined" Label="Job Title" Margin="Margin.Dense" For="(()=>createExperience.JobTitle)" />
 											</CardHeaderContent>
 										</MudCardHeader>
@@ -431,7 +465,14 @@
 										</MudCardContent>
 										<MudCardActions>
 											<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateExperienceHandle">
-												Save
+												@if (_processing)
+												{
+													<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+												}
+												else
+												{
+													<MudText>Save</MudText>
+												}
 											</MudButton>
 											<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_CreateExperience">
 												Cancel
@@ -460,7 +501,7 @@
 										}
 										@if (isEditing)
 										{
-											<MudTextField @onkeydown="KeyDown" @onblur="AddSkills" @bind-Value="newSkills" Variant="Variant.Outlined" Label="Skills" Class="form-control" />
+											<MudTextField @onkeydown="KeyDown" @onblur="AddSkills" @bind-Value="newSkills" Variant="Variant.Outlined" Label="Skills" />
 										}
 										else
 										{
@@ -476,11 +517,13 @@
 			}
 		</div>
 	</div>
-</div>
+}
+
 
 @code {
 
 	private bool _processing = false;
+	private bool _tryButton = false;
 
 	private int Active = 0;
 	private void ActiveNavlink(int active)
@@ -495,9 +538,16 @@
 
 	UserProfileResponse profile = null;
 	UpdateProfileCommand updateProfileCommand = new UpdateProfileCommand();
+
 	protected override async void OnInitialized()
 	{
+		await Load();
+	}
 
+	private async Task Load()
+	{
+		_tryButton = false;
+		StateHasChanged();
 		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
 
@@ -522,6 +572,8 @@
 		catch (Exception ex)
 		{
 			ServerNotResponding();
+			_tryButton = true;
+			StateHasChanged();
 		}
 
 
@@ -532,11 +584,23 @@
 		await GetSkills();
 
 		StateHasChanged();
+
 	}
 
 	private void ServerNotResponding()
 	{
 		Snackbar.Add("Server is not responding, please try later", MudBlazor.Severity.Error);
+	}
+
+	private async Task BadRequestResponse(HttpResponseMessage response)
+	{
+		var errorResponseString = await response.Content.ReadAsStringAsync();
+		var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorResponseString);
+		foreach (var error in errorResponse.Errors)
+		{
+			var errorMessage = string.Join(", ", error.Value);
+			Snackbar.Add(errorMessage, MudBlazor.Severity.Error);
+		}
 	}
 
 	private async Task ConfirmDelete<T>(IList<T> collection, T item)
@@ -673,7 +737,7 @@
 			}
 			else if (response.StatusCode == HttpStatusCode.BadRequest)
 			{
-				Snackbar.Add("", MudBlazor.Severity.Error);
+				await BadRequestResponse(response);
 			}
 		}
 		catch (HttpRequestException ex)
@@ -710,10 +774,10 @@
 			}
 			else if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
 			{
-				Snackbar.Add(result.RequestMessage.Content.ToString(), MudBlazor.Severity.Error);
+				await BadRequestResponse(result);
 			}
 		}
-		catch (Exception)
+		catch (HttpRequestException ex)
 		{
 			ServerNotResponding();
 		}
@@ -739,16 +803,27 @@
 
 	private async Task CreateExperienceHandle()
 	{
-		if (createExperience.EndDate == null)
-			createExperience.EndDate = default(DateTime);
-
-		var response = await UserProfileService.CreateExperienceAsync(createExperience);
-		if (response.IsSuccessStatusCode)
+		_processing = true;
+		try
 		{
-			addExperience = false;
-			createExperience = new CreateExperienceDetailCommand();
-			await GetExperiences();
+			if (createExperience.EndDate == null)
+				createExperience.EndDate = default(DateTime);
+
+			var response = await UserProfileService.CreateExperienceAsync(createExperience);
+			if (response.IsSuccessStatusCode)
+			{
+				addExperience = false;
+				createExperience = new CreateExperienceDetailCommand();
+				await GetExperiences();
+			}
+			if (response.StatusCode == HttpStatusCode.BadRequest)
+				await BadRequestResponse(response);
 		}
+		catch (HttpRequestException ex)
+		{
+			ServerNotResponding();
+		}
+		_processing = false;
 	}
 
 	private async void CancelButtonClicked_CreateExperience()
@@ -782,12 +857,23 @@
 
 	private async void UpdateExperienceHandle()
 	{
-		var result = await UserProfileService.UpdateExperienceAsync(experienceUpdate);
-		if (result.IsSuccessStatusCode)
+		_processing = true;
+		try
 		{
-			editingCardExperienceId = Guid.NewGuid();
-			StateHasChanged();
+			var result = await UserProfileService.UpdateExperienceAsync(experienceUpdate);
+			if (result.IsSuccessStatusCode)
+			{
+				editingCardExperienceId = Guid.NewGuid();
+				StateHasChanged();
+			}
+			if (result.StatusCode == HttpStatusCode.BadRequest)
+				await BadRequestResponse(result);
 		}
+		catch (HttpRequestException ex)
+		{
+			ServerNotResponding();
+		}
+		_processing = false;
 	}
 
 	#endregion
@@ -801,7 +887,15 @@
 
 	private async Task GetSkills()
 	{
-		UserSkills = await UserProfileService.GetSkills();
+		try
+		{
+			UserSkills = await UserProfileService.GetSkills();
+		}
+		catch (HttpRequestException ex)
+		{
+			ServerNotResponding();
+		}
+
 	}
 
 	async void Closed(MudChip chip)
@@ -824,28 +918,36 @@
 
 	private async void AddSkills()
 	{
-		if (!string.IsNullOrWhiteSpace(newSkills))
+		try
 		{
-			var userSkillsCommand = new AddSkillsCommand();
-			var skills = newSkills.Split(',', StringSplitOptions.RemoveEmptyEntries);
-			foreach (var skill in skills)
+			if (!string.IsNullOrWhiteSpace(newSkills))
 			{
-				var trimmedSkill = skill.Trim();
-				if (!string.IsNullOrWhiteSpace(trimmedSkill))
+				var userSkillsCommand = new AddSkillsCommand();
+				var skills = newSkills.Split(',', StringSplitOptions.RemoveEmptyEntries);
+				foreach (var skill in skills)
 				{
-					userSkillsCommand.Skills.Add(trimmedSkill);
+					var trimmedSkill = skill.Trim();
+					if (!string.IsNullOrWhiteSpace(trimmedSkill))
+					{
+						userSkillsCommand.Skills.Add(trimmedSkill);
+					}
 				}
+				var result = await UserProfileService.AddSkills(userSkillsCommand);
+				if (result != null)
+				{
+					newSkills = "";
+					isEditing = false;
+					UserSkills = result;
+					StateHasChanged();
+				}
+				isAdding = false;
 			}
-			var result = await UserProfileService.AddSkills(userSkillsCommand);
-			if (result != null)
-			{
-				newSkills = "";
-				isEditing = false;
-				UserSkills = result;
-				StateHasChanged();
-			}
-			isAdding = false;
 		}
+		catch (HttpRequestException ex)
+		{
+			ServerNotResponding();
+		}
+
 	}
 
 	#endregion
