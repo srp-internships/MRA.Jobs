@@ -34,7 +34,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, JwtToke
             {
                 RefreshToken = _jwtTokenService.CreateRefreshToken(await _userManager.GetClaimsAsync(user)),
                 AccessToken = _jwtTokenService.CreateTokenByClaims(await _userManager.GetClaimsAsync(user), out var expireDate),
-                AccessTokenValidTo = expireDate
+                AccessTokenValidateTo = expireDate
             };
         }
         throw new UnauthorizedAccessException("Incorrect password.");

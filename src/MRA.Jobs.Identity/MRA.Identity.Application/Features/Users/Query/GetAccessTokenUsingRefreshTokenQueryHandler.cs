@@ -32,7 +32,7 @@ public class GetAccessTokenUsingRefreshTokenQueryHandler : IRequestHandler<GetAc
             {
                 AccessToken = _tokenService.CreateTokenByClaims(claims, out var expireDate),
                 RefreshToken = _tokenService.CreateRefreshToken(claims),
-                RefreshTokenValidTo = expireDate
+                AccessTokenValidateTo = expireDate
             });
         }
         throw new ValidationException("Could not validate token");
