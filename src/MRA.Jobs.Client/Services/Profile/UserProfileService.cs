@@ -29,18 +29,21 @@ public class UserProfileService : IUserProfileService
         {
             var result = await _identityHttpClient.PutAsJsonAsync("Profile", command);
 
-            if (!result.IsSuccessStatusCode)
-                return "Server is not responding, please try later";
+            if (result.IsSuccessStatusCode)
+                return "";
 
-            return "";
+            if (result.StatusCode == HttpStatusCode.BadRequest)
+                return result.RequestMessage.ToString();
+
+            return "Server is not responding, please try later";
 
         }
-        catch(HttpRequestException ex)
+        catch (HttpRequestException ex)
         {
             Console.WriteLine(ex.Message);
             return "Server is not responding, please try later";
         }
-        catch (Exception ex)    
+        catch (Exception ex)
         {
             Console.WriteLine(ex);
             return "An error occurred";
@@ -71,13 +74,13 @@ public class UserProfileService : IUserProfileService
         return response;
     }
 
-    public async Task<HttpResponseMessage> DeleteEducationAync(Guid id)
+    public async Task<HttpResponseMessage> DeleteEducationAsync(Guid id)
     {
         var respose = await _identityHttpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
         return respose;
     }
 
-    public async Task<HttpResponseMessage> DeleteExperienceAync(Guid id)
+    public async Task<HttpResponseMessage> DeleteExperienceAsync(Guid id)
     {
         var respose = await _identityHttpClient.DeleteAsync($"Profile/DeleteExperienceDetail/{id}");
         return respose;
@@ -89,7 +92,7 @@ public class UserProfileService : IUserProfileService
         return result;
     }
 
-    public async Task<HttpResponseMessage> CreateExperienceAsycn(CreateExperienceDetailCommand command)
+    public async Task<HttpResponseMessage> CreateExperienceAsync(CreateExperienceDetailCommand command)
     {
         var response = await _identityHttpClient.PostAsJsonAsync("Profile/СreateExperienceDetail", command);
         return response;
@@ -107,7 +110,7 @@ public class UserProfileService : IUserProfileService
         return response;
     }
 
-    public async Task<HttpResponseMessage> RemoveSkillAync(string skill)
+    public async Task<HttpResponseMessage> RemoveSkillAsync(string skill)
     {
         var response = await _identityHttpClient.DeleteAsync($"Profile/RemoveUserSkill/{skill}");
         return response;

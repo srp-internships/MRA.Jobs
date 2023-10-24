@@ -14,6 +14,7 @@
 @using MRA.Jobs.Client.Services.Profile;
 @using MudBlazor;
 @using FluentValidation;
+@using System.Net;
 
 @inject ISnackbar Snackbar
 
@@ -108,7 +109,16 @@
 									</MudSelect>
 								</MudCardContent>
 								<MudCardActions>
-									<MudButton Color="Color.Primary" Variant="Variant.Filled" Type="submit" OnClick="UpdateProfile">Update Profile</MudButton>
+									<MudButton Color="Color.Primary" Variant="Variant.Filled" Type="submit">
+										@if (_processing)
+										{
+											<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" Style="color:#fff" />
+										}
+										else
+										{
+											<MudText>Update Profile</MudText>
+										}
+									</MudButton>
 								</MudCardActions>
 							</MudCard>
 						</EditForm>
@@ -169,7 +179,15 @@
 												</MudCardContent>
 												<MudCardActions>
 													<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(()=>UpdateEducationHandle())">
-														Update
+														@if (_processing)
+														{
+															<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+														}
+														else
+														{
+															<MudText>Update</MudText>
+														}
+
 													</MudButton>
 													<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_UpdateEducation">
 														Cancel
@@ -234,6 +252,7 @@
 										<FluentValidationValidator />
 										<MudCardHeader>
 											<CardHeaderContent>
+												<MudText Typo="Typo.h6"><strong>New Education</strong></MudText>
 												<MudTextField @bind-Value="@createEducation.Speciality" Variant="Variant.Outlined" Label="Specialty" Margin="Margin.Dense" For="(()=>createEducation.Speciality)" />
 											</CardHeaderContent>
 										</MudCardHeader>
@@ -250,7 +269,14 @@
 										</MudCardContent>
 										<MudCardActions>
 											<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateEducationHandle">
-												Save
+												@if (_processing)
+												{
+													<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+												}
+												else
+												{
+													<MudText>Save</MudText>
+												}
 											</MudButton>
 											<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_CreateEducation">
 												Cancel
@@ -454,6 +480,8 @@
 
 @code {
 
+	private bool _processing = false;
+
 	private int Active = 0;
 	private void ActiveNavlink(int active)
 	{
@@ -538,26 +566,34 @@
 			var result = new HttpResponseMessage();
 			if (idProperty != null || itemType.Name == "String")
 			{
-				if (itemType.Name == "String")
+				try
 				{
-					result = await UserProfileService.RemoveSkillAync(item.ToString());
-				}
-				else
-				{
-					Guid id = (Guid)idProperty.GetValue(item);
-
-					switch (itemType.Name)
+					if (itemType.Name == "String")
 					{
-						case "UserEducationResponse":
-							result = await UserProfileService.DeleteEducationAync(id);
-							break;
-						case "UserExperienceResponse":
-							result = await UserProfileService.DeleteExperienceAync(id);
-							break;
-						default:
-							break;
+						result = await UserProfileService.RemoveSkillAsync(item.ToString());
 					}
+					else
+					{
+						Guid id = (Guid)idProperty.GetValue(item);
 
+						switch (itemType.Name)
+						{
+							case "UserEducationResponse":
+								result = await UserProfileService.DeleteEducationAsync(id);
+								break;
+							case "UserExperienceResponse":
+								result = await UserProfileService.DeleteExperienceAsync(id);
+								break;
+							default:
+								break;
+						}
+
+					}
+				}
+				catch (HttpRequestException ex)
+				{
+					ServerNotResponding();
+					return;
 				}
 				if (result.IsSuccessStatusCode)
 				{
@@ -570,6 +606,7 @@
 
 	private async void UpdateProfile()
 	{
+		_processing = true;
 		var result = await UserProfileService.Update(updateProfileCommand);
 		if (result == "")
 		{
@@ -579,6 +616,8 @@
 		{
 			Snackbar.Add(result, MudBlazor.Severity.Error);
 		}
+		_processing = false;
+		StateHasChanged();
 	}
 
 	#region education
@@ -618,16 +657,30 @@
 
 	private async Task CreateEducationHandle()
 	{
-		if (createEducation.EndDate == null)
-			createEducation.EndDate = default(DateTime);
-
-		var response = await UserProfileService.CreateEducationAsуnc(createEducation);
-		if (response.IsSuccessStatusCode)
+		_processing = true;
+		try
 		{
-			addEducation = false;
-			createEducation = new CreateEducationDetailCommand();
-			await GetEducations();
+			if (createEducation.EndDate == null)
+				createEducation.EndDate = default(DateTime);
+
+			var response = await UserProfileService.CreateEducationAsуnc(createEducation);
+			if (response.IsSuccessStatusCode)
+			{
+				addEducation = false;
+				createEducation = new CreateEducationDetailCommand();
+				await GetEducations();
+				StateHasChanged();
+			}
+			else if (response.StatusCode == HttpStatusCode.BadRequest)
+			{
+				Snackbar.Add("", MudBlazor.Severity.Error);
+			}
 		}
+		catch (HttpRequestException ex)
+		{
+			ServerNotResponding();
+		}
+		_processing = false;
 	}
 
 	private void CancelButtonClicked_CreateEducation()
@@ -645,14 +698,29 @@
 
 	private async Task UpdateEducationHandle()
 	{
-		var result = await UserProfileService.UpdateEducationAsync(educationUpdate);
-		if (result.IsSuccessStatusCode)
+		_processing = true;
+		try
 		{
-			editingCardId = Guid.NewGuid();
-			StateHasChanged();
+			var result = await UserProfileService.UpdateEducationAsync(educationUpdate);
+			if (result.IsSuccessStatusCode)
+			{
+				editingCardId = Guid.NewGuid();
+				Snackbar.Add("Education updated", MudBlazor.Severity.Success);
+				StateHasChanged();
+			}
+			else if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+			{
+				Snackbar.Add(result.RequestMessage.Content.ToString(), MudBlazor.Severity.Error);
+			}
 		}
-	}
+		catch (Exception)
+		{
+			ServerNotResponding();
+		}
 
+		_processing = false;
+
+	}
 	#endregion
 
 	#region Experience
@@ -674,7 +742,7 @@
 		if (createExperience.EndDate == null)
 			createExperience.EndDate = default(DateTime);
 
-		var response = await UserProfileService.CreateExperienceAsycn(createExperience);
+		var response = await UserProfileService.CreateExperienceAsync(createExperience);
 		if (response.IsSuccessStatusCode)
 		{
 			addExperience = false;
@@ -722,8 +790,6 @@
 		}
 	}
 
-
-
 	#endregion
 
 	#region Skills
@@ -756,7 +822,6 @@
 		}
 	}
 
-
 	private async void AddSkills()
 	{
 		if (!string.IsNullOrWhiteSpace(newSkills))
@@ -784,6 +849,4 @@
 	}
 
 	#endregion
-
-
 }
