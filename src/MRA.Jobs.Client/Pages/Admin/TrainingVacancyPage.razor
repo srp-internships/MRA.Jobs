@@ -33,7 +33,7 @@ else
                     <MudTextField @bind-Value="@trainingService.createCommand.Fees" Label="Fees" Variant="Variant.Outlined"></MudTextField>
                 </div>
                 <div class="col-md-4">
-                    <MudSelect T="string" Label="Select category" @bind-Value="@selectedCategory" Variant="Variant.Outlined">
+                    <MudSelect T="string" Label="@selectedCategory" @bind-Value="@selectedCategory" Variant="Variant.Outlined">
                         @foreach (var cat in categories)
                         {
                             <MudSelectItem Value="@cat.Name" />
@@ -102,7 +102,7 @@ else
     bool isInserting;
     bool isUpdating = true;
     string UpdateSlug;
-    string selectedCategory = string.Empty;
+    string selectedCategory = "Select category";
     private string newQuestion = string.Empty;
 
     private List<VacancyQuestionDto> Questions = new();
@@ -171,6 +171,8 @@ else
 
     private async Task HandleSubmit()
     {
+        var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
+        trainingService.createCommand.CategoryId = catId;
         trainingService.createCommand.VacancyQuestions = Questions;
         await trainingService.Create();
         await LoadData();
