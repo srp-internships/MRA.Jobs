@@ -120,13 +120,53 @@ else
 									<MudTextField @bind-Value="@profile.UserName" Variant="Variant.Outlined" Margin="Margin.Dense" Disabled="true" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Email</MudText>
-									<MudTextField @bind-Value="@updateProfileCommand.Email" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.Email)" />
+									<div class="row">
+										<div class="col">
+											<MudTextField @bind-Value="@updateProfileCommand.Email" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.Email)" />
+										</div>
+										<div class="col-4" style="align-content:end; padding-top:10px;">
+											@if (!profile.EmailConfirmed)
+											{
+												<MudText Typo="Typo.body2" Color="Color.Warning">
+													<MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Warning" />
+													Email is not Confirmed!
+												</MudText>
+											}
+											else
+											{
+												<MudText Typo="Typo.body2" Color="Color.Success">
+													<MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success" />
+													Confirmed
+												</MudText>
+											}
+										</div>
+									</div>
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Date Of Birth</MudText>
 									<MudDatePicker @bind-Date="@updateProfileCommand.DateOfBirth" Variant="Variant.Outlined" Margin="Margin.Dense" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Phone Number</MudText>
-									<MudTextField @bind-Value="@updateProfileCommand.PhoneNumber" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.PhoneNumber)" />
+									<div class="row">
+										<div class="col">
+											<MudTextField @bind-Value="@updateProfileCommand.PhoneNumber" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.PhoneNumber)" />
+										</div>
+										<div class="col-4" style="align-content:end; padding-top:10px;">
+											@if (!profile.PhoneNumberConfirmed)
+											{
+												<MudText Typo="Typo.body2" Color="Color.Warning">
+													<MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Warning" />
+													Phone Number  is not Confirmed!
+												</MudText>
+											}
+											else
+											{
+												<MudText Typo="Typo.body2" Color="Color.Success">
+													<MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success" />
+													Confirmed
+												</MudText>
+											}
+										</div>
+									</div>
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">About Myself</MudText>
 									<MudTextField T="string" @bind-Value="@updateProfileCommand.AboutMyself" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="5" For="@(() => updateProfileCommand.AboutMyself)" />
