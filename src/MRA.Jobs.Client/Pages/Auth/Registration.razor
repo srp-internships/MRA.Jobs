@@ -1,10 +1,13 @@
 ﻿@page "/sign-up"
 
 @using System.ComponentModel.DataAnnotations
+@using System.Net
 @using MRA.Identity.Application.Contract.User.Commands.RegisterUser
 @using MRA.Jobs.Client.Services.Auth
 @inject IAuthService AuthService
 @inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
+@inject IConfiguration Configuration
 
 
 <div class="container">
@@ -58,6 +61,8 @@
                                     <MudText>Sign-up</MudText>
                                 }
                             </MudButton>
+                            
+                            <MudButton StartIcon="@Icons.Custom.Brands.Google" OnClick="GoogleAuth">With Google</MudButton>
                         </MudCardActions>
                     </MudCard>
                 </EditForm>
@@ -70,6 +75,26 @@
     private readonly LoginForm _model = new();
     private bool _processing;
 
+    private string GetCodeUrl = @"
+https://accounts.google.com/o/oauth2/v2/auth?
+access_type=offline
+&include_granted_scopes=true
+&response_type=code
+&state=state_parameter_passthrough_value";
+
+
+    protected override void OnInitialized()
+    {
+        GetCodeUrl += $"&redirect_uri={NavigationManager.BaseUri}ClientCodeCallBack&scope={WebUtility.UrlEncode("https://www.googleapis.com/auth/drive.metadata.readonly")}&client_id={Configuration["ClientId"]}";
+    }
+
+
+    private void GoogleAuth()
+    {
+        NavigationManager.NavigateTo(GetCodeUrl);
+    }
+    
+    
     public class LoginForm
     {
         [Required]

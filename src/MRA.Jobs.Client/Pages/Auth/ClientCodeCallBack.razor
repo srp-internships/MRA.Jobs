@@ -1,0 +1,33 @@
+﻿@page "/ClientCodeCallBack"
+@using System.Web
+@inject NavigationManager NavigationManager
+@inject IdentityHttpClient Client
+
+@code {
+
+    [Parameter]
+    public string Code { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var http = HttpUtility.ParseQueryString(NavigationManager.Uri);
+        var requestMessage = new HttpRequestMessage
+        {
+            Content = new StringContent(http["code"]!),
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(Client.BaseAddress + "/api/Auth/googleCode")
+        };
+        var response = await Client.SendAsync(requestMessage);
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("error page");
+        }
+    }
+
+}
