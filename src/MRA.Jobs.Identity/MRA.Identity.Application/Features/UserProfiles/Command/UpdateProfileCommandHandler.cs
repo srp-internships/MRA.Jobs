@@ -26,7 +26,7 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
     {
         var user = await _userManager.FindByNameAsync(_userHttpContextAccessor.GetUserName());
         _ = user ?? throw new NotFoundException("user is not found");
-
+        if (user.PhoneNumber != request.PhoneNumber) user.PhoneNumberConfirmed = false;
         _mapper.Map(request, user);
 
         return (await _userManager.UpdateAsync(user)).Succeeded;

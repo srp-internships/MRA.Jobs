@@ -19,16 +19,17 @@ public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificat
     }
     public async Task<bool> Handle(SmsVerificationCodeCheckQuery request, CancellationToken cancellationToken)
     {
+        if (request.PhoneNumber[0] != '+') request.PhoneNumber = "+" + request.PhoneNumber.Trim();
         var expirationTime = DateTime.Now.AddMinutes(-1);
 
-        var result = await _context.ConfirmationCodes
-            .FirstOrDefaultAsync(c => c.Code == request.Code && c.PhoneNumber == request.PhoneNumber && c.SentAt >= expirationTime);
+        var result = _context.ConfirmationCodes
+            .Any(c => c.Code == request.Code && c.PhoneNumber == request.PhoneNumber && c.SentAt >= expirationTime);
 
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber ==request.PhoneNumber);
 
-        if ((user is not null && user.PhoneNumberConfirmed == true) || user is null) return false;
+        if (user is null) return false;
 
-        if (result != null)
+        if (result)
         {
             user.PhoneNumberConfirmed = true;
             var saveResult = await _userManager.UpdateAsync(user);
