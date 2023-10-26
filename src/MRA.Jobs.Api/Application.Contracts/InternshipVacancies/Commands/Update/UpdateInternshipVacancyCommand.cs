@@ -1,4 +1,5 @@
 ﻿using MRA.Jobs.Application.Contracts.Converter.Converter;
+using MRA.Jobs.Application.Contracts.Dtos;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
@@ -28,4 +29,5 @@ public class UpdateInternshipVacancyCommand : IRequest<string>
 
     public int Duration { get; set; }
     public int Stipend { get; set; }
+    public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
 }

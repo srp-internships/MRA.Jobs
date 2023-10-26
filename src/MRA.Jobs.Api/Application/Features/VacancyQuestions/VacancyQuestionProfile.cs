@@ -10,5 +10,6 @@ public class VacancyQuestionProfile : Profile
         CreateMap<VacancyQuestion, VacancyQuestionDto>();
         CreateMap<VacancyQuestionResponseDto, VacancyQuestion>();
         CreateMap<VacancyQuestion, VacancyQuestionResponseDto>();
+        CreateMap<VacancyQuestionDto, VacancyQuestionResponseDto>();
     }
 }
