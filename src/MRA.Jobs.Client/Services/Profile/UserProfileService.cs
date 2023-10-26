@@ -1,4 +1,5 @@
-﻿using MatBlazor;
+﻿using System.Net;
+using MatBlazor;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Educations.Responses;
@@ -22,9 +23,31 @@ public class UserProfileService : IUserProfileService
         _identityHttpClient = identityHttpClient;
     }
 
-    public async Task<HttpResponseMessage> Update(UpdateProfileCommand command)
+    public async Task<string> Update(UpdateProfileCommand command)
     {
-        return await _identityHttpClient.PutAsJsonAsync("Profile", command);
+        try
+        {
+            var result = await _identityHttpClient.PutAsJsonAsync("Profile", command);
+
+            if (result.IsSuccessStatusCode)
+                return "";
+
+            if (result.StatusCode == HttpStatusCode.BadRequest)
+                return result.RequestMessage.ToString();
+
+            return "Server is not responding, please try later";
+
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine(ex.Message);
+            return "Server is not responding, please try later";
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return "An error occurred";
+        }
     }
 
     public async Task<UserProfileResponse> Get()
@@ -51,13 +74,13 @@ public class UserProfileService : IUserProfileService
         return response;
     }
 
-    public async Task<HttpResponseMessage> DeleteEducationAync(Guid id)
+    public async Task<HttpResponseMessage> DeleteEducationAsync(Guid id)
     {
         var respose = await _identityHttpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
         return respose;
     }
 
-    public async Task<HttpResponseMessage> DeleteExperienceAync(Guid id)
+    public async Task<HttpResponseMessage> DeleteExperienceAsync(Guid id)
     {
         var respose = await _identityHttpClient.DeleteAsync($"Profile/DeleteExperienceDetail/{id}");
         return respose;
@@ -69,7 +92,7 @@ public class UserProfileService : IUserProfileService
         return result;
     }
 
-    public async Task<HttpResponseMessage> CreateExperienceAsycn(CreateExperienceDetailCommand command)
+    public async Task<HttpResponseMessage> CreateExperienceAsync(CreateExperienceDetailCommand command)
     {
         var response = await _identityHttpClient.PostAsJsonAsync("Profile/СreateExperienceDetail", command);
         return response;
@@ -87,9 +110,9 @@ public class UserProfileService : IUserProfileService
         return response;
     }
 
-    public async Task<HttpResponseMessage> RemoveSkillAync(string skill)
+    public async Task<HttpResponseMessage> RemoveSkillAsync(string skill)
     {
-       var response =await _identityHttpClient.DeleteAsync($"Profile/RemoveUserSkill/{skill}");
+        var response = await _identityHttpClient.DeleteAsync($"Profile/RemoveUserSkill/{skill}");
         return response;
     }
 

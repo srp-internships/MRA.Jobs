@@ -44,68 +44,69 @@
 		color: #129fd7;
 	}
 
-    #user_icon .mud-svg-icon {
-        color: white;
-    }
+
+	#user_icon .mud-svg-icon {
+		color: white;
+	}
 
 </style>
 
 
-	<nav class="navbar bg-dark navbar-expand-lg">
-		<div class="container-fluid">
-			<a class="navbar-brand">
-				<img src="images/srp_icon.png" width="70" />
-			</a>
-			<div style="text-align: center">
-				<h3 class="text-white logo-text">SILK ROAD</h3>
-				<h4 style="font-size: 18px" class="logo-text text-white">PROFESSIONALS</h4>
-			</div>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="100" viewBox="0 0 50 50" fill="white">
-					<path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
-				</svg>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="/internships">Internships</NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="/jobs">Jobs</NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="/trainings">Trainings</NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/">Team</a>
-                    </li>
-                </ul>
-                
-				<CascadingAuthenticationState>
-					<AuthorizeView>
-						<Authorized>
-							<MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
-                                
-								<MudNavLink Href="/profile">Profile</MudNavLink>
-								<MudNavLink Href="/applications">Applications</MudNavLink>
-
-								<MudNavLink OnClick="Logout">Logout</MudNavLink>
-							</MudMenu>
-						</Authorized>
-						<NotAuthorized>
-							<MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Info">
-								<MudNavLink Href="/sign-in">Sign In</MudNavLink>
-								<MudNavLink Href="/sign-up">Sign Up</MudNavLink>
-							</MudMenu>
-						</NotAuthorized>
-					</AuthorizeView>
-				</CascadingAuthenticationState>
-			</div>
+<nav class="navbar bg-dark navbar-expand-lg">
+	<div class="container-fluid">
+		<a class="navbar-brand">
+			<img src="images/srp_icon.png" width="70" />
+		</a>
+		<div style="text-align: center">
+			<h3 class="text-white logo-text">SILK ROAD</h3>
+			<h4 style="font-size: 18px" class="logo-text text-white">PROFESSIONALS</h4>
 		</div>
-	</nav>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="100" viewBox="0 0 50 50" fill="white">
+				<path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
+			</svg>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
+				</li>
+				<li class="nav-item">
+					<NavLink class="nav-link" href="/internships">Internships</NavLink>
+				</li>
+				<li class="nav-item">
+					<NavLink class="nav-link" href="/jobs">Jobs</NavLink>
+				</li>
+				<li class="nav-item">
+					<NavLink class="nav-link" href="/trainings">Trainings</NavLink>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/">Team</a>
+				</li>
+			</ul>
+
+			<CascadingAuthenticationState>
+				<AuthorizeView>
+					<Authorized>
+						<MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
+
+							<MudNavLink Href="/profile">Profile</MudNavLink>
+							<MudNavLink Href="/applications">Applications</MudNavLink>
+
+							<MudNavLink OnClick="Logout">Logout</MudNavLink>
+						</MudMenu>
+					</Authorized>
+					<NotAuthorized>
+						<MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Info">
+							<MudNavLink Href="/sign-in">Sign In</MudNavLink>
+							<MudNavLink Href="/sign-up">Sign Up</MudNavLink>
+						</MudMenu>
+					</NotAuthorized>
+				</AuthorizeView>
+			</CascadingAuthenticationState>
+		</div>
+	</div>
+</nav>
 
 
 

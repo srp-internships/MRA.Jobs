@@ -14,24 +14,24 @@ namespace MRA.Jobs.Client.Services.Profile;
 public interface IUserProfileService
 {
     Task<UserProfileResponse> Get();
-    Task<HttpResponseMessage> Update(UpdateProfileCommand command);
+    Task<string> Update(UpdateProfileCommand command);
 
     Task<List<UserEducationResponse>> GetEducations();
 
     Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command);
 
     Task<HttpResponseMessage> UpdateEducationAsync(UpdateEducationDetailCommand command);
-    Task<HttpResponseMessage> DeleteEducationAync(Guid id); 
-    Task<HttpResponseMessage> DeleteExperienceAync(Guid id);
+    Task<HttpResponseMessage> DeleteEducationAsync(Guid id); 
+    Task<HttpResponseMessage> DeleteExperienceAsync(Guid id);
 
     Task<List<UserExperienceResponse>> GetExperiences();
 
-    Task<HttpResponseMessage> CreateExperienceAsycn(CreateExperienceDetailCommand command);
+    Task<HttpResponseMessage> CreateExperienceAsync(CreateExperienceDetailCommand command);
 
     Task<HttpResponseMessage> UpdateExperienceAsync(UpdateExperienceDetailCommand command);
 
     Task<UserSkillsResponse> GetSkills();
-    Task<HttpResponseMessage> RemoveSkillAync(string skill);
+    Task<HttpResponseMessage> RemoveSkillAsync(string skill);
 
     Task<UserSkillsResponse> AddSkills(AddSkillsCommand command);
 }
