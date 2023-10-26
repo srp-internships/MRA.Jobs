@@ -90,16 +90,15 @@
 					<Authorized>
 						<MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
 
-							<MudNavLink Href="/profile">Profile</MudNavLink>
-							<MudNavLink Href="/applications">Applications</MudNavLink>
-
-							<MudNavLink OnClick="Logout">Logout</MudNavLink>
+                            <MudMenuItem Href="/profile">Profile</MudMenuItem>
+                            <MudMenuItem Href="/applications">Applications</MudMenuItem>
+                            <MudMenuItem OnClick="Logout">Logout</MudMenuItem>
 						</MudMenu>
 					</Authorized>
 					<NotAuthorized>
 						<MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Info">
-							<MudNavLink Href="/sign-in">Sign In</MudNavLink>
-							<MudNavLink Href="/sign-up">Sign Up</MudNavLink>
+                            <MudMenuItem Href="/sign-in">Sign-in</MudMenuItem>
+                            <MudMenuItem Href="/sign-up">Sign-up</MudMenuItem>
 						</MudMenu>
 					</NotAuthorized>
 				</AuthorizeView>
