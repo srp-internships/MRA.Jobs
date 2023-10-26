@@ -34,4 +34,7 @@ public interface IUserProfileService
     Task<HttpResponseMessage> RemoveSkillAsync(string skill);
 
     Task<UserSkillsResponse> AddSkills(AddSkillsCommand command);
+
+    Task<bool> SendConfirmationCode(string phoneNumber);
+    Task<bool> CheckConfirmationCode(string phoneNumber, int? code);
 }

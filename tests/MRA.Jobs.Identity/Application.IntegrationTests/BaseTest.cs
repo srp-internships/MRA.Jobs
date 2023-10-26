@@ -35,7 +35,7 @@ public abstract class BaseTest
             Email = "test@example.com",
             UserName = "@Alex33",
             NormalizedUserName = "@alex33",
-            PhoneNumber = "123456789",
+            PhoneNumber = "+992123456789",
         };
 
         await AddUser(request1, "password@#12P");
@@ -47,7 +47,7 @@ public abstract class BaseTest
             Email = "reviewer@example.com",
             UserName = "@Reviewer",
             NormalizedUserName = "@reviewer",
-            PhoneNumber = "123456789",
+            PhoneNumber = "+992123456789",
         };
 
         await AddUser(request2, "password@#12P");
