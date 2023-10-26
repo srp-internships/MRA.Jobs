@@ -1,7 +1,9 @@
 ﻿@page "/dashboard/categories"
 @layout Dashboard
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+@using MRA.Jobs.Client.Components.Dialogs;
 @inject ICategoryService CService
+@inject IDialogService DialogService
 
 <h1>Category</h1>
 
@@ -11,55 +13,64 @@
 }
 else
 {
-    <MatAccordion>
-        <MatExpansionPanel @bind-Expanded="@panelOpenState">
-            <MatExpansionPanelSummary>
-                <MatExpansionPanelHeader>Inserting a new Category Data</MatExpansionPanelHeader>
-            </MatExpansionPanelSummary>
-            <MatExpansionPanelDetails>
-                <MatTextField PlaceHolder="data" @bind-Value="@CService.creatingEntity.Name"></MatTextField>
-                <MatButton Outlined="true" @onclick="@CService.OnSaveCreateClick">Insert</MatButton>
-            </MatExpansionPanelDetails>
-        </MatExpansionPanel>
-    </MatAccordion>
-
-    <MatTable Items="@CService.Category" ShowPaging="false" RequestApiOnlyOnce="true" RowClass="tester" class="mat-elevation-z5" PageSize="100">
-        <MatTableHeader>
-            <th>Name</th>
-            <th>Actions</th>
-        </MatTableHeader>
-        <MatTableRow>
-            <td>
-                @if (CService.updatingEntity?.Slug == context.Slug)
-                {
-                    <MatTextField @bind-Value="@CService.updatingEntity.Name"></MatTextField>
-                }
-                else
-                {
-                    @context.Name
-                }
-            </td>
-            <td>
-                @if (CService.updatingEntity?.Slug == context.Slug)
-                {
-                    <MatButton OnClick="@CService.OnSaveUpdateClick" Style="color:#2094CC" Icon="edit">Save</MatButton>
-                }
-                else
-                {
-                    <MatButton @onclick="() =>CService.OnUpdateClick(context)" Style="color:#2094CC" Icon="edit">Update</MatButton>
-                }
-                <MatButton @onclick="()=>CService.OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MatButton>
-            </td>
-        </MatTableRow>
-    </MatTable>
+    <MudChipSet AllClosable="true" OnClose="Closed">
+        @foreach (var value in _category)
+        {
+            <MudChip Text="@value.Name"></MudChip>
+        }
+    </MudChipSet>
+    <MudTextField OnKeyDown="@OnKeyDown" @bind-Value="newCategory" OnAdornmentClick="AddCategory" Label="New Category" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
 }
 
 @code {
     private List<CategoryResponse> _category;
     bool panelOpenState;
+    private string newCategory { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         _category = await CService.GetAllCategory();
+    }
+    public async Task Closed(MudChip chip)
+    {
+        var cat = _category.FirstOrDefault(c => c.Name == chip.Text);
+        var parameters = new DialogParameters<DialogMudBlazor>();
+        parameters.Add(x => x.ContentText, "Do you really want to delete these record? Make sure there is no vacancy with this category!");
+        parameters.Add(x => x.ButtonText, "Delete");
+        parameters.Add(x => x.Color, Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            _category.Remove(cat);
+            await CService.OnDeleteClick(cat.Slug);
+        }
+    }
+    public void AddCategory()
+    {
+        CService.creatingEntity = new Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory.CreateVacancyCategoryCommand
+            {
+                Name = newCategory
+            };
+        _category.Add(new CategoryResponse
+            {
+                Name = newCategory
+            });
+        CService.OnSaveCreateClick();
+        newCategory = "";
+
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter")
+        {
+            await Task.Delay(1);
+            AddCategory();
+        }
     }
 }

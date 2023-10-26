@@ -57,7 +57,8 @@ public class TrainingService : ITrainingService
             PublishDate = createCommand.PublishDate,
             ShortDescription = createCommand.ShortDescription,
             CategoryId = createCommand.CategoryId,
-            Fees = createCommand.Fees
+            Fees = createCommand.Fees,
+            VacancyQuestions = createCommand.VacancyQuestions
         };
         
         await _authenticationStateProvider.GetAuthenticationStateAsync();
