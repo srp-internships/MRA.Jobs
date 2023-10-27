@@ -26,6 +26,8 @@ public interface IApplicationDbContext
     public DbSet<Skill> Skills { get; set; }
     public DbSet<VacancyQuestion> VacancyQuestions { get; set; }
     public DbSet<VacancyResponse> VacancyResponses { get; set; }
+    public DbSet<VacancyTaskDetail> VacancyTaskDetails { get; set; }
+    public DbSet<TaskResponse> TaskResponses { get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

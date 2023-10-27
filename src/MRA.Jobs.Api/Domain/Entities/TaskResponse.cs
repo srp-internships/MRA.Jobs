@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MRA.Jobs.Domain.Entities;
+﻿namespace MRA.Jobs.Domain.Entities;
 public class TaskResponse
 {
     public Guid Id { get; set; }
