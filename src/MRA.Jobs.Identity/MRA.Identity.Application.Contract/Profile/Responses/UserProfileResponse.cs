@@ -10,6 +10,8 @@ public class UserProfileResponse
     public string LastName { get; set; }
     public string AboutMyself { get; set; }
     public string PhoneNumber { get; set; }
-    public string Email { get; set; }   
+    public string Email { get; set; }
+    public bool EmailConfirmed { get; init; }
+    public bool PhoneNumberConfirmed { get; init; }
 
 }

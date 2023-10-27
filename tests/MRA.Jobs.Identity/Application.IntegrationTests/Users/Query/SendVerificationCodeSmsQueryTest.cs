@@ -33,7 +33,7 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
     {
         // Arrange
         await AddAuthorizationAsync();
-        var query = new SendVerificationCodeSmsQuery { PhoneNumber = "123456789" };
+        var query = new SendVerificationCodeSmsQuery { PhoneNumber = "+992123456789" };
         await _client.GetAsync($"api/sms/send_code?PhoneNumber={query.PhoneNumber}");
 
         int code = (await GetEntity<ConfirmationCode>(c => c.PhoneNumber == query.PhoneNumber)).Code;

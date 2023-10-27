@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory;
 
 namespace MRA.Jobs.Application.Features.VacancyCategories.Command.CreateVacancyCategory;
@@ -20,7 +21,15 @@ public class CreateVacancyCategoryCommandHandler : IRequestHandler<CreateVacancy
     {
         var vacancyCategory = _mapper.Map<VacancyCategory>(request);
         vacancyCategory.Slug = GenerateSlug(vacancyCategory);
-        await _context.Categories.AddAsync(vacancyCategory, cancellationToken);
+        var cat = await _context.Categories.IgnoreQueryFilters().FirstOrDefaultAsync(c => c.Name == vacancyCategory.Name && c.IsDeleted);
+        if (cat is not null)
+        {
+            cat.IsDeleted = false;
+        }
+        else if (!_context.Categories.Any(c => c.Name == request.Name))
+        {
+            await _context.Categories.AddAsync(vacancyCategory, cancellationToken);
+        }
         await _context.SaveChangesAsync(cancellationToken);
         return vacancyCategory.Slug;
     }
