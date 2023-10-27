@@ -24,7 +24,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
     {
         VacancyCategory category = await _dbContext.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
-
+        Console.WriteLine(request.a);
         var jobVacancy = _mapper.Map<JobVacancy>(request);
         jobVacancy.Category = category;
         jobVacancy.Slug = GenerateSlug(jobVacancy);
