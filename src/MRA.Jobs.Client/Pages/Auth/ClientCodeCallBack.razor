@@ -1,6 +1,8 @@
 ﻿@page "/ClientCodeCallBack"
 @using System.Web
 @using MRA.Identity.Application.Contract.User.Commands.GoogleAuth
+@using System.Net
+@using MRA.Identity.Application.Contract.User.Responses
 @inject NavigationManager NavigationManager
 @inject IdentityHttpClient Client
 @inject ILocalStorageService LocalStorageService
@@ -12,7 +14,7 @@
     protected override async Task OnInitializedAsync()
     {
 
-        var http = HttpUtility.ParseQueryString(NavigationManager.Uri);
+        var http = HttpUtility.ParseQueryString(WebUtility.UrlDecode(NavigationManager.Uri.Split('?')[1]));
         Console.WriteLine(NavigationManager.Uri);
         Console.WriteLine(http["code"]);
         Console.WriteLine(Code);
@@ -21,7 +23,7 @@
         
         if (response.IsSuccessStatusCode)
         {
-            await LocalStorageService.SetItemAsync("authToken", response);
+            await LocalStorageService.SetItemAsync("authToken", await response.Content.ReadFromJsonAsync<JwtTokenResponse>());
             NavigationManager.NavigateTo("");
         }
         else
