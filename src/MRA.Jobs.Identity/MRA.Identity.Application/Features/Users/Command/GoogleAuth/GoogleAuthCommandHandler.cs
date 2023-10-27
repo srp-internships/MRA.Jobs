@@ -1,5 +1,7 @@
-﻿using MediatR;
+﻿using System.Net.Http.Json;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Commands.GoogleAuth;
@@ -11,6 +13,8 @@ namespace MRA.Identity.Application.Features.Users.Command.GoogleAuth;
 
 public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, JwtTokenResponse>
 {
+    private readonly IConfigurationSection _googleConfigurations;
+
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IGoogleTokenService _tokenService;
     private readonly IJwtTokenService _jwtTokenService;
@@ -18,8 +22,10 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, JwtTo
     private readonly ISender _mediator;
 
     public GoogleAuthCommandHandler(UserManager<ApplicationUser> userManager, ISender mediator,
+        IConfiguration configuration,
         IGoogleTokenService tokenService, IJwtTokenService jwtTokenService)
     {
+        _googleConfigurations = configuration.GetSection("Google");
         _userManager = userManager;
         _mediator = mediator;
         _tokenService = tokenService;
@@ -35,9 +41,9 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, JwtTo
         {
             { "grant_type", "authorization_code" },
             { "code", request.Code },
-            { "client_id", "452422541089-q2ilbqdhqs18bbn356qkkbk7bcqihoka.apps.googleusercontent.com" },
-            { "client_secret", "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" },
-            { "redirect_uri", "https://localhost:7071" },
+            { "client_id", _googleConfigurations["ClientId"]! },
+            { "client_secret", _googleConfigurations["ClientSecret"]! },
+            { "redirect_uri", _googleConfigurations["RedirectUri"]! },
             {
                 "scope",
                 "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
@@ -51,9 +57,12 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, JwtTo
             throw new ValidationException(await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<GoogleResponseModel>(cancellationToken: cancellationToken);
 
-        var googlePayload = await _tokenService.VerifyGoogleToken(responseContent);
+        var googlePayload = await _tokenService.VerifyGoogleToken(responseContent?.TokenId ??
+                                                                  throw new ValidationException(
+                                                                      "google response is not valid"));
         if (googlePayload == null)
             throw new ValidationException("Invalid google token");
 
@@ -68,8 +77,11 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, JwtTo
                 {
                     Email = googlePayload.Email,
                     FirstName = googlePayload.Name,
+                    LastName = googlePayload.FamilyName,
                     Username = googlePayload.Email,
-                    Password = RandomPassword()
+                    Password = RandomPassword(),
+                    Application = "MraJobs",
+                    Role = "Applicant"
                 };
 
                 var registerCommandResult = await _mediator.Send(registerCommand, cancellationToken);
