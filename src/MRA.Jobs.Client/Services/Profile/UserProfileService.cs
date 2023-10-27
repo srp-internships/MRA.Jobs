@@ -16,6 +16,7 @@ namespace MRA.Jobs.Client.Services.Profile;
 
 public class UserProfileService : IUserProfileService
 {
+
     private readonly IdentityHttpClient _identityHttpClient;
 
     public UserProfileService(IdentityHttpClient identityHttpClient)
@@ -56,7 +57,7 @@ public class UserProfileService : IUserProfileService
         return result;
     }
 
-    public async Task<List<UserEducationResponse>> GetEducations()
+    public async Task<List<UserEducationResponse>> GetEducationsByUser()
     {
         var result = await _identityHttpClient.GetJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
         return result;
@@ -86,7 +87,7 @@ public class UserProfileService : IUserProfileService
         return respose;
     }
 
-    public async Task<List<UserExperienceResponse>> GetExperiences()
+    public async Task<List<UserExperienceResponse>> GetExperiencesByUser()
     {
         var result = await _identityHttpClient.GetJsonAsync<List<UserExperienceResponse>>("Profile/GetExperiencesByUser");
         return result;
@@ -143,6 +144,12 @@ public class UserProfileService : IUserProfileService
     public async Task<List<UserEducationResponse>> GetAllEducations()
     {
         var result = await _identityHttpClient.GetJsonAsync<List<UserEducationResponse>>("Profile/GetAllEducations");
+        return result;
+    }
+
+    public async Task<List<UserExperienceResponse>> GetAllExperiences()
+    {
+        var result = await _identityHttpClient.GetJsonAsync<List<UserExperienceResponse>>("Profile/GetAllExperiences");
         return result;
     }
 }

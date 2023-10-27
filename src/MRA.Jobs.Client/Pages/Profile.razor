@@ -423,8 +423,9 @@ else
 											<EditForm Model="experienceUpdate" OnInvalidSubmit="(()=>UpdateExperienceHandle())">
 												<FluentValidationValidator />
 												<MudCardHeader>
-													<CardHeaderContent>
-														<MudTextField @bind-Value="@experienceUpdate.JobTitle" Variant="Variant.Outlined" Label="Job Title" Margin="Margin.Dense" For="(()=>experienceUpdate.JobTitle)" />
+													<CardHeaderContent>													
+															<MudAutocomplete T="string"  @bind-Value="@experienceUpdate.JobTitle" Variant="Variant.Outlined" Label="Job Title" Margin="Margin.Dense" For="(()=>experienceUpdate.JobTitle)"
+															 Adornment="Adornment.None" CoerceValue="true" SearchFunc="SearchJobTitle"	/>
 													</CardHeaderContent>
 												</MudCardHeader>
 												<MudCardContent>
@@ -790,7 +791,7 @@ else
 	{
 		try
 		{
-			educations = await UserProfileService.GetEducations();
+			educations = await UserProfileService.GetEducationsByUser();
 			allEducctions = await UserProfileService.GetAllEducations();
 		}
 		catch (Exception)
@@ -914,7 +915,11 @@ else
 
 	private async Task GetExperiences()
 	{
-		experiences = await UserProfileService.GetExperiences();
+		experiences = await UserProfileService.GetExperiencesByUser();
+	}
+
+	private Task<IE SearchJobTitle(){
+
 	}
 
 	private async Task CreateExperienceHandle()

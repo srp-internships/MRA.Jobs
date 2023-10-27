@@ -8,6 +8,7 @@ using MRA.Identity.Application.Contract.Educations.Query;
 using MRA.Identity.Application.Contract.Experience.Command.Delete;
 using MRA.Identity.Application.Contract.Experiences.Commands.Create;
 using MRA.Identity.Application.Contract.Experiences.Commands.Update;
+using MRA.Identity.Application.Contract.Experiences.Queries;
 using MRA.Identity.Application.Contract.Experiences.Query;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Queries;
@@ -129,4 +130,10 @@ public class ProfileController : ControllerBase
     }
 
 
+    [HttpGet("GetAllExperiences")]
+    public async Task<IActionResult> GetAllExperiences()
+    {
+        var result = await _mediator.Send(new GetAllExperienceQuery());
+        return Ok(result);
+    }
 }
