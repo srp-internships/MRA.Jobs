@@ -8,9 +8,9 @@ public class EducationDetailConfiguration : IEntityTypeConfiguration<EducationDe
 {
     public void Configure(EntityTypeBuilder<EducationDetail> builder)
     {
-        builder.HasOne(e => e.User)
-            .WithMany(u => u.Educations)
-            .HasForeignKey(e => e.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // builder.HasOne(e => e.User)
+        //     .WithMany(u => u.Educations)
+        //     .HasForeignKey(e => e.UserId)
+        //     .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -1,9 +1,9 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Domain.Entities;
+using MRA.Identity.Infrastructure.Persistence.TableConfigurations;
 
 namespace MRA.Identity.Infrastructure.Persistence;
 
@@ -23,7 +23,8 @@ public sealed class ApplicationDbContext : IdentityDbContext<ApplicationUser, Ap
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(builder);
+        builder.ApplyConfiguration(new ApplicationRoleConfiguration());
+        builder.ApplyConfiguration(new UserSkillConfiguration());
     }
 }
