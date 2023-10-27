@@ -17,6 +17,7 @@ public interface IUserProfileService
     Task<string> Update(UpdateProfileCommand command);
 
     Task<List<UserEducationResponse>> GetEducations();
+    Task<List<UserEducationResponse>> GetAllEducations();
 
     Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command);
 

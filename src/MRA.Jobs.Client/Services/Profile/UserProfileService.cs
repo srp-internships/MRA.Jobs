@@ -139,4 +139,10 @@ public class UserProfileService : IUserProfileService
         var response = await _identityHttpClient.GetJsonAsync<bool>($"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
         return response;
     }
+
+    public async Task<List<UserEducationResponse>> GetAllEducations()
+    {
+        var result = await _identityHttpClient.GetJsonAsync<List<UserEducationResponse>>("Profile/GetAllEducations");
+        return result;
+    }
 }
