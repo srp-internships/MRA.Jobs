@@ -89,7 +89,14 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> GetEducationsByUser([FromQuery] GetEducationsByUserQuery query)
     {
         var result = await _mediator.Send(query);
-       
+
+        return Ok(result);
+    }
+
+    [HttpGet("GetAllEducations")]
+    public async Task<IActionResult> GetAllEducations()
+    {
+        var result = await _mediator.Send(new GetAllEducationsQuery());
         return Ok(result);
     }
 
