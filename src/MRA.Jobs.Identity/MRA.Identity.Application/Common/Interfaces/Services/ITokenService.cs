@@ -3,5 +3,5 @@
 namespace MRA.Identity.Application.Common.Interfaces.Services;
 public interface IGoogleTokenService
 {
-    Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(string Token);
+    Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(string token);
 }

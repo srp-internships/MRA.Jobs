@@ -79,15 +79,14 @@
 https://accounts.google.com/o/oauth2/v2/auth?
 access_type=offline
 &include_granted_scopes=true
-&response_type=code
-&state=state_parameter_passthrough_value";
+&response_type=code";
 
 
     protected override void OnInitialized()
     {
-        GetCodeUrl += $"&redirect_uri={NavigationManager.BaseUri}ClientCodeCallBack&scope={WebUtility.UrlEncode("https://www.googleapis.com/auth/drive.metadata.readonly")}&client_id={Configuration["ClientId"]}";
+        GetCodeUrl += 
+            $"&redirect_uri={NavigationManager.BaseUri}ClientCodeCallBack&scope={WebUtility.UrlEncode("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email")}&client_id={WebUtility.UrlEncode(Configuration["ClientId"])}";
     }
-
 
     private void GoogleAuth()
     {

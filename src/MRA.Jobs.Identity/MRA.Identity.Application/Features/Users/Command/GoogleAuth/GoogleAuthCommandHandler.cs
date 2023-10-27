@@ -29,7 +29,7 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, JwtTo
     public async Task<JwtTokenResponse> Handle(GoogleAuthCommand request, CancellationToken cancellationToken)
     {
         var httpClient = new HttpClient();
-        var tokenEndpoint = "https://accounts.google.com/o/oauth2/token";
+        var tokenEndpoint = "https://oauth2.googleapis.com/token";
 
         var parameters = new Dictionary<string, string>
         {
@@ -37,15 +37,21 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, JwtTo
             { "code", request.Code },
             { "client_id", "452422541089-q2ilbqdhqs18bbn356qkkbk7bcqihoka.apps.googleusercontent.com" },
             { "client_secret", "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" },
+            { "redirect_uri", "https://localhost:7071" },
             {
                 "scope",
                 "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
             }
         };
 
-        var response = await httpClient.PostAsync(tokenEndpoint, new FormUrlEncodedContent(parameters));
+        var response =
+            await httpClient.PostAsync(tokenEndpoint, new FormUrlEncodedContent(parameters), cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ValidationException(await response.Content.ReadAsStringAsync(cancellationToken));
+        }
 
-        var responseContent = await response.Content.ReadAsStringAsync();
+        var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
 
         var googlePayload = await _tokenService.VerifyGoogleToken(responseContent);
         if (googlePayload == null)

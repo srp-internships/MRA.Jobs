@@ -1,8 +1,9 @@
 ﻿@page "/ClientCodeCallBack"
 @using System.Web
+@using MRA.Identity.Application.Contract.User.Commands.GoogleAuth
 @inject NavigationManager NavigationManager
 @inject IdentityHttpClient Client
-
+@inject ILocalStorageService LocalStorageService
 @code {
 
     [Parameter]
@@ -12,16 +13,15 @@
     {
 
         var http = HttpUtility.ParseQueryString(NavigationManager.Uri);
-        var requestMessage = new HttpRequestMessage
-        {
-            Content = new StringContent(http["code"]!),
-            Method = HttpMethod.Post,
-            RequestUri = new Uri(Client.BaseAddress + "/api/Auth/googleCode")
-        };
-        var response = await Client.SendAsync(requestMessage);
+        Console.WriteLine(NavigationManager.Uri);
+        Console.WriteLine(http["code"]);
+        Console.WriteLine(Code);
 
+        var response = await Client.PostAsJsonAsync("auth/googleCode",new GoogleAuthCommand { Code = http["code"]! });//todo check code
+        
         if (response.IsSuccessStatusCode)
         {
+            await LocalStorageService.SetItemAsync("authToken", response);
             NavigationManager.NavigateTo("");
         }
         else
