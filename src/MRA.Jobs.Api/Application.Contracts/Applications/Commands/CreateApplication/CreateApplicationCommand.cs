@@ -7,4 +7,5 @@ public class CreateApplicationCommand : IRequest<Guid>
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
     public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
+    public IEnumerable<VacancyTaskDto> VacancyTaskDtos { get; set; }
 }

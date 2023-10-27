@@ -41,6 +41,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Skill> Skills { get; set; }
     public DbSet<VacancyQuestion> VacancyQuestions { get; set; }
     public DbSet<VacancyResponse> VacancyResponses { get; set; }
+    public DbSet<VacancyTask> VacancyTasks { get; set; }
+    public DbSet<VacancyTaskDetail> VacancyTaskDetails { get; set; }
+    public DbSet<TasksResponse> TasksResponses { get; set; }
 
     #region override
 

@@ -199,6 +199,23 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("MRA.Jobs.Domain.Entities.TasksResponse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Codes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TasksResponses");
+                });
+
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.Test", b =>
                 {
                     b.Property<Guid>("Id")
@@ -507,6 +524,57 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.ToTable("VacancyTags");
                 });
 
+            modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Template")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Test")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("VacancyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VacancyId");
+
+                    b.ToTable("VacancyTasks");
+                });
+
+            modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyTaskDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ApplicantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Codes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Success")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VacancyTaskDetails");
+                });
+
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.ApplicationTimelineEvent", b =>
                 {
                     b.HasBaseType("MRA.Jobs.Domain.Entities.TimelineEvent");
@@ -691,6 +759,13 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.Navigation("Vacancy");
                 });
 
+            modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyTask", b =>
+                {
+                    b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", null)
+                        .WithMany("VacancyTasks")
+                        .HasForeignKey("VacancyId");
+                });
+
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.ApplicationTimelineEvent", b =>
                 {
                     b.HasOne("MRA.Jobs.Domain.Entities.Application", "Application")
@@ -745,6 +820,8 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.Navigation("Tests");
 
                     b.Navigation("VacancyQuestions");
+
+                    b.Navigation("VacancyTasks");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.VacancyCategory", b =>
