@@ -1,0 +1,20 @@
+﻿@inject IJSRuntime JSRuntime
+
+<MudButton FullWidth="true" StartIcon="@Icon" Color="@Color" Variant="Variant.Filled" OnClick="@(() => LoginWithProvider())">@Provider</MudButton>
+
+@code {
+	[Parameter]
+	public string Provider { get; set; }
+	[Parameter]
+	public Color Color { get; set; }
+	[Parameter]
+	public string Icon { get; set; }
+
+	private async Task LoginWithProvider()
+	{
+		// Здесь вы можете вызвать API провайдера для входа в систему
+		// и обработать ответ.
+		// Например, вы можете использовать IJSRuntime для перенаправления пользователя на страницу входа провайдера.
+		await JSRuntime.InvokeVoidAsync("open", $"https://www.{Provider}.com/login", "_self");
+	}
+}

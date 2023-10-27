@@ -1,0 +1,17 @@
+﻿
+<MudGrid Style="padding:25px;">
+	<MudItem xs="12" md="12" lg="12" Class="d-flex align-center justify-center mud-width-full">
+		<MudText Typo="Typo.body1">@Title</MudText>
+	</MudItem>
+	<MudItem xs="12" md="12" lg="12">
+		<ExternalLoginButton Provider="Google" Color="@Color.Info" Icon="@Icons.Custom.Brands.Google" />
+	</MudItem>
+	<MudItem xs="12" md="12" lg="12">
+		<ExternalLoginButton Provider="Telegram" Color="@Color.Warning" Icon="@Icons.Custom.Brands.Telegram" />
+	</MudItem>
+</MudGrid>
+
+@code {
+	[Parameter]
+	public string Title { get; set; }
+}
