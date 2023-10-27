@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MRA.Identity.Domain.Entities;
+﻿namespace MRA.Identity.Domain.Entities;
 public class ConfirmationCode
 {
     public Guid Id { get; set; }

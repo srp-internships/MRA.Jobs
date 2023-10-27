@@ -8,9 +8,9 @@ public class ExperienceDetailConfiguration : IEntityTypeConfiguration<Experience
 {
     public void Configure(EntityTypeBuilder<ExperienceDetail> builder)
     {
-        builder.HasOne(e => e.User)
-            .WithMany(u => u.Experiences)
-            .HasForeignKey(e => e.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // builder.HasOne(e => e.User)
+        //     .WithMany(u => u.Experiences)
+        //     .HasForeignKey(e => e.UserId)
+        //     .OnDelete(DeleteBehavior.Cascade);
     }
 }
