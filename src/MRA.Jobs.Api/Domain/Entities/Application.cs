@@ -18,5 +18,6 @@ public class Application : BaseAuditableEntity
     public ICollection<ApplicationTimelineEvent> History { get; set; }
     public string Slug { get; set; }
     public IEnumerable<VacancyResponse> VacancyResponses { get; set; }
+    public IEnumerable<TaskResponse> TaskResponses { get; set; }
 
 }
