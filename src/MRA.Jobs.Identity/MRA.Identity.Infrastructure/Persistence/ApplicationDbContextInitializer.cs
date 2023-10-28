@@ -167,7 +167,7 @@ public class ApplicationDbContextInitializer
                 await _context.SaveChangesAsync();
             }
             
-
+            //create role claim
             var claim = new ApplicationUserClaim
             {
                 ClaimType = ClaimTypes.Role,
@@ -176,6 +176,49 @@ public class ApplicationDbContextInitializer
                 UserId = superAdmin.Id
             };
             await _context.UserClaims.AddAsync(claim);
+            //create role claim
+
+            //create application claim
+            claim = new ApplicationUserClaim
+            {
+                ClaimType = ClaimTypes.Application,
+                ClaimValue = "MraJobs",
+                Slug = $"{superAdmin.UserName}-application",
+                UserId = superAdmin.Id
+            };
+            await _context.UserClaims.AddAsync(claim);
+            claim = new ApplicationUserClaim
+            {
+                ClaimType = ClaimTypes.Application,
+                ClaimValue = "MraOnlinePlatform",
+                Slug = $"{superAdmin.UserName}-application",
+                UserId = superAdmin.Id
+            };
+            await _context.UserClaims.AddAsync(claim);   
+            //create application claim
+            
+            //create username claim
+            claim = new ApplicationUserClaim
+            {
+                ClaimType = ClaimTypes.Username,
+                ClaimValue = superAdmin.UserName,
+                Slug = $"{superAdmin.UserName}-username",
+                UserId = superAdmin.Id
+            };
+            await _context.UserClaims.AddAsync(claim);   
+            //create username claim
+            
+            //create id claim
+            claim = new ApplicationUserClaim
+            {
+                ClaimType = ClaimTypes.Id,
+                ClaimValue = superAdmin.Id.ToString(),
+                Slug = $"{superAdmin.UserName}-id",
+                UserId = superAdmin.Id
+            };
+            await _context.UserClaims.AddAsync(claim);   
+            //create id claim
+
             await _context.SaveChangesAsync();
         }
     }

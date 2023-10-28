@@ -81,17 +81,19 @@ public static class ConfigureServices
             auth.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
                 .RequireRole(ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
+                    ApplicationClaimValues.SuperAdmin,
                     ApplicationClaimValues.Administrator)
                 .RequireClaim(ClaimTypes.Id)
                 .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName)
                 .Build();
 
             auth.AddPolicy(ApplicationPolicies.Administrator, op => op
-                .RequireRole(ApplicationClaimValues.Administrator)
+                .RequireRole(ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin)
                 .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
 
             auth.AddPolicy(ApplicationPolicies.Reviewer, op => op
-                .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator)
+                .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator,
+                    ApplicationClaimValues.SuperAdmin)
                 .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
         });
         return services;
