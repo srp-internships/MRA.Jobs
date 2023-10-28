@@ -424,12 +424,15 @@ else
 												<FluentValidationValidator />
 												<MudCardHeader>
 													<CardHeaderContent>													
-															<MudAutocomplete T="string"  @bind-Value="@experienceUpdate.JobTitle" Variant="Variant.Outlined" Label="Job Title" Margin="Margin.Dense" For="(()=>experienceUpdate.JobTitle)"
+															<MudAutocomplete T="string"  @bind-Value="@experienceUpdate.JobTitle" Variant="Variant.Outlined" Label="Job Title" 
+															Margin="Margin.Dense" For="(()=>experienceUpdate.JobTitle)"
 															 Adornment="Adornment.None" CoerceValue="true" SearchFunc="SearchJobTitle"	/>
 													</CardHeaderContent>
 												</MudCardHeader>
 												<MudCardContent>
 													<MudTextField @bind-Value="@experienceUpdate.CompanyName" Variant="Variant.Outlined" Label="Company Name" Margin="Margin.Dense" For="(()=>experienceUpdate.CompanyName)" />
+												<MudAutocomplete @bind-Value="@experienceUpdate.CompanyName" Variant="Variant.Outlined" Label="Company Name" Margin="Margin.Dense"
+												For="@(()=>experienceUpdate.CompanyName)"  Adornment="Adornment.None" CoerceValue-"true" SearchFunc="SearhCompanyName"/>
 													<MudDatePicker Label="Start Date" @bind-Date="experienceUpdate.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>experienceUpdate.StartDate)" />
 													@if (experienceUpdate.IsCurrentJob == false)
 													{
@@ -926,6 +929,15 @@ else
 			.Contains(value, StringComparison.InvariantCultureIgnoreCase))
 			.Select(e => e.JobTitle).Distinct()
 			.ToList();
+	}
+	private async Task<IEnumerable<string>> SearhCompanyName(string value)
+	{
+		await Task.Delay(5);
+
+		return allExperiences.Where(e => e.CompanyName
+		.Contains(value, StringComparison.InvariantCultureIgnoreCase))
+		.Select(e => e.CompanyName).Distinct()
+		.ToList();
 	}
 
 	private async Task CreateExperienceHandle()
