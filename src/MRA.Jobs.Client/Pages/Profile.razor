@@ -910,16 +910,22 @@ else
 	private bool addExperience = false;
 	CreateExperienceDetailCommand createExperience = new CreateExperienceDetailCommand();
 	UpdateExperienceDetailCommand experienceUpdate = null;
-
+	List<UserExperienceResponse> allExperiences = new List<UserExperienceResponse>();
 	private Guid editingCardExperienceId;
 
 	private async Task GetExperiences()
 	{
 		experiences = await UserProfileService.GetExperiencesByUser();
+		allExperiences = await UserProfileService.GetAllExperiences();
 	}
 
-	private Task<IE SearchJobTitle(){
+	private async Task<IEnumerable<string>> SearchJobTitle(string value){
+		await Task.Delay(5);
 
+		return allExperiences.Where(e => e.JobTitle
+			.Contains(value, StringComparison.InvariantCultureIgnoreCase))
+			.Select(e => e.JobTitle).Distinct()
+			.ToList();
 	}
 
 	private async Task CreateExperienceHandle()
