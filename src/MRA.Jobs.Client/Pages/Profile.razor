@@ -940,6 +940,17 @@ else
 		.ToList();
 	}
 
+	private async Task<IEnumerable<string>> SearchAddress(string value)
+	{
+		await Task.Delay(5);
+
+		return allExperiences.Where(e => e.Address
+			.Contains(value, StringComparison.InvariantCultureIgnoreCase))
+			.Select(e => e.CompanyName).Distinct()
+			.ToList();
+
+	}
+
 	private async Task CreateExperienceHandle()
 	{
 		_processing = true;
