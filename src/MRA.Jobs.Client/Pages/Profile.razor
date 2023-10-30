@@ -579,7 +579,21 @@ else
 										}
 										@if (isEditing)
 										{
-											<MudTextField @onkeydown="KeyDown" @onblur="OnBlur" @bind-Value="newSkills" Variant="Variant.Outlined" Label="Skills" />
+											<div class="row">
+												<div class="col-9">
+													<MudAutocomplete T="string" @bind-Value="newSkills"
+													@onclick="OnBlur" CoerceValue="true" Adornment="Adornment.None"
+																	 Variant="Variant.Outlined" Label="Skills"
+																	 SearchFunc="@SearchSkills">
+														<ItemTemplate Context="skill">
+															<MudListItem OnClick="@(()=>AddSkills(skill))">@skill</MudListItem>
+														</ItemTemplate>
+													</MudAutocomplete>
+												</div>
+												@* <div class="col-1" style="padding-top:10px;">
+													<MudFab Color="Color.Primary" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" OnClick="OnBlur" />
+												</div> *@
+											</div>
 										}
 										else
 										{
@@ -1050,7 +1064,7 @@ else
 	#region Skills
 
 	private UserSkillsResponse UserSkills;
-	private UserSkillsResponse allUserSkills;
+	private UserSkillsResponse allSkills;
 	bool isEditing = false;
 	string newSkills = "";
 	bool isAdding = false;
@@ -1060,7 +1074,8 @@ else
 	{
 		try
 		{
-			UserSkills = await UserProfileService.GetSkills();
+			UserSkills = await UserProfileService.GetUserSkills();
+			allSkills = await UserProfileService.GetAllSkills();
 
 		}
 		catch (HttpRequestException ex)
@@ -1133,11 +1148,12 @@ else
 
 
 
-	private async Task SearchSkills(ChangeEventArgs e)
+	private async Task<IEnumerable<string>> SearchSkills(string value)
 	{
 		await Task.Delay(5);
-		string input = e.Value.ToString();
-		FoundSkills = allUserSkills.Skills.Where(skill => skill.Contains(input)).ToList();
+		return allSkills.Skills.Where(s => s.
+			Contains(value, StringComparison.InvariantCultureIgnoreCase))
+			.ToList();
 	}
 
 	#endregion

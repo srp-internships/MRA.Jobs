@@ -14,6 +14,8 @@ using Newtonsoft.Json;
 
 namespace MRA.Jobs.Client.Services.Profile;
 
+
+
 public class UserProfileService : IUserProfileService
 {
 
@@ -105,7 +107,7 @@ public class UserProfileService : IUserProfileService
         return response;
     }
 
-    public async Task<UserSkillsResponse> GetSkills()
+    public async Task<UserSkillsResponse> GetUserSkills()
     {
         var response = await _identityHttpClient.GetJsonAsync<UserSkillsResponse>("Profile/GetUserSkills");
         return response;
@@ -151,5 +153,11 @@ public class UserProfileService : IUserProfileService
     {
         var result = await _identityHttpClient.GetJsonAsync<List<UserExperienceResponse>>("Profile/GetAllExperiences");
         return result;
+    }
+
+    public async Task<UserSkillsResponse> GetAllSkills()
+    {
+        var response = await _identityHttpClient.GetJsonAsync<UserSkillsResponse>("Profile/GetAllSkills");
+        return response;
     }
 }

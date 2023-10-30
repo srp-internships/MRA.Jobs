@@ -32,7 +32,8 @@ public interface IUserProfileService
 
     Task<HttpResponseMessage> UpdateExperienceAsync(UpdateExperienceDetailCommand command);
 
-    Task<UserSkillsResponse> GetSkills();
+    Task<UserSkillsResponse> GetUserSkills();
+    Task<UserSkillsResponse> GetAllSkills();
     Task<HttpResponseMessage> RemoveSkillAsync(string skill);
 
     Task<UserSkillsResponse> AddSkills(AddSkillsCommand command);

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract.Skills.Queries;
@@ -9,12 +8,10 @@ namespace MRA.Identity.Application.Features.Skills.Queries;
 public class GetAllSkillsQueryHandler : IRequestHandler<GetAllSkillsQuery, UserSkillsResponse>
 {
     private readonly IApplicationDbContext _dbContext;
-    private readonly IMapper _mapper;
-
-    public GetAllSkillsQueryHandler(IApplicationDbContext dbContext, IMapper mapper)
+ 
+    public GetAllSkillsQueryHandler(IApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
-        _mapper = mapper;
     }
 
     public async Task<UserSkillsResponse> Handle(GetAllSkillsQuery request, CancellationToken cancellationToken)
