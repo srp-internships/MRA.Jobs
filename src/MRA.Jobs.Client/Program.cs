@@ -18,6 +18,7 @@ using MudBlazor.Services;
 using MRA.Jobs.Client.Services.Profile;
 using System.Reflection;
 using MRA.Identity.Application.Contract.Skills.Command;
+using MRA.Jobs.Client.Identity;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -47,7 +48,28 @@ builder.Services.AddScoped(_ =>
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddOptions();
-builder.Services.AddAuthorizationCore();
+builder.Services.AddAuthorizationCore(s =>
+{
+    s.AddPolicy(ApplicationPolicies.Applicant, ac => ac
+        .RequireRole(ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
+            ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin)
+        .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
+            ApplicationClaimValues.AllApplications)
+        .RequireClaim(ClaimTypes.Id).RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Username));
+
+    s.AddPolicy(ApplicationPolicies.Reviewer, ac => ac
+        .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator,
+            ApplicationClaimValues.SuperAdmin)
+        .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
+            ApplicationClaimValues.AllApplications)
+        .RequireClaim(ClaimTypes.Id).RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Username));
+
+    s.AddPolicy(ApplicationPolicies.Administrator, ac => ac
+        .RequireRole(ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin)
+        .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
+            ApplicationClaimValues.AllApplications)
+        .RequireClaim(ClaimTypes.Id).RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Username));
+});
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MRA.Identity.Application.Contract.Admin.Responses;
+using MRA.Identity.Application.Contract.User.Responses;
 
 namespace MRA.Identity.Application.Contract.User.Queries;
 #nullable disable

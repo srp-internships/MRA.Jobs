@@ -34,6 +34,10 @@ public static class DependencyInitializer
             else
                 options.UseSqlServer(dbConnectionString);
         });
+
+        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+        services.AddScoped<ApplicationDbContextInitializer>();
+
         services.AddScoped<DbMigration>();
         services.AddHttpClient();
 
@@ -77,9 +81,6 @@ public static class DependencyInitializer
 
         
 
-        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-        services.AddScoped<ApplicationDbContextInitializer>();
-        
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication(o =>
         {
@@ -110,9 +111,5 @@ public static class DependencyInitializer
             auth.AddPolicy(ApplicationPolicies.Administrator, op => op
                 .RequireRole(ApplicationClaimValues.SuperAdministrator, ApplicationClaimValues.Administrator));
         });
-        
-
-        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-        services.AddScoped<ApplicationDbContextInitializer>();
     }
 }

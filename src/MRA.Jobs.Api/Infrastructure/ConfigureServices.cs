@@ -29,7 +29,7 @@ public static class ConfigureServices
         }
         else
         {
-            services.AddAzureEmailService(); //uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
+            services.AddAzureEmailService();
         }
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
@@ -51,7 +51,7 @@ public static class ConfigureServices
         return services;
     }
 
-    public static IServiceCollection AddAppIdentity(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddAppIdentity(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddOptions();
 
@@ -70,7 +70,7 @@ public static class ConfigureServices
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
-                        System.Text.Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings")["SecurityKey"])),
+                        System.Text.Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings")["SecurityKey"]!)),
                 ValidateIssuer = false,
                 ValidateAudience = false
             };
@@ -81,18 +81,23 @@ public static class ConfigureServices
             auth.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
                 .RequireRole(ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
+                    ApplicationClaimValues.SuperAdmin,
                     ApplicationClaimValues.Administrator)
                 .RequireClaim(ClaimTypes.Id)
-                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName)
+                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
+                    ApplicationClaimValues.AllApplications)
                 .Build();
 
             auth.AddPolicy(ApplicationPolicies.Administrator, op => op
-                .RequireRole(ApplicationClaimValues.Administrator)
-                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
+                .RequireRole(ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin)
+                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
+                    ApplicationClaimValues.AllApplications));
 
             auth.AddPolicy(ApplicationPolicies.Reviewer, op => op
-                .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator)
-                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName));
+                .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator,
+                    ApplicationClaimValues.SuperAdmin)
+                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
+                    ApplicationClaimValues.AllApplications));
         });
         return services;
     }

@@ -1,11 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MediatR;
-using MRA.Identity.Application.Contract.Admin.Responses;
 using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using ClaimTypes = Mra.Shared.Common.Constants.ClaimTypes;
 using MRA.Identity.Application.Common.Exceptions;
+using MRA.Identity.Application.Contract.User.Responses;
 
 namespace MRA.Identity.Application.Features.Users.Query;
 

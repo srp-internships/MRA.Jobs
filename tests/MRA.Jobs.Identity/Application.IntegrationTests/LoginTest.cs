@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using MRA.Identity.Application.Contract.Application.Responses;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
+using MRA.Identity.Application.Contract.User.Responses;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
