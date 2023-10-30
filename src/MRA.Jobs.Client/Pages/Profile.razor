@@ -1151,10 +1151,12 @@ else
 	private async Task<IEnumerable<string>> SearchSkills(string value)
 	{
 		await Task.Delay(5);
-		return allSkills.Skills.Where(s => s.
-			Contains(value, StringComparison.InvariantCultureIgnoreCase))
+		var userSkillsSet = new HashSet<string>(UserSkills.Skills);
+		return allSkills.Skills
+			.Where(s => s.Contains(value, StringComparison.InvariantCultureIgnoreCase) && !userSkillsSet.Contains(s))
 			.ToList();
 	}
+
 
 	#endregion
 }
