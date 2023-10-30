@@ -59,7 +59,7 @@ public class ApplicationDbContextInitializer
         //create userRole
         var userRole = new ApplicationUserRole
         {
-            UserId = mraJobsAdminUser.Id, RoleId = _applicationRole.Id, Slug = $"role-{mraJobsAdminUser.UserName}"
+            UserId = mraJobsAdminUser.Id, RoleId = _applicationRole.Id, Slug = $"{mraJobsAdminUser.UserName}-role"
         };
 
         if (!await _context.UserRoles.AnyAsync(s => s.RoleId == userRole.RoleId && s.UserId == userRole.UserId))
@@ -182,15 +182,7 @@ public class ApplicationDbContextInitializer
             claim = new ApplicationUserClaim
             {
                 ClaimType = ClaimTypes.Application,
-                ClaimValue = "MraJobs",
-                Slug = $"{superAdmin.UserName}-application",
-                UserId = superAdmin.Id
-            };
-            await _context.UserClaims.AddAsync(claim);
-            claim = new ApplicationUserClaim
-            {
-                ClaimType = ClaimTypes.Application,
-                ClaimValue = "MraOnlinePlatform",
+                ClaimValue = ApplicationClaimValues.AllApplications,
                 Slug = $"{superAdmin.UserName}-application",
                 UserId = superAdmin.Id
             };
