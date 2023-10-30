@@ -59,7 +59,7 @@ public class ApplicationDbContextInitializer
         //create userRole
         var userRole = new ApplicationUserRole
         {
-            UserId = mraJobsAdminUser.Id, RoleId = _applicationRole.Id, Slug = $"role-{mraJobsAdminUser.UserName}"
+            UserId = mraJobsAdminUser.Id, RoleId = _applicationRole.Id, Slug = $"{mraJobsAdminUser.UserName}-role"
         };
 
         if (!await _context.UserRoles.AnyAsync(s => s.RoleId == userRole.RoleId && s.UserId == userRole.UserId))
@@ -167,7 +167,7 @@ public class ApplicationDbContextInitializer
                 await _context.SaveChangesAsync();
             }
             
-
+            //create role claim
             var claim = new ApplicationUserClaim
             {
                 ClaimType = ClaimTypes.Role,
@@ -176,6 +176,41 @@ public class ApplicationDbContextInitializer
                 UserId = superAdmin.Id
             };
             await _context.UserClaims.AddAsync(claim);
+            //create role claim
+
+            //create application claim
+            claim = new ApplicationUserClaim
+            {
+                ClaimType = ClaimTypes.Application,
+                ClaimValue = ApplicationClaimValues.AllApplications,
+                Slug = $"{superAdmin.UserName}-application",
+                UserId = superAdmin.Id
+            };
+            await _context.UserClaims.AddAsync(claim);   
+            //create application claim
+            
+            //create username claim
+            claim = new ApplicationUserClaim
+            {
+                ClaimType = ClaimTypes.Username,
+                ClaimValue = superAdmin.UserName,
+                Slug = $"{superAdmin.UserName}-username",
+                UserId = superAdmin.Id
+            };
+            await _context.UserClaims.AddAsync(claim);   
+            //create username claim
+            
+            //create id claim
+            claim = new ApplicationUserClaim
+            {
+                ClaimType = ClaimTypes.Id,
+                ClaimValue = superAdmin.Id.ToString(),
+                Slug = $"{superAdmin.UserName}-id",
+                UserId = superAdmin.Id
+            };
+            await _context.UserClaims.AddAsync(claim);   
+            //create id claim
+
             await _context.SaveChangesAsync();
         }
     }

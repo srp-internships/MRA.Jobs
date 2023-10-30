@@ -1,4 +1,4 @@
-﻿@page "/applications"
+﻿@page "/dashboard/applications"
 @attribute [Authorize(ApplicationPolicies.Administrator)]
 @using System.Net.Http.Json
 @using MRA.Jobs.Client.Identity;
@@ -17,7 +17,7 @@
             <col />
         </ColGroup>
         <HeaderContent>
-            <MudTh>Appliant username</MudTh>
+            <MudTh>Applicant username</MudTh>
             <MudTh>Vacancy title</MudTh>
             <MudTh>Applied at</MudTh>
             <MudTh>Status name</MudTh>

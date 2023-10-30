@@ -21,6 +21,8 @@ public class SendSmsQueryHandler : IRequestHandler<SendVerificationCodeSmsQuery,
     }
     public async Task<bool> Handle(SendVerificationCodeSmsQuery request, CancellationToken cancellationToken)
     {
+        if (request.PhoneNumber[0] != '+') request.PhoneNumber = "+" + request.PhoneNumber.Trim();
+
         var response = await _smsService.SendSmsAsync(request.PhoneNumber, GenerateMessage(out int code));
 
         if (!response) return false;

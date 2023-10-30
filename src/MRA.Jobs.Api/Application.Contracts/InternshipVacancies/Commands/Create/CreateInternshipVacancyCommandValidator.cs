@@ -12,7 +12,7 @@ public class CreateInternshipVacancyCommandValidator : AbstractValidator<CreateI
         RuleFor(x => x.EndDate).NotEmpty();
         RuleFor(x => x.CategoryId).NotEmpty();
         RuleFor(x => x.ApplicationDeadline).NotEmpty();
-        RuleFor(x => x.Duration).NotEmpty();
-        RuleFor(x => x.Stipend).NotEmpty();
+        RuleFor(x => x.Duration).GreaterThan(0);
+        RuleFor(x => x.Stipend).GreaterThan(0);
     }
 }

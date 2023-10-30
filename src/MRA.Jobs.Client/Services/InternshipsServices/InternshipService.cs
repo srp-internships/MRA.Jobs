@@ -69,6 +69,7 @@ public class InternshipService : IInternshipService
             ApplicationDeadline = createCommand.ApplicationDeadline,
             Duration = createCommand.Duration,
             Stipend = createCommand.Stipend,
+            VacancyQuestions = createCommand.VacancyQuestions
         };
 
         return await _http.PutAsJsonAsync($"internships/{slug}", updateCommand);

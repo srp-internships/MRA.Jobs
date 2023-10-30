@@ -6,30 +6,30 @@
 <MudSnackbarProvider />
 
 
-<div class="container m-0">
+<div class="m-0">
     <div class="row">
-        <div class="col-md-4">
-            <MudPaper Width="250px" Elevation="0" Class="py-3">
+        <div class="col-md-2">
+            <MudPaper Elevation="0">
                 <MudNavMenu Bordered="true">
-                    <MudNavLink Href="/dashboard">Dashboard</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard">Dashboard</MudNavLink>
                     <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
                     <MudNavGroup Title="User" Expanded="true">
-                        <MudNavLink Href="/applications">Applications</MudNavLink>
-                        <MudNavLink Href="/">Reviewers</MudNavLink>
+                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">Applications</MudNavLink>
+                        <MudNavLink Match="NavLinkMatch.All" Href="/">Reviewers</MudNavLink>
                     </MudNavGroup>
-                    <MudNavLink Href="/dashboard/jobs">Jobs</MudNavLink>
-                    <MudNavLink Href="/dashboard/internship">Internships</MudNavLink>
-                    <MudNavLink Href="/dashboard/trainings">Trainings</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">Jobs</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">Internships</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All"  Href="/dashboard/trainings">Trainings</MudNavLink>
                     <CascadingAuthenticationState>
                         <AuthorizeView Roles="@ApplicationClaimValues.Administrator">
-                            <MudNavLink Href="/userManager">Users manager</MudNavLink>
+                            <MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
                         </AuthorizeView>
                     </CascadingAuthenticationState>
                     <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="@LogOut">Log out</MudNavLink>
                 </MudNavMenu>
             </MudPaper>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-10" style="margin: 0 auto;">
             @Body
         </div>
     </div>

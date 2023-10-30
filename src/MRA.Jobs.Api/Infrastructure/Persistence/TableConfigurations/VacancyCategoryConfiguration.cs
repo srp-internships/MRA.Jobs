@@ -15,4 +15,4 @@ public class VacancyCategoryConfiguration : IEntityTypeConfiguration<VacancyCate
             .OnDelete(DeleteBehavior.Restrict);
         builder.HasIndex(v => v.Slug).IsUnique();
     }
-}
+}   

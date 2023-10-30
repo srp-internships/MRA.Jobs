@@ -18,9 +18,9 @@
 
                 @foreach (var response in VacancyResponses)
                 {
-                    <MudListItem Icon="@Icons.Material.Filled.QuestionMark" Text="@response.VacancyQuestion.Question">
+                    <MudListItem Icon="@Icons.Material.Filled.QuestionMark" IconColor="Color.Info" Text="@response.VacancyQuestion.Question">
                     </MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.QuestionAnswer">
+                    <MudListItem Icon="@Icons.Material.Filled.QuestionAnswer" IconColor="Color.Info">
                         @response.Response
                     </MudListItem>
                 }
