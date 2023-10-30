@@ -62,9 +62,6 @@
 									<MudText>Sign-up</MudText>
 								}
 							</MudButton>
-
-							@* <MudButton StartIcon="@Icons.Custom.Brands.Google" OnClick="GoogleAuth">With Google</MudButton> *@
-
 						</MudCardActions>
 						<ExternalLoginCard Title="Or Sign-Up With" />
 					</MudCard>
@@ -78,23 +75,7 @@
 	private readonly LoginForm _model = new();
 	private bool _processing;
 
-	private string GetCodeUrl = @"
-https://accounts.google.com/o/oauth2/v2/auth?
-access_type=offline
-&include_granted_scopes=true
-&response_type=code";
-
-
-	protected override void OnInitialized()
-	{
-		GetCodeUrl +=
-			$"&redirect_uri={NavigationManager.BaseUri}ClientCodeCallBack&scope={WebUtility.UrlEncode("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email")}&client_id={WebUtility.UrlEncode(Configuration["ClientId"])}";
-	}
-
-	private void GoogleAuth()
-	{
-		NavigationManager.NavigateTo(GetCodeUrl);
-	}
+	
 
 
 	public class LoginForm

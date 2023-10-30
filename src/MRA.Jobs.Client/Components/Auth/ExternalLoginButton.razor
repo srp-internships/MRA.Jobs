@@ -1,20 +1,37 @@
-﻿@inject IJSRuntime JSRuntime
+﻿@using System.Net
+@inject NavigationManager NavigationManager
+@inject IConfiguration Configuration
 
-<MudButton FullWidth="true" StartIcon="@Icon" Color="@Color" Variant="Variant.Filled" OnClick="@(() => LoginWithProvider())">@Provider</MudButton>
+<MudButton FullWidth="true" StartIcon="@Icon" Color="@Color" Variant="Variant.Filled" OnClick="GoogleAuth">@Provider</MudButton>
 
 @code {
-	[Parameter]
-	public string Provider { get; set; }
-	[Parameter]
-	public Color Color { get; set; }
-	[Parameter]
-	public string Icon { get; set; }
 
-	private async Task LoginWithProvider()
-	{
-		// Здесь вы можете вызвать API провайдера для входа в систему
-		// и обработать ответ.
-		// Например, вы можете использовать IJSRuntime для перенаправления пользователя на страницу входа провайдера.
-		await JSRuntime.InvokeVoidAsync("open", $"https://www.{Provider}.com/login", "_self");
-	}
+    [Parameter]
+    public string Provider { get; set; }
+
+    [Parameter]
+    public Color Color { get; set; }
+
+    [Parameter]
+    public string Icon { get; set; }
+
+    private string _getCodeUrl = @"
+https://accounts.google.com/o/oauth2/v2/auth?
+access_type=offline
+&include_granted_scopes=true
+&response_type=code";
+
+
+    protected override void OnInitialized()
+    {
+        Provider = "Google";
+        _getCodeUrl +=
+            $"&redirect_uri={NavigationManager.BaseUri}ClientCodeCallBack&scope={WebUtility.UrlEncode("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email")}&client_id={WebUtility.UrlEncode(Configuration["ClientId"])}";
+    }
+
+    private void GoogleAuth()
+    {
+        NavigationManager.NavigateTo(_getCodeUrl);
+    }
+
 }
