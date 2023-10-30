@@ -58,6 +58,13 @@ public class ProfileController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("GetAllSkills")]
+    public async Task<IActionResult> GetAllSkills()
+    {
+        var result = await _mediator.Send(new GetAllSkillsQuery());
+        return Ok(result);
+    }
+
     [HttpDelete("RemoveUserSkill/{skill}")]
     public async Task<IActionResult> RemoveUserSkill([FromRoute] string skill)
     {

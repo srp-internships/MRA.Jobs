@@ -579,7 +579,7 @@ else
 										}
 										@if (isEditing)
 										{
-											<MudTextField @onkeydown="KeyDown" @onblur="AddSkills" @bind-Value="newSkills" Variant="Variant.Outlined" Label="Skills" />
+											<MudTextField @onkeydown="KeyDown" @onblur="OnBlur" @bind-Value="newSkills" Variant="Variant.Outlined" Label="Skills" />
 										}
 										else
 										{
@@ -588,6 +588,12 @@ else
 									</div>
 								</MudCardContent>
 							</MudCard>
+							<div>
+								@foreach (string foundSkill in FoundSkills)
+								{
+									<MudButton OnClick="@(()=>AddSkills(foundSkill))">@foundSkill</MudButton>
+								}
+							</div>
 						</div>
 
 					</MudGrid>
@@ -855,6 +861,7 @@ else
 			var response = await UserProfileService.CreateEducationAsуnc(createEducation);
 			if (response.IsSuccessStatusCode)
 			{
+				Snackbar.Add("Add Education successfully.", MudBlazor.Severity.Success);
 				addEducation = false;
 				createEducation = new CreateEducationDetailCommand();
 				await GetEducations();
@@ -894,7 +901,8 @@ else
 			if (result.IsSuccessStatusCode)
 			{
 				editingCardId = Guid.NewGuid();
-				Snackbar.Add("Education updated", MudBlazor.Severity.Success);
+				Snackbar.Add("Update Education successfully.", MudBlazor.Severity.Success);
+
 				await GetEducations();
 				StateHasChanged();
 			}
@@ -969,6 +977,8 @@ else
 			var response = await UserProfileService.CreateExperienceAsync(createExperience);
 			if (response.IsSuccessStatusCode)
 			{
+				Snackbar.Add("Add Experience successfully.", MudBlazor.Severity.Success);
+
 				addExperience = false;
 				createExperience = new CreateExperienceDetailCommand();
 				await GetExperiences();
@@ -1020,6 +1030,8 @@ else
 			var result = await UserProfileService.UpdateExperienceAsync(experienceUpdate);
 			if (result.IsSuccessStatusCode)
 			{
+				Snackbar.Add("Update Education successfully.", MudBlazor.Severity.Success);
+
 				editingCardExperienceId = Guid.NewGuid();
 				StateHasChanged();
 			}
@@ -1038,21 +1050,23 @@ else
 	#region Skills
 
 	private UserSkillsResponse UserSkills;
+	private UserSkillsResponse allUserSkills;
 	bool isEditing = false;
 	string newSkills = "";
 	bool isAdding = false;
+	List<string> FoundSkills = new List<string>();
 
 	private async Task GetSkills()
 	{
 		try
 		{
 			UserSkills = await UserProfileService.GetSkills();
+
 		}
 		catch (HttpRequestException ex)
 		{
 			ServerNotResponding();
 		}
-
 	}
 
 	async void Closed(MudChip chip)
@@ -1068,13 +1082,21 @@ else
 			if (!isAdding)
 			{
 				isAdding = true;
-				AddSkills();
+				await AddSkills();
 			}
 		}
 	}
 
-	private async void AddSkills()
+	private async Task OnBlur()
 	{
+		await AddSkills();
+	}
+
+	private async Task AddSkills(string foundSkill = null)
+	{
+		if (foundSkill != null)
+			newSkills = foundSkill;
+
 		try
 		{
 			if (!string.IsNullOrWhiteSpace(newSkills))
@@ -1092,6 +1114,8 @@ else
 				var result = await UserProfileService.AddSkills(userSkillsCommand);
 				if (result != null)
 				{
+					Snackbar.Add("Add Skills successfully.", MudBlazor.Severity.Success);
+
 					newSkills = "";
 					isEditing = false;
 					UserSkills = result;
@@ -1105,6 +1129,15 @@ else
 			ServerNotResponding();
 		}
 
+	}
+
+
+
+	private async Task SearchSkills(ChangeEventArgs e)
+	{
+		await Task.Delay(5);
+		string input = e.Value.ToString();
+		FoundSkills = allUserSkills.Skills.Where(skill => skill.Contains(input)).ToList();
 	}
 
 	#endregion
