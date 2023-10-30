@@ -21,4 +21,5 @@ public class UpdateTrainingVacancyCommand : IRequest<string>
     public int Duration { get; set; }
     public int Fees { get; set; }
     public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyTaskDto> VacancyTasks { get; set; }
 }

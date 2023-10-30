@@ -17,7 +17,8 @@ public class InternshipProfile : Profile
             .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag)));
         CreateMap<CreateInternshipVacancyCommand, InternshipVacancy>()
-            .ForMember(dest => dest.VacancyQuestions, opt => opt.MapFrom(src => src.VacancyQuestions));
+            .ForMember(dest => dest.VacancyQuestions, opt => opt.MapFrom(src => src.VacancyQuestions))
+            .ForMember(dest => dest.VacancyTasks, opt => opt.MapFrom(src => src.VacancyTasks));
         CreateMap<UpdateInternshipVacancyCommand, InternshipVacancy>();
         MappingConfiguration.ConfigureVacancyMap<VacancyTimelineEvent, TimeLineDetailsDto>(this);
         MappingConfiguration.ConfigureVacancyMap<Tag, TagDto>(this);

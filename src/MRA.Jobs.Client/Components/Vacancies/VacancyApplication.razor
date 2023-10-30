@@ -36,6 +36,7 @@
                     }
                 </div>
             }
+
             <button type="submit" class="btn mt-3" style="background-color: #129fd7;">Apply</button>
         </EditForm>
     }
@@ -82,6 +83,7 @@
             var updatedResponse = new VacancyResponseDto
                 {
                     VacancyQuestion = vr.VacancyQuestion,
+					VacancyTask=vr.VacancyTask,
                     Response = questionResponses[vr.VacancyQuestion.Question]
                 };
 

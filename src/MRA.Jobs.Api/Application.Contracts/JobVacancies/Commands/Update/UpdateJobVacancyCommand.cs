@@ -21,4 +21,5 @@ public class UpdateJobVacancyCommand : IRequest<string>
     public int RequiredYearOfExperience { get; set; }
     public Dtos.Enums.ApplicationStatusDto.WorkSchedule WorkSchedule { get; set; }
     public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyTaskDto> VacancyTasks { get; set; }
 }
