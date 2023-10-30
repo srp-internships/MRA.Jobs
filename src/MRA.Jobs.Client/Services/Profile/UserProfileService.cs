@@ -115,7 +115,7 @@ public class UserProfileService : IUserProfileService
 
     public async Task<HttpResponseMessage> RemoveSkillAsync(string skill)
     {
-        var response = await _identityHttpClient.DeleteAsync($"Profile/RemoveUserSkill/{skill}");
+        var response = await _identityHttpClient.DeleteAsync($"Profile/RemoveUserSkill/{Uri.EscapeDataString(skill)}");
         return response;
     }
 
