@@ -80,10 +80,10 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, JwtTo
                     LastName = googlePayload.FamilyName,
                     Username = googlePayload.Email,
                     Password = RandomPassword(),
-                    Application = "MraJobs",
-                    Role = "Applicant"
+                    Application = request.Application,
+                    Role = request.Role
                 };
-
+                
                 var registerCommandResult = await _mediator.Send(registerCommand, cancellationToken);
                 user = await _userManager.FindByIdAsync(registerCommandResult.ToString());
             }

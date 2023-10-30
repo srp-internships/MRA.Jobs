@@ -2,25 +2,28 @@
 @using System.Web
 @using MRA.Identity.Application.Contract.User.Commands.GoogleAuth
 @using System.Net
+@using Microsoft.IdentityModel.Tokens
 @using MRA.Identity.Application.Contract.User.Responses
 @inject NavigationManager NavigationManager
 @inject IdentityHttpClient Client
 @inject ILocalStorageService LocalStorageService
-@code {
+@inject ISnackbar Snackbar
 
-    [Parameter]
-    public string Code { get; set; }
+@code {
 
     protected override async Task OnInitializedAsync()
     {
-
         var http = HttpUtility.ParseQueryString(WebUtility.UrlDecode(NavigationManager.Uri.Split('?')[1]));
-        Console.WriteLine(NavigationManager.Uri);
-        Console.WriteLine(http["code"]);
-        Console.WriteLine(Code);
 
-        var response = await Client.PostAsJsonAsync("auth/googleCode",new GoogleAuthCommand { Code = http["code"]! });//todo check code
-        
+        var code = http["code"];
+        if (code.IsNullOrEmpty())
+        {
+            Snackbar.Add("Google authorization failed. Please try again later.", Severity.Error);
+            StateHasChanged();
+            return;
+        }
+        var response = await Client.PostAsJsonAsync("auth/googleCode", new GoogleAuthCommand { Code = code, Application = "MraJobs", Role = "Applicant", });
+
         if (response.IsSuccessStatusCode)
         {
             await LocalStorageService.SetItemAsync("authToken", await response.Content.ReadFromJsonAsync<JwtTokenResponse>());
