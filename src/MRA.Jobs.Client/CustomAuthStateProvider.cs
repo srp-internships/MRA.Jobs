@@ -3,8 +3,8 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
 using Blazored.LocalStorage;
-using MRA.Identity.Application.Contract.Admin.Responses;
 using MRA.Identity.Application.Contract.User.Queries;
+using MRA.Identity.Application.Contract.User.Responses;
 
 namespace MRA.Jobs.Client;
 

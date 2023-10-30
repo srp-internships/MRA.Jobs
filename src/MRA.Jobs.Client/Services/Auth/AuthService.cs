@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
-using MRA.Identity.Application.Contract.Admin.Responses;
 using Blazored.LocalStorage;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
+using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Client.Identity;
 
 namespace MRA.Jobs.Client.Services.Auth;
