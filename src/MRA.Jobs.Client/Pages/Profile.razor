@@ -260,7 +260,7 @@ else
 												<MudCardContent>
 													<MudAutocomplete T="string" @bind-Value="@educationUpdate.University" Variant="Variant.Outlined"
 																	 Label="University" Margin="Margin.Dense" For="(()=>educationUpdate.University)"
-																	 SearchFunc="SearhUniversity" Adornment="Adornment.None" CoerceValue="true" />
+																	 SearchFunc="SearchUniversity" Adornment="Adornment.None" CoerceValue="true" />
 													<MudDatePicker Label="Start Date" @bind-Date="@educationUpdate.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>educationUpdate.StartDate)" />
 													@if (educationUpdate.UntilNow == false)
 													{
@@ -349,10 +349,9 @@ else
 											</CardHeaderContent>
 										</MudCardHeader>
 										<MudCardContent>
-											<MudTextField @bind-Value="@createEducation.University" Variant="Variant.Outlined" Label="University" Margin="Margin.Dense" For="(()=>createEducation.University)" />
 											<MudAutocomplete T="string" @bind-Value="@createEducation.University" Variant="Variant.Outlined"
 															 Label="University" Margin="Margin.Dense" For="(()=>createEducation.University)"
-															 SearchFunc="SearhUniversity" CoerceValue="true" Adornment="Adornment.None" />
+															 SearchFunc="SearchUniversity" CoerceValue="true" Adornment="Adornment.None" />
 											<MudDatePicker Label="Start Date" @bind-Date="createEducation.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>createEducation.StartDate)" />
 											<small><ValidationMessage For="(()=>createEducation.StartDate)" class="text-danger"></ValidationMessage></small>
 											@if (createEducation.UntilNow == false)
@@ -423,23 +422,24 @@ else
 											<EditForm Model="experienceUpdate" OnInvalidSubmit="(()=>UpdateExperienceHandle())">
 												<FluentValidationValidator />
 												<MudCardHeader>
-													<CardHeaderContent>													
-															<MudAutocomplete T="string"  @bind-Value="@experienceUpdate.JobTitle" Variant="Variant.Outlined" Label="Job Title" 
-															Margin="Margin.Dense" For="(()=>experienceUpdate.JobTitle)"
-															 Adornment="Adornment.None" CoerceValue="true" SearchFunc="SearchJobTitle"	/>
+													<CardHeaderContent>
+														<MudAutocomplete T="string" @bind-Value="@experienceUpdate.JobTitle" Variant="Variant.Outlined" Label="Job Title"
+																		 Margin="Margin.Dense" For="(()=>experienceUpdate.JobTitle)"
+																		 Adornment="Adornment.None" CoerceValue="true" SearchFunc="SearchJobTitle" />
 													</CardHeaderContent>
 												</MudCardHeader>
 												<MudCardContent>
-													<MudTextField @bind-Value="@experienceUpdate.CompanyName" Variant="Variant.Outlined" Label="Company Name" Margin="Margin.Dense" For="(()=>experienceUpdate.CompanyName)" />
-												<MudAutocomplete @bind-Value="@experienceUpdate.CompanyName" Variant="Variant.Outlined" Label="Company Name" Margin="Margin.Dense"
-												For="@(()=>experienceUpdate.CompanyName)"  Adornment="Adornment.None" CoerceValue-"true" SearchFunc="SearhCompanyName"/>
+													<MudAutocomplete @bind-Value="@experienceUpdate.CompanyName" Variant="Variant.Outlined" Label="Company Name"
+																	 Margin="Margin.Dense" For="(()=>experienceUpdate.CompanyName)"
+																	 Adornment="Adornment.None" CoerceValue="true" SearchFunc="SearchCompanyName" />
 													<MudDatePicker Label="Start Date" @bind-Date="experienceUpdate.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>experienceUpdate.StartDate)" />
 													@if (experienceUpdate.IsCurrentJob == false)
 													{
 														<MudDatePicker Label="End Date" @bind-Date="experienceUpdate.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>experienceUpdate.EndDate)" />
 													}
 													<MudCheckBox @bind-Checked="@experienceUpdate.IsCurrentJob" Label="Until Now" Color="Color.Primary"></MudCheckBox>
-													<MudTextField @bind-Value="@experienceUpdate.Address" Label="Address" Variant="Variant.Outlined" For="(()=>experienceUpdate.Address)"></MudTextField>
+													<MudAutocomplete @bind-Value="@experienceUpdate.Address" Label="Address" Variant="Variant.Outlined"
+																	 For="(()=>experienceUpdate.Address)" Adornment="Adornment.None" CoerceValue="true" SearchFunc="SearchAddress" />
 													<MudTextField T="string" @bind-Value="@experienceUpdate.Description" Label="Description" Lines="5" Variant="Variant.Outlined" For="(()=>experienceUpdate.Description)"></MudTextField>
 
 												</MudCardContent>
@@ -521,18 +521,24 @@ else
 										<MudCardHeader>
 											<CardHeaderContent>
 												<MudText Typo="Typo.h6"><strong>New Experience</strong></MudText>
-												<MudTextField @bind-Value="@createExperience.JobTitle" Variant="Variant.Outlined" Label="Job Title" Margin="Margin.Dense" For="(()=>createExperience.JobTitle)" />
+												<MudAutocomplete @bind-Value="@createExperience.JobTitle" Variant="Variant.Outlined" Label="Job Title"
+																 Margin="Margin.Dense" For="(()=>createExperience.JobTitle)"
+																 Adornment="Adornment.None" CoerceValue="true" SearchFunc="SearchJobTitle" />
 											</CardHeaderContent>
 										</MudCardHeader>
 										<MudCardContent>
-											<MudTextField @bind-Value="@createExperience.CompanyName" Variant="Variant.Outlined" Label="Company Name" Margin="Margin.Dense" For="(()=>createExperience.CompanyName)" />
+											<MudAutocomplete @bind-Value="@createExperience.CompanyName" Variant="Variant.Outlined" Label="Company Name"
+															 Margin="Margin.Dense" For="(()=>createExperience.CompanyName)"
+															 Adornment="Adornment.None" CoerceValue="true" SearchFunc="SearchCompanyName" />
 											<MudDatePicker Label="Start Date" @bind-Date="createExperience.StartDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>createExperience.StartDate)" />
 											@if (createExperience.IsCurrentJob == false)
 											{
 												<MudDatePicker Label="End Date" @bind-Date="createExperience.EndDate" DateFormat="dd.MM.yyyy" Variant="Variant.Outlined" Margin="Margin.Dense" For="(()=>createExperience.EndDate)" />
 											}
 											<MudCheckBox @bind-Checked="@createExperience.IsCurrentJob" Label="Is Current Job" Color="Color.Primary"></MudCheckBox>
-											<MudTextField @bind-Value="@createExperience.Address" Label="Address" Variant="Variant.Outlined" For="(()=>createExperience.Address)"></MudTextField>
+											<MudAutocomplete @bind-Value="@createExperience.Address" Label="Address" Variant="Variant.Outlined"
+															 For="(()=>createExperience.Address)" Margin="Margin.Dense"
+															 Adornment="Adornment.None" CoerceValue="true" SearchFunc="SearchAddress" />
 											<MudTextField T="string" @bind-Value="@createExperience.Description" Label="Description" Lines="5" Variant="Variant.Outlined" For="(()=>createExperience.Description)"></MudTextField>
 										</MudCardContent>
 										<MudCardActions>
@@ -814,7 +820,7 @@ else
 			.ToList();
 	}
 
-	private async Task<IEnumerable<string>> SearhUniversity(string value)
+	private async Task<IEnumerable<string>> SearchUniversity(string value)
 	{
 		await Task.Delay(5);
 
@@ -922,7 +928,8 @@ else
 		allExperiences = await UserProfileService.GetAllExperiences();
 	}
 
-	private async Task<IEnumerable<string>> SearchJobTitle(string value){
+	private async Task<IEnumerable<string>> SearchJobTitle(string value)
+	{
 		await Task.Delay(5);
 
 		return allExperiences.Where(e => e.JobTitle
@@ -930,7 +937,7 @@ else
 			.Select(e => e.JobTitle).Distinct()
 			.ToList();
 	}
-	private async Task<IEnumerable<string>> SearhCompanyName(string value)
+	private async Task<IEnumerable<string>> SearchCompanyName(string value)
 	{
 		await Task.Delay(5);
 
@@ -946,7 +953,7 @@ else
 
 		return allExperiences.Where(e => e.Address
 			.Contains(value, StringComparison.InvariantCultureIgnoreCase))
-			.Select(e => e.CompanyName).Distinct()
+			.Select(e => e.Address).Distinct()
 			.ToList();
 
 	}
