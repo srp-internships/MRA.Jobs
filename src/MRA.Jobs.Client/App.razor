@@ -2,25 +2,15 @@
 <Router AppAssembly="typeof(Program).Assembly" Context="routeData">
     <Found>
         <CascadingAuthenticationState>
-
-            <AuthorizeView>
+            <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
                 <Authorized>
-                    <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
-                        <Authorized>
-                            <RouteView RouteData="routeData" DefaultLayout="typeof(Dashboard)"/>
-                        </Authorized>
-
-                        <NotAuthorized>
-                            <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)"/>
-                        </NotAuthorized>
-                    </AuthorizeView>
-
+                    <RouteView RouteData="routeData" DefaultLayout="typeof(Dashboard)"/>
                 </Authorized>
+
                 <NotAuthorized>
                     <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)"/>
                 </NotAuthorized>
             </AuthorizeView>
-
         </CascadingAuthenticationState>
     </Found>
     <NotFound>

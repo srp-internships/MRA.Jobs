@@ -16,21 +16,24 @@ public interface IUserProfileService
     Task<UserProfileResponse> Get();
     Task<string> Update(UpdateProfileCommand command);
 
-    Task<List<UserEducationResponse>> GetEducations();
+    Task<List<UserEducationResponse>> GetEducationsByUser();
+    Task<List<UserEducationResponse>> GetAllEducations();
 
     Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command);
 
     Task<HttpResponseMessage> UpdateEducationAsync(UpdateEducationDetailCommand command);
-    Task<HttpResponseMessage> DeleteEducationAsync(Guid id); 
+    Task<HttpResponseMessage> DeleteEducationAsync(Guid id);
     Task<HttpResponseMessage> DeleteExperienceAsync(Guid id);
 
-    Task<List<UserExperienceResponse>> GetExperiences();
+    Task<List<UserExperienceResponse>> GetExperiencesByUser();
+    Task<List<UserExperienceResponse>> GetAllExperiences();
 
     Task<HttpResponseMessage> CreateExperienceAsync(CreateExperienceDetailCommand command);
 
     Task<HttpResponseMessage> UpdateExperienceAsync(UpdateExperienceDetailCommand command);
 
-    Task<UserSkillsResponse> GetSkills();
+    Task<UserSkillsResponse> GetUserSkills();
+    Task<UserSkillsResponse> GetAllSkills();
     Task<HttpResponseMessage> RemoveSkillAsync(string skill);
 
     Task<UserSkillsResponse> AddSkills(AddSkillsCommand command);

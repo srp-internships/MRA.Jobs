@@ -14,6 +14,7 @@ public static class DependencyInitializer
     {
         services.AddOptions();
         services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddScoped<IGoogleTokenService, TokenService>();
 
         services.AddAutoMapper(typeof(UsersProfile).Assembly);
 

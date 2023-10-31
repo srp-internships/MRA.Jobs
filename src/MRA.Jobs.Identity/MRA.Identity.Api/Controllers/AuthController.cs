@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Commands;
+using MRA.Identity.Application.Contract.User.Commands.GoogleAuth;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Queries;
@@ -59,5 +60,12 @@ public class AuthController : ControllerBase
     {
         var response = await _mediator.Send(request);
         return Ok(response);
+    }
+    
+    [HttpPost("googleCode")]
+    public async Task<IActionResult> GoogleLogin([FromBody] GoogleAuthCommand googleAuth)
+    {
+        var result = await _mediator.Send(googleAuth);
+        return Ok(result);
     }
 }

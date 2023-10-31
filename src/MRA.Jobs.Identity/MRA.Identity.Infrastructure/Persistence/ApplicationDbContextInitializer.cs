@@ -84,6 +84,22 @@ public class ApplicationDbContextInitializer
             await _context.UserClaims.AddAsync(userRoleClaim);
         }
         //create role claim
+        
+        //create email claim
+        if (!await _context.UserClaims.AnyAsync(s =>
+                s.UserId == mraJobsAdminUser.Id &&
+                s.ClaimType == ClaimTypes.Role))
+        {
+            var userRoleClaim = new ApplicationUserClaim
+            {
+                UserId = mraJobsAdminUser.Id,
+                ClaimType = ClaimTypes.Email,
+                ClaimValue = mraJobsAdminUser.Email,
+                Slug = $"{mraJobsAdminUser.UserName}-email"
+            };
+            await _context.UserClaims.AddAsync(userRoleClaim);
+        }
+        //create email claim
 
 
         //create application claim
@@ -200,6 +216,17 @@ public class ApplicationDbContextInitializer
             await _context.UserClaims.AddAsync(claim);   
             //create username claim
             
+            //create email claim
+            claim = new ApplicationUserClaim
+            {
+                ClaimType = ClaimTypes.Email,
+                ClaimValue = superAdmin.Email,
+                Slug = $"{superAdmin.UserName}-email",
+                UserId = superAdmin.Id
+            };
+            await _context.UserClaims.AddAsync(claim);   
+            //create email claim
+            
             //create id claim
             claim = new ApplicationUserClaim
             {
@@ -267,6 +294,28 @@ public class ApplicationDbContextInitializer
         createRoleResult = await _roleManager.CreateAsync(role);
         ThrowExceptionFromIdentityResult(createRoleResult);
         //applicant
+        
+        //teacher
+        roleString = "Teacher";
+        role = new ApplicationRole
+        {
+            Id = Guid.NewGuid(), Name = roleString, NormalizedName = roleString.ToUpper(), Slug = roleString
+        };
+
+        createRoleResult = await _roleManager.CreateAsync(role);
+        ThrowExceptionFromIdentityResult(createRoleResult);
+        //teacher
+        
+        //student
+        roleString = "Student";
+        role = new ApplicationRole
+        {
+            Id = Guid.NewGuid(), Name = roleString, NormalizedName = roleString.ToUpper(), Slug = roleString
+        };
+
+        createRoleResult = await _roleManager.CreateAsync(role);
+        ThrowExceptionFromIdentityResult(createRoleResult);
+        //student
     }
 
     private static void ThrowExceptionFromIdentityResult(IdentityResult result,[System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
