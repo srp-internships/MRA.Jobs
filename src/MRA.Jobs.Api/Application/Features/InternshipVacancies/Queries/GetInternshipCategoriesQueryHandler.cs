@@ -19,8 +19,8 @@ public class GetInternshipCategoriesQueryHandler : IRequestHandler<GetInternship
         var Internships =(await _context.Internships.ToListAsync()).AsEnumerable();
         if (request.CheckDate)
         {
-            DateTime now = DateTime.UtcNow;
-            Internships = Internships.Where(t => t.PublishDate <= now && t.EndDate >= now);
+            DateTime now = DateTime.Now;
+            Internships = Internships.Where(t => t.PublishDate.AddDays(-1) <= now && t.EndDate >= now);
         }
         var sortedInternships = from t in Internships
                                 group t by t.CategoryId;

@@ -19,8 +19,8 @@ public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCate
 
         if (request.CheckDate)
         {
-            DateTime now = DateTime.UtcNow;
-            trainings = trainings.Where(t => t.PublishDate <= now && t.EndDate >= now);
+            DateTime now = DateTime.Now;
+            trainings = trainings.Where(t => t.PublishDate.AddDays(-1) <= now && t.EndDate >= now);
         }
 
         var sortedTrainings = from t in trainings
