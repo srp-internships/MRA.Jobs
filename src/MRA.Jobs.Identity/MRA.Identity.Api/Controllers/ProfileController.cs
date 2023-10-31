@@ -8,6 +8,7 @@ using MRA.Identity.Application.Contract.Educations.Query;
 using MRA.Identity.Application.Contract.Experience.Command.Delete;
 using MRA.Identity.Application.Contract.Experiences.Commands.Create;
 using MRA.Identity.Application.Contract.Experiences.Commands.Update;
+using MRA.Identity.Application.Contract.Experiences.Queries;
 using MRA.Identity.Application.Contract.Experiences.Query;
 using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Queries;
@@ -57,6 +58,13 @@ public class ProfileController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("GetAllSkills")]
+    public async Task<IActionResult> GetAllSkills()
+    {
+        var result = await _mediator.Send(new GetAllSkillsQuery());
+        return Ok(result);
+    }
+
     [HttpDelete("RemoveUserSkill/{skill}")]
     public async Task<IActionResult> RemoveUserSkill([FromRoute] string skill)
     {
@@ -89,7 +97,14 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> GetEducationsByUser([FromQuery] GetEducationsByUserQuery query)
     {
         var result = await _mediator.Send(query);
-       
+
+        return Ok(result);
+    }
+
+    [HttpGet("GetAllEducations")]
+    public async Task<IActionResult> GetAllEducations()
+    {
+        var result = await _mediator.Send(new GetAllEducationsQuery());
         return Ok(result);
     }
 
@@ -122,4 +137,10 @@ public class ProfileController : ControllerBase
     }
 
 
+    [HttpGet("GetAllExperiences")]
+    public async Task<IActionResult> GetAllExperiences()
+    {
+        var result = await _mediator.Send(new GetAllExperienceQuery());
+        return Ok(result);
+    }
 }
