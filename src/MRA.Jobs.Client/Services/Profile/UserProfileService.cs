@@ -14,8 +14,11 @@ using Newtonsoft.Json;
 
 namespace MRA.Jobs.Client.Services.Profile;
 
+
+
 public class UserProfileService : IUserProfileService
 {
+
     private readonly IdentityHttpClient _identityHttpClient;
 
     public UserProfileService(IdentityHttpClient identityHttpClient)
@@ -56,7 +59,7 @@ public class UserProfileService : IUserProfileService
         return result;
     }
 
-    public async Task<List<UserEducationResponse>> GetEducations()
+    public async Task<List<UserEducationResponse>> GetEducationsByUser()
     {
         var result = await _identityHttpClient.GetJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
         return result;
@@ -86,7 +89,7 @@ public class UserProfileService : IUserProfileService
         return respose;
     }
 
-    public async Task<List<UserExperienceResponse>> GetExperiences()
+    public async Task<List<UserExperienceResponse>> GetExperiencesByUser()
     {
         var result = await _identityHttpClient.GetJsonAsync<List<UserExperienceResponse>>("Profile/GetExperiencesByUser");
         return result;
@@ -104,7 +107,7 @@ public class UserProfileService : IUserProfileService
         return response;
     }
 
-    public async Task<UserSkillsResponse> GetSkills()
+    public async Task<UserSkillsResponse> GetUserSkills()
     {
         var response = await _identityHttpClient.GetJsonAsync<UserSkillsResponse>("Profile/GetUserSkills");
         return response;
@@ -112,7 +115,7 @@ public class UserProfileService : IUserProfileService
 
     public async Task<HttpResponseMessage> RemoveSkillAsync(string skill)
     {
-        var response = await _identityHttpClient.DeleteAsync($"Profile/RemoveUserSkill/{skill}");
+        var response = await _identityHttpClient.DeleteAsync($"Profile/RemoveUserSkill/{Uri.EscapeDataString(skill)}");
         return response;
     }
 
@@ -137,6 +140,24 @@ public class UserProfileService : IUserProfileService
     public async Task<bool> CheckConfirmationCode(string phoneNumber, int? code)
     {
         var response = await _identityHttpClient.GetJsonAsync<bool>($"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
+        return response;
+    }
+
+    public async Task<List<UserEducationResponse>> GetAllEducations()
+    {
+        var result = await _identityHttpClient.GetJsonAsync<List<UserEducationResponse>>("Profile/GetAllEducations");
+        return result;
+    }
+
+    public async Task<List<UserExperienceResponse>> GetAllExperiences()
+    {
+        var result = await _identityHttpClient.GetJsonAsync<List<UserExperienceResponse>>("Profile/GetAllExperiences");
+        return result;
+    }
+
+    public async Task<UserSkillsResponse> GetAllSkills()
+    {
+        var response = await _identityHttpClient.GetJsonAsync<UserSkillsResponse>("Profile/GetAllSkills");
         return response;
     }
 }
