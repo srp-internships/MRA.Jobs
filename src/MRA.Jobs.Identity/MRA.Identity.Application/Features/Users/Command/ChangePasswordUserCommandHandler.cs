@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.Services;
@@ -24,7 +25,7 @@ public class ChangePasswordUserCommandHandler : IRequestHandler<ChangePasswordUs
 
         bool success = await _userManager.CheckPasswordAsync(user, request.OldPassword);
         if (!success)
-            throw new Exception("Incorrect password");
+            throw new  Exception("Incorrect password");
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 

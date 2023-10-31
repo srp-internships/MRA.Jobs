@@ -15,12 +15,29 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             { Exception: UnauthorizedAccessException } => HandleUnauthorizedAccessException(context),
             { Exception: ForbiddenAccessException } => HandleForbiddenAccessException(context),
             { Exception: TaskCanceledException } => HandleTaskCanceledException(context),
+            { Exception: Exception } => HandleGenericException(context),
             { ModelState: { IsValid: false } } => HandleInvalidModelStateException(context),
             _ => HandleUnknownException(context)
         };
 
         base.OnException(context);
     }
+
+    public bool HandleGenericException(ExceptionContext context)
+    {
+        var errorResponse = new BadRequestResponse
+        {
+            Errors = new List<Error>
+        {
+            new Error { Title = "Bad Request", Details = context.Exception.Message }
+        }
+        };
+
+        context.Result = new BadRequestObjectResult(errorResponse);
+
+        return true;
+    }
+
 
     public bool HandleTaskCanceledException(ExceptionContext context)
     {
@@ -64,7 +81,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Status = StatusCodes.Status400BadRequest,
-            Title=exception.Message
+            Title = exception.Message
         };
 
         context.Result = new BadRequestObjectResult(details);
@@ -115,6 +132,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
         return true;
     }
+
 
     private bool HandleForbiddenAccessException(ExceptionContext context)
     {
