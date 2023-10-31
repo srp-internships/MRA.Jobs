@@ -7,40 +7,53 @@
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
 
-<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" vacancy="@internship"/>
+<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" taskResponses="@taskResponses" vacancy="@internship" />
 
 @code {
-    private VacancyApplicationResponse internship;
-    private CreateApplicationCommand application;
-    public Dictionary<string, string> questionResponses = new();
+	private VacancyApplicationResponse internship;
+	private CreateApplicationCommand application;
+	public Dictionary<string, string> questionResponses = new();
+	public Dictionary<string, string> taskResponses = new();
 
-    [Parameter]
-    public string Slug { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        var response = await InternshipService.GetBySlug(Slug);
+	[Parameter]
+	public string Slug { get; set; }
 
-        if (response != null)
-        {
-            internship = new VacancyApplicationResponse
-                {
-                    Id = response.Id,
-                    Title = response.Title,
-                    VacancyQuestions = response.VacancyQuestions
-                };
-            application = new CreateApplicationCommand
+	protected override async Task OnInitializedAsync()
+	{
+		var response = await InternshipService.GetBySlug(Slug);
+
+		if (response != null)
+		{
+			internship = new VacancyApplicationResponse
+				{
+					Id = response.Id,
+					Title = response.Title,
+					VacancyQuestions = response.VacancyQuestions,
+					VacancyTasks = response.VacancyTasks
+				};
+			application = new CreateApplicationCommand
 				{
 					VacancyId = internship.Id,
 					VacancyResponses = internship.VacancyQuestions.Select(q => new VacancyResponseDto
 					{
 						VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+					}),
+					TaskResponses = internship.VacancyTasks.Select(t => new TaskResponseDto
+					{
+						TaskId = t.Id,
+						Code = t.Template
 					})
+
 				};
 
 			foreach (var question in internship.VacancyQuestions)
 			{
 				questionResponses[question.Question] = "";
+			}
+			foreach (var task in internship.VacancyTasks)
+			{
+				taskResponses[task.Template] = "";
 			}
 		}
 	}

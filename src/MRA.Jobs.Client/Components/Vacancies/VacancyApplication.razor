@@ -7,101 +7,126 @@
 @inject IApplicationService ApplicationService
 
 <div class="container w-75 mt-4">
-    @if (vacancy is null)
-    {
-        if (showLoader)
-        {
-            <div class="loader"></div>
-        }
-    }
-    else
-    {
-        <EditForm Model="@application" OnValidSubmit="CreateApplication">
-            <FluentValidationValidator />
-            <MudText Typo="Typo.h2" Style="color: #129fd7; font-weight: 900; text-align: center">@vacancy.Title</MudText>
-            <label for="cover-letter"><span class="text-danger">*</span>Cover Letter</label>
-            <InputTextArea class="form-control" id="cover-letter" rows="10" @bind-Value="application.CoverLetter" required="required"></InputTextArea>
-            <small><ValidationMessage For="@(() =>application.CoverLetter)" class="text-danger" /></small>
+	@if (vacancy is null)
+	{
+		if (showLoader)
+		{
+			<div class="loader"></div>
+		}
+	}
+	else
+	{
+		<EditForm Model="@application" OnValidSubmit="CreateApplication">
+			<FluentValidationValidator />
+			<MudText Typo="Typo.h2" Style="color: #129fd7; font-weight: 900; text-align: center">@vacancy.Title</MudText>
+			<label for="cover-letter"><span class="text-danger">*</span>Cover Letter</label>
+			<InputTextArea class="form-control" id="cover-letter" rows="10" @bind-Value="application.CoverLetter" required="required"></InputTextArea>
+			<small><ValidationMessage For="@(() =>application.CoverLetter)" class="text-danger" /></small>
 
-            @if (vacancy.VacancyQuestions.Count() > 0)
-            {
-                <div>
-                    <p class="fs-3 text-center">Questions</p>
-                    @foreach (var question in vacancy.VacancyQuestions)
-                    {
-                        <label for="question" class="form-label"><span class="text-danger">*</span>@question.Question</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="question_@question.Id" required="required" @bind="questionResponses[question.Question]">
-                        </div>
-                    }
-                </div>
-            }
+			@if (vacancy.VacancyQuestions.Count() > 0)
+			{
+				<div>
+					<p class="fs-3 text-center">Questions</p>
+					@foreach (var question in vacancy.VacancyQuestions)
+					{
+						<label for="question" class="form-label"><span class="text-danger">*</span>@question.Question</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="question_@question.Id" required="required" @bind="questionResponses[question.Question]">
+						</div>
+					}
+				</div>
+			}
 
-            <button type="submit" class="btn mt-3" style="background-color: #129fd7;">Apply</button>
-        </EditForm>
-    }
+			@if (vacancy.VacancyTasks.Count() > 0)
+			{
+				<div>
+					<p class="fs-3 text-center">Task</p>
+					@foreach (var task in vacancy.VacancyTasks)
+					{
+						<label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label>
+						<label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label>
+						<div class="input-group">
+							<textarea class="form-control" id="question_@task.Id" required="required" @bind="taskResponses[task.Template]"></textarea>
+						</div>
+					}
+				</div>
+			}
+			<button type="submit" class="btn mt-3" style="background-color: #129fd7;">Apply</button>
+		</EditForm>
+	}
 </div>
 
 @code {
-    private string message = "Loading...";
-    private bool showLoader = false;
+	private string message = "Loading...";
+	private bool showLoader = false;
 
-    [Parameter]
-    public VacancyApplicationResponse vacancy { get; set; }
+	[Parameter]
+	public VacancyApplicationResponse vacancy { get; set; }
 
-    [Parameter]
-    public CreateApplicationCommand application { get; set; }
+	[Parameter]
+	public CreateApplicationCommand application { get; set; }
 
-    [Parameter]
-    public string Slug { get; set; }
+	[Parameter]
+	public string Slug { get; set; }
 
-    [Parameter]
-    public Dictionary<string, string> questionResponses { get; set; }
+	[Parameter]
+	public Dictionary<string, string> questionResponses { get; set; }
+	[Parameter]
+	public Dictionary<string, string> taskResponses { get; set; }
 
-    protected override async void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await Task.Delay(1000);
-            showLoader = true;
-            StateHasChanged();
-        }
-    }
+	protected override async void OnAfterRender(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await Task.Delay(1000);
+			showLoader = true;
+			StateHasChanged();
+		}
+	}
 
-    private async Task CreateApplication()
-    {
+	private async Task CreateApplication()
+	{
 
-        if (string.IsNullOrWhiteSpace(application.CoverLetter) || questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)))
-        {
-            return; // Do not proceed with submission if any required fields are empty.
-        }
+		if (string.IsNullOrWhiteSpace(application.CoverLetter) || questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)))
+		{
+			return; // Do not proceed with submission if any required fields are empty.
+		}
 
-        var updatedResponses = new List<VacancyResponseDto>();
+		var updatedResponses = new List<VacancyResponseDto>();
+		foreach (var vr in application.VacancyResponses)
+		{
+			var updatedResponse = new VacancyResponseDto
+				{
+					VacancyQuestion = vr.VacancyQuestion,
+					Response = questionResponses[vr.VacancyQuestion.Question]
+				};
 
-        foreach (var vr in application.VacancyResponses)
-        {
-            var updatedResponse = new VacancyResponseDto
-                {
-                    VacancyQuestion = vr.VacancyQuestion,
-					VacancyTask=vr.VacancyTask,
-                    Response = questionResponses[vr.VacancyQuestion.Question]
-                };
+			updatedResponses.Add(updatedResponse);
+		}
 
-            updatedResponses.Add(updatedResponse);
-        }
+		application.VacancyResponses = updatedResponses;
 
-        application.VacancyResponses = updatedResponses;
+		var updateTaskResponses = new List<TaskResponseDto>();
+		foreach (var task in application.TaskResponses)
+		{
+			var updateTaskResponse = new TaskResponseDto
+				{
+					TaskId = task.TaskId,
+					Code=task.Code
+				};
+			updateTaskResponses.Add(updateTaskResponse);
+		}
+		application.TaskResponses = updateTaskResponses;
+		var success = await ApplicationService.CreateApplication(application);
 
-        var success = await ApplicationService.CreateApplication(application);
-
-        if (success)
-        {
-            Snackbar.Add("Applications sent successfully!", Severity.Success);
-            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
-        }
-        else
-        {
-            Snackbar.Add("Something went wrong", Severity.Error);
-        }
-    }
+		if (success)
+		{
+			Snackbar.Add("Applications sent successfully!", Severity.Success);
+			NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+		}
+		else
+		{
+			Snackbar.Add("Something went wrong", Severity.Error);
+		}
+	}
 }
