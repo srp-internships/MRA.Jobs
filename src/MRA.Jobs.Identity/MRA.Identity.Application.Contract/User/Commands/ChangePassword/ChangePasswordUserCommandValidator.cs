@@ -7,8 +7,10 @@ public class ChangePasswordUserCommandValidator : AbstractValidator<ChangePasswo
     {
         RuleFor(x => x.OldPassword).NotEmpty();
         RuleFor(x => x.NewPassword).NotEmpty();
+        RuleFor(x => x.NewPassword).MinimumLength(8);
         RuleFor(x => x.ConfirmPassword).NotEmpty()
             .Equal(x => x.NewPassword)
             .WithMessage("Passwords do not math.");
+
     }
 }

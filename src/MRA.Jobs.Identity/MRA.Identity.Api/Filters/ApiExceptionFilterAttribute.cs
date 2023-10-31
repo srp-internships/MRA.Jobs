@@ -25,15 +25,14 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     public bool HandleGenericException(ExceptionContext context)
     {
-        var errorResponse = new BadRequestResponse
+        ProblemDetails details = new ProblemDetails
         {
-            Errors = new List<Error>
-        {
-            new Error { Title = "Bad Request", Details = context.Exception.Message }
-        }
+            Status = StatusCodes.Status400BadRequest,
+            Title = "BadRequest",
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Detail = context.Exception.Message
         };
-
-        context.Result = new BadRequestObjectResult(errorResponse);
+        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status400BadRequest };
 
         return true;
     }
@@ -45,7 +44,8 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         {
             Status = StatusCodes.Status400BadRequest,
             Title = "Request was canceled.",
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+
         };
 
         context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status400BadRequest };

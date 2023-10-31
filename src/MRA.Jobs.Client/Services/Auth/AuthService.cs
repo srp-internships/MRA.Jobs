@@ -6,6 +6,8 @@ using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Client.Identity;
+using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
+using MatBlazor;
 
 namespace MRA.Jobs.Client.Services.Auth;
 
@@ -25,6 +27,13 @@ public class AuthService : IAuthService
         _navigationManager = navigationManager;
     }
 
+    public async Task<HttpResponseMessage> ChangePassword(ChangePasswordUserCommand command)
+    {
+
+        var result = await _identityHttpClient.PutAsJsonAsync("Auth/ChangePassword", command);
+        return result;
+    }
+
     public async Task<string> LoginUserAsync(LoginUserCommand command, bool newRegister = false)
     {
         string errorMessage = null;
@@ -36,7 +45,7 @@ public class AuthService : IAuthService
                 var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
                 await _localStorage.SetItemAsync("authToken", response);
                 await _authenticationStateProvider.GetAuthenticationStateAsync();
-              if (!newRegister)
+                if (!newRegister)
                     _navigationManager.NavigateTo("/");
                 return null;
             }
@@ -67,10 +76,10 @@ public class AuthService : IAuthService
             var result = await _identityHttpClient.PostAsJsonAsync("Auth/register", command);
             if (result.IsSuccessStatusCode)
             {
-                await LoginUserAsync(new LoginUserCommand() 
-                { 
-                    Password = command.Password, 
-                    Username = command.Username 
+                await LoginUserAsync(new LoginUserCommand()
+                {
+                    Password = command.Password,
+                    Username = command.Username
                 });
 
                 _navigationManager.NavigateTo("/profile");
@@ -79,7 +88,7 @@ public class AuthService : IAuthService
             }
             if (result.StatusCode is not (HttpStatusCode.Unauthorized or HttpStatusCode.BadRequest))
                 return "server error, please try again later";
-            
+
             var response = await result.Content.ReadFromJsonAsync<CustomProblemDetails>();
             return response.Detail;
         }

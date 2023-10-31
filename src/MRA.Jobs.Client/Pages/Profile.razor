@@ -11,6 +11,7 @@
 @using MRA.Identity.Application.Contract.Skills.Command;
 @using MRA.Identity.Application.Contract.Skills.Responses;
 @using MRA.Jobs.Client.Components.Dialogs;
+@using MRA.Jobs.Client.Pages.Auth
 @using MRA.Jobs.Client.Services.Profile;
 @using MudBlazor;
 @using FluentValidation;
@@ -65,7 +66,7 @@ else
 					<MudNavLink Class="@((Active == 1) ? "active" : "")" OnClick="()=> ActiveNavlink(1)">Educations </MudNavLink>
 					<MudNavLink Class="@((Active == 2) ? "active" : "")" OnClick="()=> ActiveNavlink(2)">Experience </MudNavLink>
 					<MudNavLink Class="@((Active == 3) ? "active" : "")" OnClick="()=> ActiveNavlink(3)">Skills</MudNavLink>
-
+					<MudNavLink Class="@((Active == 4) ? "active" :"")" OnClick="()=>ActiveNavlink(4)">Change Password</MudNavLink>
 				</MudNavMenu>
 			</MudPaper>
 		</div>
@@ -591,8 +592,8 @@ else
 													</MudAutocomplete>
 												</div>
 												@* <div class="col-1" style="padding-top:10px;">
-													<MudFab Color="Color.Primary" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" OnClick="OnBlur" />
-												</div> *@
+								<MudFab Color="Color.Primary" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" OnClick="OnBlur" />
+								</div> *@
 											</div>
 										}
 										else
@@ -612,7 +613,11 @@ else
 
 					</MudGrid>
 					break;
+				case 4:
+					<ChangePassword />
+					break;
 			}
+
 		</div>
 	</div>
 }

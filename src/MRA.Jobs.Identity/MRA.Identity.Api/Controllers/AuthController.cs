@@ -73,8 +73,8 @@ public class AuthController : ControllerBase
     {
         var response = await _mediator.Send(command);
         return Ok(response);
-}
-    
+    }
+
     [HttpPost("googleCode")]
     public async Task<IActionResult> GoogleLogin([FromBody] GoogleAuthCommand googleAuth)
     {

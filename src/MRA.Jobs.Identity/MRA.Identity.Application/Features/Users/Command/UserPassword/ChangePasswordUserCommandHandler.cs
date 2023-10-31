@@ -5,7 +5,7 @@ using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 using MRA.Identity.Domain.Entities;
-namespace MRA.Identity.Application.Features.Users.Command;
+namespace MRA.Identity.Application.Features.Users.Command.UserPassword;
 public class ChangePasswordUserCommandHandler : IRequestHandler<ChangePasswordUserCommand, bool>
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -25,7 +25,7 @@ public class ChangePasswordUserCommandHandler : IRequestHandler<ChangePasswordUs
 
         bool success = await _userManager.CheckPasswordAsync(user, request.OldPassword);
         if (!success)
-            throw new  Exception("Incorrect password");
+            throw new Exception("Incorrect password");
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
