@@ -1,9 +1,9 @@
-﻿using MatBlazor;
+﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MRA.Identity.Application.Contract.UserRoles.Commands;
 using MRA.Identity.Application.Contract.UserRoles.Response;
-using ClaimTypes = MRA.Jobs.Client.Identity.ClaimTypes;
+using MudBlazor;
 
 namespace MRA.Jobs.Client.Pages.Admin;
 
@@ -14,12 +14,18 @@ public partial class UserRoles
     [Inject] private IdentityHttpClient HttpClient { get; set; }
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public AuthenticationStateProvider AuthStateProvider { get; set; }
-    [Inject] private IMatDialogService DialogService { get; set; }
+    [Inject] private ISnackbar Snackbar { get; set; }
+    [Inject] private ILocalStorageService LocalStorageService { get; set; }
     private string NewRoleName { get; set; }
 
     private bool _isOpened;
 
     protected override async Task OnInitializedAsync()
+    {
+        await ReloadDataAsync();
+    }
+
+    private async Task ReloadDataAsync()
     {
         await AuthStateProvider.GetAuthenticationStateAsync();
         var userRolesResponse = await HttpClient.GetAsync($"UserRoles?userName={Username}");
@@ -37,14 +43,23 @@ public partial class UserRoles
         if (!string.IsNullOrWhiteSpace(contextSlug))
         {
             await AuthStateProvider.GetAuthenticationStateAsync();
-            var deleteResult = await HttpClient.DeleteAsync($"UserRoles/{contextSlug}");
-            if (!deleteResult.IsSuccessStatusCode)
+            try
             {
-                await DialogService.AlertAsync("Error deleting");
+                var deleteResult = await HttpClient.DeleteAsync($"UserRoles/{contextSlug}");
+                if (!deleteResult.IsSuccessStatusCode)
+                {
+                    Snackbar.Add("Deleting error", Severity.Error);
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                Snackbar.Add("Server is not responding, please try later", Severity.Error);
                 return;
             }
-
-            NavigationManager.NavigateTo(NavigationManager.Uri, true);
+            
+            await ReloadDataAsync();
+            StateHasChanged();
         }
     }
 
@@ -52,14 +67,26 @@ public partial class UserRoles
     {
         if (!string.IsNullOrWhiteSpace(NewRoleName))
         {
-            var state = await AuthStateProvider.GetAuthenticationStateAsync();
+            var userRoleCommand = new CreateUserRolesCommand { RoleName = NewRoleName, UserName = Username };
 
-            var getIdStatus = Guid.TryParse(state.User.FindFirst(ClaimTypes.Id)?.Value, out Guid id);
-            Console.WriteLine(getIdStatus); //todo show error if getIdStatus equal false
+            await AuthStateProvider.GetAuthenticationStateAsync();
+            try
+            {
+                var userRoleResponse = await HttpClient.PostAsJsonAsync("UserRoles", userRoleCommand);
+                if (!userRoleResponse.IsSuccessStatusCode)
+                {
+                    Snackbar.Add("Add error may be you entered duplicate role");
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                Snackbar.Add("Server is not responding, please try later", Severity.Error);
+                return;
+            }
 
-            var userRoleCommand = new CreateUserRolesCommand { RoleName = NewRoleName, UserId = id };
-            var userRoleResponse = await HttpClient.PostAsJsonAsync("UserRoles", userRoleCommand);
-            Console.WriteLine(await userRoleResponse.Content.ReadAsStringAsync()); //todo check userRoleResponse
+            await ReloadDataAsync();
+            StateHasChanged();
         }
     }
 }
