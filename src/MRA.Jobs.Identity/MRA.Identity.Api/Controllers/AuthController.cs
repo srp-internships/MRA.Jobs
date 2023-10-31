@@ -1,8 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Commands;
+using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Queries;
@@ -58,6 +60,13 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Refresh(GetAccessTokenUsingRefreshTokenQuery request)
     {
         var response = await _mediator.Send(request);
+        return Ok(response);
+    }
+
+    [HttpPut("ChangePassword")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordUserCommand command)
+    {
+        var response = await _mediator.Send(command);
         return Ok(response);
     }
 }
