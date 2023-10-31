@@ -31,10 +31,6 @@
         <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Persistence\Migrations\" />
-    </ItemGroup>
-
     <ProjectExtensions>
         <VisualStudio>
             <UserProperties dbsettings_1json__JsonSchema="https://docs.renovatebot.com/renovate-schema.json" />
