@@ -575,7 +575,7 @@
     protected override async Task OnInitializedAsync()
     {
         var state = await authStateProvider.GetAuthenticationStateAsync();
-        if (state.User.IsInRole(ApplicationClaimValues.Administrator)|| state.User.IsInRole(ApplicationClaimValues.Reviewer))
+        if (state.User.IsInRole(ApplicationClaimValues.Administrator)|| state.User.IsInRole(ApplicationClaimValues.Reviewer) || state.User.IsInRole(ApplicationClaimValues.SuperAdmin))
         {
             navigationManager.NavigateTo("/dashboard");
         }
