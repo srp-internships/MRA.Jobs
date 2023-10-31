@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Api.Filters;
 using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 
@@ -46,7 +47,7 @@ public class ChangeUserPasswordTest : BaseTest
         // Assert
         Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
 
-        var responseString = await response.Content.ReadFromJsonAsync<BadRequestResponse>();
-        Assert.AreEqual("Incorrect password", responseString.Errors[0].Details);
+        var responseString = (await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail;
+        Assert.AreEqual("Incorrect password", responseString);
     }
 }
