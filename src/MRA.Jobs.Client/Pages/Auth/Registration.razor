@@ -10,6 +10,7 @@
 @using MRA.Jobs.Client.Identity;
 @using MRA.Jobs.Client.Services.Auth
 @using MRA.Jobs.Client.Services.Profile;
+@using System.Globalization;
 
 @inject IAuthService AuthService
 @inject ISnackbar Snackbar
@@ -37,11 +38,12 @@
 							</MudCardHeader>
 							<MudCardContent>
 								<MudTextField Label="First name" HelperText="Enter your first name"
-								@bind-Value="_model.FirstName" For="@(() => _model.FirstName)" InputType="InputType.Text" />
+								@bind-Value="_model.FirstName" For="@(() => _model.FirstName)" InputType="InputType.Text"
+											  OnBlur="@(e => _model.FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_model.FirstName))" />
 
 								<MudTextField Label="Last name" HelperText="Enter your last name"
-								@bind-Value="_model.LastName" For="@(() => _model.LastName)" InputType="InputType.Text" />
-
+								@bind-Value="_model.LastName" For="@(() => _model.LastName)" InputType="InputType.Text"
+											  OnBlur="@(e => _model.LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_model.LastName))" />
 								<MudTextField Label="Email" Class="mt-3"
 								@bind-Value="_model.Email" For="@(() => _model.Email)" InputType="InputType.Email" />
 
