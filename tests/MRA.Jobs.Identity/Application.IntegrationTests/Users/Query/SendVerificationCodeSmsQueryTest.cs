@@ -1,4 +1,5 @@
-﻿using MRA.Identity.Application.Contract.User.Commands;
+﻿using System.Net.Http.Json;
+using MRA.Identity.Application.Contract.User.Commands;
 using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Domain.Entities;
 
@@ -43,13 +44,13 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
         response.EnsureSuccessStatusCode();
 
         // Assert
-        var responseContent = await response.Content.ReadAsStringAsync();
+        var responseContent = await response.Content.ReadFromJsonAsync<SmsVerificationCodeStatus>();
 
         var user = await GetEntity<ApplicationUser>(u => u.PhoneNumber == query.PhoneNumber);
 
         Assert.Multiple(() =>
         {
-            Assert.AreEqual("true", responseContent, "Expected response content to be 'true'.");
+            Assert.AreEqual(SmsVerificationCodeStatus.CodeVerifySuccess, responseContent, "Expected response content to be 'true'.");
             Assert.AreEqual(true, user.PhoneNumberConfirmed, "Expected response content to be 'true'.");
         });
     }
