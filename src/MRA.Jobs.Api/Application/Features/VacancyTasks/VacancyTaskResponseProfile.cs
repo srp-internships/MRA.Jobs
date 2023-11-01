@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MRA.Jobs.Application.Contracts.Dtos;
 
 namespace MRA.Jobs.Application.Features.VacancyTasks;
-internal class VacancyTaskResponseProfile
+public class VacancyTaskResponseProfile :Profile
 {
+    public VacancyTaskResponseProfile()
+    {
+        CreateMap<TaskResponseDto, TaskResponse>();
+        CreateMap<TaskResponse, TaskResponseDto>();
+    }
 }
