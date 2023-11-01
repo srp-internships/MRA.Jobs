@@ -22,8 +22,8 @@ public class GetJobCategoriesQueryHandler : IRequestHandler<GetJobCategoriesQuer
 
         if (request.CheckDate)
         {
-            DateTime now = DateTime.UtcNow;
-            jobsQuery = _context.JobVacancies.Where(j => j.PublishDate <= now && j.EndDate >= now);
+            DateTime now = DateTime.Now;
+            jobsQuery = _context.JobVacancies.Where(j => j.PublishDate.AddDays(-1) <= now && j.EndDate >= now);
         }
 
         var sortredJobs = (from j in jobsQuery

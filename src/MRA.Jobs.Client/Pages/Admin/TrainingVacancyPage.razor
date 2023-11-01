@@ -43,10 +43,10 @@ else
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <MudTextField @bind-Value="trainingService.createCommand.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate" Variant="Variant.Outlined"></MudTextField>
+                    <MudDatePicker @bind-Date="@trainingService.createCommand.EndDate" Variant="Variant.Outlined" Label="End date" />
                 </div>
                 <div class="col-md-6">
-                    <MudTextField @bind-Value="trainingService.createCommand.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate" Variant="Variant.Outlined"></MudTextField>
+                    <MudDatePicker @bind-Date="@trainingService.createCommand.PublishDate" Variant="Variant.Outlined" Label="Publish date" />
                 </div>
             </div>
             <MudPaper Class="p-2 mb-2">
