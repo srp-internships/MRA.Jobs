@@ -25,7 +25,10 @@ public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificat
         var result = _context.ConfirmationCodes
             .Any(c => c.Code == request.Code && c.PhoneNumber == request.PhoneNumber && c.SentAt >= expirationTime);
 
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber ==request.PhoneNumber);
+        if (!result)
+            return SmsVerificationCodeStatus.CodeVerifySuccess;
+
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
 
         if (user is null) return SmsVerificationCodeStatus.CodeVerifySuccess_ButUserDontSignUp;
 
@@ -35,6 +38,7 @@ public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificat
             var saveResult = await _userManager.UpdateAsync(user);
             if (saveResult.Succeeded) return SmsVerificationCodeStatus.CodeVerifySuccess;
         }
+
         return SmsVerificationCodeStatus.CodeVerifyFailure;
 
     }
