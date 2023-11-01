@@ -21,6 +21,7 @@ public class ApplicationProfile : Profile
     {
         CreateMap<Application, ApplicationListDto>()
             .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses))
+            .ForMember(dest => dest.TaskResponses, opt => opt.MapFrom(src => src.TaskResponses))
             .ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => src.Status))
             .ForMember(dest => dest.VacancyTitle, opt => opt.MapFrom(src => src.Vacancy.Title))
             .ForMember(dest => dest.StatusName, opt => opt.MapFrom(src => src.Status.ToString()))
@@ -28,6 +29,7 @@ public class ApplicationProfile : Profile
 
         CreateMap<Application, ApplicationDetailsDto>()
             .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses))
+            .ForMember(dest => dest.TaskResponses, opt => opt.MapFrom(src => src.TaskResponses))
             .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History));
         CreateMap<CreateApplicationCommand, Application>()
             .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses));
