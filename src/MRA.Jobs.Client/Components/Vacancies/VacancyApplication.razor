@@ -43,11 +43,9 @@
 					<p class="fs-3 text-center">Task</p>
 					@foreach (var task in vacancy.VacancyTasks)
 					{
-						<label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label>
-						<label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label>
-						<div class="input-group">
-							<textarea class="form-control" id="question_@task.Id" required="required" @bind="taskResponses[task.Template]"></textarea>
-						</div>
+						<p><label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label></p>
+						<p><label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label></p>
+						<MudTextField T="string" Label="Code" Variant="Variant.Outlined" Lines="8" @bind-Value=@taskResponses[task.Title]/>
 					}
 				</div>
 			}
@@ -107,12 +105,12 @@
 		application.VacancyResponses = updatedResponses;
 
 		var updateTaskResponses = new List<TaskResponseDto>();
-		foreach (var task in application.TaskResponses)
+		foreach (var task in vacancy.VacancyTasks)
 		{
 			var updateTaskResponse = new TaskResponseDto
 				{
-					TaskId = task.TaskId,
-					Code=task.Code
+					TaskId = task.Id,
+					Code=taskResponses[task.Title]
 				};
 			updateTaskResponses.Add(updateTaskResponse);
 		}

@@ -7,13 +7,13 @@
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
 
-<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" taskResponses="@taskResponses" vacancy="@internship" />
+<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" taskResponses="@tasksResponses" vacancy="@internship" />
 
 @code {
 	private VacancyApplicationResponse internship;
 	private CreateApplicationCommand application;
 	public Dictionary<string, string> questionResponses = new();
-	public Dictionary<string, string> taskResponses = new();
+	public Dictionary<string, string> tasksResponses = new();
 
 
 	[Parameter]
@@ -53,7 +53,7 @@
 			}
 			foreach (var task in internship.VacancyTasks)
 			{
-				taskResponses[task.Template] = "";
+				tasksResponses[task.Title] = task.Template;
 			}
 		}
 	}
