@@ -15,6 +15,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             { Exception: UnauthorizedAccessException } => HandleUnauthorizedAccessException(context),
             { Exception: ForbiddenAccessException } => HandleForbiddenAccessException(context),
             { Exception: TaskCanceledException } => HandleTaskCanceledException(context),
+            { Exception: Exception } => HandleGenericException(context),
             { ModelState: { IsValid: false } } => HandleInvalidModelStateException(context),
             _ => HandleUnknownException(context)
         };
@@ -22,13 +23,29 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         base.OnException(context);
     }
 
+    public bool HandleGenericException(ExceptionContext context)
+    {
+        ProblemDetails details = new ProblemDetails
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Title = "BadRequest",
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Detail = context.Exception.Message
+        };
+        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status400BadRequest };
+
+        return true;
+    }
+
+
     public bool HandleTaskCanceledException(ExceptionContext context)
     {
         ProblemDetails details = new ProblemDetails
         {
             Status = StatusCodes.Status400BadRequest,
             Title = "Request was canceled.",
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+
         };
 
         context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status400BadRequest };
@@ -64,7 +81,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Status = StatusCodes.Status400BadRequest,
-            Title=exception.Message
+            Title = exception.Message
         };
 
         context.Result = new BadRequestObjectResult(details);
@@ -115,6 +132,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
         return true;
     }
+
 
     private bool HandleForbiddenAccessException(ExceptionContext context)
     {

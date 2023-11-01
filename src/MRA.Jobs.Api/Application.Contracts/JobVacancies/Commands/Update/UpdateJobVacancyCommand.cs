@@ -12,10 +12,10 @@ public class UpdateJobVacancyCommand : IRequest<string>
     public string Description { get; set; }
 
     [JsonConverter(typeof(DateTimeToUnixConverter))]
-    public DateTime PublishDate { get; set; }
+    public DateTime? PublishDate { get; set; }
 
     [JsonConverter(typeof(DateTimeToUnixConverter))]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     public Guid CategoryId { get; set; }
     public int RequiredYearOfExperience { get; set; }

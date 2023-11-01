@@ -47,10 +47,10 @@ else
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <MudTextField @bind-Value="VService.creatingNewJob.EndDate" Format="MM/dd/yy H:mm:ss" Label="EndDate" Variant="Variant.Outlined"></MudTextField>
+                    <MudDatePicker @bind-Date="@VService.creatingNewJob.EndDate" Variant="Variant.Outlined" Label="End date" />
                 </div>
                 <div class="col-md-6">
-                    <MudTextField @bind-Value="VService.creatingNewJob.PublishDate" Format="MM/dd/yy H:mm:ss" Label="PublishDate" Variant="Variant.Outlined"></MudTextField>
+                    <MudDatePicker @bind-Date="@VService.creatingNewJob.PublishDate" Variant="Variant.Outlined" Label="Publish date" />
                 </div>
             </div>
             
@@ -135,6 +135,8 @@ else
 
     private async Task HandleSubmit()
     {
+        var catId = _category.FirstOrDefault(c => c.Name == selectedCategory).Id;
+        VService.creatingNewJob.CategoryId = catId;
         VService.creatingNewJob.VacancyQuestions = Questions;
         await VService.OnSaveCreateClick();
         await LoadData();

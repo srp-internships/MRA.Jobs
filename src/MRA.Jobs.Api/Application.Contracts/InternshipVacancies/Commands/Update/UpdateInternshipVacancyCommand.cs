@@ -15,17 +15,17 @@ public class UpdateInternshipVacancyCommand : IRequest<string>
     public DateTime CreatedAt { get; set; }
 
     [JsonConverter(typeof(DateTimeToUnixConverter))]
-    public DateTime PublishDate { get; set; }
+    public DateTime? PublishDate { get; set; }
 
     [JsonConverter(typeof(DateTimeToUnixConverter))]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     public string Location { get; set; }
     public string RequiredSkills { get; set; }
     public Guid CategoryId { get; set; }
 
     [JsonConverter(typeof(DateTimeToUnixConverter))]
-    public DateTime ApplicationDeadline { get; set; }
+    public DateTime? ApplicationDeadline { get; set; }
 
     public int Duration { get; set; }
     public int Stipend { get; set; }
