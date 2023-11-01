@@ -1,5 +1,4 @@
-﻿using System.Data.SqlTypes;
-using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
+﻿using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Commands.ResetPassword;

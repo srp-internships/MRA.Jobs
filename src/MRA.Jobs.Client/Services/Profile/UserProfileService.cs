@@ -10,6 +10,7 @@ using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Responses;
+using MRA.Identity.Application.Contract.User.Queries;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Client.Services.Profile;
@@ -137,9 +138,9 @@ public class UserProfileService : IUserProfileService
         return response;
     }
 
-    public async Task<bool> CheckConfirmationCode(string phoneNumber, int? code)
+    public async Task<SmsVerificationCodeStatus> CheckConfirmationCode(string phoneNumber, int? code)
     {
-        var response = await _identityHttpClient.GetJsonAsync<bool>($"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
+        var response = await _identityHttpClient.GetJsonAsync<SmsVerificationCodeStatus>($"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
         return response;
     }
 

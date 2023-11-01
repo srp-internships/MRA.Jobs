@@ -7,7 +7,7 @@ using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Users.Query;
-public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificationCodeCheckQuery, bool>
+public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificationCodeCheckQuery, SmsVerificationCodeStatus>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IApplicationDbContext _context;
@@ -17,7 +17,7 @@ public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificat
         _userManager = userManager;
         _context = context;
     }
-    public async Task<bool> Handle(SmsVerificationCodeCheckQuery request, CancellationToken cancellationToken)
+    public async Task<SmsVerificationCodeStatus> Handle(SmsVerificationCodeCheckQuery request, CancellationToken cancellationToken)
     {
         if (request.PhoneNumber[0] != '+') request.PhoneNumber = "+" + request.PhoneNumber.Trim();
         var expirationTime = DateTime.Now.AddMinutes(-1);
@@ -27,15 +27,15 @@ public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificat
 
         var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber ==request.PhoneNumber);
 
-        if (user is null) return false;
+        if (user is null) return SmsVerificationCodeStatus.CodeVerifySuccess_ButUserDontSignUp;
 
         if (result)
         {
             user.PhoneNumberConfirmed = true;
             var saveResult = await _userManager.UpdateAsync(user);
-            if (saveResult.Succeeded) return true;
+            if (saveResult.Succeeded) return SmsVerificationCodeStatus.CodeVerifySuccess;
         }
-        return false;
+        return SmsVerificationCodeStatus.CodeVerifyFailure;
 
     }
 }
