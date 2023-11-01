@@ -26,7 +26,7 @@ public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificat
             .Any(c => c.Code == request.Code && c.PhoneNumber == request.PhoneNumber && c.SentAt >= expirationTime);
 
         if (!result)
-            return SmsVerificationCodeStatus.CodeVerifySuccess;
+            return SmsVerificationCodeStatus.CodeVerifyFailure;
 
         var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
 
