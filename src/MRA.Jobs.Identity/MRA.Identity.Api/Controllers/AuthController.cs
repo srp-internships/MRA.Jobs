@@ -85,10 +85,10 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("GetUserNameByPhoneNumber")]
-    public async Task<IActionResult> GetUserNameByPhoneNumber([FromRoute] GetUserNameByPhoneNumberQuery query)
+    [HttpGet("GetUserNameByPhoneNumber/{phoneNumber}")]
+    public async Task<IActionResult> GetUserNameByPhoneNumber([FromRoute] string phoneNumber)
     {
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(new GetUserNameByPhoneNumberQuery() { PhoneNumber = phoneNumber });
         return Ok(result);
     }
 
