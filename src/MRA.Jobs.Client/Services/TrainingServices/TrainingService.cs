@@ -58,7 +58,8 @@ public class TrainingService : ITrainingService
             ShortDescription = createCommand.ShortDescription,
             CategoryId = createCommand.CategoryId,
             Fees = createCommand.Fees,
-            VacancyQuestions = createCommand.VacancyQuestions
+            VacancyQuestions = createCommand.VacancyQuestions,
+            VacancyTasks=createCommand.VacancyTasks
         };
         
         await _authenticationStateProvider.GetAuthenticationStateAsync();

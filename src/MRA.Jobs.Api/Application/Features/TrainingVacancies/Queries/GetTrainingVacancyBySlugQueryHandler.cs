@@ -17,6 +17,7 @@ public class GetTrainingVacancyBySlugQueryHandler : IRequestHandler<GetTrainingV
     {
         var trainingVacancy = await _context.TrainingVacancies
             .Include(i => i.History)
+            .Include(i => i.VacancyTasks)
             .Include(i => i.VacancyQuestions)
             .Include(i => i.Tags)
             .ThenInclude(t => t.Tag)

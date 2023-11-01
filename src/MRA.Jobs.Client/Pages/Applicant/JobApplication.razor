@@ -29,8 +29,8 @@
                 {
                     Id = response.Id,
                     Title = response.Title,
-					VacancyTasks = response.VacancyTasks,
-                    VacancyQuestions = response.VacancyQuestions
+                    VacancyQuestions = response.VacancyQuestions,
+					VacancyTasks = response.VacancyTasks
                 };
             application = new CreateApplicationCommand
                 {
@@ -51,7 +51,7 @@
             }
 			foreach (var task in job.VacancyTasks)
 			{
-				tasksResponses[task.Template] = "";
+				tasksResponses[task.Title] = task.Template;
 			}
         }
     }
