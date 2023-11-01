@@ -666,13 +666,6 @@ else
 
 	protected override async void OnInitialized()
 	{
-		await Load();
-	}
-
-	private async Task Load()
-	{
-		_tryButton = false;
-		StateHasChanged();
 		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
 
@@ -681,6 +674,14 @@ else
 			Navigation.NavigateTo("sign-in");
 			return;
 		}
+		await Load();
+	}
+
+	private async Task Load()
+	{
+		_tryButton = false;
+		StateHasChanged();
+		
 
 		try
 		{

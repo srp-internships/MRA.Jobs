@@ -13,7 +13,7 @@ using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
 using MRA.Identity.Application.Contract.User.Queries;
-using MRA.Identity.Application.Contract.User.Queries.GetUserByPhoneNymber;
+using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 
 namespace MRA.Identity.Api.Controllers;
 

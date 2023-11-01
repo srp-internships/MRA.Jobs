@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Exceptions;
-using MRA.Identity.Application.Contract.User.Queries.GetUserByPhoneNymber;
+using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Users.Query;

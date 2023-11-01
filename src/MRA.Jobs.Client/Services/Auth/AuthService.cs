@@ -7,7 +7,8 @@ using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Client.Identity;
 using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
-using MatBlazor;
+using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
+using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 
 namespace MRA.Jobs.Client.Services.Auth;
 
@@ -31,6 +32,12 @@ public class AuthService : IAuthService
     {
 
         var result = await _identityHttpClient.PutAsJsonAsync("Auth/ChangePassword", command);
+        return result;
+    }
+
+    public async Task<HttpResponseMessage> GetUserNameByPhoneNumber(GetUserNameByPhoneNumberQuery query)
+    {
+        var result = await _identityHttpClient.GetAsync($"Auth/GetUserNameByPhoneNumber/{Uri.EscapeDataString(query.PhoneNumber)}");
         return result;
     }
 
@@ -102,5 +109,11 @@ public class AuthService : IAuthService
             Console.WriteLine(e);
             return "An error occurred";
         }
+    }
+
+    public async Task<HttpResponseMessage> ResetPassword(ResetPasswordCommand command)
+    {
+        var result = await _identityHttpClient.PostAsJsonAsync("Auth/ResetPassword", command);
+        return result;
     }
 }

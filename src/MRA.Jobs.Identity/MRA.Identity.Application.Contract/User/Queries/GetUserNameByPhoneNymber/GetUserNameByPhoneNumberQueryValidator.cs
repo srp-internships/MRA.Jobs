@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 
 
-namespace MRA.Identity.Application.Contract.User.Queries.GetUserByPhoneNymber;
+namespace MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 public class GetUserNameByPhoneNumberQueryValidator : AbstractValidator<GetUserNameByPhoneNumberQuery>
 {
     public GetUserNameByPhoneNumberQueryValidator()
