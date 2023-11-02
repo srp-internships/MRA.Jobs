@@ -1,12 +1,19 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Commands;
+
+using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
+
 using MRA.Identity.Application.Contract.User.Commands.GoogleAuth;
+
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
+using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
 using MRA.Identity.Application.Contract.User.Queries;
+using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 
 namespace MRA.Identity.Api.Controllers;
 
@@ -61,11 +68,34 @@ public class AuthController : ControllerBase
         var response = await _mediator.Send(request);
         return Ok(response);
     }
-    
+
+
+    [HttpPut("ChangePassword")]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordUserCommand command)
+    {
+        var response = await _mediator.Send(command);
+        return Ok(response);
+    }
+
     [HttpPost("googleCode")]
     public async Task<IActionResult> GoogleLogin([FromBody] GoogleAuthCommand googleAuth)
     {
         var result = await _mediator.Send(googleAuth);
+        return Ok(result);
+    }
+
+    [HttpGet("GetUserNameByPhoneNumber/{phoneNumber}")]
+    public async Task<IActionResult> GetUserNameByPhoneNumber([FromRoute] string phoneNumber)
+    {
+        var result = await _mediator.Send(new GetUserNameByPhoneNumberQuery() { PhoneNumber = phoneNumber });
+        return Ok(result);
+    }
+
+    [HttpPost("ResetPassword")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+    {
+        var result = await _mediator.Send(command);
         return Ok(result);
     }
 }

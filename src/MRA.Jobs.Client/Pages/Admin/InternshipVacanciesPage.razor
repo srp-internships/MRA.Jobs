@@ -28,7 +28,7 @@ else
             <MudTextField Lines="5" @bind-Value="@internshipService.createCommand.Description" Label="Description" Variant="Variant.Outlined" />
             <div class="row">
                 <div class="col-md-4">
-                    <MudTextField @bind-Value="@internshipService.createCommand.ApplicationDeadline" Label="Application deadline" Variant="Variant.Outlined" />
+                    <MudDatePicker @bind-Date="@internshipService.createCommand.ApplicationDeadline" Variant="Variant.Outlined" Label="Application deadline"/>
                 </div>
                 <div class="col-md-4">
                     <MudTextField @bind-Value="@internshipService.createCommand.Duration" Label="Duration" Variant="Variant.Outlined" />
@@ -48,10 +48,10 @@ else
                     </MudSelect>
                 </div>
                 <div class="col-md-4">
-                    <MudTextField @bind-Value="internshipService.createCommand.EndDate" Label="EndDate" Variant="Variant.Outlined"></MudTextField>
+                   <MudDatePicker  @bind-Date="@internshipService.createCommand.EndDate" Variant="Variant.Outlined" Label="End date" />
                 </div>
                 <div class="col-md-4">
-                    <MudTextField @bind-Value="internshipService.createCommand.PublishDate" Label="PublishDate"></MudTextField>
+                    <MudDatePicker @bind-Date="@internshipService.createCommand.PublishDate" Variant="Variant.Outlined" Label="Publish date" />
                 </div>
             </div>
             <MudPaper Class="p-2 mb-2">
