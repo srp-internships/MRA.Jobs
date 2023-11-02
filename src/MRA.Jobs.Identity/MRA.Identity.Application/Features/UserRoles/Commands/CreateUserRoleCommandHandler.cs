@@ -26,7 +26,7 @@ public class CreateUserRoleCommandHandler : IRequestHandler<CreateUserRolesComma
     public async Task<string> Handle(CreateUserRolesCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == request.UserId,
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedUserName == request.UserName.ToUpper(),
             cancellationToken: cancellationToken);
         _ = user ?? throw new NotFoundException("user is not found");
 
@@ -41,12 +41,16 @@ public class CreateUserRoleCommandHandler : IRequestHandler<CreateUserRolesComma
                 NormalizedName = request.RoleName.ToUpper(),
                 Slug = request.RoleName.ToLower(),
             };
-            await _roleManager.CreateAsync(role);//todo check identity result
+            var createResult = await _roleManager.CreateAsync(role);
+            if (!createResult.Succeeded)
+            {
+                throw new ValidationException(createResult.Errors.First().Description);
+            }
         }
 
         var newUserRole = new ApplicationUserRole
         {
-            UserId = request.UserId,
+            UserId = user.Id,
             RoleId = role.Id,
             Slug = $"{user.UserName}-{role.Slug}"
         };
