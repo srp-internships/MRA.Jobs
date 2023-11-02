@@ -18,7 +18,7 @@
                     <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">Internships</MudNavLink>
                     <MudNavLink Match="NavLinkMatch.All"  Href="/dashboard/trainings">Trainings</MudNavLink>
                     <CascadingAuthenticationState>
-                        <AuthorizeView Roles="@ApplicationClaimValues.Administrator">
+                        <AuthorizeView Policy="@ApplicationPolicies.Administrator">
                             <MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
                         </AuthorizeView>
                     </CascadingAuthenticationState>

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text.Json;
 using Blazored.LocalStorage;
 using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Application.Contract.User.Responses;
@@ -35,9 +34,9 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
             {
                 identity = new ClaimsIdentity(ParseClaimsFromJwt(authToken.AccessToken), "jwt");
                 _http.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", authToken.AccessToken.Replace("\"", ""));
+                    new AuthenticationHeaderValue("Bearer", authToken.AccessToken);
                 _identityHttp.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", authToken.AccessToken.Replace("\"", ""));
+                    new AuthenticationHeaderValue("Bearer", authToken.AccessToken);
             }
             catch
             {
