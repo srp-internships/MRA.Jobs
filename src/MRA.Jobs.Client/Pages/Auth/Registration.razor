@@ -4,6 +4,7 @@
 @using System.Net
 @using FluentValidation;
 @using MRA.Identity.Application.Contract.User.Commands.RegisterUser
+@using MRA.Identity.Application.Contract.User.Queries.CheckUserName;
 @using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 @using MRA.Identity.Application.Contract.User.Queries;
 @using MRA.Jobs.Client.Components.Auth
@@ -119,17 +120,40 @@
 				}
 				@if (step == 2)
 				{
-					<EditForm Model="_secondModel" OnInvalidSubmit="OnValidSubmit">
-						<FluentValidationValidator />
-						<MudCard>
-							<MudCardHeader>
-								<MudText>
-									Create a UserName and strong Password
-								</MudText>
-							</MudCardHeader>
-							<MudCardContent>
+
+					<MudCard>
+						<MudCardHeader>
+							<MudText>
+								So, Create a UserName and strong Password
+							</MudText>
+						</MudCardHeader>
+						<MudCardContent>
+							<EditForm Model="_checkUserName" OnValidSubmit="CheckUserName">
+								<FluentValidationValidator />
 								<MudTextField Variant="Variant.Filled" Label="UserName"
-								@bind-Value="_secondModel.Username" For="@(()=>_secondModel.Username)" />
+								@bind-Value="_checkUserName.UserName" For="@(()=>_checkUserName.UserName)"
+											  OnBlur="CheckUserName" />
+								@if (_processing2)
+								{
+									<MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+								}
+								@if (isAvailable == 1)
+								{
+									<MudText Typo="Typo.body2" Color="Color.Success">
+										<MudIcon Icon="@Icons.Material.Filled.Check"></MudIcon>
+										UserName: <b>@_checkUserName.UserName</b> is available
+									</MudText>
+								}
+								@if (isAvailable == 0)
+								{
+									<MudText Typo="Typo.body2" Color="Color.Error">
+										UserName: <b>@_checkUserName.UserName</b> is not available
+									</MudText>
+								}
+							</EditForm>
+
+							<EditForm Model="_secondModel" OnInvalidSubmit="OnValidSubmit">
+								<FluentValidationValidator />
 								<MudTextField Variant="Variant.Filled" Label="Password"
 								@bind-Value="_secondModel.Password" For="@(()=>_secondModel.Password)"
 											  AdornmentIcon="@PasswordInputIcon" InputType="@PasswordInput" Adornment="Adornment.End"
@@ -138,23 +162,24 @@
 								@bind-Value="_secondModel.Confirmation" For="@(()=>_secondModel.Confirmation)"
 											  AdornmentIcon="@PasswordInputIcon" InputType="@PasswordInput" Adornment="Adornment.End"
 											  OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" />
-							</MudCardContent>
-							<MudCardActions>
-								<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled"
-										   Color="Color.Primary" Class="ml-auto" OnClick="OnValidSubmit">
-									@if (_processing)
-									{
-										<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-										<MudText Class="ms-2">Processing</MudText>
-									}
-									else
-									{
-										<MudText>Sign-up</MudText>
-									}
-								</MudButton>
-							</MudCardActions>
-						</MudCard>
-					</EditForm>
+							</EditForm>
+						</MudCardContent>
+						<MudCardActions>
+							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+									   Color="Color.Primary" Class="ml-auto" OnClick="OnValidSubmit">
+								@if (_processing)
+								{
+									<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+									<MudText Class="ms-2">Processing</MudText>
+								}
+								else
+								{
+									<MudText>Sign-up</MudText>
+								}
+							</MudButton>
+						</MudCardActions>
+					</MudCard>
+
 				}
 			</div>
 		</div>
@@ -166,6 +191,7 @@
 	private readonly FirstModel _model = new();
 	private SecondModel _secondModel = new SecondModel();
 	private bool _processing;
+	private bool _processing2;
 
 	private bool isResendDisabled = true;
 	private int timeLeft = 60;
@@ -174,6 +200,10 @@
 	bool isShow;
 	InputType PasswordInput = InputType.Password;
 	string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+	string wrongUserName = "";
+	private CheckUserNameQuery _checkUserName = new CheckUserNameQuery();
+	private int isAvailable = -1;
 
 	void ButtonTestclick()
 	{
@@ -213,8 +243,7 @@
 
 	private class SecondModel
 	{
-		[Required]
-		public string Username { get; set; }
+
 		[Required]
 		[StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
 		public string Password { get; set; }
@@ -319,7 +348,7 @@
 				FirstName = _model.FirstName,
 				LastName = _model.LastName,
 				PhoneNumber = _model.PhoneNumber,
-				Username = _secondModel.Username,
+				Username = _checkUserName.UserName,
 				Password = _secondModel.Password,
 				Application = "MraJobs",
 				Role = "Applicant",
@@ -333,4 +362,34 @@
 		StateHasChanged();
 	}
 
+	private async Task CheckUserName()
+	{
+
+
+		var validator = new CheckUserNameQueryValidator();
+		if (!(validator.Validate(_checkUserName).IsValid))
+		{
+			isAvailable = -1;
+			return;
+		}
+		_processing2 = true;
+		StateHasChanged();
+		try
+		{
+			var result = await AuthService.CheckUserName(_checkUserName.UserName);
+			if (result.IsSuccessStatusCode)
+			{
+				if ((await result.Content.ReadFromJsonAsync<bool>())) isAvailable = 0;
+				else isAvailable = 1;
+			}
+		}
+		catch (Exception)
+		{
+			isAvailable = -1;
+			ServerNotResponding();
+		}
+		_processing2 = false;
+		StateHasChanged();
+
+	}
 }

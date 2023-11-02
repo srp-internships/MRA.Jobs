@@ -13,4 +13,5 @@ public interface IAuthService
     Task<HttpResponseMessage> ChangePassword(ChangePasswordUserCommand command);
     Task<HttpResponseMessage> GetUserNameByPhoneNumber(GetUserNameByPhoneNumberQuery query);
     Task<HttpResponseMessage> ResetPassword(ResetPasswordCommand command);
+    Task<HttpResponseMessage> CheckUserName(string userName);
 }
