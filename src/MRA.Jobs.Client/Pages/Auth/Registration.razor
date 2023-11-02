@@ -2,56 +2,171 @@
 
 @using System.ComponentModel.DataAnnotations
 @using System.Net
+@using FluentValidation;
 @using MRA.Identity.Application.Contract.User.Commands.RegisterUser
+@using MRA.Identity.Application.Contract.User.Queries.CheckUserName;
+@using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
+@using MRA.Identity.Application.Contract.User.Queries;
 @using MRA.Jobs.Client.Components.Auth
+@using MRA.Jobs.Client.Identity;
 @using MRA.Jobs.Client.Services.Auth
+@using MRA.Jobs.Client.Services.Profile;
+@using System.Globalization;
+
 @inject IAuthService AuthService
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 @inject IConfiguration Configuration
-
+@inject IUserProfileService UserProfileService
+@inject IAuthService AuthService
 
 <div class="container">
 	<div class="row">
 		<div Class="d-flex align-center justify-center mud-width-full py-8">
 			<div class="col-md-6 mb-3">
-				<EditForm Model="@_model" OnValidSubmit="OnValidSubmit" style="margin-top: 10%;margin-bottom: 10%">
-					<DataAnnotationsValidator />
+				@if (step == 0)
+				{
+					<EditForm Model="@_model" OnInvalidSubmit="SendCode" style="margin-top: 10%;margin-bottom: 10%">
+						<FluentValidationValidator />
+						<MudCard>
+							<MudCardHeader>
+								<CardHeaderContent>
+									<MudText Typo="Typo.h4">
+										<b>Sign Up</b>
+									</MudText>
+									<small>Do you have an account? Go to <a href="sign-in">Sign In</a></small>
+								</CardHeaderContent>
+							</MudCardHeader>
+							<MudCardContent>
+								<MudTextField Label="First name" HelperText="Enter your first name"
+								@bind-Value="_model.FirstName" For="@(() => _model.FirstName)" InputType="InputType.Text"
+											  OnBlur="@(e => _model.FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_model.FirstName))" />
+
+								<MudTextField Label="Last name" HelperText="Enter your last name"
+								@bind-Value="_model.LastName" For="@(() => _model.LastName)" InputType="InputType.Text"
+											  OnBlur="@(e => _model.LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_model.LastName))" />
+								<MudTextField Label="Email" Class="mt-3"
+								@bind-Value="_model.Email" For="@(() => _model.Email)" InputType="InputType.Email" />
+
+								<MudTextField Label="Phone" HelperText="Enter your phone number" Class="mt-3"
+								@bind-Value="_model.PhoneNumber" For="@(() => _model.PhoneNumber)" InputType="InputType.Telephone" />
+							</MudCardContent>
+							<MudCardActions>
+								<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" OnClick="SendCode" Color="Color.Primary" Class="ml-auto">
+									@if (_processing)
+									{
+										<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+										<MudText Class="ms-2">Processing</MudText>
+									}
+									else
+									{
+										<MudText>Next</MudText>
+									}
+								</MudButton>
+							</MudCardActions>
+							<ExternalLoginCard Title="Continue With" />
+						</MudCard>
+					</EditForm>
+				}
+				@if (step == 1)
+				{
 					<MudCard>
 						<MudCardHeader>
 							<CardHeaderContent>
-
-								<MudText Typo="Typo.h4">
-									<b>Sign Up</b>
+								<MudText>
+									Okay, <b>@_model.FirstName @_model.LastName</b>,
+									we have sent a confirmation code to your number: <b>@_model.PhoneNumber</b>.
+									Please confirm your identity
 								</MudText>
-								<small>Do you have an account? Go to <a href="sign-in">Sign In</a></small>
-
 							</CardHeaderContent>
 						</MudCardHeader>
 						<MudCardContent>
-							<MudTextField Label="First name" HelperText="Enter your first name"
-							@bind-Value="_model.FirstName" For="@(() => _model.FirstName)" InputType="InputType.Text" />
+							<MudTextField Label="Code" @bind-Value="code" Variant="@Variant.Filled" Clearable />
+								<br />
+								<br />
+								<MudCardActions>
+									<MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="ConfirmCode">
+										@if (_processing)
+									{
+										<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+										<MudText Class="ms-2">Processing</MudText>
+									}
+									else
+									{
+										<MudText>Apply</MudText>
+									}
+								</MudButton>
+								<MudButton Variant="Variant.Text" Color="Color.Info" FullWidth="true" OnClick="SendCode" Disabled="@isResendDisabled">
+									@if (_processing)
+									{
+										<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+										<MudText Class="ms-2">Processing</MudText>
+									}
+									else
+									{
+										<MudText>Resend code</MudText>
+									}
+								</MudButton>
 
-							<MudTextField Label="Last name" HelperText="Enter your last name"
-							@bind-Value="_model.LastName" For="@(() => _model.LastName)" InputType="InputType.Text" />
+							</MudCardActions>
+							<div>
+								<MudText Typo="Typo.body2" Color="Color.Default">@timeLeft seconds left to resend the code.</MudText>
 
-							<MudTextField Label="Email" Class="mt-3"
-							@bind-Value="_model.Email" For="@(() => _model.Email)" InputType="InputType.Email" />
+							</div>
+						</MudCardContent>
 
-							<MudTextField Label="Phone" HelperText="Enter your phone number" Class="mt-3"
-							@bind-Value="_model.PhoneNumber" For="@(() => _model.PhoneNumber)" InputType="InputType.Telephone" />
 
-							<MudTextField Label="Username" HelperText="Think out your username"
-							@bind-Value="_model.Username" For="@(() => _model.Username)" />
+					</MudCard>
+				}
+				@if (step == 2)
+				{
 
-							<MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-							@bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password" />
+					<MudCard>
+						<MudCardHeader>
+							<MudText>
+								So, Create a UserName and strong Password
+							</MudText>
+						</MudCardHeader>
+						<MudCardContent>
+							<EditForm Model="_checkUserName" OnValidSubmit="CheckUserName">
+								<FluentValidationValidator />
+								<MudTextField Variant="Variant.Filled" Label="UserName"
+								@bind-Value="_checkUserName.UserName" For="@(()=>_checkUserName.UserName)"
+											  OnBlur="CheckUserName" />
+								@if (_processing2)
+								{
+									<MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+								}
+								@if (isAvailable == 1)
+								{
+									<MudText Typo="Typo.body2" Color="Color.Success">
+										<MudIcon Icon="@Icons.Material.Filled.Check"></MudIcon>
+										UserName: <b>@_checkUserName.UserName</b> is available
+									</MudText>
+								}
+								@if (isAvailable == 0)
+								{
+									<MudText Typo="Typo.body2" Color="Color.Error">
+										UserName: <b>@_checkUserName.UserName</b> is not available
+									</MudText>
+								}
+							</EditForm>
 
-							<MudTextField Label="Confirm password" HelperText="Repeat the password" Class="mt-3"
-							@bind-Value="_model.Confirmation" For="@(() => _model.Confirmation)" InputType="InputType.Password" />
+							<EditForm Model="_secondModel" OnInvalidSubmit="OnValidSubmit">
+								<FluentValidationValidator />
+								<MudTextField Variant="Variant.Filled" Label="Password"
+								@bind-Value="_secondModel.Password" For="@(()=>_secondModel.Password)"
+											  AdornmentIcon="@PasswordInputIcon" InputType="@PasswordInput" Adornment="Adornment.End"
+											  OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" />
+								<MudTextField Variant="Variant.Filled" Label="Confirm Password"
+								@bind-Value="_secondModel.Confirmation" For="@(()=>_secondModel.Confirmation)"
+											  AdornmentIcon="@PasswordInputIcon" InputType="@PasswordInput" Adornment="Adornment.End"
+											  OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" />
+							</EditForm>
 						</MudCardContent>
 						<MudCardActions>
-							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
+							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+									   Color="Color.Primary" Class="ml-auto" OnClick="OnValidSubmit">
 								@if (_processing)
 								{
 									<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
@@ -63,35 +178,71 @@
 								}
 							</MudButton>
 						</MudCardActions>
-						<ExternalLoginCard Title="Or Sign-Up With" />
 					</MudCard>
-				</EditForm>
+
+				}
 			</div>
 		</div>
 	</div>
 </div>
 
 @code {
-	private readonly LoginForm _model = new();
+	private int step = 0;
+	private readonly FirstModel _model = new();
+	private SecondModel _secondModel = new SecondModel();
 	private bool _processing;
+	private bool _processing2;
 
-	
+	private bool isResendDisabled = true;
+	private int timeLeft = 60;
+	private int? code;
 
+	bool isShow;
+	InputType PasswordInput = InputType.Password;
+	string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-	public class LoginForm
+	string wrongUserName = "";
+	private CheckUserNameQuery _checkUserName = new CheckUserNameQuery();
+	private int isAvailable = -1;
+
+	void ButtonTestclick()
 	{
-		[Required]
+		@if (isShow)
+		{
+			isShow = false;
+			PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+			PasswordInput = InputType.Password;
+		}
+		else
+		{
+			isShow = true;
+			PasswordInputIcon = Icons.Material.Filled.Visibility;
+			PasswordInput = InputType.Text;
+		}
+	}
+
+	private class FirstModelValidator : AbstractValidator<FirstModel>
+	{
+		public FirstModelValidator()
+		{
+			RuleFor(s => s.FirstName).NotEmpty();
+			RuleFor(s => s.LastName).NotEmpty();
+			RuleFor(s => s.Email).NotEmpty().EmailAddress();
+			RuleFor(s => s.PhoneNumber).NotEmpty().Matches(@"^\+992\d{9}$")
+				.WithMessage("Invalid phone number. Example : +992921234567");
+		}
+	}
+
+	private class FirstModel
+	{
 		public string FirstName { get; set; }
-
-		[Required]
 		public string LastName { get; set; }
-
-		[Required]
-		public string Username { get; set; }
-
-		[Required]
-		[EmailAddress]
 		public string Email { get; set; }
+		public string PhoneNumber { get; set; } = "+992";
+	}
+
+	private class SecondModel
+	{
 
 		[Required]
 		[StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
@@ -100,13 +251,94 @@
 		[Required]
 		[Compare(nameof(Password))]
 		public string Confirmation { get; set; }
-
-		[Required]
-		[Phone]
-		public string PhoneNumber { get; set; } = "+992";
 	}
 
-	private async Task OnValidSubmit(EditContext context)
+
+
+	private async Task SendCode()
+	{
+		_processing = true;
+		StateHasChanged();
+		try
+		{
+			var query = new GetUserNameByPhoneNumberQuery()
+				{
+					PhoneNumber = _model.PhoneNumber
+				};
+			var userNameResponse = await AuthService.GetUserNameByPhoneNumber(query);
+			if (userNameResponse.IsSuccessStatusCode)
+			{
+				Snackbar.Add("This number is already registered!", MudBlazor.Severity.Error);
+				return;
+			}
+
+			bool response = await UserProfileService.SendConfirmationCode(query.PhoneNumber);
+			if (response)
+			{
+				_processing = false;
+				step = 1;
+				isResendDisabled = true;
+				timeLeft = 60;
+				await StartCountdown();
+			}
+		}
+		catch (Exception ex)
+		{
+			ServerNotResponding();
+		}
+		finally
+		{
+			_processing = false;
+			StateHasChanged();
+		}
+	}
+
+	private void ServerNotResponding()
+	{
+		Snackbar.Add("Server is not responding, please try later", MudBlazor.Severity.Error);
+	}
+
+	private async Task StartCountdown()
+	{
+		for (timeLeft = 60; timeLeft > 0; timeLeft--)
+		{
+			await Task.Delay(1000);
+			StateHasChanged();
+		}
+		isResendDisabled = false;
+
+	}
+
+	private async Task ConfirmCode()
+	{
+		_processing = true;
+		StateHasChanged();
+		try
+		{
+			SmsVerificationCodeStatus response = await UserProfileService.CheckConfirmationCode(_model.PhoneNumber, code);
+			if (response == SmsVerificationCodeStatus.CodeVerifyFailure)
+			{
+				Snackbar.Add("Code is incorrect or expired", MudBlazor.Severity.Error);
+			}
+			else
+			{
+				_processing = false;
+				step = 2;
+			}
+		}
+		catch (Exception)
+		{
+			ServerNotResponding();
+		}
+		finally
+		{
+			_processing = false;
+			StateHasChanged();
+		}
+
+	}
+
+	private async Task OnValidSubmit()
 	{
 		_processing = true;
 		StateHasChanged();
@@ -116,15 +348,48 @@
 				FirstName = _model.FirstName,
 				LastName = _model.LastName,
 				PhoneNumber = _model.PhoneNumber,
-				Username = _model.Username,
-				Password = _model.Password,
+				Username = _checkUserName.UserName,
+				Password = _secondModel.Password,
 				Application = "MraJobs",
 				Role = "Applicant",
 			});
 		if (registerMessage != "" || registerMessage != null)
 			Snackbar.Add(registerMessage, MudBlazor.Severity.Error);
+
+		await UserProfileService.CheckConfirmationCode(_model.PhoneNumber, code);
+
 		_processing = false;
 		StateHasChanged();
 	}
 
+	private async Task CheckUserName()
+	{
+
+
+		var validator = new CheckUserNameQueryValidator();
+		if (!(validator.Validate(_checkUserName).IsValid))
+		{
+			isAvailable = -1;
+			return;
+		}
+		_processing2 = true;
+		StateHasChanged();
+		try
+		{
+			var result = await AuthService.CheckUserName(_checkUserName.UserName);
+			if (result.IsSuccessStatusCode)
+			{
+				if ((await result.Content.ReadFromJsonAsync<bool>())) isAvailable = 0;
+				else isAvailable = 1;
+			}
+		}
+		catch (Exception)
+		{
+			isAvailable = -1;
+			ServerNotResponding();
+		}
+		_processing2 = false;
+		StateHasChanged();
+
+	}
 }

@@ -10,6 +10,7 @@
 @using MRA.Identity.Application.Contract.Profile;
 @using MRA.Identity.Application.Contract.Skills.Command;
 @using MRA.Identity.Application.Contract.Skills.Responses;
+@using MRA.Identity.Application.Contract.User.Queries;
 @using MRA.Jobs.Client.Components.Dialogs;
 @using MRA.Jobs.Client.Pages.Auth
 @using MRA.Jobs.Client.Services.Profile;
@@ -652,8 +653,8 @@ else
 
 	private async Task Verify()
 	{
-		bool response = await UserProfileService.CheckConfirmationCode(profile.PhoneNumber, confirmation_code);
-		if (!response)
+		SmsVerificationCodeStatus response = await UserProfileService.CheckConfirmationCode(profile.PhoneNumber, confirmation_code);
+		if (response==SmsVerificationCodeStatus.CodeVerifyFailure)
 		{
 			Snackbar.Add("Code is incorrect or expired", MudBlazor.Severity.Error);
 		}

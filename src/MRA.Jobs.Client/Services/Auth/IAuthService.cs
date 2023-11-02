@@ -1,5 +1,4 @@
-﻿using System.Data.SqlTypes;
-using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
+﻿using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
@@ -14,4 +13,5 @@ public interface IAuthService
     Task<HttpResponseMessage> ChangePassword(ChangePasswordUserCommand command);
     Task<HttpResponseMessage> GetUserNameByPhoneNumber(GetUserNameByPhoneNumberQuery query);
     Task<HttpResponseMessage> ResetPassword(ResetPasswordCommand command);
+    Task<HttpResponseMessage> CheckUserName(string userName);
 }
