@@ -124,7 +124,7 @@
 					<MudCard>
 						<MudCardHeader>
 							<MudText>
-								So, Create a strong Password
+								So, Create a UserName and strong Password
 							</MudText>
 						</MudCardHeader>
 						<MudCardContent>
@@ -141,13 +141,13 @@
 								{
 									<MudText Typo="Typo.body2" Color="Color.Success">
 										<MudIcon Icon="@Icons.Material.Filled.Check"></MudIcon>
-										<b>@_checkUserName.UserName</b> is available
+										UserName: <b>@_checkUserName.UserName</b> is available
 									</MudText>
 								}
 								@if (isAvailable == 0)
 								{
 									<MudText Typo="Typo.body2" Color="Color.Error">
-										<b>@_checkUserName.UserName</b> is not available
+										UserName: <b>@_checkUserName.UserName</b> is not available
 									</MudText>
 								}
 							</EditForm>
