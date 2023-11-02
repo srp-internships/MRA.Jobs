@@ -1,12 +1,12 @@
 ﻿namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
-
-using System.Reflection.Metadata.Ecma335;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Common.Interfaces;
 using Common.Security;
 using Common.SlugGeneratorService;
 using Domain.Entities;
 using Domain.Enums;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 
@@ -19,7 +19,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly ISlugGeneratorService _slugService;
     private readonly Mra.Shared.Common.Interfaces.Services.IEmailService _emailService;
     private readonly IHtmlService _htmlService;
-
+    static readonly HttpClient HttpClient = new();
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
         ICurrentUserService currentUserService, ISlugGeneratorService slugService,
         Mra.Shared.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService)
@@ -59,6 +59,44 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
             CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
 
+
+        foreach (var tResponses in application.TaskResponses)
+        {
+            var task = _context.VacancyTasks.Where(v => v.Id == tResponses.TaksId);
+            foreach (var VTasks in task)
+            {
+                var r = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = new Uri("https://localhost:7046/api/CodeAnalyzer/Analyze"),
+                    Content = new StringContent(
+                $@"{{
+                    ""codes"": [
+                        ""{VTasks.Test}"",
+                        ""{tResponses.Code}""
+                    ],
+                    ""dotNetVersionInfo"": {{
+                        ""language"": ""CSharp"",
+                        ""version"": ""NET6""
+                    }}
+                }}", Encoding.UTF8, "application/json")
+                };
+                using var response = await HttpClient.SendAsync(r);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var jsonDocument = JsonDocument.Parse(responseBody);
+                bool success = jsonDocument.RootElement.GetProperty("success").GetBoolean();
+               
+                var s = new VacancyTaskDetail
+                {
+                    ApplicantId = application.Id,
+                    Codes = tResponses.Code,
+                    Success = success,
+                    TaskId = tResponses.TaksId,
+                };
+                _context.VacancyTaskDetails.Add(s);
+            }  
+        }
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
@@ -67,8 +105,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
             "New Apply");
 
         return application.Id;
-    }
-
+    }  
     private async Task<bool> ApplicationExits(string ApplicationSlug)
     {
         var application = await _context.Applications.FirstOrDefaultAsync(a => a.Slug.Equals(ApplicationSlug));
