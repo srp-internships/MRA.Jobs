@@ -94,7 +94,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
                     Success = success,
                     TaskId = tResponses.TaksId,
                 };
-                _context.VacancyTaskDetails.Add(s);
+                _context.VacancyTaskDetails.AddAsync(s, cancellationToken);
             }  
         }
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
