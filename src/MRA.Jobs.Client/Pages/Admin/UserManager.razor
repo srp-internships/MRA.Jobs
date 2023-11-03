@@ -11,28 +11,63 @@
 					</CardHeaderContent>
 				</MudCardHeader>
 				<MudCardContent>
-					<MudText>Full Name: <b>@user.FullName</b></MudText>
+					<style>
+						td {
+							vertical-align: top;
+							text-align: left;
+							padding-bottom: 0px;
+						}
+					</style>
+					<table style="align-content:flex-start">
+						<thead>
+							<tr>
+								<th></th>
+								<th style="width:25p;x"></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Full Name:</td>
+								<td></td>
+								<td> <b>@user.FullName</b></td>
+							</tr>
+							<tr></tr>
+							<tr>
+								<td>Email:</td>
+								<td></td>
+								<td>
+									<b>@user.Email</b>
+									@if (user.EmailConfirmed)
+									{
+										<MudChip Variant="Variant.Text" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
+									}
+									else
+									{
+										<MudChip Variant="Variant.Text" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">UnConfirmed</MudChip>
+									}
+								</td>
+							</tr>
+							<tr>
+								<td>Phone Number:</td>
+								<td></td>
+								<td>
+									<b>@user.PhoneNumber</b>
+									@if (user.PhoneNumberConfirmed)
+									{
+										<MudChip Variant="Variant.Text" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
+									}
+									else
+									{
+										<MudChip Variant="Variant.Text" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">UnConfirmed</MudChip>
+									}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
 					<MudText>
-						Email: <b>@user.Email</b>
-						@if (user.EmailConfirmed)
-						{
-							<MudChip Variant="Variant.Text" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
-						}
-						else
-						{
-							<MudChip Variant="Variant.Text" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">Unconfirmed</MudChip>
-						}
-					</MudText>
-					<MudText>
-						Phone Number: <b>@user.PhoneNumber</b>
-						@if (user.PhoneNumberConfirmed)
-						{
-							<MudChip Variant="Variant.Text" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
-						}
-						else
-						{
-							<MudChip Variant="Variant.Text" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">Unconfirmed</MudChip>
-						}
+
 					</MudText>
 				</MudCardContent>
 				<MudCardActions>
