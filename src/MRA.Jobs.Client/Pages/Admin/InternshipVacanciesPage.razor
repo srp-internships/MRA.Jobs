@@ -81,12 +81,12 @@ else
             <MudTh>Category</MudTh>
             <MudTh>End date</MudTh>
             <MudTh>Publish date</MudTh>
-            <MudTh Style="width: 10%">Action</MudTh>
+            <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Title">@context.Title</MudTd>
             <MudTd DataLabel="Short description">
-                @(context.ShortDescription.Count() > 50 ? context.ShortDescription.Substring(0, 40) : context.ShortDescription)
+                @(context.ShortDescription.Count() > 50 ? context.ShortDescription.Substring(0, 50) : context.ShortDescription)
             </MudTd>
             <MudTd DataLabel="Application deadline">@context.ApplicationDeadline</MudTd>
             <MudTd DataLabel="Duration">@context.Duration</MudTd>
