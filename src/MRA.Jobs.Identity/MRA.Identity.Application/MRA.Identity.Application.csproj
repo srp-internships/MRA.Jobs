@@ -18,8 +18,8 @@
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.13" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Mra.Shared" Version="1.0.11" />
         <PackageReference Include="RestSharp" Version="110.2.0" />
+        <PackageReference Include="MRA.Configurations" Version="1.0.3" />
     </ItemGroup>
 
 </Project>

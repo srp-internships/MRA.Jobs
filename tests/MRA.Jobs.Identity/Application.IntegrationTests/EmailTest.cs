@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Identity.Domain.Entities;
-using Mra.Shared.Services;
+using MRA.Configurations.Services;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 

@@ -1,19 +1,19 @@
 using MRA.Identity.Application;
 using MRA.Identity.Infrastructure;
-using Mra.Shared.Initializer.Azure.Insight;
-using Mra.Shared.Initializer.Azure.KeyVault;
 using MRA.Identity.Infrastructure.Persistence;
 using MRA.Identity.Api.Filters;
 using FluentValidation;
 using MRA.Identity.Application.Contract.Skills.Command;
 using FluentValidation.AspNetCore;
+using MRA.Configurations.Initializer.Azure.Insight;
+using MRA.Configurations.Initializer.Azure.KeyVault;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsProduction())
 {
+    builder.Configuration.ConfigureAzureKeyVault("MRAIdentity");
     builder.Logging.AddApiApplicationInsights(builder.Configuration);
-    builder.Configuration.ConfigureAzureKeyVault("Mra.Identity");
 }
 builder.Services.AddControllers(options =>
 {

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Mra.Shared.Common.Interfaces.Services;
+using MRA.Configurations.Common.Interfaces.Services;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Domain.Entities;

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using Mra.Shared.Common.Interfaces.Services;
-using Mra.Shared.OsonSms.SmsService;
+using MRA.Configurations.Common.Interfaces.Services;
+using MRA.Configurations.OsonSms.SmsService;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract.User.Queries;
 
