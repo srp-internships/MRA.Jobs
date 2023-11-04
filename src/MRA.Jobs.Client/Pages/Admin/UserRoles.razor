@@ -98,7 +98,7 @@
 						</CardHeaderContent>
 					</MudCardHeader>
 					<MudCardContent>
-						@* 				<MatAccordion>
+										<MatAccordion>
 						<MatExpansionPanel @bind-Expanded="_isOpened">
 						<MatExpansionPanelSummary>
 						<MatExpansionPanelHeader>Add role</MatExpansionPanelHeader>
@@ -108,7 +108,7 @@
 						<MatButton OnClick="@OnAddClick" Style="color:#2094CC" Icon="edit" Label="Add"></MatButton>
 						</MatExpansionPanelDetails>
 						</MatExpansionPanel>
-						</MatAccordion> *@
+						</MatAccordion>
 						<MudTable Items="@Roles" Dense="true" Hover="true" Breakpoint="@Breakpoint.None">
 
 							<RowTemplate>
@@ -120,10 +120,10 @@
 						</MudTable>
 					</MudCardContent>
 					<MudCardActions>
-						<MudButton Variant="Variant.Filled" ButtonType="ButtonType.Button"
+						@* <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Button"
 								   StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">
 							<MudText> Add Role</MudText>
-						</MudButton>
+						</MudButton> *@
 					</MudCardActions>
 				</MudCard>
 
