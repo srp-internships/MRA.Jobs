@@ -15,7 +15,6 @@ public abstract class BaseTestFixture
     protected Mock<IEmailService> _emailServiceMock;
     protected Mock<IHtmlService> _htmlServiceMock;
     
-    HttpClient _httpClient;
 
     [SetUp]
     public virtual void Setup()

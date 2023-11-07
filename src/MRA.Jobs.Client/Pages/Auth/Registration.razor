@@ -201,7 +201,6 @@
 	InputType PasswordInput = InputType.Password;
 	string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-	string wrongUserName = "";
 	private CheckUserNameQuery _checkUserName = new CheckUserNameQuery();
 	private int isAvailable = -1;
 
@@ -286,7 +285,7 @@
 				await StartCountdown();
 			}
 		}
-		catch (Exception ex)
+		catch (Exception)
 		{
 			ServerNotResponding();
 		}

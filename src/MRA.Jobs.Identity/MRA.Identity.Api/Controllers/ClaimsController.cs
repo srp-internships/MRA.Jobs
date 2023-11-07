@@ -28,7 +28,7 @@ public class ClaimsController : ControllerBase
 
 
     [HttpPut("{slug}")]
-    public async Task<IActionResult> Put([FromBody] UpdateClaimCommand command, string slug)
+    public IActionResult Put([FromBody] UpdateClaimCommand command, string slug)
     {
 
         if (slug != command.Slug)

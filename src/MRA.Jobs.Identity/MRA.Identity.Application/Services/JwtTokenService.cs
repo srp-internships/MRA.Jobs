@@ -28,7 +28,7 @@ internal class JwtTokenService : IJwtTokenService
             expires: expireDate,
             signingCredentials: creds);
 
-        string? jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        string jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwt;
     }
@@ -46,7 +46,7 @@ internal class JwtTokenService : IJwtTokenService
                 int.Parse(_configuration["JWT:RefreshTokenValidityInDays"]!)),
             signingCredentials: creds);
 
-        string? jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        string jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwt;
     }
