@@ -6,7 +6,7 @@ using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Users.Query;
-public class GetUserNameByPhoneNumberQueryHandler : IRequestHandler<GetUserNameByPhoneNumberQuery, string>
+public class GetUserNameByPhoneNumberQueryHandler : IRequestHandler<IsAvailableUserPhoneNumberQuery, bool>
 {
     private readonly UserManager<ApplicationUser> _userManager;
 
@@ -14,12 +14,12 @@ public class GetUserNameByPhoneNumberQueryHandler : IRequestHandler<GetUserNameB
     {
         _userManager = userManager;
     }
-    public async Task<string> Handle(GetUserNameByPhoneNumberQuery request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(IsAvailableUserPhoneNumberQuery request, CancellationToken cancellationToken)
     {
         var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
         if (user == null)
-            throw new NotFoundException("User not found");
+            return true;
 
-        return user.UserName;
+        return false;
     }
 }

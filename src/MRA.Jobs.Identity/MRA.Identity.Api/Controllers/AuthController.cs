@@ -85,10 +85,10 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("GetUserNameByPhoneNumber/{phoneNumber}")]
-    public async Task<IActionResult> GetUserNameByPhoneNumber([FromRoute] string phoneNumber)
+    [HttpGet("IsAvailableUserPhoneNumber/{phoneNumber}")]
+    public async Task<IActionResult> IsAvailableUserPhoneNumber([FromRoute] string phoneNumber)
     {
-        var result = await _mediator.Send(new GetUserNameByPhoneNumberQuery() { PhoneNumber = phoneNumber });
+        var result = await _mediator.Send(new IsAvailableUserPhoneNumberQuery() { PhoneNumber = phoneNumber });
         return Ok(result);
     }
 
