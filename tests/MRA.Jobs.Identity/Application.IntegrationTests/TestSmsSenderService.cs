@@ -1,4 +1,4 @@
-﻿using Mra.Shared.Common.Interfaces.Services;
+﻿using MRA.Configurations.Common.Interfaces.Services;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 

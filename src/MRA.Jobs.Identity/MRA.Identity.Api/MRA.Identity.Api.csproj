@@ -7,10 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="wwwroot\**" />
-      <Content Remove="wwwroot\**" />
-      <EmbeddedResource Remove="wwwroot\**" />
-      <None Remove="wwwroot\**" />
+        <Compile Remove="wwwroot\**" />
+        <Content Remove="wwwroot\**" />
+        <EmbeddedResource Remove="wwwroot\**" />
+        <None Remove="wwwroot\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -20,15 +20,14 @@
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0" />
-
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 

@@ -2,7 +2,7 @@
 using FluentAssertions;
 using MRA.Identity.Application.Contract.UserRoles.Commands;
 using MRA.Identity.Domain.Entities;
-using Mra.Shared.Common.Constants;
+using MRA.Configurations.Common.Constants;
 
 namespace MRA.Jobs.Application.IntegrationTests.UserRoles.Commands;
 

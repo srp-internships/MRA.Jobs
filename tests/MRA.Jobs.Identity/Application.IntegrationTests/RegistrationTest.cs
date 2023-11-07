@@ -4,7 +4,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Domain.Entities;
-using Mra.Shared.Common.Constants;
+using MRA.Configurations.Common.Constants;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 

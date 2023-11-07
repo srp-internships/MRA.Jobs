@@ -17,12 +17,12 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
     private readonly ISlugGeneratorService _slugService;
-    private readonly Mra.Shared.Common.Interfaces.Services.IEmailService _emailService;
+    private readonly MRA.Configurations.Common.Interfaces.Services.IEmailService _emailService;
     private readonly IHtmlService _htmlService;
 
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
         ICurrentUserService currentUserService, ISlugGeneratorService slugService,
-        Mra.Shared.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService)
+        MRA.Configurations.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService)
     {
         _context = context;
         _mapper = mapper;

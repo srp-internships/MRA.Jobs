@@ -10,7 +10,7 @@ using MRA.Jobs.Application.IntegrationTests.Common.Services;
 using MRA.Jobs.Infrastructure.Identity;
 using MRA.Jobs.Infrastructure.Persistence;
 using NUnit.Framework;
-using ClaimTypes = Mra.Shared.Common.Constants.ClaimTypes;
+using ClaimTypes = MRA.Configurations.Common.Constants.ClaimTypes;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 

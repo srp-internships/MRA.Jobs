@@ -13,11 +13,11 @@ using MRA.Identity.Domain.Entities;
 using MRA.Identity.Infrastructure.Account.Services;
 using MRA.Identity.Infrastructure.Identity;
 using MRA.Identity.Infrastructure.Persistence;
-using Mra.Shared.Initializer.Azure.EmailService;
-using Mra.Shared.Initializer.Services;
-using Mra.Shared.Initializer.OsonSms.SmsService;
+using MRA.Configurations.Initializer.Azure.EmailService;
+using MRA.Configurations.Initializer.Services;
+using MRA.Configurations.Initializer.OsonSms.SmsService;
 using Microsoft.Extensions.Logging;
-using Mra.Shared.Common.Constants;
+using MRA.Configurations.Common.Constants;
 
 namespace MRA.Identity.Infrastructure;
 
@@ -25,10 +25,9 @@ public static class DependencyInitializer
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configurations)
     {
-        string? dbConnectionString = configurations.GetConnectionString("SqlServer");
-
         services.AddDbContext<ApplicationDbContext>(options =>
         {
+            string dbConnectionString = configurations.GetConnectionString("DefaultConnection");
             if (configurations["UseInMemoryDatabase"] == "true")
                 options.UseInMemoryDatabase("testDb");
             else
@@ -51,7 +50,7 @@ public static class DependencyInitializer
         }
         else
         {
-            services.AddAzureEmailService(); //uncomment this if u wont use email service from Azure from namespace Mra.Shared.Initializer.Azure.EmailService
+            services.AddAzureEmailService(); //uncomment this if u wont use email service from Azure from namespace MRA.Configurations.Initializer.Azure.EmailService
         }
 
         if (configurations["UseFileSmsService"] == "true")
@@ -79,7 +78,7 @@ public static class DependencyInitializer
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        
+
 
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication(o =>
@@ -93,7 +92,7 @@ public static class DependencyInitializer
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(configurations.GetSection("JwtSettings")["SecurityKey"])),
+                        Encoding.UTF8.GetBytes(configurations["JWT:Secret"])),
                 ValidateIssuer = false,
                 ValidateAudience = false
             };

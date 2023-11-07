@@ -261,15 +261,19 @@
 		StateHasChanged();
 		try
 		{
-			var query = new GetUserNameByPhoneNumberQuery()
+			var query = new IsAvailableUserPhoneNumberQuery()
 				{
 					PhoneNumber = _model.PhoneNumber
 				};
-			var userNameResponse = await AuthService.GetUserNameByPhoneNumber(query);
-			if (userNameResponse.IsSuccessStatusCode)
+			var isAvailable = await AuthService.IsAvailableUserPhoneNumber(query);
+			if (isAvailable.IsSuccessStatusCode)
 			{
-				Snackbar.Add("This number is already registered!", MudBlazor.Severity.Error);
-				return;
+				if (!(await isAvailable.Content.ReadFromJsonAsync<bool>()))
+				{
+					Snackbar.Add("This number is already registered!", MudBlazor.Severity.Error);
+					return;
+				}
+				
 			}
 
 			bool response = await UserProfileService.SendConfirmationCode(query.PhoneNumber);

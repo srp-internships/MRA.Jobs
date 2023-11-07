@@ -9,9 +9,9 @@ using MRA.Jobs.Infrastructure.Identity;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;
-using Mra.Shared.Common.Constants;
-using Mra.Shared.Initializer.Azure.EmailService;
-using Mra.Shared.Initializer.Services;
+using MRA.Configurations.Common.Constants;
+using MRA.Configurations.Initializer.Azure.EmailService;
+using MRA.Configurations.Initializer.Services;
 
 namespace MRA.Jobs.Infrastructure;
 
@@ -34,9 +34,10 @@ public static class ConfigureServices
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
-        string dbConnectionString = configuration.GetConnectionString("SqlServer");
+       
         services.AddDbContext<ApplicationDbContext>(options =>
         {
+            string dbConnectionString = configuration.GetConnectionString("DefaultConnection");
             if (configuration["UseInMemoryDatabase"] == "true")
                 options.UseInMemoryDatabase("testDb");
             else
@@ -70,7 +71,7 @@ public static class ConfigureServices
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
-                        System.Text.Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings")["SecurityKey"]!)),
+                        System.Text.Encoding.UTF8.GetBytes(configuration["JwtSettings:SecurityKey"]!)),
                 ValidateIssuer = false,
                 ValidateAudience = false
             };

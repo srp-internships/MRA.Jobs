@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract.UserRoles.Commands;
 using MRA.Identity.Domain.Entities;
-using Mra.Shared.Common.Constants;
+using MRA.Configurations.Common.Constants;
 using MRA.Identity.Application.Common.Exceptions;
 
 namespace MRA.Identity.Application.Features.UserRoles.Commands;

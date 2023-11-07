@@ -4,8 +4,8 @@ using MRA.Jobs.Application;
 using MRA.Jobs.Infrastructure;
 using MRA.Jobs.Infrastructure.Identity;
 using MRA.Jobs.Web;
-using Mra.Shared.Initializer.Azure.Insight;
-using Mra.Shared.Initializer.Azure.KeyVault;
+using MRA.Configurations.Initializer.Azure.Insight;
+using MRA.Configurations.Initializer.Azure.KeyVault;
 using Newtonsoft.Json;
 using Sieve.Models;
 using FluentValidation.AspNetCore;
@@ -17,8 +17,8 @@ using static System.Formats.Asn1.AsnWriter;
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
 {
-    builder.Logging.AddApiApplicationInsights(builder.Configuration);
     builder.Configuration.ConfigureAzureKeyVault(ApplicationClaimValues.ApplicationName);
+    builder.Logging.AddApiApplicationInsights(builder.Configuration);
 }
 
 builder.Services.AddApplicationServices(builder.Configuration);
