@@ -6,11 +6,11 @@ using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Users.Query;
-public class GetUserNameByPhoneNumberQueryHandler : IRequestHandler<IsAvailableUserPhoneNumberQuery, bool>
+public class IsAvailableUserPhoneNumberQueryHandler : IRequestHandler<IsAvailableUserPhoneNumberQuery, bool>
 {
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public GetUserNameByPhoneNumberQueryHandler(UserManager<ApplicationUser> userManager)
+    public IsAvailableUserPhoneNumberQueryHandler(UserManager<ApplicationUser> userManager)
     {
         _userManager = userManager;
     }
