@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Servises;
 
 namespace MRA.Jobs.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
-public class FileController : ControllerBase
+public class FileController : ApiControllerBase
 {
     private readonly IFileService _fileService;
 

@@ -8,11 +8,8 @@ using MRA.Configurations.Initializer.Azure.Insight;
 using MRA.Configurations.Initializer.Azure.KeyVault;
 using Newtonsoft.Json;
 using Sieve.Models;
-using FluentValidation.AspNetCore;
-using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using static System.Formats.Asn1.AsnWriter;
+using MRA.Jobs.Application.Servises;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
@@ -28,7 +25,8 @@ builder.Services.AddWebUiServices(builder.Configuration);
 
 builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("Sieve"));
 
-
+builder.Services.AddScoped<IFileService, FileService>(sp =>
+    new FileService(builder.Configuration.GetSection("UploadFolderPath").Value));
 
 WebApplication app = builder.Build();
 
@@ -57,7 +55,9 @@ app.UseHealthChecks("/status", new HealthCheckOptions
             Status = report.Status.ToString(),
             Checks = report.Entries.Select(entry => new
             {
-                Name = entry.Key, Status = entry.Value.Status.ToString(), entry.Value.Description
+                Name = entry.Key,
+                Status = entry.Value.Status.ToString(),
+                entry.Value.Description
             })
         };
 
