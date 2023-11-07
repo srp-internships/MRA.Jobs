@@ -67,10 +67,7 @@ app.UseHealthChecks("/status", new HealthCheckOptions
 });
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseCors(config =>
-{
-    config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
-});
+app.UseCors("CORS_POLICY");
 app.UseSwaggerUi3(settings =>
 {
     settings.Path = "/api";
