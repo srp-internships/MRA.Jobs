@@ -25,6 +25,7 @@ public static class DependencyInitializer
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configurations)
     {
+
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             string dbConnectionString = configurations.GetConnectionString("DefaultConnection");
@@ -110,5 +111,18 @@ public static class DependencyInitializer
             auth.AddPolicy(ApplicationPolicies.Administrator, op => op
                 .RequireRole(ApplicationClaimValues.SuperAdministrator, ApplicationClaimValues.Administrator));
         });
+
+        var coresAllowedHosts = configurations.GetSection("CORS").Get<string[]>();
+        services.AddCors(options =>
+        {
+            options.AddPolicy("SOME_POLICY", policyConfig =>
+            {
+                policyConfig.WithOrigins(coresAllowedHosts)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+            });
+        });
     }
+
+
 }
