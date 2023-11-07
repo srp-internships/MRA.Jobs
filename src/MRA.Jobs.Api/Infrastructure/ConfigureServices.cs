@@ -71,7 +71,7 @@ public static class ConfigureServices
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
-                        System.Text.Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!)),
+                        System.Text.Encoding.UTF8.GetBytes(configuration["JwtSettings:SecurityKey"]!)),
                 ValidateIssuer = false,
                 ValidateAudience = false
             };
