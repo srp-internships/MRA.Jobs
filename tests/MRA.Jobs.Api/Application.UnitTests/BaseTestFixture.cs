@@ -1,6 +1,6 @@
 ﻿using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Common.SlugGeneratorService;
-using IEmailService = Mra.Shared.Common.Interfaces.Services.IEmailService;
+using IEmailService = MRA.Configurations.Common.Interfaces.Services.IEmailService;
 
 namespace MRA.Jobs.Application.UnitTests;
 
