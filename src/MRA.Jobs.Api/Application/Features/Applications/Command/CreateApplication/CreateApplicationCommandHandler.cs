@@ -1,6 +1,5 @@
 ﻿namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ using Domain.Entities;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
-using Newtonsoft.Json.Linq;
 
 public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, Guid>
 {
@@ -22,7 +20,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly ISlugGeneratorService _slugService;
     private readonly Mra.Shared.Common.Interfaces.Services.IEmailService _emailService;
     private readonly IHtmlService _htmlService;
-    static readonly HttpClient httpClient = new();
+    static readonly HttpClient httpClient = new HttpClient();
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
         ICurrentUserService currentUserService, ISlugGeneratorService slugService,
         Mra.Shared.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService)
@@ -38,7 +36,8 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("API_KEY", "123");
+        //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("API_KEY", "123");
+        httpClient.DefaultRequestHeaders.Add("API_KEY", "123");
         Vacancy vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
         _ = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
         var application = _mapper.Map<Application>(request);
@@ -50,18 +49,6 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         application.ApplicantId = _currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = _currentUserService.GetUserName() ?? string.Empty;
-
-        await _context.Applications.AddAsync(application, cancellationToken);
-
-        ApplicationTimelineEvent timelineEvent = new()
-        {
-            ApplicationId = application.Id,
-            EventType = TimelineEventType.Created,
-            Time = _dateTime.Now,
-            Note = "Job vacancy created",
-            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
-        };
-
 
         foreach (var tResponses in application.TaskResponses)
         {
@@ -87,6 +74,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
                 using var response = await httpClient.SendAsync(r);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(responseBody);
                 var jsonDocument = JsonDocument.Parse(responseBody);
                 bool success = jsonDocument.RootElement.GetProperty("success").GetBoolean();
 
@@ -97,9 +85,22 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
                     Success = success,
                     TaskId = tResponses.TaksId,
                 };
-                _context.VacancyTaskDetails.AddAsync(s, cancellationToken);
+                await _context.VacancyTaskDetails.AddAsync(s, cancellationToken);
             }
         }
+        await _context.Applications.AddAsync(application, cancellationToken);
+
+        ApplicationTimelineEvent timelineEvent = new()
+        {
+            ApplicationId = application.Id,
+            EventType = TimelineEventType.Created,
+            Time = _dateTime.Now,
+            Note = "Job vacancy created",
+            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
+        };
+
+
+       
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
