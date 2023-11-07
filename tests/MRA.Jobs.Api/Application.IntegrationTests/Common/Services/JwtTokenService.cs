@@ -21,13 +21,13 @@ public class JwtTokenService : IJwtTokenService
     public string CreateTokenByClaims(IList<Claim> claims)
     {
         SymmetricSecurityKey key = new(Encoding.UTF8
-            .GetBytes(_configuration.GetSection("JwtSettings")["SecurityKey"]!));
+            .GetBytes(_configuration.GetSection("JWT")["Secret"]!));
 
         SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha512Signature);
 
         JwtSecurityToken token = new(
             claims: claims,
-            expires: DateTime.Now.AddDays(int.Parse(_configuration.GetSection("JwtSettings")["ExpireDayFromNow"]!)),
+            expires: DateTime.Now.AddDays(int.Parse(_configuration.GetSection("JWT")["ExpireDayFromNow"]!)),
             signingCredentials: creds);
 
         string jwt = new JwtSecurityTokenHandler().WriteToken(token);
