@@ -116,4 +116,10 @@ public class AuthService : IAuthService
         var result = await _identityHttpClient.PostAsJsonAsync("Auth/ResetPassword", command);
         return result;
     }
+
+    public async Task<HttpResponseMessage> CheckUserName(string userName)
+    {
+        var result = await _identityHttpClient.GetAsync($"User/CheckUserName/{userName}");
+        return result;
+    }
 }

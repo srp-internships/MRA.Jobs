@@ -23,7 +23,6 @@ public class SmsController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize]
     [HttpGet("verify_code")]
     public async Task<IActionResult> VerifyCode([FromQuery] SmsVerificationCodeCheckQuery query)
     {
