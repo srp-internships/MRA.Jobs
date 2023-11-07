@@ -86,7 +86,7 @@ public class Testing
 
     
 
-    public static async Task ResetState()
+    public static void ResetState()
     {
         try
         {

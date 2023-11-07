@@ -696,7 +696,7 @@ else
 			updateProfileCommand.Gender = profile.Gender;
 			updateProfileCommand.PhoneNumber = profile.PhoneNumber;
 		}
-		catch (Exception ex)
+		catch (Exception)
 		{
 			ServerNotResponding();
 			_tryButton = true;
@@ -742,7 +742,7 @@ else
 		var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
 		var result = await dialog.Result;
 
-		if (!result.Cancelled)
+		if (!result.Canceled)
 		{
 			Delete(collection, item);
 		}
@@ -781,7 +781,7 @@ else
 
 					}
 				}
-				catch (HttpRequestException ex)
+				catch (HttpRequestException)
 				{
 					ServerNotResponding();
 					return;
@@ -893,7 +893,7 @@ else
 				await BadRequestResponse(response);
 			}
 		}
-		catch (HttpRequestException ex)
+		catch (HttpRequestException)
 		{
 			ServerNotResponding();
 		}
@@ -932,7 +932,7 @@ else
 				await BadRequestResponse(result);
 			}
 		}
-		catch (HttpRequestException ex)
+		catch (HttpRequestException)
 		{
 			ServerNotResponding();
 		}
@@ -1007,7 +1007,7 @@ else
 			if (response.StatusCode == HttpStatusCode.BadRequest)
 				await BadRequestResponse(response);
 		}
-		catch (HttpRequestException ex)
+		catch (HttpRequestException)
 		{
 			ServerNotResponding();
 		}
@@ -1059,7 +1059,7 @@ else
 			if (result.StatusCode == HttpStatusCode.BadRequest)
 				await BadRequestResponse(result);
 		}
-		catch (HttpRequestException ex)
+		catch (HttpRequestException)
 		{
 			ServerNotResponding();
 		}
@@ -1085,7 +1085,7 @@ else
 			allSkills = await UserProfileService.GetAllSkills();
 
 		}
-		catch (HttpRequestException ex)
+		catch (HttpRequestException)
 		{
 			ServerNotResponding();
 		}
@@ -1146,7 +1146,7 @@ else
 				isAdding = false;
 			}
 		}
-		catch (HttpRequestException ex)
+		catch (HttpRequestException)
 		{
 			ServerNotResponding();
 		}
