@@ -1,0 +1,12 @@
+services:
+  web_api:
+    build: .
+    container_name: mra-identity_application
+    depends_on:
+      - sql
+  sql:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: sql_server2022
+    environment:
+      - ACCEPT_EULA=y
+      - SA_PASSWORD=A&VeryComplex123Password
