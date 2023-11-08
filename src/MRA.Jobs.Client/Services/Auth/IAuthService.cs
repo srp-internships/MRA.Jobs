@@ -11,7 +11,7 @@ public interface IAuthService
     Task<string> RegisterUserAsync(RegisterUserCommand command);
     Task<string> LoginUserAsync(LoginUserCommand command, bool newRegister = false);
     Task<HttpResponseMessage> ChangePassword(ChangePasswordUserCommand command);
-    Task<HttpResponseMessage> GetUserNameByPhoneNumber(GetUserNameByPhoneNumberQuery query);
+    Task<HttpResponseMessage> IsAvailableUserPhoneNumber(IsAvailableUserPhoneNumberQuery query);
     Task<HttpResponseMessage> ResetPassword(ResetPasswordCommand command);
     Task<HttpResponseMessage> CheckUserName(string userName);
 }

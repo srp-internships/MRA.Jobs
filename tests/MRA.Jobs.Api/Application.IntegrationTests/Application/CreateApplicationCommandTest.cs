@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace MRA.Jobs.Application.IntegrationTests.Application;
 public class CreateApplicationCommandTest : Testing
 {
-    private static Random random = new Random();
+    private static readonly Random random = new Random();
     [Test]
     public async Task CreateApplicationCommand_CreatingApplication_Success()
     {
@@ -32,7 +32,6 @@ public class CreateApplicationCommandTest : Testing
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyQuestions_Success()
     {
-        
         var vacancyId = await AddJobVacancy("foobar");
         var testSubmit = new CreateApplicationCommand
         {

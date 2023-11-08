@@ -85,7 +85,9 @@ else
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Title">@context.Title</MudTd>
-            <MudTd DataLabel="Short description">@context.ShortDescription.Substring(0, 50) ...</MudTd>
+            <MudTd DataLabel="Short description">
+                @(context.ShortDescription.Count() > 50 ? context.ShortDescription.Substring(0, 50) : context.ShortDescription)
+            </MudTd>
             <MudTd DataLabel="Application deadline">@context.ApplicationDeadline</MudTd>
             <MudTd DataLabel="Duration">@context.Duration</MudTd>
             <MudTd DataLabel="Stipend">@context.Stipend</MudTd>

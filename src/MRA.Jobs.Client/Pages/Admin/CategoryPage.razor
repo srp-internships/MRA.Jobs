@@ -24,7 +24,7 @@ else
 
 @code {
     private List<CategoryResponse> _category;
-    bool panelOpenState;
+ 
     private string newCategory { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -44,7 +44,7 @@ else
         var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
         var result = await dialog.Result;
 
-        if (!result.Cancelled)
+        if (!result.Canceled)
         {
             _category.Remove(cat);
             await CService.OnDeleteClick(cat.Slug);

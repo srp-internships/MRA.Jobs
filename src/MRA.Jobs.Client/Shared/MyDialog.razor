@@ -1,91 +1,91 @@
 ﻿@inject IApplicationService applicationService
 @inject ISnackbar Snackbar
-@inject NavigationManager navigationManager 
+@inject NavigationManager navigationManager
 <MudDialog>
-    <DialogContent>
-        <MudText Typo="Typo.h5">
-            Cover letter
-        </MudText>
-        @CoverLetter
+	<DialogContent>
+		<MudText Typo="Typo.h5">
+			Cover letter
+		</MudText>
+		@CoverLetter
 
-        <MudList>
-            @if (VacancyResponses.Count() > 0)
-            {
-                <MudListSubheader>
-                    Questions
-                </MudListSubheader>
+		<MudList>
+			@if (VacancyResponses.Count() > 0)
+			{
+				<MudListSubheader>
+					Questions
+				</MudListSubheader>
 
 
-                @foreach (var response in VacancyResponses)
-                {
-                    <MudListItem Icon="@Icons.Material.Filled.QuestionMark" IconColor="Color.Info" Text="@response.VacancyQuestion.Question">
-                    </MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.QuestionAnswer" IconColor="Color.Info">
-                        @response.Response
-                    </MudListItem>
-                }
-            }
-        </MudList>
-        @if (!isApplicant)
-        {
-            <MudSelect T="string" Label="Select status" AnchorOrigin="Origin.BottomCenter" @bind-Value="@selectedStatus">
-                @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
-                {
-                    <MudSelectItem Value="@status.ToString()" />
-                }
-            </MudSelect>
-            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ChangeStatus">Change status</MudButton>
-        }
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-    </DialogActions>
+				@foreach (var response in VacancyResponses)
+				{
+					<MudListItem Icon="@Icons.Material.Filled.QuestionMark" IconColor="Color.Info" Text="@response.VacancyQuestion.Question">
+					</MudListItem>
+					<MudListItem Icon="@Icons.Material.Filled.QuestionAnswer" IconColor="Color.Info">
+						@response.Response
+					</MudListItem>
+				}
+			}
+		</MudList>
+		@if (!isApplicant)
+		{
+			<MudSelect T="string" Label="Select status" AnchorOrigin="Origin.BottomCenter" @bind-Value="@selectedStatus">
+				@foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+				{
+					<MudSelectItem Value="@status.ToString()" />
+				}
+			</MudSelect>
+			<MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ChangeStatus">Change status</MudButton>
+		}
+	</DialogContent>
+	<DialogActions>
+		<MudButton OnClick="Cancel">Cancel</MudButton>
+	</DialogActions>
 </MudDialog>
 @code {
 
-    private string selectedStatus { get; set; } = string.Empty;
-    List<string> statuses = new List<string>();
+	private string selectedStatus { get; set; } = string.Empty;
+	List<string> statuses = new List<string>();
 
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+	[CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public string CoverLetter { get; set; }
-    [Parameter] public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
-    [Parameter] public string Slug { get; set; }
-    [Parameter] public string StatusName { get; set; }
-    [Parameter] public bool isApplicant { get; set; }
+	[Parameter] public string CoverLetter { get; set; }
+	[Parameter] public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
+	[Parameter] public string Slug { get; set; }
+	[Parameter] public string StatusName { get; set; }
+	[Parameter] public bool isApplicant { get; set; }
 
-    private UpdateApplicationStatus applicationStatus;
+	private UpdateApplicationStatus applicationStatus;
 
-    private async Task HandleSelectValueChanged(string value)
-    {
-        selectedStatus = value;
-    }
+	private void HandleSelectValueChanged(string value)
+	{
+		selectedStatus = value;
+	}
 
-    private async Task ChangeStatus()
-    {
-        if (Enum.TryParse(selectedStatus, out ApplicationStatusDto.ApplicationStatus selectedEnumStatus))
-        {
-            applicationStatus = new UpdateApplicationStatus
-                {
-                    Slug = Slug,
-                    StatusId = (int)selectedEnumStatus // Get the integer value of the enum
-                };
-            var response = await applicationService.UpdateStatus(applicationStatus);
-            if (response)
-            {
-                Snackbar.Add("Status updated successfully.", Severity.Success);
-                MudDialog.Close();
-                navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
-            }
-            
-        }
-        else
-        {
-            // Handle case where selectedStatus cannot be parsed to enum
-            Snackbar.Add("Invalid status selected.", Severity.Error);
-        }
-    }
+	private async Task ChangeStatus()
+	{
+		if (Enum.TryParse(selectedStatus, out ApplicationStatusDto.ApplicationStatus selectedEnumStatus))
+		{
+			applicationStatus = new UpdateApplicationStatus
+				{
+					Slug = Slug,
+					StatusId = (int)selectedEnumStatus // Get the integer value of the enum
+				};
+			var response = await applicationService.UpdateStatus(applicationStatus);
+			if (response)
+			{
+				Snackbar.Add("Status updated successfully.", Severity.Success);
+				MudDialog.Close();
+				navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
+			}
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
-    void Cancel() => MudDialog.Cancel();
+		}
+		else
+		{
+			// Handle case where selectedStatus cannot be parsed to enum
+			Snackbar.Add("Invalid status selected.", Severity.Error);
+		}
+	}
+
+	void Submit() => MudDialog.Close(DialogResult.Ok(true));
+	void Cancel() => MudDialog.Cancel();
 }

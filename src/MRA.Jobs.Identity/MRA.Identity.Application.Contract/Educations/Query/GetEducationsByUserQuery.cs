@@ -5,5 +5,5 @@ namespace MRA.Identity.Application.Contract.Educations.Query;
 
 public class GetEducationsByUserQuery : IRequest<List<UserEducationResponse>>
 {
-    public string? UserName { get; set; }
+    public string UserName { get; set; }
 }

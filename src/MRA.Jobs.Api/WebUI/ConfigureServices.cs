@@ -61,6 +61,15 @@ public static class ConfigureServices
         {
             options.Filters.Add(typeof(BadRequestResponseFilter));
         });
-
+        var corsAllowedHosts = configuration.GetSection("CORS").Get<string[]>();
+        services.AddCors(options =>
+        {
+            options.AddPolicy("CORS_POLICY", policyConfig =>
+            {
+                policyConfig.WithOrigins(corsAllowedHosts)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+            });
+        });
     }
 }

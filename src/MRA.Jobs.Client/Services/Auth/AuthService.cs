@@ -35,9 +35,9 @@ public class AuthService : IAuthService
         return result;
     }
 
-    public async Task<HttpResponseMessage> GetUserNameByPhoneNumber(GetUserNameByPhoneNumberQuery query)
+    public async Task<HttpResponseMessage> IsAvailableUserPhoneNumber(IsAvailableUserPhoneNumberQuery query)
     {
-        var result = await _identityHttpClient.GetAsync($"Auth/GetUserNameByPhoneNumber/{Uri.EscapeDataString(query.PhoneNumber)}");
+        var result = await _identityHttpClient.GetAsync($"Auth/IsAvailableUserPhoneNumber/{Uri.EscapeDataString(query.PhoneNumber)}");
         return result;
     }
 

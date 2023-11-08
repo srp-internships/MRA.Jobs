@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Domain.Entities;
-using Mra.Shared.Common.Constants;
+using MRA.Configurations.Common.Constants;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Common.Exceptions;
 
@@ -52,9 +53,10 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
 
         await _emailVerification.SendVerificationEmailAsync(user);
 
-        if (!await _roleManager.RoleExistsAsync(request.Role))
+        var role = await _context.Roles.FirstOrDefaultAsync(s => s.NormalizedName != null && s.NormalizedName.Contains(request.Role.ToUpper()), cancellationToken: cancellationToken);
+        if (role == null)
         {
-            var role = new ApplicationRole
+            role = new ApplicationRole
             {
                 Id = Guid.NewGuid(),
                 Name = request.Role,
@@ -69,12 +71,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
             }
         }
 
-        var userRoleResult = await _userManager.AddToRoleAsync(user, request.Role);
-        if (!userRoleResult.Succeeded)
-        {
-
-            throw new ValidationException(userRoleResult.Errors.First().Description);
-        }
+        var userRole = new ApplicationUserRole { UserId = user.Id, RoleId = role.Id, Slug = $"{user.UserName}-role" };
+        await _context.UserRoles.AddAsync(userRole, cancellationToken);
         await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
             cancellationToken);
         return user.Id;

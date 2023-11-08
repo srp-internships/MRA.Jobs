@@ -1,8 +1,7 @@
 ﻿using MediatR;
-using MRA.Identity.Application.Contract.User.Responses;
 
 namespace MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
-public class GetUserNameByPhoneNumberQuery : IRequest<string>
+public class IsAvailableUserPhoneNumberQuery : IRequest<bool>
 {
     public string PhoneNumber { get; set; }
 }

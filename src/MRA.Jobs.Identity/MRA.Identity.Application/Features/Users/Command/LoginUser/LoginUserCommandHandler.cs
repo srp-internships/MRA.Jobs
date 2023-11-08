@@ -22,7 +22,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, JwtToke
     public async Task<JwtTokenResponse> Handle(LoginUserCommand request,
         CancellationToken cancellationToken)
     {
-        ApplicationUser? user =
+        ApplicationUser user =
             await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.Username, cancellationToken);
         _ = user ?? throw new UnauthorizedAccessException("Username is not found.");
 
