@@ -260,22 +260,7 @@
 		StateHasChanged();
 		try
 		{
-			var query = new IsAvailableUserPhoneNumberQuery()
-				{
-					PhoneNumber = _model.PhoneNumber
-				};
-			var isAvailable = await AuthService.IsAvailableUserPhoneNumber(query);
-			if (isAvailable.IsSuccessStatusCode)
-			{
-				if (!(await isAvailable.Content.ReadFromJsonAsync<bool>()))
-				{
-					Snackbar.Add("This number is already registered!", MudBlazor.Severity.Error);
-					return;
-				}
-				
-			}
-
-			bool response = await UserProfileService.SendConfirmationCode(query.PhoneNumber);
+			bool response = await UserProfileService.SendConfirmationCode(_model.PhoneNumber);
 			if (response)
 			{
 				_processing = false;
