@@ -1,14 +1,28 @@
-﻿
-<MudGrid Style="padding:25px;">
-	<MudItem xs="12" md="12" lg="12" Class="d-flex align-center justify-center mud-width-full">
-		<MudText Typo="Typo.body1">@Title</MudText>
-	</MudItem>
-	<MudItem xs="12" md="12" lg="12">
-		<ExternalLoginButton Provider="Google" Color="@Color.Info" Icon="@Icons.Custom.Brands.Google" />
-	</MudItem>
-</MudGrid>
+﻿@using Microsoft.FeatureManagement
+@inject IFeatureManager FeatureManager
+
+@if (_isExternalAuthorizationEnabled)
+{
+    <MudGrid Style="padding:25px;">
+        <MudItem xs="12" md="12" lg="12" Class="d-flex align-center justify-center mud-width-full">
+            <MudText Typo="Typo.body1">@Title</MudText>
+        </MudItem>
+        <MudItem xs="12" md="12" lg="12">
+            <ExternalLoginButton Provider="Google" Color="@Color.Info" Icon="@Icons.Custom.Brands.Google"/>
+        </MudItem>
+    </MudGrid>
+}
 
 @code {
-	[Parameter]
-	public string Title { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    private bool _isExternalAuthorizationEnabled;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isExternalAuthorizationEnabled = await FeatureManager.IsEnabledAsync(FeatureFlags.ExternalAuthorization);
+    }
+
 }
