@@ -22,7 +22,7 @@ public class EmailTest : BaseTest
             FirstName = "Alex",
             Username = "@Alex221",
             LastName = "Makedonsky1",
-            PhoneNumber = "+992223456789"
+            PhoneNumber = "+992123456789"
         };
 
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
@@ -60,7 +60,7 @@ public class EmailTest : BaseTest
             FirstName = "Alex",
             Username = "@Alex221",
             LastName = "Makedonsky1",
-            PhoneNumber = "+992323456789"
+            PhoneNumber = "+992123456789"
         };
         // Act
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);

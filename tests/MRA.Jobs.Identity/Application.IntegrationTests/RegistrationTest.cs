@@ -22,7 +22,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Alex",
             Username = "@Alex223",
             LastName = "Makedonsky",
-            PhoneNumber = "+992123451789",
+            PhoneNumber = "+992123456789",
             Role = "asdfffssdesasfasefa",
             Application = "43wtruigjklf"
         };
@@ -49,7 +49,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Alex",
             Username = "@Alex22",
             LastName = "Makedonskiy",
-            PhoneNumber = "+992523456789",
+            PhoneNumber = "+992123456789",
         };
 
         // Assert
@@ -83,7 +83,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Ale123x",
             Username = "@Alsdex223123",
             LastName = "Makesddonsky",
-            PhoneNumber = "+992623456789",
+            PhoneNumber = "+992123456789",
             Role = "Role1",
             Application = "mra.Test"
         };
@@ -116,7 +116,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Alerrx",
             Username = "@Alerrrx223",
             LastName = "Makerradonsky",
-            PhoneNumber = "+992723456789",
+            PhoneNumber = "+992123456789",
             Role = role.Name,
             Application = "mra.Test"
         };
