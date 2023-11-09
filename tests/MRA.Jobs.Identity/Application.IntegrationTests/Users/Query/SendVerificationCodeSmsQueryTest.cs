@@ -46,7 +46,6 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
         // Assert
         var responseContent = await response.Content.ReadFromJsonAsync<SmsVerificationCodeStatus>();
 
-
         Assert.AreEqual(SmsVerificationCodeStatus.CodeVerifySuccess, responseContent, "Expected response content to be 'true'.");
     }
 }
