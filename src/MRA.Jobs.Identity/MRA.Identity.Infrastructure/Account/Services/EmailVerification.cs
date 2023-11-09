@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Net;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Domain.Entities;
@@ -11,18 +13,21 @@ public class EmailVerification : IEmailVerification
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IEmailService _emailService;
+    private readonly IConfiguration _configurations;
+    
 
-    public EmailVerification(UserManager<ApplicationUser> userManager, IEmailService emailService)
+    public EmailVerification(UserManager<ApplicationUser> userManager, IEmailService emailService, IConfiguration configurations)
     {
         _userManager = userManager;
         _emailService = emailService;
+        _configurations = configurations;
     }
 
     public async Task<bool> SendVerificationEmailAsync(ApplicationUser user)
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var emailBody =
-            $"<p>Пожалуйста, перейдите по следующей ссылке для дальнейших действий: <a href='http://MRAJOBS.tj/Auth/verify?token={token}'>Ссылка</a></p>";
+            $"<p>Пожалуйста, перейдите по следующей ссылке для дальнейших действий: <a href='{_configurations["IdentityHostName"]}/api/Auth/verify?token={WebUtility.UrlEncode(token)}&userId={user.Id}'>Ссылка</a></p>";
         var emailSubject = "Email Verification";
         return await _emailService.SendEmailAsync(new[] { user.Email }, emailBody, emailSubject);
     }

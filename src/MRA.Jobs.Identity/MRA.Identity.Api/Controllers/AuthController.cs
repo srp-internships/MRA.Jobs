@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Commands;
@@ -46,7 +45,7 @@ public class AuthController : ControllerBase
     {
         await _emailVerification.VerifyEmailAsync(token, userId);
 
-        return Content("<h1>Thank you!</h1><p>Your email address has been successfully confirmed.</p>");
+        return Content("<h1>Thank you!</h1><p>Your email address has been successfully confirmed.</p>","text/html");
     }
 
 
