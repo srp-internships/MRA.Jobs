@@ -241,7 +241,8 @@
             {
                 _processing = false;
                 registerUser.PhoneNumberConfirmed = true;
-                await AuthService.RegisterUserAsync(registerUser);
+                var error = await AuthService.RegisterUserAsync(registerUser);
+                Snackbar.Add(error, MudBlazor.Severity.Error);
             }
         }
         catch (Exception)
