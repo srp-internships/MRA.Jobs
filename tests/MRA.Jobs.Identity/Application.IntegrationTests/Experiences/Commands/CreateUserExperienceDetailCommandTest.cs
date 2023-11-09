@@ -1,26 +1,57 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
+using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.Experiences.Commands.Create;
 
 namespace MRA.Jobs.Application.IntegrationTests.Experiences.Commands;
 public class CreateUserExperienceDetailCommandTest : BaseTest
 {
     [Test]
-    public async Task CreateUserExperienceDetailCommand_ShouldCreateExperienceDetailComman_Success()
+    public async Task CreateUserExperienceDetailCommand_ShouldCreateExperienceDetailCommand_Success()
     {
         await AddApplicantAuthorizationAsync();
 
         var command = new CreateExperienceDetailCommand()
         {
-            CompanyName="test",
-            Description="test",
-            JobTitle="test",
-            Address="test",
-            IsCurrentJob=false,
+            CompanyName = "test",
+            Description = "test",
+            JobTitle = "test",
+            Address = "test",
+            IsCurrentJob = false,
             StartDate = DateTime.Now.AddYears(-5),
             EndDate = DateTime.Now.AddYears(-1),
         };
 
         var response = await _client.PostAsJsonAsync("/api/Profile/СreateExperienceDetail", command);
         response.EnsureSuccessStatusCode();
+    }
+
+    [Test]
+    public async Task CreateUserExperienceDetailCommand_ShouldCreateExperienceDetailCommand_Duplicate()
+    {
+        await AddApplicantAuthorizationAsync();
+
+        var command = new CreateExperienceDetailCommand()
+        {
+            CompanyName = "SRP",
+            Description = "test",
+            JobTitle = "Backend Developer",
+            Address = "test",
+            IsCurrentJob = false,
+            StartDate = DateTime.Now.AddYears(-5),
+            EndDate = DateTime.Now.AddYears(-1),
+        };
+
+        var response = await _client.PostAsJsonAsync("/api/Profile/СreateExperienceDetail", command);
+        response.EnsureSuccessStatusCode();
+
+        command.CompanyName = "srp";
+        command.JobTitle = "backend developer";
+
+        response = await _client.PostAsJsonAsync("/api/Profile/СreateExperienceDetail", command);
+        Assert.AreEqual(response.StatusCode, HttpStatusCode.BadRequest);
+        Assert.IsTrue((await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains("Experience detail already exists"));
+
+
     }
 }
