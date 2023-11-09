@@ -25,14 +25,32 @@ public class UpdateExperienceDetailCommandHandler : IRequestHandler<UpdateExperi
     {
         var userId = _userHttpContextAccessor.GetUserId();
         var user = await _context.Users
-                .Include(u => u.Experiences)
-                .FirstOrDefaultAsync(u => u.Id == userId);
+            .Include(u => u.Experiences)
+            .FirstOrDefaultAsync(u => u.Id == userId);
         _ = user ?? throw new NotFoundException("user is not found");
 
         var experienceDetail = user.Experiences.FirstOrDefault(e => e.Id == request.Id);
-        _ = experienceDetail ?? throw new NotFoundException("user is not found");
+        _ = experienceDetail ?? throw new NotFoundException("experience not exits");
+
+        var textInfo = System.Globalization.CultureInfo.CurrentCulture.TextInfo;
+        var jobTitle = textInfo.ToTitleCase(request.JobTitle.Trim().ToLower());
+        var company = textInfo.ToTitleCase(request.CompanyName.Trim().ToLower());
+        request.Description = textInfo.ToTitleCase(request.Description.Trim());
+
+        var existingExperience = user.Experiences.FirstOrDefault(e =>
+            e.Id != request.Id &&
+            e.JobTitle.Equals(jobTitle, StringComparison.OrdinalIgnoreCase) &&
+            e.CompanyName.Equals(company, StringComparison.OrdinalIgnoreCase));
+
+        if (existingExperience != null)
+        {
+            throw new DuplicateWaitObjectException("Experience detail already exists.");
+        }
 
         _mapper.Map(request, experienceDetail);
+        experienceDetail.JobTitle = jobTitle;
+        experienceDetail.CompanyName = company;
+
         await _context.SaveChangesAsync();
         return experienceDetail.Id;
     }
