@@ -57,7 +57,7 @@ public class CreateApplicationCommandTest : Testing
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyTask_Success()
     {
-        var vacancyId = await AddJobVacancy("foobar");
+        var vacancyId = await AddJobVacancy("foobar11");
         var testSubmit = new CreateApplicationCommand
         {
             VacancyId = vacancyId,
