@@ -30,9 +30,22 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
         CancellationToken cancellationToken)
     {
 
-        var userDb = await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
-        if (userDb != null)
-            throw new DuplicateWaitObjectException($"Phone number {request.PhoneNumber} is not available!");
+        var exitingUser = await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber || u.Email == request.Email);
+        if (exitingUser != null)
+        {
+            if (exitingUser.Email == request.Email && exitingUser.PhoneNumber == request.PhoneNumber)
+            {
+                throw new DuplicateWaitObjectException($"Email {request.Email} and Phone Number {request.PhoneNumber} are not available!");
+            }
+            else if (exitingUser.PhoneNumber == request.PhoneNumber)
+            {
+                throw new DuplicateWaitObjectException($"Phone Number {request.PhoneNumber} is not available!");
+            }
+            else if (exitingUser.Email == request.Email)
+            {
+                throw new DuplicateWaitObjectException($"Email {request.Email} is not available!");
+            }
+        }
 
         ApplicationUser user = new()
         {
