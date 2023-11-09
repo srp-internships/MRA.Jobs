@@ -83,7 +83,7 @@ public class AuthService : IAuthService
         {
             command.PhoneNumber = command.PhoneNumber.Trim();
             if (command.PhoneNumber.Length == 9) command.PhoneNumber = "+992" + command.PhoneNumber.Trim();
-            else if (command.PhoneNumber.Length == 10 && command.PhoneNumber[0] != '+') command.PhoneNumber = "+" + command.PhoneNumber;
+            else if (command.PhoneNumber.Length == 12 && command.PhoneNumber[0] != '+') command.PhoneNumber = "+" + command.PhoneNumber;
 
             var result = await _identityHttpClient.PostAsJsonAsync("Auth/register", command);
             if (result.IsSuccessStatusCode)
