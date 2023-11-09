@@ -10,6 +10,7 @@ public class FileService : IFileService
     public FileService(string uploadFolderPath)
     {
         _uploadFolderPath = uploadFolderPath;
+        if(Directory.Exists)
         _fileMap = new ConcurrentDictionary<string, string>();
     }
 
