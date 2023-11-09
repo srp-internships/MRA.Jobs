@@ -15,7 +15,8 @@ public class CreateJobVacancyCommandTest : Testing
     public async Task CreateJobVacancyCommand_CreatingJobVacancyWithQuestions_Success()
     {
         RunAsReviewerAsync();
-        var jobVacancy = new CreateJobVacancyCommand {            
+        var jobVacancy = new CreateJobVacancyCommand
+        {
             Title = "Cool Job",
             RequiredYearOfExperience = 5,
             Description = RandomString(10),
@@ -24,6 +25,33 @@ public class CreateJobVacancyCommandTest : Testing
             EndDate = DateTime.Now.AddDays(2),
             CategoryId = await AddVacancyCategory("jobvacancy"),
             VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
+            WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime
+        };
+        var response = await _httpClient.PostAsJsonAsync("/api/jobs", jobVacancy);
+
+        response.EnsureSuccessStatusCode();
+
+        response.Should().NotBeNull();
+    }
+    [Test]
+    public async Task CreateJobVacancyCommand_CreatingJobVacancyWithTask_Success()
+    {
+        RunAsReviewerAsync();
+        var jobVacancy = new CreateJobVacancyCommand
+        {
+            Title = "Cool Job",
+            RequiredYearOfExperience = 5,
+            Description = RandomString(10),
+            ShortDescription = RandomString(10),
+            PublishDate = DateTime.Now,
+            EndDate = DateTime.Now.AddDays(2),
+            CategoryId = await AddVacancyCategory("jobvacancy"),
+            VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
+            VacancyTasks = new List<VacancyTaskDto>() { new VacancyTaskDto {
+              Title= "Create a function",
+              Description= "Create a function Sum(a, b)",
+              Template= "static class Function { //TODO: Create a function here }",
+              Test= "using NUnit.Framework; class FunctionTests { [Test] public void FunctionTest(){int a = 100;int b = 100;int summ = Function.Sum(a, b);Assert.AreEqual(200, summ, 0);}}" } },
             WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime
         };
         var response = await _httpClient.PostAsJsonAsync("/api/jobs", jobVacancy);
