@@ -19,7 +19,10 @@ public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificat
     }
     public async Task<SmsVerificationCodeStatus> Handle(SmsVerificationCodeCheckQuery request, CancellationToken cancellationToken)
     {
-        if (request.PhoneNumber[0] != '+') request.PhoneNumber = "+" + request.PhoneNumber.Trim();
+        request.PhoneNumber = request.PhoneNumber.Trim();
+        if (request.PhoneNumber.Length == 9) request.PhoneNumber = "+992" + request.PhoneNumber.Trim();
+        else if (request.PhoneNumber.Length == 10 && request.PhoneNumber[0] != '+') request.PhoneNumber = "+" + request.PhoneNumber;
+
         var expirationTime = DateTime.Now.AddMinutes(-1);
 
         var result = _context.ConfirmationCodes

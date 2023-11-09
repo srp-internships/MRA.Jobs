@@ -39,6 +39,6 @@ public interface IUserProfileService
 
     Task<UserSkillsResponse> AddSkills(AddSkillsCommand command);
 
-    Task<bool> SendConfirmationCode(string phoneNumber);
+    Task<HttpResponseMessage> SendConfirmationCode(string phoneNumber);
     Task<SmsVerificationCodeStatus> CheckConfirmationCode(string phoneNumber, int? code);
 }

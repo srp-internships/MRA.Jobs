@@ -132,9 +132,10 @@ public class UserProfileService : IUserProfileService
         return null;
     }
 
-    public async Task<bool> SendConfirmationCode(string phoneNumber)
+    public async Task<HttpResponseMessage> SendConfirmationCode(string phoneNumber)
     {
-        var response = await _identityHttpClient.GetJsonAsync<bool>($"sms/send_code?PhoneNumber={phoneNumber}");
+        var response = await _identityHttpClient.GetAsync($"sms/send_code?PhoneNumber={phoneNumber}");
+       
         return response;
     }
 

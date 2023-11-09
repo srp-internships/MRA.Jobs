@@ -7,6 +7,7 @@
 @using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 @using MRA.Identity.Application.Contract.User.Queries;
 @using MRA.Jobs.Client.Components.Auth
+@using MRA.Jobs.Client.Identity;
 @using MRA.Jobs.Client.Services.Auth
 @using MRA.Jobs.Client.Services.Profile;
 @using System.Globalization;
@@ -212,51 +213,58 @@
 			_isShow = true;
 			_passwordInputIcon = Icons.Material.Filled.Visibility;
 			_passwordInput = InputType.Text;
-		}
-	}
+        }
+    }
 
-	private class FirstModelValidator : AbstractValidator<FirstModel>
-	{
-		public FirstModelValidator()
-		{
-			RuleFor(s => s.FirstName).NotEmpty();
-			RuleFor(s => s.LastName).NotEmpty();
-			RuleFor(s => s.Email).NotEmpty().EmailAddress();
-			RuleFor(s => s.PhoneNumber).NotEmpty().Matches(@"^\+992\d{9}$")
-				.WithMessage("Invalid phone number. Example : +992921234567");
-		}
-	}
+    private class FirstModelValidator : AbstractValidator<FirstModel>
+    {
+        public FirstModelValidator()
+        {
+            RuleFor(s => s.FirstName).NotEmpty();
+            RuleFor(s => s.LastName).NotEmpty();
+            RuleFor(s => s.Email).NotEmpty().EmailAddress();
+            RuleFor(s => s.PhoneNumber).NotEmpty().Matches(@"^\+992\d{9}$")
+                .WithMessage("Invalid phone number. Example : +992921234567");
+        }
+    }
 
-	private class FirstModel
-	{
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
-		public string Email { get; set; }
-		public string PhoneNumber { get; set; } = "+992";
-	}
+    private class FirstModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; } = "+992";
+    }
 
-	private class SecondModel
-	{
+    private class SecondModel
+    {
 
-		[Required]
-		[StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
-		public string Password { get; set; }
+        [Required]
+        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+        public string Password { get; set; }
 
-		[Required]
-		[Compare(nameof(Password))]
-		public string Confirmation { get; set; }
-	}
+        [Required]
+        [Compare(nameof(Password))]
+        public string Confirmation { get; set; }
+    }
 
 
 
-	private async Task SendCode()
-	{
-		_processing = true;
-		StateHasChanged();
-		try
-		{
-			bool response = await UserProfileService.SendConfirmationCode(_model.PhoneNumber);
-			if (response)
+    private async Task SendCode()
+    {
+        _processing = true;
+        StateHasChanged();
+        try
+        {
+            var response = await UserProfileService.SendConfirmationCode(_model.PhoneNumber);
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errorDetail = (await response.Content.ReadFromJsonAsync<CustomProblemDetails>());
+                var errorIns = (await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Instance;
+                Snackbar.Add(errorDetail.Title, MudBlazor.Severity.Error);
+                return;
+            }
+            if (await response.Content.ReadFromJsonAsync<bool>())
 			{
 				_processing = false;
 				_step = 1;

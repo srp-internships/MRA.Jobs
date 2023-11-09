@@ -22,13 +22,13 @@ public class SendSmsQueryHandler : IRequestHandler<SendVerificationCodeSmsQuery,
     public async Task<bool> Handle(SendVerificationCodeSmsQuery request, CancellationToken cancellationToken)
     {
         request.PhoneNumber = request.PhoneNumber.Trim();
-        if (request.PhoneNumber.Length == 7) request.PhoneNumber = "+992" + request.PhoneNumber.Trim();
+        if (request.PhoneNumber.Length == 9) request.PhoneNumber = "+992" + request.PhoneNumber.Trim();
         else if (request.PhoneNumber.Length == 10 && request.PhoneNumber[0] != '+') request.PhoneNumber = "+" + request.PhoneNumber;
 
-        if (!System.Text.RegularExpressions.Regex.IsMatch(request.PhoneNumber, @"^\+992\d{9}$"))
-        {
-            throw new FormatException("Phone number does not follow the required format.");
-        }
+        //if (!System.Text.RegularExpressions.Regex.IsMatch(request.PhoneNumber, @"^\+992\d{9}$"))
+        //{
+        //    throw new FormatException("Phone number does not follow the required format.");
+        //}
 
         var response = await _smsService.SendSmsAsync(request.PhoneNumber, GenerateMessage(out int code));
 

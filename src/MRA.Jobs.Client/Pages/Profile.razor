@@ -647,7 +647,7 @@ else
 
 	private async Task SendCode()
 	{
-		bool response = await UserProfileService.SendConfirmationCode(profile.PhoneNumber);
+		bool response = await (await UserProfileService.SendConfirmationCode(profile.PhoneNumber)).Content.ReadFromJsonAsync<bool>();
 		if (response) codeSent = true;
 	}
 
