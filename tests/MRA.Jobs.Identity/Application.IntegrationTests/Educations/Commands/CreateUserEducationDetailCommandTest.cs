@@ -1,11 +1,13 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
+using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
 
 namespace MRA.Jobs.Application.IntegrationTests.Educations.Commands;
 public class CreateUserEducationDetailCommandTest : BaseTest
 {
     [Test]
-    public async Task CreateUserEducationDetailCommand_ShouldCreateEducationDetailComman_Success()
+    public async Task CreateUserEducationDetailCommand_ShouldCreateEducationDetailCommand_Success()
     {
         await AddApplicantAuthorizationAsync();
 
@@ -20,5 +22,30 @@ public class CreateUserEducationDetailCommandTest : BaseTest
 
         var response = await _client.PostAsJsonAsync("/api/Profile/CreateEducationDetail", command);
         response.EnsureSuccessStatusCode();
+    }
+
+    [Test]
+    public async Task CreateUserEducationDetailCommand_ShouldCreateEducationDetailCommand_Duplicate()
+    {
+        await AddApplicantAuthorizationAsync();
+
+        var command = new CreateEducationDetailCommand()
+        {
+            Speciality = "IT Security",
+            University = "Khujand University",
+            StartDate = DateTime.Now.AddYears(-5),
+            EndDate = DateTime.Now.AddYears(-1),
+            UntilNow = false,
+        };
+
+
+        var response = await _client.PostAsJsonAsync("/api/Profile/CreateEducationDetail", command);
+        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+
+        command.Speciality = "It security";
+        command.University = "khujand university";
+        response = await _client.PostAsJsonAsync("/api/Profile/CreateEducationDetail", command);
+        Assert.AreEqual(response.StatusCode, HttpStatusCode.BadRequest);
+        Assert.IsTrue((await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains("Education detail already exists"));
     }
 }
