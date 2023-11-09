@@ -1,7 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using MRA.Configurations.Common.Interfaces.Services;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Domain.Entities;
@@ -21,7 +19,7 @@ public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificat
     {
         request.PhoneNumber = request.PhoneNumber.Trim();
         if (request.PhoneNumber.Length == 9) request.PhoneNumber = "+992" + request.PhoneNumber.Trim();
-        else if (request.PhoneNumber.Length == 10 && request.PhoneNumber[0] != '+') request.PhoneNumber = "+" + request.PhoneNumber;
+        else if (request.PhoneNumber.Length == 12 && request.PhoneNumber[0] != '+') request.PhoneNumber = "+" + request.PhoneNumber;
 
         var expirationTime = DateTime.Now.AddMinutes(-1);
 
@@ -31,18 +29,6 @@ public class SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificat
         if (!result)
             return SmsVerificationCodeStatus.CodeVerifyFailure;
 
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
-
-        if (user is null) return SmsVerificationCodeStatus.CodeVerifySuccess_ButUserDontSignUp;
-
-        if (result)
-        {
-            user.PhoneNumberConfirmed = true;
-            var saveResult = await _userManager.UpdateAsync(user);
-            if (saveResult.Succeeded) return SmsVerificationCodeStatus.CodeVerifySuccess;
-        }
-
-        return SmsVerificationCodeStatus.CodeVerifyFailure;
-
+        return SmsVerificationCodeStatus.CodeVerifySuccess;
     }
 }
