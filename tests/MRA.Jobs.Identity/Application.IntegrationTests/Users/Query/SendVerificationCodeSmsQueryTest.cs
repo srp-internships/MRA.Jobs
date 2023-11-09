@@ -46,12 +46,7 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
         // Assert
         var responseContent = await response.Content.ReadFromJsonAsync<SmsVerificationCodeStatus>();
 
-        var user = await GetEntity<ApplicationUser>(u => u.PhoneNumber == query.PhoneNumber);
 
-        Assert.Multiple(() =>
-        {
-            Assert.AreEqual(SmsVerificationCodeStatus.CodeVerifySuccess, responseContent, "Expected response content to be 'true'.");
-            Assert.AreEqual(true, user.PhoneNumberConfirmed, "Expected response content to be 'true'.");
-        });
+        Assert.AreEqual(SmsVerificationCodeStatus.CodeVerifySuccess, responseContent, "Expected response content to be 'true'.");
     }
 }

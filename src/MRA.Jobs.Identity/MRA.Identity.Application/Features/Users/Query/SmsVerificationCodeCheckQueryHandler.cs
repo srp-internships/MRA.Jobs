@@ -31,14 +31,7 @@ public class
 
         if (!result)
             return SmsVerificationCodeStatus.CodeVerifyFailure;
-        
-        var user =
-            await _context.Users.FirstOrDefaultAsync(s => s.PhoneNumber == request.PhoneNumber,
-                cancellationToken: cancellationToken) ??
-            throw new NotFoundException($"User with {request.PhoneNumber} phone number not found");
-        user.PhoneNumberConfirmed = true;
-        await _context.SaveChangesAsync(cancellationToken);
-        
+
         return SmsVerificationCodeStatus.CodeVerifySuccess;
     }
 }
