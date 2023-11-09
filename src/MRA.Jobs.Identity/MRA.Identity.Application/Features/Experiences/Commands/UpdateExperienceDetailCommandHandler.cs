@@ -33,9 +33,10 @@ public class UpdateExperienceDetailCommandHandler : IRequestHandler<UpdateExperi
         _ = experienceDetail ?? throw new NotFoundException("experience not exits");
 
         var textInfo = System.Globalization.CultureInfo.CurrentCulture.TextInfo;
-        var jobTitle = textInfo.ToTitleCase(request.JobTitle.Trim().ToLower());
-        var company = textInfo.ToTitleCase(request.CompanyName.Trim().ToLower());
+        var jobTitle = textInfo.ToTitleCase(request.JobTitle.Trim());
+        var company = textInfo.ToTitleCase(request.CompanyName.Trim());
         request.Description = textInfo.ToTitleCase(request.Description.Trim());
+        request.Address = request.Address.Trim();
 
         var existingExperience = user.Experiences.FirstOrDefault(e =>
             e.Id != request.Id &&
