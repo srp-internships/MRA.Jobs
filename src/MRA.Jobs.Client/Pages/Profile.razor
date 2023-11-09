@@ -150,7 +150,8 @@ else
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Phone Number</MudText>
 									<div class="row align-items-center">
 										<div class="col">
-											<MudTextField @bind-Value="@updateProfileCommand.PhoneNumber" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.PhoneNumber)" />
+											<MudTextField @bind-Value="@updateProfileCommand.PhoneNumber" Variant="Variant.Outlined"
+											Margin="Margin.Dense" For="@(() => updateProfileCommand.PhoneNumber)" Disabled="true" />
 										</div>
 										<div class="col-4" style="align-content:end; padding-top:10px;">
 											@if (!profile.PhoneNumberConfirmed)
