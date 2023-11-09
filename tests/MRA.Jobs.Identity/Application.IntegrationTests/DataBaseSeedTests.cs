@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using MRA.Identity.Domain.Entities;
 using MRA.Identity.Infrastructure.Identity;
-using Mra.Shared.Common.Constants;
+using MRA.Configurations.Common.Constants;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 

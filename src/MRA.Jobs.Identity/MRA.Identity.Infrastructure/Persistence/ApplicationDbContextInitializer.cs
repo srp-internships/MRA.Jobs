@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Domain.Entities;
 using MRA.Identity.Infrastructure.Identity;
-using Mra.Shared.Common.Constants;
+using MRA.Configurations.Common.Constants;
 
 namespace MRA.Identity.Infrastructure.Persistence;
 

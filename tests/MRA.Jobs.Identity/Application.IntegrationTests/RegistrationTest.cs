@@ -4,7 +4,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Domain.Entities;
-using Mra.Shared.Common.Constants;
+using MRA.Configurations.Common.Constants;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
@@ -22,7 +22,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Alex",
             Username = "@Alex223",
             LastName = "Makedonsky",
-            PhoneNumber = "+992123456789",
+            PhoneNumber = "+992123451789",
             Role = "asdfffssdesasfasefa",
             Application = "43wtruigjklf"
         };
@@ -49,7 +49,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Alex",
             Username = "@Alex22",
             LastName = "Makedonskiy",
-            PhoneNumber = "+992123456789",
+            PhoneNumber = "+992523456789",
         };
 
         // Assert
@@ -83,7 +83,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Ale123x",
             Username = "@Alsdex223123",
             LastName = "Makesddonsky",
-            PhoneNumber = "+992123456789",
+            PhoneNumber = "+992623456789",
             Role = "Role1",
             Application = "mra.Test"
         };
@@ -116,7 +116,7 @@ public class RegistrationTests : BaseTest
             FirstName = "Alerrx",
             Username = "@Alerrrx223",
             LastName = "Makerradonsky",
-            PhoneNumber = "+992123456789",
+            PhoneNumber = "+992723456789",
             Role = role.Name,
             Application = "mra.Test"
         };

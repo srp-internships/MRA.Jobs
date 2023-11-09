@@ -37,7 +37,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProfileByUserName([FromQuery] string? userName = null)
+    public async Task<IActionResult> GetProfileByUserName([FromQuery] string userName = null)
     {
         var result = await _mediator.Send(new GetPofileQuery { UserName = userName });
         return Ok(result);
@@ -51,7 +51,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet("GetUserSkills")]
-    public async Task<IActionResult> GetUserSkills([FromQuery] string? userName = null)
+    public async Task<IActionResult> GetUserSkills([FromQuery] string userName = null)
     {
         var result = await _mediator.Send(new GetUserSkillsQuery { UserName = userName });
         return Ok(result);

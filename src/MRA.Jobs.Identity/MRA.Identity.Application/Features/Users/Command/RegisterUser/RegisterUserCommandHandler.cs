@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Domain.Entities;
-using Mra.Shared.Common.Constants;
+using MRA.Configurations.Common.Constants;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Common.Exceptions;
 
@@ -29,6 +29,10 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
     public async Task<Guid> Handle(RegisterUserCommand request,
         CancellationToken cancellationToken)
     {
+
+        var userDb = await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
+        if (userDb != null)
+            throw new DuplicateWaitObjectException($"Phone number {request.PhoneNumber} is not available!");
 
         ApplicationUser user = new()
         {

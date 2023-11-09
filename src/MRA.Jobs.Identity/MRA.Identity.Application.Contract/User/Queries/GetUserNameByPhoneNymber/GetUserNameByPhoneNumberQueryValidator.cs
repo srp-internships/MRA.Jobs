@@ -2,7 +2,7 @@
 
 
 namespace MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
-public class GetUserNameByPhoneNumberQueryValidator : AbstractValidator<GetUserNameByPhoneNumberQuery>
+public class GetUserNameByPhoneNumberQueryValidator : AbstractValidator<IsAvailableUserPhoneNumberQuery>
 {
     public GetUserNameByPhoneNumberQueryValidator()
     {

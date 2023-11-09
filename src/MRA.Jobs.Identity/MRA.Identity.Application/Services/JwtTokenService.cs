@@ -19,16 +19,16 @@ internal class JwtTokenService : IJwtTokenService
     public string CreateTokenByClaims(IList<Claim> claims, out DateTime expireDate)
     {
         SymmetricSecurityKey key = new(Encoding.UTF8
-            .GetBytes(_configuration.GetSection("JwtSettings")["SecurityKey"]!));
+            .GetBytes(_configuration["JWT:Secret"]!));
 
         SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha512Signature);
-        expireDate = DateTime.Now.AddDays(int.Parse(_configuration.GetSection("JwtSettings")["ExpireDayFromNow"]!));
+        expireDate = DateTime.Now.AddDays(int.Parse(_configuration["JWT:RefreshTokenValidityInDays"]!));
         JwtSecurityToken token = new(
             claims: claims,
             expires: expireDate,
             signingCredentials: creds);
 
-        string? jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        string jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwt;
     }
@@ -36,17 +36,17 @@ internal class JwtTokenService : IJwtTokenService
     public string CreateRefreshToken(IList<Claim> claims)
     {
         SymmetricSecurityKey key = new(Encoding.UTF8
-            .GetBytes(_configuration.GetSection("JwtSettings")["SecurityKey"]!));
+            .GetBytes(_configuration["JWT:Secret"]!));
 
         SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha512Signature);
 
         JwtSecurityToken token = new(
             claims: claims,
             expires: DateTime.Now.AddDays(
-                int.Parse(_configuration.GetSection("JwtSettings")["RefreshTokenExpireDayFromNow"]!)),
+                int.Parse(_configuration["JWT:RefreshTokenValidityInDays"]!)),
             signingCredentials: creds);
 
-        string? jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        string jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwt;
     }

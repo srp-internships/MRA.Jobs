@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Mra.Shared.Common.Interfaces.Services;
+using MRA.Configurations.Common.Interfaces.Services;
 using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Identity.Domain.Entities;
-using IEmailService = Mra.Shared.Common.Interfaces.Services.IEmailService;
+using IEmailService = MRA.Configurations.Common.Interfaces.Services.IEmailService;
 
 namespace MRA.Identity.Infrastructure.Account.Services;
 public class EmailVerification : IEmailVerification

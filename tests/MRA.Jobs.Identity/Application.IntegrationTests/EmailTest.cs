@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Identity.Domain.Entities;
-using Mra.Shared.Services;
+using MRA.Configurations.Services;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 
@@ -22,7 +22,7 @@ public class EmailTest : BaseTest
             FirstName = "Alex",
             Username = "@Alex221",
             LastName = "Makedonsky1",
-            PhoneNumber = "+992123456789"
+            PhoneNumber = "+992223456789"
         };
 
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
@@ -60,7 +60,7 @@ public class EmailTest : BaseTest
             FirstName = "Alex",
             Username = "@Alex221",
             LastName = "Makedonsky1",
-            PhoneNumber = "+992123456789"
+            PhoneNumber = "+992323456789"
         };
         // Act
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);

@@ -1,4 +1,4 @@
-﻿using Mra.Shared.Common.Constants;
+﻿using MRA.Configurations.Common.Constants;
 using Microsoft.AspNetCore.Http;
 
 namespace MRA.Jobs.Infrastructure.Identity.Services;
