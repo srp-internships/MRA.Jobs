@@ -4,11 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Commands;
-
 using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
-
 using MRA.Identity.Application.Contract.User.Commands.GoogleAuth;
-
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
@@ -45,10 +42,9 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("verify")]
-    [Authorize]
-    public async Task<IActionResult> Verify(string token)
+    public async Task<IActionResult> Verify(string token, Guid userId)
     {
-        await _emailVerification.VerifyEmailAsync(token);
+        await _emailVerification.VerifyEmailAsync(token, userId);
 
         return Content("<h1>Thank you!</h1><p>Your email address has been successfully confirmed.</p>");
     }
