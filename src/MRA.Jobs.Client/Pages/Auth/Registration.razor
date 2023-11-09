@@ -34,7 +34,7 @@
                         </MudCardHeader>
                         <MudCardContent>
                             <EditForm Model="@registerUser" OnInvalidSubmit="SendCode" style="margin-top: 10%;margin-bottom: 0%">
-                                <FluentValidationValidator /> 
+                                <FluentValidationValidator @ref="_fluentValidationValidator" />
                                 <MudTextField Label="First name" HelperText="Enter your first name"
                                 @bind-Value="registerUser.FirstName" For="@(() => registerUser.FirstName)" InputType="InputType.Text"
                                               OnBlur="@(_ => registerUser.FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(registerUser.FirstName))" />
@@ -147,6 +147,7 @@
 
 @code {
     private RegisterUserCommand registerUser = new();
+    private FluentValidationValidator? _fluentValidationValidator;
     private int _step;
     private bool _processing;
     private bool _processing2;
@@ -185,6 +186,12 @@
     {
         _processing = true;
         StateHasChanged();
+
+        if (!(await _fluentValidationValidator!.ValidateAsync()) || _isAvailable == 0)
+        {
+            _processing = false;
+            return;
+        }
         try
         {
             var response = await UserProfileService.SendConfirmationCode(registerUser.PhoneNumber);
@@ -276,6 +283,5 @@
         }
         _processing2 = false;
         StateHasChanged();
-
     }
 }
