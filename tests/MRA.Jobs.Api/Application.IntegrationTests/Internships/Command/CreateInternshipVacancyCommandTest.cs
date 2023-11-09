@@ -48,7 +48,7 @@ public class CreateInternshipVacancyCommandTest : Testing
             Duration = 10,
             Stipend = 100,
             VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
-            VacancyTasks= new List<VacancyTaskDto>() { new VacancyTaskDto { Title= "Create a function", Description= "Create a function Sum(a, b)",Template= "static class Function { //TODO: Create a function here }" } }
+            VacancyTasks = new List<VacancyTaskDto>() { new VacancyTaskDto { Title = "Create a function", Description = "Create a function Sum(a, b)", Template = "static class Function { //TODO: Create a function here }" } }
         };
 
         var response = await _httpClient.PostAsJsonAsync("/api/internships", internshipVacancy);
