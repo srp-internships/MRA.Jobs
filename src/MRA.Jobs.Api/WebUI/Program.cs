@@ -26,7 +26,7 @@ builder.Services.AddWebUiServices(builder.Configuration);
 builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("Sieve"));
 
 builder.Services.AddScoped<IFileService, FileService>(sp =>
-    new FileService(builder.Configuration.GetSection("UploadFolderPath").Value));
+    new FileService($"{Environment.SpecialFolder.MyDocuments}/MraFiles"));
 
 WebApplication app = builder.Build();
 
