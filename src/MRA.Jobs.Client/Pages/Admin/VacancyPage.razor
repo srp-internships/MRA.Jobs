@@ -159,6 +159,7 @@ else
 		var catId = _category.FirstOrDefault(c => c.Name == selectedCategory).Id;
 		VService.creatingNewJob.CategoryId = catId;
 		VService.creatingNewJob.VacancyQuestions = Questions;
+		VService.creatingNewJob.VacancyTasks = Tasks;
 		await VService.OnSaveCreateClick();
 		await LoadData();
 		Clear();
