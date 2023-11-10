@@ -568,17 +568,21 @@
 </div>
 <!-- End Contact Section -->
 @code {
-    [Inject] private AuthenticationStateProvider authStateProvider { get; set; }
-    
-    [Inject] private NavigationManager navigationManager { get; set; }
-    
-    protected override async Task OnInitializedAsync()
-    {
-        var state = await authStateProvider.GetAuthenticationStateAsync();
-        if (state.User.IsInRole(ApplicationClaimValues.Administrator)|| state.User.IsInRole(ApplicationClaimValues.Reviewer) || state.User.IsInRole(ApplicationClaimValues.SuperAdmin))
-        {
-            navigationManager.NavigateTo("/dashboard");
-        }
-    }
+	[Inject] private AuthenticationStateProvider authStateProvider { get; set; }
+
+	[Inject] private NavigationManager navigationManager { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		var state = await authStateProvider.GetAuthenticationStateAsync();
+		if (state.User.IsInRole(ApplicationClaimValues.Administrator)||  state.User.IsInRole(ApplicationClaimValues.SuperAdmin))
+		{
+			navigationManager.NavigateTo("/userManager");
+		}
+		else if (state.User.IsInRole(ApplicationClaimValues.Reviewer))
+		{
+			navigationManager.NavigateTo("//dashboard/applications");
+		}
+	}
 
 }

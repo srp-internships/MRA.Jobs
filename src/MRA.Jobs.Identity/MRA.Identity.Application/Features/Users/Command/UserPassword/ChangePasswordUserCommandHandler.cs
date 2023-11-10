@@ -25,7 +25,7 @@ public class ChangePasswordUserCommandHandler : IRequestHandler<ChangePasswordUs
 
         bool success = await _userManager.CheckPasswordAsync(user, request.OldPassword);
         if (!success)
-            throw new Exception("Incorrect password");
+            throw new Exception("Incorrect old password");
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 

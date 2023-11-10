@@ -19,7 +19,7 @@ public class GetAccessTokenIntegrationTests : BaseTest
         {
             var registerCommand1 = new RegisterUserCommand
             {
-                Email = "test1@example.com",
+                Email = "test123@example.com",
                 Password = "password@#12P",
                 FirstName = "Alex",
                 Username = "@Alex111122",
