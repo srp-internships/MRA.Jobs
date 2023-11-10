@@ -30,6 +30,10 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
         CancellationToken cancellationToken)
     {
 
+        var userDb = await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
+        if (userDb != null)
+            throw new DuplicateWaitObjectException($"Phone number {request.PhoneNumber} is not available!");
+
         ApplicationUser user = new()
         {
             Id = Guid.NewGuid(),
