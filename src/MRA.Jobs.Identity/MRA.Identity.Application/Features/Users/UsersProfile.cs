@@ -7,6 +7,8 @@ public class UsersProfile : Profile
 {
     public UsersProfile()
     {
-        CreateMap<ApplicationUser, UserResponse>();
+        CreateMap<ApplicationUser, UserResponse>()
+            .ForMember(dest => dest.FullName, opt => opt
+            .MapFrom(src => $"{src.FirstName} {src.LastName}"));
     }
 }
