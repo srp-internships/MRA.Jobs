@@ -90,7 +90,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
 
         var userRole = new ApplicationUserRole { UserId = user.Id, RoleId = role.Id, Slug = $"{user.UserName}-role" };
         await _context.UserRoles.AddAsync(userRole, cancellationToken);
-        await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
+        await _context.SaveChangesAsync(cancellationToken);
+            await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
             cancellationToken);
         return user.Id;
     }

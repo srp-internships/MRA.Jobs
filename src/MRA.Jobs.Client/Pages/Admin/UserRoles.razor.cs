@@ -1,8 +1,11 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using MRA.Identity.Application.Contract.Profile.Responses;
+using MRA.Identity.Application.Contract.Skills.Responses;
 using MRA.Identity.Application.Contract.UserRoles.Commands;
 using MRA.Identity.Application.Contract.UserRoles.Response;
+using MRA.Jobs.Client.Services.Profile;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Pages.Admin;
@@ -16,13 +19,19 @@ public partial class UserRoles
     [Inject] public AuthenticationStateProvider AuthStateProvider { get; set; }
     [Inject] private ISnackbar Snackbar { get; set; }
     [Inject] private ILocalStorageService LocalStorageService { get; set; }
+    [Inject] private IUserProfileService UserProfileService { get; set; }
     private string NewRoleName { get; set; }
 
     private bool _isOpened;
 
+    private UserProfileResponse personalData = new UserProfileResponse();
+    private UserSkillsResponse userSkills = new UserSkillsResponse();
+
     protected override async Task OnInitializedAsync()
     {
         await ReloadDataAsync();
+        personalData = await UserProfileService.Get(Username);
+        userSkills= await UserProfileService.GetUserSkills(Username);
     }
 
     private async Task ReloadDataAsync()
@@ -57,7 +66,7 @@ public partial class UserRoles
                 Snackbar.Add("Server is not responding, please try later", Severity.Error);
                 return;
             }
-            
+
             await ReloadDataAsync();
             StateHasChanged();
         }
