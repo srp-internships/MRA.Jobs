@@ -1,60 +1,63 @@
 ﻿@page "/fileupload"
 @inject ISnackbar Snackbar
-@inject HttpClient http
+@inject HttpClient Http
 <MudStack Style="width: 100%">
-	<MudFileUpload T="IReadOnlyList<IBrowserFile>" OnFilesChanged="OnInputFileChanged" AppendMultipleFiles Hidden="false" Class="flex-1" InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20" InputStyle="opacity:0"
-		@ondragenter="@SetDragClass" @ondragleave="@ClearDragClass" @ondragend="@ClearDragClass">
-			<ButtonTemplate>
-				<MudPaper Height="300px" Outlined="true" Class="@DragClass">
-					<MudText Typo="Typo.h6">Drag and drop files here or click</MudText>
-					@foreach (var file in fileNames)
-				{
-					<MudChip Color="Color.Dark" Text="@file" />
-				}
-			</MudPaper>
-		</ButtonTemplate>
-	</MudFileUpload>
-	<MudToolBar DisableGutters="true" Class="gap-4">
-		<MudButton OnClick="Upload" Disabled="@(!fileNames.Any())" Color="Color.Primary" Variant="Variant.Filled">Upload</MudButton>
-		<MudButton OnClick="Clear" Disabled="@(!fileNames.Any())" Color="Color.Error" Variant="Variant.Filled">Clear</MudButton>
-	</MudToolBar>
+    <MudFileUpload T="IReadOnlyList<IBrowserFile>" OnFilesChanged="OnInputFileChanged" AppendMultipleFiles Hidden="false" Class="flex-1" InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20" InputStyle="opacity:0"
+                   @ondragenter="@SetDragClass" @ondragleave="@ClearDragClass" @ondragend="@ClearDragClass">
+        <ButtonTemplate>
+            <MudPaper Height="300px" Outlined="true" Class="@_dragClass">
+                <MudText Typo="Typo.h6">Drag and drop files here or click</MudText>
+                @foreach (var file in _fileNames)
+                {
+                    <MudChip Color="Color.Dark" Text="@file"/>
+                }
+            </MudPaper>
+        </ButtonTemplate>
+    </MudFileUpload>
+    <MudToolBar DisableGutters="true" Class="gap-4">
+        <MudButton OnClick="Upload" Disabled="@(!_fileNames.Any())" Color="Color.Primary" Variant="Variant.Filled">Upload</MudButton>
+        <MudButton OnClick="Clear" Disabled="@(!_fileNames.Any())" Color="Color.Error" Variant="Variant.Filled">Clear</MudButton>
+    </MudToolBar>
 </MudStack>
+
 @code {
-	private static string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full z-10";
-	private string DragClass = DefaultDragClass;
-	private List<string> fileNames = new List<string>();
+        private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full z-10";
+    private string _dragClass = DefaultDragClass;
+    private readonly List<string> _fileNames = new();
 
-	private void OnInputFileChanged(InputFileChangeEventArgs e)
-	{
-		ClearDragClass();
-		var files = e.GetMultipleFiles();
-		foreach (var file in files)
-		{
-			fileNames.Add(file.Name);
-		}
-	}
+    private void OnInputFileChanged(InputFileChangeEventArgs e)
+    {
+        ClearDragClass();
+        var files = e.GetMultipleFiles();
+        foreach (var file in files)
+        {
+            _fileNames.Add(file.Name);
+        }
+    }
 
-	private async Task Clear()
-	{
-		fileNames.Clear();
-		ClearDragClass();
-		await Task.Delay(100);
-	}
-	private async void Upload()
-	{
-		//Upload the files here
-		var result = await http.PostAsync("api/")
-		Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-		Snackbar.Add("TODO: Upload your files!", Severity.Normal);
-	}
+    private async Task Clear()
+    {
+        _fileNames.Clear();
+        ClearDragClass();
+        await Task.Delay(100);
+    }
 
-	private void SetDragClass()
-	{
-		DragClass = $"{DefaultDragClass} mud-border-primary";
-	}
+    private async void Upload()
+    {
+    //Upload the files here
+        var result = await Http.PostAsync("api/");
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        Snackbar.Add("TODO: Upload your files!");
+    }
 
-	private void ClearDragClass()
-	{
-		DragClass = DefaultDragClass;
-	}
+    private void SetDragClass()
+    {
+        _dragClass = $"{DefaultDragClass} mud-border-primary";
+    }
+
+    private void ClearDragClass()
+    {
+        _dragClass = DefaultDragClass;
+    }
+
 }
