@@ -33,14 +33,22 @@ else
 						Category = r.Category,
 						Title = r.Title,
 						ShortDescription = r.ShortDescription,
-						Slug = r.Slug
+						Slug = r.Slug,
+                        EndDate = r.EndDate,
+                        PublishDate = r.PublishDate,
+                        Duration = r.Duration,
+                        Deadline = r.ApplicationDeadline
 					}).ToList();
 				filteredInternships = allJobs.Select(r => new VacancyClientResponse
 					{
 						Category = r.Category,
 						Title = r.Title,
 						ShortDescription = r.ShortDescription,
-						Slug = r.Slug
+						Slug = r.Slug,
+                        EndDate = r.EndDate,
+                        PublishDate = r.PublishDate,
+                        Duration = r.Duration,
+                        Deadline = r.ApplicationDeadline
 					}).ToList();
 			}
 		}
