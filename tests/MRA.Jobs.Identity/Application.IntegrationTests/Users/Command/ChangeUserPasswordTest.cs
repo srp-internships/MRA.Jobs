@@ -48,6 +48,6 @@ public class ChangeUserPasswordTest : BaseTest
         Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
 
         var responseString = (await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail;
-        Assert.AreEqual("Incorrect password", responseString);
+        Assert.AreEqual("Incorrect old password", responseString);
     }
 }

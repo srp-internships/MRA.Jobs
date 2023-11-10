@@ -50,7 +50,6 @@ public class ProfileController : ControllerBase
         return Ok(result);
     }
 
-
     [HttpGet("GetUserSkills")]
     public async Task<IActionResult> GetUserSkills([FromQuery] string userName = null)
     {

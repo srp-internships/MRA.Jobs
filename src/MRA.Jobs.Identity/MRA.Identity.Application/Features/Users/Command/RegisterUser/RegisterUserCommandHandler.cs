@@ -30,6 +30,23 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
         CancellationToken cancellationToken)
     {
 
+        var exitingUser = await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber || u.Email == request.Email);
+        if (exitingUser != null)
+        {
+            if (exitingUser.Email == request.Email && exitingUser.PhoneNumber == request.PhoneNumber)
+            {
+                throw new DuplicateWaitObjectException($"Email {request.Email} and Phone Number {request.PhoneNumber} are not available!");
+            }
+            else if (exitingUser.PhoneNumber == request.PhoneNumber)
+            {
+                throw new DuplicateWaitObjectException($"Phone Number {request.PhoneNumber} is not available!");
+            }
+            else if (exitingUser.Email == request.Email)
+            {
+                throw new DuplicateWaitObjectException($"Email {request.Email} is not available!");
+            }
+        }
+
         ApplicationUser user = new()
         {
             Id = Guid.NewGuid(),
@@ -41,8 +58,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
             PhoneNumber = request.PhoneNumber,
             FirstName = request.FirstName,
             LastName = request.LastName,
-            DateOfBirth = new DateTime(2000, 1, 1)
-
+            DateOfBirth = new DateTime(2000, 1, 1),
+            PhoneNumberConfirmed = request.PhoneNumberConfirmed
         };
         IdentityResult result = await _userManager.CreateAsync(user, request.Password);
 
@@ -73,7 +90,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
 
         var userRole = new ApplicationUserRole { UserId = user.Id, RoleId = role.Id, Slug = $"{user.UserName}-role" };
         await _context.UserRoles.AddAsync(userRole, cancellationToken);
-        await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
+        await _context.SaveChangesAsync(cancellationToken);
+            await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
             cancellationToken);
         return user.Id;
     }

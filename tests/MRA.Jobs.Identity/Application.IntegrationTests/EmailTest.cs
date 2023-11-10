@@ -22,29 +22,20 @@ public class EmailTest : BaseTest
             FirstName = "Alex",
             Username = "@Alex221",
             LastName = "Makedonsky1",
-            PhoneNumber = "+992123456789"
+            PhoneNumber = "+992223456789"
         };
 
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         var splitted = SendEmailData.Body.Split("'")[1].Split("token=")[1];
 
-        var requestLogin = new LoginUserCommand { Username = "@Alex221", Password = "password@#12P" };
 
-        // Act
-        var responseLogin = await _client.PostAsJsonAsync("api/Auth/login", requestLogin);
-        var jwt = await responseLogin.Content.ReadFromJsonAsync<JwtTokenResponse>();
-
-
-        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwt.AccessToken);
-
-        var responseEmail = await _client.GetAsync($"api/Auth/verify?token={WebUtility.UrlEncode(splitted)}");
+        var responseEmail = await _client.GetAsync($"api/Auth/verify?token={splitted}");
 
         var stringres = responseEmail.Content.ReadAsStringAsync();
 
         // Assert
-        
+
         responseEmail.EnsureSuccessStatusCode();
-       // Assert.That(responseEmail.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         var user = await GetEntity<ApplicationUser>(s => s.Email == request.Email);
         Assert.IsTrue(user.EmailConfirmed);
     }
@@ -60,23 +51,15 @@ public class EmailTest : BaseTest
             FirstName = "Alex",
             Username = "@Alex221",
             LastName = "Makedonsky1",
-            PhoneNumber = "+992123456789"
+            PhoneNumber = "+992323456789"
         };
         // Act
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
+        var userId = (await response.Content.ReadAsStringAsync()).Replace("\"", "");
         var splitted = "aaaa1";
 
-        var requestLogin = new LoginUserCommand { Username = "@Alex221", Password = "password@#12P" };
-
-        // Act
-        var responseLogin = await _client.PostAsJsonAsync("api/Auth/login", requestLogin);
-        var jwt = await responseLogin.Content.ReadFromJsonAsync<JwtTokenResponse>();
-
-
-        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwt.AccessToken);
-
-
-        var responseEmail = await _client.GetAsync($"api/Auth/verify?token={WebUtility.UrlEncode(splitted)}");
+        var responseEmail =
+            await _client.GetAsync($"api/Auth/verify?token={WebUtility.UrlEncode(splitted)}&userId={userId}");
         // Assert
 
         Assert.That(responseEmail.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
