@@ -39,7 +39,7 @@ else
                 <div class="col-md-4 col-sm-12">
                     <MudCard>
                         <MudCardContent>
-                            <MudText Typo="Typo.h5" Color="Color.Info">Do You want to work at Silk Road Professionals?</MudText>
+                            <MudText Typo="Typo.h5" Style="color: #129fd7">Do You want to work at Silk Road Professionals?</MudText>
                             <MudText Typo="Typo.body2">Write a cover letter, answer few questions and send yout application!</MudText>
                         </MudCardContent>
                         <MudCardActions>
@@ -52,11 +52,11 @@ else
                                     }
                                     else
                                     {
-                                        <a href="/@vacancy/apply/@Slug" class="btn btn-primary w-100">Apply</a>
+                                        <a href="/@vacancy/apply/@Slug" class="btn btn-primary w-100" style="background:#129fd7; border: none">Apply</a>
                                     }
                                 </Authorized>
                                 <NotAuthorized>
-                                    <a href="/sign-in?returnUrl=@vacancy|@Slug" class="btn btn-primary w-100">Apply</a>
+                                    <a href="/sign-in?returnUrl=@vacancy|@Slug" class="btn btn-primary w-100" style="background:#129fd7; border: none">Apply</a>
                                 </NotAuthorized>
                             </AuthorizeView>
                         </CascadingAuthenticationState>

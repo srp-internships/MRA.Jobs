@@ -25,14 +25,18 @@
                     Category = r.Category,
                     Title = r.Title,
                     ShortDescription = r.ShortDescription,
-                    Slug = r.Slug
+                    Slug = r.Slug,
+                    EndDate = r.EndDate,
+                    PublishDate = r.PublishDate
                 }).ToList(); ;
             filteredJobs = allJobs.Select(r => new VacancyClientResponse
                 {
                     Category = r.Category,
                     Title = r.Title,
                     ShortDescription = r.ShortDescription,
-                    Slug = r.Slug
+                    Slug = r.Slug,
+                    EndDate = r.EndDate,
+                    PublishDate = r.PublishDate
                 }).ToList(); ;
         }
     }
