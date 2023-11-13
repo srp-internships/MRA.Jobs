@@ -50,8 +50,10 @@
 				<MudCard>
 					<MudCardContent>
 						<MudText Style="color:gray"><b>Questions</b></MudText>
+						<br />
 						@foreach (var question in vacancy.VacancyQuestions)
 						{
+							<MudDivider />
 							<label for="question" class="form-label"><span class="text-danger">*</span>@question.Question</label>
 							<div class="input-group">
 								<input type="text" class="form-control" id="question_@question.Id" required="required" @bind="questionResponses[question.Question]">
