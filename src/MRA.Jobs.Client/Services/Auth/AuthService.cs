@@ -9,6 +9,7 @@ using MRA.Jobs.Client.Identity;
 using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
 using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
+using MediatR;
 
 namespace MRA.Jobs.Client.Services.Auth;
 
@@ -80,6 +81,10 @@ public class AuthService : IAuthService
     {
         try
         {
+            command.PhoneNumber = command.PhoneNumber.Trim();
+            if (command.PhoneNumber.Length == 9) command.PhoneNumber = "+992" + command.PhoneNumber.Trim();
+            else if (command.PhoneNumber.Length == 12 && command.PhoneNumber[0] != '+') command.PhoneNumber = "+" + command.PhoneNumber;
+
             var result = await _identityHttpClient.PostAsJsonAsync("Auth/register", command);
             if (result.IsSuccessStatusCode)
             {

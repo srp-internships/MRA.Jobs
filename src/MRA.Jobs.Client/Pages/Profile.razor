@@ -12,6 +12,7 @@
 @using MRA.Identity.Application.Contract.Skills.Responses;
 @using MRA.Identity.Application.Contract.User.Queries;
 @using MRA.Jobs.Client.Components.Dialogs;
+@using MRA.Jobs.Client.Identity;
 @using MRA.Jobs.Client.Pages.Auth
 @using MRA.Jobs.Client.Services.Profile;
 @using MudBlazor;
@@ -150,7 +151,8 @@ else
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Phone Number</MudText>
 									<div class="row align-items-center">
 										<div class="col">
-											<MudTextField @bind-Value="@updateProfileCommand.PhoneNumber" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.PhoneNumber)" />
+											<MudTextField @bind-Value="@updateProfileCommand.PhoneNumber" Variant="Variant.Outlined"
+														  Margin="Margin.Dense" For="@(() => updateProfileCommand.PhoneNumber)" Disabled="true" />
 										</div>
 										<div class="col-4" style="align-content:end; padding-top:10px;">
 											@if (!profile.PhoneNumberConfirmed)
@@ -654,7 +656,7 @@ else
 	private async Task Verify()
 	{
 		SmsVerificationCodeStatus response = await UserProfileService.CheckConfirmationCode(profile.PhoneNumber, confirmation_code);
-		if (response==SmsVerificationCodeStatus.CodeVerifyFailure)
+		if (response == SmsVerificationCodeStatus.CodeVerifyFailure)
 		{
 			Snackbar.Add("Code is incorrect or expired", MudBlazor.Severity.Error);
 		}
@@ -682,7 +684,7 @@ else
 	{
 		_tryButton = false;
 		StateHasChanged();
-		
+
 
 		try
 		{
@@ -721,12 +723,20 @@ else
 
 	private async Task BadRequestResponse(HttpResponseMessage response)
 	{
-		var errorResponseString = await response.Content.ReadAsStringAsync();
-		var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorResponseString);
-		foreach (var error in errorResponse.Errors)
+		var customProblemDetails = await response.Content.ReadFromJsonAsync<CustomProblemDetails>();
+		if (customProblemDetails.Detail != null)
 		{
-			var errorMessage = string.Join(", ", error.Value);
-			Snackbar.Add(errorMessage, MudBlazor.Severity.Error);
+			Snackbar.Add(customProblemDetails.Detail, MudBlazor.Severity.Error);
+		}
+		else
+		{
+			var errorResponseString = await response.Content.ReadAsStringAsync();
+			var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorResponseString);
+			foreach (var error in errorResponse.Errors)
+			{
+				var errorMessage = string.Join(", ", error.Value);
+				Snackbar.Add(errorMessage, MudBlazor.Severity.Error);
+			}
 		}
 	}
 

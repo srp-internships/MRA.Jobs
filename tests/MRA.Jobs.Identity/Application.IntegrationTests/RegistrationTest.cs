@@ -54,7 +54,7 @@ public class RegistrationTests : BaseTest
 
         // Assert
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
 
     [Test]

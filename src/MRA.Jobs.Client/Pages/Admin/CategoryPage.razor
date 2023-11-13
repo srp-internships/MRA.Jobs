@@ -5,72 +5,88 @@
 @inject ICategoryService CService
 @inject IDialogService DialogService
 
-<h1>Category</h1>
-
-@if (_category == null)
+<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Category</MudText>
+@if (serverError)
 {
-    <div>Loading</div>
+	<ServerErrorComponent/>
 }
 else
 {
-    <MudChipSet AllClosable="true" OnClose="Closed">
-        @foreach (var value in _category)
-        {
-            <MudChip Text="@value.Name"></MudChip>
-        }
-    </MudChipSet>
-    <MudTextField OnKeyDown="@OnKeyDown" @bind-Value="newCategory" OnAdornmentClick="AddCategory" Label="New Category" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
+	@if (_category == null)
+	{
+		<div class="loader"></div>
+	}
+	else
+	{
+		<MudChipSet AllClosable="true" OnClose="Closed">
+			@foreach (var value in _category)
+			{
+				<MudChip Text="@value.Name"></MudChip>
+			}
+		</MudChipSet>
+		<MudTextField OnKeyDown="@OnKeyDown" @bind-Value="newCategory" OnAdornmentClick="AddCategory" Label="New Category" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
+	}
 }
 
 @code {
-    private List<CategoryResponse> _category;
- 
-    private string newCategory { get; set; }
+	private bool serverError = false;
+	private List<CategoryResponse> _category;
 
-    protected override async Task OnInitializedAsync()
-    {
-        _category = await CService.GetAllCategory();
-    }
-    public async Task Closed(MudChip chip)
-    {
-        var cat = _category.FirstOrDefault(c => c.Name == chip.Text);
-        var parameters = new DialogParameters<DialogMudBlazor>();
-        parameters.Add(x => x.ContentText, "Do you really want to delete these record? Make sure there is no vacancy with this category!");
-        parameters.Add(x => x.ButtonText, "Delete");
-        parameters.Add(x => x.Color, Color.Error);
+	private string newCategory { get; set; }
 
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			_category = await CService.GetAllCategory();
+		}
+		catch (Exception)
+		{
+			serverError = true;
+			StateHasChanged();
+		}
 
-        var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
-        var result = await dialog.Result;
+	}
+	public async Task Closed(MudChip chip)
+	{
+		var cat = _category.FirstOrDefault(c => c.Name == chip.Text);
+		var parameters = new DialogParameters<DialogMudBlazor>();
+		parameters.Add(x => x.ContentText, "Do you really want to delete these record? Make sure there is no vacancy with this category!");
+		parameters.Add(x => x.ButtonText, "Delete");
+		parameters.Add(x => x.Color, Color.Error);
 
-        if (!result.Canceled)
-        {
-            _category.Remove(cat);
-            await CService.OnDeleteClick(cat.Slug);
-        }
-    }
-    public void AddCategory()
-    {
-        CService.creatingEntity = new Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory.CreateVacancyCategoryCommand
-            {
-                Name = newCategory
-            };
-        _category.Add(new CategoryResponse
-            {
-                Name = newCategory
-            });
-        CService.OnSaveCreateClick();
-        newCategory = "";
+		var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-    }
+		var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+		var result = await dialog.Result;
 
-    private async Task OnKeyDown(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter")
-        {
-            await Task.Delay(1);
-            AddCategory();
-        }
-    }
+		if (!result.Canceled)
+		{
+			_category.Remove(cat);
+			await CService.OnDeleteClick(cat.Slug);
+		}
+	}
+	public void AddCategory()
+	{
+		CService.creatingEntity = new Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory.CreateVacancyCategoryCommand
+			{
+				Name = newCategory
+			};
+		_category.Add(new CategoryResponse
+			{
+				Name = newCategory
+			});
+		CService.OnSaveCreateClick();
+		newCategory = "";
+
+	}
+
+	private async Task OnKeyDown(KeyboardEventArgs e)
+	{
+		if (e.Code == "Enter")
+		{
+			await Task.Delay(1);
+			AddCategory();
+		}
+	}
 }

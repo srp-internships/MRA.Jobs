@@ -6,37 +6,58 @@
 @using MRA.Jobs.Client.Components.Vacancies
 
 <MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Trainings</MudText>
-<VacanciesList VacancyCategories="TrainingCategories" filteredVacancies="filteredtrainings" Route="trainings" Vacancies="trainings"/>
-
+@if (serverError)
+{
+	<ServerErrorComponent />
+}
+else
+{
+	<VacanciesList VacancyCategories="TrainingCategories" filteredVacancies="filteredtrainings" Route="trainings" Vacancies="trainings" />
+}
 @code {
-    private List<string> TrainingCategories { get; set; }
-    private List<VacancyClientResponse> trainings { get; set; }
-    private List<VacancyClientResponse> filteredtrainings;
+	private bool serverError;
+	private List<string> TrainingCategories { get; set; }
+	private List<VacancyClientResponse> trainings { get; set; }
+	private List<VacancyClientResponse> filteredtrainings;
 
 	protected override async Task OnInitializedAsync()
 	{
-		var result = await categoryService.GetTrainingCategoriesSinceCheckDate();
-		var allTrainings = await vacancyService.GetTrainings();
-		if (result is not null && allTrainings is not null)
+		try
 		{
-			TrainingCategories = result.Select(r => r.Category.Name).ToList();
-            trainings = allTrainings.Select(r => new VacancyClientResponse
-                {
-                    Category = r.Category,
-                    Title = r.Title,
-                    ShortDescription = r.ShortDescription,
-                    Slug = r.Slug
-                }).ToList(); 
-            filteredtrainings = allTrainings.Select(r => new VacancyClientResponse
-                {
-                    Category = r.Category,
-                    Title = r.Title,
-                    ShortDescription = r.ShortDescription,
-                    Slug = r.Slug
-                }).ToList(); ;
+			var result = await categoryService.GetTrainingCategoriesSinceCheckDate();
+			var allTrainings = await vacancyService.GetTrainings();
+			if (result is not null && allTrainings is not null)
+			{
+				TrainingCategories = result.Select(r => r.Category.Name).ToList();
+				trainings = allTrainings.Select(r => new VacancyClientResponse
+					{
+						Category = r.Category,
+						Title = r.Title,
+						ShortDescription = r.ShortDescription,
+						Slug = r.Slug,
+                        EndDate = r.EndDate,
+                        PublishDate = r.PublishDate,
+                        Duration = r.Duration
+					}).ToList();
+				filteredtrainings = allTrainings.Select(r => new VacancyClientResponse
+					{
+						Category = r.Category,
+						Title = r.Title,
+						ShortDescription = r.ShortDescription,
+						Slug = r.Slug,
+                        EndDate = r.EndDate,
+                        PublishDate = r.PublishDate,
+                        Duration = r.Duration
+					}).ToList();
 
+			}
+		}
+		catch (Exception)
+		{
+			serverError = true;
+			StateHasChanged();
 		}
 	}
 
-	
+
 }

@@ -54,9 +54,10 @@ public class UserProfileService : IUserProfileService
         }
     }
 
-    public async Task<UserProfileResponse> Get()
+    public async Task<UserProfileResponse> Get(string userName = null)
     {
-        var result = await _identityHttpClient.GetJsonAsync<UserProfileResponse>("Profile");
+        var result = await _identityHttpClient
+          .GetJsonAsync<UserProfileResponse>($"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
         return result;
     }
 
@@ -108,9 +109,10 @@ public class UserProfileService : IUserProfileService
         return response;
     }
 
-    public async Task<UserSkillsResponse> GetUserSkills()
+    public async Task<UserSkillsResponse> GetUserSkills(string userName = null)
     {
-        var response = await _identityHttpClient.GetJsonAsync<UserSkillsResponse>("Profile/GetUserSkills");
+        var response = await _identityHttpClient
+            .GetJsonAsync<UserSkillsResponse>($"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
         return response;
     }
 
@@ -134,7 +136,8 @@ public class UserProfileService : IUserProfileService
 
     public async Task<bool> SendConfirmationCode(string phoneNumber)
     {
-        var response = await _identityHttpClient.GetJsonAsync<bool>($"sms/send_code?PhoneNumber={phoneNumber}");
+        var response = await _identityHttpClient.GetFromJsonAsync<bool>($"sms/send_code?PhoneNumber={phoneNumber}");
+       
         return response;
     }
 
