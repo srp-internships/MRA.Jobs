@@ -2,10 +2,7 @@ namespace MRA.Jobs.Application.Common.Exceptions;
 
 public class ConflictException : Exception
 {
-    public string Details { get; set; }
-
-    public ConflictException(string details)
+    public ConflictException(string message):base(message)
     {
-        Details = details;
     }
 }

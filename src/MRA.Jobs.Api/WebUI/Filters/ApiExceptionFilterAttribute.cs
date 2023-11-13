@@ -30,7 +30,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         var details = new ProblemDetails
         {
             Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.8",
-            Detail = exception.Details
+            Detail = exception.Message
         };
 
         context.Result = new ObjectResult(details){StatusCode = StatusCodes.Status409Conflict};
