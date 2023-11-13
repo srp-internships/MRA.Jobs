@@ -6,7 +6,7 @@
 @inject AuthenticationStateProvider provider
 @inject IApplicationService ApplicationService
 
-@if (vacancyDetails is null)
+@if (vacancyDetails is null || vacancy == null)
 {
 	if (showLoader)
 	{
