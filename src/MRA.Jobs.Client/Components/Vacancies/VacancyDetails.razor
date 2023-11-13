@@ -1,6 +1,7 @@
 ﻿@using Blazored.LocalStorage;
 @using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
+@using MRA.Jobs.Client.CustomMethods;
 @using MRA.Jobs.Client.Identity;
 @using Microsoft.AspNetCore.Components.Authorization;
 @inject AuthenticationStateProvider provider
@@ -23,46 +24,7 @@ else
 						<CardHeaderContent>
 							<MudText Typo="Typo.h5"><b>@vacancyDetails.Title</b></MudText>
 							<MudText Typo="Typo.body2" Style="color:gray">
-								Posted
-								@{
-									var publishDate = vacancyDetails.PublishDate;
-									var currentDate = DateTime.Now;
-									string displayDate;
-
-									if (publishDate.Date == currentDate.Date)
-									{
-										if (publishDate.Minute == currentDate.Minute)
-										{
-											displayDate = $"{currentDate.Second - publishDate.Second} seconds ago";
-
-										}
-										else if (publishDate.Hour == currentDate.Hour)
-										{
-											displayDate = $"{currentDate.Minute - publishDate.Minute} min ago";
-										}
-										else if ((currentDate.Hour - publishDate.Hour) == 1)
-										{
-											displayDate = $"1 hour ago";
-										}
-										else if ((currentDate.Hour - publishDate.Hour) <= 5)
-										{
-											displayDate = $"{currentDate.Hour - publishDate.Hour} hours ago";
-										}
-										else
-										{
-											displayDate = $"Today at {publishDate:HH:mm}";
-										}
-									}
-									else if (publishDate.Date == currentDate.AddDays(-1).Date)
-									{
-										displayDate = $"Yesterday at {publishDate:HH:mm}";
-									}
-									else
-									{
-										displayDate = $"{publishDate:dd.MM.yyyy}";
-									}
-									<span>@displayDate</span>
-								}
+								Posted @CustomConverter.GetDisplayPostedDate(vacancyDetails.PublishDate)
 							</MudText>
 						</CardHeaderContent>
 					</MudCardHeader>

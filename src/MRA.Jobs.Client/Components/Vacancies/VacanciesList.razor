@@ -1,5 +1,6 @@
 ﻿@using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
+@using MRA.Jobs.Client.CustomMethods;
 @inject ICategoryService categoryService
 @inject IVacancyService vacancyService
 
@@ -92,24 +93,25 @@ else
 							<MudItem xs="12">
 								<a href="/@Route/@Vacancy.Slug">
 									<MudCard Class="job-card">
-										<MudCardHeader>
-                                            <MudText Style="color: #129fd7;" Typo="Typo.h5">@Vacancy.Title</MudText> <br />
-										</MudCardHeader>
 										<MudCardContent>
-                                            <MudText Color="Color.Dark" Typo="Typo.caption"><b>@(Vacancy.Deadline is not null ? $"Deadline: {Vacancy.Deadline?.ToString("dd/MM/yyyy")}," : "") @(Vacancy.Duration != 0 ? $"Duration: {Vacancy.Duration} month(s)," : "") @(Vacancy.PublishDate is not null ? $"Publish date: {Vacancy.PublishDate?.ToString("dd/MM/yyyy")}," : "") @(Vacancy.EndDate is not null ? $"End date: {Vacancy.EndDate?.ToString("dd/MM/yyyy")}" : "") </b></MudText>
-                                            <MudText Typo="Typo.h6">@Vacancy.ShortDescription</MudText>
+											<MudText Style="color: #129fd7;" Typo="Typo.h5"><b>@Vacancy.Title</b></MudText>
+											<MudText Typo="Typo.body2" Style="color:gray"><small><b>Posted @CustomConverter.GetDisplayPostedDate(Vacancy.PublishDate)</b></small></MudText>
+											<br />
+											@* <MudText Color="Color.Dark" Typo="Typo.caption"><b>@(Vacancy.Deadline is not null ? $"Deadline: {Vacancy.Deadline?.ToString("dd/MM/yyyy")}," : "") @(Vacancy.Duration != 0 ? $"Duration: {Vacancy.Duration} month(s)," : "") @(Vacancy.EndDate is not null ? $"End date: {Vacancy.EndDate?.ToString("dd/MM/yyyy")}" : "") </b></MudText> *@
+											<MudText Typo="Typo.h6">@Vacancy.ShortDescription</MudText>
+											<MudText Typo="Typo.caption" Style="color:gray"><b>@CustomConverter.GetDeadlineDisplayDate(Vacancy.Deadline)</b></MudText>
 										</MudCardContent>
 									</MudCard>
 								</a>
 							</MudItem>
 						}
-                        @if (GetTotalPages() > 1)
-                        {
-                            <MudItem xs="12" Class="d-flex justify-content-center">
-                                <MudPagination Color="Color.Info" Variant="Variant.Outlined" Count="@GetTotalPages()" @bind-Selected="@_selected" />
-                            </MudItem>
-                        }
-                    </MudGrid>
+						@if (GetTotalPages() > 1)
+						{
+							<MudItem xs="12" Class="d-flex justify-content-center">
+								<MudPagination Color="Color.Info" Variant="Variant.Outlined" Count="@GetTotalPages()" @bind-Selected="@_selected" />
+							</MudItem>
+						}
+					</MudGrid>
 				</MudItem>
 			}
 		</MudGrid>
