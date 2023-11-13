@@ -6,6 +6,7 @@ using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Internships.Command;
+
 public class CreateInternshipVacancyCommandTest : Testing
 {
     [Test]
@@ -19,11 +20,12 @@ public class CreateInternshipVacancyCommandTest : Testing
             ShortDescription = "Hi",
             PublishDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(2),
-            CategoryId = await AddVacancyCategory("internshipvacancy"),
+            CategoryId = await AddVacancyCategory("internshipVacancy"),
             ApplicationDeadline = DateTime.Now.AddDays(20),
             Duration = 10,
             Stipend = 100,
-            VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
+            VacancyQuestions = new List<VacancyQuestionDto>
+                { new() { Question = "What is your English proficiency level?" } }
         };
 
         var response = await _httpClient.PostAsJsonAsync("/api/internships", internshipVacancy);
@@ -31,6 +33,37 @@ public class CreateInternshipVacancyCommandTest : Testing
         response.EnsureSuccessStatusCode();
 
         response.Should().NotBeNull();
+    }
+
+    [Test]
+    public async Task CreateInternshipVacancy_ValidRequest_ShouldFillDatabase()
+    {
+        RunAsAdministratorAsync();
+        var internshipVacancy = new CreateInternshipVacancyCommand
+        {
+            Title = "Cool Job1",
+            Description = "Hello1",
+            ShortDescription = "Hi1",
+            PublishDate = DateTime.Now,
+            EndDate = DateTime.Now.AddDays(2),
+            CategoryId = await AddVacancyCategory("internshipVacancy1"),
+            ApplicationDeadline = DateTime.Now.AddDays(20),
+            Duration = 10,
+            Stipend = 100,
+            VacancyQuestions = new List<VacancyQuestionDto>
+                { new() { Question = "What is your English proficiency level?1" } }
+        };
+        await _httpClient.PostAsJsonAsync("/api/internships", internshipVacancy);
+        
+        var databaseVacancy = await FindFirstOrDefaultAsync<InternshipVacancy>(s =>
+            s.CategoryId == internshipVacancy.CategoryId && 
+            s.Title == internshipVacancy.Title &&
+            s.Description == internshipVacancy.Description);
+        databaseVacancy.Should().NotBeNull();
+
+        databaseVacancy.CreatedAt.Should().NotBe(null);
+        databaseVacancy.CreatedByEmail.Should().NotBeNull();
+        databaseVacancy.CreatedBy.Should().NotBeEmpty();
     }
 
     async Task<Guid> AddVacancyCategory(string name)
