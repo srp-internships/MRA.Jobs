@@ -83,8 +83,7 @@ else
 										</MudItem>
 									</MudGrid>
 								</MudItem>
-								<MudItem xs="3">
-								</MudItem>
+								<MudItem xs="3" />
 								<MudItem>
 									<MudGrid>
 										<MudItem Style="padding:0px;"><MudIcon Icon="@Icons.Material.Outlined.Alarm" /></MudItem>
@@ -95,16 +94,33 @@ else
 									</MudGrid>
 
 								</MudItem>
+
+								@if (vacancyDetails.RequiredYearOfExperience != 0)
+							{
+								<MudItem md="3" xs="0" />
 								<MudItem>
-									@if (vacancyDetails.RequiredYearOfExperience != 0)
-								{
-									<MudText><i class="material-icons">work_experience</i> Required year(s) of experience: @vacancyDetails.RequiredYearOfExperience</MudText>
-								}
-								@if (vacancyDetails.Fees != 0)
-								{
-									<MudText><i class="material-icons">attach_money</i> Fees: @vacancyDetails.Fees $</MudText>
-								}
-							</MudItem>
+									<MudGrid>
+										<MudItem Style="padding:0px;"><MudIcon Icon="@Icons.Material.Outlined.Work" /></MudItem>
+										<MudItem Style="padding:0px;">
+											<MudText><b>@vacancyDetails.RequiredYearOfExperience year(s)</b></MudText>
+											<MudText Typo="Typo.body2"><small>Required year of experience</small></MudText>
+										</MudItem>
+									</MudGrid>
+								</MudItem>
+							}
+							@if (vacancyDetails.Fees != 0)
+							{
+								<MudItem md="3" xs="0" />
+								<MudItem>
+									<MudGrid>
+										<MudItem Style="padding:0px;"><MudIcon Icon="@Icons.Material.Outlined.AttachMoney" /></MudItem>
+										<MudItem Style="padding:0px;">
+											<MudText><b>@vacancyDetails.Fees $</b></MudText>
+											<MudText Typo="Typo.body2"><small>Fees</small></MudText>
+										</MudItem>
+									</MudGrid>
+								</MudItem>
+							}
 						</MudGrid>
 
 
@@ -185,6 +201,7 @@ else
 
 	protected override async void OnAfterRender(bool firstRender)
 	{
+
 		if (firstRender)
 		{
 			applied = await ApplicationService.ApplicationExist(Slug);
