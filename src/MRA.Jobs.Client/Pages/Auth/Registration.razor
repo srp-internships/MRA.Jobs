@@ -83,58 +83,58 @@
                         <ExternalLoginCard Title="Continue With"/>
                     </MudCard>
                 }
-                @if (_step == 1)
-                {
-                    <MudCard>
-                        <MudCardHeader>
-                            <CardHeaderContent>
-                                <MudText>
-                                    we have sent a confirmation code to this number: <b>@_registerUser.PhoneNumber</b>.
-                                    Please confirm your identity
-                                </MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
-                        <MudCardContent>
-                            <MudTextField Label="Code" @bind-Value="_code" Variant="@Variant.Filled" Clearable/>
-                            <br/>
-                            <br/>
-                            <MudCardActions>
-                                <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="ConfirmCode">
-                                    @if (_processing)
-                                    {
-                                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                                        <MudText Class="ms-2">Processing</MudText>
-                                    }
-                                    else
-                                    {
-                                        <MudText>Apply</MudText>
-                                    }
-                                </MudButton>
-                                <MudButton Variant="Variant.Text" Color="Color.Info" FullWidth="true" OnClick="SendCode" Disabled="@_isResendDisabled">
-                                    @if (_processing)
-                                    {
-                                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                                        <MudText Class="ms-2">Processing</MudText>
-                                    }
-                                    else
-                                    {
-                                        <MudText>Resend code</MudText>
-                                    }
-                                </MudButton>
+				@if (_step == 1)
+				{
+					<MudCard>
+						<MudCardHeader>
+							<CardHeaderContent>
+								<MudText>
+									we have sent a confirmation code to this number: <b>@_registerUser.PhoneNumber</b>.
+									Please confirm your identity
+								</MudText>
+							</CardHeaderContent>
+						</MudCardHeader>
+						<MudCardContent>
+							<MudTextField Label="Code" @bind-Value="_code" Variant="@Variant.Filled" Clearable />
+								<br />
+								<br />
+								<MudCardActions>
+									<MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="ConfirmCode">
+										@if (_processing)
+									{
+										<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+										<MudText Class="ms-2">Processing</MudText>
+									}
+									else
+									{
+										<MudText>Apply</MudText>
+									}
+								</MudButton>
+								<MudButton Variant="Variant.Text" Color="Color.Info" FullWidth="true" OnClick="SendCode" Disabled="@_isResendDisabled">
+									@if (_processing)
+									{
+										<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+										<MudText Class="ms-2">Processing</MudText>
+									}
+									else
+									{
+										<MudText>Resend code</MudText>
+									}
+								</MudButton>
 
-                            </MudCardActions>
-                            <div>
-                                <MudText Typo="Typo.body2" Color="Color.Default">@_timeLeft seconds left to resend the code.</MudText>
+							</MudCardActions>
+							<div>
+								<MudText Typo="Typo.body2" Color="Color.Default">@_timeLeft seconds left to resend the code.</MudText>
 
-                            </div>
-                        </MudCardContent>
+							</div>
+						</MudCardContent>
 
 
-                    </MudCard>
-                }
-            </div>
-        </div>
-    </div>
+					</MudCard>
+				}
+			</div>
+		</div>
+	</div>
 </div>
 
 @code {
@@ -144,17 +144,17 @@
     private bool _processing;
     private bool _processing2;
 
-    private bool _isResendDisabled = true;
-    private int _timeLeft = 60;
-    private int? _code;
+	private bool _isResendDisabled = true;
+	private int _timeLeft = 60;
+	private int? _code;
 
     private int _isAvailable = -1;
 
 
-    private async Task SendCode()
-    {
-        _processing = true;
-        StateHasChanged();
+	private async Task SendCode()
+	{
+		_processing = true;
+		StateHasChanged();
 
         if (!(await _fluentValidationValidator!.ValidateAsync()) || _isAvailable == 0)
         {

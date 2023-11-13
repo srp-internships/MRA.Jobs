@@ -6,28 +6,42 @@
 @inject IApplicationService ApplicationService
 
 @using MRA.Jobs.Client.Components.Vacancies
-
-<VacancyDetails Slug="@Slug" vacancyDetails="@details" vacancy="jobs"/>
-
-
+@if (serverError)
+{
+	<ServerErrorComponent />
+}
+else
+{
+	<VacancyDetails Slug="@Slug" vacancyDetails="@details" vacancy="jobs" />
+}
 @code {
-    [Parameter]
-    public string Slug { get; set; }
-    private VacancyDetailsResponse details;
+	private bool serverError = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        var response = await VacancyService.GetBySlug(Slug);
-        if (response is not null)
-        {
-            details = new VacancyDetailsResponse
-                {
-                    Title = response.Title,
-                    Description = response.Description,
-                    EndDate = response.EndDate,
-                    PublishDate = response.PublishDate,
-                    RequiredYearOfExperience = response.RequiredYearOfExperience
-                };
-        }
-    }
+	[Parameter]
+	public string Slug { get; set; }
+	private VacancyDetailsResponse details;
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			var response = await VacancyService.GetBySlug(Slug);
+			if (response is not null)
+			{
+				details = new VacancyDetailsResponse
+					{
+						Title = response.Title,
+						Description = response.Description,
+						EndDate = response.EndDate,
+						PublishDate = response.PublishDate,
+						RequiredYearOfExperience = response.RequiredYearOfExperience
+					};
+			}
+		}
+		catch (Exception)
+		{
+			serverError = true;
+			StateHasChanged();
+		}
+	}
 }

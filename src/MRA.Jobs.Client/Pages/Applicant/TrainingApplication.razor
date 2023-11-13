@@ -8,41 +8,59 @@
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
 
-<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" vacancy="@training" />
+@if (serverError)
+{
+	<ServerErrorComponent />
+}
+else
+{
+	<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" vacancy="@training" />
+}
 
 @code {
-    private VacancyApplicationResponse training;
-    private CreateApplicationCommand application;
-    public Dictionary<string, string> questionResponses = new();
+	private bool serverError;
 
-    [Parameter]
-    public string Slug { get; set; }
+	private VacancyApplicationResponse training;
+	private CreateApplicationCommand application;
+	public Dictionary<string, string> questionResponses = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        var response = await _trainingService.GetBySlug(Slug);
+	[Parameter]
+	public string Slug { get; set; }
 
-        if (response != null)
-        {
-            training = new VacancyApplicationResponse
-                {
-                    Id = response.Id,
-                    Title = response.Title,
-                    VacancyQuestions = response.VacancyQuestions
-                };
-            application = new CreateApplicationCommand
-                {
-                    VacancyId = training.Id,
-                    VacancyResponses = training.VacancyQuestions.Select(q => new VacancyResponseDto
-                    {
-                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
-                    })
-                };
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			var response = await _trainingService.GetBySlug(Slug);
 
-            foreach (var question in training.VacancyQuestions)
-            {
-                questionResponses[question.Question] = "";
-            }
-        }
-    }
+			if (response != null)
+			{
+				training = new VacancyApplicationResponse
+					{
+						Id = response.Id,
+						Title = response.Title,
+						Description=response.Description,
+						VacancyQuestions = response.VacancyQuestions
+					};
+				application = new CreateApplicationCommand
+					{
+						VacancyId = training.Id,
+						VacancyResponses = training.VacancyQuestions.Select(q => new VacancyResponseDto
+						{
+							VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+						})
+					};
+
+				foreach (var question in training.VacancyQuestions)
+				{
+					questionResponses[question.Question] = "";
+				}
+			}
+		}
+		catch (Exception)
+		{
+			serverError = true;
+			StateHasChanged();
+		}
+	}
 }
