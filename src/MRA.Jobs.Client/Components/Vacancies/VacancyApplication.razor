@@ -37,7 +37,7 @@
 				<MudCardContent>
 					<MudText Style="color:gray"><b>Additional Details</b></MudText>
 					<MudText Typo="Typo.h6"><b><span class="text-danger">*</span>Cover Letter</b></MudText>
-					<MudTextField T="string" Lines="7" Variant="Variant.Outlined" Text="@application.CoverLetter"
+					<MudTextField T="string" Lines="7" Variant="Variant.Outlined" @bind-Value="@application.CoverLetter"
 								  For="@(() =>application.CoverLetter)" />
 				</MudCardContent>
 			</MudCard>
