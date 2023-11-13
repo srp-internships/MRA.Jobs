@@ -61,9 +61,8 @@
                                         UserName: <b>@_registerUser.Username</b> is not available
                                     </MudText>
                                 }
-
-                                <MudTextField Label="Password" HelperText="Password" Class="mt-3"
-                                              @bind-Value="_registerUser.Password" For="@(() => _registerUser.Password)" InputType="InputType.Password"/>
+                                <MudTextField Label="Password" HelperText="Password" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
+                                              @bind-Value="_registerUser.Password" For="@(() => _registerUser.Password)"/>
 
                             </EditForm>
                         </MudCardContent>
@@ -143,6 +142,25 @@
     private int _step;
     private bool _processing;
     private bool _processing2;
+
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+    void ButtonTestclick()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
 
 	private bool _isResendDisabled = true;
 	private int _timeLeft = 60;
