@@ -1,12 +1,12 @@
-﻿namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
+﻿using ValidationException = MRA.Jobs.Application.Common.Exceptions.ValidationException;
 
-using System.Reflection.Metadata.Ecma335;
+namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
+
 using Common.Interfaces;
 using Common.Security;
 using Common.SlugGeneratorService;
 using Domain.Entities;
 using Domain.Enums;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 
@@ -36,14 +36,14 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
 
-        Vacancy vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
+        var vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
         _ = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
         var application = _mapper.Map<Application>(request);
 
         application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
 
-        if ((await ApplicationExits(application.Slug)) == true)
-            throw new DuplicateWaitObjectException("Duplicate Apply. You have already submitted your application!");
+        if (await ApplicationExits(application.Slug))
+            throw new ConflictException("Duplicate Apply. You have already submitted your application!");
 
         application.ApplicantId = _currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = _currentUserService.GetUserName() ?? string.Empty;
@@ -69,9 +69,9 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         return application.Id;
     }
 
-    private async Task<bool> ApplicationExits(string ApplicationSlug)
+    private async Task<bool> ApplicationExits(string applicationSlug)
     {
-        var application = await _context.Applications.FirstOrDefaultAsync(a => a.Slug.Equals(ApplicationSlug));
+        var application = await _context.Applications.FirstOrDefaultAsync(a => a.Slug.Equals(applicationSlug));
         if (application == null)
             return false;
         return true;
