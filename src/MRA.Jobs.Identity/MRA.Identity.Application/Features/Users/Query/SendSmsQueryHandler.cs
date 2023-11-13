@@ -30,7 +30,7 @@ public class SendSmsQueryHandler : IRequestHandler<SendVerificationCodeSmsQuery,
             throw new FormatException("Phone number does not follow the required format.");
         }
 
-        var response = await _smsService.SendSmsAsync(request.PhoneNumber, GenerateMessage(out int code));
+        var response = await _smsService.SendSmsAsync(request.PhoneNumber[1..], GenerateMessage(out int code));
 
         if (!response) return false;
 
