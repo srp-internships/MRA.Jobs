@@ -7,10 +7,10 @@
 @inject IInternshipService internshipService
 @inject ICategoryService categoryService
 
-<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Internships</MudText>
+<MudText Typo="Typo.h4" Color="Color.Primary">Internships Vacancy</MudText>
 @if (serverError)
 {
-	<ServerErrorComponent/>
+	<ServerErrorComponent />
 }
 else
 {
@@ -26,54 +26,121 @@ else
 	}
 	else
 	{
-		<MudExpansionPanels>
-			<MudExpansionPanel Text="Create new Internship" @bind-IsExpanded="@panelOpenState">
-				<MudTextField @bind-Value="@internshipService.createCommand.Title" Label="Title" Variant="Variant.Outlined" />
-				<MudTextField Lines="5" @bind-Value="@internshipService.createCommand.ShortDescription" Label="ShortDescription" Variant="Variant.Outlined" />
-				<MudTextField Lines="5" @bind-Value="@internshipService.createCommand.Description" Label="Description" Variant="Variant.Outlined" />
-				<div class="row">
-					<div class="col-md-4">
-						<MudDatePicker @bind-Date="@internshipService.createCommand.ApplicationDeadline" Variant="Variant.Outlined" Label="Application deadline" />
-					</div>
-					<div class="col-md-4">
-						<MudTextField @bind-Value="@internshipService.createCommand.Duration" Label="Duration" Variant="Variant.Outlined" />
-					</div>
-					<div class="col-md-4">
-						<MudTextField @bind-Value="@internshipService.createCommand.Stipend" Label="Stipend" Variant="Variant.Outlined" />
-					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-md-4">
-						<MudSelect T="string" Label="@selectedCategory" @bind-Value="@selectedCategory" Variant="Variant.Outlined">
-							@foreach (var cat in categories)
-							{
-								<MudSelectItem Value="@cat.Name" />
-							}
-						</MudSelect>
-					</div>
-					<div class="col-md-4">
-						<MudDatePicker @bind-Date="@internshipService.createCommand.EndDate" Variant="Variant.Outlined" Label="End date" />
-					</div>
-					<div class="col-md-4">
-						<MudDatePicker @bind-Date="@internshipService.createCommand.PublishDate" Variant="Variant.Outlined" Label="Publish date" />
-					</div>
-				</div>
-				<MudPaper Class="p-2 mb-2">
-					<MudText Typo="Typo.caption">Vacancy questions</MudText>
-					@foreach (var ques in Questions)
-					{
-						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.QuestionMark" /> @ques.Question<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveQuestion(ques.Question)" aria-label="delete"></MudIconButton></MudText>
+		<MudGrid>
+			<MudItem Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0" hidden="@panelOpenState" lg="12">
+				<MudCardHeader>
+				<MudButton Justify="Justify.FlexEnd" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(()=>panelOpenState=true)">
+					<MudText>Create New Internship Vacancy</MudText>
+				</MudButton>
+				</MudCardHeader>
+			</MudItem>
+			<MudItem lg="12" hidden="@(!panelOpenState)">
+				<EditForm Model="@internshipService.createCommand">
+					<FluentValidationValidator />
+					<MudText Style="color:gray" Typo="Typo.h6"><b>New Internship Vacancy</b></MudText><br />
+					<MudGrid>
+						<MudItem xs="12">
+							<MudCard>
+								<MudCardContent>
+									<MudTextField @bind-Value="@internshipService.createCommand.Title" Label="Title"
+												  Variant="Variant.Outlined" For="@(()=>internshipService.createCommand.Title)" />
+									<MudTextField Lines="2" @bind-Value="@internshipService.createCommand.ShortDescription" Label="ShortDescription"
+												  Variant="Variant.Outlined" For="@(()=>internshipService.createCommand.ShortDescription)" />
+									<MudTextField Lines="5" @bind-Value="@internshipService.createCommand.Description" Label="Description"
+												  Variant="Variant.Outlined" For="@(()=>internshipService.createCommand.Description)" />
+								</MudCardContent>
+							</MudCard>
+						</MudItem>
+						<MudItem xs="12" lg="6">
+							<MudCard>
+								<MudCardContent>
+									<MudGrid>
+										<MudItem xs=12 lg="12">
+											<MudText Style="color:gray" Typo="Typo.body2">Category</MudText>
+											<MudSelect T="string" @bind-Value="@selectedCategory"
+													   Variant="Variant.Outlined">
+												@foreach (var cat in categories)
+												{
+													<MudSelectItem Value="@cat.Name" />
+												}
+											</MudSelect>
+										</MudItem>
+										<MudItem xs="12" lg="6">
+											<MudTextField @bind-Value="@internshipService.createCommand.Duration" Label="Duration"
+														  Variant="Variant.Outlined" For="@(()=>internshipService.createCommand.Duration)" />
+										</MudItem>
+										<MudItem xs="12" lg="6">
+											<MudTextField @bind-Value="@internshipService.createCommand.Stipend" Label="Stipend"
+														  Variant="Variant.Outlined" For="@(()=>internshipService.createCommand.Stipend)" />
+										</MudItem>
+										<MudItem xs=12 lg="12">
+											<MudText Style="color:gray" Typo="Typo.body2">Publish Date</MudText>
+											<MudGrid>
+												<MudItem xs=12 lg="6">
+													<MudDatePicker @bind-Date="@internshipService.createCommand.PublishDate" Variant="Variant.Outlined"
+																   Label="Date" For="@(()=>internshipService.createCommand.PublishDate)" />
+												</MudItem>
+												<MudItem xs=12 lg="6">
+													<MudTimePicker AmPm="true" @bind-Time="applicationDeadlineTime" Variant="Variant.Outlined" Label="Time" />
+												</MudItem>
+											</MudGrid>
+										</MudItem>
+										<MudItem xs=12 lg="12">
+											<MudText Style="color:gray" Typo="Typo.body2">Application Deadline</MudText>
+											<MudGrid>
+												<MudItem xs=12 lg="6">
+													<MudDatePicker @bind-Date="@internshipService.createCommand.ApplicationDeadline" Variant="Variant.Outlined"
+																   Label="Date" For="@(()=>internshipService.createCommand.ApplicationDeadline)" />
+												</MudItem>
+												<MudItem xs=12 lg="6">
+													<MudTimePicker AmPm="true" @bind-Time="applicationDeadlineTime" Variant="Variant.Outlined" Label="Time" />
+												</MudItem>
+											</MudGrid>
+										</MudItem>
+										<MudItem xs=12 lg="12">
+											<MudText Style="color:gray" Typo="Typo.body2">End Date</MudText>
+											<MudGrid>
+												<MudItem xs=12 lg="6">
+													<MudDatePicker @bind-Date="@internshipService.createCommand.EndDate" Variant="Variant.Outlined"
+																   Label="Date" For="@(()=>internshipService.createCommand.EndDate)" />
 
-					}
-					<MudTextField @bind-Value="newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
-				</MudPaper>
+												</MudItem>
+												<MudItem xs=12 lg="6">
+													<MudTimePicker AmPm="true" @bind-Time="applicationDeadlineTime" Variant="Variant.Outlined" Label="Time" />
+												</MudItem>
+											</MudGrid>
+										</MudItem>
+									</MudGrid>
+								</MudCardContent>
+							</MudCard>
+						</MudItem>
+						<MudItem xs="12" lg="6">
+							<MudCard>
+								<MudCardHeader>
+									<CardHeaderContent>
+										<MudText Style="color:gray">Vacancy questions</MudText>
+									</CardHeaderContent>
+								</MudCardHeader>
+								<MudCardContent>
+									@foreach (var ques in Questions)
+									{
+										<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Outlined.QuestionAnswer" /> @ques.Question<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveQuestion(ques.Question)" aria-label="delete"></MudIconButton></MudText>
+									}
+									<MudTextField @bind-Value="newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
+								</MudCardContent>
+							</MudCard>
+						</MudItem>
+						<MudItem xs="12" lg="12" Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0">
+							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MudButton>
+							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MudButton>
+							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MudButton>
+						</MudItem>
+					</MudGrid>
 
-				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MudButton>
-				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MudButton>
-				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MudButton>
-			</MudExpansionPanel>
-		</MudExpansionPanels>
+				</EditForm>
+			</MudItem>
+		</MudGrid>
 
 		<DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem" />
 		<MudTable Items="@interships" Class="text-center" Breakpoint="Breakpoint.Md">
@@ -117,16 +184,20 @@ else
 	bool isInserting;
 	bool isUpdating = true;
 	string UpdateSlug;
-	private string selectedCategory { get; set; } = "Select category";
+	private string selectedCategory { get; set; } = "";
 	private string newQuestion = string.Empty;
 
 	private List<VacancyQuestionDto> Questions = new();
 	private List<CategoryResponse> categories;
 	private List<InternshipVacancyListResponse> interships;
 
+	private TimeSpan? applicationDeadlineTime;
+
 	protected override async Task OnInitializedAsync()
 	{
 		await LoadData();
+		applicationDeadlineTime = DateTime.Now.TimeOfDay;
+		StateHasChanged();
 	}
 
 	private bool isDialogOpen = false;
@@ -200,6 +271,13 @@ else
 		var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
 		internshipService.createCommand.CategoryId = catId;
 		internshipService.createCommand.VacancyQuestions = Questions;
+		if (applicationDeadlineTime.HasValue)
+		{
+			internshipService.createCommand.ApplicationDeadline = internshipService.createCommand.ApplicationDeadline + applicationDeadlineTime.Value;
+		}
+
+
+
 		await internshipService.Create();
 		await LoadData();
 		Clear();
