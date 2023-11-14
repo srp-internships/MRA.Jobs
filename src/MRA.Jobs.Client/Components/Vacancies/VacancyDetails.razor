@@ -66,20 +66,6 @@ else
 								</MudItem>
 							}
 
-							<MudItem lg="4" md="6" xs="6">
-								@{
-									var endDateResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate);
-									var endDatelineStyle = $"color:{endDateResult.Color}";
-
-									<MudGrid Style="@endDatelineStyle">
-										<MudItem Style="padding:0px;"><MudIcon Icon="@Icons.Material.Outlined.DateRange" /></MudItem>
-										<MudItem Style="padding:0px;">
-											<MudText><b>@endDateResult.DisplayDate</b></MudText>
-											<MudText Typo="Typo.body2"><small>End Date</small></MudText>
-										</MudItem>
-									</MudGrid>
-								}
-							</MudItem>
 							@if (vacancyDetails.RequiredYearOfExperience != 0)
 							{
 								<MudItem lg="4" md="6" xs="6">
@@ -104,6 +90,22 @@ else
 									</MudGrid>
 								</MudItem>
 							}
+
+							<MudItem lg="4" md="6" xs="6">
+								@{
+									var endDateResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate);
+									var endDatelineStyle = $"color:{endDateResult.Color}";
+
+									<MudGrid Style="@endDatelineStyle">
+										<MudItem Style="padding:0px;"><MudIcon Icon="@Icons.Material.Outlined.DateRange" /></MudItem>
+										<MudItem Style="padding:0px;">
+											<MudText><b>@endDateResult.DisplayDate</b></MudText>
+											<MudText Typo="Typo.body2"><small>End Date</small></MudText>
+										</MudItem>
+									</MudGrid>
+								}
+							</MudItem>
+
 						</MudGrid>
 
 
@@ -115,8 +117,10 @@ else
 
 
 			<MudItem xs="12" lg="3" sm="6" md="4" Class="fixed-bottom-sm">
-				@if (CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
-						|| CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red")
+				@if (vacancyDetails.Deadline != default(DateTime) && (
+						CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
+						|| CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"
+						))
 				{
 					<MudCard>
 						<MudCardContent>
