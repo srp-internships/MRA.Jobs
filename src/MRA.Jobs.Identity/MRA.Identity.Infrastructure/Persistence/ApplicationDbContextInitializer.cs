@@ -48,7 +48,7 @@ public class ApplicationDbContextInitializer
                 Id = Guid.NewGuid(),
                 UserName = $"{applicationName}Admin",
                 NormalizedUserName = $"{applicationName}ADMIN".ToUpper(),
-                Email = "mrajobsadmin@silkroadprofessionals.com",
+                Email = $"{applicationName.ToLower()}admin@silkroadprofessionals.com",
             };
 
             var createMraJobsAdminResult = await _userManager.CreateAsync(mraJobsAdminUser, adminPassword);
