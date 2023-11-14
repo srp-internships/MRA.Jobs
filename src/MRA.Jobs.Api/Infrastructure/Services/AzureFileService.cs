@@ -7,28 +7,26 @@ namespace MRA.Jobs.Infrastructure.Services;
 
 public class AzureFileService : IFileService
 {
-    private readonly string _connection;
-    private readonly string _containerName;
-
+    private readonly IConfiguration _configuration;
     public AzureFileService(IConfiguration configurations)
     {
-        _connection = configurations["AzureWebJobsStorage"];
-        _containerName = configurations["ContainerName"];
+        _configuration = configurations;
     }
 
     public async Task<string> UploadAsync(IFormFile file)
     {
+        string fileId = $"{Guid.NewGuid()}_{file.FileName}";
         var myBlob = file.OpenReadStream();
-        var blobClient = new BlobContainerClient(_connection, _containerName);
-        var blob = blobClient.GetBlobClient(file.FileName);
-        await blob.UploadAsync(myBlob);
-        return ";";
+        var blobClient = new BlobContainerClient(_configuration["AzureBlob:AzureWebJobsStorage"], _configuration["AzureBlob:ContainerName"]);
+        var blob = blobClient.GetBlobClient(fileId);
+        await blob.UploadAsync(myBlob);//TODO check the status and handle exceptions 
+        return fileId;
     }
 
     public async Task<byte[]> Download(string key)
     {
-        var blobServiceClient = new BlobServiceClient(_connection);
-        var containerClient = blobServiceClient.GetBlobContainerClient(_containerName);
+        var blobServiceClient = new BlobServiceClient(_configuration["AzureBlob:AzureWebJobsStorage"]);
+        var containerClient = blobServiceClient.GetBlobContainerClient(_configuration["AzureBlob:ContainerName"]);
 
         var blobClient = containerClient.GetBlobClient(key);//key is filename
 
