@@ -144,16 +144,7 @@
 			updateTaskResponses.Add(updateTaskResponse);
 		}
 		application.TaskResponses = updateTaskResponses;
-		var success = await ApplicationService.CreateApplication(application);
 
-		if (success)
-		{
-			Snackbar.Add("Applications sent successfully!", Severity.Success);
-			NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
-		}
-		else
-		{
-			Snackbar.Add("Something went wrong", Severity.Error);
-		}
+		await ApplicationService.CreateApplication(application);
 	}
 }
