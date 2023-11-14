@@ -49,6 +49,15 @@ public static class ConfigureServices
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<ISmsService, GenericSmsService>();
         services.AddScoped<IHtmlService, HtmlService>();
+
+        if (configuration["UseAzureBlobStorage"] == "true")
+        {
+            services.AddScoped<IFileService, AzureFileService>();
+        }
+        else
+        {
+            services.AddScoped<IFileService, FileService>();
+        }
         return services;
     }
 
