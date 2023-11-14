@@ -36,51 +36,63 @@ public static class CustomConverter
         }
         else
         {
-            displayDate = $"{publishDate:dd.MM.yyyy}";
+            displayDate = $"{publishDate:dd.MM.yyyy} {publishDate.ToShortTimeString()}";
         }
 
         return displayDate;
     }
 
 
-    public static string GetDeadlineDisplayDate(DateTime deadlineDate)
+
+    public static (string DisplayDate, string Color) GetDeadlineOrEndDateDisplayDate(DateTime value)
     {
         var currentDate = DateTime.Now;
         string displayDate;
+        string color = "gray";
 
-        if (deadlineDate.Date == currentDate.Date)
+        if (value.Date == currentDate.Date)
         {
-            if (deadlineDate.Minute == currentDate.Minute)
+            if (value.Minute == currentDate.Minute)
             {
-                displayDate = $"{deadlineDate.Second - currentDate.Second} seconds left";
+                displayDate = $"{value.Second - currentDate.Second} seconds left";
+                color = "orange";
             }
-            else if (deadlineDate.Hour == currentDate.Hour)
+            else if (value.Hour == currentDate.Hour)
             {
-                displayDate = $"{deadlineDate.Minute - currentDate.Minute} min left";
+                displayDate = $"{value.Minute - currentDate.Minute} min left";
+                color = "orange";
             }
-            else if ((deadlineDate.Hour - currentDate.Hour) == 1)
+            else if ((value.Hour - currentDate.Hour) == 1)
             {
                 displayDate = $"1 hour left";
+                color = "orange";
             }
-            else if ((deadlineDate.Hour - currentDate.Hour) <= 5)
+            else if ((value.Hour - currentDate.Hour) <= 5)
             {
-                displayDate = $"{deadlineDate.Hour - currentDate.Hour} hours left";
+                displayDate = $"{value.Hour - currentDate.Hour} hours left";
+                color = "orange";
             }
             else
             {
-                displayDate = $"Today at {deadlineDate:HH:mm}";
+                displayDate = $"Today at {value:HH:mm}";
             }
         }
-        else if (deadlineDate.Date == currentDate.AddDays(1).Date)
+        else if (value.Date == currentDate.AddDays(1).Date)
         {
-            displayDate = $"Tomorrow at {deadlineDate:HH:mm}";
+            displayDate = $"Tomorrow at {value:HH:mm}";
         }
         else
         {
-            displayDate = $"on {deadlineDate:dd.MM.yyyy}";
+            displayDate = $"on {value:dd.MM.yyyy} at {value.ToShortTimeString()} ";
         }
 
-        return $"Deadline {displayDate}";
+        if (value <= currentDate)
+        {
+            color = "red";
+        }
+
+        return (displayDate, color);
     }
+
 
 }

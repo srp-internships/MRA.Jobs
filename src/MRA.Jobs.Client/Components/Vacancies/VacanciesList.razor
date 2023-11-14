@@ -97,9 +97,32 @@ else
 											<MudText Style="color: #129fd7;" Typo="Typo.h5"><b>@Vacancy.Title</b></MudText>
 											<MudText Typo="Typo.body2" Style="color:gray"><small><b>Posted @CustomConverter.GetDisplayPostedDate(Vacancy.PublishDate)</b></small></MudText>
 											<br />
-											@* <MudText Color="Color.Dark" Typo="Typo.caption"><b>@(Vacancy.Deadline is not null ? $"Deadline: {Vacancy.Deadline?.ToString("dd/MM/yyyy")}," : "") @(Vacancy.Duration != 0 ? $"Duration: {Vacancy.Duration} month(s)," : "") @(Vacancy.EndDate is not null ? $"End date: {Vacancy.EndDate?.ToString("dd/MM/yyyy")}" : "") </b></MudText> *@
 											<MudText Typo="Typo.h6">@Vacancy.ShortDescription</MudText>
-											<MudText Typo="Typo.caption" Style="color:gray"><b>@CustomConverter.GetDeadlineDisplayDate(Vacancy.Deadline)</b></MudText>
+											<MudGrid>
+												@if (Vacancy.Duration != 0)
+												{
+													<MudItem Style="color:gray">
+														<MudText Typo="Typo.caption">Duration <b>@Vacancy.Duration month(s)</b></MudText>
+													</MudItem>
+												}				
+												@if (Vacancy.Deadline != default(DateTime))
+												{
+													<MudItem>
+														@{
+															var deadlineResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(Vacancy.Deadline);
+															var deadlineStyle = $"color:{deadlineResult.Color}";
+															<MudText Typo="Typo.caption" Style="@deadlineStyle">Deadline <b>@deadlineResult.DisplayDate</b></MudText>
+														}
+													</MudItem>
+												}
+												<MudItem>
+													@{
+														var endDateResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(Vacancy.EndDate);
+														var endDateStyle = $"color:{endDateResult.Color}";
+														<MudText Typo="Typo.caption" Style="@endDateStyle">End date <b>@endDateResult.DisplayDate</b></MudText>
+													}
+												</MudItem>
+											</MudGrid>
 										</MudCardContent>
 									</MudCard>
 								</a>
