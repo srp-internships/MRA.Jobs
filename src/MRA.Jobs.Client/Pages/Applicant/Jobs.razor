@@ -12,7 +12,7 @@
 }
 else
 {
-<VacanciesList  filteredVacancies="filteredJobs" Vacancies="jobs" Route="jobs" VacancyCategories="jobCategories"/>
+	<VacanciesList filteredVacancies="filteredJobs" Vacancies="jobs" Route="jobs" VacancyCategories="jobCategories" />
 }
 
 @code {
@@ -36,17 +36,17 @@ else
 						Title = r.Title,
 						ShortDescription = r.ShortDescription,
 						Slug = r.Slug,
-                        PublishDate = r.PublishDate,
-                        EndDate = r.EndDate
+						PublishDate = r.PublishDate,
+						EndDate = r.EndDate
 					}).ToList(); ;
 				filteredJobs = allJobs.Select(r => new VacancyClientResponse
 					{
 						Category = r.Category,
 						Title = r.Title,
 						ShortDescription = r.ShortDescription,
-                        Slug = r.Slug,
-                        PublishDate = r.PublishDate,
-                        EndDate = r.EndDate
+						Slug = r.Slug,
+						PublishDate = r.PublishDate,
+						EndDate = r.EndDate
 					}).ToList(); ;
 			}
 		}
