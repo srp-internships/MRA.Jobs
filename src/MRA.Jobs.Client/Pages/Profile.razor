@@ -1,24 +1,9 @@
 ﻿@page "/profile"
-@using MRA.Identity.Application.Contract.Educations.Command.Create;
-@using MRA.Identity.Application.Contract.Educations.Command.Update;
 @using MRA.Identity.Application.Contract.Educations.Responses;
-@using MRA.Identity.Application.Contract.Experiences.Commands.Create;
-@using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 @using MRA.Identity.Application.Contract.Experiences.Responses;
-@using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
-@using MRA.Identity.Application.Contract.Profile.Responses;
 @using MRA.Identity.Application.Contract.Profile;
-@using MRA.Identity.Application.Contract.Skills.Command;
-@using MRA.Identity.Application.Contract.Skills.Responses;
-@using MRA.Identity.Application.Contract.User.Queries;
-@using MRA.Jobs.Client.Components.Dialogs;
-@using MRA.Jobs.Client.Identity;
 @using MRA.Jobs.Client.Pages.Auth
 @using MRA.Jobs.Client.Services.Profile;
-@using MudBlazor;
-@using FluentValidation;
-@using System.Net;
-@using Newtonsoft.Json;
 
 @inject ISnackbar Snackbar
 
@@ -64,20 +49,20 @@ else
 
 					<MudDivider Class="my-2" />
 
-					<MudNavLink Class="@((Active == 0) ? "active" : "")" OnClick="()=> ActiveNavlink(0)">Personal Information</MudNavLink>
-					<MudNavLink Class="@((Active == 1) ? "active" : "")" OnClick="()=> ActiveNavlink(1)">Educations </MudNavLink>
-					<MudNavLink Class="@((Active == 2) ? "active" : "")" OnClick="()=> ActiveNavlink(2)">Experience </MudNavLink>
-					<MudNavLink Class="@((Active == 3) ? "active" : "")" OnClick="()=> ActiveNavlink(3)">Skills</MudNavLink>
-					<MudNavLink Class="@((Active == 4) ? "active" :"")" OnClick="()=>ActiveNavlink(4)">Change Password</MudNavLink>
+					<MudNavLink Class="@((_active == 0) ? "active" : "")" OnClick="()=> ActiveNavLink(0)">Personal Information</MudNavLink>
+					<MudNavLink Class="@((_active == 1) ? "active" : "")" OnClick="()=> ActiveNavLink(1)">Educations </MudNavLink>
+					<MudNavLink Class="@((_active == 2) ? "active" : "")" OnClick="()=> ActiveNavLink(2)">Experience </MudNavLink>
+					<MudNavLink Class="@((_active == 3) ? "active" : "")" OnClick="()=> ActiveNavLink(3)">Skills</MudNavLink>
+					<MudNavLink Class="@((_active == 4) ? "active" :"")" OnClick="()=>ActiveNavLink(4)">Change Password</MudNavLink>
 				</MudNavMenu>
 			</MudPaper>
 		</div>
 		<div class="col-md-8" style="padding:10px;">
-			@switch (Active)
+			@switch (_active)
 			{
 				case 0:
 					<MudText Typo="Typo.h4"> Personal Information</MudText> <br />
-					if (profile == null)
+					if (_profile == null)
 					{
 						<MudCard>
 							<MudCardHeader>
@@ -108,27 +93,27 @@ else
 					}
 					else
 					{
-						<EditForm Model="@updateProfileCommand" OnValidSubmit="UpdateProfile">
+						<EditForm Model="@_updateProfileCommand" OnValidSubmit="UpdateProfile">
 							<FluentValidationValidator />
 
 							<MudCard>
 								<MudCardContent>
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">First Name</MudText>
-									<MudTextField @bind-Value="@updateProfileCommand.FirstName" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.FirstName)" />
+									<MudTextField @bind-Value="@_updateProfileCommand.FirstName" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => _updateProfileCommand.FirstName)" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Last Name</MudText>
-									<MudTextField @bind-Value="@updateProfileCommand.LastName" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.LastName)" />
+									<MudTextField @bind-Value="@_updateProfileCommand.LastName" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => _updateProfileCommand.LastName)" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">UserName</MudText>
-									<MudTextField @bind-Value="@profile.UserName" Variant="Variant.Outlined" Margin="Margin.Dense" Disabled="true" />
+									<MudTextField @bind-Value="@_profile.UserName" Variant="Variant.Outlined" Margin="Margin.Dense" Disabled="true" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Email</MudText>
 									<div class="row">
 										<div class="col">
-											<MudTextField @bind-Value="@updateProfileCommand.Email" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => updateProfileCommand.Email)" />
+											<MudTextField @bind-Value="@_updateProfileCommand.Email" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => _updateProfileCommand.Email)" />
 										</div>
 										<div class="col-4" style="align-content:end; padding-top:10px;">
-											@if (!profile.EmailConfirmed)
+											@if (!_profile.EmailConfirmed)
 											{
 												<MudText Typo="Typo.body2" Color="Color.Warning">
 													<MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Warning" />
@@ -146,22 +131,22 @@ else
 									</div>
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Date Of Birth</MudText>
-									<MudDatePicker @bind-Date="@updateProfileCommand.DateOfBirth" Variant="Variant.Outlined" Margin="Margin.Dense" />
+									<MudDatePicker @bind-Date="@_updateProfileCommand.DateOfBirth" Variant="Variant.Outlined" Margin="Margin.Dense" />
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">Phone Number</MudText>
 									<div class="row align-items-center">
 										<div class="col">
-											<MudTextField @bind-Value="@updateProfileCommand.PhoneNumber" Variant="Variant.Outlined"
-														  Margin="Margin.Dense" For="@(() => updateProfileCommand.PhoneNumber)" Disabled="true" />
+											<MudTextField @bind-Value="@_updateProfileCommand.PhoneNumber" Variant="Variant.Outlined"
+														  Margin="Margin.Dense" For="@(() => _updateProfileCommand.PhoneNumber)" Disabled="_isPhoneNumberNull" />
 										</div>
 										<div class="col-4" style="align-content:end; padding-top:10px;">
-											@if (!profile.PhoneNumberConfirmed)
+											@if (!_profile.PhoneNumberConfirmed)
 											{
 												<MudText Typo="Typo.body2" Color="Color.Warning">
 													<MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Warning" />
 													Phone Number  is not Confirmed!
 												</MudText>
-												if (!codeSent)
+												if (!_codeSent)
 												{
 													<MudButton Variant="Variant.Text" Color="Color.Info" OnClick="SendCode">Send confirmation code</MudButton>
 												}
@@ -178,11 +163,11 @@ else
 												</MudText>
 											}
 										</div>
-										@if (codeSent)
+										@if (_codeSent)
 										{
 											<div class="d-flex flex-row align-items-center">
 												<div class="m-1">
-													<MudTextField Label="Confirmation code" MaxLength="4" Required Style="width:200px" @bind-Value="@confirmation_code" Variant="Variant.Outlined" Margin="Margin.Dense" Clearable="true" />
+													<MudTextField Label="Confirmation code" MaxLength="4" Required Style="width:200px" @bind-Value="@_confirmationCode" Variant="Variant.Outlined" Margin="Margin.Dense" Clearable="true" />
 													</div>
 													<div class="m-1">
 														<MudButton OnClick="Verify" Variant="Variant.Filled" Color="Color.Info" Style="width: 100px">Confirm</MudButton>
@@ -192,9 +177,9 @@ else
 									</div>
 									<br />
 									<MudText Typo="Typo.body2" Class="mud-text-secondary">About Myself</MudText>
-									<MudTextField T="string" @bind-Value="@updateProfileCommand.AboutMyself" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="5" For="@(() => updateProfileCommand.AboutMyself)" />
+									<MudTextField T="string" @bind-Value="@_updateProfileCommand.AboutMyself" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="5" For="@(() => _updateProfileCommand.AboutMyself)" />
 									<br />
-									<MudSelect T="Gender" Label="Select Gender" @bind-Value="@updateProfileCommand.Gender" Variant="Variant.Outlined" For="@(() => updateProfileCommand.Gender)">
+									<MudSelect T="Gender" Label="Select Gender" @bind-Value="@_updateProfileCommand.Gender" Variant="Variant.Outlined" For="@(() => _updateProfileCommand.Gender)">
 										<MudSelectItem Value="Gender.Male" />
 										<MudSelectItem Value="Gender.Female" />
 									</MudSelect>
@@ -252,7 +237,7 @@ else
 										<!-- Edit Education -->
 										@if (editingCardId == cardId)
 										{
-											<EditForm Model="educationUpdate" OnInvalidSubmit="(()=>UpdateEducationHandle())">
+											<EditForm Model="educationUpdate" OnInvalidSubmit="UpdateEducationHandle">
 												<FluentValidationValidator />
 												<MudCardHeader>
 													<CardHeaderContent>
@@ -273,7 +258,7 @@ else
 													<MudCheckBox @bind-Checked="@educationUpdate.UntilNow" Label="Until Now" Color="Color.Primary"></MudCheckBox>
 												</MudCardContent>
 												<MudCardActions>
-													<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(()=>UpdateEducationHandle())">
+													<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateEducationHandle">
 														@if (_processing)
 														{
 															<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
@@ -423,7 +408,7 @@ else
 										<!-- Edit Experience -->
 										@if (editingCardExperienceId == cardExperienceId)
 										{
-											<EditForm Model="experienceUpdate" OnInvalidSubmit="(()=>UpdateExperienceHandle())">
+											<EditForm Model="experienceUpdate" OnInvalidSubmit="UpdateExperienceHandle">
 												<FluentValidationValidator />
 												<MudCardHeader>
 													<CardHeaderContent>
@@ -448,7 +433,7 @@ else
 
 												</MudCardContent>
 												<MudCardActions>
-													<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(()=>UpdateExperienceHandle())">
+													<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateExperienceHandle">
 														@if (_processing)
 														{
 															<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
@@ -594,9 +579,6 @@ else
 														</ItemTemplate>
 													</MudAutocomplete>
 												</div>
-												@* <div class="col-1" style="padding-top:10px;">
-								<MudFab Color="Color.Primary" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" OnClick="OnBlur" />
-								</div> *@
 											</div>
 										}
 										else
@@ -623,557 +605,4 @@ else
 
 		</div>
 	</div>
-}
-
-
-@code {
-
-	private bool _processing = false;
-	private bool _tryButton = false;
-	private bool codeSent = false;
-	private int? confirmation_code;
-
-	private int Active = 0;
-	private void ActiveNavlink(int active)
-	{
-		if (profile != null)
-		{
-			Active = active;
-			return;
-		}
-		ServerNotResponding();
-	}
-
-	UserProfileResponse profile = null;
-	UpdateProfileCommand updateProfileCommand = new UpdateProfileCommand();
-
-	private async Task SendCode()
-	{
-		bool response = await UserProfileService.SendConfirmationCode(profile.PhoneNumber);
-		if (response) codeSent = true;
-	}
-
-	private async Task Verify()
-	{
-		SmsVerificationCodeStatus response = await UserProfileService.CheckConfirmationCode(profile.PhoneNumber, confirmation_code);
-		if (response == SmsVerificationCodeStatus.CodeVerifyFailure)
-		{
-			Snackbar.Add("Code is incorrect or expired", MudBlazor.Severity.Error);
-		}
-		else
-		{
-			profile = await UserProfileService.Get();
-			codeSent = false;
-		}
-	}
-
-	protected override async void OnInitialized()
-	{
-		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-		var user = authState.User;
-
-		if (!user.Identity.IsAuthenticated)
-		{
-			Navigation.NavigateTo("sign-in");
-			return;
-		}
-		await Load();
-	}
-
-	private async Task Load()
-	{
-		_tryButton = false;
-		StateHasChanged();
-
-
-		try
-		{
-			profile = await UserProfileService.Get();
-
-			updateProfileCommand.AboutMyself = profile.AboutMyself;
-			updateProfileCommand.DateOfBirth = profile.DateOfBirth;
-			updateProfileCommand.Email = profile.Email;
-			updateProfileCommand.FirstName = profile.FirstName;
-			updateProfileCommand.LastName = profile.LastName;
-			updateProfileCommand.Gender = profile.Gender;
-			updateProfileCommand.PhoneNumber = profile.PhoneNumber;
-		}
-		catch (Exception)
-		{
-			ServerNotResponding();
-			_tryButton = true;
-			StateHasChanged();
-		}
-
-
-		await GetEducations();
-
-		await GetExperiences();
-
-		await GetSkills();
-
-		StateHasChanged();
-
-	}
-
-	private void ServerNotResponding()
-	{
-		Snackbar.Add("Server is not responding, please try later", MudBlazor.Severity.Error);
-	}
-
-	private async Task BadRequestResponse(HttpResponseMessage response)
-	{
-		var customProblemDetails = await response.Content.ReadFromJsonAsync<CustomProblemDetails>();
-		if (customProblemDetails.Detail != null)
-		{
-			Snackbar.Add(customProblemDetails.Detail, MudBlazor.Severity.Error);
-		}
-		else
-		{
-			var errorResponseString = await response.Content.ReadAsStringAsync();
-			var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorResponseString);
-			foreach (var error in errorResponse.Errors)
-			{
-				var errorMessage = string.Join(", ", error.Value);
-				Snackbar.Add(errorMessage, MudBlazor.Severity.Error);
-			}
-		}
-	}
-
-	private async Task ConfirmDelete<T>(IList<T> collection, T item)
-	{
-		var parameters = new DialogParameters<DialogMudBlazor>();
-		parameters.Add(x => x.ContentText, "Do you really want to delete these records? This process cannot be undone.");
-		parameters.Add(x => x.ButtonText, "Delete");
-		parameters.Add(x => x.Color, Color.Error);
-
-		var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-
-		var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
-		var result = await dialog.Result;
-
-		if (!result.Canceled)
-		{
-			Delete(collection, item);
-		}
-	}
-
-	private async void Delete<T>(ICollection<T> collection, T item)
-	{
-		if (collection.Contains(item))
-		{
-			Type itemType = item.GetType();
-			var idProperty = itemType.GetProperty("Id");
-			var result = new HttpResponseMessage();
-			if (idProperty != null || itemType.Name == "String")
-			{
-				try
-				{
-					if (itemType.Name == "String")
-					{
-						result = await UserProfileService.RemoveSkillAsync(item.ToString());
-					}
-					else
-					{
-						Guid id = (Guid)idProperty.GetValue(item);
-
-						switch (itemType.Name)
-						{
-							case "UserEducationResponse":
-								result = await UserProfileService.DeleteEducationAsync(id);
-								break;
-							case "UserExperienceResponse":
-								result = await UserProfileService.DeleteExperienceAsync(id);
-								break;
-							default:
-								break;
-						}
-
-					}
-				}
-				catch (HttpRequestException)
-				{
-					ServerNotResponding();
-					return;
-				}
-				if (result.IsSuccessStatusCode)
-				{
-					collection.Remove(item);
-					StateHasChanged();
-				}
-			}
-		}
-	}
-
-	private async void UpdateProfile()
-	{
-		_processing = true;
-		var result = await UserProfileService.Update(updateProfileCommand);
-		if (result == "")
-		{
-			Snackbar.Add("Profile updated successfully.", MudBlazor.Severity.Success);
-			profile = await UserProfileService.Get();
-		}
-		else
-		{
-			Snackbar.Add(result, MudBlazor.Severity.Error);
-		}
-		_processing = false;
-		StateHasChanged();
-	}
-
-	#region education
-
-	List<UserEducationResponse> educations = new List<UserEducationResponse>();
-	private bool addEducation = false;
-	CreateEducationDetailCommand createEducation = new CreateEducationDetailCommand();
-	List<UserEducationResponse> allEducctions = new List<UserEducationResponse>();
-
-
-	Guid editingCardId = new Guid();
-	UpdateEducationDetailCommand educationUpdate = null;
-
-	private async Task GetEducations()
-	{
-		try
-		{
-			educations = await UserProfileService.GetEducationsByUser();
-			allEducctions = await UserProfileService.GetAllEducations();
-		}
-		catch (Exception)
-		{
-			ServerNotResponding();
-		}
-
-	}
-
-	private async Task<IEnumerable<string>> SearchEducation(string value)
-	{
-		await Task.Delay(5);
-
-		return allEducctions.Where(e => e.Speciality
-			.Contains(value, StringComparison.InvariantCultureIgnoreCase))
-			.Select(e => e.Speciality).Distinct()
-			.ToList();
-	}
-
-	private async Task<IEnumerable<string>> SearchUniversity(string value)
-	{
-		await Task.Delay(5);
-
-		return allEducctions.Where(e => e.University
-			.Contains(value, StringComparison.InvariantCultureIgnoreCase))
-			.Select(e => e.University).Distinct()
-			.ToList();
-	}
-
-	private void EditButtonClicked(Guid cardId, UserEducationResponse educationResponse)
-	{
-		editingCardId = cardId;
-		educationUpdate = new UpdateEducationDetailCommand()
-			{
-				EndDate = educationResponse.EndDate.HasValue ? educationResponse.EndDate.Value : default(DateTime),
-				StartDate = educationResponse.StartDate.HasValue ? educationResponse.StartDate.Value : default(DateTime),
-				University = educationResponse.University,
-				Speciality = educationResponse.Speciality,
-				Id = educationResponse.Id,
-				UntilNow = educationResponse.UntilNow
-			};
-	}
-
-	private async Task CreateEducationHandle()
-	{
-		_processing = true;
-		try
-		{
-			if (createEducation.EndDate == null)
-				createEducation.EndDate = default(DateTime);
-
-			var response = await UserProfileService.CreateEducationAsуnc(createEducation);
-			if (response.IsSuccessStatusCode)
-			{
-				Snackbar.Add("Add Education successfully.", MudBlazor.Severity.Success);
-				addEducation = false;
-				createEducation = new CreateEducationDetailCommand();
-				await GetEducations();
-				StateHasChanged();
-			}
-			else if (response.StatusCode == HttpStatusCode.BadRequest)
-			{
-				await BadRequestResponse(response);
-			}
-		}
-		catch (HttpRequestException)
-		{
-			ServerNotResponding();
-		}
-		_processing = false;
-	}
-
-	private void CancelButtonClicked_CreateEducation()
-	{
-		addEducation = false;
-		createEducation = new CreateEducationDetailCommand();
-	}
-
-	private async void CancelButtonClicked_UpdateEducation()
-	{
-		editingCardId = Guid.NewGuid();
-		await GetEducations();
-		StateHasChanged();
-	}
-
-	private async Task UpdateEducationHandle()
-	{
-		_processing = true;
-		try
-		{
-			var result = await UserProfileService.UpdateEducationAsync(educationUpdate);
-			if (result.IsSuccessStatusCode)
-			{
-				editingCardId = Guid.NewGuid();
-				Snackbar.Add("Update Education successfully.", MudBlazor.Severity.Success);
-
-				await GetEducations();
-				StateHasChanged();
-			}
-			else if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
-			{
-				await BadRequestResponse(result);
-			}
-		}
-		catch (HttpRequestException)
-		{
-			ServerNotResponding();
-		}
-
-		_processing = false;
-
-	}
-	#endregion
-
-	#region Experience
-
-	List<UserExperienceResponse> experiences = new List<UserExperienceResponse>();
-	private bool addExperience = false;
-	CreateExperienceDetailCommand createExperience = new CreateExperienceDetailCommand();
-	UpdateExperienceDetailCommand experienceUpdate = null;
-	List<UserExperienceResponse> allExperiences = new List<UserExperienceResponse>();
-	private Guid editingCardExperienceId;
-
-	private async Task GetExperiences()
-	{
-		experiences = await UserProfileService.GetExperiencesByUser();
-		allExperiences = await UserProfileService.GetAllExperiences();
-	}
-
-	private async Task<IEnumerable<string>> SearchJobTitle(string value)
-	{
-		await Task.Delay(5);
-
-		return allExperiences.Where(e => e.JobTitle
-			.Contains(value, StringComparison.InvariantCultureIgnoreCase))
-			.Select(e => e.JobTitle).Distinct()
-			.ToList();
-	}
-	private async Task<IEnumerable<string>> SearchCompanyName(string value)
-	{
-		await Task.Delay(5);
-
-		return allExperiences.Where(e => e.CompanyName
-		.Contains(value, StringComparison.InvariantCultureIgnoreCase))
-		.Select(e => e.CompanyName).Distinct()
-		.ToList();
-	}
-
-	private async Task<IEnumerable<string>> SearchAddress(string value)
-	{
-		await Task.Delay(5);
-
-		return allExperiences.Where(e => e.Address
-			.Contains(value, StringComparison.InvariantCultureIgnoreCase))
-			.Select(e => e.Address).Distinct()
-			.ToList();
-
-	}
-
-	private async Task CreateExperienceHandle()
-	{
-		_processing = true;
-		try
-		{
-			if (createExperience.EndDate == null)
-				createExperience.EndDate = default(DateTime);
-
-			var response = await UserProfileService.CreateExperienceAsync(createExperience);
-			if (response.IsSuccessStatusCode)
-			{
-				Snackbar.Add("Add Experience successfully.", MudBlazor.Severity.Success);
-
-				addExperience = false;
-				createExperience = new CreateExperienceDetailCommand();
-				await GetExperiences();
-			}
-			if (response.StatusCode == HttpStatusCode.BadRequest)
-				await BadRequestResponse(response);
-		}
-		catch (HttpRequestException)
-		{
-			ServerNotResponding();
-		}
-		_processing = false;
-	}
-
-	private async void CancelButtonClicked_CreateExperience()
-	{
-		addExperience = false;
-		createExperience = new CreateExperienceDetailCommand();
-		await GetExperiences();
-	}
-
-	private async void CancelButtonClicked_UpdateExperience()
-	{
-		editingCardExperienceId = Guid.NewGuid();
-		await GetExperiences();
-		StateHasChanged();
-	}
-
-	private void EditCardExperienceButtonClicked(Guid cardExperienceId, UserExperienceResponse experienceResponse)
-	{
-		editingCardExperienceId = cardExperienceId;
-		experienceUpdate = new UpdateExperienceDetailCommand()
-			{
-				Id = experienceResponse.Id,
-				JobTitle = experienceResponse.JobTitle,
-				CompanyName = experienceResponse.CompanyName,
-				Address = experienceResponse.Address,
-				IsCurrentJob = experienceResponse.IsCurrentJob,
-				StartDate = experienceResponse.StartDate,
-				EndDate = experienceResponse.EndDate
-			};
-	}
-
-	private async void UpdateExperienceHandle()
-	{
-		_processing = true;
-		try
-		{
-			var result = await UserProfileService.UpdateExperienceAsync(experienceUpdate);
-			if (result.IsSuccessStatusCode)
-			{
-				Snackbar.Add("Update Education successfully.", MudBlazor.Severity.Success);
-
-				editingCardExperienceId = Guid.NewGuid();
-				StateHasChanged();
-			}
-			if (result.StatusCode == HttpStatusCode.BadRequest)
-				await BadRequestResponse(result);
-		}
-		catch (HttpRequestException)
-		{
-			ServerNotResponding();
-		}
-		_processing = false;
-	}
-
-	#endregion
-
-	#region Skills
-
-	private UserSkillsResponse UserSkills;
-	private UserSkillsResponse allSkills;
-	bool isEditing = false;
-	string newSkills = "";
-	bool isAdding = false;
-	List<string> FoundSkills = new List<string>();
-
-	private async Task GetSkills()
-	{
-		try
-		{
-			UserSkills = await UserProfileService.GetUserSkills();
-			allSkills = await UserProfileService.GetAllSkills();
-
-		}
-		catch (HttpRequestException)
-		{
-			ServerNotResponding();
-		}
-	}
-
-	async void Closed(MudChip chip)
-	{
-		await ConfirmDelete(UserSkills.Skills, chip.Text);
-	}
-
-	private async Task KeyDown(KeyboardEventArgs e)
-	{
-		if (e.Key == "Enter")
-		{
-			await Task.Delay(1);
-			if (!isAdding)
-			{
-				isAdding = true;
-				await AddSkills();
-			}
-		}
-	}
-
-	private async Task OnBlur()
-	{
-		await AddSkills();
-	}
-
-	private async Task AddSkills(string foundSkill = null)
-	{
-		if (foundSkill != null)
-			newSkills = foundSkill;
-
-		try
-		{
-			if (!string.IsNullOrWhiteSpace(newSkills))
-			{
-				var userSkillsCommand = new AddSkillsCommand();
-				var skills = newSkills.Split(',', StringSplitOptions.RemoveEmptyEntries);
-				foreach (var skill in skills)
-				{
-					var trimmedSkill = skill.Trim();
-					if (!string.IsNullOrWhiteSpace(trimmedSkill))
-					{
-						userSkillsCommand.Skills.Add(trimmedSkill);
-					}
-				}
-				var result = await UserProfileService.AddSkills(userSkillsCommand);
-				if (result != null)
-				{
-					Snackbar.Add("Add Skills successfully.", MudBlazor.Severity.Success);
-
-					newSkills = "";
-					isEditing = false;
-					UserSkills = result;
-					StateHasChanged();
-				}
-				isAdding = false;
-			}
-		}
-		catch (HttpRequestException)
-		{
-			ServerNotResponding();
-		}
-
-	}
-
-
-
-	private async Task<IEnumerable<string>> SearchSkills(string value)
-	{
-		await Task.Delay(5);
-		var userSkillsSet = new HashSet<string>(UserSkills.Skills);
-		return allSkills.Skills
-			.Where(s => s.Contains(value, StringComparison.InvariantCultureIgnoreCase) && !userSkillsSet.Contains(s))
-			.ToList();
-	}
-
-
-	#endregion
 }
