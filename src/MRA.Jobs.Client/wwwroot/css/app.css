@@ -147,3 +147,12 @@ ul, li {
 .mud-nav-link:hover {
     color: #1c92c8 !important;
 }
+
+
+@media (max-width: 768px) { /* sm = 768px */
+    .fixed-bottom-sm {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+}
