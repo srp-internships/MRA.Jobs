@@ -18,11 +18,9 @@ else
 }
 @code {
 	private bool serverError;
-
-@code {
-    private VacancyApplicationResponse job;
-    private CreateApplicationCommand application;
-    public Dictionary<string, string> questionResponses = new();
+	private VacancyApplicationResponse job;
+	private CreateApplicationCommand application;
+	public Dictionary<string, string> questionResponses = new();
 	public Dictionary<string, string> tasksResponses = new();
 
 	[Parameter]
@@ -32,43 +30,44 @@ else
 	{
 		try
 		{
-
 			var response = await VacancyService.GetBySlug(Slug);
 
-        if (response != null)
-        {
-            job = new VacancyApplicationResponse
-                {
-                    Id = response.Id,
-                    Title = response.Title,
-                    VacancyQuestions = response.VacancyQuestions,
-					VacancyTasks = response.VacancyTasks
-                };
-            application = new CreateApplicationCommand
-                {
-                    VacancyId = job.Id,
-                    VacancyResponses = job.VacancyQuestions.Select(q => new VacancyResponseDto
-                    {
-                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
-                    }),
-					TaskResponses = job.VacancyTasks.Select(t => new TaskResponseDto
-					{
-						TaskId = t.Id,
-						Code = t.Template
-					})
-                };
-            foreach (var question in job.VacancyQuestions)
-            {
-                questionResponses[question.Question] = "";
-            }
-			foreach (var task in job.VacancyTasks)
+			if (response != null)
 			{
-				tasksResponses[task.Title] = task.Template;
+				job = new VacancyApplicationResponse
+					{
+						Id = response.Id,
+						Title = response.Title,
+						VacancyQuestions = response.VacancyQuestions,
+						VacancyTasks = response.VacancyTasks
+					};
+				application = new CreateApplicationCommand
+					{
+						VacancyId = job.Id,
+						VacancyResponses = job.VacancyQuestions.Select(q => new VacancyResponseDto
+						{
+							VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+						}),
+						TaskResponses = job.VacancyTasks.Select(t => new TaskResponseDto
+						{
+							TaskId = t.Id,
+							Code = t.Template
+						})
+					};
+				foreach (var question in job.VacancyQuestions)
+				{
+					questionResponses[question.Question] = "";
+				}
+				foreach (var task in job.VacancyTasks)
+				{
+					tasksResponses[task.Title] = task.Template;
+				}
 			}
-            foreach (var task in job.VacancyTasks)
-            {
-	        tasksResponses[task.Title] = task.Template;
-            }
-        }
-    }
+		}
+		catch (Exception)
+		{
+			serverError = true;
+			StateHasChanged();
+		}
+	}
 }

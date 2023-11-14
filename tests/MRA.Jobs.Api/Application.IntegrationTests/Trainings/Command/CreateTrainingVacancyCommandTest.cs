@@ -58,6 +58,7 @@ public class CreateTrainingVacancyCommandTest : Testing
         var response = await _httpClient.PostAsJsonAsync("/api/trainings", trainingVacancy);
 
         response.EnsureSuccessStatusCode();
+        response.Should().NotBeNull();
     }
     [Test]
     public async Task CreateTrainingVacancy_ValidRequest_ShouldFillDatabase()
@@ -89,8 +90,6 @@ public class CreateTrainingVacancyCommandTest : Testing
         databaseVacancy.CreatedBy.Should().NotBeEmpty();
     }
 
-        response.Should().NotBeNull();
-    }
     async Task<Guid> AddVacancyCategory(string name)
     {
         var vacancyCategory = new VacancyCategory

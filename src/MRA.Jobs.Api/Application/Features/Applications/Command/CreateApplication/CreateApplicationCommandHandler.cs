@@ -3,6 +3,8 @@
 namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
 using System.Reflection.Metadata.Ecma335;
+using System.Text;
+using System.Text.Json;
 using Common.Interfaces;
 using Common.Security;
 using Common.SlugGeneratorService;
@@ -110,7 +112,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         return application.Id;
     }  
-    private async Task<bool> ApplicationExits(string ApplicationSlug)
+    private async Task<bool> ApplicationExits(string applicationSlug)
     {
         var application = await _context.Applications.FirstOrDefaultAsync(a => a.Slug.Equals(applicationSlug));
         if (application == null)
