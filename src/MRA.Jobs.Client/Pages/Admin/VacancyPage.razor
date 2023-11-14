@@ -20,12 +20,6 @@
 }
 else
 {
-@if (serverError)
-{
-	<ServerErrorComponent />
-}
-else
-{
 	@if (_category == null)
 	{
 		<div>Loading</div>
@@ -91,7 +85,7 @@ else
 	<MudTextField Lines="5" @bind-Value="newTemplate" OnKeyDown="@OnKeyDown" Label="New Template" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
 	<MudTextField Lines="5" @bind-Value="newTest" OnKeyDown="@OnKeyDown" Label="New Test" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
 	<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@AddTask" Id="AddTask">Add Task</MudButton>
-</MudPaper>
+    </MudPaper>
 				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MudButton>
 				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MudButton>
 				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MudButton>
@@ -268,7 +262,7 @@ else
 		newQuestion = "";
 	}
 	public void AddTask()
-{
+    {
 	Tasks.Add(new VacancyTaskDto
 		{
 			Title = newTitle,
@@ -280,7 +274,7 @@ else
 	newDescription = "";
 	newTemplate = "";
 	newTest = "";
-}
+    }
 	private async Task OnKeyDown(KeyboardEventArgs e)
 	{
 		if (e.Code == "Enter")
