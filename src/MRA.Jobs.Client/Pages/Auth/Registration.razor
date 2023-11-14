@@ -85,10 +85,11 @@
 				@if (_step == 1)
 				{
 					<MudCard>
+                        <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" OnClick="Back"></MudIconButton>
 						<MudCardHeader>
 							<CardHeaderContent>
 								<MudText>
-									we have sent a confirmation code to this number: <b>@_registerUser.PhoneNumber</b>.
+									We have sent a confirmation code to this number: <b>@_registerUser.PhoneNumber</b>.
 									Please confirm your identity
 								</MudText>
 							</CardHeaderContent>
@@ -124,7 +125,6 @@
 							</MudCardActions>
 							<div>
 								<MudText Typo="Typo.body2" Color="Color.Default">@_timeLeft seconds left to resend the code.</MudText>
-
 							</div>
 						</MudCardContent>
 
@@ -146,6 +146,13 @@
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    void Back()
+    {
+        _step = 0;
+        StateHasChanged();
+    }
+
     void ButtonTestclick()
     {
         @if (isShow)
