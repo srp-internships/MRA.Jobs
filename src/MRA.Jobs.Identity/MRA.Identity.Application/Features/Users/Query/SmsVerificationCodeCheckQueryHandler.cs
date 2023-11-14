@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract.User.Queries;
 
@@ -16,7 +14,7 @@ public class
         _context = context;
     }
 
-    public async Task<SmsVerificationCodeStatus> Handle(SmsVerificationCodeCheckQuery request,
+    public Task<SmsVerificationCodeStatus> Handle(SmsVerificationCodeCheckQuery request,
         CancellationToken cancellationToken)
     {
         request.PhoneNumber = request.PhoneNumber.Trim();
@@ -30,8 +28,8 @@ public class
             .Any(c => c.Code == request.Code && c.PhoneNumber == request.PhoneNumber && c.SentAt >= expirationTime);
 
         if (!result)
-            return SmsVerificationCodeStatus.CodeVerifyFailure;
+            return Task.FromResult(SmsVerificationCodeStatus.CodeVerifyFailure);
 
-        return SmsVerificationCodeStatus.CodeVerifySuccess;
+        return Task.FromResult(SmsVerificationCodeStatus.CodeVerifySuccess);
     }
 }

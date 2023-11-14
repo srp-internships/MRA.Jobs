@@ -8,7 +8,16 @@
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
 
-<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" taskResponses="@tasksResponses" vacancy="@job" />
+@if (serverError)
+{
+	<ServerErrorComponent />
+}
+else
+{
+	<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" taskResponses="@tasksResponses" vacancy="@job" />
+}
+@code {
+	private bool serverError;
 
 @code {
     private VacancyApplicationResponse job;
@@ -16,12 +25,15 @@
     public Dictionary<string, string> questionResponses = new();
 	public Dictionary<string, string> tasksResponses = new();
 
-    [Parameter]
-    public string Slug { get; set; }
+	[Parameter]
+	public string Slug { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        var response = await VacancyService.GetBySlug(Slug);
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+
+			var response = await VacancyService.GetBySlug(Slug);
 
         if (response != null)
         {
@@ -53,6 +65,10 @@
 			{
 				tasksResponses[task.Title] = task.Template;
 			}
+            foreach (var task in job.VacancyTasks)
+            {
+	        tasksResponses[task.Title] = task.Template;
+            }
         }
     }
 }

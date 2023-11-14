@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Dtos;
@@ -8,7 +9,7 @@ using NUnit.Framework;
 namespace MRA.Jobs.Application.IntegrationTests.Application;
 public class CreateApplicationCommandTest : Testing
 {
-    private static readonly Random random = new Random();
+    private static readonly Random Random = new();
     [Test]
     public async Task CreateApplicationCommand_CreatingApplication_Success()
     {
@@ -114,11 +115,31 @@ public class CreateApplicationCommandTest : Testing
         await AddAsync(internshipVacancy);
         return internshipVacancy.Id;
     }
+    
+    [Test]
+    public async Task Handle_DuplicateApplyForUser_ReturnsConflict()
+    {
+        var jobId = await AddJobVacancy("newVacancyForDuplicateTest");
+        
+        RunAsDefaultUserAsync();
 
-    public static string RandomString(int length)
+        var createCommand = new CreateApplicationCommand
+        {
+            CoverLetter = RandomString(200),
+            VacancyId = jobId,
+            VacancyResponses = null
+        };
+        
+        await _httpClient.PostAsJsonAsync("/api/applications", createCommand);
+        var response = await _httpClient.PostAsJsonAsync("/api/applications", createCommand);
+
+        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
+    }
+
+    private static string RandomString(int length)
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
+            .Select(s => s[Random.Next(s.Length)]).ToArray());
     }
 }

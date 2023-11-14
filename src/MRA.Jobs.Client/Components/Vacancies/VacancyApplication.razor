@@ -16,12 +16,33 @@
 	}
 	else
 	{
+		<MudCard>
+			<MudCardContent>
+				<MudText Style="color:gray"><b>Vacancy Details</b></MudText>
+				<MudText Typo="Typo.h5">
+					<b>
+						@vacancy.Title
+					</b>
+				</MudText>
+				<br />
+				<MudText>@vacancy.Description</MudText>
+			</MudCardContent>
+		</MudCard>
+		<br />
+
 		<EditForm Model="@application" OnValidSubmit="CreateApplication">
 			<FluentValidationValidator />
-			<MudText Typo="Typo.h2" Style="color: #129fd7; font-weight: 900; text-align: center">@vacancy.Title</MudText>
-			<label for="cover-letter"><span class="text-danger">*</span>Cover Letter</label>
-			<InputTextArea class="form-control" id="cover-letter" rows="10" @bind-Value="application.CoverLetter" required="required"></InputTextArea>
-			<small><ValidationMessage For="@(() =>application.CoverLetter)" class="text-danger" /></small>
+
+			<MudCard>
+				<MudCardContent>
+					<MudText Style="color:gray"><b>Additional Details</b></MudText>
+					<MudText Typo="Typo.h6"><b><span class="text-danger">*</span>Cover Letter</b></MudText>
+					<MudTextField T="string" Lines="7" Variant="Variant.Outlined" @bind-Value="@application.CoverLetter"
+								  For="@(() =>application.CoverLetter)" />
+				</MudCardContent>
+			</MudCard>
+
+			<br />
 
 			@if (vacancy.VacancyQuestions.Count() > 0)
 			{

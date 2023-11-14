@@ -9,7 +9,7 @@ namespace MRA.Jobs.Client.Services.ApplicationService;
 public interface IApplicationService
 {
     Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status);
-    Task<bool> CreateApplication(CreateApplicationCommand application);
+    Task CreateApplication(CreateApplicationCommand application);
     Task<PagedList<ApplicationListDto>> GetAllApplications();
     Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus);
     Task<ApplicationDetailsDto> GetApplicationDetails(string ApplicationSlug);

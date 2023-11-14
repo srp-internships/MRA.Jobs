@@ -7,7 +7,14 @@
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
 
-<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" taskResponses="@tasksResponses" vacancy="@internship" />
+@if (serverError)
+{
+	<ServerErrorComponent />
+}
+else
+{
+	<VacancyApplication Slug="@Slug" application="@application" taskResponses="@tasksResponses" questionResponses="@questionResponses" vacancy="@internship" />
+}
 
 @code {
 	private VacancyApplicationResponse internship;
@@ -21,7 +28,9 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		var response = await InternshipService.GetBySlug(Slug);
+		try
+		{
+			var response = await InternshipService.GetBySlug(Slug);
 
 		if (response != null)
 		{
@@ -47,14 +56,20 @@
 
 				};
 
-			foreach (var question in internship.VacancyQuestions)
-			{
-				questionResponses[question.Question] = "";
+				foreach (var question in internship.VacancyQuestions)
+				{
+					questionResponses[question.Question] = "";
+				}
+		        foreach (var task in internship.VacancyTasks)
+	            {
+	         	tasksResponses[task.Title] = task.Template;
+            	}
 			}
-			foreach (var task in internship.VacancyTasks)
-			{
-				tasksResponses[task.Title] = task.Template;
-			}
+		}
+		catch (Exception)
+		{
+			serverError = true;
+			StateHasChanged();
 		}
 	}
 }

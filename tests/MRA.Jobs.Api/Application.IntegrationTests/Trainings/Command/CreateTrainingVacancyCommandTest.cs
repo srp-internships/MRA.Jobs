@@ -6,6 +6,7 @@ using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Trainings.Command;
+
 public class CreateTrainingVacancyCommandTest : Testing
 {
     [Test]
@@ -20,7 +21,8 @@ public class CreateTrainingVacancyCommandTest : Testing
             EndDate = DateTime.Now.AddDays(2),
             CategoryId = await AddVacancyCategory("jobvacancy"),
             Duration = 2,
-            VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
+            VacancyQuestions = new List<VacancyQuestionDto>
+                { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
             Fees = 5
         };
 
@@ -56,6 +58,36 @@ public class CreateTrainingVacancyCommandTest : Testing
         var response = await _httpClient.PostAsJsonAsync("/api/trainings", trainingVacancy);
 
         response.EnsureSuccessStatusCode();
+    }
+    [Test]
+    public async Task CreateTrainingVacancy_ValidRequest_ShouldFillDatabase()
+    {
+        RunAsAdministratorAsync();
+        var training = new CreateTrainingVacancyCommand
+        {
+            Title = "Good Job!1",
+            Description = "Hey dude!1",
+            ShortDescription = "Hello1",
+            PublishDate = DateTime.Now,
+            EndDate = DateTime.Now.AddDays(2),
+            CategoryId = await AddVacancyCategory("jobVacancy"),
+            Duration = 2,
+            VacancyQuestions = new List<VacancyQuestionDto>
+                { new() { Question = "What is your English proficiency level?1" } },
+            Fees = 5
+        };
+        await _httpClient.PostAsJsonAsync("/api/trainings", training);
+        
+        var databaseVacancy = await FindFirstOrDefaultAsync<TrainingVacancy>(s =>
+            s.CategoryId == training.CategoryId &&
+            s.Title == training.Title &&
+            s.Description == training.Description);
+        databaseVacancy.Should().NotBeNull();
+
+        databaseVacancy.CreatedAt.Should().NotBe(null);
+        databaseVacancy.CreatedByEmail.Should().NotBeNull();
+        databaseVacancy.CreatedBy.Should().NotBeEmpty();
+    }
 
         response.Should().NotBeNull();
     }

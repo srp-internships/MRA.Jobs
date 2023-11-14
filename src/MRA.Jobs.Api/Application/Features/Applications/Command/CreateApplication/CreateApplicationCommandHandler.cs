@@ -1,8 +1,8 @@
-﻿namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
+﻿using ValidationException = MRA.Jobs.Application.Common.Exceptions.ValidationException;
 
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
+
+using System.Reflection.Metadata.Ecma335;
 using Common.Interfaces;
 using Common.Security;
 using Common.SlugGeneratorService;
@@ -44,8 +44,8 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
 
-        if ((await ApplicationExits(application.Slug)) == true)
-            throw new DuplicateWaitObjectException("Duplicate Apply. You have already submitted your application!");
+        if (await ApplicationExits(application.Slug))
+            throw new ConflictException("Duplicate Apply. You have already submitted your application!");
 
         application.ApplicantId = _currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = _currentUserService.GetUserName() ?? string.Empty;
@@ -112,7 +112,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     }  
     private async Task<bool> ApplicationExits(string ApplicationSlug)
     {
-        var application = await _context.Applications.FirstOrDefaultAsync(a => a.Slug.Equals(ApplicationSlug));
+        var application = await _context.Applications.FirstOrDefaultAsync(a => a.Slug.Equals(applicationSlug));
         if (application == null)
             return false;
         return true;
