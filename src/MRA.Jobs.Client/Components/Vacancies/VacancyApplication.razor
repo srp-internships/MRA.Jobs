@@ -46,29 +46,37 @@
 
 			@if (vacancy.VacancyQuestions.Count() > 0)
 			{
-				<div>
-					<p class="fs-3 text-center">Questions</p>
-					@foreach (var question in vacancy.VacancyQuestions)
-					{
-						<label for="question" class="form-label"><span class="text-danger">*</span>@question.Question</label>
-						<div class="input-group">
-							<input type="text" class="form-control" id="question_@question.Id" required="required" @bind="questionResponses[question.Question]">
-						</div>
-					}
-				</div>
+				<MudCard>
+					<MudCardContent>
+						<MudText Style="color:gray"><b>Questions</b></MudText>
+						<br />
+						@foreach (var question in vacancy.VacancyQuestions)
+						{
+							<MudDivider />
+							<label for="question" class="form-label"><span class="text-danger">*</span>@question.Question</label>
+							<div class="input-group">
+								<input type="text" class="form-control" id="question_@question.Id" required="required" @bind="questionResponses[question.Question]">
+							</div>
+						}
+					</MudCardContent>
+				</MudCard>
 			}
 
 			@if (vacancy.VacancyTasks.Count() > 0)
 			{
-				<div>
-					<p class="fs-3 text-center">Task</p>
-					@foreach (var task in vacancy.VacancyTasks)
-					{
-						<p><label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label></p>
-						<p><label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label></p>
-						<MudTextField T="string" Label="Code" Variant="Variant.Outlined" Lines="8" @bind-Value=@taskResponses[task.Title]/>
-					}
-				</div>
+				<MudCard>
+					<MudCardContent>
+						<MudText Style="color:gray"><b>vacancy.VacancyTasks</b></MudText>
+						<br />
+						@foreach (var task in vacancy.VacancyTasks)
+						{
+							<MudDivider />
+							<p><label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label></p>
+							<p><label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label></p>
+							<MudTextField T="string" Label="Code" Variant="Variant.Outlined" Lines="8" @bind-Value=@taskResponses[task.Title] />
+						}
+					</MudCardContent>
+				</MudCard>
 			}
 			<button type="submit" class="btn mt-3" style="background-color: #129fd7;">Apply</button>
 		</EditForm>
