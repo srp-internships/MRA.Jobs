@@ -112,7 +112,9 @@ else
 
 
 			</MudItem>
-			<MudItem xs="12" lg="3" sm="6" md="4">
+
+
+			<MudItem xs="12" lg="3" sm="6" md="4" Class="fixed-bottom-sm">
 				@if (CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
 						|| CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red")
 				{
@@ -197,16 +199,18 @@ else
 
 	protected override async void OnAfterRender(bool firstRender)
 	{
-
-		if (firstRender)
+		try
 		{
-			applied = await ApplicationService.ApplicationExist(Slug);
-			await Task.Delay(1000);
-
-
-
-			showLoader = true;
-			StateHasChanged();
+			if (firstRender)
+			{
+				applied = await ApplicationService.ApplicationExist(Slug);
+				await Task.Delay(1000);
+				showLoader = true;
+				StateHasChanged();
+			}
+		}
+		catch (Exception)
+		{
 		}
 
 	}
