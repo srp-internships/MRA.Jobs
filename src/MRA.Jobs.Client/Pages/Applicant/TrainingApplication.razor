@@ -18,6 +18,7 @@ else
 }
 
 @code {
+	private bool serverError;
 	private VacancyApplicationResponse training;
 	private CreateApplicationCommand application;
 	public Dictionary<string, string> questionResponses = new();
@@ -59,7 +60,7 @@ else
 				{
 					questionResponses[question.Question] = "";
 				}
-                foreach (var task in job.VacancyTasks)
+				foreach (var task in training.VacancyTasks)
                 {
 	            tasksResponses[task.Title] = task.Template;
                 }
