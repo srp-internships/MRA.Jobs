@@ -2,7 +2,9 @@
 @layout Dashboard
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @using MRA.Jobs.Client.Components.Dialogs;
+@using MRA.Jobs.Client.Identity;
 @inject IJSRuntime JS
+@inject ISnackbar Snackbar;
 
 @inject IInternshipService internshipService
 @inject ICategoryService categoryService
@@ -26,19 +28,18 @@ else
 	}
 	else
 	{
-
 		<MudGrid>
-			<MudItem Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0" hidden="@panelOpenState" lg="12">
+			<MudItem Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0" lg="12">
 				<MudCardHeader>
-				<MudButton Justify="Justify.FlexEnd" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(()=>panelOpenState=true)">
-					<MudText>Create New Internship Vacancy</MudText>
-				</MudButton>
+					<MudButton hidden="@panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(()=>panelOpenState=true)">
+						<MudText>Create New Internship Vacancy</MudText>
+					</MudButton>
 				</MudCardHeader>
 			</MudItem>
 			<MudItem lg="12" hidden="@(!panelOpenState)">
 				<EditForm Model="@internshipService.createCommand">
 					<FluentValidationValidator />
-					<MudText Style="color:gray" Typo="Typo.h6"><b>New Internship Vacancy</b></MudText><br />
+					<MudText Style="color:gray" Typo="Typo.h6"><b>@createOrEditHeader</b></MudText><br />
 					<MudGrid>
 						<MudItem xs="12">
 							<MudCard>
@@ -82,7 +83,7 @@ else
 																   Label="Date" For="@(()=>internshipService.createCommand.PublishDate)" />
 												</MudItem>
 												<MudItem xs=12 lg="6">
-													<MudTimePicker AmPm="true" @bind-Time="applicationDeadlineTime" Variant="Variant.Outlined" Label="Time" />
+													<MudTimePicker AmPm="true" @bind-Time="publishDate_Time" Variant="Variant.Outlined" Label="Time" />
 												</MudItem>
 											</MudGrid>
 										</MudItem>
@@ -107,7 +108,7 @@ else
 
 												</MudItem>
 												<MudItem xs=12 lg="6">
-													<MudTimePicker AmPm="true" @bind-Time="applicationDeadlineTime" Variant="Variant.Outlined" Label="Time" />
+													<MudTimePicker AmPm="true" @bind-Time="endDate_Time" Variant="Variant.Outlined" Label="Time" />
 												</MudItem>
 											</MudGrid>
 										</MudItem>
@@ -125,34 +126,42 @@ else
 								<MudCardContent>
 									@foreach (var ques in Questions)
 									{
-										<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Outlined.QuestionAnswer" /> @ques.Question<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveQuestion(ques.Question)" aria-label="delete"></MudIconButton></MudText>
+										<MudText Typo="Typo.subtitle1">
+											<MudChip>
+												<MudIcon Icon="@Icons.Material.Filled.QuestionMark" />
+											</MudChip>
+
+											@ques.Question
+											<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveQuestion(ques.Question)" aria-label="delete"></MudIconButton>
+										</MudText>
 									}
 									<MudTextField @bind-Value="newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
 								</MudCardContent>
 							</MudCard>
+							<MudCardActions>
+
+							</MudCardActions>
 						</MudItem>
-						<MudItem xs="12" lg="12" Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0">
+						<MudItem xs="12" lg="12">
 							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MudButton>
 							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MudButton>
 							<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MudButton>
 						</MudItem>
 					</MudGrid>
-
 				</EditForm>
 			</MudItem>
 		</MudGrid>
-
 		<DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem" />
-		<MudTable Items="@interships" Class="text-center" Breakpoint="Breakpoint.Md">
+		<MudTable Items="@interships" Class="text-center" Breakpoint="Breakpoint.Md" hidden="@panelOpenState">
 			<HeaderContent>
 				<MudTh>Title</MudTh>
 				<MudTh>Short description</MudTh>
-				<MudTh>Application deadline</MudTh>
 				<MudTh>Duration</MudTh>
 				<MudTh>Stipend</MudTh>
 				<MudTh>Category</MudTh>
-				<MudTh>End date</MudTh>
 				<MudTh>Publish date</MudTh>
+				<MudTh>Application deadline</MudTh>
+				<MudTh>End date</MudTh>
 				<MudTh></MudTh>
 			</HeaderContent>
 			<RowTemplate>
@@ -160,14 +169,14 @@ else
 				<MudTd DataLabel="Short description">
 					@(context.ShortDescription.Count() > 50 ? context.ShortDescription.Substring(0, 50) : context.ShortDescription)
 				</MudTd>
-				<MudTd DataLabel="Application deadline">@context.ApplicationDeadline</MudTd>
 				<MudTd DataLabel="Duration">@context.Duration</MudTd>
 				<MudTd DataLabel="Stipend">@context.Stipend</MudTd>
 				<MudTd DataLabel="Category">@context.Category</MudTd>
-				<MudTd DataLabel="EndDate">@context.EndDate.ToString("D")</MudTd>
 				<MudTd DataLabel="PublishDate">@context.PublishDate.ToString("D")</MudTd>
+				<MudTd DataLabel="Application deadline">@context.ApplicationDeadline</MudTd>
+				<MudTd DataLabel="EndDate">@context.EndDate.ToString("D")</MudTd>
 				<MudTd DataLabel="Action">
-					<MudButton @onclick="()=>OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MudButton>
+					<MudButton @onclick="()=>OnDeleteClick(context.Slug)" Style="color:red" Icon="delete">Delete</MudButton>
 					<MudButton @onclick="()=>OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MudButton>
 				</MudTd>
 			</RowTemplate>
@@ -192,11 +201,14 @@ else
 	private List<InternshipVacancyListResponse> interships;
 
 	private TimeSpan? applicationDeadlineTime;
+	private TimeSpan? publishDate_Time;
+	private TimeSpan? endDate_Time;
+	private string createOrEditHeader = "New Internship Vacancy";
 
 	protected override async Task OnInitializedAsync()
 	{
 		await LoadData();
-		applicationDeadlineTime = DateTime.Now.TimeOfDay;
+		Clear();
 		StateHasChanged();
 	}
 
@@ -210,9 +222,27 @@ else
 	}
 	private async Task DeleteItem()
 	{
-		await internshipService.Delete(itemSlugToDelete);
+
 		isDialogOpen = false;
 		await LoadData();
+		try
+		{
+			var result = await internshipService.Delete(itemSlugToDelete);
+			if (result.IsSuccessStatusCode)
+			{
+				Snackbar.Add($"Deleted", Severity.Success);
+			}
+			else
+			{
+				Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+			}
+			await LoadData();
+			Clear();
+		}
+		catch (Exception)
+		{
+			Snackbar.Add("Server is not responding, try latter", Severity.Error);
+		}
 	}
 
 	private async Task OnEditClick(string slug)
@@ -220,6 +250,7 @@ else
 		var vacancy = await internshipService.GetBySlug(slug);
 		if (vacancy != null)
 		{
+			createOrEditHeader = $"Edit {vacancy.Title}";
 			internshipService.createCommand.Title = vacancy.Title;
 			internshipService.createCommand.ShortDescription = vacancy.ShortDescription;
 			internshipService.createCommand.Description = vacancy.Description;
@@ -272,15 +303,31 @@ else
 		internshipService.createCommand.CategoryId = catId;
 		internshipService.createCommand.VacancyQuestions = Questions;
 		if (applicationDeadlineTime.HasValue)
-		{
 			internshipService.createCommand.ApplicationDeadline = internshipService.createCommand.ApplicationDeadline + applicationDeadlineTime.Value;
+
+		if (endDate_Time.HasValue)
+			internshipService.createCommand.ApplicationDeadline = internshipService.createCommand.EndDate + endDate_Time.Value;
+
+		if (publishDate_Time.HasValue)
+			internshipService.createCommand.ApplicationDeadline = internshipService.createCommand.PublishDate + publishDate_Time.Value;
+		try
+		{
+			var result = await internshipService.Create();
+			if (result.IsSuccessStatusCode)
+			{
+				Snackbar.Add($"{internshipService.createCommand.Title} created", Severity.Success);
+			}
+			else
+			{
+				Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+			}
+			await LoadData();
+			Clear();
 		}
-
-
-
-		await internshipService.Create();
-		await LoadData();
-		Clear();
+		catch (Exception)
+		{
+			Snackbar.Add("Server is not responding, try latter", Severity.Error);
+		}
 	}
 
 	private async Task HandleUpdate()
@@ -288,16 +335,36 @@ else
 		internshipService.createCommand.VacancyQuestions = Questions;
 		var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
 		internshipService.createCommand.CategoryId = catId;
-		await internshipService.Update(UpdateSlug);
-		await LoadData();
-		Clear();
+		try
+		{
+			var result = await internshipService.Update(UpdateSlug);
+			if (result.StatusCode == System.Net.HttpStatusCode.Created)
+			{
+				Snackbar.Add("Updated", Severity.Success);
+			}
+			else
+			{
+				Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+			}
+			await LoadData();
+			Clear();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.ToString());
+			Snackbar.Add("Server is not responding, try latter", Severity.Error);
+		}
 	}
 
 	public void AddQuestions()
 	{
-		Questions.Add(new VacancyQuestionDto { Question = newQuestion });
-		newQuestion = "";
+		if (newQuestion.Trim() != "")
+		{
+			Questions.Add(new VacancyQuestionDto { Question = newQuestion });
+			newQuestion = "";
+		}
 	}
+
 
 	private async Task OnKeyDown(KeyboardEventArgs e)
 	{
@@ -315,6 +382,7 @@ else
 
 	private void Clear()
 	{
+		createOrEditHeader = "New Internship Vacancy";
 		internshipService.createCommand.Title = string.Empty;
 		internshipService.createCommand.ShortDescription = string.Empty;
 		internshipService.createCommand.Description = string.Empty;
@@ -328,5 +396,8 @@ else
 		panelOpenState = false;
 		UpdateSlug = string.Empty;
 		Questions.Clear();
+		applicationDeadlineTime = DateTime.Now.TimeOfDay;
+		publishDate_Time = DateTime.Now.TimeOfDay;
+		endDate_Time = DateTime.Now.TimeOfDay;
 	}
 }
