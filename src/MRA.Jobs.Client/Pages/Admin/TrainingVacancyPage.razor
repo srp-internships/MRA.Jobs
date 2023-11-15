@@ -7,10 +7,10 @@
 @inject ICategoryService categoryService
 
 
-<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Trainings</MudText>
+<MudText Typo="Typo.h4" Color="Color.Primary">Trainings</MudText>
 @if (serverError)
 {
-	<ServerErrorComponent/>
+	<ServerErrorComponent />
 }
 else
 {
@@ -26,6 +26,55 @@ else
 	}
 	else
 	{
+		<MudGrid>
+			<MudItem Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0" lg="12">
+				<MudCardHeader>
+					<MudButton hidden="@panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(()=>panelOpenState=true)">
+						<MudText>Create New Training Vacancy</MudText>
+					</MudButton>
+				</MudCardHeader>
+			</MudItem>
+			<MudItem lg="12" hidden="@(!panelOpenState)">
+				<EditForm Model="@trainingService.createCommand">
+					<FluentValidationValidator />
+					<MudText Style="color:gray" Typo="Typo.h6"><b>createOrEditHeader</b></MudText><br />
+					<MudGrid>
+						<MudItem xs="12">
+							<MudCard>
+								<MudCardContent>
+									<MudTextField @bind-Value="@trainingService.createCommand.Title" Label="Title"
+												  Variant="Variant.Outlined" For="@(()=>trainingService.createCommand.Title)" />
+									<MudTextField Lines="2" @bind-Value="@trainingService.createCommand.ShortDescription" Label="ShortDescription"
+												  Variant="Variant.Outlined" For="@(()=>trainingService.createCommand.ShortDescription)" />
+									<MudTextField Lines="5" @bind-Value="@trainingService.createCommand.Description" Label="Description"
+												  Variant="Variant.Outlined" For="@(()=>trainingService.createCommand.Description)" />
+								</MudCardContent>
+							</MudCard>
+						</MudItem>
+						<MudItem xs="12" lg="6">
+							<MudCard>
+								<MudCardContent>
+									<MudGrid>
+										<MudItem xs=12 lg="12">
+											<MudText Style="color:gray" Typo="Typo.body2">Category</MudText>
+											<MudSelect T="string" @bind-Value="@selectedCategory"
+													   Variant="Variant.Outlined">
+												@foreach (var cat in categories)
+												{
+													<MudSelectItem Value="@cat.Name" />
+												}
+											</MudSelect>
+										</MudItem>
+									</MudGrid>
+								</MudCardContent>
+							</MudCard>
+
+						</MudItem>
+					</MudGrid>
+				</EditForm>
+			</MudItem>
+		</MudGrid>
+
 		<MudExpansionPanels>
 			<MudExpansionPanel Text="Create new Training" @bind-IsExpanded="@panelOpenState">
 				<MudTextField @bind-Value="@trainingService.createCommand.Title" Label="Title" Variant="Variant.Outlined"></MudTextField>
