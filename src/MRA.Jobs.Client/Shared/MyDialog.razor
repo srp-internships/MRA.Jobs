@@ -43,40 +43,39 @@
 </MudDialog>
 @code {
 
-	private string selectedStatus { get; set; } = string.Empty;
-	List<string> statuses = new List<string>();
+    private string selectedStatus { get; set; } = string.Empty;
+    List<string> statuses = new List<string>();
 
-	[CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-	[Parameter] public string CoverLetter { get; set; }
-	[Parameter] public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
-	[Parameter] public string Slug { get; set; }
-	[Parameter] public string StatusName { get; set; }
-	[Parameter] public bool isApplicant { get; set; }
+    [Parameter] public string CoverLetter { get; set; }
+    [Parameter] public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
+    [Parameter] public string Slug { get; set; }
+    [Parameter] public string StatusName { get; set; }
+    [Parameter] public bool isApplicant { get; set; }
 
-	private UpdateApplicationStatus applicationStatus;
+    private UpdateApplicationStatus applicationStatus;
 
-	private void HandleSelectValueChanged(string value)
-	{
-		selectedStatus = value;
-	}
+    private void HandleSelectValueChanged(string value)
+    {
+        selectedStatus = value;
+    }
 
-	private async Task ChangeStatus()
-	{
-		if (Enum.TryParse(selectedStatus, out ApplicationStatusDto.ApplicationStatus selectedEnumStatus))
-		{
-			applicationStatus = new UpdateApplicationStatus
+    private async Task ChangeStatus()
+    {
+        if (Enum.TryParse(selectedStatus, out ApplicationStatusDto.ApplicationStatus selectedEnumStatus))
+        {
+            applicationStatus = new UpdateApplicationStatus
 				{
 					Slug = Slug,
 					StatusId = (int)selectedEnumStatus // Get the integer value of the enum
 				};
-			var response = await applicationService.UpdateStatus(applicationStatus);
-			if (response)
-			{
-				Snackbar.Add("Status updated successfully.", Severity.Success);
-				MudDialog.Close();
-				navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
-			}
+            var response = await applicationService.UpdateStatus(applicationStatus);
+            if (response)
+            {
+                Snackbar.Add("Status updated successfully.", Severity.Success);
+                MudDialog.Cancel();
+            }
 
 		}
 		else
