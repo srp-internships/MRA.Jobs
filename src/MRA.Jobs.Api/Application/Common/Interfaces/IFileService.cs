@@ -5,5 +5,5 @@ public interface IFileService
 {
     Task<string> UploadAsync(IFormFile file);
     Task<byte[]> Download(string key);
-    bool FileExists(string key);
+    Task<bool> FileExistsAsync(string key);
 }

@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Common.Interfaces;
 
 namespace MRA.Jobs.Web.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class FileController : ApiControllerBase
@@ -27,7 +28,7 @@ public class FileController : ApiControllerBase
     [HttpGet("download/{key}")]
     public async Task<IActionResult> Download(string key)
     {
-        if (!_fileService.FileExists(key))
+        if (!await _fileService.FileExistsAsync(key))
             return NotFound("File not found.");
 
         var fileBytes = await _fileService.Download(key);

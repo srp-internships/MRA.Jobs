@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
@@ -12,6 +13,6 @@ public interface IApplicationService
     Task CreateApplication(CreateApplicationCommand application);
     Task<PagedList<ApplicationListDto>> GetAllApplications();
     Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus);
-    Task<ApplicationDetailsDto> GetApplicationDetails(string ApplicationSlug);
+    Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug);
     Task<bool> ApplicationExist(string vacancySlug);
 }

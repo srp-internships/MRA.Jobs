@@ -37,8 +37,10 @@ public class AzureFileService : IFileService
         return ms.ToArray();
     }
 
-    public bool FileExists(string key)
+    public async Task<bool> FileExistsAsync(string key)
     {
-        throw new NotImplementedException();
+        var blobServiceClient = new BlobServiceClient(_configuration["AzureBlob:AzureWebJobsStorage"]);
+        var containerClient = blobServiceClient.GetBlobContainerClient(_configuration["AzureBlob:ContainerName"]);
+        return await containerClient.GetBlobClient(key).ExistsAsync();
     }
 }
