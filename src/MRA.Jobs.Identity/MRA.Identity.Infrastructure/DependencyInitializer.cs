@@ -28,11 +28,13 @@ public static class DependencyInitializer
 
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            string dbConnectionString = configurations.GetConnectionString("DefaultConnection");
             if (configurations["UseInMemoryDatabase"] == "true")
                 options.UseInMemoryDatabase("testDb");
             else
-                options.UseSqlServer(dbConnectionString);
+            {
+                string dbConnectionString = configurations.GetConnectionString("DefaultConnection");
+                options.UseSqlServer(dbConnectionString); 
+            }
         });
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
