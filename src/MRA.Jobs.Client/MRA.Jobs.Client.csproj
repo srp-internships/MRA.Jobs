@@ -20,6 +20,7 @@
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="QuestPDF" Version="2023.10.2" />
+        <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.6" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
     </ItemGroup>
 
