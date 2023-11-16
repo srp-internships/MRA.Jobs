@@ -73,21 +73,34 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
                     }}
                 }}", Encoding.UTF8, "application/json")
                 };
-                using var response = await httpClient.SendAsync(r);
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(responseBody);
-                var jsonDocument = JsonDocument.Parse(responseBody);
-                bool success = jsonDocument.RootElement.GetProperty("success").GetBoolean();
 
-                var s = new VacancyTaskDetail
+                try
                 {
-                    ApplicantId = application.Id,
-                    Codes = tResponses.Code,
-                    Success = success,
-                    TaskId = tResponses.TaksId,
-                };
-                await _context.VacancyTaskDetails.AddAsync(s, cancellationToken);
+                    using var response = await httpClient.SendAsync(r);
+                    response.EnsureSuccessStatusCode();
+                    Console.WriteLine("Request was successful.");
+                    /// response.EnsureSuccessStatusCode();
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseBody);
+                    var jsonDocument = JsonDocument.Parse(responseBody);
+                    bool success = jsonDocument.RootElement.GetProperty("success").GetBoolean();
+
+                    var s = new VacancyTaskDetail
+                    {
+                        ApplicantId = application.Id,
+                        Codes = tResponses.Code,
+                        Success = success,
+                        TaskId = tResponses.TaksId,
+                    };
+                    await _context.VacancyTaskDetails.AddAsync(s, cancellationToken);
+                }
+                catch (Exception)
+                {
+                    //   throw new ValidationException($"Request failed: {ex.Message}");
+                    throw new Exception($"dotnet compiler don't work!");
+
+                }
             }
         }
         await _context.Applications.AddAsync(application, cancellationToken);
@@ -102,7 +115,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         };
 
 
-       
+
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
@@ -111,7 +124,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
             "New Apply");
 
         return application.Id;
-    }  
+    }
     private async Task<bool> ApplicationExits(string applicationSlug)
     {
         var application = await _context.Applications.FirstOrDefaultAsync(a => a.Slug.Equals(applicationSlug));
