@@ -5,6 +5,8 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+ENV UseInMemoryDatabase = "true"
+
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["MRA.Identity.Api/MRA.Identity.Api.csproj", "MRA.Identity.Api/"]
