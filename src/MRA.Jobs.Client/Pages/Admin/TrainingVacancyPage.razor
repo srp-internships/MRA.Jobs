@@ -109,7 +109,6 @@ else
 					@foreach (var ques in Questions)
 					{
 						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.QuestionMark" /> @ques.Question<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveQuestion(ques.Question)" aria-label="delete"></MudIconButton></MudText>
-
 					}
 					<MudTextField @bind-Value="newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
 				</MudPaper>
@@ -150,8 +149,6 @@ else
 				<MudTablePager />
 			</PagerContent>
 		</MudTable>
-
-
 	}}
 
 @code {
