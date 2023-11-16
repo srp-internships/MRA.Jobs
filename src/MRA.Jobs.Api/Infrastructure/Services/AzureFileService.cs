@@ -1,6 +1,5 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace MRA.Jobs.Infrastructure.Services;
@@ -8,18 +7,20 @@ namespace MRA.Jobs.Infrastructure.Services;
 public class AzureFileService : IFileService
 {
     private readonly IConfiguration _configuration;
+
     public AzureFileService(IConfiguration configurations)
     {
         _configuration = configurations;
     }
 
-    public async Task<string> UploadAsync(IFormFile file)
+    public async Task<string> UploadAsync(byte[] fileBytes, string fileName)
     {
-        string fileId = $"{Guid.NewGuid()}_{file.FileName}";
-        var myBlob = file.OpenReadStream();
-        var blobClient = new BlobContainerClient(_configuration["AzureBlob:AzureWebJobsStorage"], _configuration["AzureBlob:ContainerName"]);
+        string fileId = $"{Guid.NewGuid()}_{fileName}";
+        var blobClient = new BlobContainerClient(_configuration["AzureBlob:AzureWebJobsStorage"],
+            _configuration["AzureBlob:ContainerName"]);
         var blob = blobClient.GetBlobClient(fileId);
-        await blob.UploadAsync(myBlob);//TODO check the status and handle exceptions 
+        var ms = new MemoryStream(fileBytes);
+        await blob.UploadAsync(ms); //TODO check the status and handle exceptions 
         return fileId;
     }
 
@@ -28,7 +29,7 @@ public class AzureFileService : IFileService
         var blobServiceClient = new BlobServiceClient(_configuration["AzureBlob:AzureWebJobsStorage"]);
         var containerClient = blobServiceClient.GetBlobContainerClient(_configuration["AzureBlob:ContainerName"]);
 
-        var blobClient = containerClient.GetBlobClient(key);//key is filename
+        var blobClient = containerClient.GetBlobClient(key); //key is filename
 
         BlobDownloadInfo blobDownloadInfo = await blobClient.DownloadAsync();
 

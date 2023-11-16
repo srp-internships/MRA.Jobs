@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
@@ -19,6 +20,25 @@ namespace MRA.Jobs.Web.Controllers;
 [Authorize]
 public class ApplicationsController : ApiControllerBase
 {
+    private readonly IFileService _fileService;
+
+    public ApplicationsController(IFileService fileService)
+    {
+        _fileService = fileService;
+    }
+
+    [HttpGet("DownloadCv/{key}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> DownloadCv(string key)
+    {
+        if (!await _fileService.FileExistsAsync(key))
+            return NotFound("File not found.");
+
+        var fileBytes = await _fileService.Download(key);
+        return File(fileBytes, "application/octet-stream", key);
+    }
+
+
     [HttpGet]
     public async Task<ActionResult<PagedList<ApplicationListDto>>> GetAll(
         [FromQuery] PagedListQuery<ApplicationListDto> query)
@@ -28,7 +48,6 @@ public class ApplicationsController : ApiControllerBase
     }
 
     [HttpGet("{slug}")]
-    [Authorize(ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<ApplicationDetailsDto>> Get(string slug, CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetBySlugApplicationQuery { Slug = slug }, cancellationToken);

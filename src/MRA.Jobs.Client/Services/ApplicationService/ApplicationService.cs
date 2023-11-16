@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
@@ -19,15 +20,17 @@ public class ApplicationService : IApplicationService
     private readonly AuthenticationStateProvider _authenticationState;
     private readonly ISnackbar _snackbar;
     private readonly NavigationManager _navigationManager;
+    private readonly IConfiguration _configuration;
 
 
     public ApplicationService(HttpClient httpClient, AuthenticationStateProvider authenticationState,
-        ISnackbar snackbar, NavigationManager navigationManager)
+        ISnackbar snackbar, NavigationManager navigationManager, IConfiguration configuration)
     {
         _httpClient = httpClient;
         _authenticationState = authenticationState;
         _snackbar = snackbar;
         _navigationManager = navigationManager;
+        _configuration = configuration;
     }
 
     public async Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status)
@@ -39,10 +42,16 @@ public class ApplicationService : IApplicationService
     }
 
 
-    public async Task CreateApplication(CreateApplicationCommand application)
+    public async Task CreateApplication(CreateApplicationCommand application, IBrowserFile file)
     {
         try
         {
+            //set cv
+            var fileBytes = await GetFileBytesAsync(file);
+            application.CvBytes = fileBytes;
+            application.FileName = file.Name;
+            //set cv
+            
             var response = await _httpClient.PostAsJsonAsync("/api/applications", application);
             switch (response.StatusCode)
             {
@@ -64,6 +73,19 @@ public class ApplicationService : IApplicationService
             _snackbar.Add("Server is not responding, please try later", Severity.Error);
             Console.WriteLine(e.Message);
         }
+    }
+
+    private async Task<byte[]> GetFileBytesAsync(IBrowserFile file)
+    {
+        if (file.Size <= int.Parse(_configuration["CvSettings:MaxFileSize"]!) * 1024)
+        {
+            var ms = new MemoryStream();
+            await file.OpenReadStream().CopyToAsync(ms);
+            var res = ms.ToArray();
+            return res;
+        }
+
+        return null;
     }
 
     public async Task<PagedList<ApplicationListDto>> GetAllApplications()
@@ -98,15 +120,18 @@ public class ApplicationService : IApplicationService
         return null;
     }
 
-    public async Task<bool> ApplicationExist(string vacancySlug)
+    public async Task<string> GetCvLinkAsync(string slug)
     {
-        var applicationSlug = ($"{(await GetCurrentUserName())}-{vacancySlug}").ToLower().Trim();
-        var apps = (await GetAllApplications()).Items;
-        if (apps.Any(a => a.Slug == applicationSlug))
-            return true;
-        return false;
-    }
+        
+        var applicationSlug = $"{await GetCurrentUserName()}-{slug}".ToLower().Trim();
+        var app = await GetApplicationDetails(applicationSlug);
+        if (app == null)
+        {
+            return "";
+        }
 
+        return $"{_httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
+    }
 
     private async Task<string> GetCurrentUserName()
     {

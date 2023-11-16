@@ -10,9 +10,9 @@ namespace MRA.Jobs.Client.Services.ApplicationService;
 public interface IApplicationService
 {
     Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status);
-    Task CreateApplication(CreateApplicationCommand application);
+    Task CreateApplication(CreateApplicationCommand application, IBrowserFile cv);
     Task<PagedList<ApplicationListDto>> GetAllApplications();
     Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus);
     Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug);
-    Task<bool> ApplicationExist(string vacancySlug);
+    Task<string> GetCvLinkAsync(string slug);
 }

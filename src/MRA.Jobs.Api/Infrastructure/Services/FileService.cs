@@ -24,6 +24,17 @@ public class FileService : IFileService
         return key;
     }
 
+    public async Task<string> UploadAsync(byte[] fileBytes, string fileName)
+    {
+        var key = $"{Guid.NewGuid()}_{fileName}";
+        var filePath = Path.Combine(_uploadFolderPath, key);
+
+        var ms = new MemoryStream(fileBytes);
+        var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+        await ms.CopyToAsync(fs);
+        return key;
+    }
+
     public async Task<byte[]> Download(string key)
     {
         var filePath = Path.Combine(_uploadFolderPath, key);

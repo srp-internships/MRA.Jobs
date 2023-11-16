@@ -19,10 +19,13 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly ISlugGeneratorService _slugService;
     private readonly MRA.Configurations.Common.Interfaces.Services.IEmailService _emailService;
     private readonly IHtmlService _htmlService;
+    private readonly IFileService _fileService;
+
 
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
         ICurrentUserService currentUserService, ISlugGeneratorService slugService,
-        MRA.Configurations.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService)
+        MRA.Configurations.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService,
+        IFileService fileService)
     {
         _context = context;
         _mapper = mapper;
@@ -31,11 +34,11 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         _slugService = slugService;
         _emailService = emailService;
         _htmlService = htmlService;
+        _fileService = fileService;
     }
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
-
         var vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
         _ = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
         var application = _mapper.Map<Application>(request);
@@ -47,6 +50,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         application.ApplicantId = _currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = _currentUserService.GetUserName() ?? string.Empty;
+        application.CV = await _fileService.UploadAsync(request.CvBytes, request.FileName);
 
         await _context.Applications.AddAsync(application, cancellationToken);
 
