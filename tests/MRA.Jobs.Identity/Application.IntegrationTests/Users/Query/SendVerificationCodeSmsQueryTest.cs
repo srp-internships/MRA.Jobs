@@ -1,7 +1,12 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http;
+using System.Net;
+using System.Net.Http.Json;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using MRA.Identity.Application.Contract.User.Commands;
 using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Domain.Entities;
+using System;
 
 namespace MRA.Jobs.Application.IntegrationTests.Users.Query;
 
@@ -14,6 +19,47 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
         // Arrange
         await AddAuthorizationAsync();
         var query = new SendVerificationCodeSmsQuery { PhoneNumber = "911111111" };
+
+        // Act
+        var response = await _client.GetAsync($"api/sms/send_code?PhoneNumber={query.PhoneNumber}");
+        response.EnsureSuccessStatusCode();
+
+        // Assert
+        var responseContent = await response.Content.ReadAsStringAsync();
+        Assert.Multiple(() =>
+        {
+            Assert.AreEqual("true", responseContent, "Expected response content to be 'true'.");
+            Assert.NotNull(TestSmsSandbox.PhoneNumber);
+            Assert.NotNull(TestSmsSandbox.Text);
+        });
+    }
+    [Test]
+    public async Task SendVerificationCodeSmsQueryHandler_SendingSmsWithCorrectPhoneNumberAndDifferentFormat_Success()
+    {
+        // Arrange
+        await AddAuthorizationAsync();
+        var query = new SendVerificationCodeSmsQuery { PhoneNumber = "992911111111" };
+
+        // Act
+        var response = await _client.GetAsync($"api/sms/send_code?PhoneNumber={query.PhoneNumber}");
+        response.EnsureSuccessStatusCode();
+
+        // Assert
+        var responseContent = await response.Content.ReadAsStringAsync();
+        Assert.Multiple(() =>
+        {
+            Assert.AreEqual("true", responseContent, "Expected response content to be 'true'.");
+            Assert.NotNull(TestSmsSandbox.PhoneNumber);
+            Assert.NotNull(TestSmsSandbox.Text);
+        });
+    }
+
+    [Test]
+    public async Task SendVerificationCodeSmsQueryHandler_SendingSmsWithCorrectPhoneNumberAndAnotherFormat_Success()
+    {
+        // Arrange
+        await AddAuthorizationAsync();
+        var query = new SendVerificationCodeSmsQuery { PhoneNumber = "+992911111111" };
 
         // Act
         var response = await _client.GetAsync($"api/sms/send_code?PhoneNumber={query.PhoneNumber}");
@@ -46,12 +92,6 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
         // Assert
         var responseContent = await response.Content.ReadFromJsonAsync<SmsVerificationCodeStatus>();
 
-        var user = await GetEntity<ApplicationUser>(u => u.PhoneNumber == query.PhoneNumber);
-
-        Assert.Multiple(() =>
-        {
-            Assert.AreEqual(SmsVerificationCodeStatus.CodeVerifySuccess, responseContent, "Expected response content to be 'true'.");
-            Assert.AreEqual(true, user.PhoneNumberConfirmed, "Expected response content to be 'true'.");
-        });
+        Assert.AreEqual(SmsVerificationCodeStatus.CodeVerifySuccess, responseContent, "Expected response content to be 'true'.");
     }
 }

@@ -11,7 +11,8 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
     private readonly IMapper _mapper;
     private readonly ISlugGeneratorService _slugService;
 
-    public CreateJobVacancyCommandHandler(ISlugGeneratorService slugService, IApplicationDbContext dbContext, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
+    public CreateJobVacancyCommandHandler(ISlugGeneratorService slugService, IApplicationDbContext dbContext,
+        IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _dbContext = dbContext;
         _mapper = mapper;
@@ -26,8 +27,13 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
         var jobVacancy = _mapper.Map<JobVacancy>(request);
+
         jobVacancy.Category = category;
         jobVacancy.Slug = GenerateSlug(jobVacancy);
+        jobVacancy.LastModifiedBy = jobVacancy.CreatedBy = _currentUserService.GetUserId() ?? Guid.Empty;
+        jobVacancy.CreatedByEmail = _currentUserService.GetEmail();
+        jobVacancy.LastModifiedAt =jobVacancy.CreatedAt = _dateTime.Now;
+
         await _dbContext.JobVacancies.AddAsync(jobVacancy, cancellationToken);
 
         VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
@@ -44,5 +50,6 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         return jobVacancy.Slug;
     }
 
-    private string GenerateSlug(JobVacancy job) => _slugService.GenerateSlug($"{job.Title}-{job.CreatedAt.Year}-{job.CreatedAt.Month}");
+    private string GenerateSlug(JobVacancy job) =>
+        _slugService.GenerateSlug($"{job.Title}-{job.CreatedAt.Year}-{job.CreatedAt.Month}");
 }

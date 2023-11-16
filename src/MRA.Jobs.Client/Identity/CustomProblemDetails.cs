@@ -14,4 +14,5 @@ public class CustomProblemDetails
     [JsonPropertyName("title")] public string? Title { get; set; }
 
     [JsonPropertyName("type")] public string? Type { get; set; }
+    [JsonPropertyName("errors")] public Dictionary<string, List<string>>? Errors { get; set; }
 }

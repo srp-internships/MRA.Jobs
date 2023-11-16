@@ -6,34 +6,54 @@
 @using MRA.Jobs.Client.Components.Vacancies
 
 <MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900;">Jobs</MudText>
-<VacanciesList  filteredVacancies="filteredJobs" Vacancies="jobs" Route="jobs" VacancyCategories="jobCategories"/>
+@if (serverError)
+{
+	<ServerErrorComponent />
+}
+else
+{
+	<VacanciesList filteredVacancies="filteredJobs" Vacancies="jobs" Route="jobs" VacancyCategories="jobCategories" />
+}
 
 @code {
-    private List<string> jobCategories;
-    private List<VacancyClientResponse> jobs;
-    private List<VacancyClientResponse> filteredJobs;
+	private bool serverError;
+	private List<string> jobCategories;
+	private List<VacancyClientResponse> jobs;
+	private List<VacancyClientResponse> filteredJobs;
 
-    protected override async Task OnInitializedAsync()
-    {
-        var result = await categoryService.GetJobCategoriesSinceCheckDate();
-        var allJobs = await vacancyService.GetJobs();
-        if (result is not null && allJobs is not null)
-        {
-            jobCategories = result.Select(r => r.Category.Name).ToList();
-            jobs = allJobs.Select(r => new VacancyClientResponse
-                {
-                    Category = r.Category,
-                    Title = r.Title,
-                    ShortDescription = r.ShortDescription,
-                    Slug = r.Slug
-                }).ToList(); ;
-            filteredJobs = allJobs.Select(r => new VacancyClientResponse
-                {
-                    Category = r.Category,
-                    Title = r.Title,
-                    ShortDescription = r.ShortDescription,
-                    Slug = r.Slug
-                }).ToList(); ;
-        }
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			var result = await categoryService.GetJobCategoriesSinceCheckDate();
+			var allJobs = await vacancyService.GetJobs();
+			if (result is not null && allJobs is not null)
+			{
+				jobCategories = result.Select(r => r.Category.Name).ToList();
+				jobs = allJobs.Select(r => new VacancyClientResponse
+					{
+						Category = r.Category,
+						Title = r.Title,
+						ShortDescription = r.ShortDescription,
+						Slug = r.Slug,
+						PublishDate = r.PublishDate,
+						EndDate = r.EndDate
+					}).ToList(); ;
+				filteredJobs = allJobs.Select(r => new VacancyClientResponse
+					{
+						Category = r.Category,
+						Title = r.Title,
+						ShortDescription = r.ShortDescription,
+						Slug = r.Slug,
+						PublishDate = r.PublishDate,
+						EndDate = r.EndDate
+					}).ToList(); ;
+			}
+		}
+		catch (Exception)
+		{
+			serverError = true;
+			StateHasChanged();
+		}
+	}
 }

@@ -26,14 +26,30 @@ public class CreateExperienceDetailCommandHandler : IRequestHandler<CreateExperi
     {
         var userId = _userHttpContextAccessor.GetUserId();
         var user = await _context.Users
-                .Include(u => u.Experiences)
-                .FirstOrDefaultAsync(u => u.Id == userId);
+            .Include(u => u.Experiences)
+            .FirstOrDefaultAsync(u => u.Id == userId);
         _ = user ?? throw new NotFoundException("user is not found");
 
+        var textInfo = System.Globalization.CultureInfo.CurrentCulture.TextInfo;
+        var jobTitle = textInfo.ToTitleCase(request.JobTitle.Trim());
+        var company = textInfo.ToTitleCase(request.CompanyName.Trim());
+        request.Description = textInfo.ToTitleCase(request.Description.Trim());
+        request.Address=request.Address.Trim();
+
+        var existingExperience = user.Experiences.FirstOrDefault(e =>
+            e.JobTitle.Equals(jobTitle, StringComparison.OrdinalIgnoreCase) &&
+            e.CompanyName.Equals(company, StringComparison.OrdinalIgnoreCase));
+
+        if (existingExperience != null)
+        {
+            throw new DuplicateWaitObjectException("Experience detail already exists.");
+        }
+
         var experienceDetail = _mapper.Map<ExperienceDetail>(request);
+        experienceDetail.JobTitle = jobTitle;
+        experienceDetail.CompanyName = company;
 
         user.Experiences.Add(experienceDetail);
-
         await _context.SaveChangesAsync();
         return experienceDetail.Id;
     }

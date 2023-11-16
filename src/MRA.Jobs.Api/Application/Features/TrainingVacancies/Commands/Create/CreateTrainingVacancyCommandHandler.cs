@@ -11,7 +11,8 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
     private readonly ICurrentUserService _currentUserService;
     private readonly ISlugGeneratorService _slugService;
 
-    public CreateTrainingVacancyCommandHandler(ISlugGeneratorService slugService, IApplicationDbContext context, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
+    public CreateTrainingVacancyCommandHandler(ISlugGeneratorService slugService, IApplicationDbContext context,
+        IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
     {
         _context = context;
         _mapper = mapper;
@@ -25,14 +26,19 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         VacancyCategory category = await _context.Categories.FindAsync(request.CategoryId);
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
-        var traningModel = _mapper.Map<TrainingVacancy>(request);
-        traningModel.Category = category;
-        traningModel.Slug = GenerateSlug(traningModel);
-        await _context.TrainingVacancies.AddAsync(traningModel, cancellationToken);
+        var trainingModel = _mapper.Map<TrainingVacancy>(request);
+
+        trainingModel.Category = category;
+        trainingModel.Slug = GenerateSlug(trainingModel);
+        trainingModel.CreatedByEmail = _currentUserService.GetEmail();
+        trainingModel.LastModifiedBy = trainingModel.CreatedBy = _currentUserService.GetUserId() ?? Guid.NewGuid();
+        trainingModel.LastModifiedAt = trainingModel.CreatedAt = _dateTime.Now;
+        
+        await _context.TrainingVacancies.AddAsync(trainingModel, cancellationToken);
 
         VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
         {
-            VacancyId = traningModel.Id,
+            VacancyId = trainingModel.Id,
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Training Model Created",
@@ -40,9 +46,9 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return traningModel.Slug;
+        return trainingModel.Slug;
     }
 
-    private string GenerateSlug(TrainingVacancy vacancy) => _slugService.GenerateSlug($"{vacancy.Title}-{vacancy.PublishDate.Year}-{vacancy.PublishDate.Month}");
-
+    private string GenerateSlug(TrainingVacancy vacancy) =>
+        _slugService.GenerateSlug($"{vacancy.Title}-{vacancy.PublishDate.Year}-{vacancy.PublishDate.Month}");
 }

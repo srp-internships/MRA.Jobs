@@ -1,57 +1,104 @@
 ﻿@page "/dashboard/applications"
 @attribute [Authorize(ApplicationPolicies.Administrator)]
 @using System.Net.Http.Json
+@using MRA.Jobs.Client.Components
 @using MRA.Jobs.Client.Identity;
 @inject HttpClient httpClient
 @inject IApplicationService applicationService
 
 <MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Applications</MudText>
 
-<MudContainer Class="text-center">
-    <MudTable Items="@applications.Items" Class="text-center">
-        <ColGroup>
-            <col style="width: 25%;" />
-            <col style="width: 25%;" />
-            <col style="width: 25%;" />
-            <col style="width: 25%" />
-            <col />
-        </ColGroup>
-        <HeaderContent>
-            <MudTh>Applicant username</MudTh>
-            <MudTh>Vacancy title</MudTh>
-            <MudTh>Applied at</MudTh>
-            <MudTh>Status name</MudTh>
-            <MudTh>Action</MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Username">@context.Username</MudTd>
-            <MudTd DataLabel="Title">@context.VacancyTitle</MudTd>
-            <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
-            <MudTd DataLabel="StatusName">@context.StatusName</MudTd>
-            <MudTd DataLabel="Name"><MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton></MudTd>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager />
-        </PagerContent>
-    </MudTable>
+@if (serverError)
+{
+    <ServerErrorComponent />
+}
+else
+{
+    @if (applications == null)
+    {
+        <div class="loader"></div>
+    }
+    else
+    {
+        <MudContainer Class="text-center">
+            <MudTable Items="@applications.Items" Class="text-center">
+                <ColGroup>
+                    <col style="width: 25%;" />
+                    <col style="width: 25%;" />
+                    <col style="width: 25%;" />
+                    <col style="width: 25%" />
+                    <col />
+                </ColGroup>
+                <HeaderContent>
+                    <MudTh>Applicant username</MudTh>
+                    <MudTh>Vacancy title</MudTh>
+                    <MudTh>Applied at</MudTh>
+                    <MudTh>Status name</MudTh>
+                    <MudTh>Action</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Username">@context.Username</MudTd>
+                    <MudTd DataLabel="Title">@context.VacancyTitle</MudTd>
+                    <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
+                    <MudTd DataLabel="StatusName">@context.StatusName</MudTd>
+                    <MudTd DataLabel="Name"><MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton></MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
 
-</MudContainer>
+        </MudContainer>
+    }
+}
 
 @code {
-
+    private bool serverError = false;
     private PagedList<ApplicationListDto> applications;
     protected override async Task OnInitializedAsync()
     {
-        var response = await applicationService.GetAllApplications();
-        if (response is not null)
+        await LoadData();
+    }
+
+
+    private async Task LoadData()
+    {
+        try
         {
-            applications = response;
+            var response = await applicationService.GetAllApplications();
+            if (response is not null)
+            {
+                applications = response;
+            }
+        }
+        catch (Exception)
+        {
+            serverError = true;
+            StateHasChanged();
         }
     }
+
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
-    private void OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
+    private async void OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
     {
-        Dialog.Show<MyDialog>("Applicant response", new DialogParameters { { "CoverLetter", coverLetter }, { "VacancyResponses", vacancyResponses }, { "Slug", slug }, { "StatusName", statusName }, { "isApplicant", false } }, options);
+        var dialog = Dialog.Show<MyDialog>("Applicant response", new DialogParameters
+        {
+            { "CoverLetter", coverLetter },
+            { "VacancyResponses", vacancyResponses },
+            { "Slug", slug },
+            { "StatusName", statusName },
+            { "isApplicant", false }
+        }, options);
+        var result = await dialog.Result;
+
+        // you can check if the modal was cancelled
+        var isCancelled = result.Canceled;
+
+        if (isCancelled)
+        {
+            await LoadData();
+            StateHasChanged();
+        }
     }
 }

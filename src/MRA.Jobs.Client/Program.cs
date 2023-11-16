@@ -17,6 +17,7 @@ using MRA.Jobs.Client.Services.Auth;
 using MudBlazor.Services;
 using MRA.Jobs.Client.Services.Profile;
 using System.Reflection;
+using Microsoft.FeatureManagement;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Jobs.Client.Identity;
 
@@ -78,4 +79,5 @@ builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+builder.Services.AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
 await builder.Build().RunAsync();

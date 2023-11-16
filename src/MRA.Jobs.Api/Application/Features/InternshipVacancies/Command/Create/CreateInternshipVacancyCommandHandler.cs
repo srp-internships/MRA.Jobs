@@ -15,7 +15,7 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
     private readonly IHtmlService _htmlService;
 
     public CreateInternshipVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
-        ICurrentUserService currentUserService, ISlugGeneratorService slugService,IEmailService emailService,
+        ICurrentUserService currentUserService, ISlugGeneratorService slugService, IEmailService emailService,
         IHtmlService htmlService)
     {
         _context = context;
@@ -33,7 +33,13 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         _ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
 
         var internship = _mapper.Map<InternshipVacancy>(request);
+
         internship.Slug = GenerateSlug(internship);
+        internship.CreatedByEmail = _currentUserService.GetEmail();
+        internship.LastModifiedAt = internship.CreatedAt = _dateTime.Now;
+        internship.LastModifiedBy = internship.CreatedBy = _currentUserService.GetUserId() ?? Guid.Empty;
+
+
         await _context.Internships.AddAsync(internship, cancellationToken);
 
         VacancyTimelineEvent timelineEvent = new()
@@ -46,12 +52,12 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-       
+
 
         await _emailService.SendEmailAsync(new[] { internship.CreatedByEmail },
             _htmlService.GenerateApplyVacancyContent(_currentUserService.GetUserName()), "New internship apply");
 
-         return internship.Slug;
+        return internship.Slug;
     }
 
     private string GenerateSlug(InternshipVacancy internship) =>

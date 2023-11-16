@@ -13,7 +13,7 @@ public class SendSmsQueryHandler : IRequestHandler<SendVerificationCodeSmsQuery,
     private readonly ISmsService _smsService;
     private readonly ILogger<SmsService> _logger;
 
-    public SendSmsQueryHandler(IApplicationDbContext context,  ISmsService smsService, ILogger<SmsService> logger)
+    public SendSmsQueryHandler(IApplicationDbContext context, ISmsService smsService, ILogger<SmsService> logger)
     {
         _context = context;
         _smsService = smsService;
@@ -21,9 +21,16 @@ public class SendSmsQueryHandler : IRequestHandler<SendVerificationCodeSmsQuery,
     }
     public async Task<bool> Handle(SendVerificationCodeSmsQuery request, CancellationToken cancellationToken)
     {
-        if (request.PhoneNumber[0] != '+') request.PhoneNumber = "+" + request.PhoneNumber.Trim();
+        request.PhoneNumber = request.PhoneNumber.Trim();
+        if (request.PhoneNumber.Length == 9) request.PhoneNumber = "+992" + request.PhoneNumber.Trim();
+        else if (request.PhoneNumber.Length == 12 && request.PhoneNumber[0] != '+') request.PhoneNumber = "+" + request.PhoneNumber;
 
-        var response = await _smsService.SendSmsAsync(request.PhoneNumber, GenerateMessage(out int code));
+        if (!System.Text.RegularExpressions.Regex.IsMatch(request.PhoneNumber, @"^\+992\d{9}$"))
+        {
+            throw new FormatException("Phone number does not follow the required format.");
+        }
+
+        var response = await _smsService.SendSmsAsync(request.PhoneNumber[1..], GenerateMessage(out int code));
 
         if (!response) return false;
 
