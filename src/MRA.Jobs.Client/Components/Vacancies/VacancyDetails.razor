@@ -179,11 +179,11 @@ else
                                 <MudText Typo="Typo.body2">Write a cover letter, answer few questions and send your application!</MudText>
 
                             </MudCardContent>
-                            <MudCardActions>
+                            <MudCardActions Style="flex-direction: column">
 
                                 @if (applied)
                                 {
-                                    <a class="btn btn-primary w-100" href="@cvUrl"><MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>Download CV</a>
+                                    <a class="btn btn-primary w-100" style="margin-bottom: 10px" href="@cvUrl"><MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>Download CV</a>
                                     <a href="#" class="btn btn-secondary w-100 disabled">Applied</a>
                                 }
                                 else
