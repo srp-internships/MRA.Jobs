@@ -57,7 +57,7 @@ public class ApplicationService : IApplicationService
             {
                 case HttpStatusCode.OK:
                     _snackbar.Add("Applications sent successfully!", Severity.Success);
-                    _navigationManager.NavigateTo(_navigationManager.Uri, forceLoad: true);
+                    _navigationManager.NavigateTo(_navigationManager.Uri.Replace("/apply/","/"));
                     break;
                 case HttpStatusCode.Conflict:
                     _snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,

@@ -84,7 +84,20 @@
                 </ButtonTemplate>
             </MudFileUpload>
 
-            <button type="submit" class="btn mt-3" style="background-color: #129fd7; color: white; border: none">Apply</button>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="CreateApplication">
+                    @if (_processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                        <MudText Class="ms-2">Processing</MudText>
+                    }
+                    else
+                    {
+                        <MudText>Apply</MudText>
+                    }
+                </MudButton>
+
+            </MudCardActions>
         </EditForm>
     }
 </div>
@@ -108,6 +121,7 @@
     public IConfiguration Configuration { get; set; }
 
     private IBrowserFile _cv;
+    private bool _processing;
 
     protected override async void OnAfterRender(bool firstRender)
     {
@@ -132,8 +146,9 @@
         }).ToList();
 
         application.VacancyResponses = updatedResponses;
-
+        _processing = true;
         await ApplicationService.CreateApplication(application, _cv);
+        _processing = false;
     }
 
 }
