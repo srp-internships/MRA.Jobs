@@ -4,7 +4,7 @@ public class VacancyTaskDetail
     public Guid Id { get; set; }
     public Guid ApplicantId { get; set; }
     public Guid TaskId { get; set; }
-    public bool Success { get; init; }
+    public TaskSuccsess Success { get; set; }
     public string Codes { get; set; }
-
+    public string Log { get; set; }
 }

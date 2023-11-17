@@ -569,8 +569,11 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.Property<string>("Codes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Success")
-                        .HasColumnType("bit");
+                    b.Property<string>("Log")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Success")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("TaskId")
                         .HasColumnType("uniqueidentifier");
