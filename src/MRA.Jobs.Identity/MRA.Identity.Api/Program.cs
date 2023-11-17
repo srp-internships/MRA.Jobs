@@ -7,6 +7,7 @@ using MRA.Identity.Application.Contract.Skills.Command;
 using FluentValidation.AspNetCore;
 using MRA.Configurations.Initializer.Azure.Insight;
 using MRA.Configurations.Initializer.Azure.KeyVault;
+using System.Net;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,20 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssembly(typeof(RemoveUserSkillCommand).Assembly);
 
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Services.AddHttpsRedirection(options =>
+    {
+        options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+        options.HttpsPort = 443;
+    });
+}
+
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+    options.HttpsPort = 5001;
+});
 
 WebApplication app = builder.Build();
 
