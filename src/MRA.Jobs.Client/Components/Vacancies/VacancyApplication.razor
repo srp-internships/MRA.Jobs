@@ -85,7 +85,7 @@
             </MudFileUpload>
 
             <MudCardActions>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="CreateApplication">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
                     @if (_processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -148,6 +148,7 @@
         application.VacancyResponses = updatedResponses;
         _processing = true;
         await ApplicationService.CreateApplication(application, _cv);
+        Console.WriteLine(1+1);
         _processing = false;
     }
 

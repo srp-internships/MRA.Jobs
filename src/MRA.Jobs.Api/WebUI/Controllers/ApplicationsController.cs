@@ -7,11 +7,8 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug;
-using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationsByStatus;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Infrastructure.Identity;
-using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Web.Controllers;
 

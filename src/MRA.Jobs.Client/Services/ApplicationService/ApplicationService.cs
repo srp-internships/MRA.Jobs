@@ -51,13 +51,13 @@ public class ApplicationService : IApplicationService
             application.CvBytes = fileBytes;
             application.FileName = file.Name;
             //set cv
-            
+
             var response = await _httpClient.PostAsJsonAsync("/api/applications", application);
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
                     _snackbar.Add("Applications sent successfully!", Severity.Success);
-                    _navigationManager.NavigateTo(_navigationManager.Uri.Replace("/apply/","/"));
+                    _navigationManager.NavigateTo(_navigationManager.Uri.Replace("/apply/", "/"));
                     break;
                 case HttpStatusCode.Conflict:
                     _snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,
@@ -77,7 +77,7 @@ public class ApplicationService : IApplicationService
 
     private async Task<byte[]> GetFileBytesAsync(IBrowserFile file)
     {
-        if (file.Size <= int.Parse(_configuration["CvSettings:MaxFileSize"]!) * 1024)
+        if (file.Size <= int.Parse(_configuration["CvSettings:MaxFileSize"]!) * 1024 * 1024)
         {
             var ms = new MemoryStream();
             await file.OpenReadStream().CopyToAsync(ms);
@@ -122,7 +122,6 @@ public class ApplicationService : IApplicationService
 
     public async Task<string> GetCvLinkAsync(string slug)
     {
-        
         var applicationSlug = $"{await GetCurrentUserName()}-{slug}".ToLower().Trim();
         var app = await GetApplicationDetails(applicationSlug);
         if (app == null)

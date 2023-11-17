@@ -1,6 +1,4 @@
-﻿using ValidationException = MRA.Jobs.Application.Common.Exceptions.ValidationException;
-
-namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
+﻿namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
 using Common.Interfaces;
 using Common.Security;
