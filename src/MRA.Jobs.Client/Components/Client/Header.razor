@@ -1,11 +1,15 @@
 ﻿@inject AuthenticationStateProvider authProvider
 @inject ILocalStorageService localStorage
 @inject NavigationManager navigationManager
+@inject Blazorme.IStreamSaver StreamSaver
 @using MRA.Jobs.Client.Services.QuestPdfServices;
 @using Microsoft.AspNetCore.Components.Authorization
 @using MRA.Jobs.Client.Identity
-@using QuestPDF.Fluent;
+
 @using System.Diagnostics;
+@using QuestPDF.Fluent;
+@using QuestPDF.Helpers;
+@using QuestPDF.Infrastructure;
 
 <style>
 	@@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
@@ -106,7 +110,7 @@
 				</AuthorizeView>
 			</CascadingAuthenticationState>
 		</div>
-		<MudButton OnClick="CreateDocument">CV</MudButton>
+		<MudButton OnClick="CreatePdf">CV</MudButton>
 	</div>
 </nav>
 
@@ -115,6 +119,8 @@
 
 @code {
 
+
+
 	private async Task Logout()
 	{
 		await localStorage.RemoveItemAsync("authToken");
@@ -122,15 +128,16 @@
 		navigationManager.NavigateTo("/");
 	}
 
-	private void CreateDocument()
+	async Task CreatePdf()
 	{
-		var filePath = "invoice.pdf";
-
 		var model = InvoiceDocumentDataSource.GetInvoiceDetails();
 		var document = new InvoiceDocument(model);
-		document.GeneratePdf(filePath);
+		using var ms = new MemoryStream();
+		document.GeneratePdf(ms);
+		ms.Position = 0;
 
-		Process.Start("explorer.exe", filePath);
+		await using var output = await StreamSaver.CreateWritableFileStreamAsync("invoice.pdf");
+		await ms.CopyToAsync(output);
 	}
 
 }

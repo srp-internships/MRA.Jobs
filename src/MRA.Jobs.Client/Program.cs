@@ -80,4 +80,5 @@ builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
+builder.Services.AddScoped<Blazorme.IStreamSaver, Blazorme.StreamSaver>();
 await builder.Build().RunAsync();
