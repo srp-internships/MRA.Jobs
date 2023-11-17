@@ -60,6 +60,7 @@ using (var scope = app.Services.CreateScope())
 var applicationDbContextInitializer = app.Services.CreateAsyncScope().ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
 await applicationDbContextInitializer.SeedAsync();
 
+app.UseHttpsRedirection();
 app.UseCors("CORS_POLICY");
 
 app.UseAuthentication();
