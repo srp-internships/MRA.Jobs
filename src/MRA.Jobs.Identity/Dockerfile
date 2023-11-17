@@ -22,6 +22,8 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-EXPOSE 7245
+EXPOSE 5010/tcp
+
+ENV ASPNETCORE_URLS http://*:5010
 
 ENTRYPOINT ["dotnet", "MRA.Identity.Api.dll"]
