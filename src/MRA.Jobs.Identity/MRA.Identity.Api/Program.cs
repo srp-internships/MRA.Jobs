@@ -62,8 +62,6 @@ await applicationDbContextInitializer.SeedAsync();
 
 app.UseCors("CORS_POLICY");
 
-app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
