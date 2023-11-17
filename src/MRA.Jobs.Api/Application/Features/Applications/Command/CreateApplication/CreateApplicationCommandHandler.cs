@@ -51,9 +51,15 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         application.ApplicantId = _currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = _currentUserService.GetUserName() ?? string.Empty;
-
+        await _context.Applications.AddAsync(application, cancellationToken);
         foreach (var tResponses in application.TaskResponses)
         {
+            var s = new VacancyTaskDetail
+            {
+                ApplicantId = application.Id,
+                Codes = tResponses.Code,
+                TaskId = tResponses.TaksId,
+            };
             var task = _context.VacancyTasks.Where(v => v.Id == tResponses.TaksId);
             foreach (var VTasks in task)
             {
@@ -78,33 +84,20 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
                 {
                     using var response = await httpClient.SendAsync(r);
                     response.EnsureSuccessStatusCode();
-                    Console.WriteLine("Request was successful.");
-                    /// response.EnsureSuccessStatusCode();
-
                     string responseBody = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(responseBody);
                     var jsonDocument = JsonDocument.Parse(responseBody);
                     bool success = jsonDocument.RootElement.GetProperty("success").GetBoolean();
-
-                    var s = new VacancyTaskDetail
-                    {
-                        ApplicantId = application.Id,
-                        Codes = tResponses.Code,
-                        Success = success,
-                        TaskId = tResponses.TaksId,
-                    };
-                    await _context.VacancyTaskDetails.AddAsync(s, cancellationToken);
+                    s.Success = success ? TaskSuccsess.Success : TaskSuccsess.Failure;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //   throw new ValidationException($"Request failed: {ex.Message}");
-                    throw new Exception($"dotnet compiler don't work!");
-
+                    s.Success = TaskSuccsess.Error;
+                    s.Log = $"Something went wrong! Message={ex.Message},Data = {DateTime.Now} ";
                 }
             }
+            await _context.VacancyTaskDetails.AddAsync(s, cancellationToken);
         }
-        await _context.Applications.AddAsync(application, cancellationToken);
-
         ApplicationTimelineEvent timelineEvent = new()
         {
             ApplicationId = application.Id,
@@ -113,8 +106,6 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
             Note = "Job vacancy created",
             CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
-
-
 
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
