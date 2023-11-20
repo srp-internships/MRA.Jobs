@@ -18,11 +18,11 @@ WORKDIR "/src/MRA.Identity.Api"
 RUN dotnet build "MRA.Identity.Api.csproj" -c Release -o /app/build
 
 # Create the developer certificate and trust it
-RUN dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p test1234 \
+RUN dotnet dev-certs https -ep $HOME/.aspnet/https/aspnetapp.pfx -p test1234 \
     && dotnet dev-certs https --trust
 
 # Copy the developer certificate to the image
-COPY ["${HOME}/.aspnet/https/aspnetapp.pfx", "/https/aspnetapp.pfx"]
+COPY ["$HOME/.aspnet/https/aspnetapp.pfx", "/https/aspnetapp.pfx"]
 
 FROM build AS publish
 RUN dotnet publish "MRA.Identity.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
