@@ -20,6 +20,7 @@ using System.Reflection;
 using Microsoft.FeatureManagement;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Jobs.Client.Identity;
+using MRA.Jobs.Client.Services.FileService;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -79,5 +80,6 @@ builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
 await builder.Build().RunAsync();

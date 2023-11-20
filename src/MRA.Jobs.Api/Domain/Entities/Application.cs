@@ -19,4 +19,5 @@ public class Application : BaseAuditableEntity
     public string Slug { get; set; }
     public IEnumerable<VacancyResponse> VacancyResponses { get; set; }
 
+    public string CV { get; set; }
 }

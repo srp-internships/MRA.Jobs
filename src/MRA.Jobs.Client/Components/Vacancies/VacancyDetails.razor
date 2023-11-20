@@ -4,213 +4,258 @@
 @using MRA.Jobs.Client.CustomMethods;
 @using MRA.Jobs.Client.Identity;
 @using Microsoft.AspNetCore.Components.Authorization;
+@using System.Net
+@using Blazorise.Extensions
 @inject AuthenticationStateProvider provider
 @inject IApplicationService ApplicationService
 
 @if (vacancyDetails is null || vacancy == null)
 {
-	if (showLoader)
-	{
-		<div class="loader"></div>
-	}
+    if (showLoader)
+    {
+        <div class="loader"></div>
+    }
 }
 else
 {
-	<MudContainer Style="margin-top:25px;">
-		<MudGrid>
-			<MudItem xs="12" lg="9" sm="6" md="8">
-				<MudCard>
-					<MudCardHeader>
-						<CardHeaderContent>
-							<MudText Typo="Typo.h5"><b>@vacancyDetails.Title</b></MudText>
-							<MudText Typo="Typo.body2" Style="color:gray">
-								Posted @CustomConverter.GetDisplayPostedDate(vacancyDetails.PublishDate)
-							</MudText>
-						</CardHeaderContent>
-					</MudCardHeader>
-					<MudCardContent>
-						<MudDivider />
+    <MudContainer Style="margin-top:25px;">
+    <MudGrid>
+    <MudItem xs="12" lg="9" sm="6" md="8">
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5">
+                        <b>@vacancyDetails.Title</b>
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color:gray">
+                        Posted @CustomConverter.GetDisplayPostedDate(vacancyDetails.PublishDate)
+                    </MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudDivider/>
 
-						<MudText>@((MarkupString)@vacancyDetails.Description)</MudText>
-						</MudCardContent>
-						<MudCardContent Style="color:gray">
-							<MudDivider Style="padding:10px" />
-							<MudGrid Style="padding:10px 10px;">
-								@if (vacancyDetails.Duration != 0)
-							{
-								<MudItem lg="4" md="6" xs="6">
-									<MudGrid>
-										<MudItem Style="padding:0px;"><MudIcon Icon="@Icons.Material.Outlined.Timelapse" /></MudItem>
-										<MudItem Style="padding:0px;">
-											<MudText><b>@vacancyDetails.Duration month(s)</b></MudText>
-											<MudText Typo="Typo.body2"><small>Duration</small></MudText>
-										</MudItem>
-									</MudGrid>
-								</MudItem>
-							}
-							@if (vacancyDetails.Deadline != default(DateTime))
-							{
-								<MudItem lg="4" md="6" xs="6">
-									@{
-										var deadlineResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline);
-										var deadlineStyle = $"color:{deadlineResult.Color}";
+                <MudText>@((MarkupString)@vacancyDetails.Description)</MudText>
+            </MudCardContent>
+            <MudCardContent Style="color:gray">
+                <MudDivider Style="padding:10px"/>
+                <MudGrid Style="padding:10px 10px;">
+                    @if (vacancyDetails.Duration != 0)
+                    {
+                        <MudItem lg="4" md="6" xs="6">
+                            <MudGrid>
+                                <MudItem Style="padding:0px;">
+                                    <MudIcon Icon="@Icons.Material.Outlined.Timelapse"/>
+                                </MudItem>
+                                <MudItem Style="padding:0px;">
+                                    <MudText>
+                                        <b>@vacancyDetails.Duration month(s)</b>
+                                    </MudText>
+                                    <MudText Typo="Typo.body2">
+                                        <small>Duration</small>
+                                    </MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudItem>
+                    }
+                    @if (vacancyDetails.Deadline != default(DateTime))
+                    {
+                        <MudItem lg="4" md="6" xs="6">
+                            @{
+                                var deadlineResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline);
+                                var deadlineStyle = $"color:{deadlineResult.Color}";
 
-										<MudGrid Style="@deadlineStyle">
-											<MudItem Style="padding:0px;"><MudIcon Icon="@Icons.Material.Outlined.Alarm" /></MudItem>
-											<MudItem Style="padding:0px;">
-												<MudText><b>@deadlineResult.DisplayDate</b></MudText>
-												<MudText Typo="Typo.body2"><small>Deadline</small></MudText>
-											</MudItem>
-										</MudGrid>
-									}
-								</MudItem>
-							}
+                                <MudGrid Style="@deadlineStyle">
+                                    <MudItem Style="padding:0px;">
+                                        <MudIcon Icon="@Icons.Material.Outlined.Alarm"/>
+                                    </MudItem>
+                                    <MudItem Style="padding:0px;">
+                                        <MudText>
+                                            <b>@deadlineResult.DisplayDate</b>
+                                        </MudText>
+                                        <MudText Typo="Typo.body2">
+                                            <small>Deadline</small>
+                                        </MudText>
+                                    </MudItem>
+                                </MudGrid>
+                            }
+                        </MudItem>
+                    }
 
-							@if (vacancyDetails.RequiredYearOfExperience != 0)
-							{
-								<MudItem lg="4" md="6" xs="6">
-									<MudGrid>
-										<MudItem Style="padding:0px;"><MudIcon Icon="@Icons.Material.Outlined.Work" /></MudItem>
-										<MudItem Style="padding:0px;">
-											<MudText><b>@vacancyDetails.RequiredYearOfExperience year(s)</b></MudText>
-											<MudText Typo="Typo.body2"><small>Required year of experience</small></MudText>
-										</MudItem>
-									</MudGrid>
-								</MudItem>
-							}
-							@if (vacancyDetails.Fees != 0)
-							{
-								<MudItem lg="4" md="6" xs="6">
-									<MudGrid>
-										<MudItem Style="padding:0px;"><MudIcon Icon="@Icons.Material.Outlined.AttachMoney" /></MudItem>
-										<MudItem Style="padding:0px;">
-											<MudText><b>@vacancyDetails.Fees</b></MudText>
-											<MudText Typo="Typo.body2"><small>Fees</small></MudText>
-										</MudItem>
-									</MudGrid>
-								</MudItem>
-							}
+                    @if (vacancyDetails.RequiredYearOfExperience != 0)
+                    {
+                        <MudItem lg="4" md="6" xs="6">
+                            <MudGrid>
+                                <MudItem Style="padding:0px;">
+                                    <MudIcon Icon="@Icons.Material.Outlined.Work"/>
+                                </MudItem>
+                                <MudItem Style="padding:0px;">
+                                    <MudText>
+                                        <b>@vacancyDetails.RequiredYearOfExperience year(s)</b>
+                                    </MudText>
+                                    <MudText Typo="Typo.body2">
+                                        <small>Required year of experience</small>
+                                    </MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudItem>
+                    }
+                    @if (vacancyDetails.Fees != 0)
+                    {
+                        <MudItem lg="4" md="6" xs="6">
+                            <MudGrid>
+                                <MudItem Style="padding:0px;">
+                                    <MudIcon Icon="@Icons.Material.Outlined.AttachMoney"/>
+                                </MudItem>
+                                <MudItem Style="padding:0px;">
+                                    <MudText>
+                                        <b>@vacancyDetails.Fees</b>
+                                    </MudText>
+                                    <MudText Typo="Typo.body2">
+                                        <small>Fees</small>
+                                    </MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudItem>
+                    }
 
-							<MudItem lg="4" md="6" xs="6">
-								@{
-									var endDateResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate);
-									var endDatelineStyle = $"color:{endDateResult.Color}";
+                    <MudItem lg="4" md="6" xs="6">
+                        @{
+                            var endDateResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate);
+                            var endDatelineStyle = $"color:{endDateResult.Color}";
 
-									<MudGrid Style="@endDatelineStyle">
-										<MudItem Style="padding:0px;"><MudIcon Icon="@Icons.Material.Outlined.DateRange" /></MudItem>
-										<MudItem Style="padding:0px;">
-											<MudText><b>@endDateResult.DisplayDate</b></MudText>
-											<MudText Typo="Typo.body2"><small>End Date</small></MudText>
-										</MudItem>
-									</MudGrid>
-								}
-							</MudItem>
+                            <MudGrid Style="@endDatelineStyle">
+                                <MudItem Style="padding:0px;">
+                                    <MudIcon Icon="@Icons.Material.Outlined.DateRange"/>
+                                </MudItem>
+                                <MudItem Style="padding:0px;">
+                                    <MudText>
+                                        <b>@endDateResult.DisplayDate</b>
+                                    </MudText>
+                                    <MudText Typo="Typo.body2">
+                                        <small>End Date</small>
+                                    </MudText>
+                                </MudItem>
+                            </MudGrid>
+                        }
+                    </MudItem>
 
-						</MudGrid>
+                </MudGrid>
 
 
-					</MudCardContent>
-				</MudCard>
+            </MudCardContent>
+        </MudCard>
 
 
-			</MudItem>
+    </MudItem>
 
 
-			<MudItem xs="12" lg="3" sm="6" md="4" Class="fixed-bottom-sm">
-				@if (vacancyDetails.Deadline != default(DateTime) && (
-						CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
-						|| CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"
-						))
-				{
-					<MudCard>
-						<MudCardContent>
-							<MudText>Unfortunately, the deadline has already expired</MudText>
-							<MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" Disabled="true">Apply Now</MudButton>
-						</MudCardContent>
-					</MudCard>
-				}
-				else
-				{
-					<CascadingAuthenticationState>
-						<AuthorizeView>
-							<Authorized>
-								<MudCard>
-									<MudCardHeader>
-										<CardHeaderContent>
-											<MudText>Are you ready to take your career to the next level with <b> Silk Road Professionals</b>?</MudText>
+    <MudItem xs="12" lg="3" sm="6" md="4" Class="fixed-bottom-sm">
+        @if (vacancyDetails.Deadline != default && (
+            CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
+            || CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"
+            ))
+        {
+            <MudCard>
+                <MudCardContent>
+                    <MudText>Unfortunately, the deadline has already expired</MudText>
+                    <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" Disabled="true">Apply Now</MudButton>
+                </MudCardContent>
+            </MudCard>
+        }
+        else
+        {
+            <CascadingAuthenticationState>
+                <AuthorizeView>
+                    <Authorized>
+                        <MudCard>
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText>Are you ready to take your career to the next level with <b> Silk Road Professionals</b>?</MudText>
 
-										</CardHeaderContent>
-									</MudCardHeader>
-									<MudCardContent>
-										<MudText Typo="Typo.body2">Write a cover letter, answer few questions and send your application!</MudText>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <MudText Typo="Typo.body2">Write a cover letter, answer few questions and send your application!</MudText>
 
-									</MudCardContent>
-									<MudCardActions>
+                            </MudCardContent>
+                            <MudCardActions Style="flex-direction: column">
 
-										@if (applied)
-										{
-											<a href="#" class="btn btn-secondary w-100 disabled">Applied</a>
-										}
-										else
-										{
-											<a href="/@vacancy/apply/@Slug" class="btn btn-primary w-100" style="background:#129fd7; border: none"><b>Apply Now</b></a>
-										}
+                                @if (applied)
+                                {
+                                    <a class="btn btn-primary w-100" style="margin-bottom: 10px" href="@cvUrl"><MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>Download CV</a>
+                                    <a href="#" class="btn btn-secondary w-100 disabled">Applied</a>
+                                }
+                                else
+                                {
+                                    <a href="/@vacancy/apply/@Slug" class="btn btn-primary w-100" style="background:#129fd7; border: none">
+                                        <b>Apply Now</b>
+                                    </a>
+                                }
 
-									</MudCardActions>
-								</MudCard>
-							</Authorized>
-							<NotAuthorized>
-								<MudCard>
-									<MudCardHeader>
-										<MudText>
-											Explore <b>Silk Road Professionals</b> opportunities
-										</MudText>
-									</MudCardHeader>
-									<MudCardActions>
-										<a href="sign-up" class="btn btn-primary" style="width:100%; background-color:#129fd7; border: none "><b>Sign Up</b></a>
-									</MudCardActions>
-									<MudText Typo="Typo.body2" Style="padding:0px 10px 10px 10px">
-										Already have an account? <a href="/sign-in?returnUrl=@vacancy|@Slug" style="color:#129fd7"><b>Sign In</b></a>
-									</MudText>
-								</MudCard>
-							</NotAuthorized>
-						</AuthorizeView>
-					</CascadingAuthenticationState>
-				}
-			</MudItem>
-		</MudGrid>
-	</MudContainer>
-
+                            </MudCardActions>
+                        </MudCard>
+                    </Authorized>
+                    <NotAuthorized>
+                        <MudCard>
+                            <MudCardHeader>
+                                <MudText>
+                                    Explore <b>Silk Road Professionals</b> opportunities
+                                </MudText>
+                            </MudCardHeader>
+                            <MudCardActions>
+                                <a href="sign-up" class="btn btn-primary" style="width:100%; background-color:#129fd7; border: none ">
+                                    <b>Sign Up</b>
+                                </a>
+                            </MudCardActions>
+                            <MudText Typo="Typo.body2" Style="padding:0px 10px 10px 10px">
+                                Already have an account?
+                                <a href="/sign-in?returnUrl=@vacancy|@Slug" style="color:#129fd7">
+                                    <b>Sign In</b>
+                                </a>
+                            </MudText>
+                        </MudCard>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </CascadingAuthenticationState>
+        }
+    </MudItem>
+    </MudGrid>
+    </MudContainer>
 }
 
 @code {
-	private bool showLoader = false;
-	[Parameter]
-	public string Slug { get; set; }
+    private bool showLoader = false;
 
-	[Parameter]
-	public VacancyDetailsResponse vacancyDetails { get; set; }
+    [Parameter]
+    public string Slug { get; set; }
 
-	[Parameter]
-	public string vacancy { get; set; }
+    private string cvUrl;
 
-	public bool applied { get; set; }
+    [Parameter]
+    public VacancyDetailsResponse vacancyDetails { get; set; }
 
-	protected override async void OnAfterRender(bool firstRender)
-	{
-		try
-		{
-			if (firstRender)
-			{
-				applied = await ApplicationService.ApplicationExist(Slug);
-				await Task.Delay(1000);
-				showLoader = true;
-				StateHasChanged();
-			}
-		}
-		catch (Exception)
-		{
-		}
+    [Parameter]
+    public string vacancy { get; set; }
 
-	}
+    public bool applied { get; set; }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                cvUrl = await ApplicationService.GetCvLinkAsync(Slug);
+                applied = !cvUrl.IsNullOrEmpty();
+                await Task.Delay(1000);
+                showLoader = true;
+                StateHasChanged();
+            }
+        }
+        catch (Exception)
+        {
+        }
+    }
+
 }
