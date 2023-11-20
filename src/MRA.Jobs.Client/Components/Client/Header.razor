@@ -1,11 +1,8 @@
 ﻿@inject AuthenticationStateProvider authProvider
 @inject ILocalStorageService localStorage
 @inject NavigationManager navigationManager
-@using MRA.Jobs.Client.Services.QuestPdfServices;
 @using Microsoft.AspNetCore.Components.Authorization
 @using MRA.Jobs.Client.Identity
-@using QuestPDF.Fluent;
-@using System.Diagnostics;
 
 <style>
 	@@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
@@ -106,7 +103,6 @@
 				</AuthorizeView>
 			</CascadingAuthenticationState>
 		</div>
-		<MudButton OnClick="CreateDocument">CV</MudButton>
 	</div>
 </nav>
 
@@ -120,17 +116,6 @@
 		await localStorage.RemoveItemAsync("authToken");
 		await authProvider.GetAuthenticationStateAsync();
 		navigationManager.NavigateTo("/");
-	}
-
-	private void CreateDocument()
-	{
-		var filePath = "invoice.pdf";
-
-		var model = InvoiceDocumentDataSource.GetInvoiceDetails();
-		var document = new InvoiceDocument(model);
-		document.GeneratePdf(filePath);
-
-		Process.Start("explorer.exe", filePath);
 	}
 
 }
