@@ -19,8 +19,12 @@ public class CreateApplicationCommandTest : Testing
         {
             VacancyId = vacancyId,
             CoverLetter = RandomString(150),
-            CvBytes = new byte[]{1,2,3},
-            FileName = "213.bytes"
+            Cv =
+            {
+                IsUploadCvMode = true,
+                CvBytes = new byte[]{1,2,3},
+                FileName = "213.bytes"
+            }
         };
         RunAsDefaultUserAsync();
         var response = await _httpClient.PostAsJsonAsync("/api/applications", testSubmit);
@@ -45,8 +49,12 @@ public class CreateApplicationCommandTest : Testing
                 new VacancyResponseDto { VacancyQuestion = new VacancyQuestionDto{ Question = "How old are you?"}, Response = "56"},
                 new VacancyResponseDto {VacancyQuestion = new VacancyQuestionDto{ Question = "What is your English proficiency level?"}, Response = "Beginner"}
             },
-            CvBytes = new byte[]{1,2,3},
-            FileName = "213.bytes"
+            Cv =
+            {
+                IsUploadCvMode = true,
+                CvBytes = new byte[]{1,2,3},
+                FileName = "213.bytes"
+            }
         };
         
         RunAsDefaultUserAsync();
@@ -102,8 +110,12 @@ public class CreateApplicationCommandTest : Testing
             CoverLetter = RandomString(200),
             VacancyId = jobId,
             VacancyResponses = null,
-            CvBytes = new byte[]{1,2,3},
-            FileName = "213.bytes"
+            Cv =
+            {
+                IsUploadCvMode = true,
+                CvBytes = new byte[]{1,2,3},
+                FileName = "213.bytes"
+            }
         };
         
         await _httpClient.PostAsJsonAsync("/api/applications", createCommand);

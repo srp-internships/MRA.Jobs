@@ -21,7 +21,7 @@ public class CreateApplicationCommandHandlerTests : BaseTestFixture
             _slugGenerator.Object,
             _emailServiceMock.Object,
             _htmlServiceMock.Object,
-            _fileService);
+            _cvService.Object);
     }
 
     [Test]

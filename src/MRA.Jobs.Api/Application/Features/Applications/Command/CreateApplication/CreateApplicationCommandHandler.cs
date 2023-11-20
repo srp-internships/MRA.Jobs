@@ -17,13 +17,13 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly ISlugGeneratorService _slugService;
     private readonly MRA.Configurations.Common.Interfaces.Services.IEmailService _emailService;
     private readonly IHtmlService _htmlService;
-    private readonly IFileService _fileService;
+    private readonly ICvService _cvService;
+    
 
 
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
         ICurrentUserService currentUserService, ISlugGeneratorService slugService,
-        MRA.Configurations.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService,
-        IFileService fileService)
+        MRA.Configurations.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService, ICvService cvService)
     {
         _context = context;
         _mapper = mapper;
@@ -32,7 +32,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         _slugService = slugService;
         _emailService = emailService;
         _htmlService = htmlService;
-        _fileService = fileService;
+        _cvService = cvService;
     }
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
@@ -48,7 +48,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         application.ApplicantId = _currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = _currentUserService.GetUserName() ?? string.Empty;
-        application.CV = await _fileService.UploadAsync(request.CvBytes, request.FileName);
+        application.CV = await _cvService.GetCvByCommandAsync(ref request);
 
         await _context.Applications.AddAsync(application, cancellationToken);
 

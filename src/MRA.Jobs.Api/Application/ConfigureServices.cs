@@ -2,11 +2,10 @@
 using AutoMapper.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MRA.Jobs.Application.ApplicationServices;
 using MRA.Jobs.Application.Common.Behaviours;
 using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Common.SlugGeneratorService;
-
-
 using Sieve.Services;
 
 namespace MRA.Jobs.Application;
@@ -33,6 +32,8 @@ public static class ConfigureServices
       
         services.AddScoped<ISieveCustomFilterMethods, SieveCustomFilterMethods>();
         services.AddScoped<IApplicationSieveProcessor, ApplicationSieveProcessor>();
+        
+        services.AddScoped<ICvService, CvService>();
         return services;
     }
 }

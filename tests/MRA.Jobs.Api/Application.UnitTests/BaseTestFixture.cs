@@ -15,12 +15,11 @@ public abstract class BaseTestFixture
     protected Mock<ISlugGeneratorService> _slugGenerator;
     protected Mock<IEmailService> _emailServiceMock;
     protected Mock<IHtmlService> _htmlServiceMock;
-    protected IFileService _fileService;
-
+    protected Mock<ICvService> _cvService;
     [SetUp]
     public virtual void Setup()
     {
-        _fileService = new FileService();
+        _cvService = new Mock<ICvService>();
         _dbContextMock = new Mock<IApplicationDbContext>();
         _dateTimeMock = new Mock<IDateTime>();
         _slugGenerator = new Mock<ISlugGeneratorService>();
