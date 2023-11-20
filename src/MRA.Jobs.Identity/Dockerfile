@@ -17,6 +17,7 @@ COPY . .
 WORKDIR "/src/MRA.Identity.Api"
 RUN dotnet build "MRA.Identity.Api.csproj" -c Release -o /app/build
 
+COPY ["%USERPROFILE%/.aspnet/https/aspnetapp.pfx", "/https/aspnetapp.pfx"]
 RUN dotnet dev-certs https --trust
 
 FROM build AS publish
