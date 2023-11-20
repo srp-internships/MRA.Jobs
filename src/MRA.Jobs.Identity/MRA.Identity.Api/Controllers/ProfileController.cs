@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MRA.Identity.Application.Contract.CV;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Delete;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
@@ -143,17 +144,13 @@ public class ProfileController : ControllerBase
     {
         var result = await _mediator.Send(new GetAllExperienceQuery());
         return Ok(result);
-    }   
+    }
 
-    [HttpGet("pdf")]
-    [AllowAnonymous]
-    public async Task<ActionResult> Pdf()
+    [HttpGet("GenerateCV")]
+    public async Task<ActionResult> GenerateCV()
     {
-        var ser = new PdfGeneratorService();
-        var stream = new MemoryStream();
-        ser.GenarateCodument(stream);
-        stream.Position = 0; // Reset the stream position to the beginning
-        return File(stream, "application/pdf", "myReport.pdf");
+        var result = await _mediator.Send(new CVGenerateQuery());
+        return File(result, "application/pdf", "cv.pdf");
     }
 
 }
