@@ -143,14 +143,17 @@ public class ProfileController : ControllerBase
     {
         var result = await _mediator.Send(new GetAllExperienceQuery());
         return Ok(result);
-    }
+    }   
 
     [HttpGet("pdf")]
     [AllowAnonymous]
     public async Task<ActionResult> Pdf()
     {
         var ser = new PdfGeneratorService();
-        ser.GenarateCodument();
-        return Ok(ser);
+        var stream = new MemoryStream();
+        ser.GenarateCodument(stream);
+        stream.Position = 0; // Reset the stream position to the beginning
+        return File(stream, "application/pdf", "myReport.pdf");
     }
+
 }

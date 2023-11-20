@@ -10,15 +10,9 @@ using QuestPDF.Infrastructure;
 namespace MRA.Identity.Infrastructure.PDF;
 public class PdfGeneratorService
 {
-    public void GenarateCodument()
+    public void GenarateCodument(Stream stream)
     {
         QuestPDF.Settings.License = LicenseType.Community;
-        string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CV");
-        if (!Directory.Exists(folderPath))
-        {
-            Directory.CreateDirectory(folderPath);
-        }
-        string filePath = Path.Combine(folderPath, "hello.pdf");
 
         Document.Create(container =>
         {
@@ -52,7 +46,8 @@ public class PdfGeneratorService
                     });
             });
         })
-.GeneratePdf(filePath);
-
+        .GeneratePdf(stream);
     }
+
+
 }
