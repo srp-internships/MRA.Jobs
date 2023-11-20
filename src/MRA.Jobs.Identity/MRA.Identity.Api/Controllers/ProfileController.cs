@@ -14,6 +14,7 @@ using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Queries;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Queries;
+using MRA.Identity.Infrastructure.PDF;
 
 namespace MRA.Identity.Api.Controllers;
 
@@ -137,9 +138,19 @@ public class ProfileController : ControllerBase
 
 
     [HttpGet("GetAllExperiences")]
+
     public async Task<IActionResult> GetAllExperiences()
     {
         var result = await _mediator.Send(new GetAllExperienceQuery());
         return Ok(result);
+    }
+
+    [HttpGet("pdf")]
+    [AllowAnonymous]
+    public async Task<ActionResult> Pdf()
+    {
+        var ser = new PdfGeneratorService();
+        ser.GenarateCodument();
+        return Ok(ser);
     }
 }

@@ -18,6 +18,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.13" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.13" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
+        <PackageReference Include="QuestPDF" Version="2023.10.2" />
     </ItemGroup>
 
 </Project>
