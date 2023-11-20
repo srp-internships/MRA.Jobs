@@ -22,7 +22,7 @@ RUN dotnet dev-certs https -ep ~/.aspnet/https/aspnetapp.pfx -p test1234 \
     && dotnet dev-certs https --trust
 
 # Copy the developer certificate to the image
-COPY ["~/.aspnet/https/aspnetapp.pfx", "/https/aspnetapp.pfx"]
+COPY ["${HOME}/.aspnet/https/aspnetapp.pfx", "/https/aspnetapp.pfx"]
 
 FROM build AS publish
 RUN dotnet publish "MRA.Identity.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
