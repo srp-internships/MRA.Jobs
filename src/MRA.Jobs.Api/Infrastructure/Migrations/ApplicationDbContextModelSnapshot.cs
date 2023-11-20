@@ -61,6 +61,9 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.Property<DateTime>("AppliedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CV")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CoverLetter")
                         .HasColumnType("nvarchar(max)");
 
