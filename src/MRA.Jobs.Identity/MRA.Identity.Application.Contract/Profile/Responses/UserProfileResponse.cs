@@ -12,5 +12,4 @@ public class UserProfileResponse
     public string Email { get; set; }
     public bool EmailConfirmed { get; init; }
     public bool PhoneNumberConfirmed { get; init; }
-
 }

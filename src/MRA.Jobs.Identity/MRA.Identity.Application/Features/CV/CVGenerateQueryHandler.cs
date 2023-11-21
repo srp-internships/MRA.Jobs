@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Runtime.CompilerServices;
+using MediatR;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
@@ -40,7 +41,7 @@ public class CVGenerateQueryHandler : IRequestHandler<CVGenerateQuery, MemoryStr
         var userProfile = await _mediator.Send(new GetPofileQuery());
         var userSkills = await _mediator.Send(new GetUserSkillsQuery());
         var userEducations = await _mediator.Send(new GetEducationsByUserQuery());
-        var userExperience= await _mediator.Send(new GetExperiencesByUserQuery());
+        var userExperience = await _mediator.Send(new GetExperiencesByUserQuery());
 
         InvoiceDocument document = new InvoiceDocument(userProfile, userSkills,
             userEducations, userExperience);
@@ -181,5 +182,39 @@ public class CVGenerateQueryHandler : IRequestHandler<CVGenerateQuery, MemoryStr
             });
         }
 
+    }
+
+    public class EducationsComponent : IComponent
+    {
+        private readonly UserEducationResponse _userEducationResponse;
+
+        public EducationsComponent(UserEducationResponse userEducationResponse)
+        {
+            _userEducationResponse = userEducationResponse;
+        }
+        public void Compose(IContainer container)
+        {
+            container.Column(column =>
+            {
+                column.Spacing(2);
+                column.Item().BorderBottom(1).PaddingBottom(5)
+                .Text(_userEducationResponse.Speciality).SemiBold();
+
+                column.Item().Text(_userEducationResponse.University);
+                column.Item().Text(_userEducationResponse.StartDate.HasValue ?
+                                    $"Start Date: {_userEducationResponse.StartDate.Value.ToString("dd.MM.yyyy")}" :
+                                    "Start Date: Not available");
+                if (_userEducationResponse.UntilNow == false)
+                {
+                    column.Item().Text(_userEducationResponse.EndDate.HasValue ?
+                                       $"End Date: {_userEducationResponse.EndDate.Value.ToString("dd.MM.yyyy")}" :
+                                       "End Date: Not available");
+                }
+                else
+                {
+                    column.Item().Text("Until Now");
+                }
+            });
+        }
     }
 }
