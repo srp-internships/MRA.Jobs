@@ -20,7 +20,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly ISlugGeneratorService _slugService;
     private readonly MRA.Configurations.Common.Interfaces.Services.IEmailService _emailService;
     private readonly IHtmlService _htmlService;
-    static readonly HttpClient httpClient = new HttpClient();
+    private readonly HttpClient _httpClient = new();
     private readonly ICvService _cvService;
 
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
@@ -39,7 +39,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
-        httpClient.DefaultRequestHeaders.Add("API_KEY", "123");
+        _httpClient.DefaultRequestHeaders.Add("API_KEY", "123");
         var vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
         _ = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
         var application = _mapper.Map<Application>(request);
@@ -63,7 +63,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
                 TaskId = tResponses.TaksId,
             };
             var task = _context.VacancyTasks.Where(v => v.Id == tResponses.TaksId);
-            foreach (var VTasks in task)
+            foreach (var vTasks in task)
             {
                 var r = new HttpRequestMessage
                 {
@@ -72,7 +72,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
                     Content = new StringContent(
                         $@"{{
                     ""codes"": [
-                        ""{VTasks.Test}"",
+                        ""{vTasks.Test}"",
                         ""{tResponses.Code}""
                     ],
                     ""dotNetVersionInfo"": {{
@@ -84,9 +84,9 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
                 try
                 {
-                    using var response = await httpClient.SendAsync(r);
+                    using var response = await _httpClient.SendAsync(r, cancellationToken);
                     response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
+                    string responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
                     Console.WriteLine(responseBody);
                     var jsonDocument = JsonDocument.Parse(responseBody);
                     bool success = jsonDocument.RootElement.GetProperty("success").GetBoolean();
