@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\Reviewer\" />
+      <_ContentIncludedByDefault Remove="Pages\File\FileUpload.razor" />
     </ItemGroup>
 
 </Project>

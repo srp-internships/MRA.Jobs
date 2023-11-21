@@ -32,6 +32,7 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
         var trainingVacancy = await _context.TrainingVacancies
            .Include(i => i.Category)
            .Include(i => i.VacancyQuestions)
+           .Include(i => i.VacancyTasks)
            .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken);
         _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Slug);
 

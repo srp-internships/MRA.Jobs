@@ -1,5 +1,6 @@
 ﻿using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Common.SlugGeneratorService;
+using MRA.Jobs.Infrastructure.Services;
 using IEmailService = MRA.Configurations.Common.Interfaces.Services.IEmailService;
 
 namespace MRA.Jobs.Application.UnitTests;
@@ -14,11 +15,11 @@ public abstract class BaseTestFixture
     protected Mock<ISlugGeneratorService> _slugGenerator;
     protected Mock<IEmailService> _emailServiceMock;
     protected Mock<IHtmlService> _htmlServiceMock;
-    
-
+    protected Mock<ICvService> _cvService;
     [SetUp]
     public virtual void Setup()
     {
+        _cvService = new Mock<ICvService>();
         _dbContextMock = new Mock<IApplicationDbContext>();
         _dateTimeMock = new Mock<IDateTime>();
         _slugGenerator = new Mock<ISlugGeneratorService>();

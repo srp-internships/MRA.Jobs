@@ -6,12 +6,12 @@ using MRA.Identity.Application.Contract.Educations.Query;
 using MRA.Identity.Application.Contract.Educations.Responses;
 
 namespace MRA.Identity.Application.Features.Educations.Queries;
-public class GetAddEducationsQueryHandler : IRequestHandler<GetAllEducationsQuery, List<UserEducationResponse>>
+public class GetAllEducationsQueryHandler : IRequestHandler<GetAllEducationsQuery, List<UserEducationResponse>>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
 
-    public GetAddEducationsQueryHandler(IApplicationDbContext dbContext, IMapper mapper)
+    public GetAllEducationsQueryHandler(IApplicationDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
         _mapper = mapper;

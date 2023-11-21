@@ -14,14 +14,14 @@
 }
 else
 {
-	<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" vacancy="@job" />
+	<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" taskResponses="@tasksResponses" vacancy="@job" />
 }
 @code {
 	private bool serverError;
-
 	private VacancyApplicationResponse job;
 	private CreateApplicationCommand application;
 	public Dictionary<string, string> questionResponses = new();
+	public Dictionary<string, string> tasksResponses = new();
 
 	[Parameter]
 	public string Slug { get; set; }
@@ -30,7 +30,6 @@ else
 	{
 		try
 		{
-
 			var response = await VacancyService.GetBySlug(Slug);
 
 			if (response != null)
@@ -39,8 +38,12 @@ else
 					{
 						Id = response.Id,
 						Title = response.Title,
+						EndDate=response.EndDate,
+						PublishDate=response.PublishDate,
+						RequiredYearOfExperience = response.RequiredYearOfExperience,
 						Description=response.Description,
-						VacancyQuestions = response.VacancyQuestions
+						VacancyQuestions = response.VacancyQuestions,
+						VacancyTasks = response.VacancyTasks
 					};
 				application = new CreateApplicationCommand
 					{
@@ -48,11 +51,20 @@ else
 						VacancyResponses = job.VacancyQuestions.Select(q => new VacancyResponseDto
 						{
 							VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+						}),
+						TaskResponses = job.VacancyTasks.Select(t => new TaskResponseDto
+						{
+							TaskId = t.Id,
+							Code = t.Template
 						})
 					};
 				foreach (var question in job.VacancyQuestions)
 				{
 					questionResponses[question.Question] = "";
+				}
+				foreach (var task in job.VacancyTasks)
+				{
+					tasksResponses[task.Title] = task.Template;
 				}
 			}
 		}

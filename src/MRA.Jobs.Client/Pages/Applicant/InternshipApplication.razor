@@ -13,15 +13,16 @@
 }
 else
 {
-	<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" vacancy="@internship" />
+	<VacancyApplication Slug="@Slug" application="@application" taskResponses="@tasksResponses" questionResponses="@questionResponses" vacancy="@internship" />
 }
 
 @code {
 	private bool serverError;
-
 	private VacancyApplicationResponse internship;
 	private CreateApplicationCommand application;
 	public Dictionary<string, string> questionResponses = new();
+	public Dictionary<string, string> tasksResponses = new();
+
 
 	[Parameter]
 	public string Slug { get; set; }
@@ -38,8 +39,12 @@ else
 					{
 						Id = response.Id,
 						Title = response.Title,
-						Description=response.Description,
-						VacancyQuestions = response.VacancyQuestions
+						PublishDate = response.PublishDate,
+						EndDate = response.EndDate,
+						Duration = response.Duration,
+						Stipend = response.Stipend,
+						VacancyQuestions = response.VacancyQuestions,
+						VacancyTasks = response.VacancyTasks
 					};
 				application = new CreateApplicationCommand
 					{
@@ -47,12 +52,22 @@ else
 						VacancyResponses = internship.VacancyQuestions.Select(q => new VacancyResponseDto
 						{
 							VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+						}),
+						TaskResponses = internship.VacancyTasks.Select(t => new TaskResponseDto
+						{
+							TaskId = t.Id,
+							Code = t.Template
 						})
+
 					};
 
 				foreach (var question in internship.VacancyQuestions)
 				{
 					questionResponses[question.Question] = "";
+				}
+				foreach (var task in internship.VacancyTasks)
+				{
+					tasksResponses[task.Title] = task.Template;
 				}
 			}
 		}

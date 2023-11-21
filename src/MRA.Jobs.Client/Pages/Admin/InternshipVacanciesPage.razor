@@ -195,10 +195,15 @@ else
 	string UpdateSlug;
 	private string selectedCategory { get; set; } = "";
 	private string newQuestion = string.Empty;
-
+	private string newDescription = string.Empty;
+	private string newTemplate = string.Empty;
+	private string newTest = string.Empty;
+	private string newTitle = string.Empty;
 	private List<VacancyQuestionDto> Questions = new();
 	private List<CategoryResponse> categories;
 	private List<InternshipVacancyListResponse> interships;
+	private List<VacancyTaskDto> Tasks = new();
+	
 
 	private TimeSpan? applicationDeadlineTime;
 	private TimeSpan? publishDate_Time;
@@ -272,9 +277,16 @@ else
 						Question = v.Question
 					}
 			).ToList();
+			Tasks = vacancy.VacancyTasks.Select(v =>
+				new VacancyTaskDto
+					{
+						Title = v.Title,
+						Description = v.Description,
+						Template = v.Template,
+						Test = v.Test
+					}).ToList();
 		}
 	}
-
 	private void RemoveQuestion(string question)
 	{
 		var q = Questions.FirstOrDefault(t => t.Question == question);
@@ -296,12 +308,17 @@ else
 		}
 
 	}
-
+	private void RemoveTask(string title)
+	{
+		var r = Tasks.FirstOrDefault(t => t.Title == title);
+		Tasks.Remove(r);
+	}
 	private async Task HandleSubmit()
 	{
 		var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
 		internshipService.createCommand.CategoryId = catId;
 		internshipService.createCommand.VacancyQuestions = Questions;
+
 		if (applicationDeadlineTime.HasValue)
 			internshipService.createCommand.ApplicationDeadline = internshipService.createCommand.ApplicationDeadline + applicationDeadlineTime.Value;
 
@@ -312,6 +329,7 @@ else
 			internshipService.createCommand.ApplicationDeadline = internshipService.createCommand.PublishDate + publishDate_Time.Value;
 		try
 		{
+			internshipService.createCommand.VacancyTasks = Tasks;
 			var result = await internshipService.Create();
 			if (result.IsSuccessStatusCode)
 			{
@@ -328,11 +346,12 @@ else
 		{
 			Snackbar.Add("Server is not responding, try latter", Severity.Error);
 		}
-	}
 
+	}
 	private async Task HandleUpdate()
 	{
 		internshipService.createCommand.VacancyQuestions = Questions;
+		internshipService.createCommand.VacancyTasks = Tasks;
 		var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
 		internshipService.createCommand.CategoryId = catId;
 		try
@@ -364,14 +383,27 @@ else
 			newQuestion = "";
 		}
 	}
-
-
+	public void AddTask()
+	{
+		Tasks.Add(new VacancyTaskDto
+			{
+				Title = newTitle,
+				Description = newDescription,
+				Template = newTemplate,
+				Test = newTest
+			});
+		newTitle = "";
+		newDescription = "";
+		newTemplate = "";
+		newTest = "";
+	}
 	private async Task OnKeyDown(KeyboardEventArgs e)
 	{
 		if (e.Code == "Enter")
 		{
 			await Task.Delay(1);
 			AddQuestions();
+			AddTask();
 		}
 	}
 
@@ -379,7 +411,6 @@ else
 	{
 		Clear();
 	}
-
 	private void Clear()
 	{
 		createOrEditHeader = "New Internship Vacancy";
@@ -399,5 +430,6 @@ else
 		applicationDeadlineTime = DateTime.Now.TimeOfDay;
 		publishDate_Time = DateTime.Now.TimeOfDay;
 		endDate_Time = DateTime.Now.TimeOfDay;
+		Tasks.Clear();
 	}
 }
