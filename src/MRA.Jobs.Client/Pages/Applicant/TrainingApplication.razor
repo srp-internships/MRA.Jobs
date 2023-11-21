@@ -14,15 +14,15 @@
 }
 else
 {
-	<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" vacancy="@training" />
+	<VacancyApplication Slug="@Slug" application="@application" questionResponses="@questionResponses" taskResponses="@tasksResponses" vacancy="@training" />
 }
 
 @code {
 	private bool serverError;
-
 	private VacancyApplicationResponse training;
 	private CreateApplicationCommand application;
 	public Dictionary<string, string> questionResponses = new();
+	public Dictionary<string, string> tasksResponses = new();
 
 	[Parameter]
 	public string Slug { get; set; }
@@ -33,28 +33,37 @@ else
 		{
 			var response = await _trainingService.GetBySlug(Slug);
 
-			if (response != null)
-			{
-				training = new VacancyApplicationResponse
+		if (response != null)
+		{
+			training = new VacancyApplicationResponse
+				{
+					Id = response.Id,
+					Title = response.Title,
+					VacancyTasks=response.VacancyTasks,
+					VacancyQuestions = response.VacancyQuestions
+				};
+			application = new CreateApplicationCommand
+				{
+					VacancyId = training.Id,
+					VacancyResponses = training.VacancyQuestions.Select(q => new VacancyResponseDto
 					{
-						Id = response.Id,
-						Title = response.Title,
-						Description=response.Description,
-						VacancyQuestions = response.VacancyQuestions
-					};
-				application = new CreateApplicationCommand
+						VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+					}),
+					TaskResponses = training.VacancyTasks.Select(t => new TaskResponseDto
 					{
-						VacancyId = training.Id,
-						VacancyResponses = training.VacancyQuestions.Select(q => new VacancyResponseDto
-						{
-							VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
-						})
-					};
+						TaskId = t.Id,
+						Code = t.Template
+					})
+				};
 
 				foreach (var question in training.VacancyQuestions)
 				{
 					questionResponses[question.Question] = "";
 				}
+				foreach (var task in training.VacancyTasks)
+                {
+	            tasksResponses[task.Title] = task.Template;
+                }
 			}
 		}
 		catch (Exception)

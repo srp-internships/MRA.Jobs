@@ -72,6 +72,22 @@
                     </MudCardContent>
                 </MudCard>
             }
+            @if (vacancy.VacancyTasks.Count() > 0)
+      {
+	<MudCard>
+		<MudCardContent>
+			<MudText Style="color:gray"><b>vacancy.VacancyTasks</b></MudText>
+			<br />
+			@foreach (var task in vacancy.VacancyTasks)
+			{
+				<MudDivider />
+				<p><label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label></p>
+				<p><label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label></p>
+				<MudTextField T="string" Label="Code" Variant="Variant.Outlined" Lines="8" @bind-Value=@taskResponses[task.Title] />
+			}
+		</MudCardContent>
+	</MudCard>
+       }
             <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
                 <ButtonTemplate Context="anotherContext">
                     <MudButton HtmlTag="label"
@@ -114,8 +130,10 @@
     [Parameter]
     public string Slug { get; set; }
 
-    [Parameter]
-    public Dictionary<string, string> questionResponses { get; set; }
+	[Parameter]
+	public Dictionary<string, string> questionResponses { get; set; }
+	[Parameter]
+	public Dictionary<string, string> taskResponses { get; set; }
 
     [Inject]
     public IConfiguration Configuration { get; set; }
@@ -144,6 +162,18 @@
         {
             VacancyQuestion = vr.VacancyQuestion, Response = questionResponses[vr.VacancyQuestion.Question]
         }).ToList();
+       var updateTaskResponses = new List<TaskResponseDto>();
+       foreach (var task in vacancy.VacancyTasks)
+        {
+    	var updateTaskResponse = new TaskResponseDto
+		{
+			TaskId = task.Id,
+			Code=taskResponses[task.Title]
+		};
+	    updateTaskResponses.Add(updateTaskResponse);
+        }
+       application.TaskResponses = updateTaskResponses;
+
 
         application.VacancyResponses = updatedResponses;
         _processing = true;

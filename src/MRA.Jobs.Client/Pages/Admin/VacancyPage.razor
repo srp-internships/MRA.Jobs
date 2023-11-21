@@ -70,6 +70,22 @@ else
 					}
 					<MudTextField @bind-Value="newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
 				</MudPaper>
+				<MudPaper Class="p-2 mb-2">
+	<MudText Typo="Typo.caption">Vacancy Tasks</MudText>
+	@foreach (var task in Tasks)
+	{
+		<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Title<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveTask(task.Title)" aria-label="delete"></MudIconButton></MudText>
+		<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Description</MudText>
+		<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Template</MudText>
+		<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Test</MudText>
+
+	}
+	<MudTextField @bind-Value="newTitle" OnKeyDown="@OnKeyDown" Label="New Title" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
+	<MudTextField Lines="5" @bind-Value="newDescription" OnKeyDown="@OnKeyDown" Label="New Description" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
+	<MudTextField Lines="5" @bind-Value="newTemplate" OnKeyDown="@OnKeyDown" Label="New Template" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
+	<MudTextField Lines="5" @bind-Value="newTest" OnKeyDown="@OnKeyDown" Label="New Test" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
+	<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@AddTask" Id="AddTask">Add Task</MudButton>
+    </MudPaper>
 				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MudButton>
 				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MudButton>
 				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MudButton>
@@ -123,6 +139,11 @@ else
 	private string UpdateSlug;
 	private string selectedCategory = string.Empty;
 	private string newQuestion = string.Empty;
+	private string newDescription = string.Empty;
+    private string newTemplate = string.Empty;
+    private string newTest = string.Empty;
+    private string newTitle = string.Empty;
+    private List<VacancyTaskDto> Tasks = new();
 
 	private List<VacancyQuestionDto> Questions = new();
 
@@ -159,6 +180,7 @@ else
 		var catId = _category.FirstOrDefault(c => c.Name == selectedCategory).Id;
 		VService.creatingNewJob.CategoryId = catId;
 		VService.creatingNewJob.VacancyQuestions = Questions;
+	    VService.creatingNewJob.VacancyTasks = Tasks;
 		await VService.OnSaveCreateClick();
 		await LoadData();
 		Clear();
@@ -201,6 +223,14 @@ else
 						Question = v.Question
 					}
 			).ToList();
+	Tasks = vacancy.VacancyTasks.Select(v =>
+	new VacancyTaskDto
+		{
+			Title = v.Title,
+			Description = v.Description,
+			Template = v.Template,
+			Test = v.Test
+		}).ToList();
 		}
 	}
 
@@ -209,10 +239,16 @@ else
 		var q = Questions.FirstOrDefault(t => t.Question == question);
 		Questions.Remove(q);
 	}
+	private void RemoveTask(string title)
+{
+	var r = Tasks.FirstOrDefault(t => t.Title == title);
+	Tasks.Remove(r);
+}
 
 	private async Task HandleUpdate()
 	{
 		VService.creatingNewJob.VacancyQuestions = Questions;
+	    VService.creatingNewJob.VacancyTasks = Tasks;
 		var catId = _category.FirstOrDefault(c => c.Name == selectedCategory).Id;
 		VService.creatingNewJob.CategoryId = catId;
 		await VService.UpdateJobVacancy(UpdateSlug);
@@ -225,12 +261,26 @@ else
 		Questions.Add(new VacancyQuestionDto { Question = newQuestion });
 		newQuestion = "";
 	}
-
+	public void AddTask()
+    {
+	Tasks.Add(new VacancyTaskDto
+		{
+			Title = newTitle,
+			Description = newDescription,
+			Template = newTemplate,
+			Test = newTest
+		});
+	newTitle = "";
+	newDescription = "";
+	newTemplate = "";
+	newTest = "";
+    }
 	private async Task OnKeyDown(KeyboardEventArgs e)
 	{
 		if (e.Code == "Enter")
 		{
 			await Task.Delay(1);
+	        AddTask();
 			AddQuestions();
 		}
 	}
@@ -253,5 +303,6 @@ else
 		isUpdating = true;
 		UpdateSlug = string.Empty;
 		Questions.Clear();
+	    Tasks.Clear();
 	}
 }

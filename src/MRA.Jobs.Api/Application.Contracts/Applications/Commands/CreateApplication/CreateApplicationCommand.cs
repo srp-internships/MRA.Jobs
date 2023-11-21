@@ -13,4 +13,6 @@ public class CreateApplicationCommand : IRequest<Guid>
     /// server should make it unique.
     /// </summary>
     public string FileName { get; set; }
+    public IEnumerable<TaskResponseDto> TaskResponses { get; set; }
+    
 }
