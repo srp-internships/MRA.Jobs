@@ -10,7 +10,7 @@
 <MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Trainings</MudText>
 @if (serverError)
 {
-	<ServerErrorComponent/>
+	<ServerErrorComponent />
 }
 else
 {
@@ -26,65 +26,65 @@ else
 	}
 	else
 	{
-	<MudExpansionPanels>
-		<MudExpansionPanel Text="Create new Training" @bind-IsExpanded="@panelOpenState">
-			<MudTextField @bind-Value="@trainingService.createCommand.Title" Label="Title" Variant="Variant.Outlined"></MudTextField>
-			<MudTextField Lines="5" @bind-Value="@trainingService.createCommand.ShortDescription" Variant="Variant.Outlined" Label="ShortDescription"></MudTextField>
-			<MudTextField Lines="5" @bind-Value="@trainingService.createCommand.Description" Label="Description" Variant="Variant.Outlined"></MudTextField>
-			<div class="row">
-				<div class="col-md-4">
-					<MudTextField @bind-Value="@trainingService.createCommand.Duration" Variant="Variant.Outlined" Label="Duration"></MudTextField>
+		<MudExpansionPanels>
+			<MudExpansionPanel Text="Create new Training" @bind-IsExpanded="@panelOpenState">
+				<MudTextField @bind-Value="@trainingService.createCommand.Title" Label="Title" Variant="Variant.Outlined"></MudTextField>
+				<MudTextField Lines="5" @bind-Value="@trainingService.createCommand.ShortDescription" Variant="Variant.Outlined" Label="ShortDescription"></MudTextField>
+				<MudTextField Lines="5" @bind-Value="@trainingService.createCommand.Description" Label="Description" Variant="Variant.Outlined"></MudTextField>
+				<div class="row">
+					<div class="col-md-4">
+						<MudTextField @bind-Value="@trainingService.createCommand.Duration" Variant="Variant.Outlined" Label="Duration"></MudTextField>
+					</div>
+					<div class="col-md-4">
+						<MudTextField @bind-Value="@trainingService.createCommand.Fees" Label="Fees" Variant="Variant.Outlined"></MudTextField>
+					</div>
+					<div class="col-md-4">
+						<MudSelect T="string" Label="@selectedCategory" @bind-Value="@selectedCategory" Variant="Variant.Outlined">
+							@foreach (var cat in categories)
+							{
+								<MudSelectItem Value="@cat.Name" />
+							}
+						</MudSelect>
+					</div>
 				</div>
-				<div class="col-md-4">
-					<MudTextField @bind-Value="@trainingService.createCommand.Fees" Label="Fees" Variant="Variant.Outlined"></MudTextField>
+				<div class="row">
+					<div class="col-md-6">
+						<MudDatePicker @bind-Date="@trainingService.createCommand.EndDate" Variant="Variant.Outlined" Label="End date" />
+					</div>
+					<div class="col-md-6">
+						<MudDatePicker @bind-Date="@trainingService.createCommand.PublishDate" Variant="Variant.Outlined" Label="Publish date" />
+					</div>
 				</div>
-				<div class="col-md-4">
-					<MudSelect T="string" Label="@selectedCategory" @bind-Value="@selectedCategory" Variant="Variant.Outlined">
-						@foreach (var cat in categories)
-						{
-							<MudSelectItem Value="@cat.Name" />
-						}
-					</MudSelect>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-6">
-					<MudDatePicker @bind-Date="@trainingService.createCommand.EndDate" Variant="Variant.Outlined" Label="End date" />
-				</div>
-				<div class="col-md-6">
-					<MudDatePicker @bind-Date="@trainingService.createCommand.PublishDate" Variant="Variant.Outlined" Label="Publish date" />
-				</div>
-			</div>
-			<MudPaper Class="p-2 mb-2">
-				<MudText Typo="Typo.caption">Vacancy questions</MudText>
-				@foreach (var ques in Questions)
-				{
-					<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.QuestionMark" /> @ques.Question<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveQuestion(ques.Question)" aria-label="delete"></MudIconButton></MudText>
+				<MudPaper Class="p-2 mb-2">
+					<MudText Typo="Typo.caption">Vacancy questions</MudText>
+					@foreach (var ques in Questions)
+					{
+						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.QuestionMark" /> @ques.Question<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveQuestion(ques.Question)" aria-label="delete"></MudIconButton></MudText>
 
-				}
+					}
 					<MudTextField @bind-Value="newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
-		     </MudPaper>
-			<MudPaper Class="p-2 mb-2">
-				<MudText Typo="Typo.caption">Vacancy Tasks</MudText>
-				@foreach (var task in Tasks)
-				{
-					<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Title<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveTask(task.Title)" aria-label="delete"></MudIconButton></MudText>
-					<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Description</MudText>
-					<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Template</MudText>
-					<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Test</MudText>
+				</MudPaper>
+				<MudPaper Class="p-2 mb-2">
+					<MudText Typo="Typo.caption">Vacancy Tasks</MudText>
+					@foreach (var task in Tasks)
+					{
+						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Title<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveTask(task.Title)" aria-label="delete"></MudIconButton></MudText>
+						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Description</MudText>
+						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Template</MudText>
+						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Test</MudText>
 
-				}
-				<MudTextField @bind-Value="newTitle" OnKeyDown="@OnKeyDown" Label="New Title" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
-				<MudTextField Lines="5" @bind-Value="newDescription" OnKeyDown="@OnKeyDown" Label="New Description" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
-				<MudTextField Lines="5" @bind-Value="newTemplate" OnKeyDown="@OnKeyDown" Label="New Template" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
-				<MudTextField Lines="5" @bind-Value="newTest" OnKeyDown="@OnKeyDown" Label="New Test" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
-				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@AddTask" Id="AddTask">Add Task</MudButton>
-			</MudPaper>
-			<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MudButton>
-			<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MudButton>
-			<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MudButton>
-		</MudExpansionPanel>
-	</MudExpansionPanels>
+					}
+					<MudTextField @bind-Value="newTitle" OnKeyDown="@OnKeyDown" Label="New Title" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
+					<MudTextField Lines="5" @bind-Value="newDescription" OnKeyDown="@OnKeyDown" Label="New Description" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
+					<MudTextField Lines="5" @bind-Value="newTemplate" OnKeyDown="@OnKeyDown" Label="New Template" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
+					<MudTextField Lines="5" @bind-Value="newTest" OnKeyDown="@OnKeyDown" Label="New Test" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
+					<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@AddTask" Id="AddTask">Add Task</MudButton>
+				</MudPaper>
+				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MudButton>
+				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MudButton>
+				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MudButton>
+			</MudExpansionPanel>
+		</MudExpansionPanels>
 
 		<DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem" />
 		<MudTable Items="@trainings" Class="text-center" Breakpoint="Breakpoint.Md">
@@ -121,8 +121,8 @@ else
 
 
 	}
-  }
 }
+
 
 @code {
 	private bool serverError;
