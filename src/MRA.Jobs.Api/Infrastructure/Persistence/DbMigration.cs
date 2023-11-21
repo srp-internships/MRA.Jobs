@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-
-namespace MRA.Jobs.Infrastructure.Persistence;
+﻿namespace MRA.Jobs.Infrastructure.Persistence;
 public class DbMigration
 {
     private readonly ApplicationDbContext _context;

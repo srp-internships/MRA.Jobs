@@ -19,6 +19,7 @@ public class ApplicationListDto
     public string Slug { get; set; }
     public DateTime CreatedAt { get; set; }
     public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
+    public IEnumerable<TaskResponseDto> TaskResponses { get; set; }
     public string CV { get; set; }
 }
 
@@ -45,6 +46,7 @@ public class ApplicationDetailsDto
     public string Slug { get; set; }
     public string CV { get; set; }
     public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
+    public IEnumerable<TaskResponseDto> TaskResponses { get; set; }
 }
 
 public class ApplicationListStatus

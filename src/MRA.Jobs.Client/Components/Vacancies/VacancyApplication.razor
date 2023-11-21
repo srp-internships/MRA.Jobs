@@ -1,5 +1,6 @@
 ﻿@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
+@using MRA.Jobs.Client.CustomMethods;
 @using MRA.Jobs.Client.Services.FileService
 @layout MainLayout
 @inject ISnackbar Snackbar
@@ -8,145 +9,285 @@
 @inject IApplicationService ApplicationService
 
 <div class="container w-75 mt-4">
-    @if (vacancy is null)
-    {
-        if (_showLoader)
-        {
-            <div class="loader"></div>
-        }
-    }
-    else
-    {
-        <MudCard>
-            <MudCardContent>
-                <MudText Style="color:gray">
-                    <b>Vacancy Details</b>
-                </MudText>
-                <MudText Typo="Typo.h5">
-                    <b>
-                        @vacancy.Title
-                    </b>
-                </MudText>
-                <br/>
-                <MudText>@vacancy.Description</MudText>
-            </MudCardContent>
-        </MudCard>
-        <br/>
+	@if (vacancy is null)
+	{
+		if (_showLoader)
+		{
+			<div class="loader"></div>
+		}
+	}
+	else
+	{
+		<MudCard>
+			<MudCardContent>
+				<MudText Style="color:gray">
+					<b>Vacancy Details</b>
+				</MudText>
+				<MudText Typo="Typo.h5">
+					<b>
+						@vacancy.Title
+					</b>
+				</MudText>
+				<MudText Typo="Typo.body2" Style="color:gray"><small><b>Posted @CustomConverter.GetDisplayPostedDate(vacancy.PublishDate)</b></small></MudText>
 
-        <EditForm Model="@application" OnValidSubmit="CreateApplication">
-            <FluentValidationValidator/>
+				<br />
+				<MudDivider Style="padding:10px;" />
+				<MudText>@vacancy.Description</MudText>
+				<MudDivider Style="padding:10px" />
+				<MudGrid Style="padding:10px 10px; color:gray;">
+					@if (vacancy.Duration != 0)
+					{
+						<MudItem lg="4" md="6" xs="6">
+							<MudGrid>
+								<MudItem Style="padding:0px;">
+									<MudIcon Icon="@Icons.Material.Outlined.Timelapse" />
+								</MudItem>
+								<MudItem Style="padding:0px;">
+									<MudText>
+										<b>@vacancy.Duration month(s)</b>
+									</MudText>
+									<MudText Typo="Typo.body2">
+										<small>Duration</small>
+									</MudText>
+								</MudItem>
+							</MudGrid>
+						</MudItem>
+					}
+					@if (vacancy.Deadline != default(DateTime))
+					{
+						<MudItem lg="4" md="6" xs="6">
+							@{
+								var deadlineResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancy.Deadline);
+								var deadlineStyle = $"color:{deadlineResult.Color}";
 
-            <MudCard>
-                <MudCardContent>
-                    <MudText Style="color:gray">
-                        <b>Additional Details</b>
-                    </MudText>
-                    <MudText Typo="Typo.h6">
-                        <b><span class="text-danger">*</span>Cover Letter</b>
-                    </MudText>
-                    <MudTextField T="string" Lines="7" Variant="Variant.Outlined" @bind-Value="@application.CoverLetter"
-                                  For="@(() => application.CoverLetter)"/>
-                </MudCardContent>
-            </MudCard>
-            <br/>
-            @if (vacancy.VacancyQuestions.Any())
-            {
-                <MudCard>
-                    <MudCardContent>
-                        <MudText Style="color:gray">
-                            <b>Questions</b>
-                        </MudText>
-                        <br/>
-                        @foreach (var question in vacancy.VacancyQuestions)
-                        {
-                            <MudDivider/>
-                            <label for="question" class="form-label">
-                                <span class="text-danger">*</span>@question.Question
-                            </label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="question_@question.Id" required="required" @bind="questionResponses[question.Question]">
-                            </div>
-                        }
-                    </MudCardContent>
-                </MudCard>
-            }
-            <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
-                <ButtonTemplate Context="anotherContext">
-                    <MudButton HtmlTag="label"
-                               Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               StartIcon="@Icons.Material.Filled.CloudUpload"
-                               for="@anotherContext">
-                        Upload your CV
-                    </MudButton>
-                </ButtonTemplate>
-            </MudFileUpload>
+								<MudGrid Style="@deadlineStyle">
+									<MudItem Style="padding:0px;">
+										<MudIcon Icon="@Icons.Material.Outlined.Alarm" />
+									</MudItem>
+									<MudItem Style="padding:0px;">
+										<MudText>
+											<b>@deadlineResult.DisplayDate</b>
+										</MudText>
+										<MudText Typo="Typo.body2">
+											<small>Deadline</small>
+										</MudText>
+									</MudItem>
+								</MudGrid>
+							}
+						</MudItem>
+					}
 
-            <MudCardActions>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
-                    @if (_processing)
-                    {
-                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                        <MudText Class="ms-2">Processing</MudText>
-                    }
-                    else
-                    {
-                        <MudText>Apply</MudText>
-                    }
-                </MudButton>
+					@if (vacancy.RequiredYearOfExperience != 0)
+					{
+						<MudItem lg="4" md="6" xs="6">
+							<MudGrid>
+								<MudItem Style="padding:0px;">
+									<MudIcon Icon="@Icons.Material.Outlined.Work" />
+								</MudItem>
+								<MudItem Style="padding:0px;">
+									<MudText>
+										<b>@vacancy.RequiredYearOfExperience year(s)</b>
+									</MudText>
+									<MudText Typo="Typo.body2">
+										<small>Required year of experience</small>
+									</MudText>
+								</MudItem>
+							</MudGrid>
+						</MudItem>
+					}
+					@if (vacancy.Fees != 0)
+					{
+						<MudItem lg="4" md="6" xs="6">
+							<MudGrid>
+								<MudItem Style="padding:0px;">
+									<MudIcon Icon="@Icons.Material.Outlined.AttachMoney" />
+								</MudItem>
+								<MudItem Style="padding:0px;">
+									<MudText>
+										<b>@vacancy.Fees</b>
+									</MudText>
+									<MudText Typo="Typo.body2">
+										<small>Fees</small>
+									</MudText>
+								</MudItem>
+							</MudGrid>
+						</MudItem>
+					}
 
-            </MudCardActions>
-        </EditForm>
-    }
+					<MudItem lg="4" md="6" xs="6">
+						@{
+							var endDateResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancy.EndDate);
+							var endDatelineStyle = $"color:{endDateResult.Color}";
+
+							<MudGrid Style="@endDatelineStyle">
+								<MudItem Style="padding:0px;">
+									<MudIcon Icon="@Icons.Material.Outlined.DateRange" />
+								</MudItem>
+								<MudItem Style="padding:0px;">
+									<MudText>
+										<b>@endDateResult.DisplayDate</b>
+									</MudText>
+									<MudText Typo="Typo.body2">
+										<small>End Date</small>
+									</MudText>
+								</MudItem>
+							</MudGrid>
+						}
+					</MudItem>
+
+				</MudGrid>
+			</MudCardContent>
+		</MudCard>
+		<br />
+
+		<EditForm Model="@application" OnValidSubmit="CreateApplication">
+			<FluentValidationValidator />
+
+			<MudCard>
+				<MudCardContent>
+					<MudText Style="color:gray">
+						<b>Additional Details</b>
+					</MudText>
+					<MudText Typo="Typo.h6">
+						<b><span class="text-danger">*</span>Cover Letter</b>
+					</MudText>
+					<MudTextField T="string" Lines="7" Variant="Variant.Outlined" @bind-Value="@application.CoverLetter"
+								  For="@(() => application.CoverLetter)" />
+				</MudCardContent>
+			</MudCard>
+
+			<br />
+
+			@if (vacancy.VacancyQuestions.Any())
+			{
+				<MudCard>
+					<MudCardContent>
+						<MudText Style="color:gray">
+							<b>Questions</b>
+						</MudText>
+						<br />
+						@foreach (var question in vacancy.VacancyQuestions)
+						{
+							<MudDivider />
+							<label for="question" class="form-label">
+								<span class="text-danger">*</span>@question.Question
+							</label>
+							<div class="input-group">
+								<input type="text" class="form-control" id="question_@question.Id" required="required" @bind="questionResponses[question.Question]">
+							</div>
+						}
+					</MudCardContent>
+				</MudCard>
+			}
+			@if (vacancy.VacancyTasks.Count() > 0)
+			{
+				<MudCard>
+					<MudCardContent>
+						<MudText Style="color:gray"><b>Task(s)</b></MudText>
+						<br />
+						@foreach (var task in vacancy.VacancyTasks)
+						{
+							<MudDivider />
+							<p><label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label></p>
+							<p><label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label></p>
+							<MudTextField T="string" Label="Code" Variant="Variant.Outlined" Lines="8" @bind-Value=@taskResponses[task.Title] />
+						}
+					</MudCardContent>
+				</MudCard>
+			}
+			<MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
+				<ButtonTemplate Context="anotherContext">
+					<MudButton HtmlTag="label"
+							   Variant="Variant.Filled"
+							   Color="Color.Primary"
+							   StartIcon="@Icons.Material.Filled.CloudUpload"
+							   for="@anotherContext">
+						Upload your CV
+					</MudButton>
+				</ButtonTemplate>
+			</MudFileUpload>
+
+			<MudCardActions>
+				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
+					@if (_processing)
+					{
+						<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+						<MudText Class="ms-2">Processing</MudText>
+					}
+					else
+					{
+						<MudText>Apply</MudText>
+					}
+				</MudButton>
+
+			</MudCardActions>
+		</EditForm>
+	}
 </div>
 
 @code {
-    private bool _showLoader = false;
+	private bool _showLoader = false;
 
-    [Parameter]
-    public VacancyApplicationResponse vacancy { get; set; }
+	[Parameter]
+	public VacancyApplicationResponse vacancy { get; set; }
 
-    [Parameter]
-    public CreateApplicationCommand application { get; set; }
+	[Parameter]
+	public CreateApplicationCommand application { get; set; }
 
-    [Parameter]
-    public string Slug { get; set; }
+	[Parameter]
+	public string Slug { get; set; }
 
-    [Parameter]
-    public Dictionary<string, string> questionResponses { get; set; }
+	[Parameter]
+	public Dictionary<string, string> questionResponses { get; set; }
+	[Parameter]
+	public Dictionary<string, string> taskResponses { get; set; }
 
-    [Inject]
-    public IConfiguration Configuration { get; set; }
+	[Inject]
+	public IConfiguration Configuration { get; set; }
 
-    private IBrowserFile _cv;
-    private bool _processing;
+	private IBrowserFile _cv;
+	private bool _processing;
 
-    protected override async void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await Task.Delay(1000);
-            _showLoader = true;
-            StateHasChanged();
-        }
-    }
+	protected override async void OnAfterRender(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await Task.Delay(1000);
+			_showLoader = true;
+			StateHasChanged();
+		}
+	}
 
-    private async Task CreateApplication()
-    {
-        if (string.IsNullOrWhiteSpace(application.CoverLetter) || questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)) || _cv == null)
-        {
-            return; // Do not proceed with submission if any required fields are empty.
-        }
+	private async Task CreateApplication()
+	{
+		if (string.IsNullOrWhiteSpace(application.CoverLetter) || questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)) || _cv == null)
+		{
+			return; // Do not proceed with submission if any required fields are empty.
+		}
 
-        var updatedResponses = application.VacancyResponses.Select(vr => new VacancyResponseDto
-        {
-            VacancyQuestion = vr.VacancyQuestion, Response = questionResponses[vr.VacancyQuestion.Question]
-        }).ToList();
+		var updatedResponses = application.VacancyResponses.Select(vr => new VacancyResponseDto
+			{
+				VacancyQuestion = vr.VacancyQuestion,
+				Response = questionResponses[vr.VacancyQuestion.Question]
+			}).ToList();
+		var updateTaskResponses = new List<TaskResponseDto>();
+		foreach (var task in vacancy.VacancyTasks)
+		{
+			var updateTaskResponse = new TaskResponseDto
+				{
+					TaskId = task.Id,
+					Code = taskResponses[task.Title]
+				};
+			updateTaskResponses.Add(updateTaskResponse);
+		}
+		application.TaskResponses = updateTaskResponses;
 
-        application.VacancyResponses = updatedResponses;
-        _processing = true;
-        await ApplicationService.CreateApplication(application, _cv);
-        Console.WriteLine(1+1);
-        _processing = false;
-    }
+
+		application.VacancyResponses = updatedResponses;
+		_processing = true;
+		await ApplicationService.CreateApplication(application, _cv);
+		Console.WriteLine(1 + 1);
+		_processing = false;
+	}
+
 }

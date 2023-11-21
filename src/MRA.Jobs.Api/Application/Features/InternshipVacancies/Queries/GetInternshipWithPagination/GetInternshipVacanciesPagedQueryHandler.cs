@@ -27,6 +27,7 @@ public class GetInternshipVacanciesPagedQueryHandler : IRequestHandler<PagedList
             _context.Internships
                 .Include(i => i.Category)
                 .Include(i => i.VacancyQuestions)
+                .Include(i => i.VacancyTasks)
                 .AsNoTracking(),
             _mapper.Map<InternshipVacancyListResponse>);
         return await Task.FromResult(result);

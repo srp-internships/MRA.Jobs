@@ -27,6 +27,7 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
         var jobVacancy = await _dbContext.JobVacancies
             .Include(j => j.Category)
             .Include(j => j.VacancyQuestions)
+            .Include(i => i.VacancyTasks)
             .FirstOrDefaultAsync(j => j.Slug == request.Slug, cancellationToken);
         _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Slug);
 

@@ -21,6 +21,7 @@ public class CreateInternshipVacancyCommand : IRequest<string>
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime? ApplicationDeadline { get; set; }
     public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyTaskDto> VacancyTasks { get; set; }
     public int Duration { get; set; }
     public int Stipend { get; set; }
 }
