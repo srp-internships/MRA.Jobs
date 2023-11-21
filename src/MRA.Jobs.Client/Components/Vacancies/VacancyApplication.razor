@@ -28,10 +28,13 @@
 						@vacancy.Title
 					</b>
 				</MudText>
+				<MudText Typo="Typo.body2" Style="color:gray"><small><b>Posted @CustomConverter.GetDisplayPostedDate(vacancy.PublishDate)</b></small></MudText>
+
 				<br />
+				<MudDivider Style="padding:10px;" />
 				<MudText>@vacancy.Description</MudText>
 				<MudDivider Style="padding:10px" />
-				<MudGrid Style="padding:10px 10px;">
+				<MudGrid Style="padding:10px 10px; color:gray;">
 					@if (vacancy.Duration != 0)
 					{
 						<MudItem lg="4" md="6" xs="6">
