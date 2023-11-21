@@ -82,6 +82,13 @@ public static class DependencyInitializer
 
 
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+        var jwtSecret = configurations["JWT:Secret"];
+        if (string.IsNullOrEmpty(jwtSecret))
+        {
+            // Handle the case where the JWT secret is missing or empty.
+            throw new InvalidOperationException("JWT secret is missing or empty.");
+        }
         services.AddAuthentication(o =>
         {
             o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
