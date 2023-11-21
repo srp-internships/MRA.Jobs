@@ -19,8 +19,6 @@ jobs:
       with:
         dotnet-version: 7.0.x
     
-    - name: Install dependencies
-      run: apt-get install -y libskiasharp
 
     - name: Restore dependencies
       run: dotnet restore
