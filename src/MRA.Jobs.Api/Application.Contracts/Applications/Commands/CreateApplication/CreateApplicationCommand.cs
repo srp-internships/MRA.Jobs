@@ -9,6 +9,8 @@ public class CreateApplicationCommand : IRequest<Guid>
     public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
 
     public Cv Cv { get; set; } = new();
+    public IEnumerable<TaskResponseDto> TaskResponses { get; set; }
+
 }
 
 #nullable enable

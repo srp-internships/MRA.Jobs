@@ -20,5 +20,6 @@ public abstract class Vacancy : BaseAuditableEntity
     public ICollection<VacancyTimelineEvent> History { get; set; }
     public ICollection<Test> Tests { get; set; }
     public IEnumerable<VacancyQuestion> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyTask> VacancyTasks { get; set; }
     public ICollection<VacancyTag> Tags { get; set; }
 }

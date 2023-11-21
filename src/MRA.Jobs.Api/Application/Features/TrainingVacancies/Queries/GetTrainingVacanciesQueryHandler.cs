@@ -25,7 +25,12 @@ public class
     public async Task<PagedList<TrainingVacancyListDto>> Handle(GetTrainingsQueryOptions request,
         CancellationToken cancellationToken)
     {
-        var trainings = (await _context.TrainingVacancies.Include(t => t.Category).Include(t => t.VacancyQuestions).ToListAsync()).AsEnumerable();
+        var trainings = (await _context.TrainingVacancies
+            .Include(t => t.Category)
+            .Include(t => t.VacancyQuestions)
+            .Include(i => i.VacancyTasks)
+            .ToListAsync())
+            .AsEnumerable();
 
         if (request.CategorySlug is not null)
         {

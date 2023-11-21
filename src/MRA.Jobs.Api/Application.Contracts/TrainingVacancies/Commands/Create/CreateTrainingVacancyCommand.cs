@@ -19,5 +19,6 @@ public class CreateTrainingVacancyCommand : IRequest<string>
     public Guid CategoryId { get; set; }
     public int Duration { get; set; }
     public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyTaskDto> VacancyTasks { get; set; }
     public int Fees { get; set; }
 }

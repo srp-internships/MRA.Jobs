@@ -67,7 +67,37 @@ public class CreateApplicationCommandTest : Testing
         responseGuid.Should().NotBeEmpty();
     }
 
+    [Test]
+    public async Task CreateApplicationCommand_CreateApplicationWithVacancyTask_Success()
+    {
+        var vacancyId = await AddJobVacancy("foobar11");
+        var testSubmit = new CreateApplicationCommand
+        {
+            VacancyId = vacancyId,
+            CoverLetter = RandomString(200),
+            VacancyResponses = new List<VacancyResponseDto>
+            {
+                new VacancyResponseDto { VacancyQuestion = new VacancyQuestionDto{ Question = "How old are you?"}, Response = "56"},
+                new VacancyResponseDto {VacancyQuestion = new VacancyQuestionDto{ Question = "What is your English proficiency level?"}, Response = "Beginner"}
+            },
+            TaskResponses= new List<TaskResponseDto>
+            {
+                new TaskResponseDto { Code ="static class Function {public static int Sum(int a, int b){return a + b;}",TaskId=Guid.Empty},
+                new TaskResponseDto { Code ="static class Function {public static int Sum(int a, int b){return a - b;}",TaskId=Guid.Empty}
+            }
+            
 
+        };
+
+        RunAsDefaultUserAsync();
+        var response = await _httpClient.PostAsJsonAsync("/api/applications", testSubmit);
+
+        response.EnsureSuccessStatusCode();
+
+        var responseGuid = await response.Content.ReadAsStringAsync();
+
+        responseGuid.Should().NotBeEmpty();
+    }
     async Task<Guid> AddVacancyCategory(string name)
     {
         var vacancyCategory = new VacancyCategory

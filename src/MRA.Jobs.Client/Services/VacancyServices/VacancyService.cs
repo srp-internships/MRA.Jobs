@@ -145,7 +145,9 @@ public class VacancyService : IVacancyService
             RequiredYearOfExperience = creatingNewJob.RequiredYearOfExperience,
             EndDate = creatingNewJob.EndDate,
             PublishDate = creatingNewJob.PublishDate,
-            VacancyQuestions = creatingNewJob.VacancyQuestions
+            VacancyQuestions = creatingNewJob.VacancyQuestions,
+            VacancyTasks=creatingNewJob.VacancyTasks
+            
         };
         await _http.PutAsJsonAsync($"jobs/{slug}", update);
 
