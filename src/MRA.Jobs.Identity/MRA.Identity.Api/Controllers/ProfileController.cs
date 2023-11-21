@@ -15,7 +15,6 @@ using MRA.Identity.Application.Contract.Profile.Commands.UpdateProfile;
 using MRA.Identity.Application.Contract.Profile.Queries;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Queries;
-using MRA.Identity.Infrastructure.PDF;
 
 namespace MRA.Identity.Api.Controllers;
 
