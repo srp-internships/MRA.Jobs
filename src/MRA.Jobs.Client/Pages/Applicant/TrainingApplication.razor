@@ -33,37 +33,42 @@ else
 		{
 			var response = await _trainingService.GetBySlug(Slug);
 
-		if (response != null)
-		{
-			training = new VacancyApplicationResponse
-				{
-					Id = response.Id,
-					Title = response.Title,
-					VacancyTasks=response.VacancyTasks,
-					VacancyQuestions = response.VacancyQuestions
-				};
-			application = new CreateApplicationCommand
-				{
-					VacancyId = training.Id,
-					VacancyResponses = training.VacancyQuestions.Select(q => new VacancyResponseDto
+			if (response != null)
+			{
+				training = new VacancyApplicationResponse
 					{
-						VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
-					}),
-					TaskResponses = training.VacancyTasks.Select(t => new TaskResponseDto
+						Id = response.Id,
+						Title = response.Title,
+						VacancyTasks = response.VacancyTasks,
+						VacancyQuestions = response.VacancyQuestions,
+						Description = response.Description,
+						Duration = response.Duration,
+						Fees = response.Fees,
+						PublishDate = response.PublishDate,
+						EndDate = response.EndDate
+					};
+				application = new CreateApplicationCommand
 					{
-						TaskId = t.Id,
-						Code = t.Template
-					})
-				};
+						VacancyId = training.Id,
+						VacancyResponses = training.VacancyQuestions.Select(q => new VacancyResponseDto
+						{
+							VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+						}),
+						TaskResponses = training.VacancyTasks.Select(t => new TaskResponseDto
+						{
+							TaskId = t.Id,
+							Code = t.Template
+						})
+					};
 
 				foreach (var question in training.VacancyQuestions)
 				{
 					questionResponses[question.Question] = "";
 				}
 				foreach (var task in training.VacancyTasks)
-                {
-	            tasksResponses[task.Title] = task.Template;
-                }
+				{
+					tasksResponses[task.Title] = task.Template;
+				}
 			}
 		}
 		catch (Exception)
