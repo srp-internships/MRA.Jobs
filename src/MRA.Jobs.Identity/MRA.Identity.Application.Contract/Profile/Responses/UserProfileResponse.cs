@@ -3,7 +3,6 @@ namespace MRA.Identity.Application.Contract.Profile.Responses;
 public class UserProfileResponse
 {
     public string UserName { get; set; }
-    public string UserEmail { get; set; }
     public Gender Gender { get; set; }
     public DateTime DateOfBirth { get; set; }
     public string FirstName { get; set; }
@@ -13,5 +12,4 @@ public class UserProfileResponse
     public string Email { get; set; }
     public bool EmailConfirmed { get; init; }
     public bool PhoneNumberConfirmed { get; init; }
-
 }
