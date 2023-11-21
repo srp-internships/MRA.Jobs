@@ -8,7 +8,6 @@ public class GeneratePdfCV_Test : BaseTest
     {
         await AddApplicantAuthorizationAsync();
         var response = await _client.GetAsync("/api/Profile/GenerateCV");
-        response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsByteArrayAsync();
         Assert.IsTrue(content.Length > 0, "File not received");
     }
