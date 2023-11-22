@@ -16,6 +16,7 @@ public abstract class BaseTestFixture
     protected Mock<IEmailService> _emailServiceMock;
     protected Mock<IHtmlService> _htmlServiceMock;
     protected Mock<ICvService> _cvService;
+    protected Mock<IVacancyTaskService> _vacancyTaskService;
     [SetUp]
     public virtual void Setup()
     {

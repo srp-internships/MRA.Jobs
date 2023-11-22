@@ -1,9 +1,10 @@
-﻿
-using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
+﻿using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
 namespace MRA.Jobs.Application.UnitTests.Applications;
-using MRA.Jobs.Domain.Entities;
+
+using Domain.Entities;
+
 public class CreateApplicationCommandHandlerTests : BaseTestFixture
 {
     private CreateApplicationCommandHandler _handler;
@@ -21,7 +22,9 @@ public class CreateApplicationCommandHandlerTests : BaseTestFixture
             _slugGenerator.Object,
             _emailServiceMock.Object,
             _htmlServiceMock.Object,
-            _cvService.Object);
+            _cvService.Object,
+            _vacancyTaskService.Object
+        );
     }
 
     [Test]

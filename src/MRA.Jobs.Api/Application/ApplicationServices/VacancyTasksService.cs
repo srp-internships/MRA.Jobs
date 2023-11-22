@@ -1,17 +1,17 @@
 using System.Text;
 using System.Text.Json;
-using MRA.Jobs.Application.Contracts.Dtos;
+using Microsoft.Extensions.Configuration;
 
 namespace MRA.Jobs.Application.ApplicationServices;
 
-public class VacancyTasksService(IApplicationDbContext _context) : IVacancyTaskService
+public class VacancyTasksService(IApplicationDbContext context, IConfiguration configuration) : IVacancyTaskService
 {
     private readonly HttpClient _httpClient = new();
 
     public async Task CheckVacancyTasksAsync(Guid applicationId, IEnumerable<TaskResponse> taskResponses,
         CancellationToken cancellationToken)
     {
-        _httpClient.DefaultRequestHeaders.Add("API_KEY", "123");
+        _httpClient.DefaultRequestHeaders.Add("API_KEY", configuration["OnlinePlatform:ApiKey"]!);
 
         foreach (var taskResponse in taskResponses)
         {
@@ -21,24 +21,26 @@ public class VacancyTasksService(IApplicationDbContext _context) : IVacancyTaskS
                 Codes = taskResponse.Code,
                 TaskId = taskResponse.TaksId,
             };
-            var vacancyTasks = _context.VacancyTasks.Where(v => v.Id == taskResponse.TaksId);
+            var vacancyTasks = context.VacancyTasks.Where(v => v.Id == taskResponse.TaksId);
             foreach (var vacancyTask in vacancyTasks)
             {
                 var r = new HttpRequestMessage
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = new Uri("https://localhost:7046/api/CodeAnalyzer/Analyze"),
+                    RequestUri = new Uri(configuration["OnlinePlatform:Analyze"]!),
                     Content = new StringContent(
-                        $@"{{
-                    ""codes"": [
-                        ""{vacancyTask.Test}"",
-                        ""{taskResponse.Code}""
-                    ],
-                    ""dotNetVersionInfo"": {{
-                        ""language"": ""CSharp"",
-                        ""version"": ""NET6""
-                    }}
-                }}", Encoding.UTF8, "application/json")
+                        $$"""
+                          {
+                                              "codes": [
+                                                  "{{vacancyTask.Test}}",
+                                                  "{{taskResponse.Code}}"
+                                              ],
+                                              "dotNetVersionInfo": {
+                                                  "language": "CSharp",
+                                                  "version": "NET6"
+                                              }
+                                          }
+                          """, Encoding.UTF8, "application/json")
                 };
 
                 try
@@ -57,8 +59,8 @@ public class VacancyTasksService(IApplicationDbContext _context) : IVacancyTaskS
                 }
             }
 
-            await _context.VacancyTaskDetails.AddAsync(vacancyTaskDetail, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.VacancyTaskDetails.AddAsync(vacancyTaskDetail, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
         }
     }
 }
