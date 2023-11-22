@@ -24,7 +24,8 @@ public class ApplicationService : IApplicationService
     private readonly IConfiguration _configuration;
 
 
-    public ApplicationService(IdentityHttpClient identityHttpClient , HttpClient httpClient, AuthenticationStateProvider authenticationState,
+    public ApplicationService(IdentityHttpClient identityHttpClient, HttpClient httpClient,
+        AuthenticationStateProvider authenticationState,
         ISnackbar snackbar, NavigationManager navigationManager, IConfiguration configuration)
     {
         _identityHttpClient = identityHttpClient;
@@ -54,7 +55,7 @@ public class ApplicationService : IApplicationService
             {
                 var responseCv = await _identityHttpClient.GetAsync("Profile/GenerateCV");
                 fileBytes = await responseCv.Content.ReadAsByteArrayAsync();
-                fileName = $"{Guid.NewGuid()}_{DateTime.Now.ToString("ddMMyyyy_HHmmss")}_cv.pdf";
+                fileName = $"_{DateTime.Now.ToString("ddMMyyyy_HHmmss")}_cv.pdf";
             }
             else
             {
