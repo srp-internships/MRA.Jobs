@@ -17,7 +17,7 @@ public class TaskService:ITaskService
 
     public async Task<List<VacancyTaskDetail>> GetGetVacancyTaskDetailAsync(CreateApplicationCommand application, CancellationToken cancellationToken)
     {
-        var ApplicantId = _currentUserService.GetUserId() ?? Guid.Empty;
+        var applicantId = _currentUserService.GetUserId() ?? Guid.Empty;
         _httpClient.DefaultRequestHeaders.Add("API_KEY", "123");
         var taskDetails = new List<VacancyTaskDetail>();
 
@@ -25,7 +25,7 @@ public class TaskService:ITaskService
         {
             var taskDetail = new VacancyTaskDetail
             {
-                ApplicantId= ApplicantId,
+                ApplicantId= applicantId,
                 Codes = tResponses.Code,
                 TaskId = tResponses.TaskId,
             };
@@ -47,9 +47,7 @@ public class TaskService:ITaskService
                     ""language"": ""CSharp"",
                     ""version"": ""NET6""
                 }}
-            }}
-                ", Encoding.UTF8, "application/json")
-                };
+            }}", Encoding.UTF8, "application/json")};
 
                 try
                 {
