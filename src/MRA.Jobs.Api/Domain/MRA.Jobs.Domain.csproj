@@ -1,18 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <RootNamespace>MRA.Jobs.Domain</RootNamespace>
         <AssemblyName>MRA.Jobs.Domain</AssemblyName>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MediatR" Version="11.1.0" />
-      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.5" />
-      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.9" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.0" />
     </ItemGroup>
 
 </Project>
