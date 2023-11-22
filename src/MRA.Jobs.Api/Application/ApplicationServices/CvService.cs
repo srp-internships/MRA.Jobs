@@ -11,12 +11,13 @@ public class CvService : ICvService
     private readonly IFileService _fileService;
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    
-    public CvService(IFileService fileService, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+    private readonly IHttpClientFactory _factory;
+    public CvService(IFileService fileService, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IHttpClientFactory factory)
     {
         _fileService = fileService;
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
+        _factory = factory;
     }
 
     public Task<string> GetCvByCommandAsync(ref CreateApplicationCommand command)
@@ -31,12 +32,11 @@ public class CvService : ICvService
 
     private async Task<string> DownloadFromIdentityServerAsync()
     {
-        var identityHttpClient = new HttpClient();
-        identityHttpClient.BaseAddress = new Uri(_configuration["IdentityApi:BaseAddress"]!);
-        identityHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",_httpContextAccessor.HttpContext?.Request.Headers.Authorization[0]!.Split(' ')[1]);
-        var stream = await identityHttpClient.GetStreamAsync(_configuration["IdentityApi:DownloadCvEndPoint"]);
-        var ms = new MemoryStream();
+        using var identityHttpClient = _factory.CreateClient();
+        identityHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _httpContextAccessor.HttpContext?.Request.Headers.Authorization[0]!.Split(' ')[1]);
+        using var stream = await identityHttpClient.GetStreamAsync(_configuration["IdentityApi:DownloadCvEndPoint"]);
+        using var ms = new MemoryStream();
         await stream.CopyToAsync(ms);
-        return await _fileService.UploadAsync(ms.ToArray(),$"{Guid.NewGuid()}_{_httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Username)}.pdf");
+        return await _fileService.UploadAsync(ms.ToArray(), $"{Guid.NewGuid()}_{_httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Username).Value}.pdf");
     }
 }
