@@ -8,7 +8,7 @@ public class VacancyTasksService(IApplicationDbContext _context) : IVacancyTaskS
 {
     private readonly HttpClient _httpClient = new();
 
-    public async Task CheckVacancyTasksAsync(Guid applicationId, IEnumerable<TaskResponseDto> taskResponses,
+    public async Task CheckVacancyTasksAsync(Guid applicationId, IEnumerable<TaskResponse> taskResponses,
         CancellationToken cancellationToken)
     {
         _httpClient.DefaultRequestHeaders.Add("API_KEY", "123");
@@ -19,9 +19,9 @@ public class VacancyTasksService(IApplicationDbContext _context) : IVacancyTaskS
             {
                 ApplicantId = applicationId,
                 Codes = taskResponse.Code,
-                TaskId = taskResponse.TaskId,
+                TaskId = taskResponse.TaksId,
             };
-            var vacancyTasks = _context.VacancyTasks.Where(v => v.Id == taskResponse.TaskId);
+            var vacancyTasks = _context.VacancyTasks.Where(v => v.Id == taskResponse.TaksId);
             foreach (var vacancyTask in vacancyTasks)
             {
                 var r = new HttpRequestMessage

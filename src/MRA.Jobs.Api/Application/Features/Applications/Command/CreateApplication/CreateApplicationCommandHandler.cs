@@ -53,7 +53,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         application.CV = await _cvService.GetCvByCommandAsync(ref request);
 
         await _context.Applications.AddAsync(application, cancellationToken);
-        await _vacancyTaskService.CheckVacancyTasksAsync(application.Id, request.TaskResponses, cancellationToken);
+        await _vacancyTaskService.CheckVacancyTasksAsync(application.Id, application.TaskResponses, cancellationToken);
         ApplicationTimelineEvent timelineEvent = new()
         {
             ApplicationId = application.Id,
