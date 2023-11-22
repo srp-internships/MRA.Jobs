@@ -35,7 +35,6 @@ WebApplication app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseMigrationsEndPoint();
 }
 else
 {
@@ -57,7 +56,9 @@ app.UseHealthChecks("/status", new HealthCheckOptions
             Status = report.Status.ToString(),
             Checks = report.Entries.Select(entry => new
             {
-                Name = entry.Key, Status = entry.Value.Status.ToString(), entry.Value.Description
+                Name = entry.Key,
+                Status = entry.Value.Status.ToString(),
+                entry.Value.Description
             })
         };
 
@@ -68,7 +69,7 @@ app.UseHealthChecks("/status", new HealthCheckOptions
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCors("CORS_POLICY");
-app.UseSwaggerUi3(settings =>
+app.UseSwaggerUi(settings =>
 {
     settings.Path = "/api";
     settings.DocumentPath = "/api/specification.json";

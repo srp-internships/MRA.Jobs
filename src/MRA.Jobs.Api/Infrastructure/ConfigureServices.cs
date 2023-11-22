@@ -21,7 +21,6 @@ public static class ConfigureServices
         IConfiguration configuration)
     {
         services.AddAppIdentity(configuration);
-        services.AddMediatR(typeof(ConfigureServices).Assembly);
 
         if (configuration["UseFileEmailService"] == "true")
         {
