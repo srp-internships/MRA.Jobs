@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MRA.Jobs.Application.ApplicationServices;
-internal class TaskService
+public class TaskService:ITaskService
 {
+
 }

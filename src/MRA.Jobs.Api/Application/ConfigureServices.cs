@@ -34,6 +34,7 @@ public static class ConfigureServices
         services.AddScoped<IApplicationSieveProcessor, ApplicationSieveProcessor>();
         
         services.AddScoped<ICvService, CvService>();
+        services.AddScoped<ITaskService, TaskService>();
         return services;
     }
 }
