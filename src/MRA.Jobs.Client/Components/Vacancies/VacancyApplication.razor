@@ -260,9 +260,14 @@ else
 
     private async Task CreateApplication()
     {
-        if (string.IsNullOrWhiteSpace(application.CoverLetter) || questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)) || _cv == null)
+        if (_isUploadCvMode && _cv == null)
         {
-            return; // Do not proceed with submission if any required fields are empty.
+            Snackbar.Add("Please upload your CV", Severity.Warning);
+        }
+
+        if( questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)))
+        {
+            Snackbar.Add("please answer the questions", Severity.Error);
         }
 
         var updatedResponses = application.VacancyResponses.Select(vr => new VacancyResponseDto

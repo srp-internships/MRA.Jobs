@@ -16,6 +16,7 @@ namespace MRA.Jobs.Client.Services.ApplicationService;
 
 public class ApplicationService : IApplicationService
 {
+    private readonly IdentityHttpClient _identityHttpClient;
     private readonly HttpClient _httpClient;
     private readonly AuthenticationStateProvider _authenticationState;
     private readonly ISnackbar _snackbar;
@@ -23,9 +24,10 @@ public class ApplicationService : IApplicationService
     private readonly IConfiguration _configuration;
 
 
-    public ApplicationService(HttpClient httpClient, AuthenticationStateProvider authenticationState,
+    public ApplicationService(IdentityHttpClient identityHttpClient , HttpClient httpClient, AuthenticationStateProvider authenticationState,
         ISnackbar snackbar, NavigationManager navigationManager, IConfiguration configuration)
     {
+        _identityHttpClient = identityHttpClient;
         _httpClient = httpClient;
         _authenticationState = authenticationState;
         _snackbar = snackbar;
@@ -46,12 +48,24 @@ public class ApplicationService : IApplicationService
     {
         try
         {
-            //set cv
-            var fileBytes = await GetFileBytesAsync(file);
-            application.Cv.CvBytes = fileBytes;
-            application.Cv.FileName = file.Name;
-            //set cv
+            byte[] fileBytes;
+            string fileName;
+            if (!application.Cv.IsUploadCvMode)
+            {
+                var responseCv = await _identityHttpClient.GetAsync("Profile/GenerateCV");
+                fileBytes = await responseCv.Content.ReadAsByteArrayAsync();
+                fileName = $"{Guid.NewGuid()}_{DateTime.Now.ToString("ddMMyyyy_HHmmss")}_cv.pdf";
+            }
+            else
+            {
+                fileBytes = await GetFileBytesAsync(file);
+                fileName = file.Name;
+            }
 
+            //set cv
+            application.Cv.CvBytes = fileBytes;
+            application.Cv.FileName = fileName;
+            //set cv
             var response = await _httpClient.PostAsJsonAsync("/api/applications", application);
             switch (response.StatusCode)
             {
