@@ -25,8 +25,6 @@ public class ApplicationProfile : Profile
         CreateMap<CreateApplicationCommand, Domain.Entities.Application>()
             .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses))
             .ForMember(dest => dest.CV, opt => opt.Ignore());
-
-        CreateMap<CreateApplicationWithoutApplicantIdCommand, Domain.Entities.Application>();
         CreateMap<UpdateApplicationCommand, Domain.Entities.Application>();
         MappingConfiguration.ConfigureUserMap<ApplicationTimelineEvent, TimeLineDetailsDto>(this);
         CreateMap<Domain.Entities.Application, ApplicationListStatus>()
