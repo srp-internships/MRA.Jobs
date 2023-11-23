@@ -47,9 +47,12 @@ public class ApplicationService : IApplicationService
         try
         {
             //set cv
-            var fileBytes = await GetFileBytesAsync(file);
-            application.Cv.CvBytes = fileBytes;
-            application.Cv.FileName = file.Name;
+            if (application.Cv.IsUploadCvMode)
+            {
+                var fileBytes = await GetFileBytesAsync(file);
+                application.Cv.CvBytes = fileBytes;
+                application.Cv.FileName = file.Name;
+            }
             //set cv
 
             var response = await _httpClient.PostAsJsonAsync("/api/applications", application);
