@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Application.Contract.User.Queries.CheckUserDetails;
-using MRA.Identity.Application.Contract.User.Queries.CheckUserName;
 
 namespace MRA.Identity.Api.Controllers;
 [Route("api/[controller]")]
@@ -31,13 +30,6 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    [HttpGet("CheckUserName/{userName}")]
-    [AllowAnonymous]
-    public async Task<IActionResult> CheckUserName([FromRoute] string userName)
-    {
-        var result = await _mediator.Send(new CheckUserNameQuery() { UserName = userName });
-        return Ok(result);
-    }
 
     [HttpGet("CheckUserDetails/{userName}/{phoneNumber}/{email}")]
     [AllowAnonymous]
