@@ -10,6 +10,8 @@ using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
 using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 using MediatR;
+using MRA.Identity.Application.Contract.User.Queries.CheckUserDetails;
+using MRA.Jobs.Client.Pages.Admin;
 
 namespace MRA.Jobs.Client.Services.Auth;
 
@@ -125,6 +127,12 @@ public class AuthService : IAuthService
     public async Task<HttpResponseMessage> CheckUserName(string userName)
     {
         var result = await _identityHttpClient.GetAsync($"User/CheckUserName/{userName}");
+        return result;
+    }
+
+    public async Task<HttpResponseMessage> CheckUserDetails(CheckUserDetailsQuery query)
+    {
+        var result = await _identityHttpClient.GetAsync($"User/CheckUserDetails/{query.UserName}/{query.PhoneNumber}/{query.Email}");
         return result;
     }
 }

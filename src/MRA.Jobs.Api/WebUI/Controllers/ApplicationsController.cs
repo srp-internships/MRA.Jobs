@@ -57,13 +57,6 @@ public class ApplicationsController : ApiControllerBase
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPost("withoutApplicantId")]
-    public async Task<ActionResult<Guid>> CreateApplicationWithoutApplicantId(
-        CreateApplicationWithoutApplicantIdCommand request, CancellationToken cancellationToken)
-    {
-        return await Mediator.Send(request, cancellationToken);
-    }
-
     [HttpPut("{slug}")]
     public async Task<ActionResult<Guid>> UpdateApplication(string slug, UpdateApplicationCommand request,
         CancellationToken cancellationToken)
