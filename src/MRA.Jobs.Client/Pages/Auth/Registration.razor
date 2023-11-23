@@ -40,66 +40,15 @@
 								<MudTextField Label="Email" Class="mt-3"
 											  @bind-Value="_registerUser.Email" For="@(() => _registerUser.Email)" InputType="InputType.Email"
 											  OnBlur="CheckUserName" />
-								@if (_registerUser.Email != "")
-								{
-									@if (!_userDetailsResponse.IsEmailTaken)
-									{
-										<MudText Typo="Typo.body2" Color="Color.Success">
-											<MudIcon Icon="@Icons.Material.Filled.Check"></MudIcon>
-											Email: <b>@_registerUser.Email</b> is available
-										</MudText>
-									}
-									else
-									{
-										<MudText Typo="Typo.body2" Color="Color.Error">
-											Email: <b>@_registerUser.Email</b> is not available
-										</MudText>
-									}
-								}
+							
 								<MudTextField Label="Phone" HelperText="Enter your phone number" Class="mt-3"
 											  @bind-Value="_registerUser.PhoneNumber" For="@(() => _registerUser.PhoneNumber)" InputType="InputType.Telephone"
 											  OnBlur="CheckUserName" />
-								@if (_registerUser.PhoneNumber != "")
-								{
-									@if (!_userDetailsResponse.IsPhoneNumberTaken)
-									{
-										<MudText Typo="Typo.body2" Color="Color.Success">
-											<MudIcon Icon="@Icons.Material.Filled.Check"></MudIcon>
-											PhoneNumber: <b>@_registerUser.PhoneNumber</b> is available
-										</MudText>
-									}
-									else
-									{
-										<MudText Typo="Typo.body2" Color="Color.Error">
-											PhoneNumber: <b>@_registerUser.PhoneNumber</b> is not available
-										</MudText>
-									}
-
-								}
+							
 								<MudTextField Label="Username"
 											  @bind-Value="_registerUser.Username" For="@(() => _registerUser.Username)"
 											  OnBlur="CheckUserName" />
-								@if (_processing2)
-								{
-									<MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-								}
-								@if (_registerUser.Username != "")
-								{
-									@if (!_userDetailsResponse.IsUserNameTaken)
-									{
-										<MudText Typo="Typo.body2" Color="Color.Success">
-											<MudIcon Icon="@Icons.Material.Filled.Check"></MudIcon>
-											UserName: <b>@_registerUser.Username</b> is available
-										</MudText>
-									}
-									else
-									{
-										<MudText Typo="Typo.body2" Color="Color.Error">
-											UserName: <b>@_registerUser.Username</b> is not available
-										</MudText>
-									}
-
-								}
+							
 								<MudTextField Label="Password" HelperText="Password" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
 											  @bind-Value="_registerUser.Password" For="@(() => _registerUser.Password)" />
 
@@ -217,6 +166,30 @@
 	{
 		_processing = true;
 		StateHasChanged();
+		await CheckUserName();
+		var check=true;
+		if (_userDetailsResponse.IsEmailTaken)
+		{
+			Snackbar.Add("Email is not available", Severity.Error);
+			check = false;
+		}
+		if (_userDetailsResponse.IsUserNameTaken)
+		{
+			Snackbar.Add("User Name is not available", Severity.Error);
+			check = false;
+		}
+		if (_userDetailsResponse.IsUserNameTaken)
+		{
+			Snackbar.Add("Phone Number is not available", Severity.Error);
+			check = false;
+		}
+		if (!check)
+		{
+			_processing = false;
+			return;
+		}
+		
+
 		if (!(await _fluentValidationValidator!.ValidateAsync()) || _isAvailable == 0)
 		{
 			_processing = false;
@@ -292,6 +265,7 @@
 	}
 
 	private UserDetailsResponse _userDetailsResponse = new();
+
 	private async Task CheckUserName()
 	{
 		StateHasChanged();

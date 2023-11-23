@@ -46,6 +46,4 @@ public class UserController : ControllerBase
         var result = await _mediator.Send(new CheckUserDetailsQuery() { UserName = userName, PhoneNumber = phoneNumber, Email = email });
         return Ok(result);
     }
-
-
 }
