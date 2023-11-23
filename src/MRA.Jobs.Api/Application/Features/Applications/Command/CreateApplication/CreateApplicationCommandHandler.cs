@@ -61,7 +61,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
             ApplicationId = application.Id,
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
-            Note = "Job vacancy created",
+            Note = "Applied vacancy",
             CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
 
