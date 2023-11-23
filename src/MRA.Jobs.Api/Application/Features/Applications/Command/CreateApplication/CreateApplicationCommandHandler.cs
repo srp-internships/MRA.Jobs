@@ -1,7 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
-
-namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
+﻿namespace MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 
 using Common.Interfaces;
 using Common.Security;
@@ -20,12 +17,14 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly ISlugGeneratorService _slugService;
     private readonly MRA.Configurations.Common.Interfaces.Services.IEmailService _emailService;
     private readonly IHtmlService _htmlService;
-    private readonly HttpClient _httpClient = new();
     private readonly ICvService _cvService;
+    private readonly IVacancyTaskService _vacancyTaskService;
+
 
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
         ICurrentUserService currentUserService, ISlugGeneratorService slugService,
-        MRA.Configurations.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService, ICvService cvService)
+        MRA.Configurations.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService,
+        ICvService cvService, IVacancyTaskService vacancyTaskService)
     {
         _context = context;
         _mapper = mapper;
@@ -35,11 +34,11 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         _emailService = emailService;
         _htmlService = htmlService;
         _cvService = cvService;
+        _vacancyTaskService = vacancyTaskService;
     }
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
-        _httpClient.DefaultRequestHeaders.Add("API_KEY", "123");
         var vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
         _ = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
         var application = _mapper.Map<Application>(request);
@@ -54,58 +53,13 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         application.CV = await _cvService.GetCvByCommandAsync(ref request);
 
         await _context.Applications.AddAsync(application, cancellationToken);
-        foreach (var tResponses in application.TaskResponses)
-        {
-            var s = new VacancyTaskDetail
-            {
-                ApplicantId = application.Id,
-                Codes = tResponses.Code,
-                TaskId = tResponses.TaksId,
-            };
-            var task = _context.VacancyTasks.Where(v => v.Id == tResponses.TaksId);
-            foreach (var vTasks in task)
-            {
-                var r = new HttpRequestMessage
-                {
-                    Method = HttpMethod.Post,
-                    RequestUri = new Uri("https://localhost:7046/api/CodeAnalyzer/Analyze"),
-                    Content = new StringContent(
-                        $@"{{
-                    ""codes"": [
-                        ""{vTasks.Test}"",
-                        ""{tResponses.Code}""
-                    ],
-                    ""dotNetVersionInfo"": {{
-                        ""language"": ""CSharp"",
-                        ""version"": ""NET6""
-                    }}
-                }}", Encoding.UTF8, "application/json")
-                };
-
-                try
-                {
-                    using var response = await _httpClient.SendAsync(r, cancellationToken);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
-                    Console.WriteLine(responseBody);
-                    var jsonDocument = JsonDocument.Parse(responseBody);
-                    bool success = jsonDocument.RootElement.GetProperty("success").GetBoolean();
-                    s.Success = success ? TaskSuccsess.Success : TaskSuccsess.Failure;
-                }
-                catch (Exception ex)
-                {
-                    s.Success = TaskSuccsess.Error;
-                    s.Log = $"Something went wrong! Message={ex.Message},Data = {DateTime.Now} ";
-                }
-            }
-            await _context.VacancyTaskDetails.AddAsync(s, cancellationToken);
-        }
+        await _vacancyTaskService.CheckVacancyTasksAsync(application.Id, application.TaskResponses, cancellationToken);
         ApplicationTimelineEvent timelineEvent = new()
         {
             ApplicationId = application.Id,
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
-            Note = "Job vacancy created",
+            Note = "Applied vacancy",
             CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
         };
 
