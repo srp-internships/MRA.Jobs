@@ -47,7 +47,7 @@ public abstract class BaseTest
             Email = "reviewer@example.com",
             UserName = "@Reviewer",
             NormalizedUserName = "@reviewer",
-            PhoneNumber = "+992123456789",
+            PhoneNumber = "+992223456789",
         };
 
         await AddUser(request2, "password@#12P");

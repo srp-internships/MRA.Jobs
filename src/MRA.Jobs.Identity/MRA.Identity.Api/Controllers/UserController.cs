@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.User.Queries;
-using MRA.Identity.Application.Contract.User.Queries.CheckUserName;
+using MRA.Identity.Application.Contract.User.Queries.CheckUserDetails;
 
 namespace MRA.Identity.Api.Controllers;
 [Route("api/[controller]")]
@@ -30,11 +30,12 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    [HttpGet("CheckUserName/{userName}")]
+
+    [HttpGet("CheckUserDetails/{userName}/{phoneNumber}/{email}")]
     [AllowAnonymous]
-    public async Task<IActionResult> CheckUserName([FromRoute]string userName)
+    public async Task<IActionResult> CheckUserDetails([FromRoute] string userName, [FromRoute] string phoneNumber, [FromRoute] string email)
     {
-        var result = await _mediator.Send(new CheckUserNameQuery() { UserName = userName });
+        var result = await _mediator.Send(new CheckUserDetailsQuery() { UserName = userName, PhoneNumber = phoneNumber, Email = email });
         return Ok(result);
     }
 }

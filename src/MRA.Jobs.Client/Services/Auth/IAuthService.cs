@@ -2,6 +2,7 @@
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
+using MRA.Identity.Application.Contract.User.Queries.CheckUserDetails;
 using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 
 namespace MRA.Jobs.Client.Services.Auth;
@@ -14,4 +15,5 @@ public interface IAuthService
     Task<HttpResponseMessage> IsAvailableUserPhoneNumber(IsAvailableUserPhoneNumberQuery query);
     Task<HttpResponseMessage> ResetPassword(ResetPasswordCommand command);
     Task<HttpResponseMessage> CheckUserName(string userName);
+    Task<HttpResponseMessage> CheckUserDetails(CheckUserDetailsQuery checkUserDetailsQuery);
 }
