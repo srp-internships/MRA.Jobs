@@ -16,10 +16,8 @@ public static class ConfigureServices
         IConfiguration configuration)
     {
         //services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddAutoMapper(config =>
-        {
-            config.Internal().MethodMappingEnabled = false;
-        }, typeof(IApplicationMarker).Assembly);
+        services.AddAutoMapper(config => { config.Internal().MethodMappingEnabled = false; },
+            typeof(IApplicationMarker).Assembly);
 
         services.AddSingleton<ISlugGeneratorService, SlugGeneratorService>();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -34,6 +32,7 @@ public static class ConfigureServices
         services.AddScoped<IApplicationSieveProcessor, ApplicationSieveProcessor>();
 
         services.AddScoped<ICvService, CvService>();
+        services.AddScoped<IVacancyTaskService, VacancyTasksService>();
         return services;
     }
 }
