@@ -3,7 +3,7 @@ using System.Text;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 
 namespace MRA.Jobs.Application.ApplicationServices;
-public class TaskService:ITaskService
+public class TaskService : ITaskService
 {
     private readonly HttpClient _httpClient = new();
     private readonly IApplicationDbContext _context;
@@ -25,7 +25,7 @@ public class TaskService:ITaskService
         {
             var taskDetail = new VacancyTaskDetail
             {
-                ApplicantId= applicantId,
+                ApplicantId = applicantId,
                 Codes = tResponses.Code,
                 TaskId = tResponses.TaskId,
             };
@@ -47,7 +47,8 @@ public class TaskService:ITaskService
                     ""language"": ""CSharp"",
                     ""version"": ""NET6""
                 }}
-            }}", Encoding.UTF8, "application/json")};
+            }}", Encoding.UTF8, "application/json")
+                };
 
                 try
                 {
