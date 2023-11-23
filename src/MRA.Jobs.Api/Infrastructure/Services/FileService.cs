@@ -29,8 +29,8 @@ public class FileService : IFileService
         var key = $"{Guid.NewGuid()}_{fileName}";
         var filePath = Path.Combine(_uploadFolderPath, key);
 
-        var ms = new MemoryStream(fileBytes);
-        var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+        using var ms = new MemoryStream(fileBytes);
+        using var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write);
         await ms.CopyToAsync(fs);
         return key;
     }

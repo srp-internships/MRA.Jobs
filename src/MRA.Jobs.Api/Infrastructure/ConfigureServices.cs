@@ -21,7 +21,6 @@ public static class ConfigureServices
         IConfiguration configuration)
     {
         services.AddAppIdentity(configuration);
-        services.AddMediatR(typeof(ConfigureServices).Assembly);
 
         if (configuration["UseFileEmailService"] == "true")
         {
@@ -49,6 +48,7 @@ public static class ConfigureServices
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<ISmsService, GenericSmsService>();
         services.AddScoped<IHtmlService, HtmlService>();
+        services.AddHttpClient();
 
         if (configuration["UseAzureBlobStorage"] == "true")
         {

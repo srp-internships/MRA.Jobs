@@ -260,7 +260,7 @@ else
 
     private async Task CreateApplication()
     {
-        if (string.IsNullOrWhiteSpace(application.CoverLetter) || questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)) || _cv == null)
+        if (string.IsNullOrWhiteSpace(application.CoverLetter) || questionResponses.Any(qr => string.IsNullOrWhiteSpace(qr.Value)) || (_cv == null && _isUploadCvMode))
         {
             return; // Do not proceed with submission if any required fields are empty.
         }
