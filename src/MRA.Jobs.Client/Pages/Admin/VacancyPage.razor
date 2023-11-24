@@ -26,7 +26,23 @@ else
 	}
 	else
 	{
-
+        
+	    <MudGrid>
+            <MudItem Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0" lg="12">
+                <MudCardHeader>
+                    <MudButton hidden="@panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => panelOpenState = true)">
+                        <MudText>Create New Job Vacancy</MudText>
+                    </MudButton>
+                </MudCardHeader>
+            </MudItem>
+            <MudItem lg="12" hidden="@(!panelOpenState)">
+                <EditForm Model="@VService.creatingNewJob">
+                    
+                </EditForm>
+            </MudItem>
+        </MudGrid>
+	    
+	    
 		<MudExpansionPanels>
 			<MudExpansionPanel Text="Create new Job" @bind-IsExpanded=@panelOpenState>
 
