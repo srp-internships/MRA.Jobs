@@ -16,10 +16,9 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly ICurrentUserService _currentUserService;
     private readonly ISlugGeneratorService _slugService;
     private readonly MRA.Configurations.Common.Interfaces.Services.IEmailService _emailService;
-    private readonly IHtmlService _htmlService;
+    private readonly IHtmlService _htmlService;  
     private readonly ICvService _cvService;
     private readonly IVacancyTaskService _vacancyTaskService;
-
 
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
         ICurrentUserService currentUserService, ISlugGeneratorService slugService,
@@ -44,6 +43,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         var application = _mapper.Map<Application>(request);
 
         application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
+
 
         if (await ApplicationExits(application.Slug))
             throw new ConflictException("Duplicate Apply. You have already submitted your application!");
