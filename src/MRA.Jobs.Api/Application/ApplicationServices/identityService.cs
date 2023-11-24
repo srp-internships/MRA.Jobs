@@ -10,13 +10,13 @@ using Microsoft.Extensions.Configuration;
 using MRA.Identity.Application.Contract.Profile.Responses;
 
 namespace MRA.Jobs.Application.ApplicationServices;
-public class identityService : IidentityService
+public class IdentityService : IidentityService
 {
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IHttpClientFactory _factory;
 
-    public identityService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IHttpClientFactory factory)
+    public IdentityService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IHttpClientFactory factory)
     {
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
