@@ -3,19 +3,16 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Dtos;
-using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Application;
 
-public class CreateApplicationCommandTest : Testing
+public class CreateApplicationCommandTest : CreateApplicationTestsBase
 {
-    private static readonly Random Random = new();
-
     [Test]
     public async Task CreateApplicationCommand_CreatingApplication_Success()
     {
-        var vacancyId = await AddJobVacancy("foobar2");
+        var vacancyId = await AddJobVacancyAsync("foobar2");
         var testSubmit = new CreateApplicationCommand
         {
             VacancyId = vacancyId,
@@ -28,7 +25,7 @@ public class CreateApplicationCommandTest : Testing
             }
         };
         RunAsDefaultUserAsync();
-        var response = await _httpClient.PostAsJsonAsync("/api/applications", testSubmit);
+        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
 
@@ -40,7 +37,7 @@ public class CreateApplicationCommandTest : Testing
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyQuestions_Success()
     {
-        var vacancyId = await AddJobVacancy("foobar");
+        var vacancyId = await AddJobVacancyAsync("foobar");
         var testSubmit = new CreateApplicationCommand
         {
             VacancyId = vacancyId,
@@ -63,7 +60,7 @@ public class CreateApplicationCommandTest : Testing
         };
 
         RunAsDefaultUserAsync();
-        var response = await _httpClient.PostAsJsonAsync("/api/applications", testSubmit);
+        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
 
@@ -75,7 +72,7 @@ public class CreateApplicationCommandTest : Testing
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyTask_Success()
     {
-        var vacancyId = await AddJobVacancy("foobar11");
+        var vacancyId = await AddJobVacancyAsync("foobar11");
         var testSubmit = new CreateApplicationCommand
         {
             VacancyId = vacancyId,
@@ -111,7 +108,7 @@ public class CreateApplicationCommandTest : Testing
         };
 
         RunAsDefaultUserAsync();
-        var response = await _httpClient.PostAsJsonAsync("/api/applications", testSubmit);
+        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
 
@@ -120,40 +117,11 @@ public class CreateApplicationCommandTest : Testing
         responseGuid.Should().NotBeEmpty();
     }
 
-    async Task<Guid> AddVacancyCategory(string name)
-    {
-        var vacancyCategory = new VacancyCategory
-        {
-            Name = name,
-            Id = Guid.NewGuid(),
-        };
-        await AddAsync(vacancyCategory);
-        return vacancyCategory.Id;
-    }
-
-    async Task<Guid> AddJobVacancy(string title)
-    {
-        var internshipVacancy = new InternshipVacancy
-        {
-            Id = Guid.NewGuid(),
-            Title = title,
-            Description = RandomString(50),
-            ShortDescription = RandomString(10),
-            Stipend = 100,
-            Duration = 3,
-            PublishDate = DateTime.Now,
-            ApplicationDeadline = DateTime.Now.AddDays(2),
-            CategoryId = await AddVacancyCategory("internship"),
-            Slug = title.ToLower().Replace(" ", "-")
-        };
-        await AddAsync(internshipVacancy);
-        return internshipVacancy.Id;
-    }
 
     [Test]
     public async Task Handle_DuplicateApplyForUser_ReturnsConflict()
     {
-        var jobId = await AddJobVacancy("newVacancyForDuplicateTest");
+        var jobId = await AddJobVacancyAsync("newVacancyForDuplicateTest");
 
         RunAsDefaultUserAsync();
 
@@ -170,16 +138,9 @@ public class CreateApplicationCommandTest : Testing
             }
         };
 
-        await _httpClient.PostAsJsonAsync("/api/applications", createCommand);
-        var response = await _httpClient.PostAsJsonAsync("/api/applications", createCommand);
+        await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createCommand);
+        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createCommand);
 
         response.StatusCode.Should().Be(HttpStatusCode.Conflict);
-    }
-
-    private static string RandomString(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[Random.Next(s.Length)]).ToArray());
     }
 }
