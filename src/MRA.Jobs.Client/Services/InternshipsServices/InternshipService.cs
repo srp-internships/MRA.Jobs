@@ -39,9 +39,9 @@ public class InternshipService : IInternshipService
         return await _http.PostAsJsonAsync("internships", createCommand);
     }
 
-    public async Task Delete(string slug)
+    public async Task<HttpResponseMessage> Delete(string slug)
     {
-        await _http.DeleteAsync($"internships/{slug}");
+        return await _http.DeleteAsync($"internships/{slug}");
     }
 
     public async Task<List<InternshipVacancyListResponse>> GetAll()
