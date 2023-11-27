@@ -86,9 +86,8 @@ public static class ConfigureServices
             };
         });
 
-        services.AddAuthorization(auth =>
-        {
-            auth.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+        services.AddAuthorizationBuilder()
+            .SetDefaultPolicy(new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
                 .RequireRole(ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
                     ApplicationClaimValues.SuperAdmin,
@@ -96,19 +95,16 @@ public static class ConfigureServices
                 .RequireClaim(ClaimTypes.Id)
                 .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
                     ApplicationClaimValues.AllApplications)
-                .Build();
-
-            auth.AddPolicy(ApplicationPolicies.Administrator, op => op
+                .Build())
+            .AddPolicy(ApplicationPolicies.Administrator, op => op
                 .RequireRole(ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin)
                 .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
-                    ApplicationClaimValues.AllApplications));
-
-            auth.AddPolicy(ApplicationPolicies.Reviewer, op => op
+                    ApplicationClaimValues.AllApplications))
+            .AddPolicy(ApplicationPolicies.Reviewer, op => op
                 .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator,
                     ApplicationClaimValues.SuperAdmin)
                 .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
                     ApplicationClaimValues.AllApplications));
-        });
         return services;
     }
 }
