@@ -1,36 +1,46 @@
 ﻿@using MRA.Jobs.Client.Identity
 @inherits LayoutComponentBase
 
-<MudThemeProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
 
-<div class="container" style="padding-top:25px;">
-    <div class="row">
-        <div class="col-md-2">
-            <MudPaper Elevation="0">
-                <MudNavMenu Bordered="true">
-                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard" Disabled="true" hidden="true">Dashboard</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">Applications</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">Jobs</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">Internships</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All"  Href="/dashboard/trainings">Trainings</MudNavLink>
-                    <CascadingAuthenticationState>
-                        <AuthorizeView Roles="@ApplicationClaimValues.Administrator">
-                            <MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
-                        </AuthorizeView>
-                    </CascadingAuthenticationState>
-                    <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="@LogOut">Log out</MudNavLink>
-                </MudNavMenu>
-            </MudPaper>
-        </div>
-        <div class="col-md-10" style="margin: 0 auto;">
-            @Body
-        </div>
-    </div>
-</div>
+<CascadingAuthenticationState>
+    <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
+        <Authorized>
+
+            <div class="container" style="padding-top:25px;">
+                <div class="row">
+                    <div class="col-md-2">
+                        <MudPaper Elevation="0">
+                            <MudNavMenu Bordered="true">
+                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard" Disabled="true" hidden="true">Dashboard</MudNavLink>
+                                <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
+                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">Applications</MudNavLink>
+                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">Jobs</MudNavLink>
+                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">Internships</MudNavLink>
+                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">Trainings</MudNavLink>
+
+                                <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
+                                    <MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
+                                </AuthorizeView>
+
+                                <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="@LogOut">Log out</MudNavLink>
+                            </MudNavMenu>
+                        </MudPaper>
+                    </div>
+                    <div class="col-md-10" style="margin: 0 auto;">
+                        @Body
+                    </div>
+                </div>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            Sorry, there's nothing at this address.
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
 
 @code {
 
@@ -50,4 +60,5 @@
         await _authStateProvider.GetAuthenticationStateAsync();
         _navigationManager.NavigateTo("/");
     }
+
 }
