@@ -436,6 +436,14 @@ else
     {
         internshipService.createCommand.VacancyQuestions = Questions;
         internshipService.createCommand.VacancyTasks = Tasks;
+        if (applicationDeadlineTime.HasValue)
+            internshipService.createCommand.ApplicationDeadline += applicationDeadlineTime.Value;
+
+        if (endDate_Time.HasValue)
+            internshipService.createCommand.EndDate += endDate_Time.Value;
+
+        if (publishDate_Time.HasValue)
+            internshipService.createCommand.PublishDate += publishDate_Time.Value;
         var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
         internshipService.createCommand.CategoryId = catId;
         try

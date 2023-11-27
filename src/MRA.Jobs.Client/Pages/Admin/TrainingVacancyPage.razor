@@ -391,6 +391,11 @@ else
 
     private async Task HandleUpdate()
     {
+        if (endDate_Time.HasValue)
+            TrainingService.createCommand.EndDate += endDate_Time.Value;
+
+        if (publishDate_Time.HasValue)
+            TrainingService.createCommand.PublishDate += publishDate_Time.Value;
         TrainingService.createCommand.VacancyQuestions = Questions;
         TrainingService.createCommand.VacancyTasks = Tasks;
         var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
