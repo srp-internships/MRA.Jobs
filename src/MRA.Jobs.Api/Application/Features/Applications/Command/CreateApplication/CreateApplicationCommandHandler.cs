@@ -19,11 +19,12 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly IHtmlService _htmlService;  
     private readonly ICvService _cvService;
     private readonly IVacancyTaskService _vacancyTaskService;
+    private readonly IidentityService _identityService;
 
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
         ICurrentUserService currentUserService, ISlugGeneratorService slugService,
         MRA.Configurations.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService,
-        ICvService cvService, IVacancyTaskService vacancyTaskService)
+        ICvService cvService, IVacancyTaskService vacancyTaskService, IidentityService identityService)
     {
         _context = context;
         _mapper = mapper;
@@ -34,6 +35,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         _htmlService = htmlService;
         _cvService = cvService;
         _vacancyTaskService = vacancyTaskService;
+        _identityService = identityService;
     }
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
@@ -67,7 +69,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         await _context.SaveChangesAsync(cancellationToken);
 
         await _emailService.SendEmailAsync(new[] { vacancy.CreatedByEmail },
-            _htmlService.GenerateApplyVacancyContent(_currentUserService.GetUserName()),
+            _htmlService.GenerateApplyVacancyContent_CreateApplication(vacancy.Title, await _cvService.GetCvByCommandAsync(ref request), await _identityService.ApplicantDetailsInfo()),
             "New Apply");
 
         return application.Id;
