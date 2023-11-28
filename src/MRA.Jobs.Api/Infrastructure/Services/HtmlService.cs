@@ -15,21 +15,20 @@ public class HtmlService : IHtmlService
 ";
         return content;
     }
-    public string GenerateApplyVacancyContent_CreateApplication(string VacancyTitle, string CV, UserProfileResponse userInfo)
+    public string GenerateApplyVacancyContent_CreateApplication(string applicationSlug, string vacancyTitle, string cV, UserProfileResponse userInfo)
     {
         var content = $@"
             <div style=""display: flex;flex-direction: column;width: 100%"">
             <h2><strong>New Job Application Received</strong></h2>
-            <h2>{userInfo.UserName} applied to the {VacancyTitle}</h2>
+            <h2>{userInfo.UserName} applied to the {vacancyTitle}</h2>
             <h2>Applicant Details:</h2>
             <ul>
             <li><strong>Name:</strong> {userInfo.FirstName} {userInfo.LastName}</li>
             <li><strong>Email:</strong>{userInfo.Email}</li>
             <li><strong>PhoneNumber:</strong>{userInfo.PhoneNumber}</li>
-            <li><strong>Resume:</strong> {CV}</li>
+            <li><strong>Resume:</strong> {cV}</li>
             </ul>
-            <p>Link to application: <a href=""http://192.168.1.17:5006/dashboard/applications/{userInfo.UserName}""></a></p>
-            <button type=""button"" onclick=""location.href='#your_url'"">Link to application</button>
+            <p>Link to application: <a href=""http://192.168.1.17:5006/dashboard/applications/{applicationSlug}"">http://192.168.1.17:5006/dashboard/applications/{applicationSlug}</a></p>
             </div>
 ";
         return content;

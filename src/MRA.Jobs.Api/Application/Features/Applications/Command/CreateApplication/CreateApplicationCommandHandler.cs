@@ -69,7 +69,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         await _context.SaveChangesAsync(cancellationToken);
 
         await _emailService.SendEmailAsync(new[] { vacancy.CreatedByEmail },
-            _htmlService.GenerateApplyVacancyContent_CreateApplication(vacancy.Title, await _cvService.GetCvByCommandAsync(ref request), await _identityService.ApplicantDetailsInfo()),
+            _htmlService.GenerateApplyVacancyContent_CreateApplication(application.Slug, vacancy.Title, await _cvService.GetCvByCommandAsync(ref request), await _identityService.ApplicantDetailsInfo()),
             "New Apply");
 
         return application.Id;
