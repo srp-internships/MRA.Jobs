@@ -3,298 +3,460 @@
 @using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @using MRA.Jobs.Client.Components.Dialogs;
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-@inject ITrainingService trainingService
-@inject ICategoryService categoryService
+@using MRA.Jobs.Client.Identity
+@inject ITrainingService TrainingService
+@inject ICategoryService CategoryService
+@inject ISnackbar Snackbar
 
-
-<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Trainings</MudText>
+<MudText Typo="Typo.h4" Color="Color.Primary">Trainings</MudText>
 @if (serverError)
 {
-	<ServerErrorComponent />
+    <ServerErrorComponent/>
 }
 else
 {
-	<style>
+    <style>
 		.mud-input-control {
 			margin-bottom: 10px;
 		}
 	</style>
 
-	@if (categories == null)
-	{
-		<div class="loader"></div>
-	}
-	else
-	{
-		<MudExpansionPanels>
-			<MudExpansionPanel Text="Create new Training" @bind-IsExpanded="@panelOpenState">
-				<MudTextField @bind-Value="@trainingService.createCommand.Title" Label="Title" Variant="Variant.Outlined"></MudTextField>
-				<MudTextField Lines="5" @bind-Value="@trainingService.createCommand.ShortDescription" Variant="Variant.Outlined" Label="ShortDescription"></MudTextField>
-				<MudTextField Lines="5" @bind-Value="@trainingService.createCommand.Description" Label="Description" Variant="Variant.Outlined"></MudTextField>
-				<div class="row">
-					<div class="col-md-4">
-						<MudTextField @bind-Value="@trainingService.createCommand.Duration" Variant="Variant.Outlined" Label="Duration"></MudTextField>
-					</div>
-					<div class="col-md-4">
-						<MudTextField @bind-Value="@trainingService.createCommand.Fees" Label="Fees" Variant="Variant.Outlined"></MudTextField>
-					</div>
-					<div class="col-md-4">
-						<MudSelect T="string" Label="@selectedCategory" @bind-Value="@selectedCategory" Variant="Variant.Outlined">
-							@foreach (var cat in categories)
-							{
-								<MudSelectItem Value="@cat.Name" />
-							}
-						</MudSelect>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<MudDatePicker @bind-Date="@trainingService.createCommand.EndDate" Variant="Variant.Outlined" Label="End date" />
-					</div>
-					<div class="col-md-6">
-						<MudDatePicker @bind-Date="@trainingService.createCommand.PublishDate" Variant="Variant.Outlined" Label="Publish date" />
-					</div>
-				</div>
-				<MudPaper Class="p-2 mb-2">
-					<MudText Typo="Typo.caption">Vacancy questions</MudText>
-					@foreach (var ques in Questions)
-					{
-						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.QuestionMark" /> @ques.Question<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveQuestion(ques.Question)" aria-label="delete"></MudIconButton></MudText>
+    @if (categories == null)
+    {
+        <div class="loader"></div>
+    }
+    else
+    {
+        <MudGrid>
+            <MudItem Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0" lg="12">
+                <MudCardHeader>
+                    <MudButton hidden="@panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => panelOpenState = true)">
+                        <MudText>Create New Training Vacancy</MudText>
+                    </MudButton>
+                </MudCardHeader>
+            </MudItem>
+            <MudItem lg="12" hidden="@(!panelOpenState)">
+                <EditForm Model="@TrainingService.createCommand">
+                    <FluentValidationValidator/>
+                    <MudGrid>
+                        <MudItem xs="12" lg="6">
+                            <MudCard>
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Style="color:#808080">
+                                            <b>@createOrEditHeader</b>
+                                        </MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    <MudTextField @bind-Value="@TrainingService.createCommand.Title" Label="Title"
+                                                  Variant="Variant.Outlined" For="@(() => TrainingService.createCommand.Title)"/>
+                                    <MudTextField Lines="4" @bind-Value="@TrainingService.createCommand.ShortDescription" Label="ShortDescription"
+                                                  Variant="Variant.Outlined" For="@(() => TrainingService.createCommand.ShortDescription)"/>
+                                    <MudTextField Lines="10" @bind-Value="@TrainingService.createCommand.Description" Label="Description"
+                                                  Variant="Variant.Outlined" For="@(() => TrainingService.createCommand.Description)"/>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12" lg="6">
+                            <MudCard>
+                                <MudCardHeader>
+                                    <MatCardContent>
+                                        <MudText Style="color: #808080">
+                                            <b>Vacancy details</b>
+                                        </MudText>
+                                    </MatCardContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    <MudGrid>
+                                        <MudItem xs=12 lg="12">
+                                            <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Category</MudText>
+                                            <MudSelect T="string" @bind-Value="@selectedCategory"
+                                                       Variant="Variant.Outlined">
+                                                @foreach (var cat in categories)
+                                                {
+                                                    <MudSelectItem Value="@cat.Name"/>
+                                                }
+                                            </MudSelect>
+                                        </MudItem>
+                                        <MudItem xs="12" lg="6">
+                                            <MudTextField @bind-Value="@TrainingService.createCommand.Duration" Variant="Variant.Outlined" Label="Duration"></MudTextField>
+                                        </MudItem>
+                                        <MudItem xs="12" lg="6">
+                                            <MudTextField @bind-Value="@TrainingService.createCommand.Fees" Label="Fees" Variant="Variant.Outlined"></MudTextField>
+                                        </MudItem>
+                                        <MudItem xs=12 lg="12">
+                                            <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Publish Date</MudText>
+                                            <MudGrid>
+                                                <MudItem xs=12 lg="6">
+                                                    <MudDatePicker @bind-Date="@TrainingService.createCommand.PublishDate" Variant="Variant.Outlined"
+                                                                   Label="Date" For="@(() => TrainingService.createCommand.PublishDate)"/>
+                                                </MudItem>
+                                                <MudItem xs=12 lg="6">
+                                                    <MudTimePicker AmPm="true" @bind-Time="publishDate_Time" Variant="Variant.Outlined" Label="Time"/>
+                                                </MudItem>
+                                            </MudGrid>
+                                        </MudItem>
+                                        <MudItem xs=12 lg="12">
+                                            <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">End Date</MudText>
+                                            <MudGrid>
+                                                <MudItem xs=12 lg="6">
+                                                    <MudDatePicker @bind-Date="@TrainingService.createCommand.EndDate" Variant="Variant.Outlined"
+                                                                   Label="Date" For="@(() => TrainingService.createCommand.EndDate)"/>
 
-					}
-					<MudTextField @bind-Value="newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
-				</MudPaper>
-				<MudPaper Class="p-2 mb-2">
-					<MudText Typo="Typo.caption">Vacancy Tasks</MudText>
-					@foreach (var task in Tasks)
-					{
-						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Title<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveTask(task.Title)" aria-label="delete"></MudIconButton></MudText>
-						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Description</MudText>
-						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Template</MudText>
-						<MudText Typo="Typo.subtitle1"><MudIcon Icon="@Icons.Material.Filled.Task" /> @task.Test</MudText>
+                                                </MudItem>
+                                                <MudItem xs=12 lg="6">
+                                                    <MudTimePicker AmPm="true" @bind-Time="endDate_Time" Variant="Variant.Outlined" Label="Time"/>
+                                                </MudItem>
+                                            </MudGrid>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudCardContent>
+                            </MudCard>
 
-					}
-					<MudTextField @bind-Value="newTitle" OnKeyDown="@OnKeyDown" Label="New Title" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
-					<MudTextField Lines="5" @bind-Value="newDescription" OnKeyDown="@OnKeyDown" Label="New Description" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
-					<MudTextField Lines="5" @bind-Value="newTemplate" OnKeyDown="@OnKeyDown" Label="New Template" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
-					<MudTextField Lines="5" @bind-Value="newTest" OnKeyDown="@OnKeyDown" Label="New Test" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
-					<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@AddTask" Id="AddTask">Add Task</MudButton>
-				</MudPaper>
-				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" @onclick="@HandleSubmit" Id="btnInsert" hidden="@isInserting">Insert</MudButton>
-				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate" Id="btnUpdate" hidden="@isUpdating">Update</MudButton>
-				<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Surface" @onclick="@HandleCancel" Id="btnUpdate">Cancel</MudButton>
-			</MudExpansionPanel>
-		</MudExpansionPanels>
+                        </MudItem>
+                    </MudGrid>
+                    <MudGrid>
+                        <MudItem xs="12" lg="6">
+                            <MudCard>
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Style="color:rgb(128,128,128)">
+                                            <b>Tasks</b>
+                                        </MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    <MudExpansionPanels MultiExpansion="true">
+                                        @foreach (var task in Tasks)
+                                        {
+                                            <MudExpansionPanel Text="@task.Title">
+                                                <MudText> Description: @task.Description</MudText>
+                                                <MudText>Template:</MudText>
+                                                <MudElement HtmlTag="pre">
+                                                    <MudElement HtmlTag="code">
+                                                        @task.Template
+                                                    </MudElement>
+                                                </MudElement>
+                                                <MudText>Test:</MudText>
+                                                <MudElement HtmlTag="pre">
+                                                    <MudElement HtmlTag="code">
+                                                        @task.Test
+                                                    </MudElement>
+                                                </MudElement>
+                                                <MudButton StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error"
+                                                           Variant="Variant.Filled" OnClick="() => RemoveTask(task.Title)" aria-label="delete">
+                                                    <MudText>Remove</MudText>
+                                                </MudButton>
+                                            </MudExpansionPanel>
+                                        }
+                                    </MudExpansionPanels>
+                                    <MudTextField @bind-Value="newTitle" OnKeyDown="@OnKeyDown" Label="Title"
+                                                  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
+                                    <MudTextField Lines="5" @bind-Value="newDescription" OnKeyDown="@OnKeyDown" Label="Description"
+                                                  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
+                                    <MudTextField Lines="5" @bind-Value="newTemplate" OnKeyDown="@OnKeyDown" Label="Template"
+                                                  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
+                                    <MudTextField Lines="5" @bind-Value="newTest" OnKeyDown="@OnKeyDown" Label="Test"
+                                                  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                               @onclick="@AddTask" Id="AddTask">
+                                        <MudText>Add Task</MudText>
+                                    </MudButton>
 
-		<DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem" />
-		<MudTable Items="@trainings" Class="text-center" Breakpoint="Breakpoint.Md">
-			<HeaderContent>
-				<MudTh>Title</MudTh>
-				<MudTh>Short description</MudTh>
-				<MudTh>Category</MudTh>
-				<MudTh>Publish date</MudTh>
-				<MudTh>End date</MudTh>
-				<MudTh>Duration</MudTh>
-				<MudTh>Fees</MudTh>
-				<MudTh></MudTh>
-			</HeaderContent>
-			<RowTemplate>
-				<MudTd DataLabel="Title">@context.Title</MudTd>
-				<MudTd DataLabel="Short description">
-					@(context.ShortDescription.Count() > 50 ? context.ShortDescription.Substring(0, 50) : context.ShortDescription)
-				</MudTd>
-				<MudTd DataLabel="Category">@context.Category</MudTd>
-				<MudTd DataLabel="PublishDate">@context.PublishDate.ToString("D")</MudTd>
-				<MudTd DataLabel="EndDate">@context.EndDate.ToString("D")</MudTd>
-				<MudTd DataLabel="Duration">@context.Duration</MudTd>
-				<MudTd DataLabel="Fees">@context.Fees</MudTd>
-				<MudTd DataLabel="Action">
-					<MudButton @onclick="()=>OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MudButton>
-					<MudButton @onclick="()=>OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MudButton>
-				</MudTd>
-			</RowTemplate>
-			<PagerContent>
-				<MudTablePager />
-			</PagerContent>
-		</MudTable>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12" lg="6">
+                            <MudCard>
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Style="color:rgb(128,128,128)">
+                                            <b>Vacancy questions</b>
+                                        </MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    @foreach (var ques in Questions)
+                                    {
+                                        <MudText Typo="Typo.subtitle1">
+                                            <MudChip>
+                                                <MudIcon Icon="@Icons.Material.Filled.QuestionMark"/>
+                                            </MudChip>
 
+                                            @ques.Question
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveQuestion(ques.Question)" aria-label="delete"></MudIconButton>
+                                        </MudText>
+                                        <MudDivider/>
+                                    }
+                                    <MudTextField @bind-Value="newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary"/>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12" lg="12">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit"
+                                       Id="btnInsert" hidden="@isInserting">
+                                <MudText>
+                                    Create
+                                </MudText>
+                            </MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate"
+                                       Id="btnUpdate" hidden="@isUpdating">
+                                <MudText>
+                                    Save changes
+                                </MudText>
+                            </MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Dark" @onclick="@HandleCancel"
+                                       Id="btnUpdate">
+                                <MudText>
+                                    Cancel
+                                </MudText>
+                            </MudButton>
+                        </MudItem>
+                    </MudGrid>
+                </EditForm>
+            </MudItem>
+        </MudGrid>
 
-
-	}
+        <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem"/>
+        <MudTable Items="@trainings" Class="text-center" Breakpoint="Breakpoint.Md" hidden="@panelOpenState">
+            <HeaderContent>
+                <MudTh>Title</MudTh>
+                <MudTh>Short description</MudTh>
+                <MudTh>Category</MudTh>
+                <MudTh>Publish date</MudTh>
+                <MudTh>End date</MudTh>
+                <MudTh>Duration</MudTh>
+                <MudTh>Fees</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Title">@context.Title</MudTd>
+                <MudTd DataLabel="Short description">
+                    @(context.ShortDescription.Count() > 50 ? context.ShortDescription.Substring(0, 50) : context.ShortDescription)
+                </MudTd>
+                <MudTd DataLabel="Category">@context.Category</MudTd>
+                <MudTd DataLabel="PublishDate">@context.PublishDate.ToString("D")</MudTd>
+                <MudTd DataLabel="EndDate">@context.EndDate.ToString("D")</MudTd>
+                <MudTd DataLabel="Duration">@context.Duration</MudTd>
+                <MudTd DataLabel="Fees">@context.Fees</MudTd>
+                <MudTd DataLabel="Action">
+                    <MudButton @onclick="() => OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MudButton>
+                    <MudButton @onclick="() => OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MudButton>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager/>
+            </PagerContent>
+        </MudTable>
+    }
 }
 
-
 @code {
-	private bool serverError;
-	bool panelOpenState;
-	bool isInserting;
-	bool isUpdating = true;
-	string UpdateSlug;
-	string selectedCategory = "Select category";
-	private string newQuestion = string.Empty;
-	private string newDescription = string.Empty;
-	private string newTemplate = string.Empty;
-	private string newTest = string.Empty;
-	private string newTitle = string.Empty;
+    private bool serverError;
+    bool panelOpenState;
+    bool isInserting;
+    bool isUpdating = true;
+    string UpdateSlug;
+    string selectedCategory = "Select category";
+    private string newQuestion = string.Empty;
+    private string newDescription = string.Empty;
+    private string newTemplate = string.Empty;
+    private string newTest = string.Empty;
+    private string newTitle = string.Empty;
 
-	private List<VacancyQuestionDto> Questions = new();
-	private List<CategoryResponse> categories;
-	private List<TrainingVacancyListDto> trainings;
-	private List<VacancyTaskDto> Tasks = new();
+    private string createOrEditHeader = "New Internship Vacancy";
 
-	protected override async Task OnInitializedAsync()
-	{
+    private List<VacancyQuestionDto> Questions = new();
+    private List<CategoryResponse> categories;
+    private List<TrainingVacancyListDto> trainings;
+    private List<VacancyTaskDto> Tasks = new();
 
-		await LoadData();
-	}
+    private TimeSpan? publishDate_Time;
+    private TimeSpan? endDate_Time;
 
-	private bool isDialogOpen;
-	private string itemSlugToDelete;
 
-	void OnDeleteClick(string slug)
-	{
-		itemSlugToDelete = slug;
-		isDialogOpen = true;
-	}
-	private async Task DeleteItem()
-	{
-		await trainingService.Delete(itemSlugToDelete);
-		isDialogOpen = false;
-		await LoadData();
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
 
-	private async Task OnEditClick(string slug)
-	{
-		var vacancy = await trainingService.GetBySlug(slug);
-		if (vacancy != null)
-		{
-			trainingService.createCommand.Title = vacancy.Title;
-			trainingService.createCommand.ShortDescription = vacancy.ShortDescription;
-			trainingService.createCommand.Description = vacancy.Description;
-			trainingService.createCommand.Duration = vacancy.Duration;
-			trainingService.createCommand.EndDate = vacancy.EndDate;
-			trainingService.createCommand.PublishDate = vacancy.PublishDate;
-			trainingService.createCommand.CategoryId = vacancy.CategoryId;
-			trainingService.createCommand.Fees = vacancy.Fees;
-			isInserting = true;
-			isUpdating = false;
-			panelOpenState = true;
-			UpdateSlug = slug;
-			Questions = vacancy.VacancyQuestions.Select(v =>
+    private bool isDialogOpen;
+    private string itemSlugToDelete;
 
-				new VacancyQuestionDto
-					{
-						Question = v.Question
-					}
-			).ToList();
-			Tasks = vacancy.VacancyTasks.Select(v =>
-				new VacancyTaskDto
-					{
-						Title = v.Title,
-						Description = v.Description,
-						Template = v.Template,
-						Test = v.Test
-					}).ToList();
-		}
-	}
+    void OnDeleteClick(string slug)
+    {
+        itemSlugToDelete = slug;
+        isDialogOpen = true;
+    }
 
-	private void RemoveQuestion(string question)
-	{
-		var q = Questions.FirstOrDefault(t => t.Question == question);
-		Questions.Remove(q);
-	}
-	private void RemoveTask(string title)
-	{
-		var r = Tasks.FirstOrDefault(t => t.Title == title);
-		Tasks.Remove(r);
-	}
+    private async Task DeleteItem()
+    {
+        await TrainingService.Delete(itemSlugToDelete);
+        isDialogOpen = false;
+        await LoadData();
+    }
 
-	private async Task LoadData()
-	{
-		try
-		{
-			trainings = (await trainingService.GetAll()).Items;
-			categories = await categoryService.GetAllCategory();
-		}
-		catch (Exception)
-		{
+    private async Task OnEditClick(string slug)
+    {
+        var vacancy = await TrainingService.GetBySlug(slug);
+        if (vacancy != null)
+        {
+            createOrEditHeader = $"Edit {vacancy.Title}";
+            TrainingService.createCommand.Title = vacancy.Title;
+            TrainingService.createCommand.ShortDescription = vacancy.ShortDescription;
+            TrainingService.createCommand.Description = vacancy.Description;
+            TrainingService.createCommand.Duration = vacancy.Duration;
+            TrainingService.createCommand.EndDate = vacancy.EndDate;
+            TrainingService.createCommand.PublishDate = vacancy.PublishDate;
+            TrainingService.createCommand.CategoryId = vacancy.CategoryId;
+            TrainingService.createCommand.Fees = vacancy.Fees;
+            isInserting = true;
+            isUpdating = false;
+            panelOpenState = true;
+            UpdateSlug = slug;
+            Questions = vacancy.VacancyQuestions.Select(v =>
+                new VacancyQuestionDto
+                {
+                    Question = v.Question
+                }
+                ).ToList();
+            Tasks = vacancy.VacancyTasks.Select(v =>
+                new VacancyTaskDto
+                {
+                    Title = v.Title,
+                    Description = v.Description,
+                    Template = v.Template,
+                    Test = v.Test
+                }).ToList();
+        }
+    }
 
-			serverError = true;
-			StateHasChanged();
-		}
+    private void RemoveQuestion(string question)
+    {
+        var q = Questions.FirstOrDefault(t => t.Question == question);
+        Questions.Remove(q);
+    }
 
-	}
+    private void RemoveTask(string title)
+    {
+        var r = Tasks.FirstOrDefault(t => t.Title == title);
+        Tasks.Remove(r);
+    }
 
-	private async Task HandleSubmit()
-	{
-		var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
-		trainingService.createCommand.CategoryId = catId;
-		trainingService.createCommand.VacancyQuestions = Questions;
-		trainingService.createCommand.VacancyTasks = Tasks;
-		await trainingService.Create();
-		await LoadData();
-		Clear();
-	}
+    private async Task LoadData()
+    {
+        try
+        {
+            trainings = (await TrainingService.GetAll()).Items;
+            categories = await CategoryService.GetAllCategory();
+        }
+        catch (Exception)
+        {
+            serverError = true;
+            StateHasChanged();
+        }
+    }
 
-	private async Task HandleUpdate()
-	{
-		trainingService.createCommand.VacancyQuestions = Questions;
-		trainingService.createCommand.VacancyTasks = Tasks;
-		var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
-		trainingService.createCommand.CategoryId = catId;
-		await trainingService.Update(UpdateSlug);
-		await LoadData();
-		Clear();
-	}
+    private async Task HandleSubmit()
+    {
+        if (endDate_Time.HasValue)
+            TrainingService.createCommand.EndDate += endDate_Time.Value;
 
-	public void AddQuestions()
-	{
-		Questions.Add(new VacancyQuestionDto { Question = newQuestion });
-		newQuestion = "";
-	}
-	public void AddTask()
-	{
-		Tasks.Add(new VacancyTaskDto
-			{
-				Title = newTitle,
-				Description = newDescription,
-				Template = newTemplate,
-				Test = newTest
-			});
-		newTitle = "";
-		newDescription = "";
-		newTemplate = "";
-		newTest = "";
-	}
-	private async Task OnKeyDown(KeyboardEventArgs e)
-	{
-		if (e.Code == "Enter")
-		{
-			await Task.Delay(1);
-			AddQuestions();
-			AddTask();
-		}
-	}
+        if (publishDate_Time.HasValue)
+            TrainingService.createCommand.PublishDate += publishDate_Time.Value;
+        try
+        {
+            var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
+            TrainingService.createCommand.CategoryId = catId;
+            TrainingService.createCommand.VacancyQuestions = Questions;
+            TrainingService.createCommand.VacancyTasks = Tasks;
+            var result = await TrainingService.Create();
+            if (result.IsSuccessStatusCode)
+            {
+                Snackbar.Add($"{TrainingService.createCommand.Title} created", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+            }
+            await LoadData();
+            Clear();
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Server is not responding, try latter", Severity.Error);
+        }
+    }
 
-	void HandleCancel()
-	{
-		Clear();
-	}
+    private async Task HandleUpdate()
+    {
+        if (endDate_Time.HasValue)
+            TrainingService.createCommand.EndDate += endDate_Time.Value;
 
-	private void Clear()
-	{
-		trainingService.createCommand.Title = string.Empty;
-		trainingService.createCommand.ShortDescription = string.Empty;
-		trainingService.createCommand.Description = string.Empty;
-		trainingService.createCommand.Fees = 0;
-		trainingService.createCommand.Duration = 0;
-		trainingService.createCommand.EndDate = DateTime.Now;
-		trainingService.createCommand.PublishDate = DateTime.Now;
-		isInserting = false;
-		isUpdating = true;
-		panelOpenState = false;
-		UpdateSlug = string.Empty;
-		Questions.Clear();
-		Tasks.Clear();
-	}
+        if (publishDate_Time.HasValue)
+            TrainingService.createCommand.PublishDate += publishDate_Time.Value;
+        TrainingService.createCommand.VacancyQuestions = Questions;
+        TrainingService.createCommand.VacancyTasks = Tasks;
+        var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
+        TrainingService.createCommand.CategoryId = catId;
+        await TrainingService.Update(UpdateSlug);
+        await LoadData();
+        Clear();
+    }
+
+    public void AddQuestions()
+    {
+        Questions.Add(new VacancyQuestionDto { Question = newQuestion });
+        newQuestion = "";
+    }
+
+    public void AddTask()
+    {
+        Tasks.Add(new VacancyTaskDto
+        {
+            Title = newTitle,
+            Description = newDescription,
+            Template = newTemplate,
+            Test = newTest
+        });
+        newTitle = "";
+        newDescription = "";
+        newTemplate = "";
+        newTest = "";
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter")
+        {
+            await Task.Delay(1);
+            AddQuestions();
+            AddTask();
+        }
+    }
+
+    void HandleCancel()
+    {
+        Clear();
+    }
+
+    private void Clear()
+    {
+        createOrEditHeader = "New Internship Vacancy";
+        TrainingService.createCommand.Title = string.Empty;
+        TrainingService.createCommand.ShortDescription = string.Empty;
+        TrainingService.createCommand.Description = string.Empty;
+        TrainingService.createCommand.Fees = 0;
+        TrainingService.createCommand.Duration = 0;
+        TrainingService.createCommand.EndDate = DateTime.Now;
+        TrainingService.createCommand.PublishDate = DateTime.Now;
+        isInserting = false;
+        isUpdating = true;
+        panelOpenState = false;
+        UpdateSlug = string.Empty;
+        Questions.Clear();
+        Tasks.Clear();
+    }
+
 }

@@ -16,9 +16,10 @@ public class CreateJobVacancyCommand : IRequest<string>
 
     [JsonConverter(typeof(DateTimeToUnixConverter))]
     public DateTime? EndDate { get; set; }
+
     public Guid CategoryId { get; set; }
     public int RequiredYearOfExperience { get; set; }
     public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
-    public IEnumerable<VacancyTaskDto> VacancyTasks { get; set;}
+    public IEnumerable<VacancyTaskDto> VacancyTasks { get; set; }
     public WorkSchedule WorkSchedule { get; set; }
 }

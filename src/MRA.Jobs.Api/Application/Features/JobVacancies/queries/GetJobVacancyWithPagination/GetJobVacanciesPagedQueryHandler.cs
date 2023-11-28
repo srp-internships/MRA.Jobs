@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Immutable;
+using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
@@ -29,6 +30,9 @@ public class GetJobVacanciesPagedQueryHandler : IRequestHandler<PagedListQuery<J
             .Include(i => i.VacancyTasks)
             .AsNoTracking(),
             _mapper.Map<JobVacancyListDto>);
+
+        var user = await _dbContext.Categories.ToListAsync();
+        
         return await Task.FromResult(result);
     }
 }

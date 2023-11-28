@@ -19,7 +19,6 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             { ModelState: { IsValid: false } } => HandleInvalidModelStateException(context),
             _ => HandleUnknownException(context)
         };
-
         base.OnException(context);
     }
 

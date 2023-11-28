@@ -12,10 +12,9 @@ public interface IInternshipService
 
     Task<HttpResponseMessage> Create();
     Task<HttpResponseMessage> Update(string slug);
-    Task Delete(string slug);
+    Task<HttpResponseMessage> Delete(string slug);
     Task<List<InternshipVacancyListResponse>> GetAll();
     Task<InternshipVacancyResponse> GetBySlug(string slug);
-
     CreateInternshipVacancyCommand createCommand { get; set; }
     UpdateInternshipVacancyCommand UpdateCommand { get; set; }
     DeleteInternshipVacancyCommand DeleteCommand { get; set; }
