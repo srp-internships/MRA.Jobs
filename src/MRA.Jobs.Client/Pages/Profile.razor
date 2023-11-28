@@ -312,25 +312,18 @@ else
                 }
                 <!--Add new Education-->
                 <div class="col-md-6 mb-3">
-                    <MudCard>
-                        @if (addEducation == false)
-                        {
-                            <MudCardHeader>
-                                <CardHeaderContent>
-                                    <MudText Typo="Typo.h6">
-                                        <strong>Add New Education</strong>
-                                    </MudText>
 
-                                </CardHeaderContent>
-                            </MudCardHeader>
-                            <MatCardContent>
-                                <div class="d-flex align-center justify-center mud-width-full py-8">
-                                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="@(() => addEducation = true)"/>
-                                </div>
-                            </MatCardContent>
-                        }
-                        else
-                        {
+                    @if (addEducation == false)
+                    {
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" OnClick="@(() => addEducation = true)">
+                            <MudText>
+                                Add New Education
+                            </MudText>
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudCard>
                             <EditForm Model="createEducation" OnInvalidSubmit="CreateEducationHandle">
                                 <FluentValidationValidator/>
                                 <MudCardHeader>
@@ -376,8 +369,9 @@ else
                                     </MudButton>
                                 </MudCardActions>
                             </EditForm>
-                        }
-                    </MudCard>
+                        </MudCard>
+                    }
+
                 </div>
                 <!--------------------->
             </div>
@@ -505,25 +499,16 @@ else
                 }
                 <!--Add new Experience-->
                 <div class="col-md-6 mb-3">
-                    <MudCard>
-                        @if (addExperience == false)
-                        {
-                            <MudCardHeader>
-                                <CardHeaderContent>
-                                    <MudText Typo="Typo.h6">
-                                        <strong>Add New Experience</strong>
-                                    </MudText>
 
-                                </CardHeaderContent>
-                            </MudCardHeader>
-                            <MatCardContent>
-                                <div class="d-flex align-center justify-center mud-width-full py-8">
-                                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="@(() => addExperience = true)"/>
-                                </div>
-                            </MatCardContent>
-                        }
-                        else
-                        {
+                    @if (addExperience == false)
+                    {
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" OnClick="@(() => addExperience = true)">
+                            <MudText> Add New Experience</MudText>
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudCard>
                             <EditForm Model="createExperience" OnInvalidSubmit="CreateExperienceHandle">
                                 <FluentValidationValidator/>
                                 <MudCardHeader>
@@ -567,8 +552,9 @@ else
                                     </MudButton>
                                 </MudCardActions>
                             </EditForm>
-                        }
-                    </MudCard>
+                        </MudCard>
+                    }
+
                 </div>
                 <!--------------------->
             </div>
