@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Dtos;
+using MRA.Jobs.Application.IntegrationTests.FakeClasses;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Application;
@@ -25,7 +26,9 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
             }
         };
         RunAsDefaultUserAsync();
-        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
+        var httpc = new FakeHttpClientFactory();
+        var cli = httpc.CreateClient("IdentityHttpClient");
+        var response = await cli.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
 
@@ -60,7 +63,9 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
         };
 
         RunAsDefaultUserAsync();
-        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
+        var httpc = new FakeHttpClientFactory();
+        var cli = httpc.CreateClient("IdentityHttpClient");
+        var response = await cli.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
 
@@ -108,7 +113,9 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
         };
 
         RunAsDefaultUserAsync();
-        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
+        var httpc = new FakeHttpClientFactory();
+        var cli = httpc.CreateClient("IdentityHttpClient");
+        var response = await cli.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
 

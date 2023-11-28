@@ -5,7 +5,7 @@ namespace MRA.Jobs.Application.IntegrationTests.Application;
 public class CreateApplicationTestsBase : Testing
 {
     private static readonly Random Random = new();
-    protected const string ApplicationApiEndPoint = "/api/applications";
+    protected const string ApplicationApiEndPoint = "https://localhost:7245/api/applications";
 
     protected static string RandomString(int length)
     {
