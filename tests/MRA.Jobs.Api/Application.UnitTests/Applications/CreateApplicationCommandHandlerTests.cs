@@ -23,7 +23,8 @@ public class CreateApplicationCommandHandlerTests : BaseTestFixture
             _emailServiceMock.Object,
             _htmlServiceMock.Object,
             _cvService.Object,
-            _vacancyTaskService.Object
+            _vacancyTaskService.Object,
+            _identityServiceMock.Object
         );
     }
 

@@ -17,9 +17,11 @@ public abstract class BaseTestFixture
     protected Mock<IHtmlService> _htmlServiceMock;
     protected Mock<ICvService> _cvService;
     protected Mock<IVacancyTaskService> _vacancyTaskService;
+    protected Mock<IidentityService> _identityServiceMock;
     [SetUp]
     public virtual void Setup()
     {
+        _identityServiceMock = new Mock<IidentityService>();
         _cvService = new Mock<ICvService>();
         _dbContextMock = new Mock<IApplicationDbContext>();
         _dateTimeMock = new Mock<IDateTime>();
