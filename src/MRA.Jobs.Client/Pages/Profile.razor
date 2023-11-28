@@ -105,7 +105,7 @@ else
                             <MudText Typo="Typo.body2" Class="mud-text-secondary">Last Name</MudText>
                             <MudTextField @bind-Value="@_updateProfileCommand.LastName" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => _updateProfileCommand.LastName)"/>
                             <br/>
-                            <MudText Typo="Typo.body2" Class="mud-text-secondary">UserName</MudText>
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">Username</MudText>
                             <MudTextField @bind-Value="@_profile.UserName" Variant="Variant.Outlined" Margin="Margin.Dense" Disabled="true"/>
                             <br/>
                             <MudText Typo="Typo.body2" Class="mud-text-secondary">Email</MudText>
@@ -185,7 +185,7 @@ else
                                 <MudSelectItem Value="Gender.Female"/>
                             </MudSelect>
                         </MudCardContent>
-                        <MudCardActions>
+                        <MudCardActions Class="d-flex justify-content-center">
                             <MudButton Color="Color.Primary" Variant="Variant.Filled" ButtonType="ButtonType.Submit">
                                 @if (_processing)
                                 {
@@ -193,7 +193,7 @@ else
                                 }
                                 else
                                 {
-                                    <MudText>Update Profile</MudText>
+                                    <MudText>Save changes</MudText>
                                 }
                             </MudButton>
                         </MudCardActions>
