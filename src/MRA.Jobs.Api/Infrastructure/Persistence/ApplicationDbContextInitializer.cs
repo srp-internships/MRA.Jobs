@@ -2,7 +2,6 @@
 
 public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
 {
-    private readonly ApplicationDbContext _dbContext = dbContext;
 
     public async Task SeedAsync()
     {
@@ -11,15 +10,15 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
 
     private async Task CreateHiddenVacancy(string vacancyTitle)
     {
-        var hiddenCategory = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Name == "Hidden Category");
+        var hiddenCategory = await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == "Hidden Category");
         if (hiddenCategory == null)
         {
             var category = new VacancyCategory() { Name = "Hidden Category", Slug = "hidden_category" };
-            await _dbContext.Categories.AddAsync(category);
+            await dbContext.Categories.AddAsync(category);
             hiddenCategory = category;
         }
 
-        var hiddenVacancy = await _dbContext.HiddenVacancies.FirstOrDefaultAsync(hv => hv.Title == vacancyTitle);
+        var hiddenVacancy = await dbContext.HiddenVacancies.FirstOrDefaultAsync(hv => hv.Title == vacancyTitle);
         if (hiddenVacancy == null)
         {
             var vacancy = new HiddenVacancy()
@@ -35,9 +34,9 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
                 CreatedAt = DateTime.Now,
             };
 
-            await _dbContext.HiddenVacancies.AddAsync(vacancy);
+            await dbContext.HiddenVacancies.AddAsync(vacancy);
         }
 
-        await _dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 }
