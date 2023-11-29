@@ -190,6 +190,22 @@
                     </MudCardContent>
                 </MudCard>
             }
+			@if (vacancy.VacancyTasks.Count() > 0)
+			{
+				<MudCard>
+					<MudCardContent>
+						<MudText Style="color:gray"><b>VacancyTasks</b></MudText>
+						<br />
+						@foreach (var task in vacancy.VacancyTasks)
+						{
+							<MudDivider />
+							<p><label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label></p>
+							<p><label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label></p>
+							<MudTextField T="string" Label="Code" Variant="Variant.Outlined" Lines="8" @bind-Value=@taskResponses[task.Title] />
+						}
+					</MudCardContent>
+				</MudCard>
+			}
 
             @* cv *@
             <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
