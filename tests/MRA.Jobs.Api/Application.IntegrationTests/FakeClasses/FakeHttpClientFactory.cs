@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
 using Moq;
 using Moq.Protected;
 using MRA.Identity.Application.Contract.Profile;

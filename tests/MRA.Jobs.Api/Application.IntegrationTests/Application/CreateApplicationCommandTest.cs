@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Dtos;
-using MRA.Jobs.Application.IntegrationTests.FakeClasses;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Application;
