@@ -45,6 +45,13 @@ using (var scope = app.Services.CreateScope())
 {
     var initialiser = scope.ServiceProvider.GetRequiredService<DbMigration>();
     await initialiser.InitialiseAsync();
+    app.UseSwaggerUi(settings =>
+    {
+        settings.Path = "/api";
+        settings.DocumentPath = "/api/specification.json";
+        settings.EnableTryItOut = true;
+        settings.PersistAuthorization = true;
+    });
 }
 
 app.UseHealthChecks("/status", new HealthCheckOptions
@@ -69,13 +76,7 @@ app.UseHealthChecks("/status", new HealthCheckOptions
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCors("CORS_POLICY");
-app.UseSwaggerUi(settings =>
-{
-    settings.Path = "/api";
-    settings.DocumentPath = "/api/specification.json";
-    settings.EnableTryItOut = true;
-    settings.PersistAuthorization = true;
-});
+
 
 app.UseRouting();
 app.UseAuthentication();

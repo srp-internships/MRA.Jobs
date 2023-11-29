@@ -14,7 +14,7 @@
 </style>
 
 <MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Jobs</MudText>
-@if (serverError)
+@if (_serverError)
 {
     <ServerErrorComponent/>
 }
@@ -29,12 +29,12 @@ else
         <MudGrid>
             <MudItem Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0" lg="12">
                 <MudCardHeader>
-                    <MudButton hidden="@panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => panelOpenState = true)">
+                    <MudButton hidden="@_panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => _panelOpenState = true)">
                         <MudText>Create New Job Vacancy</MudText>
                     </MudButton>
                 </MudCardHeader>
             </MudItem>
-            <MudItem lg="12" hidden="@(!panelOpenState)">
+            <MudItem lg="12" hidden="@(!_panelOpenState)">
                 <EditForm Model="@VService.creatingNewJob">
                     <FluentValidationValidator/>
                     <MudGrid>
@@ -43,7 +43,7 @@ else
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:#808080">
-                                            <b>@createOrEditHeader</b>
+                                            <b>@_createOrEditHeader</b>
                                         </MudText>
                                     </CardHeaderContent>
                                 </MudCardHeader>
@@ -70,7 +70,7 @@ else
                                     <MudGrid>
                                         <MudItem xs="12" lg="12">
                                             <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Category</MudText>
-                                            <MudSelect T="string" Label="Select category" @bind-Value="@selectedCategory" Variant="Variant.Outlined">
+                                            <MudSelect T="string" Label="Select category" @bind-Value="@_selectedCategory" Variant="Variant.Outlined">
                                                 @foreach (var cat in _category)
                                                 {
                                                     <MudSelectItem Value="@cat.Name"/>
@@ -84,7 +84,7 @@ else
                                         <MudItem xs="12" lg="5">
                                             <MudText Style="color:rgb(128,128,128)">Work Schedule</MudText>
                                             <MudSelect @bind-Value="VService.creatingNewJob.WorkSchedule" Variant="Variant.Outlined">
-                                                @foreach (var item in value2Items)
+                                                @foreach (var item in _value2Items)
                                                 {
                                                     <MudSelectItem Value="@item">@item.ToString()</MudSelectItem>
                                                 }
@@ -98,7 +98,7 @@ else
                                                                    Label="Date" For="@(() => VService.creatingNewJob.PublishDate)"/>
                                                 </MudItem>
                                                 <MudItem xs=12 lg="6">
-                                                    <MudTimePicker AmPm="true" @bind-Time="publishDate_Time" Variant="Variant.Outlined" Label="Time"/>
+                                                    <MudTimePicker AmPm="true" @bind-Time="_publishDateTime" Variant="Variant.Outlined" Label="Time"/>
                                                 </MudItem>
                                             </MudGrid>
                                         </MudItem>
@@ -111,7 +111,7 @@ else
 
                                                 </MudItem>
                                                 <MudItem xs=12 lg="6">
-                                                    <MudTimePicker AmPm="true" @bind-Time="endDate_Time" Variant="Variant.Outlined" Label="Time"/>
+                                                    <MudTimePicker AmPm="true" @bind-Time="_endDateTime" Variant="Variant.Outlined" Label="Time"/>
                                                 </MudItem>
                                             </MudGrid>
                                         </MudItem>
@@ -132,7 +132,7 @@ else
                                 </MudCardHeader>
                                 <MudCardContent>
                                     <MudExpansionPanels MultiExpansion="true">
-                                        @foreach (var task in Tasks)
+                                        @foreach (var task in _tasks)
                                         {
                                             <MudExpansionPanel Text="@task.Title">
                                                 <MudText> Description: @task.Description</MudText>
@@ -155,13 +155,13 @@ else
                                             </MudExpansionPanel>
                                         }
                                     </MudExpansionPanels>
-                                    <MudTextField @bind-Value="newTitle" OnKeyDown="@OnKeyDown" Label="Title"
+                                    <MudTextField @bind-Value="_newTitle" OnKeyDown="@OnKeyDown" Label="Title"
                                                   Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                                    <MudTextField Lines="5" @bind-Value="newDescription" OnKeyDown="@OnKeyDown" Label="Description"
+                                    <MudTextField Lines="5" @bind-Value="_newDescription" OnKeyDown="@OnKeyDown" Label="Description"
                                                   Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                                    <MudTextField Lines="5" @bind-Value="newTemplate" OnKeyDown="@OnKeyDown" Label="Template"
+                                    <MudTextField Lines="5" @bind-Value="_newTemplate" OnKeyDown="@OnKeyDown" Label="Template"
                                                   Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                                    <MudTextField Lines="5" @bind-Value="newTest" OnKeyDown="@OnKeyDown" Label="Test"
+                                    <MudTextField Lines="5" @bind-Value="_newTest" OnKeyDown="@OnKeyDown" Label="Test"
                                                   Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
                                     <MudButton Variant="Variant.Filled" Color="Color.Primary"
                                                @onclick="@AddTask" Id="AddTask">
@@ -181,7 +181,7 @@ else
                                     </CardHeaderContent>
                                 </MudCardHeader>
                                 <MudCardContent>
-                                    @foreach (var ques in Questions)
+                                    @foreach (var ques in _questions)
                                     {
                                         <MudText Typo="Typo.subtitle1">
                                             <MudChip>
@@ -193,19 +193,19 @@ else
                                         </MudText>
                                         <MudDivider/>
                                     }
-                                    <MudTextField @bind-Value="newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary"/>
+                                    <MudTextField @bind-Value="_newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary"/>
                                 </MudCardContent>
                             </MudCard>
                         </MudItem>
                         <MudItem xs="12" lg="12">
                             <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit"
-                                       Id="btnInsert" hidden="@isInserting">
+                                       Id="btnInsert" hidden="@_isInserting">
                                 <MudText>
                                     Create
                                 </MudText>
                             </MudButton>
                             <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate"
-                                       Id="btnUpdate" hidden="@isUpdating">
+                                       Id="btnUpdate" hidden="@_isUpdating">
                                 <MudText>
                                     Save changes
                                 </MudText>
@@ -221,29 +221,29 @@ else
                 </EditForm>
             </MudItem>
         </MudGrid>
-        <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem"/>
-        <MudTable Items="@vacancies" hidden="@panelOpenState" Class="text-center" Breakpoint="Breakpoint.Md">
+        <DeleteConfirmation @bind-IsOpen="@_isDialogOpen" OnConfirm="DeleteItem"/>
+        <MudTable Items="@_vacancies" hidden="@_panelOpenState" Class="text-center" Breakpoint="Breakpoint.Md">
             <HeaderContent>
-                <MudTh>Title</MudTh>
-                <MudTh>ShortDescription</MudTh>
-                <MudTh>Category</MudTh>
-                <MudTh>PublishDate</MudTh>
-                <MudTh>EndDate</MudTh>
-                <MudTh>WorkSchedule</MudTh>
+                <MudTh><strong>Title</strong></MudTh>
+                <MudTh><strong>ShortDescription</strong></MudTh>
+                <MudTh><strong>Category</strong></MudTh>
+                <MudTh><strong>PublishDate</strong></MudTh>
+                <MudTh><strong>EndDate</strong></MudTh>
+                <MudTh><strong>WorkSchedule</strong></MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="Title">@context.Title</MudTd>
                 <MudTd DataLabel="Short description">
-                    @(context.ShortDescription.Count() > 50 ? context.ShortDescription.Substring(0, 50) : context.ShortDescription)
+                    @(context.ShortDescription.Length > 50 ? context.ShortDescription.Substring(0, 50) : context.ShortDescription)
                 </MudTd>
                 <MudTd DataLabel="Category">@context.Category</MudTd>
                 <MudTd DataLabel="Publish date">@context.PublishDate.ToString("D")</MudTd>
                 <MudTd DataLabel="End date">@context.EndDate.ToString("D")</MudTd>
                 <MudTd DataLabel="Work schedule">@context.WorkSchedule</MudTd>
                 <MudTd DataLabel="Action">
-                    <MatButton @onclick="() => OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete"></MatButton>
-                    <MatButton @onclick="() => OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit"></MatButton>
+                    <MudIconButton @onclick="() => OnDeleteClick(context.Slug)" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Medium"/>
+                    <MudIconButton @onclick="() => OnEditClick(context.Slug)" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium"/>
                 </MudTd>
             </RowTemplate>
         </MudTable>
@@ -252,42 +252,42 @@ else
 
 @code {
 
-    private string createOrEditHeader = "New Job vacancy";
-    private bool serverError;
-    WorkSchedule[] value2Items = Enum.GetValues(typeof(WorkSchedule)).Cast<WorkSchedule>().ToArray();
+    private string _createOrEditHeader = "New Job vacancy";
+    private bool _serverError;
+    private readonly WorkSchedule[] _value2Items = Enum.GetValues(typeof(WorkSchedule)).Cast<WorkSchedule>().ToArray();
 
 
     private List<CategoryResponse> _category;
-    private List<JobVacancyListDto> vacancies;
-    private bool isDialogOpen = false;
-    private string itemSlugToDelete;
-    bool panelOpenState;
-    private bool isInserting = false;
-    private bool isUpdating = true;
-    private string UpdateSlug;
-    private string selectedCategory = string.Empty;
-    private string newQuestion = string.Empty;
-    private string newDescription = string.Empty;
-    private string newTemplate = string.Empty;
-    private string newTest = string.Empty;
-    private string newTitle = string.Empty;
-    private List<VacancyTaskDto> Tasks = new();
+    private List<JobVacancyListDto> _vacancies;
+    private bool _isDialogOpen;
+    private string _itemSlugToDelete;
+    private bool _panelOpenState;
+    private bool _isInserting;
+    private bool _isUpdating = true;
+    private string _updateSlug;
+    private string _selectedCategory = string.Empty;
+    private string _newQuestion = string.Empty;
+    private string _newDescription = string.Empty;
+    private string _newTemplate = string.Empty;
+    private string _newTest = string.Empty;
+    private string _newTitle = string.Empty;
+    private List<VacancyTaskDto> _tasks = new();
 
-    private List<VacancyQuestionDto> Questions = new();
+    private List<VacancyQuestionDto> _questions = new();
 
-    private TimeSpan? publishDate_Time;
-    private TimeSpan? endDate_Time;
+    private TimeSpan? _publishDateTime;
+    private TimeSpan? _endDateTime;
 
     void OnDeleteClick(string slug)
     {
-        itemSlugToDelete = slug;
-        isDialogOpen = true;
+        _itemSlugToDelete = slug;
+        _isDialogOpen = true;
     }
 
     private async Task DeleteItem()
     {
-        await VService.OnDelete(itemSlugToDelete);
-        isDialogOpen = false;
+        await VService.OnDelete(_itemSlugToDelete);
+        _isDialogOpen = false;
         await LoadData();
     }
 
@@ -296,26 +296,26 @@ else
         try
         {
             _category = await VService.GetAllCategory();
-            vacancies = await VService.GetJobs();
+            _vacancies = await VService.GetJobs();
         }
         catch (Exception)
         {
-            serverError = true;
+            _serverError = true;
             StateHasChanged();
         }
     }
 
     private async Task HandleSubmit()
     {
-        if (endDate_Time.HasValue)
-            VService.creatingNewJob.EndDate += endDate_Time.Value;
+        if (_endDateTime.HasValue)
+            VService.creatingNewJob.EndDate += _endDateTime.Value;
 
-        if (publishDate_Time.HasValue)
-            VService.creatingNewJob.PublishDate += publishDate_Time.Value;
-        var catId = _category.FirstOrDefault(c => c.Name == selectedCategory).Id;
+        if (_publishDateTime.HasValue)
+            VService.creatingNewJob.PublishDate += _publishDateTime.Value;
+        var catId = _category.First(c => c.Name == _selectedCategory).Id;
         VService.creatingNewJob.CategoryId = catId;
-        VService.creatingNewJob.VacancyQuestions = Questions;
-        VService.creatingNewJob.VacancyTasks = Tasks;
+        VService.creatingNewJob.VacancyQuestions = _questions;
+        VService.creatingNewJob.VacancyTasks = _tasks;
         await VService.OnSaveCreateClick();
         await LoadData();
         Clear();
@@ -323,7 +323,7 @@ else
 
     private async Task LoadData()
     {
-        vacancies = await VService.GetJobs();
+        _vacancies = await VService.GetJobs();
     }
 
 
@@ -331,7 +331,7 @@ else
     {
     // Получение данных о выбранной вакансии
         var vacancy = await VService.GetBySlug(slug);
-        createOrEditHeader = $"Edit {vacancy.Title}";
+        _createOrEditHeader = $"Edit {vacancy.Title}";
         if (vacancy != null)
         {
     // Отображение данных о выбранной вакансии в форме
@@ -346,19 +346,19 @@ else
             }
             VService.creatingNewJob.EndDate = vacancy.EndDate;
             VService.creatingNewJob.PublishDate = vacancy.PublishDate;
-            selectedCategory = _category.FirstOrDefault(c => c.Id == vacancy.CategoryId).Name;
+            _selectedCategory = _category.First(c => c.Id == vacancy.CategoryId).Name;
     // Открытие панели формы
-            panelOpenState = true;
-            isInserting = true;
-            isUpdating = false;
-            UpdateSlug = slug;
-            Questions = vacancy.VacancyQuestions.Select(v =>
+            _panelOpenState = true;
+            _isInserting = true;
+            _isUpdating = false;
+            _updateSlug = slug;
+            _questions = vacancy.VacancyQuestions.Select(v =>
                 new VacancyQuestionDto
                 {
                     Question = v.Question
                 }
                 ).ToList();
-            Tasks = vacancy.VacancyTasks.Select(v =>
+            _tasks = vacancy.VacancyTasks.Select(v =>
                 new VacancyTaskDto
                 {
                     Title = v.Title,
@@ -371,51 +371,51 @@ else
 
     private void RemoveQuestion(string question)
     {
-        var q = Questions.FirstOrDefault(t => t.Question == question);
-        Questions.Remove(q);
+        var q = _questions.FirstOrDefault(t => t.Question == question);
+        _questions.Remove(q);
     }
 
     private void RemoveTask(string title)
     {
-        var r = Tasks.FirstOrDefault(t => t.Title == title);
-        Tasks.Remove(r);
+        var r = _tasks.FirstOrDefault(t => t.Title == title);
+        _tasks.Remove(r);
     }
 
     private async Task HandleUpdate()
     {
-        if (endDate_Time.HasValue)
-            VService.creatingNewJob.EndDate += endDate_Time.Value;
+        if (_endDateTime.HasValue)
+            VService.creatingNewJob.EndDate += _endDateTime.Value;
 
-        if (publishDate_Time.HasValue)
-            VService.creatingNewJob.PublishDate += publishDate_Time.Value;
-        VService.creatingNewJob.VacancyQuestions = Questions;
-        VService.creatingNewJob.VacancyTasks = Tasks;
-        var catId = _category.FirstOrDefault(c => c.Name == selectedCategory).Id;
+        if (_publishDateTime.HasValue)
+            VService.creatingNewJob.PublishDate += _publishDateTime.Value;
+        VService.creatingNewJob.VacancyQuestions = _questions;
+        VService.creatingNewJob.VacancyTasks = _tasks;
+        var catId = _category.First(c => c.Name == _selectedCategory).Id;
         VService.creatingNewJob.CategoryId = catId;
-        await VService.UpdateJobVacancy(UpdateSlug);
+        await VService.UpdateJobVacancy(_updateSlug);
         await LoadData();
         Clear();
     }
 
     public void AddQuestions()
     {
-        Questions.Add(new VacancyQuestionDto { Question = newQuestion });
-        newQuestion = "";
+        _questions.Add(new VacancyQuestionDto { Question = _newQuestion });
+        _newQuestion = "";
     }
 
     public void AddTask()
     {
-        Tasks.Add(new VacancyTaskDto
+        _tasks.Add(new VacancyTaskDto
         {
-            Title = newTitle,
-            Description = newDescription,
-            Template = newTemplate,
-            Test = newTest
+            Title = _newTitle,
+            Description = _newDescription,
+            Template = _newTemplate,
+            Test = _newTest
         });
-        newTitle = "";
-        newDescription = "";
-        newTemplate = "";
-        newTest = "";
+        _newTitle = "";
+        _newDescription = "";
+        _newTemplate = "";
+        _newTest = "";
     }
 
     private async Task OnKeyDown(KeyboardEventArgs e)
@@ -435,7 +435,7 @@ else
 
     private void Clear()
     {
-        createOrEditHeader = "New Internship Vacancy";
+        _createOrEditHeader = "New Internship Vacancy";
         VService.creatingNewJob.Title = string.Empty;
         VService.creatingNewJob.ShortDescription = string.Empty;
         VService.creatingNewJob.Description = string.Empty;
@@ -443,11 +443,12 @@ else
         VService.creatingNewJob.WorkSchedule = 0;
         VService.creatingNewJob.EndDate = DateTime.Now;
         VService.creatingNewJob.PublishDate = DateTime.Now;
-        isInserting = false;
-        isUpdating = true;
-        UpdateSlug = string.Empty;
-        Questions.Clear();
-        Tasks.Clear();
+        _isInserting = false;
+        _isUpdating = true;
+        _updateSlug = string.Empty;
+        _questions.Clear();
+        _tasks.Clear();
+        _panelOpenState = false;
     }
 
 }
