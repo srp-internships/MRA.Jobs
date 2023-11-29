@@ -242,8 +242,8 @@ else
                 <MudTd DataLabel="End date">@context.EndDate.ToString("D")</MudTd>
                 <MudTd DataLabel="Work schedule">@context.WorkSchedule</MudTd>
                 <MudTd DataLabel="Action">
-                    <MatButton @onclick="() => OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MatButton>
-                    <MatButton @onclick="() => OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MatButton>
+                    <MatButton @onclick="() => OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete"></MatButton>
+                    <MatButton @onclick="() => OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit"></MatButton>
                 </MudTd>
             </RowTemplate>
         </MudTable>
