@@ -23,7 +23,6 @@ public class ApplicationDbContextInitializer
         _context = context;
     }
 
-
     public async Task SeedAsync()
     {
         await CreateRolesAsync();
