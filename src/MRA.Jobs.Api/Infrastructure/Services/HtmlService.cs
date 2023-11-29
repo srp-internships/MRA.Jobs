@@ -1,9 +1,15 @@
-﻿using MRA.Identity.Application.Contract.Profile.Responses;
+﻿using System.Net;
+using MRA.Identity.Application.Contract.Profile.Responses;
 
 namespace MRA.Jobs.Infrastructure.Services;
 
 public class HtmlService : IHtmlService
 {
+    private readonly HttpClient _httpClient;
+    public HtmlService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
     public string GenerateApplyVacancyContent(string userName)
     {
         var content = $@"
@@ -15,7 +21,7 @@ public class HtmlService : IHtmlService
 ";
         return content;
     }
-    public string GenerateApplyVacancyContent_CreateApplication(string applicationSlug, string vacancyTitle, string cV, UserProfileResponse userInfo)
+    public string GenerateApplyVacancyContent_CreateApplication(string hostName, string applicationSlug, string vacancyTitle, string cV, UserProfileResponse userInfo)
     {
         var content = $@"
             <div style=""display: flex;flex-direction: column;width: 100%"">
@@ -24,11 +30,11 @@ public class HtmlService : IHtmlService
             <h2>Applicant Details:</h2>
             <ul>
             <li><strong>Name:</strong> {userInfo.FirstName} {userInfo.LastName}</li>
-            <li><strong>Email:</strong>{userInfo.Email}</li>
-            <li><strong>PhoneNumber:</strong>{userInfo.PhoneNumber}</li>
-            <li><strong>Resume:</strong> {cV}</li>
+            <li><strong>Email:</strong> {userInfo.Email}</li>
+            <li><strong>PhoneNumber:</strong> {userInfo.PhoneNumber}</li>
+            <li><strong>Resume:</strong> <a href='{hostName}applications/downloadCv/{cV}'> Download CV </a> </li>
             </ul>
-            <p>Link to application: <a href=""http://192.168.1.17:5006/dashboard/applications/{applicationSlug}"">http://192.168.1.17:5006/dashboard/applications/{applicationSlug}</a></p>
+            <p>Link to application: <a href='{hostName}dashboard/applications/{applicationSlug}'>{hostName}dashboard/applications/{applicationSlug}</a></p>
             </div>
 ";
         return content;

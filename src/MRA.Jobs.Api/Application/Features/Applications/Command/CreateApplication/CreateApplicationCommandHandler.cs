@@ -6,6 +6,7 @@ using Common.SlugGeneratorService;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 
 public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, Guid>
@@ -20,11 +21,12 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly ICvService _cvService;
     private readonly IVacancyTaskService _vacancyTaskService;
     private readonly IidentityService _identityService;
+    private readonly IConfiguration _configuration;
 
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
         ICurrentUserService currentUserService, ISlugGeneratorService slugService,
         MRA.Configurations.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService,
-        ICvService cvService, IVacancyTaskService vacancyTaskService, IidentityService identityService)
+        ICvService cvService, IVacancyTaskService vacancyTaskService, IidentityService identityService, IConfiguration configuration)
     {
         _context = context;
         _mapper = mapper;
@@ -36,6 +38,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         _cvService = cvService;
         _vacancyTaskService = vacancyTaskService;
         _identityService = identityService;
+        _configuration = configuration;
     }
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
@@ -68,8 +71,9 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
+        string hostName = _configuration["HostName:SvPath"];
         await _emailService.SendEmailAsync(new[] { vacancy.CreatedByEmail },
-            _htmlService.GenerateApplyVacancyContent_CreateApplication(application.Slug, vacancy.Title, await _cvService.GetCvByCommandAsync(ref request), await _identityService.ApplicantDetailsInfo()),
+            _htmlService.GenerateApplyVacancyContent_CreateApplication(hostName, application.Slug, vacancy.Title, await _cvService.GetCvByCommandAsync(ref request), await _identityService.ApplicantDetailsInfo()),
             "New Apply");
 
         return application.Id;
