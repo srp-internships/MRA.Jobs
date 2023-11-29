@@ -4,6 +4,7 @@ using MRA.Jobs.Application.Features.Applications.Command.CreateApplication;
 namespace MRA.Jobs.Application.UnitTests.Applications;
 
 using Domain.Entities;
+using Microsoft.Extensions.Configuration;
 
 public class CreateApplicationCommandHandlerTests : BaseTestFixture
 {
@@ -24,8 +25,9 @@ public class CreateApplicationCommandHandlerTests : BaseTestFixture
             _htmlServiceMock.Object,
             _cvService.Object,
             _vacancyTaskService.Object,
-            _identityService.Object
-        );
+            _identityService.Object,
+            new ConfigurationBuilder().Build()
+        ) ;
     }
 
     [Test]

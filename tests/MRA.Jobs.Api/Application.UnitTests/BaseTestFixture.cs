@@ -1,6 +1,6 @@
-﻿using MRA.Jobs.Application.Common.Security;
+﻿using Castle.Core.Configuration;
+using MRA.Jobs.Application.Common.Security;
 using MRA.Jobs.Application.Common.SlugGeneratorService;
-using MRA.Jobs.Infrastructure.Services;
 using IEmailService = MRA.Configurations.Common.Interfaces.Services.IEmailService;
 
 namespace MRA.Jobs.Application.UnitTests;
@@ -18,9 +18,12 @@ public abstract class BaseTestFixture
     protected Mock<ICvService> _cvService;
     protected Mock<IVacancyTaskService> _vacancyTaskService;
     protected Mock<IidentityService> _identityService;
+    protected Mock<IConfiguration> _configuration;
+
     [SetUp]
     public virtual void Setup()
     {
+        _configuration = new Mock<IConfiguration>();
         _identityService = new Mock<IidentityService>();
         _cvService = new Mock<ICvService>();
         _dbContextMock = new Mock<IApplicationDbContext>();
