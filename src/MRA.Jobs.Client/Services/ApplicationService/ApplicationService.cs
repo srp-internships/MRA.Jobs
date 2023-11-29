@@ -131,7 +131,6 @@ public class ApplicationService : IApplicationService
         {
             return "";
         }
-
         return $"{_httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
     }
 
