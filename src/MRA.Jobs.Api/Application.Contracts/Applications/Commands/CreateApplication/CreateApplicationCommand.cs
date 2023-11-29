@@ -16,6 +16,10 @@ public class CreateApplicationCommand : IRequest<Guid>
 #nullable enable
 public class Cv
 {
+    
+    /// <summary>
+    /// if this property is true client must upload cv file manually
+    /// </summary>
     public bool IsUploadCvMode { get; set; }
     public byte[]? CvBytes { get; set; }
     /// <summary>

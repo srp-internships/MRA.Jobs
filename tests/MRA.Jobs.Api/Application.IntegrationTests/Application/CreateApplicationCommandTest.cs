@@ -26,9 +26,7 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
             }
         };
         RunAsDefaultUserAsync();
-        var httpc = new FakeHttpClientFactory();
-        var cli = httpc.CreateClient("IdentityHttpClient");
-        var response = await cli.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
+        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
 
@@ -63,9 +61,7 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
         };
 
         RunAsDefaultUserAsync();
-        var httpc = new FakeHttpClientFactory();
-        var cli = httpc.CreateClient("IdentityHttpClient");
-        var response = await cli.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
+        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
 
@@ -113,9 +109,7 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
         };
 
         RunAsDefaultUserAsync();
-        var httpc = new FakeHttpClientFactory();
-        var cli = httpc.CreateClient("IdentityHttpClient");
-        var response = await cli.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
+        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
 
