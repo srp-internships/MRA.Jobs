@@ -11,15 +11,33 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
 
     private async Task CreateHiddenVacancy(string vacancyTitle)
     {
-        var vacancy = new HiddenVacancy()
+        var hiddenCategory = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Name == "Hidden Category");
+        if (hiddenCategory == null)
         {
-            Id = Guid.NewGuid(),
-            Title = vacancyTitle,
-            PublishDate = new DateTime(2000, 01, 01),
-            EndDate = new DateTime(2099, 12, 31),
-        };
+            var category = new VacancyCategory() { Name = "Hidden Category", Slug = "hidden_category" };
+            await _dbContext.Categories.AddAsync(category);
+            hiddenCategory = category;
+        }
 
-        await _dbContext.HiddenVacancies.AddAsync(vacancy);
+        var hiddenVacancy = await _dbContext.HiddenVacancies.FirstOrDefaultAsync(hv => hv.Title == vacancyTitle);
+        if (hiddenVacancy == null)
+        {
+            var vacancy = new HiddenVacancy()
+            {
+                Id = Guid.NewGuid(),
+                Title = vacancyTitle,
+                PublishDate = DateTime.Now,
+                EndDate = new DateTime(2099, 12, 31),
+                ShortDescription = "",
+                Description = "",
+                Slug = "hidden_vacancy",
+                CategoryId = hiddenCategory.Id,
+                CreatedAt = DateTime.Now,
+            };
+
+            await _dbContext.HiddenVacancies.AddAsync(vacancy);
+        }
+
         await _dbContext.SaveChangesAsync();
     }
 }
