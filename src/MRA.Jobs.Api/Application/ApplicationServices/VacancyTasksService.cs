@@ -27,7 +27,7 @@ public class VacancyTasksService(IApplicationDbContext context, IConfiguration c
                 var r = new HttpRequestMessage
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = new Uri(configuration["OnlinePlatform:Analyze"]!),
+                    RequestUri = new Uri(configuration["OnlinePlatform:AnalyzeUrl"]!),
                     Content = new StringContent(
                         $$"""
                           {

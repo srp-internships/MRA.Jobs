@@ -33,6 +33,7 @@ public static class ConfigureServices
 
         services.AddScoped<ICvService, CvService>();
         services.AddScoped<IVacancyTaskService, VacancyTasksService>();
+        services.AddScoped<IidentityService, IdentityService>();
         return services;
     }
 }

@@ -26,7 +26,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
         var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createApplicationCommand);
         response.EnsureSuccessStatusCode();
 
-        var application = await FindFirstOrDefaultAsync<Domain.Entities.Application>(s=>s.VacancyId==createApplicationCommand.VacancyId&&s.CoverLetter==createApplicationCommand.CoverLetter);
+        var application = await FindFirstOrDefaultAsync<Domain.Entities.Application>(s => s.VacancyId == createApplicationCommand.VacancyId && s.CoverLetter == createApplicationCommand.CoverLetter);
         application.Should().NotBeNull();
     }
 }
