@@ -52,6 +52,9 @@
                                 <MudTextField Label="Password" HelperText="Password" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
                                               @bind-Value="_registerUser.Password" For="@(() => _registerUser.Password)"/>
 
+                                <MudTextField Label="Confirm password" HelperText="Confirm password" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
+                                              @bind-Value="_registerUser.ConfirmPassword" For="@(() => _registerUser.ConfirmPassword)" />
+
                             </EditForm>
                         </MudCardContent>
                         <MudCardActions>
@@ -84,7 +87,7 @@
                             </CardHeaderContent>
                         </MudCardHeader>
                         <MudCardContent>
-                            <MudTextField Label="Code" @bind-Value="_code" Variant="@Variant.Filled" Clearable/>
+                            <MudTextField Label="Code" @bind-Value="_code" Clearable/>
                             <br/>
                             <br/>
                             <MudCardActions>
