@@ -26,7 +26,19 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="wwwroot\api\"/>
+      <Compile Remove="wwwroot\api\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="wwwroot\api\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="wwwroot\api\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="wwwroot\api\**" />
     </ItemGroup>
 
     <PropertyGroup>

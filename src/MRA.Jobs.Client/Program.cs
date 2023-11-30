@@ -80,4 +80,6 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
+
+builder.Services.AddLocalization();
 await builder.Build().RunAsync();
