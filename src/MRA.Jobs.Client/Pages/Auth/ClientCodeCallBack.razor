@@ -2,11 +2,12 @@
 @using System.Web
 @using MRA.Identity.Application.Contract.User.Commands.GoogleAuth
 @using System.Net
+@using AltairCA.Blazor.WebAssembly.Cookie
 @using Microsoft.IdentityModel.Tokens
 @using MRA.Identity.Application.Contract.User.Responses
 @inject NavigationManager NavigationManager
 @inject IdentityHttpClient Client
-@inject ILocalStorageService LocalStorageService
+@inject IAltairCABlazorCookieUtil CookieUtil
 @inject ISnackbar Snackbar
 
 @code {
@@ -26,7 +27,7 @@
 
         if (response.IsSuccessStatusCode)
         {
-            await LocalStorageService.SetItemAsync("authToken", await response.Content.ReadFromJsonAsync<JwtTokenResponse>());
+            await CookieUtil.SetValueAsync("authToken", await response.Content.ReadFromJsonAsync<JwtTokenResponse>());
             NavigationManager.NavigateTo("");
         }
         else

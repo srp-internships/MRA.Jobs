@@ -2,10 +2,9 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
 using MRA.Jobs.Web.Filters;
-using NSwag;
-using NSwag.Generation.Processors.Security;
 
 namespace MRA.Jobs.Web;
 
@@ -34,18 +33,14 @@ public static class ConfigureServices
         services.Configure<ApiBehaviorOptions>(options =>
             options.SuppressModelStateInvalidFilter = true);
 
-        services.AddOpenApiDocument(configure =>
+        services.AddSwaggerGen(options =>
         {
-            configure.Title = "MRA.Jobs API";
-            configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+            options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Type = OpenApiSecuritySchemeType.ApiKey,
-                Name = "Authorization",
-                In = OpenApiSecurityApiKeyLocation.Header,
-                Description = "Type into the textbox: Bearer {your JWT token}."
+                Version = "v1",
+                Title = "MraJobsApi",
+                Description = "MraJobsApi"
             });
-
-            configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
 
         services.AddMvc(options =>

@@ -26,7 +26,8 @@ public class GetAccessTokenIntegrationTests : BaseTest
                 LastName = "Makedonsky",
                 PhoneNumber = "+992123156789",
                 Application = "32wrgoi;l;",
-                Role = "wqu;k65"
+                Role = "wqu;k65",
+                ConfirmPassword = "password@#12P"
             };
             var loginCommand1 = new LoginUserCommand { Username = "@Alex111122", Password = "password@#12P" };
 
@@ -98,7 +99,8 @@ public class GetAccessTokenIntegrationTests : BaseTest
             LastName = "Makedonsky",
             PhoneNumber = "+992423456711",
             Application = "32wrgoi;l;",
-            Role = "wqu;k65"
+            Role = "wqu;k65",
+            ConfirmPassword = "password@#12P2"
         };
         var loginCommand2 = new LoginUserCommand { Username = "@Alex222", Password = "password@#12P2" };
 

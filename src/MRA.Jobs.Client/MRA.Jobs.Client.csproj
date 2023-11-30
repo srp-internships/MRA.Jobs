@@ -6,8 +6,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AltairCA.Blazor.WebAssembly.Cookie" Version="1.0.1" />
         <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
-        <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
         <PackageReference Include="Blazorise" Version="1.3.3" />
         <PackageReference Include="Blazorise.Bootstrap" Version="1.3.3" />
         <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.3.3" />

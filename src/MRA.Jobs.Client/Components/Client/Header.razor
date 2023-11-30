@@ -1,8 +1,9 @@
 ﻿@inject AuthenticationStateProvider authProvider
-@inject ILocalStorageService localStorage
+@inject IAltairCABlazorCookieUtil CookieUtil
 @inject NavigationManager navigationManager
 @using Microsoft.AspNetCore.Components.Authorization
 @using MRA.Jobs.Client.Identity
+@using AltairCA.Blazor.WebAssembly.Cookie
 
 <style>
 	@@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
@@ -53,67 +54,67 @@
 
 
 <nav class="navbar bg-dark navbar-expand-lg">
-    <div class="container-fluid">
-        <a class="navbar-brand">
-            <img src="images/srp_icon.png" width="70"/>
-        </a>
-        <div style="text-align: center">
-            <h3 class="text-white logo-text">SILK ROAD</h3>
-            <h4 style="font-size: 18px" class="logo-text text-white">PROFESSIONALS</h4>
-        </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="100" viewBox="0 0 50 50" fill="white">
-                <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
-            </svg>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/internships">Internships</NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/jobs">Jobs</NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/trainings">Trainings</NavLink>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/" target="_blank">Team</a>
-                </li>
-            </ul>
+	<div class="container-fluid">
+		<a class="navbar-brand">
+			<img src="images/srp_icon.png" width="70" />
+		</a>
+		<div style="text-align: center">
+			<h3 class="text-white logo-text">SILK ROAD</h3>
+			<h4 style="font-size: 18px" class="logo-text text-white">PROFESSIONALS</h4>
+		</div>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="100" viewBox="0 0 50 50" fill="white">
+				<path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
+			</svg>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
+				</li>
+				<li class="nav-item">
+					<NavLink class="nav-link" href="/internships">Internships</NavLink>
+				</li>
+				<li class="nav-item">
+					<NavLink class="nav-link" href="/jobs">Jobs</NavLink>
+				</li>
+				<li class="nav-item">
+					<NavLink class="nav-link" href="/trainings">Trainings</NavLink>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/">Team</a>
+				</li>
+			</ul>
 
-            <CascadingAuthenticationState>
-                <AuthorizeView>
-                    <Authorized>
-                        <MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
-                            <MudMenuItem Href="/profile">Profile</MudMenuItem>
-                            <MudMenuItem Href="/applications">Applications</MudMenuItem>
-                            <MudMenuItem OnClick="Logout">Logout</MudMenuItem>
-                        </MudMenu>
-                    </Authorized>
-                    <NotAuthorized>
-                        <MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
-                            <MudMenuItem Href="/sign-in">Sign In</MudMenuItem>
-                            <MudMenuItem Href="/sign-up">Sign Up</MudMenuItem>
-                        </MudMenu>
-                    </NotAuthorized>
-                </AuthorizeView>
-            </CascadingAuthenticationState>
-        </div>
-    </div>
+			<CascadingAuthenticationState>
+				<AuthorizeView>
+					<Authorized>
+						<MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
+							<MudMenuItem Href="/profile">Profile</MudMenuItem>
+							<MudMenuItem Href="/applications">Applications</MudMenuItem>
+							<MudMenuItem OnClick="Logout">Logout</MudMenuItem>
+						</MudMenu>
+					</Authorized>
+					<NotAuthorized>
+						<MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
+							<MudMenuItem Href="/sign-in">Sign In</MudMenuItem>
+							<MudMenuItem Href="/sign-up">Sign Up</MudMenuItem>
+						</MudMenu>
+					</NotAuthorized>
+				</AuthorizeView>
+			</CascadingAuthenticationState>
+		</div>
+	</div>
 </nav>
 
 
 @code {
 
-    private async Task Logout()
-    {
-        await localStorage.RemoveItemAsync("authToken");
-        await authProvider.GetAuthenticationStateAsync();
-        navigationManager.NavigateTo("/");
-    }
+	private async Task Logout()
+	{
+		await CookieUtil.RemoveAsync("authToken");
+		await authProvider.GetAuthenticationStateAsync();
+		navigationManager.NavigateTo("/");
+	}
 
 }
