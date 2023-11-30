@@ -1,8 +1,9 @@
 ﻿@inject AuthenticationStateProvider authProvider
-@inject ILocalStorageService localStorage
+@inject IAltairCABlazorCookieUtil CookieUtil
 @inject NavigationManager navigationManager
 @using Microsoft.AspNetCore.Components.Authorization
 @using MRA.Jobs.Client.Identity
+@using AltairCA.Blazor.WebAssembly.Cookie
 
 <style>
 	@@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
@@ -113,7 +114,7 @@
 
 	private async Task Logout()
 	{
-		await localStorage.RemoveItemAsync("authToken");
+		await CookieUtil.RemoveAsync("authToken");
 		await authProvider.GetAuthenticationStateAsync();
 		navigationManager.NavigateTo("/");
 	}

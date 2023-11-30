@@ -1,4 +1,5 @@
 ﻿@using MRA.Jobs.Client.Identity
+@using AltairCA.Blazor.WebAssembly.Cookie
 @inherits LayoutComponentBase
 
 <MudThemeProvider/>
@@ -48,7 +49,7 @@
     private NavigationManager _navigationManager { get; set; }
 
     [Inject]
-    private ILocalStorageService _localStorageService { get; set; }
+    private IAltairCABlazorCookieUtil CookieUtil { get; set; }
 
     [Inject]
     private AuthenticationStateProvider _authStateProvider { get; set; }
@@ -56,7 +57,7 @@
 
     private async Task LogOut()
     {
-        await _localStorageService.RemoveItemAsync("authToken");
+        await CookieUtil.RemoveAsync("authToken");
         await _authStateProvider.GetAuthenticationStateAsync();
         _navigationManager.NavigateTo("/");
     }
