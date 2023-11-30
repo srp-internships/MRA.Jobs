@@ -24,7 +24,8 @@ public class RegistrationTests : BaseTest
             LastName = "Makedonsky",
             PhoneNumber = "+992123451789",
             Role = "asdfffssdesasfasefa",
-            Application = "43wtruigjklf"
+            Application = "43wtruigjklf",
+            ConfirmPassword = "password@#12P"
         };
 
         // Assert
@@ -85,7 +86,8 @@ public class RegistrationTests : BaseTest
             LastName = "Makesddonsky",
             PhoneNumber = "+992623456789",
             Role = "Role1",
-            Application = "mra.Test"
+            Application = "mra.Test",
+            ConfirmPassword = "passdsword@#12P"
         };
 
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
@@ -118,7 +120,8 @@ public class RegistrationTests : BaseTest
             LastName = "Makerradonsky",
             PhoneNumber = "+992723456789",
             Role = role.Name,
-            Application = "mra.Test"
+            Application = "mra.Test",
+            ConfirmPassword = "passworrrrd@#12P"
         };
 
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
