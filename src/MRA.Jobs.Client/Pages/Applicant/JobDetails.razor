@@ -16,11 +16,11 @@ else
 }
 @code {
 	private bool serverError = false;
-
+    
 	[Parameter]
 	public string Slug { get; set; }
 	private VacancyDetailsResponse details;
-
+    
 	protected override async Task OnInitializedAsync()
 	{
 		try

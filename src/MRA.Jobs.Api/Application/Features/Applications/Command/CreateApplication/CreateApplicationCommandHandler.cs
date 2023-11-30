@@ -6,6 +6,7 @@ using Common.SlugGeneratorService;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 
 public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, Guid>
@@ -16,15 +17,16 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly ICurrentUserService _currentUserService;
     private readonly ISlugGeneratorService _slugService;
     private readonly MRA.Configurations.Common.Interfaces.Services.IEmailService _emailService;
-    private readonly IHtmlService _htmlService;
+    private readonly IHtmlService _htmlService;  
     private readonly ICvService _cvService;
     private readonly IVacancyTaskService _vacancyTaskService;
-
+    private readonly IidentityService _identityService;
+    private readonly IConfiguration _configuration;
 
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
         ICurrentUserService currentUserService, ISlugGeneratorService slugService,
         MRA.Configurations.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService,
-        ICvService cvService, IVacancyTaskService vacancyTaskService)
+        ICvService cvService, IVacancyTaskService vacancyTaskService, IidentityService identityService, IConfiguration configuration)
     {
         _context = context;
         _mapper = mapper;
@@ -35,6 +37,8 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         _htmlService = htmlService;
         _cvService = cvService;
         _vacancyTaskService = vacancyTaskService;
+        _identityService = identityService;
+        _configuration = configuration;
     }
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
@@ -44,6 +48,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         var application = _mapper.Map<Application>(request);
 
         application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
+
 
         if (await ApplicationExits(application.Slug))
             throw new ConflictException("Duplicate Apply. You have already submitted your application!");
@@ -66,8 +71,9 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
+        string hostName = _configuration["HostName:SvPath"];
         await _emailService.SendEmailAsync(new[] { vacancy.CreatedByEmail },
-            _htmlService.GenerateApplyVacancyContent(_currentUserService.GetUserName()),
+            _htmlService.GenerateApplyVacancyContent_CreateApplication(hostName, application.Slug, vacancy.Title, await _cvService.GetCvByCommandAsync(ref request), await _identityService.ApplicantDetailsInfo()),
             "New Apply");
 
         return application.Id;

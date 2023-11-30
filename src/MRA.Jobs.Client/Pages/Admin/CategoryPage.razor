@@ -18,13 +18,15 @@ else
 	}
 	else
 	{
+	    <MudTextField OnKeyDown="@OnKeyDown" @bind-Value="newCategory" OnAdornmentClick="AddCategory" 
+                      Label="New Category" Variant="Variant.Outlined" Adornment="Adornment.End" 
+                      AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
 		<MudChipSet AllClosable="true" OnClose="Closed">
 			@foreach (var value in _category)
 			{
 				<MudChip Text="@value.Name"></MudChip>
 			}
 		</MudChipSet>
-		<MudTextField OnKeyDown="@OnKeyDown" @bind-Value="newCategory" OnAdornmentClick="AddCategory" Label="New Category" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
 	}
 }
 
@@ -45,7 +47,6 @@ else
 			serverError = true;
 			StateHasChanged();
 		}
-
 	}
 	public async Task Closed(MudChip chip)
 	{
@@ -68,6 +69,8 @@ else
 	}
 	public void AddCategory()
 	{
+	    if(newCategory == "")
+	        return;
 		CService.creatingEntity = new Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory.CreateVacancyCategoryCommand
 			{
 				Name = newCategory
@@ -80,7 +83,6 @@ else
 		newCategory = "";
 
 	}
-
 	private async Task OnKeyDown(KeyboardEventArgs e)
 	{
 		if (e.Code == "Enter")
