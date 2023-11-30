@@ -10,7 +10,7 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
 
     private async Task CreateHiddenVacancy(string vacancyTitle)
     {
-        var hiddenCategory = await dbContext.Categories.FirstAsync(c => c.Name == "Hidden Category");
+        var hiddenCategory = await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == "Hidden Category");
         if (hiddenCategory == null)
         {
             var category = new VacancyCategory() { Name = "Hidden Category", Slug = "hidden_category" };
@@ -18,7 +18,7 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
             hiddenCategory = category;
         }
 
-        var hiddenVacancy = await dbContext.HiddenVacancies.FirstAsync(hv => hv.Title == vacancyTitle);
+        var hiddenVacancy = await dbContext.HiddenVacancies.FirstOrDefaultAsync(hv => hv.Title == vacancyTitle);
         if (hiddenVacancy == null)
         {
             var vacancy = new HiddenVacancy()
