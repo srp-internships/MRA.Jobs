@@ -1,5 +1,4 @@
-﻿using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Identity.Application.Contract.Skills.Responses;
@@ -18,7 +17,6 @@ public partial class UserRoles
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public AuthenticationStateProvider AuthStateProvider { get; set; }
     [Inject] private ISnackbar Snackbar { get; set; }
-    [Inject] private ILocalStorageService LocalStorageService { get; set; }
     [Inject] private IUserProfileService UserProfileService { get; set; }
     private string NewRoleName { get; set; }
 

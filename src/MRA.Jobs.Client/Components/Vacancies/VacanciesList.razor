@@ -1,22 +1,36 @@
 ﻿@using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.CustomMethods;
-@inject ICategoryService categoryService
-@inject IVacancyService vacancyService
+@inject ICategoryService CategoryService
+@inject IVacancyService VacancyService
 @inject NavigationManager NavigationManager
 
 <style>
 	.job-card:hover {
 		background-color: #F5F5F5; /* Change to desired hover color */
 	}
+	.customTabContainer{
+	    display: flex;
+	    width: 100%;
+	    justify-content: space-between;
+	}
+	.customTabContainerLeft{
+	    margin-right: 10px ;
+	    margin-left: 10px;
+	}
+	.customTabContainerRight{
+	    margin-right: 20px;
+	    margin-left: 10px;
+	    display:flex;
+	}
 </style>
 
 @if (Vacancies is null)
 {
-    if (showLoader)
-    {
-        <div class="loader"></div>
-    }
+	if (showLoader)
+	{
+		<div class="loader"></div>
+	}
 }
 else
 {
@@ -30,7 +44,18 @@ else
                                 <MudTabPanel Text="All"/>
                                 @foreach (var jobCats in VacancyCategories)
                                 {
-                                    <MudTabPanel Text="@jobCats" BadgeData="@GetVacancyCategoryCount(jobCats)" BadgeColor="Color.Info"/>
+                                    <MudTabPanel>
+                                        <TabContent>
+                                            <div class="customTabContainer">
+                                                <div class="customTabContainerLeft">
+                                                    <MudText>@jobCats</MudText>
+                                                </div>
+                                                <div class="customTabContainerRight">
+                                                    <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(jobCats)"></MudBadge>
+                                                </div>
+                                            </div>
+                                        </TabContent>
+                                    </MudTabPanel>
                                 }
                             </MudTabs>
                         </MudHidden>
@@ -39,7 +64,18 @@ else
                                 <MudTabPanel Text="All"/>
                                 @foreach (var jobCats in VacancyCategories)
                                 {
-                                    <MudTabPanel Text="@jobCats" BadgeData="@GetVacancyCategoryCount(jobCats)" BadgeColor="Color.Info"/>
+                                    <MudTabPanel>
+                                        <TabContent>
+                                            <div class="customTabContainer">
+                                                <div class="customTabContainerLeft">
+                                                    <MudText>@jobCats</MudText>
+                                                </div>
+                                                <div class="customTabContainerRight">
+                                                    <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(jobCats)"></MudBadge>
+                                                </div>
+                                            </div>
+                                        </TabContent>
+                                    </MudTabPanel>
                                 }
                             </MudTabs>
                         </MudHidden>
@@ -48,7 +84,18 @@ else
                                 <MudTabPanel Text="All"/>
                                 @foreach (var jobCats in VacancyCategories)
                                 {
-                                    <MudTabPanel Text="@jobCats" BadgeData="@GetVacancyCategoryCount(jobCats)" BadgeColor="Color.Info"/>
+                                    <MudTabPanel>
+                                        <TabContent>
+                                            <div class="customTabContainer">
+                                                <div class="customTabContainerLeft">
+                                                    <MudText>@jobCats</MudText>
+                                                </div>
+                                                <div class="customTabContainerRight">
+                                                    <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(jobCats)"></MudBadge>
+                                                </div>
+                                            </div>
+                                        </TabContent>
+                                    </MudTabPanel>
                                 }
                             </MudTabs>
                         </MudHidden>
@@ -57,7 +104,18 @@ else
                                 <MudTabPanel Text="All"/>
                                 @foreach (var jobCats in VacancyCategories)
                                 {
-                                    <MudTabPanel Text="@jobCats" BadgeData="@GetVacancyCategoryCount(jobCats)" BadgeColor="Color.Info"/>
+                                    <MudTabPanel>
+                                        <TabContent>
+                                            <div class="customTabContainer">
+                                                <div class="customTabContainerLeft">
+                                                    <MudText>@jobCats</MudText>
+                                                </div>
+                                                <div class="customTabContainerRight">
+                                                    <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(jobCats)"></MudBadge>
+                                                </div>
+                                            </div>
+                                        </TabContent>
+                                    </MudTabPanel>
                                 }
                             </MudTabs>
                         </MudHidden>
@@ -66,7 +124,18 @@ else
                                 <MudTabPanel Text="All"/>
                                 @foreach (var jobCats in VacancyCategories)
                                 {
-                                    <MudTabPanel Text="@jobCats" BadgeData="@GetVacancyCategoryCount(jobCats)" BadgeColor="Color.Info"/>
+                                    <MudTabPanel>
+                                        <TabContent>
+                                            <div class="customTabContainer">
+                                                <div class="customTabContainerLeft">
+                                                    <MudText>@jobCats</MudText>
+                                                </div>
+                                                <div class="customTabContainerRight">
+                                                    <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(jobCats)"></MudBadge>
+                                                </div>
+                                            </div>
+                                        </TabContent>
+                                    </MudTabPanel>
                                 }
                             </MudTabs>
                         </MudHidden>
@@ -75,41 +144,50 @@ else
                                 <MudTabPanel Text="All"/>
                                 @foreach (var jobCats in VacancyCategories)
                                 {
-                                    <MudTabPanel Text="@jobCats" BadgeData="@GetVacancyCategoryCount(jobCats)" BadgeColor="Color.Info"/>
+                                    <MudTabPanel>
+                                        <TabContent>
+                                            <div class="customTabContainer">
+                                                <div class="customTabContainerLeft">
+                                                    <MudText>@jobCats</MudText>
+                                                </div>
+                                                <div class="customTabContainerRight">
+                                                    <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(jobCats)"></MudBadge>
+                                                </div>
+                                            </div>
+                                        </TabContent>
+                                    </MudTabPanel>
                                 }
                             </MudTabs>
                         </MudHidden>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudCard>
-                            <MudCardContent>
-                                <MudText Typo="Typo.body2">
-                                    If you would like to nominate yourself, send us your СV.
-                                </MudText>
-                            </MudCardContent>
-                            <MudCardActions>
-                                <CascadingAuthenticationState>
-                                    <AuthorizeView>
-                                        <Authorized>
-                                            <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                                                       OnClick="ApplyHiddenVacancy" FullWidth="true">
-                                                <MudText>Upload CV</MudText>
-                                            </MudButton>
-                                        </Authorized>
-                                        <NotAuthorized>
-                                            <MudButton Variant="Variant.Filled" OnClick="SignIn" Color="Color.Primary" FullWidth="true">
-                                                <MudText>Sign In</MudText>
-                                            </MudButton>
-                                        </NotAuthorized>
-                                    </AuthorizeView>
-                                </CascadingAuthenticationState>
-                            </MudCardActions>
-                        </MudCard>
-                    </MudItem>
+                                            <MudCard>
+                                                <MudCardContent>
+                                                    <MudText Typo="Typo.body2">
+                                                        If you would like to nominate yourself, send us your СV.
+                                                    </MudText>
+                                                </MudCardContent>
+                                                <MudCardActions>
+                                                    <CascadingAuthenticationState>
+                                                        <AuthorizeView>
+                                                            <Authorized>
+                                                                <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                                                           OnClick="ApplyHiddenVacancy" FullWidth="true">
+                                                                    <MudText>Upload CV</MudText>
+                                                                </MudButton>
+                                                            </Authorized>
+                                                            <NotAuthorized>
+                                                                <MudButton Variant="Variant.Filled" OnClick="SignIn" Color="Color.Primary" FullWidth="true">
+                                                                    <MudText>Sign In</MudText>
+                                                                </MudButton>
+                                                            </NotAuthorized>
+                                                        </AuthorizeView>
+                                                    </CascadingAuthenticationState>
+                                                </MudCardActions>
+                                            </MudCard>
+                                        </MudItem>
                 </MudGrid>
-
             </MudItem>
-
             @if (VacancyCategories.Count == 0)
             {
                 <MudText Typo="Typo.h5" Style="margin:50px;">There are currently no job vacancies available. Please check back later :)</MudText>
@@ -181,88 +259,86 @@ else
 }
 
 @code {
-    private int _selected = 1;
-    public string Search { get; set; }
-    private bool showLoader = false;
+	private int _selected = 1;
+	public string Search { get; set; }
+	private bool showLoader = false;
+	[Parameter]
+	public List<string> VacancyCategories { get; set; }
 
-    [Parameter]
-    public List<string> VacancyCategories { get; set; }
+	[Parameter]
+	public List<VacancyClientResponse> Vacancies { get; set; }
 
-    [Parameter]
-    public List<VacancyClientResponse> Vacancies { get; set; }
+	[Parameter]
+	public string Route { get; set; }
 
-    [Parameter]
-    public string Route { get; set; }
+	[Parameter]
+	public List<VacancyClientResponse> filteredVacancies { get; set; }
+	private int activeIndex = 0;
+	private string selectedCategoryText = "All Internships";
+	private int ItemsPerPage = 5;
 
-    [Parameter]
-    public List<VacancyClientResponse> filteredVacancies { get; set; }
+	protected override async void OnAfterRender(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await Task.Delay(1000);
+			showLoader = true;
+			StateHasChanged();
+		}
+	}
 
-    private int activeIndex = 0;
-    private string selectedCategoryText = "All Internships";
-    private int ItemsPerPage = 5;
+	private void HandleTabSelection(int index)
+	{
+		activeIndex = index;
 
-    protected override async void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await Task.Delay(1000);
-            showLoader = true;
-            StateHasChanged();
-        }
-    }
+		if (index == 0)
+		{
+			filteredVacancies = Vacancies;
+		}
+		else if (index > 0 && index <= VacancyCategories.Count)
+		{
+			selectedCategoryText = VacancyCategories[index - 1];
+			filteredVacancies = Vacancies.Where(j => j.Category == selectedCategoryText).ToList();
+		}
 
-    private void HandleTabSelection(int index)
-    {
-        activeIndex = index;
+		// Reset pagination on tab change
+		_selected = 1;
+	}
 
-        if (index == 0)
-        {
-            filteredVacancies = Vacancies;
-        }
-        else if (index > 0 && index <= VacancyCategories.Count)
-        {
-            selectedCategoryText = VacancyCategories[index - 1];
-            filteredVacancies = Vacancies.Where(j => j.Category == selectedCategoryText).ToList();
-        }
+	private int GetVacancyCategoryCount(string category)
+	{
+		return Vacancies.Count(j => j.Category == category);
+	}
 
-    // Reset pagination on tab change
-        _selected = 1;
-    }
+	private void ApplySearchFilter(string query)
+	{
+		if (!string.IsNullOrEmpty(query))
+		{
+			Console.WriteLine(query);
+			filteredVacancies = Vacancies
+				.Where(j => j.Title.Contains(Search, StringComparison.OrdinalIgnoreCase)
+							|| j.ShortDescription.Contains(query, StringComparison.OrdinalIgnoreCase))
+				.ToList();
+		}
+		else
+		{
+			filteredVacancies = Vacancies;
+		}
 
-    private int GetVacancyCategoryCount(string category)
-    {
-        return Vacancies.Count(j => j.Category == category);
-    }
+		// Reset pagination on search
+		_selected = 1;
+	}
 
-    private void ApplySearchFilter(string query)
-    {
-        if (!string.IsNullOrEmpty(query))
-        {
-            Console.WriteLine(query);
-            filteredVacancies = Vacancies
-                .Where(j => j.Title.Contains(Search, StringComparison.OrdinalIgnoreCase)
-                            || j.ShortDescription.Contains(query, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-        }
-        else
-        {
-            filteredVacancies = Vacancies;
-        }
+	private void SearchVacancy()
+	{
+		ApplySearchFilter(Search);
+	}
 
-    // Reset pagination on search
-        _selected = 1;
-    }
-
-    private void SearchVacancy()
-    {
-        ApplySearchFilter(Search);
-    }
-
-    private List<VacancyClientResponse> GetVisibleVacancies()
-    {
-        int startIndex = (_selected - 1) * ItemsPerPage;
-        return filteredVacancies.Skip(startIndex).Take(ItemsPerPage).ToList();
-    }
+	private List<VacancyClientResponse> GetVisibleVacancies()
+	{
+		int startIndex = (_selected - 1) * ItemsPerPage;
+		return filteredVacancies.Skip(startIndex).Take(ItemsPerPage).ToList();
+	}
 
     private int GetTotalPages()
     {
@@ -278,5 +354,3 @@ else
     {
         NavigationManager.NavigateTo("/sign-in");
     }
-
-}

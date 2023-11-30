@@ -4,40 +4,33 @@
         <TargetFramework>net8.0</TargetFramework>
         <IsPackable>true</IsPackable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj" />
-        <ProjectReference Include="..\Infrastructure\MRA.Jobs.Infrastructure.csproj" />
+        <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj"/>
+        <ProjectReference Include="..\Infrastructure\MRA.Jobs.Infrastructure.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="MRA.Jobs.Application.IntegrationTests" />
+        <InternalsVisibleTo Include="MRA.Jobs.Application.IntegrationTests"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.3.0" />
-        <PackageReference Include="Azure.Identity" Version="1.10.4" />
-        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-          <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0" />
-        <PackageReference Include="NSwag.AspNetCore" Version="14.0.0-preview010" />
-        <PackageReference Include="NSwag.MSBuild" Version="14.0.0-preview010">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
+        <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.3.0"/>
+        <PackageReference Include="Azure.Identity" Version="1.10.4"/>
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="wwwroot\api\" />
+        <Folder Include="wwwroot\api\"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Content Update="wwwroot\api\specification.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
+    <PropertyGroup>
+        <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    </PropertyGroup>
+
 </Project>

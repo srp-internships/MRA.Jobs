@@ -11,12 +11,12 @@ using MRA.Jobs.Client;
 using MRA.Jobs.Client.Services.ApplicationService;
 using MRA.Jobs.Client.Services.InternshipsServices;
 using MRA.Jobs.Client.Services.TrainingServices;
-using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using MRA.Jobs.Client.Services.Auth;
 using MudBlazor.Services;
 using MRA.Jobs.Client.Services.Profile;
 using System.Reflection;
+using AltairCA.Blazor.WebAssembly.Cookie.Framework;
 using Microsoft.FeatureManagement;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Jobs.Client.Identity;
@@ -27,16 +27,15 @@ using MRA.Jobs.Client.Services.HiddenVacancies;
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services
-    .AddBlazorise(options =>
-    {
-        options.Immediate = true;
-    })
+    .AddBlazorise(options => { options.Immediate = true; })
     .AddBootstrapProviders()
     .AddFontAwesomeIcons();
 
 
 builder.Services.AddMudServices();
 builder.Services.AddMatBlazor();
+
+builder.Services.AddAltairCACookieService(options => { options.DefaultExpire = TimeSpan.Zero; });
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
@@ -74,7 +73,6 @@ builder.Services.AddAuthorizationCore(s =>
             ApplicationClaimValues.AllApplications)
         .RequireClaim(ClaimTypes.Id).RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Username));
 });
-builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IInternshipService, InternshipService>();

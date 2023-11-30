@@ -221,13 +221,13 @@ else
         <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem"/>
         <MudTable Items="@trainings" Class="text-center" Breakpoint="Breakpoint.Md" hidden="@panelOpenState">
             <HeaderContent>
-                <MudTh>Title</MudTh>
-                <MudTh>Short description</MudTh>
-                <MudTh>Category</MudTh>
-                <MudTh>Publish date</MudTh>
-                <MudTh>End date</MudTh>
-                <MudTh>Duration</MudTh>
-                <MudTh>Fees</MudTh>
+                <MudTh><strong>Title</strong></MudTh>
+                <MudTh><strong>Short description</strong></MudTh>
+                <MudTh><strong>Category</strong></MudTh>
+                <MudTh><strong>Publish date</strong></MudTh>
+                <MudTh><strong>End date</strong></MudTh>
+                <MudTh><strong>Duration</strong></MudTh>
+                <MudTh><strong>Fees</strong></MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
@@ -241,8 +241,8 @@ else
                 <MudTd DataLabel="Duration">@context.Duration</MudTd>
                 <MudTd DataLabel="Fees">@context.Fees</MudTd>
                 <MudTd DataLabel="Action">
-                    <MudButton @onclick="() => OnDeleteClick(context.Slug)" Style="color:#2094CC" Icon="delete">Delete</MudButton>
-                    <MudButton @onclick="() => OnEditClick(context.Slug)" Style="color:#2094CC" Icon="edit">Edit</MudButton>
+                    <MudIconButton @onclick="() => OnDeleteClick(context.Slug)" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Medium"/>
+                    <MudIconButton @onclick="() => OnEditClick(context.Slug)" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium"/>
                 </MudTd>
             </RowTemplate>
             <PagerContent>

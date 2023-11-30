@@ -1,7 +1,7 @@
 ﻿using System.Net;
+using AltairCA.Blazor.WebAssembly.Cookie;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
-using Blazored.LocalStorage;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Responses;
@@ -9,38 +9,25 @@ using MRA.Jobs.Client.Identity;
 using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
 using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
-using MediatR;
 using MRA.Identity.Application.Contract.User.Queries.CheckUserDetails;
-using MRA.Jobs.Client.Pages.Admin;
 
 namespace MRA.Jobs.Client.Services.Auth;
 
-public class AuthService : IAuthService
+public class AuthService(IdentityHttpClient identityHttpClient,
+        AuthenticationStateProvider authenticationStateProvider, NavigationManager navigationManager,
+        IAltairCABlazorCookieUtil cookieUtil)
+    : IAuthService
 {
-    private readonly IdentityHttpClient _identityHttpClient;
-    private readonly ILocalStorageService _localStorage;
-    private readonly AuthenticationStateProvider _authenticationStateProvider;
-    private readonly NavigationManager _navigationManager;
-
-    public AuthService(IdentityHttpClient identityHttpClient, ILocalStorageService localStorage,
-        AuthenticationStateProvider authenticationStateProvider, NavigationManager navigationManager)
-    {
-        _identityHttpClient = identityHttpClient;
-        _localStorage = localStorage;
-        _authenticationStateProvider = authenticationStateProvider;
-        _navigationManager = navigationManager;
-    }
-
     public async Task<HttpResponseMessage> ChangePassword(ChangePasswordUserCommand command)
     {
 
-        var result = await _identityHttpClient.PutAsJsonAsync("Auth/ChangePassword", command);
+        var result = await identityHttpClient.PutAsJsonAsync("Auth/ChangePassword", command);
         return result;
     }
 
     public async Task<HttpResponseMessage> IsAvailableUserPhoneNumber(IsAvailableUserPhoneNumberQuery query)
     {
-        var result = await _identityHttpClient.GetAsync($"Auth/IsAvailableUserPhoneNumber/{Uri.EscapeDataString(query.PhoneNumber)}");
+        var result = await identityHttpClient.GetAsync($"Auth/IsAvailableUserPhoneNumber/{Uri.EscapeDataString(query.PhoneNumber)}");
         return result;
     }
 
@@ -49,14 +36,14 @@ public class AuthService : IAuthService
         string errorMessage = null;
         try
         {
-            var result = await _identityHttpClient.PostAsJsonAsync("Auth/login", command);
+            var result = await identityHttpClient.PostAsJsonAsync("Auth/login", command);
             if (result.IsSuccessStatusCode)
             {
                 var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
-                await _localStorage.SetItemAsync("authToken", response);
-                await _authenticationStateProvider.GetAuthenticationStateAsync();
+                await cookieUtil.SetValueAsync("authToken", response);
+                await authenticationStateProvider.GetAuthenticationStateAsync();
                 if (!newRegister)
-                    _navigationManager.NavigateTo("/");
+                    navigationManager.NavigateTo("/");
                 return null;
             }
 
@@ -87,7 +74,7 @@ public class AuthService : IAuthService
             if (command.PhoneNumber.Length == 9) command.PhoneNumber = "+992" + command.PhoneNumber.Trim();
             else if (command.PhoneNumber.Length == 12 && command.PhoneNumber[0] != '+') command.PhoneNumber = "+" + command.PhoneNumber;
 
-            var result = await _identityHttpClient.PostAsJsonAsync("Auth/register", command);
+            var result = await identityHttpClient.PostAsJsonAsync("Auth/register", command);
             if (result.IsSuccessStatusCode)
             {
                 await LoginUserAsync(new LoginUserCommand()
@@ -96,7 +83,7 @@ public class AuthService : IAuthService
                     Username = command.Username
                 });
 
-                _navigationManager.NavigateTo("/profile");
+                navigationManager.NavigateTo("/profile");
 
                 return "";
             }
@@ -120,19 +107,19 @@ public class AuthService : IAuthService
 
     public async Task<HttpResponseMessage> ResetPassword(ResetPasswordCommand command)
     {
-        var result = await _identityHttpClient.PostAsJsonAsync("Auth/ResetPassword", command);
+        var result = await identityHttpClient.PostAsJsonAsync("Auth/ResetPassword", command);
         return result;
     }
 
     public async Task<HttpResponseMessage> CheckUserName(string userName)
     {
-        var result = await _identityHttpClient.GetAsync($"User/CheckUserName/{userName}");
+        var result = await identityHttpClient.GetAsync($"User/CheckUserName/{userName}");
         return result;
     }
 
     public async Task<HttpResponseMessage> CheckUserDetails(CheckUserDetailsQuery query)
     {
-        var result = await _identityHttpClient.GetAsync($"User/CheckUserDetails/{query.UserName}/{query.PhoneNumber}/{query.Email}");
+        var result = await identityHttpClient.GetAsync($"User/CheckUserDetails/{query.UserName}/{query.PhoneNumber}/{query.Email}");
         return result;
     }
 }

@@ -9,29 +9,23 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStat
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Infrastructure.Identity;
 
 namespace MRA.Jobs.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class ApplicationsController : ApiControllerBase
+public class ApplicationsController(IFileService fileService) : ApiControllerBase
 {
-    private readonly IFileService _fileService;
-
-    public ApplicationsController(IFileService fileService)
-    {
-        _fileService = fileService;
-    }
-
     [HttpGet("DownloadCv/{key}")]
     [AllowAnonymous]
     public async Task<IActionResult> DownloadCv(string key)
     {
-        if (!await _fileService.FileExistsAsync(key))
+        if (!await fileService.FileExistsAsync(key))
             return NotFound("File not found.");
 
-        var fileBytes = await _fileService.Download(key);
+        var fileBytes = await fileService.Download(key);
         return File(fileBytes, "application/octet-stream", key);
     }
 
@@ -73,6 +67,7 @@ public class ApplicationsController : ApiControllerBase
     }
 
     [HttpPut("{slug}/update-status")]
+    [Authorize(policy:ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<bool>> UpdateStatus(string slug, UpdateApplicationStatus request,
         CancellationToken cancellationToken)
     {
@@ -81,6 +76,7 @@ public class ApplicationsController : ApiControllerBase
     }
 
     [HttpPost("{slug}/add-note")]
+    [Authorize(policy:ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<bool>> AddNote(string slug, AddNoteToApplicationCommand request,
         CancellationToken cancellationToken)
     {
