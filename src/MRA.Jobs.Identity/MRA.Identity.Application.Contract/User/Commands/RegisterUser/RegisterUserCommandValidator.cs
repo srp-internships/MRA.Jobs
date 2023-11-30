@@ -15,5 +15,6 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         RuleFor(s => s.Password).Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$").WithMessage("Password must have at least one lowercase letter, one uppercase letter, one digit, and one special character, with a minimum length of 8 characters.");
         RuleFor(s => !string.IsNullOrEmpty(s.Role));
         RuleFor(s => !string.IsNullOrEmpty(s.Application));
+        RuleFor(s => s.ConfirmPassword).Equal(s => s.Password).WithMessage("Passwords do not match.");
     }
 }
