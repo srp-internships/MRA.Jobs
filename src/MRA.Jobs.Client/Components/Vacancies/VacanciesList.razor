@@ -1,21 +1,26 @@
 ﻿@using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.CustomMethods;
-@inject ICategoryService categoryService
-@inject IVacancyService vacancyService
+@inject ICategoryService CategoryService
+@inject IVacancyService VacancyService
 
 <style>
 	.job-card:hover {
 		background-color: #F5F5F5; /* Change to desired hover color */
 	}
 	.customTabContainer{
-	display: flex;width: 100%;justify-content: space-between
+	    display: flex;
+	    width: 100%;
+	    justify-content: space-between;
 	}
 	.customTabContainerLeft{
-	margin-right: 10px ;margin-left: 10px
+	    margin-right: 10px ;
+	    margin-left: 10px;
 	}
 	.customTabContainerRight{
-	margin-right: 20px ;margin-left: 10px;display:flex;
+	    margin-right: 20px;
+	    margin-left: 10px;
+	    display:flex;
 	}
 </style>
 
@@ -237,11 +242,11 @@ else
     public string Route { get; set; }
 
     [Parameter]
-    public List<VacancyClientResponse> filteredVacancies { get; set; }
+    public List<VacancyClientResponse> FilteredVacancies { get; set; }
 
-    private int activeIndex = 0;
-    private string selectedCategoryText = "All Internships";
-    private int ItemsPerPage = 5;
+    private int _activeIndex = 0;
+    private string _selectedCategoryText = "All Internships";
+    private int _itemsPerPage = 5;
 
     protected override async void OnAfterRender(bool firstRender)
     {
@@ -255,16 +260,16 @@ else
 
     private void HandleTabSelection(int index)
     {
-        activeIndex = index;
+        _activeIndex = index;
 
         if (index == 0)
         {
-            filteredVacancies = Vacancies;
+            FilteredVacancies = Vacancies;
         }
         else if (index > 0 && index <= VacancyCategories.Count)
         {
-            selectedCategoryText = VacancyCategories[index - 1];
-            filteredVacancies = Vacancies.Where(j => j.Category == selectedCategoryText).ToList();
+            _selectedCategoryText = VacancyCategories[index - 1];
+            FilteredVacancies = Vacancies.Where(j => j.Category == _selectedCategoryText).ToList();
         }
 
     // Reset pagination on tab change
@@ -281,14 +286,14 @@ else
         if (!string.IsNullOrEmpty(query))
         {
             Console.WriteLine(query);
-            filteredVacancies = Vacancies
+            FilteredVacancies = Vacancies
                 .Where(j => j.Title.Contains(Search, StringComparison.OrdinalIgnoreCase)
                             || j.ShortDescription.Contains(query, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }
         else
         {
-            filteredVacancies = Vacancies;
+            FilteredVacancies = Vacancies;
         }
 
     // Reset pagination on search
@@ -302,13 +307,13 @@ else
 
     private List<VacancyClientResponse> GetVisibleVacancies()
     {
-        int startIndex = (_selected - 1) * ItemsPerPage;
-        return filteredVacancies.Skip(startIndex).Take(ItemsPerPage).ToList();
+        int startIndex = (_selected - 1) * _itemsPerPage;
+        return FilteredVacancies.Skip(startIndex).Take(_itemsPerPage).ToList();
     }
 
     private int GetTotalPages()
     {
-        return (int)Math.Ceiling((double)filteredVacancies.Count / ItemsPerPage);
+        return (int)Math.Ceiling((double)FilteredVacancies.Count / _itemsPerPage);
     }
 
 }
