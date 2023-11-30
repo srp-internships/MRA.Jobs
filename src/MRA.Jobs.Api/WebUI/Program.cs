@@ -8,11 +8,7 @@ using MRA.Configurations.Initializer.Azure.Insight;
 using MRA.Configurations.Initializer.Azure.KeyVault;
 using Newtonsoft.Json;
 using Sieve.Models;
-using FluentValidation.AspNetCore;
-using MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using static System.Formats.Asn1.AsnWriter;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
@@ -35,6 +31,15 @@ WebApplication app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
+    app.UseSwagger(options =>
+    {
+        options.SerializeAsV2 = true;
+    });
 }
 else
 {
@@ -45,13 +50,6 @@ using (var scope = app.Services.CreateScope())
 {
     var initialiser = scope.ServiceProvider.GetRequiredService<DbMigration>();
     await initialiser.InitialiseAsync();
-    app.UseSwaggerUi(settings =>
-    {
-        settings.Path = "/api";
-        settings.DocumentPath = "/api/specification.json";
-        settings.EnableTryItOut = true;
-        settings.PersistAuthorization = true;
-    });
 }
 
 app.UseHealthChecks("/status", new HealthCheckOptions
