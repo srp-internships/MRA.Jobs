@@ -11,7 +11,8 @@ public class GetFirsHiddenVacancyQueryHandler
     public async Task<HiddenVacancyResponse> Handle(GetFirstHiddenVacancyQuery request,
         CancellationToken cancellationToken)
     {
-        var vacancy = await dbContext.HiddenVacancies.FirstOrDefaultAsync(cancellationToken);
+        var vacancy =
+            await dbContext.HiddenVacancies.FirstOrDefaultAsync(x => x.Slug == "hidden_vacancy", cancellationToken);
 
         if (vacancy == null)
             throw new NullReferenceException();

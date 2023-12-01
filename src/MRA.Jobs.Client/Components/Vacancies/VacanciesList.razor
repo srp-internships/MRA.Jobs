@@ -273,7 +273,7 @@ else
     public string Route { get; set; }
 
     [Parameter]
-    public List<VacancyClientResponse> filteredVacancies { get; set; }
+    public List<VacancyClientResponse> FilteredVacancies { get; set; }
 
     private int activeIndex = 0;
     private string selectedCategoryText = "All Internships";
@@ -295,12 +295,12 @@ else
 
         if (index == 0)
         {
-            filteredVacancies = Vacancies;
+            FilteredVacancies = Vacancies;
         }
         else if (index > 0 && index <= VacancyCategories.Count)
         {
             selectedCategoryText = VacancyCategories[index - 1];
-            filteredVacancies = Vacancies.Where(j => j.Category == selectedCategoryText).ToList();
+            FilteredVacancies = Vacancies.Where(j => j.Category == selectedCategoryText).ToList();
         }
 
     // Reset pagination on tab change
@@ -317,14 +317,14 @@ else
         if (!string.IsNullOrEmpty(query))
         {
             Console.WriteLine(query);
-            filteredVacancies = Vacancies
+            FilteredVacancies = Vacancies
                 .Where(j => j.Title.Contains(Search, StringComparison.OrdinalIgnoreCase)
                             || j.ShortDescription.Contains(query, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }
         else
         {
-            filteredVacancies = Vacancies;
+            FilteredVacancies = Vacancies;
         }
 
     // Reset pagination on search
@@ -339,12 +339,12 @@ else
     private List<VacancyClientResponse> GetVisibleVacancies()
     {
         int startIndex = (_selected - 1) * ItemsPerPage;
-        return filteredVacancies.Skip(startIndex).Take(ItemsPerPage).ToList();
+        return FilteredVacancies.Skip(startIndex).Take(ItemsPerPage).ToList();
     }
 
     private int GetTotalPages()
     {
-        return (int)Math.Ceiling((double)filteredVacancies.Count / ItemsPerPage);
+        return (int)Math.Ceiling((double)FilteredVacancies.Count / ItemsPerPage);
     }
 
     private void ApplyHiddenVacancy()
