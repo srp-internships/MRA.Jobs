@@ -202,8 +202,11 @@
 							<MudDivider />
 							<p><label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label></p>
 							<p><label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label></p>
-							<MudTextField T="string" Label="Code" Variant="Variant.Outlined" Lines="8" @bind-Value=@taskResponses[task.Title] />
-							<StandaloneCodeEditor @ref="_editor" Id="sample-code-editor-123" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
+							@* @if(task.Template!=null){
+								SetValue(task.Template);
+							} *@
+							<StandaloneCodeEditor @ref="_editor" Id="sample-code-editor-123" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" SetValue(task.Template) />
+							UpdateTaskResponse(task.Title);
 						}
 					</MudCardContent>
 				</MudCard>
@@ -249,6 +252,7 @@
 
 @code {
 	private StandaloneCodeEditor _editor = null!;
+	private string _valueToSet = "";
     private bool _isUploadCvMode = true;
     private bool _showLoader = false;
 
@@ -293,6 +297,10 @@
 						"};\n"
 			};
 	}
+	private async Task UpdateTaskResponse(string taskTitle)
+	{
+		taskResponses[taskTitle] = await _editor.GetValue();
+	}
 	private async Task EditorOnDidInit()
 	{
 		await _editor.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) =>
@@ -324,7 +332,11 @@
 	{
 		Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
 	}
-	
+	private async Task SetValue(string s)
+	{
+		Console.WriteLine($"setting value to: {s}");
+		await _editor.SetValue(s);
+	}
     protected override async void OnAfterRender(bool firstRender)
     {
         if (firstRender)
