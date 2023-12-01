@@ -1,9 +1,13 @@
-﻿@inject AuthenticationStateProvider authProvider
+﻿@inject AuthenticationStateProvider AuthProvider
 @inject IAltairCABlazorCookieUtil CookieUtil
-@inject NavigationManager navigationManager
+@inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.Authorization
 @using MRA.Jobs.Client.Identity
 @using AltairCA.Blazor.WebAssembly.Cookie
+@using MRA.Jobs.Client.Services.ContentService
+@using MRA.Jobs.Client.wwwroot.resources
+@inject IContentService ContentService
+@inject IJSRuntime JsRuntime
 
 <style>
 	@@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
@@ -70,35 +74,46 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<li class="nav-item">
-					<NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
+					<NavLink class="nav-link" href="/" Match="NavLinkMatch.All">@ContentService["Header:Home"]</NavLink>
 				</li>
 				<li class="nav-item">
-					<NavLink class="nav-link" href="/internships">Internships</NavLink>
+					<NavLink class="nav-link" href="/internships">@ContentService["Header:Internships"]</NavLink>
 				</li>
 				<li class="nav-item">
-					<NavLink class="nav-link" href="/jobs">Jobs</NavLink>
+					<NavLink class="nav-link" href="/jobs">@ContentService["Header:Jobs"]</NavLink>
 				</li>
 				<li class="nav-item">
-					<NavLink class="nav-link" href="/trainings">Trainings</NavLink>
+					<NavLink class="nav-link" href="/trainings">@ContentService["Header:Trainings"]</NavLink>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/">Team</a>
+					<a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/">@ContentService["Header:Team"]</a>
 				</li>
 			</ul>
-
+			
+			@* language switch *@
+			<div class="parent">
+				<div class="switch_3_ways_v2">
+					<div id="monthly2" class="switch2 monthly" @onclick="SwitchToEnglish">English</div>
+					<div class="switch2 semester" id="semester2" @onclick="	SwitchToRussian">Русский</div>
+					<div id="annual2" class="switch2 annual" @onclick="SwitchToTajik">Точики</div>
+					<div id="selector" class="selector"></div>
+				</div>
+			</div>
+			@* language switch *@
+			
 			<CascadingAuthenticationState>
 				<AuthorizeView>
 					<Authorized>
 						<MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
-							<MudMenuItem Href="/profile">Profile</MudMenuItem>
-							<MudMenuItem Href="/applications">Applications</MudMenuItem>
-							<MudMenuItem OnClick="Logout">Logout</MudMenuItem>
+							<MudMenuItem Href="/profile">@ContentService["UserButton:Profile"]</MudMenuItem>
+							<MudMenuItem Href="/applications">@ContentService["UserButton:Applications"]</MudMenuItem>
+							<MudMenuItem OnClick="Logout">@ContentService["UserButton:Logout"]</MudMenuItem>
 						</MudMenu>
 					</Authorized>
 					<NotAuthorized>
 						<MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
-							<MudMenuItem Href="/sign-in">Sign In</MudMenuItem>
-							<MudMenuItem Href="/sign-up">Sign Up</MudMenuItem>
+							<MudMenuItem Href="/sign-in">@ContentService["UserButton:Sign In"]</MudMenuItem>
+							<MudMenuItem Href="/sign-up">@ContentService["UserButton:Sign Up"]</MudMenuItem>
 						</MudMenu>
 					</NotAuthorized>
 				</AuthorizeView>
@@ -113,8 +128,30 @@
 	private async Task Logout()
 	{
 		await CookieUtil.RemoveAsync("authToken");
-		await authProvider.GetAuthenticationStateAsync();
-		navigationManager.NavigateTo("/");
+		await AuthProvider.GetAuthenticationStateAsync();
+		NavigationManager.NavigateTo("/");
+	}
+
+	private async Task SwitchToEnglish()
+	{
+		await JsRuntime.InvokeVoidAsync("change_period2","English");
+		await ContentService.ChangeCulture(ApplicationCulturesNames.En);
+		StateHasChanged();
+		
+	}
+
+	private async Task SwitchToRussian()
+	{
+		await JsRuntime.InvokeVoidAsync("change_period2","Русский");
+		await ContentService.ChangeCulture(ApplicationCulturesNames.Ru);
+		StateHasChanged();
+	}
+
+	private async Task SwitchToTajik()
+	{
+		await JsRuntime.InvokeVoidAsync("change_period2","Точики");
+		await ContentService.ChangeCulture(ApplicationCulturesNames.Tj);
+		StateHasChanged();
 	}
 
 }

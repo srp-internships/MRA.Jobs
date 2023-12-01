@@ -14,7 +14,7 @@ namespace MRA.Jobs.Client.wwwroot.resources.languages {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class English {
+    public class English {
         
         private static System.Resources.ResourceManager resourceMan;
         

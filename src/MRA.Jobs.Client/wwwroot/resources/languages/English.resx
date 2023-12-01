@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
-            
+
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
@@ -13,9 +14,49 @@
         <value>1.3</value>
     </resheader>
     <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
     </resheader>
     <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
     </resheader>
+    <!-- header -->
+    <data name="Header:Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="Header:Internships" xml:space="preserve">
+        <value>Internships</value>
+    </data>
+    <data name="Header:Jobs" xml:space="preserve">
+        <value>Jobs</value>
+    </data>
+    <data name="Header:Trainings" xml:space="preserve">
+        <value>Trainings</value>
+    </data>
+    <data name="Header:Team" xml:space="preserve">
+        <value>Team</value>
+    </data>
+    <!-- header -->
+
+    <!-- UserButton -->
+    <data name="UserButton:Profile" xml:space="preserve">
+        <value>Profile</value>
+    </data>
+    <data name="UserButton:Applications" xml:space="preserve">
+        <value>Applications</value>
+    </data>
+    <data name="UserButton:Logout" xml:space="preserve">
+        <value>Logout</value>
+    </data>
+    <data name="UserButton:Sign In" xml:space="preserve">
+        <value>Sign In</value>
+    </data>
+    <data name="UserButton:Sign Up" xml:space="preserve">
+        <value>Sign Up</value>
+    </data>
+    <!-- UserButton -->
+
 </root>

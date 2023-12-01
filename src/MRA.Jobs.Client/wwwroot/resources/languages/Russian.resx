@@ -18,4 +18,40 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+
+    <!-- header -->
+    <data name="Header:Home" xml:space="preserve">
+        <value>Главная</value>
+    </data>
+    <data name="Header:Internships" xml:space="preserve">
+        <value>Стажировки</value>
+    </data>
+    <data name="Header:Jobs" xml:space="preserve">
+        <value>Вакансии</value>
+    </data>
+    <data name="Header:Trainings" xml:space="preserve">
+        <value>Трейнинги</value>
+    </data>
+    <data name="Header:Team" xml:space="preserve">
+        <value>Команда</value>
+    </data>
+    <!-- header -->
+
+    <!-- UserButton -->
+    <data name="UserButton:Profile" xml:space="preserve">
+        <value>Профиль</value>
+    </data>
+    <data name="UserButton:Applications" xml:space="preserve">
+        <value>Отклики</value>
+    </data>
+    <data name="UserButton:Logout" xml:space="preserve">
+        <value>Выход</value>
+    </data>
+    <data name="UserButton:Sign In" xml:space="preserve">
+        <value>Вход</value>
+    </data>
+    <data name="UserButton:Sign Up" xml:space="preserve">
+        <value>Регистрация</value>
+    </data>
+    <!-- UserButton -->
 </root>
