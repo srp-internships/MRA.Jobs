@@ -21,4 +21,5 @@ public class Application : BaseAuditableEntity
     public IEnumerable<TaskResponse> TaskResponses { get; set; }
 
     public string CV { get; set; }
+  
 }

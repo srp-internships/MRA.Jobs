@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Contracts.HiddenVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.HiddenVacancies.Queries;
 
-public class GetFirsHiddenVacancyQueryHandler
+public class GetFirstHiddenVacancyQueryHandler
     (IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<GetFirstHiddenVacancyQuery,
         HiddenVacancyResponse>
 {

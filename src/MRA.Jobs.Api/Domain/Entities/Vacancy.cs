@@ -22,6 +22,6 @@ public abstract class Vacancy : BaseAuditableEntity
     public IEnumerable<VacancyQuestion> VacancyQuestions { get; set; }
     public IEnumerable<VacancyTask> VacancyTasks { get; set; }
     public ICollection<VacancyTag> Tags { get; set; }
-    
+    public string Discriminator { get; set; }
 }
 

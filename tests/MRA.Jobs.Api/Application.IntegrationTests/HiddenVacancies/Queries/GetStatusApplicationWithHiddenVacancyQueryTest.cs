@@ -21,7 +21,8 @@ public class GetStatusApplicationWithHiddenVacancyQueryTest : CreateApplicationT
     [Test]
     public async Task GetStatusApplicationWithHiddenVacancyQuery_2_Return_AppliedFalse()
     {
-        RunAsDefaultUserAsync();
+        
+        RunAsDefaultUserAsync("applicant3");
         var response = await _httpClient.GetAsync("api/HiddenVacancies/GetApplicationStatus");
         response.EnsureSuccessStatusCode();
         var applicationStatus = await response.Content.ReadFromJsonAsync<ApplicationWithHiddenVacancyStatus>();
@@ -40,7 +41,7 @@ public class GetStatusApplicationWithHiddenVacancyQueryTest : CreateApplicationT
         {
             VacancyId = hiddenVacancy.Id, CoverLetter = RandomString(150), Cv = { IsUploadCvMode = false, }
         };
-        RunAsDefaultUserAsync();
+        RunAsDefaultUserAsync("applicant2");
         var response1 = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createApplicationCommand);
         response1.EnsureSuccessStatusCode();
 
