@@ -4,5 +4,6 @@ namespace MRA.Jobs.Application.Contracts.HiddenVacancies.Responses;
 
 public class ApplicationWithHiddenVacancyStatus
 {
-    public ApplicationStatusDto.ApplicationStatus Status { get; set; }
+    public bool Applied { get; set; } = true;
+    public ApplicationStatusDto.ApplicationStatus? Status { get; set; }
 }

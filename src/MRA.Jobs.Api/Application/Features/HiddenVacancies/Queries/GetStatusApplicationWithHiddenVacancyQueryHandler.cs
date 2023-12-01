@@ -14,7 +14,8 @@ public class GetStatusApplicationWithHiddenVacancyQueryHandler(IApplicationDbCon
         var application =
             await dbContext.Applications.FirstOrDefaultAsync(a => a.Slug == $"{userName}-hidden_vacancy");
         if (application == null)
-            throw new NotFoundException("Applicant not applied to this vacancy");
+            return new ApplicationWithHiddenVacancyStatus() { Applied = false, Status = null};
+           
         return new ApplicationWithHiddenVacancyStatus() { Status = (ApplicationStatusDto.ApplicationStatus)application.Status };
     }
 }
