@@ -202,11 +202,8 @@
 							<MudDivider />
 							<p><label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label></p>
 							<p><label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label></p>
-							@* @if(task.Template!=null){
-								SetValue(task.Template);
-							} *@
-							<StandaloneCodeEditor @ref="_editor" Id="sample-code-editor-123" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" SetValue(task.Template) />
-							UpdateTaskResponse(task.Title);
+							<StandaloneCodeEditor @ref="_editor" Id="sample-code-editor-123" ConstructionOptions="@(options => EditorConstructionOptions(options, task.Template))" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
+							 UpdateTaskResponse(task.Title);
 						}
 					</MudCardContent>
 				</MudCard>
@@ -280,21 +277,14 @@
     private IBrowserFile _cv;
     private bool _processing;
 
-	private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+	private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor ,string initialValue)
 	{
 		return new StandaloneEditorConstructionOptions
 			{
-				Language = "javascript",
+				Language = "csharp",
 				GlyphMargin = true,
-				Value = "\"use strict\";\n" +
-						"function Person(age) {\n" +
-						"	if (age) {\n" +
-						"		this.age = age;\n" +
-						"	}\n" +
-						"}\n" +
-						"Person.prototype.getAge = function () {\n" +
-						"	return this.age;\n" +
-						"};\n"
+				AutomaticLayout = true,
+				Value = initialValue
 			};
 	}
 	private async Task UpdateTaskResponse(string taskTitle)
@@ -332,11 +322,7 @@
 	{
 		Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
 	}
-	private async Task SetValue(string s)
-	{
-		Console.WriteLine($"setting value to: {s}");
-		await _editor.SetValue(s);
-	}
+	
     protected override async void OnAfterRender(bool firstRender)
     {
         if (firstRender)
