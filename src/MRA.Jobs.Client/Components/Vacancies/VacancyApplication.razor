@@ -171,10 +171,9 @@
                 </MudCardContent>
             </MudCard>
 
-            <br/>
-
             @if (vacancy.VacancyQuestions.Any())
             {
+                <br/>
                 <MudCard>
                     <MudCardContent>
                         <MudText Style="color:rgb(128,128,128)">
@@ -194,22 +193,33 @@
                     </MudCardContent>
                 </MudCard>
             }
-			@if (vacancy.VacancyTasks.Count() > 0)
-			{
-				<MudCard>
-					<MudCardContent>
-						<MudText Style="color:gray"><b>VacancyTasks</b></MudText>
-						<br />
-						@foreach (var task in vacancy.VacancyTasks)
-						{
-							<MudDivider />
-							<p><label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label></p>
-							<p><label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label></p>
-							<StandaloneCodeEditor @ref="_editors[task.Title]" Id="@($"sample-code-editor-{task.Title}")" ConstructionOptions="@(options => EditorConstructionOptions(options, task.Template))" OnDidInit="@(async () => await EditorOnDidInit(task.Title))" OnContextMenu="OnContextMenu" OnDidChangeModelContent="@(async () => await UpdateTaskResponse(task.Title))" />
-						}
-					</MudCardContent>
-				</MudCard>
-			}
+            @if (vacancy.VacancyTasks.Count() > 0)
+            {
+                <br/>
+                <MudCard>
+                    <MudCardContent>
+                        <MudText Style="color:gray">
+                            <b>Task(s)</b>
+                        </MudText>
+                        <br/>
+                        @foreach (var task in vacancy.VacancyTasks)
+                        {
+                            <MudDivider/>
+                            <p>
+                                <label for="Title" class="form-label">
+                                    <span class="text-danger">*</span>@task.Title
+                                </label>
+                            </p>
+                            <p>
+                                <label for="Description" class="form-label">
+                                    <span class="text-danger">*</span>@task.Description
+                                </label>
+                            </p>
+                            <StandaloneCodeEditor @ref="_editors[task.Title]" Id="@($"sample-code-editor-{task.Title}")" ConstructionOptions="@(options => EditorConstructionOptions(options, task.Template))" OnDidInit="@(async () => await EditorOnDidInit(task.Title))" OnContextMenu="OnContextMenu" OnDidChangeModelContent="@(async () => await UpdateTaskResponse(task.Title))"/>
+                        }
+                    </MudCardContent>
+                </MudCard>
+            }
             @* cv *@
             <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
                 <MudRadio Option="@(false)" Color="Color.Primary">Apply using profile</MudRadio>
@@ -277,41 +287,39 @@
     private IBrowserFile _cv;
     private bool _processing;
 
-	private Dictionary<string, StandaloneCodeEditor> _editors = new Dictionary<string, StandaloneCodeEditor>();
+    private Dictionary<string, StandaloneCodeEditor> _editors = new Dictionary<string, StandaloneCodeEditor>();
 
-	private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor, string initialValue)
-	{
-		return new StandaloneEditorConstructionOptions
-			{
-				Language = "csharp",
-				GlyphMargin = true,
-				AutomaticLayout = true,
-				Value = initialValue
-			};
-	}
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor, string initialValue)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            Language = "csharp",
+            GlyphMargin = true,
+            AutomaticLayout = true,
+            Value = initialValue
+        };
+    }
 
-	private async Task UpdateTaskResponse(string taskTitle)
-	{
-		if (_editors.ContainsKey(taskTitle))
-		{
-			taskResponses[taskTitle] = await _editors[taskTitle].GetValue();
-		}
-	}
+    private async Task UpdateTaskResponse(string taskTitle)
+    {
+        if (_editors.ContainsKey(taskTitle))
+        {
+            taskResponses[taskTitle] = await _editors[taskTitle].GetValue();
+        }
+    }
 
-	private async Task EditorOnDidInit(string taskTitle)
-	{
-		if (_editors.ContainsKey(taskTitle))
-		{
-			await _editors[taskTitle].AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) =>
-			{
-				Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
-			});
-		}
-	}
-	private void OnContextMenu(EditorMouseEvent eventArg)
-	{
-		Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
-	}
+    private async Task EditorOnDidInit(string taskTitle)
+    {
+        if (_editors.ContainsKey(taskTitle))
+        {
+            await _editors[taskTitle].AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) => { Console.WriteLine("Ctrl+H : Initial editor command is triggered."); });
+        }
+    }
+
+    private void OnContextMenu(EditorMouseEvent eventArg)
+    {
+        Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
+    }
 
     protected override async void OnAfterRender(bool firstRender)
     {
