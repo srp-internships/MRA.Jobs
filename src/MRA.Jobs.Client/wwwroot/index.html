@@ -98,6 +98,8 @@
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
+        var localizationValue = localStorage.getItem('ApplicationCulturesNames');
+        DotNet.invokeMethod("MRA.Jobs.Client", "SetCulture", localizationValue);
 </script>
 
 </body>

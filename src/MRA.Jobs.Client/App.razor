@@ -1,4 +1,5 @@
 ﻿@using MRA.Jobs.Client.Identity
+@using MRA.Jobs.Client.Services.ContentService
 <Router AppAssembly="typeof(Program).Assembly" Context="routeData">
 	<Found>
 			<CascadingAuthenticationState>
@@ -31,3 +32,11 @@
 		</CascadingAuthenticationState>
 	</NotFound>
 </Router>
+@code
+{
+	[Inject] private IContentService ContentService { get; set; }
+	protected override async Task OnInitializedAsync()
+	{
+		await ContentService.InitializeCultureAsync();
+	}
+}
