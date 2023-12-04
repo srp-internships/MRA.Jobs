@@ -67,36 +67,38 @@
 
 <body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
 
-<div id="app">
-    <div id="preloader">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+    <div id="app">
+        <div id="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
-</div>
+    <script src="_content/BlazorMonaco/jsInterop.js"></script>
+    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
+    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
+    <a href="#"
+       id="scroll-top"
+       class="scroll-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short">
+        </i>
+    </a>
 
-<a href="#"
-   id="scroll-top"
-   class="scroll-top d-flex align-items-center justify-content-center">
-    <i class="bi bi-arrow-up-short">
-    </i>
-</a>
+    <script src="_framework/blazor.webassembly.js"></script>
 
-<script src="_framework/blazor.webassembly.js"></script>
+    <script>
+        function loadScript(url) {
+            var script = document.createElement('script');
+            script.src = url;
+            document.body.appendChild(script);
+        }
 
-<script>
-    function loadScript(url) {
-        var script = document.createElement('script');
-        script.src = url;
-        document.body.appendChild(script);
-    }
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-    function scrollToTop() {
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    }
-
-</script>
+    </script>
 
 </body>
 
