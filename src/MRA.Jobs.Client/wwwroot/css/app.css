@@ -156,3 +156,22 @@ ul, li {
         width: 100%;
     }
 }
+
+.monaco-editor-container { /* for all editor instances */
+    height: 250px;
+    border: 1px solid gray
+}
+
+/* or */
+
+#my-editor-id { /* for a specific editor instance */
+    height: 100px;
+   
+}
+
+/* or */
+
+.my-editor-class { /* for a specific editor instance */
+    height: 100px;
+    
+}
