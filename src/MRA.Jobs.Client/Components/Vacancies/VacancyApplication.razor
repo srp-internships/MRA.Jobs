@@ -205,8 +205,7 @@
 							<MudDivider />
 							<p><label for="Title" class="form-label"><span class="text-danger">*</span>@task.Title</label></p>
 							<p><label for="Description" class="form-label"><span class="text-danger">*</span>@task.Description</label></p>
-							<StandaloneCodeEditor @ref="_editors[task.Title]" Id="@($"sample-code-editor-{task.Title}")" ConstructionOptions="@(options => EditorConstructionOptions(options, task.Template))" OnDidInit="@(async () => await EditorOnDidInit(task.Title))" OnContextMenu="OnContextMenu" />
-							 UpdateTaskResponse(task.Title);
+							<StandaloneCodeEditor @ref="_editors[task.Title]" Id="@($"sample-code-editor-{task.Title}")" ConstructionOptions="@(options => EditorConstructionOptions(options, task.Template))" OnDidInit="@(async () => await EditorOnDidInit(task.Title))" OnContextMenu="OnContextMenu" OnDidChangeModelContent="@(async () => await UpdateTaskResponse(task.Title))" />
 						}
 					</MudCardContent>
 				</MudCard>
