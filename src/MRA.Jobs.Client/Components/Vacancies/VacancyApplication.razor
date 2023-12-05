@@ -10,7 +10,6 @@
 @inject NavigationManager NavigationManager
 @inject IInternshipService InternshipService
 @inject IApplicationService ApplicationService
-@inject IJSRuntime jsRuntime
 
 <div class="container w-75 mt-4">
     @if (vacancy is null)
@@ -35,16 +34,16 @@
                 </MudText>
                 <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
                     <small>
-                        <b>Posted @CustomConverter.GetDisplayPostedDate(vacancy.PublishDate)</b>
+                        <b>@ContentService["VacancyApplication:Posted"] @CustomConverter.GetDisplayPostedDate(vacancy.PublishDate)</b>
                     </small>
                 </MudText>
 
                 <br/>
                 <MudDivider Style="padding:10px;"/>
-                <MudText Typo="Typo.body2">
-                    Style="color:rgb(128,128,128)"
+                <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
+                    
                     <small>
-                        <b>Vacancy Details</b>
+                        <b>@ContentService["VacancyApplication:Vacancy Details"]</b>
                     </small>
                 </MudText>
                 <MudText>@vacancy.Description</MudText>
@@ -59,10 +58,10 @@
                                 </MudItem>
                                 <MudItem Style="padding:0;">
                                     <MudText>
-                                        <b>@vacancy.Duration month(s)</b>
+                                        <b>@vacancy.Duration @ContentService["VacancyApplication:month(s)"]</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2">
-                                        <small>Duration</small>
+                                        <small>@ContentService["VacancyApplication:Duration"]</small>
                                     </MudText>
                                 </MudItem>
                             </MudGrid>
@@ -84,7 +83,7 @@
                                             <b>@deadlineResult.DisplayDate</b>
                                         </MudText>
                                         <MudText Typo="Typo.body2">
-                                            <small>Deadline</small>
+                                            <small>@ContentService["VacancyApplication:Deadline"]</small>
                                         </MudText>
                                     </MudItem>
                                 </MudGrid>
@@ -101,10 +100,10 @@
                                 </MudItem>
                                 <MudItem Style="padding:0;">
                                     <MudText>
-                                        <b>@vacancy.RequiredYearOfExperience year(s)</b>
+                                        <b>@vacancy.RequiredYearOfExperience @ContentService["VacancyApplication:year(s)"]</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2">
-                                        <small>Required year of experience</small>
+                                        <small>@ContentService["VacancyApplication:Required year of experience"]</small>
                                     </MudText>
                                 </MudItem>
                             </MudGrid>
@@ -122,7 +121,7 @@
                                         <b>@vacancy.Fees</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2">
-                                        <small>Fees</small>
+                                        <small>@ContentService["VacancyApplication:Fees"]</small>
                                     </MudText>
                                 </MudItem>
                             </MudGrid>
@@ -143,7 +142,7 @@
                                         <b>@endDateResult.DisplayDate</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2">
-                                        <small>End Date</small>
+                                        <small>@ContentService["VacancyApplication:End Date"]</small>
                                     </MudText>
                                 </MudItem>
                             </MudGrid>
@@ -161,10 +160,10 @@
             <MudCard>
                 <MudCardContent>
                     <MudText Style="color:rgb(128,128,128)">
-                        <b>Additional Details</b>
+                        <b>@ContentService["VacancyApplication:Additional Details"]</b>
                     </MudText>
                     <MudText Typo="Typo.h6">
-                        <b><span class="text-danger">*</span>Cover Letter</b>
+                        <b><span class="text-danger">*</span>@ContentService["VacancyApplication:Cover Letter"]</b>
                     </MudText>
                     <MudTextField T="string" Lines="7" Variant="Variant.Outlined" @bind-Value="@application.CoverLetter"
                                   For="@(() => application.CoverLetter)"/>
@@ -177,7 +176,7 @@
                 <MudCard>
                     <MudCardContent>
                         <MudText Style="color:rgb(128,128,128)">
-                            <b>Questions</b>
+                            <b>@ContentService["VacancyApplication:Questions"]</b>
                         </MudText>
                         <br/>
                         @foreach (var question in vacancy.VacancyQuestions)
@@ -222,8 +221,8 @@
             }
             @* cv *@
             <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
-                <MudRadio Option="@(false)" Color="Color.Primary">Apply using profile</MudRadio>
-                <MudRadio Option="@(true)" Color="Color.Primary">Apply with uploading file</MudRadio>
+                <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
+                <MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio>
             </MudRadioGroup>
             @if (_isUploadCvMode)
             {
@@ -234,7 +233,7 @@
                                    Color="Color.Primary"
                                    StartIcon="@Icons.Material.Filled.CloudUpload"
                                    for="@anotherContext">
-                            Upload your CV
+                            @ContentService["VacancyApplication:Upload your CV"]
                         </MudButton>
                     </ButtonTemplate>
                 </MudFileUpload>
@@ -246,11 +245,11 @@
                     @if (_processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                        <MudText Class="ms-2">Processing</MudText>
+                        <MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
                     }
                     else
                     {
-                        <MudText>Apply</MudText>
+                        <MudText>@ContentService["VacancyApplication:Apply"]</MudText>
                     }
                 </MudButton>
 

@@ -154,4 +154,91 @@
     <!--SignUp-->
 
 
+    <!-- VacanciesList -->
+    <data name="VacanciesList:All" xml:space="preserve">
+        <value>Все</value>
+    </data>
+    <data name="VacanciesList:NoJobs" xml:space="preserve">
+        <value>На данный момент нет доступных вакансий. Пожалуйста, проверьте позже :)</value>
+    </data>
+    <data name="VacanciesList:Search" xml:space="preserve">
+        <value>Поиск</value>
+    </data>
+    <data name="VacanciesList:Posted" xml:space="preserve">
+        <value>Опубликовано</value>
+    </data>
+    <data name="VacanciesList:month(s)" xml:space="preserve">
+        <value>месяц(ев)</value>
+    </data>
+    <data name="VacanciesList:Duration" xml:space="preserve">
+        <value>Продолжительность</value>
+    </data>
+    <data name="VacanciesList:Deadline" xml:space="preserve">
+        <value>Срок</value>
+    </data>
+    <data name="VacanciesList:End date" xml:space="preserve">
+        <value>Дата завершения</value>
+    </data>
+    <!-- VacanciesList -->
+
+    <!-- Jobs -->
+    <data name="Jobs:Jobs" xml:space="preserve">
+        <value>Вакансии на работу</value>
+    </data>
+    <!-- Jobs -->
+
+    <!-- VacancyApplication -->
+
+    <data name="VacancyApplication:Posted" xml:space="preserve">
+    <value>Опубликовано</value>
+</data>
+    <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
+    <value>Детали вакансии</value>
+</data>
+    <data name="VacancyApplication:month(s)" xml:space="preserve">
+    <value>месяц(ев)</value>
+</data>
+    <data name="VacancyApplication:Duration" xml:space="preserve">
+    <value>Продолжительность</value>
+</data>
+    <data name="VacancyApplication:Deadline" xml:space="preserve">
+    <value>Срок</value>
+</data>
+    <data name="VacancyApplication:year(s)" xml:space="preserve">
+    <value>год(ы)</value>
+</data>
+    <data name="VacancyApplication:Required year of experience" xml:space="preserve">
+    <value>Требуемый опыт работы в годах</value>
+</data>
+    <data name="VacancyApplication:Fees" xml:space="preserve">
+    <value>Сборы</value>
+</data>
+    <data name="VacancyApplication:End Date" xml:space="preserve">
+    <value>Дата завершения</value>
+</data>
+    <data name="VacancyApplication:Additional Details" xml:space="preserve">
+    <value>Дополнительные детали</value>
+</data>
+    <data name="VacancyApplication:Cover Letter" xml:space="preserve">
+    <value>Сопроводительное письмо</value>
+</data>
+    <data name="VacancyApplication:Questions" xml:space="preserve">
+    <value>Вопросы</value>
+</data>
+    <data name="VacancyApplication:Apply using profile" xml:space="preserve">
+    <value>Применить, используя профиль</value>
+</data>
+    <data name="VacancyApplication:Apply with uploading file" xml:space="preserve">
+    <value>Применить, загрузив файл</value>
+</data>
+    <data name="VacancyApplication:Upload your CV" xml:space="preserve">
+    <value>Загрузить свое резюме</value>
+</data>
+    <data name="VacancyApplication:Processing" xml:space="preserve">
+    <value>Обработка</value>
+</data>
+    <data name="VacancyApplication:Apply" xml:space="preserve">
+    <value>Применить</value>
+</data>
+    <!-- VacancyApplication -->
 </root>

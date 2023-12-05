@@ -151,4 +151,140 @@
         <value>seconds left to resend the code.</value>
     </data>
     <!--SignUp-->
+
+    <!-- dashboard Applications -->
+    <data name="Dashboard:Appilcations:Applications" xml:space="preserve">
+        <value>Applications</value>
+    </data>
+    <data name="Dashboard:Appilcations:Applicant username" xml:space="preserve">
+        <value>Applicant username</value>
+    </data>
+    <data name="Dashboard:Appilcations:Vacancy title" xml:space="preserve">
+        <value>Vacancy title</value>
+    </data>
+    <data name="Dashboard:Appilcations:Applied at" xml:space="preserve">
+        <value>Applied at</value>
+    </data>
+    <data name="Dashboard:Appilcations:Status name" xml:space="preserve">
+        <value>Status name</value>
+    </data>
+    <data name="Dashboard:Appilcations:Action" xml:space="preserve">
+        <value>Action</value>
+    </data>
+    <data name="Dashboard:Appilcations:Applicant response" xml:space="preserve">
+        <value>Applicant response</value>
+    </data>
+    <data name="Dashboard:Appilcations:CoverLetter" xml:space="preserve">
+        <value>CoverLetter</value>
+    </data>
+    <data name="Dashboard:Appilcations:VacancyResponses" xml:space="preserve">
+        <value>VacancyResponses</value>
+    </data>
+    <data name="Dashboard:Appilcations:Slug" xml:space="preserve">
+        <value>Slug</value>
+    </data>
+    <data name="Dashboard:Appilcations:StatusName" xml:space="preserve">
+        <value>StatusName</value>
+    </data>
+    <data name="Dashboard:Appilcations:Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="Dashboard:Appilcations:More" xml:space="preserve">
+        <value>More</value>
+    </data>
+
+    <!-- dashboard Applications -->
+    
+    
+    <!-- VacanciesList -->
+
+    <data name="VacanciesList:All" xml:space="preserve">
+        <value>All</value>
+    </data>
+    <data name="VacanciesList:NoJobs" xml:space="preserve">
+        <value>There are currently no job vacancies available. Please check back later :)</value>
+    </data>
+    <data name="VacanciesList:Search" xml:space="preserve">
+        <value>Search</value>
+    </data>
+    <data name="VacanciesList:Posted" xml:space="preserve">
+        <value>Posted</value>
+    </data>
+    <data name="VacanciesList:month(s)" xml:space="preserve">
+        <value>month(s)</value>
+    </data>
+    <data name="VacanciesList:Duration" xml:space="preserve">
+        <value>Duration</value>
+    </data>
+    <data name="VacanciesList:Deadline" xml:space="preserve">
+        <value>Deadline</value>
+    </data>
+    <data name="VacanciesList:End date" xml:space="preserve">
+        <value>End date</value>
+    </data>
+    
+    <!-- VacanciesList -->
+    
+    <!-- Jobs -->
+    <data name="Jobs:Jobs" xml:space="preserve">
+        <value>Jobs</value>
+    </data>
+    <!-- Jobs -->
+    
+    
+    <!-- VacancyApplication -->
+    <data name="VacancyApplication:Posted" xml:space="preserve">
+        <value>Posted</value>
+    </data>
+    <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
+        <value>Vacancy Details</value>
+    </data>
+    <data name="VacancyApplication:month(s)" xml:space="preserve">
+        <value>month(s)</value>
+    </data>
+    <data name="VacancyApplication:Duration" xml:space="preserve">
+        <value>Duration</value>
+    </data>
+    <data name="VacancyApplication:Deadline" xml:space="preserve">
+        <value>Deadline</value>
+    </data>
+    <data name="VacancyApplication:year(s)" xml:space="preserve">
+        <value>year(s)</value>
+    </data>
+    <data name="VacancyApplication:Required year of experience" xml:space="preserve">
+        <value>Required year of experience</value>
+    </data>
+    <data name="VacancyApplication:Fees" xml:space="preserve">
+        <value>Fees</value>
+    </data>
+    <data name="VacancyApplication:End Date" xml:space="preserve">
+        <value>End Date</value>
+    </data>
+    <data name="VacancyApplication:Additional Details" xml:space="preserve">
+        <value>Additional Details</value>
+    </data>
+    <data name="VacancyApplication:Cover Letter" xml:space="preserve">
+        <value>Cover Letter</value>
+    </data>
+    <data name="VacancyApplication:Questions" xml:space="preserve">
+        <value>Questions</value>
+    </data>
+    <data name="VacancyApplication:Apply using profile" xml:space="preserve">
+        <value>Apply using profile</value>
+    </data>
+    <data name="VacancyApplication:Apply with uploading file" xml:space="preserve">
+        <value>Apply with uploading file</value>
+    </data>
+    <data name="VacancyApplication:Upload your CV" xml:space="preserve">
+        <value>Upload your CV</value>
+    </data>
+    <data name="VacancyApplication:Processing" xml:space="preserve">
+        <value>Processing</value>
+    </data>
+    <data name="VacancyApplication:Apply" xml:space="preserve">
+        <value>Apply</value>
+    </data>
+
+
+    <!-- VacancyApplication -->
 </root>
