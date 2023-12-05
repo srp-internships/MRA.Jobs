@@ -55,4 +55,28 @@
     </data>
     <!-- UserButton -->
 
+<!--SignIn-->
+<data name="SignIn:UserName" xml:space="preserve">
+    <value>Номи корбар</value>
+</data>
+<data name="SignIn:Password" xml:space="preserve">
+    <value>Калимаи убур</value>
+</data>
+<data name="SignIn:LabelForgot" xml:space="preserve">
+    <value>Калимаи убуратонро фаромуш кардед?</value>
+</data>
+<data name="SignIn:LinkReset" xml:space="preserve">
+    <value>Бозгузории калимаи убур</value>
+</data>
+<data name="SignIn:SignIn" xml:space="preserve">
+    <value>Даромадан</value>
+</data>
+<data name="SignIn:LabelDontAccount" xml:space="preserve">
+    <value>Ҳисоботи шумо вуҷуд надорад? Ба</value>
+</data>
+<data name="SignIn:LinkSignUp" xml:space="preserve">
+    <value>Сабт ном кунед</value>
+</data>
+<!--SignIn-->
+
 </root>

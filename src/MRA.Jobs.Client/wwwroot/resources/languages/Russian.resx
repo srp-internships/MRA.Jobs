@@ -54,4 +54,29 @@
         <value>Регистрация</value>
     </data>
     <!-- UserButton -->
+
+    <!--SignIn-->
+<data name="SignIn:UserName" xml:space="preserve">
+    <value>Имя пользователя</value>
+</data>
+<data name="SignIn:Password" xml:space="preserve">
+    <value>Пароль</value>
+</data>
+<data name="SignIn:LabelForgot" xml:space="preserve">
+    <value>Забыли пароль?</value>
+</data>
+<data name="SignIn:LinkReset" xml:space="preserve">
+    <value>Сбросить пароль</value>
+</data>
+<data name="SignIn:SignIn" xml:space="preserve">
+    <value>Войти</value>
+</data>
+<data name="SignIn:LabelDontAccount" xml:space="preserve">
+    <value>Нет аккаунта? Перейдите на</value>
+</data>
+<data name="SignIn:LinkSignUp" xml:space="preserve">
+    <value>Зарегистрироваться</value>
+</data>
+<!--SignIn-->
+
 </root>
