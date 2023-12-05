@@ -1,5 +1,4 @@
-﻿@using MRA.Jobs.Client.Services.ContentService
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 @inject IJSRuntime JS
 
 <Header></Header>
@@ -54,16 +53,6 @@
 
 @code
 {
-    
-    
-    [Inject]
-    public IContentService ContentService { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        // await ContentService.InitializeCultureAsync();
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

@@ -121,8 +121,16 @@
     </div>
 </nav>
 
+<script>
 
+</script>
 @code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JsRuntime.InvokeVoidAsync("InitLocation");
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
     private async Task Logout()
     {
@@ -135,21 +143,21 @@
     {
         await JsRuntime.InvokeVoidAsync("change_period2", "English");
         await ContentService.ChangeCulture(ApplicationCulturesNames.En);
-        StateHasChanged();
+        await JsRuntime.InvokeVoidAsync("location.reload", true);
     }
 
     private async Task SwitchToRussian()
     {
         await JsRuntime.InvokeVoidAsync("change_period2", "Русский");
         await ContentService.ChangeCulture(ApplicationCulturesNames.Ru);
-        StateHasChanged();
+        await JsRuntime.InvokeVoidAsync("location.reload", true);
     }
 
     private async Task SwitchToTajik()
     {
         await JsRuntime.InvokeVoidAsync("change_period2", "Тоҷикӣ");
         await ContentService.ChangeCulture(ApplicationCulturesNames.Tj);
-        StateHasChanged();
+        await JsRuntime.InvokeVoidAsync("location.reload", true);
     }
 
 }
