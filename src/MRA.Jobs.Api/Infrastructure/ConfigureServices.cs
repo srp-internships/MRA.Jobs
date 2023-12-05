@@ -36,7 +36,7 @@ public static class ConfigureServices
        
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            string dbConnectionString = configuration.GetConnectionString("DefaultConnection");
+            string dbConnectionString = configuration["CS"];
             if (configuration["UseInMemoryDatabase"] == "true")
                 options.UseInMemoryDatabase("testDb");
             else
