@@ -11,6 +11,7 @@
 @inject ISnackbar Snackbar
 @inject IUserProfileService UserProfileService
 @inject IAuthService AuthService
+@inject IContentService ContentService
 
 <div class="container">
     <div class="row">
@@ -22,38 +23,40 @@
                         <MudCardHeader>
                             <CardHeaderContent>
                                 <MudText Typo="Typo.h4">
-                                    <b>Sign Up</b>
+                                    <b>@ContentService["SignUp:LabelSignUp"]</b>
                                 </MudText>
-                                <small>Do you have an account? Go to <a href="sign-in">Sign In</a></small>
+                                <small>
+                                    @ContentService["SignUp:LabelHaveAccount"]<a href="sign-in">@ContentService["SignUp:LinkSignIn"]</a>
+                                </small>
                             </CardHeaderContent>
                         </MudCardHeader>
                         <MudCardContent>
                             <EditForm Model="@_registerUser" OnInvalidSubmit="SendCode" style="margin-top: 10%;margin-bottom: 0">
                                 <FluentValidationValidator @ref="_fluentValidationValidator"/>
-                                <MudTextField Label="First name" HelperText="Enter your first name"
+                                <MudTextField Label="@ContentService["SignUp:FirstName"]" HelperText="@ContentService["SignUp:FirstName_HelperText"]"
                                               @bind-Value="_registerUser.FirstName" For="@(() => _registerUser.FirstName)" InputType="InputType.Text"
                                               OnBlur="@(_ => _registerUser.FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_registerUser.FirstName))"/>
 
-                                <MudTextField Label="Last name" HelperText="Enter your last name"
+                                <MudTextField Label="@ContentService["SignUp:LastName"]" HelperText="@ContentService["SignUp:LastName_HelperText"]"
                                               @bind-Value="_registerUser.LastName" For="@(() => _registerUser.LastName)" InputType="InputType.Text"
                                               OnBlur="@(_ => _registerUser.LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_registerUser.LastName))"/>
-                                <MudTextField Label="Email" Class="mt-3"
+                                <MudTextField Label="@ContentService["SignUp:Email"]" Class="mt-3"
                                               @bind-Value="_registerUser.Email" For="@(() => _registerUser.Email)" InputType="InputType.Email"
                                               OnBlur="CheckUserName"/>
 
-                                <MudTextField Label="Phone" HelperText="Enter your phone number" Class="mt-3"
+                                <MudTextField Label="@ContentService["SignUp:Phone"]" HelperText="@ContentService["SignUp:Phone_HelperText"]" Class="mt-3"
                                               @bind-Value="_registerUser.PhoneNumber" For="@(() => _registerUser.PhoneNumber)" InputType="InputType.Telephone"
                                               OnBlur="CheckUserName"/>
 
-                                <MudTextField Label="Username"
+                                <MudTextField Label="@ContentService["SignUp:UserName"]"
                                               @bind-Value="_registerUser.Username" For="@(() => _registerUser.Username)"
                                               OnBlur="CheckUserName"/>
 
-                                <MudTextField Label="Password" HelperText="Password" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
+                                <MudTextField Label="@ContentService["SignUp:Password"]" HelperText="@ContentService["SignUp:Password_HelperText"]" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
                                               @bind-Value="_registerUser.Password" For="@(() => _registerUser.Password)"/>
 
-                                <MudTextField Label="Confirm password" HelperText="Confirm password" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
-                                              @bind-Value="_registerUser.ConfirmPassword" For="@(() => _registerUser.ConfirmPassword)" />
+                                <MudTextField Label="@ContentService["SignUp:ConfirmPassword"]" HelperText="@ContentService["SignUp:ConfirmPassword_HelperText"]" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
+                                              @bind-Value="_registerUser.ConfirmPassword" For="@(() => _registerUser.ConfirmPassword)"/>
 
                             </EditForm>
                         </MudCardContent>
@@ -67,11 +70,11 @@
                                 }
                                 else
                                 {
-                                    <MudText>Next</MudText>
+                                    <MudText>@ContentService["SignUp:ButtonNext"]</MudText>
                                 }
                             </MudButton>
                         </MudCardActions>
-                        <ExternalLoginCard Title="Continue With"/>
+                        <ExternalLoginCard Title="@ContentService["SignUp:ExternalLoginCard"]"/>
                     </MudCard>
                 }
                 @if (_step == 1)
@@ -81,13 +84,14 @@
                         <MudCardHeader>
                             <CardHeaderContent>
                                 <MudText>
-                                    We have sent a confirmation code to this number: <b>@_registerUser.PhoneNumber</b>.
-                                    Please confirm your identity
+                                    <MudText>
+                                        @((MarkupString)ContentService["signUp:messageText"].Replace("$phone$", $"<strong>{_registerUser.PhoneNumber}</strong>"))
+                                    </MudText>
                                 </MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
                         <MudCardContent>
-                            <MudTextField Label="Code" @bind-Value="_code" Clearable/>
+                            <MudTextField Label="@ContentService["SignUp:Code"]" @bind-Value="_code" Clearable/>
                             <br/>
                             <br/>
                             <MudCardActions>
@@ -99,7 +103,7 @@
                                     }
                                     else
                                     {
-                                        <MudText>Apply</MudText>
+                                        <MudText>@ContentService["SignUp:Apply"]</MudText>
                                     }
                                 </MudButton>
                                 <MudButton Variant="Variant.Text" Color="Color.Info" FullWidth="true" OnClick="SendCode" Disabled="@_isResendDisabled">
@@ -110,13 +114,13 @@
                                     }
                                     else
                                     {
-                                        <MudText>Resend code</MudText>
+                                        <MudText>@ContentService["SignUp:ResendCode"]</MudText>
                                     }
                                 </MudButton>
 
                             </MudCardActions>
                             <div>
-                                <MudText Typo="Typo.body2" Color="Color.Default">@_timeLeft seconds left to resend the code.</MudText>
+                                <MudText Typo="Typo.body2" Color="Color.Default">@_timeLeft @ContentService["SignUp:Secconds"]</MudText>
                             </div>
                         </MudCardContent>
                     </MudCard>

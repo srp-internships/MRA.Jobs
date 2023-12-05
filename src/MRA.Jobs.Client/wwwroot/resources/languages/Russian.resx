@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
-            
+
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
@@ -13,10 +14,14 @@
         <value>1.3</value>
     </resheader>
     <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
     </resheader>
     <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
     </resheader>
 
     <!-- header -->
@@ -54,4 +59,99 @@
         <value>Регистрация</value>
     </data>
     <!-- UserButton -->
+
+    <!--SignIn-->
+    <data name="SignIn:UserName" xml:space="preserve">
+    <value>Имя пользователя</value>
+</data>
+    <data name="SignIn:Password" xml:space="preserve">
+    <value>Пароль</value>
+</data>
+    <data name="SignIn:LabelForgot" xml:space="preserve">
+    <value>Забыли пароль?</value>
+</data>
+    <data name="SignIn:LinkReset" xml:space="preserve">
+    <value>Сбросить пароль</value>
+</data>
+    <data name="SignIn:SignIn" xml:space="preserve">
+    <value>Войти</value>
+</data>
+    <data name="SignIn:LabelDontAccount" xml:space="preserve">
+    <value>Нет аккаунта? Перейдите на</value>
+</data>
+    <data name="SignIn:LinkSignUp" xml:space="preserve">
+    <value>Зарегистрироваться</value>
+</data>
+    <!--SignIn-->
+
+    <!--SignUp-->
+    <data name="SignUp:LabelSignUp" xml:space="preserve">
+    <value>Зарегистрироваться</value>
+</data>
+    <data name="SignUp:LabelHaveAccount" xml:space="preserve">
+    <value>У вас есть аккаунт? Перейдите на</value>
+</data>
+    <data name="SignUp:LinkSignIn" xml:space="preserve">
+    <value>Войти</value>
+</data>
+    <data name="SignUp:FirstName" xml:space="preserve">
+    <value>Имя</value>
+</data>
+    <data name="SignUp:FirstName_HelperText" xml:space="preserve">
+    <value>Введите ваше имя</value>
+</data>
+    <data name="SignUp:LastName" xml:space="preserve">
+    <value>Фамилия</value>
+</data>
+    <data name="SignUp:LastName_HelperText" xml:space="preserve">
+    <value>Введите вашу фамилию</value>
+</data>
+    <data name="SignUp:Email" xml:space="preserve">
+    <value>Email</value>
+</data>
+    <data name="SignUp:Phone" xml:space="preserve">
+    <value>Телефон</value>
+</data>
+    <data name="SignUp:Phone_HelperText" xml:space="preserve">
+    <value>Введите ваш номер телефона</value>
+</data>
+    <data name="SignUp:UserName" xml:space="preserve">
+    <value>Имя пользователя</value>
+</data>
+    <data name="SignUp:Password" xml:space="preserve">
+    <value>Пароль</value>
+</data>
+    <data name="SignUp:Password_HelperText" xml:space="preserve">
+    <value>Пароль</value>
+</data>
+    <data name="SignUp:ConfirmPassword" xml:space="preserve">
+    <value>Подтвердите пароль</value>
+</data>
+    <data name="SignUp:ConfirmPassword_HelperText" xml:space="preserve">
+    <value>Подтвердите пароль</value>
+</data>
+    <data name="SignUp:ButtonNext" xml:space="preserve">
+    <value>Далее</value>
+</data>
+    <data name="SignUp:ExternalLoginCard">
+        <value>Продолжить с</value>
+    </data>
+    <data name="signUp:messageText" xml:space="preserve">
+    <value>Мы отправили код подтверждения на этот номер: $phone$. Пожалуйста, подтвердите свою личность</value>
+</data>
+    <data name="SignUp:Code" xml:space="preserve">
+    <value>Код</value>
+</data>
+    <data name="SignUp:Apply" xml:space="preserve">
+    <value>Применить</value>
+</data>
+    <data name="SignUp:ResendCode" xml:space="preserve">
+    <value>Отправить код повторно</value>
+</data>
+    <data name="SignUp:Secconds" xml:space="preserve">
+    <value>секунд осталось для повторной отправки кода.</value>
+</data>
+    <!--SignUp-->
+
+
 </root>
