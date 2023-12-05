@@ -3,8 +3,11 @@
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @using MRA.Jobs.Client.Components.Dialogs;
 @using MRA.Jobs.Client.Identity;
+@using BlazorMonaco
+@using BlazorMonaco.Editor
+@using BlazorMonaco.Languages
 @inject ISnackbar Snackbar;
-
+@inject IJSRuntime jsRuntime
 @inject IInternshipService InternshipService
 @inject ICategoryService CategoryService
 
@@ -170,10 +173,15 @@ else
                                                   Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
                                     <MudTextField Lines="5" @bind-Value="_newDescription" OnKeyDown="@OnKeyDown" Label="Description"
                                                   Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                                    <MudTextField Lines="5" @bind-Value="_newTemplate" OnKeyDown="@OnKeyDown" Label="Template"
+									<MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Template</MudText>
+									<StandaloneCodeEditor @ref="_editor1" Id="sample-code-editor-123" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit1" OnContextMenu="OnContextMenu" />
+									<MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Test</MudText>
+									<StandaloneCodeEditor @ref="_editor2" Id="sample-code-editor-456" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit2" OnContextMenu="OnContextMenu" />
+
+									@*  <MudTextField Lines="5" @bind-Value="_newTemplate" OnKeyDown="@OnKeyDown" Label="Template"
                                                   Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
                                     <MudTextField Lines="5" @bind-Value="_newTest" OnKeyDown="@OnKeyDown" Label="Test"
-                                                  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
+                                                  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/> *@
                                     <MudButton Variant="Variant.Filled" Color="Color.Primary"
                                                @onclick="@AddTask" Id="AddTask">
                                         <MudText>Add Task</MudText>
@@ -281,6 +289,8 @@ else
     private string _newTemplate = string.Empty;
     private string _newTest = string.Empty;
     private string _newTitle = string.Empty;
+	private StandaloneCodeEditor _editor1 = null!;
+	private StandaloneCodeEditor _editor2 = null!;
     private List<VacancyQuestionDto> _questions = new();
     private List<CategoryResponse> _categories;
     private List<InternshipVacancyListResponse> _internships;
@@ -292,6 +302,78 @@ else
     private TimeSpan? _endDateTime;
     private string _createOrEditHeader = "New Internship Vacancy";
 
+	private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+	{
+		if (editor == _editor2)
+		{
+			return new StandaloneEditorConstructionOptions
+				{
+					Language = "csharp",
+					GlyphMargin = true,
+					Value = "using Microsoft.VisualStudio.TestTools.UnitTesting;\n\n" +
+			"namespace TestProject\n" +
+			"{\n" +
+			"    [TestClass]\n" +
+			"    public class UnitTest1\n" +
+			"    {\n" +
+			"        [TestMethod]\n" +
+			"        public void TestMethod1()\n" +
+			"        {\n" +
+			"            int expected = 5;\n" +
+			"            int actual = 2 + 3;\n" +
+			"            Assert.AreEqual(expected, actual, \"Values are not equal\");\n" +
+			"        }\n" +
+			"    }\n" +
+			"}\n"
+				};
+			
+		}
+		else  
+		{
+			return new StandaloneEditorConstructionOptions
+				{
+					Language = "csharp",
+					GlyphMargin = true,
+					Value = "using System;\n\n" +
+								"public class Program\n" +
+								"{\n" +
+								"    public static void Main()\n" +
+								"    {\n" +
+								"        Console.WriteLine(\"Hello, world!\");\n" +
+								"    }\n" +
+								"}\n"
+				};
+		}
+	}
+	private async Task EditorOnDidInit1()
+	{
+		if (_editor1 != null)
+		{
+			await EditorOnDidInit(_editor1);
+			_newTest = await _editor1.GetValue();
+		}
+	}
+
+	private async Task EditorOnDidInit2()
+	{
+		if (_editor2 != null)
+		{
+			await EditorOnDidInit(_editor2);
+			_newTemplate = await _editor2.GetValue();
+		}
+	}
+
+	private async void OnContextMenu(EditorMouseEvent eventArg)
+	{
+		Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
+	}
+	private async Task EditorOnDidInit(StandaloneCodeEditor editor)
+	{
+		await editor.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) =>
+		{
+			Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
+		});
+	}
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
