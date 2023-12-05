@@ -9,13 +9,11 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-10">
-                <h2>We are here.</h2>
+                <h2>@ContentService["Home:Hero_Title_1"]</h2>
                 <h2 style="color: #129fd7">
-                    To help you!
+                    @ContentService["Home:Hero_Title_2"]
                 </h2>
-                <p>
-                    We Developer Softwate and Provide Outsourse Programming support.
-                </p>
+                <p> @ContentService["Home:Hero_Content"]</p>
             </div>
             <div class="col-lg-5"></div>
         </div>
@@ -25,7 +23,9 @@
 
 <section class="about">
     <div class="container section-title aos-init aos-animate">
-        <h2><span style="color: #129fd7">How</span> We Work</h2>
+        <h2>
+            <span style="color: #129fd7">@ContentService["Home:How"]</span> @ContentService["Home:WeWork"]
+        </h2>
     </div>
     <div class="container">
         <div class="row gy-5">
@@ -37,7 +37,7 @@
                          style="height: 140px; width: 140p"/>
                 </div>
                 <div class="member-info text-center" style="height: 100px">
-                    <h4>Planning</h4>
+                    <h4>@ContentService["Home:Planning"]</h4>
                 </div>
             </div>
             <div class="col">
@@ -48,7 +48,7 @@
                          style="height: 160px; width: 160p"/>
                 </div>
                 <div class="member-info text-center" style="height: 100px">
-                    <h4>Design</h4>
+                    <h4>@ContentService["Home:Design"]</h4>
                 </div>
             </div>
             <div class="col">
@@ -59,7 +59,7 @@
                          style="height: 180px; width: 180p"/>
                 </div>
                 <div class="member-info text-center" style="height: 100px">
-                    <h4>Development</h4>
+                    <h4>@ContentService["Home:Development"]</h4>
                 </div>
             </div>
         </div>
@@ -69,7 +69,9 @@
 <section class="services">
     <!--  Section Title -->
     <div class="container section-title aos-init aos-animate">
-        <h2><span style="color: #129fd7">What</span> We Do</h2>
+        <h2>
+            <span style="color: #129fd7">@ContentService["Home:What"]</span> @ContentService["Home:WeDo"]
+        </h2>
     </div>
     <!-- End Section Title -->
     <div class="container">
@@ -81,10 +83,10 @@
                     </div>
                     <div>
                         <h4 class="title">
-                            <a href="https://www.silkroadprofessionals.com/service/web/" target="_blank" class="stretched-link">Web Development</a>
+                            <a href="https://www.silkroadprofessionals.com/service/web/" target="_blank" class="stretched-link">@ContentService["Home:WebLinkTitle"]</a>
                         </h4>
                         <p class="description">
-                            We develop websites and enterprise web applications.
+                            @ContentService["WebServiceDescription"]
                         </p>
                     </div>
                 </div>
@@ -98,10 +100,10 @@
                     </div>
                     <div>
                         <h4 class="title">
-                            <a href="https://www.silkroadprofessionals.com/service/mobile/" target="_blank" class="stretched-link">Mobile Development</a>
+                            <a href="https://www.silkroadprofessionals.com/service/mobile/" target="_blank" class="stretched-link">@ContentService["Home:MobileServiceTitle"]</a>
                         </h4>
                         <p class="description">
-                            We build a native and cross platform mobile applications.
+                            @ContentService["Home:MobileServiceDescription"]
                         </p>
                     </div>
                 </div>
@@ -115,10 +117,10 @@
                     </div>
                     <div>
                         <h4 class="title">
-                            <a href="https://www.silkroadprofessionals.com/service/desktop/" target="_blank" class="stretched-link">Desktop Applications</a>
+                            <a href="https://www.silkroadprofessionals.com/service/desktop/" target="_blank" class="stretched-link">@ContentService["Home:DesktopServiceTitle"]</a>
                         </h4>
                         <p class="description">
-                            We build applications for an OS of your need.
+                            @ContentService["Home:DesktopServiceDescription"]
                         </p>
                     </div>
                 </div>
@@ -133,12 +135,12 @@
                         <h4 class="title">
                             <a href="https://www.silkroadprofessionals.com/service/cloud/" target="_blank"
                                class="stretched-link">
-                                Cloud Native Development
+                                @ContentService["Home:CloudServiceTitle"]
                             </a>
 
                         </h4>
                         <p class="description">
-                            We build and run scalable applications with cloud computing.
+                            @ContentService["Home:CloudServiceDescription"]
                         </p>
                     </div>
                 </div>
@@ -151,20 +153,20 @@
 <!-- About Section - Home Page -->
 <section id="about" class="about">
     <div class="container section-title aos-init aos-animate">
-        <h2><span style="color: #129fd7">About</span> Us</h2>
+        <h2>
+            <span style="color: #129fd7">@ContentService["Home:About"]</span> @ContentService["Home:Us"]
+        </h2>
     </div>
     <div class="container">
         <div class="row align-items-xl-center gy-5">
             <div class="col-xl-5 content">
 
                 <a Href="https://www.silkroadprofessionals.com/" target="_blank" style="a:hover {color: #1784b5 }">
-                    <h2 style="color: #1c92c8">Silk Road Professionals</h2>
+                    <h2 style="color: #1c92c8">@ContentService["Home:AboutTitle"]</h2>
                 </a>
 
                 <p>
-                    Silk Road Professionals (SRP) is a full-cycle software
-                    development company founded in 2014. We are legally registered
-                    in Virginia, USA and in Dehmoy, Tajikistan.
+                    @ContentService["Home:AboutContent"]
                 </p>
                 @*<a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>*@
 
@@ -175,11 +177,9 @@
             <div class="col-md-3">
                 <div class="icon-box">
                     <i class="bi bi-chevron-contract"></i>
-                    <h3>OUR MISSION</h3>
+                    <h3>@ContentService["Home:MissionTitle"]</h3>
                     <p>
-                        To engage a team of local talented IT professionals and
-                        empower them to deliver outstanding IT services to our
-                        partners
+                        @ContentService["Home:MissionContent"]
                     </p>
                 </div>
             </div>
@@ -188,11 +188,9 @@
             <div class="col-md-3">
                 <div class="icon-box">
                     <i class="bi bi-chevron-contract"></i>
-                    <h3>OUR VISION</h3>
+                    <h3>@ContentService["Home:VisionTitle"]</h3>
                     <p>
-                        To drive our business partners to a new level of success
-                        by providing remarkable IT outsourcing and outstaffing
-                        services
+                        @ContentService["Home:VisionContent"]
                     </p>
                 </div>
             </div>
@@ -208,64 +206,59 @@
     <div class="container">
         <div class="row align-items-xl-center gy-5">
             <div class="col-xl-12 content">
-                <h2>Main principles</h2>
+                <h2>@ContentService["Home:Principles"]</h2>
             </div>
         </div>
         <MudGrid>
             <MudItem lg="4" md="6" xs="12">
                 <div class="icon-box">
                     <i class="bi bi-1-circle"></i>
-                    <h3>Agile</h3>
+                    <h3>@ContentService["Home:Agile"]</h3>
                     <p>
-                        Our highest priority is to satisfy the customer through
-                        early and continuous delivery of valuable software.
+                        @ContentService["Home:AgileDetails"]
                     </p>
                 </div>
             </MudItem>
             <MudItem lg="4" md="6" xs="12">
                 <div class="icon-box">
                     <i class="bi bi-2-circle"></i>
-                    <h3>Code Quality</h3>
+                    <h3>@ContentService["Home:CodeQuality"]</h3>
                     <p>
-                        We do our best to write Descriptive Maintainable Economical
-                        Testable code.
+                        @ContentService["Home:CodeQualityDetails"]
                     </p>
                 </div>
             </MudItem>
             <MudItem lg="4" md="6" xs="12">
                 <div class="icon-box">
                     <i class="bi bi-3-circle"></i>
-                    <h3>Continual Learning</h3>
+                    <h3>@ContentService["Home:ContinualLearning"]</h3>
                     <p>
-                        We are committed to keeping our skills and knowledge up to
-                        date so, that we can meet the requirements of our clients.
+                        @ContentService["Home:ContinualLearningDetails"]
                     </p>
                 </div>
             </MudItem>
             <MudItem lg="4" md="6" xs="12">
                 <div class="icon-box">
                     <i class="bi bi-4-circle"></i>
-                    <h3>Intrinsic Control</h3>
+                    <h3>@ContentService["Home:IntrinsicControl"]</h3>
                     <p>
-                        We encourage our programmers to be self-motivated towards
-                        improving their own skills and producing quality work.
+                        @ContentService["Home:IntrinsicControlDetails"]
                     </p>
                 </div>
             </MudItem>
             <MudItem lg="4" md="6" xs="12">
                 <div class="icon-box">
                     <i class="bi bi-5-circle"></i>
-                    <h3>Glorify God</h3>
-                    <p>We want everything we do to bring glory to God.</p>
+                    <h3>@ContentService["Home:GlorifyGod"]</h3>
+                    <p>@ContentService["Home:GlorifyGodDetails"]</p>
                 </div>
             </MudItem>
             <MudItem lg="4" md="6" xs="12">
                 <div class="icon-box">
                     <i class="bi bi-6-circle"></i>
-                    <h3>Productivity</h3>
+                    <h3>@ContentService["Home:Productivity"]</h3>
                     <p>
-                        We are committed to providing the tools and environment that
-                        our programmers need to reach maximum productivity.
+                        @ContentService["Home:ProductivityDetails"]
                     </p>
                 </div>
             </MudItem>
@@ -284,8 +277,10 @@
         <div class="row justify-content-center">
             <div class="col-xl-10">
                 <div class="text-center">
-                    <h3><span style="color: #129fd7">Meet</span> Our Team</h3>
-                    <a class="cta-btn" href="https://www.silkroadprofessionals.com/team/team/" target="_blank">View Team</a>
+                    <h3>
+                        <span style="color: #129fd7">@ContentService["Home:Meet"]</span>@ContentService["Home:OurTeam"]
+                    </h3>
+                    <a class="cta-btn" href="https://www.silkroadprofessionals.com/team/team/" target="_blank">@ContentService["Home:ViewTeam"]</a>
                 </div>
             </div>
         </div>
@@ -296,7 +291,9 @@
 <section id="pricing" class="pricing">
     <!--  Section Title -->
     <div class="container section-title">
-        <h2><span style="color: #129fd7;">Client</span> And Partner Testimonials</h2>
+        <h2>
+            <span style="color: #129fd7;">@ContentService["Home:Client"]</span> @ContentService["Home:Partner"]
+        </h2>
     </div>
     <!-- End Section Title -->
 
@@ -378,7 +375,7 @@
 <section id="contact" class="contact">
     <!--  Section Title -->
     <div class="container section-title">
-        <h2>Contact</h2>
+        <h2>@ContentService["Home:Contact"]</h2>
     </div>
     <!-- End Section Title -->
 
@@ -389,9 +386,9 @@
                     <div class="col-md-6">
                         <div class="info-item">
                             <i class="bi bi-geo-alt"></i>
-                            <h3>Address</h3>
-                            <p>Sugd, Jabbor Rasulov district,</p>
-                            <p> Dehmoy, 80 Somoni Steet</p>
+                            <h3>@ContentService["Home:Address"]</h3>
+                            <p>@ContentService["Home:Address_p1"]</p>
+                            <p>@ContentService["Home:Address_p2"]</p>
                         </div>
                     </div>
                     <!-- End Info Item -->
@@ -400,8 +397,10 @@
                     <div class="col-md-6">
                         <div class="info-item">
                             <i class="bi bi-envelope"></i>
-                            <h3>Email Us</h3>
-                            <p>info@silkroadprofessionals.com</p>
+                            <h3>@ContentService["Home:Email"]</h3>
+                            <p>
+                                <a href="mailto:@ContentService["Home:EmailLink"]" target="_blank">@ContentService["Home:EmailLink"]</a>
+                            </p>
                         </div>
                     </div>
                     <!-- End Info Item -->
@@ -409,14 +408,13 @@
                     <div class="col-md-6">
                         <div class="info-item">
                             <i class="bi bi-clock"></i>
-                            <h3>Working Hours</h3>
-                            <p>Mon: 12pm to 9pm</p>
-                            <p>Tue - Fri: 8am to 5:30pm</p>
-                            <p>Sat - Sun: closed</p>
+                            <h3>@ContentService["Home:WorkingHours"]</h3>
+                            <p>@ContentService["Home:WorkingHours1"]</p>
+                            <p>@ContentService["Home:WorkingHours2"]</p>
+                            <p>@ContentService["Home:WorkingHours3"]</p>
                         </div>
                     </div>
                     <!-- End Info Item -->
-
 
                 </div>
             </div>

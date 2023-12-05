@@ -287,4 +287,187 @@
 
 
     <!-- VacancyApplication -->
+
+    <!--Home-->
+    <data name="Home:Hero_Title_1" xml:space="preserve">
+        <value>We are here.</value>
+    </data>
+    <data name="Home:Hero_Title_2" xml:space="preserve">
+        <value>  To help you!</value>
+    </data>
+    <data name="Home:Hero_Content" xml:space="preserve">
+        <value>We Developer Softwate and Provide Outsourse Programming support.</value>
+    </data>
+    <data name="Home:How" xml:space="preserve">
+        <value>How</value>
+    </data>
+    <data name="Home:WeWork" xml:space="preserve">
+        <value> We Work</value>
+    </data>
+    <data name="Home:Planning" xml:space="preserve">
+        <value>Planning</value>
+    </data>
+    <data name="Home:Design" xml:space="preserve">
+        <value>Design</value>
+    </data>
+    <data name="Home:Development" xml:space="preserve">
+        <value>Development</value>
+    </data>
+    <data name="Home:What" xml:space="preserve">
+        <value>What</value>
+    </data>
+    <data name="Home:WeDo" xml:space="preserve">
+        <value> We Do</value>
+    </data>
+    <data name="Home:WebServiceTitle" xml:space="preserve">
+        <value>Web Development</value>
+    </data>
+    <data name="Home:WebServiceDescription" xml:space="preserve">
+        <value>We develop websites and enterprise web applications.</value>
+    </data>
+    <data name="Home:MobileServiceTitle" xml:space="preserve">
+        <value>Mobile Development</value>
+    </data>
+    <data name="Home:MobileServiceDescription" xml:space="preserve">
+        <value>We build a native and cross platform mobile applications.</value>
+    </data>
+    <data name="Home:DesktopServiceTitle" xml:space="preserve">
+        <value>Desktop Applications</value>
+    </data>
+    <data name="Home:DesktopServiceDescription" xml:space="preserve">
+        <value> We build applications for an OS of your need.</value>
+    </data>
+    <data name="Home:CloudServiceTitle" xml:space="preserve">
+        <value>Cloud Native Development</value>
+    </data>
+    <data name="Home:CloudServiceDescription" xml:space="preserve">
+        <value> We build and run scalable applications with cloud computing.</value>
+    </data>
+    
+    <data name="Home:About" xml:space="preserve">
+        <value>About</value>
+    </data>
+    <data name="Home:Us" xml:space="preserve">
+        <value> Us</value>
+    </data>
+    <data name="Home:AboutTitle" xml:space="preserve">
+        <value>Silk Road Professionals</value>
+    </data>
+    <data name="Home:AboutContent" xml:space="preserve">
+        <value> Silk Road Professionals (SRP) is a full-cycle software development company founded in 2014. We are legally registered in Virginia, USA and in Dehmoy, Tajikistan.</value>
+    </data>
+
+    <data name="Home:MissionTitle" xml:space="preserve">
+        <value>OUR MISSION</value>
+    </data>
+    <data name="Home:MissionContent" xml:space="preserve">
+        <value>To engage a team of local talented IT professionals and empower them to deliver outstanding IT services to our partners</value>
+    </data>
+
+    <data name="Home:VisionTitle" xml:space="preserve">
+        <value>OUR VISION</value>
+    </data>
+    <data name="Home:VisionContent" xml:space="preserve">
+        <value>To drive our business partners to a new level of success by providing remarkable IT outsourcing and outstaffing services</value>
+    </data>
+
+
+    <data name="Home:Principles" xml:space="preserve">
+        <value>Main principles</value>
+    </data>
+
+    <data name="Home:Agile" xml:space="preserve">
+        <value>Agile</value>
+    </data>
+    <data name="Home:AgileDetails" xml:space="preserve">
+        <value>Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.</value>
+    </data>
+
+    <data name="Home:CodeQuality" xml:space="preserve">
+        <value>Code Quality</value>
+    </data>
+    <data name="Home:CodeQualityDetails" xml:space="preserve">
+        <value>We do our best to write Descriptive Maintainable Economical Testable code.</value>
+    </data>
+
+    <data name="Home:ContinualLearning" xml:space="preserve">
+        <value>Continual Learning</value>
+    </data>
+    <data name="Home:ContinualLearningDetails" xml:space="preserve">
+        <value> We are committed to keeping our skills and knowledge up to date so, that we can meet the requirements of our clients.</value>
+    </data>
+
+    <data name="Home:IntrinsicControl" xml:space="preserve">
+        <value>Intrinsic Control</value>
+    </data>
+    <data name="Home:IntrinsicControlDetails" xml:space="preserve">
+        <value>We encourage our programmers to be self-motivated towards improving their own skills and producing quality work.</value>
+    </data>
+
+    <data name="Home:GlorifyGod" xml:space="preserve">
+        <value>Glorify God</value>
+    </data>
+    <data name="Home:GlorifyGodDetails" xml:space="preserve">
+        <value>We want everything we do to bring glory to God.</value>
+    </data>
+
+    <data name="Home:Productivity" xml:space="preserve">
+        <value>Productivity</value>
+    </data>
+    <data name="Home:ProductivityDetails" xml:space="preserve">
+        <value> We are committed to providing the tools and environment that our programmers need to reach maximum productivity.</value>
+    </data>
+
+    <data name="Home:Meet" xml:space="preserve">
+        <value>Meet</value>
+    </data>
+    <data name="Home:OurTeam" xml:space="preserve">
+        <value> Our Team</value>
+    </data>
+    <data name="Home:ViewTeam" xml:space="preserve">
+        <value>View Team</value>
+    </data>
+
+    <data name="Home:Contact" xml:space="preserve">
+        <value>Contact</value>
+    </data>
+    <data name="Hone:Address" xml:space="preserve">
+        <value>Address</value>
+    </data>
+    <data name="Home:Address_p1" xml:space="preserve">
+        <value>Sugd, Jabbor Rasulov district,</value>
+    </data>
+    <data name="Home:Address_p2" xml:space="preserve">
+        <value>Dehmoy, 80 Somoni Steet</value>
+    </data>
+
+    <data name="Home:Email">
+        <value>Email Us</value>
+    </data>
+    <data name="Home:EmailLink">
+        <value>info@silkroadprofessionals.com</value>
+    </data>
+
+    <data name="Home:WorkingHours">
+        <value>Working Hours</value>
+    </data>
+    <data name="Home:WorkingHours1">
+        <value>Mon: 12pm to 9pm</value>
+    </data>
+    <data name="Home:WorkingHours2">
+        <value>Tue - Fri: 8am to 5:30pm</value>
+    </data>
+    <data name="Home:WorkingHours3">
+        <value>Sat - Sun: closed</value>
+    </data>
+
+    <data name="Home:Client">
+        <value>Client</value>
+    </data>
+    <data name="Home:Partner">
+        <value> And Partner Testimonials</value>
+    </data>
+    
+    <!--Home-->
+
 </root>
