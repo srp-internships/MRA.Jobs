@@ -1,6 +1,6 @@
 name: Publish image to Docker Hub
 on: 
-  [workflow_dispatch]
+  workflow_dispatch
 
 jobs:
   publish_image:
