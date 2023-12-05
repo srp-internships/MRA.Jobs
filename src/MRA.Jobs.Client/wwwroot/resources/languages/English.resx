@@ -83,4 +83,72 @@
     </data>
     <!--SignIn-->
 
+    <!--SignUp-->
+    <data name="SignUp:LabelSignUp" xml:space="preserve">
+        <value>Sign Up</value>
+    </data>
+    <data name="SignUp:LabelHaveAccount" xml:space="preserve">
+        <value>Do you have an account? Go to</value>
+    </data>
+    <data name="SignUp:LinkSignIn" xml:space="preserve">
+        <value>Sign In</value>
+    </data>
+    <data name="SignUp:FirstName" xml:space="preserve">
+        <value>Firs name</value>
+    </data>
+    <data name="SignUp:FirstName_HelperText" xml:space="preserve">
+        <value>Enter your first name</value>
+    </data>
+    <data name="SignUp:LastName" xml:space="preserve">
+        <value>Last name name</value>
+    </data>
+    <data name="SignUp:LastName_HelperText" xml:space="preserve">
+        <value>Enter your last name</value>
+    </data>
+    <data name="SignUp:Email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+    <data name="SignUp:Phone" xml:space="preserve">
+        <value>Phone</value>
+    </data>
+    <data name="SignUp:Phone_HelperText" xml:space="preserve">
+        <value>Enter your phone number</value>
+    </data>
+    <data name="SignUp:UserName" xml:space="preserve">
+        <value>Username</value>
+    </data>
+    <data name="SignUp:Password" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="SignUp:Password_HelperText" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="SignUp:ConfirmPassword" xml:space="preserve">
+        <value>Confirm password</value>
+    </data>
+    <data name="SignUp:ConfirmPassword_HelperText" xml:space="preserve">
+        <value>Confirm password</value>
+    </data>
+    <data name="SignUp:ButtonNext" xml:space="preserve">
+        <value>Next</value>
+    </data>
+    <data name="SignUp:ExternalLoginCard">
+        <value>Continue With</value>
+    </data>
+    <data name="signUp:messageText" xml:space="preserve">
+        <value>We have sent a confirmation code to this number: $phone$. Please confirm your identity</value>
+    </data>
+    <data name="SignUp:Code" xml:space="preserve">
+        <value>Code</value>
+    </data>
+    <data name="SignUp:Apply" xml:space="preserve">
+        <value>Apply</value>
+    </data>
+    <data name="SignUp:ResendCode" xml:space="preserve">
+        <value>Resend code</value>
+    </data>
+    <data name="SignUp:Secconds" xml:space="preserve">
+        <value>seconds left to resend the code.</value>
+    </data>
+    <!--SignUp-->
 </root>
