@@ -54,12 +54,14 @@
 
 @code
 {
+    
+    
     [Inject]
     public IContentService ContentService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        await ContentService.InitializeCultureAsync();
+        // await ContentService.InitializeCultureAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

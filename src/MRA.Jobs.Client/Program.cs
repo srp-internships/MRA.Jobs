@@ -83,6 +83,8 @@ builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
 
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddLocalization();
 builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddBlazoredLocalStorage();

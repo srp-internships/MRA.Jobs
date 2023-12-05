@@ -11,11 +11,14 @@ public class ContentService(IStringLocalizer<English> english, IStringLocalizer<
         IStringLocalizer<Tajik> tajik, ILocalStorageService localStorageService)
     : IContentService
 {
-    private static CultureInfo _applicationCulture = CultureInfo.CurrentCulture; 
+    private static CultureInfo _applicationCulture = CultureInfo.CurrentCulture;
+
     public string this[string name]
     {
         get
         {
+            Console.WriteLine(name + @" is key");
+            Console.WriteLine(_applicationCulture.Name + @" is culture for now");
             return _applicationCulture.Name switch
             {
                 ApplicationCulturesNames.En => english[name].Value,
@@ -34,7 +37,9 @@ public class ContentService(IStringLocalizer<English> english, IStringLocalizer<
 
     public async Task InitializeCultureAsync()
     {
+        Console.WriteLine(@"Initializing");
         var cultureName = await localStorageService.GetItemAsStringAsync(nameof(ApplicationCulturesNames));
+        Console.WriteLine(cultureName + @"i s cultureName");
         if (!cultureName.IsNullOrEmpty())
         {
             _applicationCulture = new CultureInfo(cultureName);
