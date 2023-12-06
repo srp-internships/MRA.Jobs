@@ -10,11 +10,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Minor version for each merge
-      id: taggerDryRun
-      uses: anothrNick/github-tag-action@1.36.0
-      env:
-        WITH_V: true
-        DRY_RUN: true
+        id: taggerDryRun
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          WITH_V: true
+          DRY_RUN: true
 
       - name: build docker image for Identity Service
         run: |
