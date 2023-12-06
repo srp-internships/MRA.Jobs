@@ -20,15 +20,16 @@ jobs:
         env:
           WITH_V: true
           DRY_RUN: true
-      - name: echo new tag
+    
+      - name: build docker image for Identity Service
         run: |
-          echo "The next tag version will be: ${{ steps.taggerDryRun.outputs.new_tag }}"
-      - name: echo tag
+          docker build . -t adheem/mra-identity-api:${{ steps.taggerDryRun.outputs.new_tag }}
+        working-directory: ./src/MRA.Jobs.Identity
+
+      - name: Publish Identity Service to Docker Hub
         run: |
-          echo "The current tag is: ${{ steps.taggerDryRun.outputs.tag }}"
-      - name: echo part
-        run: |
-          echo "The version increment was: ${{ steps.taggerDryRun.outputs.part }}"
+          docker login -u adheem -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push adheem/mra-identity-api:${{ steps.taggerDryRun.outputs.new_tag }}
 
       - name: Minor version for each merge
         id: taggerFinal
