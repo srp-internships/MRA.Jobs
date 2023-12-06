@@ -24,3 +24,9 @@ jobs:
       - name: echo part
         run: |
           echo "The version increment was: ${{ steps.taggerDryRun.outputs.part }}"
+
+      - name: Minor version for each merge
+        id: taggerFinal
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          WITH_V: true
