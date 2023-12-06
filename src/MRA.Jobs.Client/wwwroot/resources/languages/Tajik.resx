@@ -38,7 +38,7 @@
         <value>Тренингҳо</value>
     </data>
     <data name="Header:Team" xml:space="preserve">
-        <value>Даста</value>
+        <value>Тим</value>
     </data>
     <!-- header -->
 
@@ -326,12 +326,12 @@
         <value>Шанбе - Якшанбе: истироҳат</value>
     </data>
 
-<data name="Home:Client">
-    <value>Мизоҷ</value>
-</data>
-<data name="Home:Partner">
-    <value> Ва баррасиҳои шарикон</value>
-</data>
-    
-<!--Home-->
+    <data name="Home:Client">
+        <value>Мизоҷ</value>
+    </data>
+    <data name="Home:Partner">
+        <value>Ва баррасиҳои шарикон</value>
+    </data>
+
+    <!--Home-->
 </root>
