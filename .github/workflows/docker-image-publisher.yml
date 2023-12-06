@@ -29,4 +29,5 @@ jobs:
         id: taggerFinal
         uses: anothrNick/github-tag-action@1.36.0
         env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           WITH_V: true
