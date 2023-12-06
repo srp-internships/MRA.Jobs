@@ -1,9 +1,9 @@
 ﻿@using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
-@using MRA.Jobs.Client.CustomMethods;
+@using MRA.Jobs.Client.Services.ConverterService
 @inject ICategoryService CategoryService
 @inject IVacancyService VacancyService
-
+@inject IDateTimeConvertToStringService DateTimeConvert
 <style>
 	.job-card:hover {
 		background-color: #F5F5F5; /* Change to desired hover color */
@@ -177,9 +177,9 @@ else
                                             <MudText Style="color: #129fd7;" Typo="Typo.h5">
                                                 <b>@Vacancy.Title</b>
                                             </MudText>
-                                            <MudText Typo="Typo.body2" Style="color:gray">
+                                            <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
                                                 <small>
-                                                    <b>@ContentService["VacanciesList:Posted"] @CustomConverter.GetDisplayPostedDate(Vacancy.PublishDate)</b>
+                                                    <b>@ContentService["VacanciesList:Posted"] @DateTimeConvert.GetDisplayPostedDate(Vacancy.PublishDate)</b>
                                                 </small>
                                             </MudText>
                                             <br/>
@@ -187,7 +187,7 @@ else
                                             <MudGrid>
                                                 @if (Vacancy.Duration != 0)
                                                 {
-                                                    <MudItem Style="color:gray">
+                                                    <MudItem Style="color:rgb(128,128,128)">
                                                         <MudText Typo="Typo.caption">@ContentService["VacanciesList:Duration"] <b>@Vacancy.Duration month(s)</b></MudText>
                                                     </MudItem>
                                                 }
@@ -195,15 +195,15 @@ else
                                                 {
                                                     <MudItem>
                                                         @{
-                                                            var deadlineResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(Vacancy.Deadline);
+                                                            var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(Vacancy.Deadline);
                                                             var deadlineStyle = $"color:{deadlineResult.Color}";
-                                                            <MudText Typo="Typo.caption" Style="@deadlineStyle">@ContentService["VacanciesList:DeadLine"] <b>@deadlineResult.DisplayDate</b></MudText>
+                                                            <MudText Typo="Typo.caption" Style="@deadlineStyle">@ContentService["VacanciesList:Deadline"] <b>@deadlineResult.DisplayDate</b></MudText>
                                                         }
                                                     </MudItem>
                                                 }
                                                 <MudItem>
                                                     @{
-                                                        var endDateResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(Vacancy.EndDate);
+                                                        var endDateResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(Vacancy.EndDate);
                                                         var endDateStyle = $"color:{endDateResult.Color}";
                                                         <MudText Typo="Typo.caption" Style="@endDateStyle">@ContentService["VacanciesList:End date"] <b>@endDateResult.DisplayDate</b></MudText>
                                                     }

@@ -1,8 +1,8 @@
-﻿namespace MRA.Jobs.Client.CustomMethods;
+﻿namespace MRA.Jobs.Client.Services.ConverterService;
 
-public static class CustomConverter
+public class DateTimeConverterToStringService : IDateTimeConvertToStringService
 {
-    public static string GetDisplayPostedDate(DateTime publishDate)
+    public  string GetDisplayPostedDate(DateTime publishDate)
     {
         var currentDate = DateTime.Now;
         string displayDate;
@@ -32,19 +32,17 @@ public static class CustomConverter
         }
         else if (publishDate.Date == currentDate.AddDays(-1).Date)
         {
-            displayDate = $"Yesterday at {publishDate:HH:mm}";
+            displayDate = $"Yesterday";
         }
         else
         {
-            displayDate = $"{publishDate:dd.MM.yyyy} {publishDate.ToShortTimeString()}";
+            displayDate = $"{publishDate:dd.MM.yyyy}";
         }
 
         return displayDate;
     }
 
-
-
-    public static (string DisplayDate, string Color) GetDeadlineOrEndDateDisplayDate(DateTime value)
+    public  (string DisplayDate, string Color) GetDeadlineOrEndDateDisplayDate(DateTime value)
     {
         var currentDate = DateTime.Now;
         string displayDate;
@@ -79,11 +77,11 @@ public static class CustomConverter
         }
         else if (value.Date == currentDate.AddDays(1).Date)
         {
-            displayDate = $"Tomorrow at {value:HH:mm}";
+            displayDate = $"Tomorrow";
         }
         else
         {
-            displayDate = $"on {value:dd.MM.yyyy} at {value.ToShortTimeString()} ";
+            displayDate = $"on {value:dd.MM.yyyy}";
         }
 
         if (value <= currentDate)

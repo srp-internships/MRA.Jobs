@@ -1,15 +1,16 @@
 ﻿@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
-@using MRA.Jobs.Client.CustomMethods
 @using MRA.Jobs.Client.Services.FileService
 @using BlazorMonaco
 @using BlazorMonaco.Editor
 @using BlazorMonaco.Languages
+@using MRA.Jobs.Client.Services.ConverterService
 @layout MainLayout
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 @inject IInternshipService InternshipService
 @inject IApplicationService ApplicationService
+@inject IDateTimeConvertToStringService DateTimeConvert
 
 <div class="container w-75 mt-4">
     @if (vacancy is null)
@@ -34,7 +35,7 @@
                 </MudText>
                 <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
                     <small>
-                        <b>@ContentService["VacancyApplication:Posted"] @CustomConverter.GetDisplayPostedDate(vacancy.PublishDate)</b>
+                        <b>@ContentService["VacancyApplication:Posted"] @DateTimeConvert.GetDisplayPostedDate(vacancy.PublishDate)</b>
                     </small>
                 </MudText>
 
@@ -71,7 +72,7 @@
                     {
                         <MudItem lg="4" md="6" xs="6">
                             @{
-                                var deadlineResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancy.Deadline);
+                                var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancy.Deadline);
                                 var deadlineStyle = $"color:{deadlineResult.Color}";
 
                                 <MudGrid Style="@deadlineStyle">
@@ -130,7 +131,7 @@
 
                     <MudItem lg="4" md="6" xs="6">
                         @{
-                            var endDateResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancy.EndDate);
+                            var endDateResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancy.EndDate);
                             var endDatelineStyle = $"color:{endDateResult.Color}";
 
                             <MudGrid Style="@endDatelineStyle">
@@ -197,7 +198,7 @@
                 <br/>
                 <MudCard>
                     <MudCardContent>
-                        <MudText Style="color:gray">
+                        <MudText Style="color:rgb(128,128,128)">
                             <b>Task(s)</b>
                         </MudText>
                         <br/>

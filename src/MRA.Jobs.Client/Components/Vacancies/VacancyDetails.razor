@@ -1,13 +1,13 @@
 ﻿@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
-@using MRA.Jobs.Client.CustomMethods;
 @using MRA.Jobs.Client.Identity;
 @using Microsoft.AspNetCore.Components.Authorization;
 @using System.Net
 @using Blazorise.Extensions
+@using MRA.Jobs.Client.Services.ConverterService
 @inject AuthenticationStateProvider provider
 @inject IApplicationService ApplicationService
-
+@inject IDateTimeConvertToStringService DateTimeConvert
 @if (vacancyDetails is null || vacancy == null)
 {
     if (showLoader)
@@ -32,7 +32,7 @@ else
                             </MudText>
                             <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
                                 <small>
-                                    <b> Posted @CustomConverter.GetDisplayPostedDate(vacancyDetails.PublishDate)</b>
+                                    <b> Posted @DateTimeConvert.GetDisplayPostedDate(vacancyDetails.PublishDate)</b>
                                 </small>
                             </MudText>
                         </CardHeaderContent>
@@ -66,7 +66,7 @@ else
                             {
                                 <MudItem lg="4" md="6" xs="6">
                                     @{
-                                        var deadlineResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline);
+                                        var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline);
                                         var deadlineStyle = $"color:{deadlineResult.Color}";
 
                                         <MudGrid Style="@deadlineStyle">
@@ -125,7 +125,7 @@ else
 
                             <MudItem lg="4" md="6" xs="6">
                                 @{
-                                    var endDateResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate);
+                                    var endDateResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate);
                                     var endDatelineStyle = $"color:{endDateResult.Color}";
 
                                     <MudGrid Style="@endDatelineStyle">
@@ -156,8 +156,8 @@ else
 
             <MudItem xs="12" lg="3" sm="6" md="4">
                 @if (vacancyDetails.Deadline != default && (
-                    CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
-                    || CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"
+                    DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
+                    || DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"
                     ))
                 {
                     <MudCard>

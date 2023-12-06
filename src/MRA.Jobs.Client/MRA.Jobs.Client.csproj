@@ -71,4 +71,8 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="CustomMethods\" />
+    </ItemGroup>
+
 </Project>
