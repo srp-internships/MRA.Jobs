@@ -21,7 +21,7 @@ else
 	private VacancyApplicationResponse job;
 	private CreateApplicationCommand application;
 	public Dictionary<string, string> questionResponses = new();
-	public Dictionary<string, string> tasksResponses = new();
+	public Dictionary<Guid, string> tasksResponses = new();
 
 	[Parameter]
 	public string Slug { get; set; }
@@ -64,7 +64,7 @@ else
 				}
 				foreach (var task in job.VacancyTasks)
 				{
-					tasksResponses[task.Title] = task.Template;
+					tasksResponses[task.Id] = task.Template;
 				}
 			}
 		}
