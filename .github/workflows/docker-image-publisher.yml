@@ -14,11 +14,13 @@ jobs:
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
           fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+
       - name: 'Get next minor version'
         id: semvers
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
           version: ${{ steps.previoustag.outputs.tag }}
+
       - name: 'Create new milestone'
         id: createmilestone
         uses: "WyriHaximus/github-action-create-milestone@v1"
@@ -29,5 +31,10 @@ jobs:
         run: |
           docker build . -t adheem/mra-identity-api:${{ steps.semvers.outputs.patch }}
         working-directory: ./src/MRA.Jobs.Identity
+
+      - name: Publish Identity Service to Docker Hub
+        run: |
+          docker login -u adheem -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push adheem/mra-identity-api:${{ steps.semvers.outputs.patch }}
 
 
