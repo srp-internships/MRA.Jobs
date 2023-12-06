@@ -1,7 +1,6 @@
 name: Publish image to Docker Hub
 
-on: 
-  workflow_dispatch:
+on: push
 
 jobs:
   publish_image:
@@ -12,7 +11,7 @@ jobs:
 
       - name: Minor version for each merge
         id: taggerDryRun
-        uses: anothrNick/github-tag-action@1.36.0
+        uses: anothrNick/github-tag-action@1.64.0
         env:
           WITH_V: true
           DRY_RUN: true
@@ -25,10 +24,3 @@ jobs:
       - name: echo part
         run: |
           echo "The version increment was: ${{ steps.taggerDryRun.outputs.part }}"
-
-      - name: Minor version for each merge
-        id: taggerFinal
-        uses: anothrNick/github-tag-action@1.36.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          WITH_V: true
