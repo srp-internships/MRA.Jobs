@@ -8,15 +8,22 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+
       - name: 'Get Previous tag'
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
       - name: build docker image for Identity Service
-        id: semvers
-        uses: "WyriHaximus/github-action-next-semvers@v1"
+
         run: |
           docker build . -t adheem/mra-identity-api:${{ steps.previoustag.outputs.tag }}
         working-directory: ./src/MRA.Jobs.Identity
+
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+
       - name: 'Create new milestone'
         id: createmilestone
         uses: "WyriHaximus/github-action-create-milestone@v1"
