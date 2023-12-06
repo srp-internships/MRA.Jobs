@@ -71,16 +71,16 @@
     <value>Забыли пароль?</value>
 </data>
     <data name="SignIn:LinkReset" xml:space="preserve">
-    <value>Сбросить пароль</value>
+    <value> Сбросить пароль</value>
 </data>
     <data name="SignIn:SignIn" xml:space="preserve">
     <value>Войти</value>
 </data>
     <data name="SignIn:LabelDontAccount" xml:space="preserve">
-    <value>Нет аккаунта? Перейдите на</value>
+    <value>Нет аккаунта?</value>
 </data>
     <data name="SignIn:LinkSignUp" xml:space="preserve">
-    <value>Зарегистрироваться</value>
+    <value> Зарегистрироваться</value>
 </data>
     <!--SignIn-->
 
@@ -89,10 +89,10 @@
     <value>Зарегистрироваться</value>
 </data>
     <data name="SignUp:LabelHaveAccount" xml:space="preserve">
-    <value>У вас есть аккаунт? Перейдите на</value>
+    <value>У вас есть аккаунт?</value>
 </data>
     <data name="SignUp:LinkSignIn" xml:space="preserve">
-    <value>Войти</value>
+    <value> Войти</value>
 </data>
     <data name="SignUp:FirstName" xml:space="preserve">
     <value>Имя</value>
@@ -154,189 +154,187 @@
     <!--SignUp-->
 
 
-<!--Home-->
-<data name="Home:Hero_Title_1" xml:space="preserve">
+    <!--Home-->
+    <data name="Home:Hero_Title_1" xml:space="preserve">
     <value>Мы здесь.</value>
 </data>
-<data name="Home:Hero_Title_2" xml:space="preserve">
+    <data name="Home:Hero_Title_2" xml:space="preserve">
     <value> Чтобы помочь вам!</value>
 </data>
-<data name="Home:Hero_Content" xml:space="preserve">
+    <data name="Home:Hero_Content" xml:space="preserve">
     <value>Мы разрабатываем программное обеспечение и предоставляем поддержку программирования в аутсорсинге.</value>
 </data>
-<data name="Home:How" xml:space="preserve">
+    <data name="Home:How" xml:space="preserve">
     <value>Как</value>
 </data>
-<data name="Home:WeWork" xml:space="preserve">
+    <data name="Home:WeWork" xml:space="preserve">
     <value> Мы работаем</value>
 </data>
-<data name="Home:Planning" xml:space="preserve">
+    <data name="Home:Planning" xml:space="preserve">
     <value>Планирование</value>
 </data>
-<data name="Home:Design" xml:space="preserve">
+    <data name="Home:Design" xml:space="preserve">
     <value>Дизайн</value>
 </data>
-<data name="Home:Development" xml:space="preserve">
+    <data name="Home:Development" xml:space="preserve">
     <value>Разработка</value>
 </data>
-<data name="Home:What" xml:space="preserve">
+    <data name="Home:What" xml:space="preserve">
     <value>Что</value>
 </data>
-<data name="Home:WeDo" xml:space="preserve">
+    <data name="Home:WeDo" xml:space="preserve">
     <value> Мы делаем</value>
 </data>
-<data name="Home:WebServiceTitle" xml:space="preserve">
+    <data name="Home:WebServiceTitle" xml:space="preserve">
     <value>Разработка веб-сайтов</value>
 </data>
-<data name="Home:WebServiceDescription" xml:space="preserve">
+    <data name="Home:WebServiceDescription" xml:space="preserve">
     <value>Мы разрабатываем веб-сайты и корпоративные веб-приложения.</value>
 </data>
-<data name="Home:MobileServiceTitle" xml:space="preserve">
+    <data name="Home:MobileServiceTitle" xml:space="preserve">
     <value>Мобильная разработка</value>
 </data>
-<data name="Home:MobileServiceDescription" xml:space="preserve">
+    <data name="Home:MobileServiceDescription" xml:space="preserve">
     <value>Мы создаем нативные и кросс-платформенные мобильные приложения.</value>
 </data>
-<data name="Home:DesktopServiceTitle" xml:space="preserve">
+    <data name="Home:DesktopServiceTitle" xml:space="preserve">
     <value>Настольные приложения</value>
 </data>
-<data name="Home:DesktopServiceDescription" xml:space="preserve">
+    <data name="Home:DesktopServiceDescription" xml:space="preserve">
     <value> Мы создаем приложения для ОС по вашему выбору.</value>
 </data>
-<data name="Home:CloudServiceTitle" xml:space="preserve">
+    <data name="Home:CloudServiceTitle" xml:space="preserve">
     <value>Разработка облачных приложений</value>
 </data>
-<data name="Home:CloudServiceDescription" xml:space="preserve">
+    <data name="Home:CloudServiceDescription" xml:space="preserve">
     <value> Мы создаем и запускаем масштабируемые приложения с использованием облачных вычислений.</value>
 </data>
 
-<data name="Home:About" xml:space="preserve">
+    <data name="Home:About" xml:space="preserve">
     <value>О</value>
 </data>
-<data name="Home:Us" xml:space="preserve">
+    <data name="Home:Us" xml:space="preserve">
     <value> Нас</value>
 </data>
-<data name="Home:AboutTitle" xml:space="preserve">
+    <data name="Home:AboutTitle" xml:space="preserve">
     <value>Профессионалы Шелкового пути</value>
 </data>
-<data name="Home:AboutContent" xml:space="preserve">
+    <data name="Home:AboutContent" xml:space="preserve">
     <value> Профессионалы Шелкового пути (SRP) - это компания, занимающаяся разработкой программного обеспечения полного цикла, основанная в 2014 году. Мы юридически зарегистрированы в штате Вирджиния, США и в Дехмое, Таджикистан.</value>
 </data>
 
-<data name="Home:MissionTitle" xml:space="preserve">
+    <data name="Home:MissionTitle" xml:space="preserve">
     <value>НАША МИССИЯ</value>
 </data>
-<data name="Home:MissionContent" xml:space="preserve">
+    <data name="Home:MissionContent" xml:space="preserve">
     <value>Привлечь команду местных талантливых IT-специалистов и дать им возможность оказывать выдающиеся IT-услуги нашим партнерам</value>
 </data>
 
-<data name="Home:VisionTitle" xml:space="preserve">
+    <data name="Home:VisionTitle" xml:space="preserve">
     <value>НАШЕ ВИДЕНИЕ</value>
 </data>
-<data name="Home:VisionContent" xml:space="preserve">
+    <data name="Home:VisionContent" xml:space="preserve">
     <value>Поднять наших бизнес-партнеров на новый уровень успеха, предоставляя замечательные услуги по аутсорсингу и аутстаффингу в области IT</value>
 </data>
 
 
-<data name="Home:Principles" xml:space="preserve">
+    <data name="Home:Principles" xml:space="preserve">
     <value>Основные принципы</value>
 </data>
 
-<data name="Home:Agile" xml:space="preserve">
+    <data name="Home:Agile" xml:space="preserve">
     <value>Гибкость</value>
 </data>
-<data name="Home:AgileDetails" xml:space="preserve">
+    <data name="Home:AgileDetails" xml:space="preserve">
     <value>Наш приоритет - удовлетворить потребности клиента за счет ранней и непрерывной поставки ценного программного обеспечения.</value>
 </data>
 
-<data name="Home:CodeQuality" xml:space="preserve">
+    <data name="Home:CodeQuality" xml:space="preserve">
     <value>Качество кода</value>
 </data>
-<data name="Home:CodeQualityDetails" xml:space="preserve">
+    <data name="Home:CodeQualityDetails" xml:space="preserve">
     <value>Мы делаем все возможное, чтобы написать описательный, поддерживаемый, экономичный, тестируемый код.</value>
 </data>
 
-<data name="Home:ContinualLearning" xml:space="preserve">
+    <data name="Home:ContinualLearning" xml:space="preserve">
     <value>Постоянное обучение</value>
 </data>
-<data name="Home:ContinualLearningDetails" xml:space="preserve">
+    <data name="Home:ContinualLearningDetails" xml:space="preserve">
     <value> Мы стремимся поддерживать наши навыки и знания на современном уровне, чтобы мы могли удовлетворить требования наших клиентов.</value>
 </data>
 
-<data name="Home:IntrinsicControl" xml:space="preserve">
+    <data name="Home:IntrinsicControl" xml:space="preserve">
     <value>Внутренний контроль</value>
 </data>
-<data name="Home:IntrinsicControlDetails" xml:space="preserve">
+    <data name="Home:IntrinsicControlDetails" xml:space="preserve">
     <value>Мы поощряем наших программистов быть самомотивированными в улучшении своих навыков и производстве качественной работы.</value>
 </data>
 
-<data name="Home:GlorifyGod" xml:space="preserve">
+    <data name="Home:GlorifyGod" xml:space="preserve">
     <value>Прославить Бога</value>
 </data>
-<data name="Home:GlorifyGodDetails" xml:space="preserve">
+    <data name="Home:GlorifyGodDetails" xml:space="preserve">
     <value>Мы хотим, чтобы все, что мы делаем, славило Бога.</value>
 </data>
 
-<data name="Home:Productivity" xml:space="preserve">
+    <data name="Home:Productivity" xml:space="preserve">
     <value>Продуктивность</value>
 </data>
-<data name="Home:ProductivityDetails" xml:space="preserve">
+    <data name="Home:ProductivityDetails" xml:space="preserve">
     <value> Мы стремимся предоставить инструменты и среду, которые наши программисты нуждаются для достижения максимальной продуктивности.</value>
 </data>
 
-<data name="Home:Meet" xml:space="preserve">
+    <data name="Home:Meet" xml:space="preserve">
     <value>Встречайте</value>
 </data>
-<data name="Home:OurTeam" xml:space="preserve">
+    <data name="Home:OurTeam" xml:space="preserve">
     <value> Наша команда</value>
 </data>
-<data name="Home:ViewTeam" xml:space="preserve">
+    <data name="Home:ViewTeam" xml:space="preserve">
     <value>Посмотреть команду</value>
 </data>
 
-<data name="Home:Contact" xml:space="preserve">
+    <data name="Home:Contact" xml:space="preserve">
     <value>Контакт</value>
 </data>
-<data name="Home:Address" xml:space="preserve">
+    <data name="Home:Address" xml:space="preserve">
     <value>Адрес</value>
 </data>
-<data name="Home:Address_p1" xml:space="preserve">
+    <data name="Home:Address_p1" xml:space="preserve">
     <value>Сугд, район Джаббор Расулов,</value>
 </data>
-<data name="Home:Address_p2" xml:space="preserve">
+    <data name="Home:Address_p2" xml:space="preserve">
     <value>Дехмой, улица Сомони 80</value>
 </data>
 
-<data name="Home:Email">
-    <value>Напишите нам</value>
-</data>
-<data name="Home:EmailLink">
-    <value>info@silkroadprofessionals.com</value>
-</data>
+    <data name="Home:Email">
+        <value>Напишите нам</value>
+    </data>
+    <data name="Home:EmailLink">
+        <value>info@silkroadprofessionals.com</value>
+    </data>
 
-<data name="Home:WorkingHours">
-    <value>Часы работы</value>
-</data>
-<data name="Home:WorkingHours1">
-    <value>Пн: с 12:00 до 21:00</value>
-</data>
-<data name="Home:WorkingHours2">
-    <value>Вт - Пт: с 8:00 до 17:30</value>
-</data>
-<data name="Home:WorkingHours3">
-    <value>Сб - Вс: закрыто</value>
-</data>
+    <data name="Home:WorkingHours">
+        <value>Часы работы</value>
+    </data>
+    <data name="Home:WorkingHours1">
+        <value>Пн: с 12:00 до 21:00</value>
+    </data>
+    <data name="Home:WorkingHours2">
+        <value>Вт - Пт: с 8:00 до 17:30</value>
+    </data>
+    <data name="Home:WorkingHours3">
+        <value>Сб - Вс: закрыто</value>
+    </data>
 
-<data name="Home:Client">
-    <value>Клиент</value>
-</data>
-<data name="Home:Partner">
-    <value> И отзывы партнеров</value>
-</data>
-    
-<!--Home-->
+    <data name="Home:Client">
+        <value>Клиент</value>
+    </data>
+    <data name="Home:Partner">
+        <value>И отзывы партнеров</value>
+    </data>
 
-
+    <!--Home-->
 
 
 </root>

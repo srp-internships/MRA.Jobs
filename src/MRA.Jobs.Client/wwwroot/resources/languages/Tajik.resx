@@ -71,7 +71,7 @@
     <value>Калимаи убуратонро фаромуш кардед?</value>
 </data>
     <data name="SignIn:LinkReset" xml:space="preserve">
-    <value>Бозгузории калимаи убур</value>
+    <value> Бозгузории калимаи убур</value>
 </data>
     <data name="SignIn:SignIn" xml:space="preserve">
     <value>Ворид шудан</value>
@@ -89,7 +89,7 @@
     <value>Бақайдгирӣ</value>
 </data>
     <data name="SignUp:LabelHaveAccount" xml:space="preserve">
-    <value>Ҳисоботи шумо вуҷуд дорад? Ба</value>
+    <value>Ҳисоботи шумо вуҷуд дорад? </value>
 </data>
     <data name="SignUp:LinkSignIn" xml:space="preserve">
     <value>Ворид шудан</value>
