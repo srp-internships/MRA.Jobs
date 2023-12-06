@@ -30,7 +30,7 @@ public static class DependencyInitializer
         {
             string dbConnectionString = configurations["CS"];
             if (configurations["UseInMemoryDatabase"] == "true")
-                options.UseInMemoryDatabase("testDB");
+                options.UseInMemoryDatabase("testDb");
             else
                 options.UseSqlServer(dbConnectionString);
         });
