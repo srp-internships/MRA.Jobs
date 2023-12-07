@@ -1,11 +1,6 @@
 name: Publish image to Docker Hub
 
-on: 
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
+on: push
 
 jobs:
   publish_image:
@@ -47,7 +42,7 @@ jobs:
           event-type: update
           token: ${{ secrets.GH_TOKEN }}
           repository: srp-internships/MRAInfrastructure
-          client-payload: '{"version":" ${{ steps.taggerDryRun.outputs.new_tag }}"}'
+          client-payload: '{"version":"${{ steps.taggerDryRun.outputs.new_tag }}"}'
 
       - name: Minor version for each merge
         id: taggerFinal
