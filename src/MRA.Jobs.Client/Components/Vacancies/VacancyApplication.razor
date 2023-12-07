@@ -11,6 +11,7 @@
 @inject IInternshipService InternshipService
 @inject IApplicationService ApplicationService
 @inject IDateTimeConvertToStringService DateTimeConvert
+@inject IJSRuntime jsRuntime
 
 <div class="container w-75 mt-4">
     @if (vacancy is null)
@@ -215,8 +216,9 @@
                                     <span class="text-danger">*</span>@task.Description
                                 </label>
                             </p>
-                            <StandaloneCodeEditor @ref="_editors[task.Title]" Id="@($"sample-code-editor-{task.Title}")" ConstructionOptions="@(options => EditorConstructionOptions(options, task.Template))" OnDidInit="@(async () => await EditorOnDidInit(task.Title))" OnContextMenu="OnContextMenu" OnDidChangeModelContent="@(async () => await UpdateTaskResponse(task.Title))"/>
-                        }
+                            <StandaloneCodeEditor @ref="_editors[task.Id]" Id="@($"sample-code-editor-{task.Id}")" ConstructionOptions="@(options => EditorConstructionOptions(options, task.Template))" OnDidInit="@(async () => await EditorOnDidInit(task.Id))" OnContextMenu="OnContextMenu" OnDidChangeModelContent="@(async () => await UpdateTaskResponse(task.Id))"/>
+                       
+							}
                     </MudCardContent>
                 </MudCard>
             }
@@ -287,34 +289,37 @@
     private IBrowserFile _cv;
     private bool _processing;
 
-    private Dictionary<string, StandaloneCodeEditor> _editors = new Dictionary<string, StandaloneCodeEditor>();
+	private Dictionary<Guid, StandaloneCodeEditor> _editors = new Dictionary<Guid, StandaloneCodeEditor>();
 
-    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor, string initialValue)
-    {
-        return new StandaloneEditorConstructionOptions
-        {
-            Language = "csharp",
-            GlyphMargin = true,
-            AutomaticLayout = true,
-            Value = initialValue
-        };
-    }
+	private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor, string initialValue)
+	{
+		return new StandaloneEditorConstructionOptions
+			{
+				Language = "csharp",
+				GlyphMargin = true,
+				AutomaticLayout = true,
+				Value = initialValue
+			};
+	}
 
-    private async Task UpdateTaskResponse(string taskTitle)
-    {
-        if (_editors.ContainsKey(taskTitle))
-        {
-            taskResponses[taskTitle] = await _editors[taskTitle].GetValue();
-        }
-    }
+	private async Task UpdateTaskResponse(Guid taskid)
+	{
+		if (_editors.ContainsKey(taskid))
+		{
+			taskResponses[taskid] = await _editors[taskid].GetValue();
+		}
+	}
 
-    private async Task EditorOnDidInit(string taskTitle)
-    {
-        if (_editors.ContainsKey(taskTitle))
-        {
-            await _editors[taskTitle].AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) => { Console.WriteLine("Ctrl+H : Initial editor command is triggered."); });
-        }
-    }
+	private async Task EditorOnDidInit(Guid taskid)
+	{
+		if (_editors.ContainsKey(taskid))
+		{
+			await _editors[taskid].AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) =>
+			{
+				Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
+			});
+		}
+	}
 
     private void OnContextMenu(EditorMouseEvent eventArg)
     {
