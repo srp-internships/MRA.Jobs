@@ -284,21 +284,15 @@ else
 	private string newTemplate = string.Empty;
 	private string newTest = string.Empty;
 	private string newTitle = string.Empty;
-
-	private string createOrEditHeader = "New Internship Vacancy";
-
+	private string createOrEditHeader = "New Training Vacancy";
 	private List<VacancyQuestionDto> Questions = new();
 	private List<CategoryResponse> categories;
 	private List<TrainingVacancyListDto> trainings;
 	private List<VacancyTaskDto> Tasks = new();
-
 	private TimeSpan? publishDate_Time;
 	private TimeSpan? endDate_Time;
-	private Guid idTask=Guid.NewGuid();
 	private StandaloneCodeEditor _editorTemplate = null!;
 	private StandaloneCodeEditor _editorTest = null!;
-	private string _valueToSet = "";
-
 	private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
 	{
 		if (editor == _editorTest)
@@ -307,6 +301,7 @@ else
 				{
 					Language = "csharp",
 					GlyphMargin = true,
+					AutomaticLayout = true,
 					Value = "using Microsoft.VisualStudio.TestTools.UnitTesting;\n\n" +
 					"namespace TestProject\n" +
 					"{\n" +
@@ -328,6 +323,7 @@ else
 				{
 					Language = "csharp",
 					GlyphMargin = true,
+					AutomaticLayout = true,
 					Value = "using System;\n\n" +
 								"public class Program\n" +
 								"{\n" +
