@@ -1,11 +1,6 @@
 name: Publish image to Docker Hub
 
-on: 
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
+on: push
 
 jobs:
   publish_image:
