@@ -1,48 +1,48 @@
 ﻿@page "/jobs/{Slug}"
-@using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
-@using MRA.Jobs.Client.Identity;
 @inject IVacancyService VacancyService
-@inject IApplicationService ApplicationService
 
 @using MRA.Jobs.Client.Components.Vacancies
-@if (serverError)
+@if (_serverError)
 {
-	<ServerErrorComponent />
+    <ServerErrorComponent/>
 }
 else
 {
-	<VacancyDetails Slug="@Slug" vacancyDetails="@details" vacancy="jobs" />
+    <VacancyDetails Slug="@Slug" vacancyDetails="@_details" vacancy="jobs"/>
 }
+
 @code {
-	private bool serverError = false;
-    
-	[Parameter]
-	public string Slug { get; set; }
-	private VacancyDetailsResponse details;
-    
-	protected override async Task OnInitializedAsync()
-	{
-await base.OnInitializedAsync();
-		try
-		{
-			var response = await VacancyService.GetBySlug(Slug);
-			if (response is not null)
-			{
-				details = new VacancyDetailsResponse
-					{
-						Title = response.Title,
-						Description = response.Description,
-						EndDate = response.EndDate,
-						PublishDate = response.PublishDate,
-						RequiredYearOfExperience = response.RequiredYearOfExperience
-					};
-			}
-		}
-		catch (Exception)
-		{
-			serverError = true;
-			StateHasChanged();
-		}
-	}
+    private bool _serverError;
+
+    [Parameter]
+    public string Slug { get; set; }
+
+    private VacancyDetailsResponse _details;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        try
+        {
+            var response = await VacancyService.GetBySlug(Slug);
+            if (response is not null)
+            {
+                _details = new VacancyDetailsResponse
+                {
+                    Title = response.Title,
+                    Description = response.Description,
+                    EndDate = response.EndDate,
+                    PublishDate = response.PublishDate,
+                    RequiredYearOfExperience = response.RequiredYearOfExperience
+                };
+            }
+        }
+        catch (Exception)
+        {
+            _serverError = true;
+            StateHasChanged();
+        }
+    }
+
 }

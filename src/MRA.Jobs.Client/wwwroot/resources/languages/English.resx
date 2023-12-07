@@ -470,4 +470,61 @@
     
     <!--Home-->
 
+    
+    <!-- VacancyDetails -->
+    <data name="VacancyDetails:Posted">
+        <value>Posted</value>
+    </data>
+    <data name="VacancyDetails:month(s)">
+        <value>month(s)</value>
+    </data>
+    <data name="VacancyDetails:Duration">
+        <value>Duration</value>
+    </data>
+    <data name="VacancyDetails:Deadline">
+        <value>Deadline</value>
+    </data>
+    <data name="VacancyDetails:year(s)">
+        <value>year(s)</value>
+    </data>
+    <data name="VacancyDetails:Required year of experience">
+        <value>Required year of experience</value>
+    </data>
+    <data name="VacancyDetails:Fees">
+        <value>Fees</value>
+    </data>
+    <data name="VacancyDetails:End Date">
+        <value>End Date</value>
+    </data>
+    <data name="VacancyDetails:Unfortunately, the deadline has already expired">
+        <value>Unfortunately, the deadline has already expired</value>
+    </data>
+    <data name="VacancyDetails:Apply Now">
+        <value>Apply Now</value>
+    </data>
+    <data name="VacancyDetails:Are you ready to take your career to the next level with">
+        <value>Are you ready to take your career to the next level with</value>
+    </data>
+    <data name="VacancyDetails:Write a cover letter, answer few questions and send your application!">
+        <value>Write a cover letter, answer few questions and send your application!</value>
+    </data>
+    <data name="VacancyDetails:Download CV">
+        <value>Download CV</value>
+    </data>
+    <data name="VacancyDetails:Explore">
+        <value>Explore</value>
+    </data>
+    <data name="VacancyDetails:opportunities">
+        <value>opportunities</value>
+    </data>
+    <data name="VacancyDetails:Sign Up">
+        <value>Sign Up</value>
+    </data>
+    <data name="VacancyDetails:Already have an account?">
+        <value>Already have an account?</value>
+    </data>
+    <data name="VacancyDetails:Sign In">
+        <value>Sign In</value>
+    </data>
+    <!-- VacancyDetails -->
 </root>
