@@ -185,6 +185,18 @@
         <value>Вакансии на работу</value>
     </data>
     <!-- Jobs -->
+
+    <!-- Internships -->
+    <data name="Internships:Internships" xml:space="preserve">
+        <value>Стажировки</value>
+    </data>
+    <!-- Internships -->
+
+    <!-- Trainings -->
+    <data name="Trainings:Trainings" xml:space="preserve">
+        <value>Трейнинги</value>
+    </data>
+    <!-- Trainings -->
     
     <!-- VacancyApplication -->
     <data name="VacancyApplication:Posted" xml:space="preserve">

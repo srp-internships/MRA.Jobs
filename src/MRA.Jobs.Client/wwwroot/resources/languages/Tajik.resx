@@ -185,6 +185,18 @@
         <value>Ҷойҳои холии корӣ</value>
     </data>
     <!-- Jobs -->
+
+    <!-- Internships -->
+    <data name="Internships:Internships" xml:space="preserve">
+        <value>Тачрибаомузихо</value>
+    </data>
+    <!-- Internships -->
+
+    <!-- Trainings -->
+    <data name="Trainings:Trainings" xml:space="preserve">
+        <value>Машваратхо</value>
+    </data>
+    <!-- Trainings -->
     
     <!-- VacancyApplication -->
 

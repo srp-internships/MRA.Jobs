@@ -229,7 +229,19 @@
     <data name="Jobs:Jobs" xml:space="preserve">
         <value>Jobs</value>
     </data>
-    <!-- Jobs -->
+    <!-- Jobs --> 
+    
+    <!-- Internships -->
+    <data name="Internships:Internships" xml:space="preserve">
+        <value>Internships</value>
+    </data>
+    <!-- Internships -->  
+    
+    <!-- Trainings -->
+    <data name="Trainings:Trainings" xml:space="preserve">
+        <value>Trainings</value>
+    </data>
+    <!-- Trainings -->
     
     
     <!-- VacancyApplication -->
