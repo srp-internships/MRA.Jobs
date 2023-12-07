@@ -1,9 +1,6 @@
 ﻿@page "/dashboard/applications"
 @attribute [Authorize(ApplicationPolicies.Administrator)]
-@using System.Net.Http.Json
-@using MRA.Jobs.Client.Components
 @using MRA.Jobs.Client.Identity;
-@inject HttpClient httpClient
 @inject IApplicationService applicationService
 
 <MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Applications</MudText>
@@ -53,7 +50,7 @@ else
 }
 
 @code {
-    private bool serverError = false;
+    private bool serverError;
     private PagedList<ApplicationListDto> applications;
     protected override async Task OnInitializedAsync()
     {

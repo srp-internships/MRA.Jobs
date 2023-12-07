@@ -1,11 +1,10 @@
 ﻿@page "/trainings"
-@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @inject ICategoryService categoryService
 @inject IVacancyService vacancyService
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
 
-<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Trainings</MudText>
+<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">@ContentService["Trainings:Trainings"]</MudText>
 @if (serverError)
 {
 	<ServerErrorComponent />
@@ -22,6 +21,7 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+await base.OnInitializedAsync();
 		try
 		{
 			var result = await categoryService.GetTrainingCategoriesSinceCheckDate();

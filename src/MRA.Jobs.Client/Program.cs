@@ -17,9 +17,12 @@ using MudBlazor.Services;
 using MRA.Jobs.Client.Services.Profile;
 using System.Reflection;
 using AltairCA.Blazor.WebAssembly.Cookie.Framework;
+using Blazored.LocalStorage;
 using Microsoft.FeatureManagement;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Jobs.Client.Identity;
+using MRA.Jobs.Client.Services.ContentService;
+using MRA.Jobs.Client.Services.ConverterService;
 using MRA.Jobs.Client.Services.FileService;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -80,4 +83,12 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
+
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<IContentService, ContentService>();
+builder.Services.AddLocalization();
+builder.Services.AddScoped<IContentService, ContentService>();
+builder.Services.AddScoped<IDateTimeConvertToStringService, DateTimeConverterToStringService>();
+builder.Services.AddBlazoredLocalStorage();
+
 await builder.Build().RunAsync();
