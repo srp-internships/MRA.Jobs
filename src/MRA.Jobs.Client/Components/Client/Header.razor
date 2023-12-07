@@ -1,9 +1,12 @@
-﻿@inject AuthenticationStateProvider authProvider
+﻿@inject AuthenticationStateProvider AuthProvider
 @inject IAltairCABlazorCookieUtil CookieUtil
-@inject NavigationManager navigationManager
+@inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.Authorization
 @using MRA.Jobs.Client.Identity
 @using AltairCA.Blazor.WebAssembly.Cookie
+@using MRA.Jobs.Client.wwwroot.resources
+@inject IContentService ContentService
+@inject IJSRuntime JsRuntime
 
 <style>
 	@@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
@@ -54,67 +57,107 @@
 
 
 <nav class="navbar bg-dark navbar-expand-lg">
-	<div class="container-fluid">
-		<a class="navbar-brand">
-			<img src="images/srp_icon.png" width="70" />
-		</a>
-		<div style="text-align: center">
-			<h3 class="text-white logo-text">SILK ROAD</h3>
-			<h4 style="font-size: 18px" class="logo-text text-white">PROFESSIONALS</h4>
-		</div>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="100" viewBox="0 0 50 50" fill="white">
-				<path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
-			</svg>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item">
-					<NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
-				</li>
-				<li class="nav-item">
-					<NavLink class="nav-link" href="/internships">Internships</NavLink>
-				</li>
-				<li class="nav-item">
-					<NavLink class="nav-link" href="/jobs">Jobs</NavLink>
-				</li>
-				<li class="nav-item">
-					<NavLink class="nav-link" href="/trainings">Trainings</NavLink>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/">Team</a>
-				</li>
-			</ul>
+    <div class="container-fluid">
+        <a class="navbar-brand">
+            <img src="images/srp_icon.png" width="70"/>
+        </a>
+        <div style="text-align: center">
+            <h3 class="text-white logo-text">SILK ROAD</h3>
+            <h4 style="font-size: 18px" class="logo-text text-white">PROFESSIONALS</h4>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="100" viewBox="0 0 50 50" fill="white">
+                <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
+            </svg>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">@ContentService["Header:Home"]</NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/internships">@ContentService["Header:Internships"]</NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/jobs">@ContentService["Header:Jobs"]</NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/trainings">@ContentService["Header:Trainings"]</NavLink>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/" target="_blank">@ContentService["Header:Team"]</a>
+                </li>
+            </ul>
 
-			<CascadingAuthenticationState>
-				<AuthorizeView>
-					<Authorized>
-						<MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
-							<MudMenuItem Href="/profile">Profile</MudMenuItem>
-							<MudMenuItem Href="/applications">Applications</MudMenuItem>
-							<MudMenuItem OnClick="Logout">Logout</MudMenuItem>
-						</MudMenu>
-					</Authorized>
-					<NotAuthorized>
-						<MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
-							<MudMenuItem Href="/sign-in">Sign In</MudMenuItem>
-							<MudMenuItem Href="/sign-up">Sign Up</MudMenuItem>
-						</MudMenu>
-					</NotAuthorized>
-				</AuthorizeView>
-			</CascadingAuthenticationState>
-		</div>
-	</div>
+            @* language switch *@
+            <div class="parent">
+                <div class="switch_3_ways_v2">
+                    <div id="monthly2" class="switch2 monthly" @onclick="SwitchToEnglish">English</div>
+                    <div class="switch2 semester" id="semester2" @onclick="SwitchToRussian">Русский</div>
+                    <div id="annual2" class="switch2 annual" @onclick="SwitchToTajik">Тоҷикӣ</div>
+                    <div id="selector" class="selector"></div>
+                </div>
+            </div>
+            @* language switch *@
+
+            <CascadingAuthenticationState>
+                <AuthorizeView>
+                    <Authorized>
+                        <MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
+                            <MudMenuItem Href="/profile">@ContentService["UserButton:Profile"]</MudMenuItem>
+                            <MudMenuItem Href="/applications">@ContentService["UserButton:Applications"]</MudMenuItem>
+                            <MudMenuItem OnClick="Logout">@ContentService["UserButton:Logout"]</MudMenuItem>
+                        </MudMenu>
+                    </Authorized>
+                    <NotAuthorized>
+                        <MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
+                            <MudMenuItem Href="/sign-in">@ContentService["UserButton:Sign In"]</MudMenuItem>
+                            <MudMenuItem Href="/sign-up">@ContentService["UserButton:Sign Up"]</MudMenuItem>
+                        </MudMenu>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </CascadingAuthenticationState>
+        </div>
+    </div>
 </nav>
 
+<script>
 
+</script>
 @code {
 
-	private async Task Logout()
-	{
-		await CookieUtil.RemoveAsync("authToken");
-		await authProvider.GetAuthenticationStateAsync();
-		navigationManager.NavigateTo("/");
-	}
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JsRuntime.InvokeVoidAsync("InitLocation");
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task Logout()
+    {
+        await CookieUtil.RemoveAsync("authToken");
+        await AuthProvider.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("/");
+    }
+
+    private async Task SwitchToEnglish()
+    {
+        await JsRuntime.InvokeVoidAsync("change_period2", "English");
+        await ContentService.ChangeCulture(ApplicationCulturesNames.En);
+        await JsRuntime.InvokeVoidAsync("location.reload", true);
+    }
+
+    private async Task SwitchToRussian()
+    {
+        await JsRuntime.InvokeVoidAsync("change_period2", "Русский");
+        await ContentService.ChangeCulture(ApplicationCulturesNames.Ru);
+        await JsRuntime.InvokeVoidAsync("location.reload", true);
+    }
+
+    private async Task SwitchToTajik()
+    {
+        await JsRuntime.InvokeVoidAsync("change_period2", "Тоҷикӣ");
+        await ContentService.ChangeCulture(ApplicationCulturesNames.Tj);
+        await JsRuntime.InvokeVoidAsync("location.reload", true);
+    }
 
 }

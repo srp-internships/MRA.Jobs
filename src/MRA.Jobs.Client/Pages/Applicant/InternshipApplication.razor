@@ -1,9 +1,7 @@
 ﻿@page "/internships/apply/{Slug}"
 @using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 @layout MainLayout
-@inject NavigationManager NavigationManager
 @inject IInternshipService InternshipService
-@inject IApplicationService ApplicationService
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
 
@@ -29,6 +27,8 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+await base.OnInitializedAsync();
+		await base.OnInitializedAsync();
 		try
 		{
 			var response = await InternshipService.GetBySlug(Slug);

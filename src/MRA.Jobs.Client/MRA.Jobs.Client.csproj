@@ -8,6 +8,7 @@
     <ItemGroup>
         <PackageReference Include="AltairCA.Blazor.WebAssembly.Cookie" Version="1.0.1" />
         <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
+        <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
         <PackageReference Include="Blazorise" Version="1.3.3" />
         <PackageReference Include="Blazorise.Bootstrap" Version="1.3.3" />
         <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.3.3" />
@@ -34,6 +35,44 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\File\FileUpload.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="wwwroot\resources\languages\English.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>English.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\resources\languages\Russian.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Russian.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\resources\languages\Tajik.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Tajik.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="wwwroot\resources\ApplicationCulturesNames.cs" />
+      <Compile Include="wwwroot\resources\languages\English.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>English.resx</DependentUpon>
+      </Compile>
+      <Compile Include="wwwroot\resources\languages\Russian.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Russian.resx</DependentUpon>
+      </Compile>
+      <Compile Include="wwwroot\resources\languages\Tajik.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Tajik.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="CustomMethods\" />
     </ItemGroup>
 
 </Project>
