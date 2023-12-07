@@ -18,7 +18,7 @@ jobs:
     
       - name: build docker image for Identity Service
         run: |
-          docker build . -t adheem/mra-identity-api:${{ steps.taggerDryRun.outputs.new_tag }}
+          docker build -t adheem/mra-identity-api:${{ steps.taggerDryRun.outputs.new_tag }} .
         working-directory: ./src/MRA.Jobs.Identity
 
       - name: Publish Identity Service to Docker Hub
@@ -28,7 +28,7 @@ jobs:
       
       - name: build docker image for Web API
         run: |
-          docker build . -t adheem/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }}
+          docker build -t adheem/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }} .
         working-directory: ./src
 
       - name: Publish Web API to Docker Hub
