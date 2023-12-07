@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="wwwroot\api\" />
+        <Folder Include="wwwroot\api\"/>
     </ItemGroup>
 
     <PropertyGroup>
