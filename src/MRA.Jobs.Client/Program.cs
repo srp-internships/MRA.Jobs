@@ -23,7 +23,9 @@ using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.ContentService;
 using MRA.Jobs.Client.Services.ConverterService;
+using MRA.Jobs.Client.Services;
 using MRA.Jobs.Client.Services.FileService;
+using MRA.Jobs.Client.Services.UserPreferences;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -82,6 +84,8 @@ builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<LayoutService>();
+
 builder.Services.AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
 
 builder.Services.AddBlazoredLocalStorage();
@@ -89,6 +93,7 @@ builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddLocalization();
 builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IDateTimeConvertToStringService, DateTimeConverterToStringService>();
+builder.Services.AddScoped<IUserPreferencesService, UserPreferencesService>();
 builder.Services.AddBlazoredLocalStorage();
 
 await builder.Build().RunAsync();

@@ -15,9 +15,7 @@
     }
 }
 
-html, body {
-    background-color: #ffffff;
-}
+
 
 h1:focus {
     outline: none;
@@ -140,8 +138,11 @@ ul, li {
 
 :root {
     --mdc-theme-primary: #1c92c8 !important;
+    --mdc-theme-default: #1c92c8 !important;
     --mud-palette-primary: #1c92c8 !important;
+    --mud-palette-default: #1c92c8 !important;
     --mud-palette-primary-darken: #1784b5 !important;
+    --mud-palette-default-darken: #1784b5 !important;
 }
 
 .mud-nav-link:hover {

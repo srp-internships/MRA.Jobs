@@ -1,12 +1,18 @@
-﻿@inherits LayoutComponentBase
+﻿@using MRA.Jobs.Client.Services
+@using MRA.Jobs.Client.Enums
+@inherits LayoutComponentBase
 @inject IJSRuntime JS
-
-<Header></Header>
-<MudThemeProvider/>
+@inject LayoutService LayoutService
+<Header2/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 <main id="main" style="min-height: 100vh">
-    @Body
+
+    <MudContainer>
+        @Body
+
+    </MudContainer>
+
 </main>
 
 <footer class="bg-dark text-light text-center py-5 mt-5">
@@ -53,6 +59,10 @@
 
 @code
 {
+    private MudTheme _theme = new();
+    private bool _isDarkMode;
+    private MudThemeProvider _mudThemeProvider;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -68,5 +78,6 @@
             await JS.InvokeVoidAsync("loadScript", "/javascript.js");
         }
     }
+
 
 }
