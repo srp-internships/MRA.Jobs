@@ -21,13 +21,14 @@ else
 	private VacancyApplicationResponse job;
 	private CreateApplicationCommand application;
 	public Dictionary<string, string> questionResponses = new();
-	public Dictionary<string, string> tasksResponses = new();
+	public Dictionary<Guid, string> tasksResponses = new();
 
 	[Parameter]
 	public string Slug { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
+await base.OnInitializedAsync();
 		try
 		{
 			var response = await VacancyService.GetBySlug(Slug);
@@ -64,7 +65,7 @@ else
 				}
 				foreach (var task in job.VacancyTasks)
 				{
-					tasksResponses[task.Title] = task.Template;
+					tasksResponses[task.Id] = task.Template;
 				}
 			}
 		}

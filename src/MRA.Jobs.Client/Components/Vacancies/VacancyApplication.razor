@@ -1,12 +1,17 @@
 ﻿@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
-@using MRA.Jobs.Client.CustomMethods
 @using MRA.Jobs.Client.Services.FileService
+@using BlazorMonaco
+@using BlazorMonaco.Editor
+@using BlazorMonaco.Languages
+@using MRA.Jobs.Client.Services.ConverterService
 @layout MainLayout
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 @inject IInternshipService InternshipService
 @inject IApplicationService ApplicationService
+@inject IDateTimeConvertToStringService DateTimeConvert
+@inject IJSRuntime jsRuntime
 
 <div class="container w-75 mt-4">
     @if (vacancy is null)
@@ -31,16 +36,16 @@
                 </MudText>
                 <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
                     <small>
-                        <b>Posted @CustomConverter.GetDisplayPostedDate(vacancy.PublishDate)</b>
+                        <b>@ContentService["VacancyApplication:Posted"] @DateTimeConvert.GetDisplayPostedDate(vacancy.PublishDate)</b>
                     </small>
                 </MudText>
 
                 <br/>
                 <MudDivider Style="padding:10px;"/>
-                <MudText Typo="Typo.body2">
-                    Style="color:rgb(128,128,128)"
+                <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
+                    
                     <small>
-                        <b>Vacancy Details</b>
+                        <b>@ContentService["VacancyApplication:Vacancy Details"]</b>
                     </small>
                 </MudText>
                 <MudText>@vacancy.Description</MudText>
@@ -55,10 +60,10 @@
                                 </MudItem>
                                 <MudItem Style="padding:0;">
                                     <MudText>
-                                        <b>@vacancy.Duration month(s)</b>
+                                        <b>@vacancy.Duration @ContentService["VacancyApplication:month(s)"]</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2">
-                                        <small>Duration</small>
+                                        <small>@ContentService["VacancyApplication:Duration"]</small>
                                     </MudText>
                                 </MudItem>
                             </MudGrid>
@@ -68,7 +73,7 @@
                     {
                         <MudItem lg="4" md="6" xs="6">
                             @{
-                                var deadlineResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancy.Deadline);
+                                var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancy.Deadline);
                                 var deadlineStyle = $"color:{deadlineResult.Color}";
 
                                 <MudGrid Style="@deadlineStyle">
@@ -80,7 +85,7 @@
                                             <b>@deadlineResult.DisplayDate</b>
                                         </MudText>
                                         <MudText Typo="Typo.body2">
-                                            <small>Deadline</small>
+                                            <small>@ContentService["VacancyApplication:Deadline"]</small>
                                         </MudText>
                                     </MudItem>
                                 </MudGrid>
@@ -97,10 +102,10 @@
                                 </MudItem>
                                 <MudItem Style="padding:0;">
                                     <MudText>
-                                        <b>@vacancy.RequiredYearOfExperience year(s)</b>
+                                        <b>@vacancy.RequiredYearOfExperience @ContentService["VacancyApplication:year(s)"]</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2">
-                                        <small>Required year of experience</small>
+                                        <small>@ContentService["VacancyApplication:Required year of experience"]</small>
                                     </MudText>
                                 </MudItem>
                             </MudGrid>
@@ -118,7 +123,7 @@
                                         <b>@vacancy.Fees</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2">
-                                        <small>Fees</small>
+                                        <small>@ContentService["VacancyApplication:Fees"]</small>
                                     </MudText>
                                 </MudItem>
                             </MudGrid>
@@ -127,7 +132,7 @@
 
                     <MudItem lg="4" md="6" xs="6">
                         @{
-                            var endDateResult = CustomConverter.GetDeadlineOrEndDateDisplayDate(vacancy.EndDate);
+                            var endDateResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancy.EndDate);
                             var endDatelineStyle = $"color:{endDateResult.Color}";
 
                             <MudGrid Style="@endDatelineStyle">
@@ -139,7 +144,7 @@
                                         <b>@endDateResult.DisplayDate</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2">
-                                        <small>End Date</small>
+                                        <small>@ContentService["VacancyApplication:End Date"]</small>
                                     </MudText>
                                 </MudItem>
                             </MudGrid>
@@ -157,24 +162,23 @@
             <MudCard>
                 <MudCardContent>
                     <MudText Style="color:rgb(128,128,128)">
-                        <b>Additional Details</b>
+                        <b>@ContentService["VacancyApplication:Additional Details"]</b>
                     </MudText>
                     <MudText Typo="Typo.h6">
-                        <b><span class="text-danger">*</span>Cover Letter</b>
+                        <b><span class="text-danger">*</span>@ContentService["VacancyApplication:Cover Letter"]</b>
                     </MudText>
                     <MudTextField T="string" Lines="7" Variant="Variant.Outlined" @bind-Value="@application.CoverLetter"
                                   For="@(() => application.CoverLetter)"/>
                 </MudCardContent>
             </MudCard>
 
-            <br/>
-
             @if (vacancy.VacancyQuestions.Any())
             {
+                <br/>
                 <MudCard>
                     <MudCardContent>
                         <MudText Style="color:rgb(128,128,128)">
-                            <b>Questions</b>
+                            <b>@ContentService["VacancyApplication:Questions"]</b>
                         </MudText>
                         <br/>
                         @foreach (var question in vacancy.VacancyQuestions)
@@ -190,11 +194,38 @@
                     </MudCardContent>
                 </MudCard>
             }
-
+            @if (vacancy.VacancyTasks.Count() > 0)
+            {
+                <br/>
+                <MudCard>
+                    <MudCardContent>
+                        <MudText Style="color:rgb(128,128,128)">
+                            <b>Task(s)</b>
+                        </MudText>
+                        <br/>
+                        @foreach (var task in vacancy.VacancyTasks)
+                        {
+                            <MudDivider/>
+                            <p>
+                                <label for="Title" class="form-label">
+                                    <span class="text-danger">*</span>@task.Title
+                                </label>
+                            </p>
+                            <p>
+                                <label for="Description" class="form-label">
+                                    <span class="text-danger">*</span>@task.Description
+                                </label>
+                            </p>
+                            <StandaloneCodeEditor @ref="_editors[task.Id]" Id="@($"sample-code-editor-{task.Id}")" ConstructionOptions="@(options => EditorConstructionOptions(options, task.Template))" OnDidInit="@(async () => await EditorOnDidInit(task.Id))" OnContextMenu="OnContextMenu" OnDidChangeModelContent="@(async () => await UpdateTaskResponse(task.Id))"/>
+                       
+							}
+                    </MudCardContent>
+                </MudCard>
+            }
             @* cv *@
             <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
-                <MudRadio Option="@(false)" Color="Color.Primary">Apply using profile</MudRadio>
-                <MudRadio Option="@(true)" Color="Color.Primary">Apply with uploading file</MudRadio>
+                <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
+                <MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio>
             </MudRadioGroup>
             @if (_isUploadCvMode)
             {
@@ -205,7 +236,7 @@
                                    Color="Color.Primary"
                                    StartIcon="@Icons.Material.Filled.CloudUpload"
                                    for="@anotherContext">
-                            Upload your CV
+                            @ContentService["VacancyApplication:Upload your CV"]
                         </MudButton>
                     </ButtonTemplate>
                 </MudFileUpload>
@@ -217,11 +248,11 @@
                     @if (_processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                        <MudText Class="ms-2">Processing</MudText>
+                        <MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
                     }
                     else
                     {
-                        <MudText>Apply</MudText>
+                        <MudText>@ContentService["VacancyApplication:Apply"]</MudText>
                     }
                 </MudButton>
 
@@ -247,7 +278,7 @@
     public Dictionary<string, string> questionResponses { get; set; }
 
     [Parameter]
-    public Dictionary<string, string> taskResponses { get; set; }
+	public Dictionary<Guid, string> taskResponses { get; set; }
 
     [Parameter]
     public string vacancyType { get; set; }
@@ -257,6 +288,43 @@
 
     private IBrowserFile _cv;
     private bool _processing;
+
+	private Dictionary<Guid, StandaloneCodeEditor> _editors = new Dictionary<Guid, StandaloneCodeEditor>();
+
+	private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor, string initialValue)
+	{
+		return new StandaloneEditorConstructionOptions
+			{
+				Language = "csharp",
+				GlyphMargin = true,
+				AutomaticLayout = true,
+				Value = initialValue
+			};
+	}
+
+	private async Task UpdateTaskResponse(Guid taskid)
+	{
+		if (_editors.ContainsKey(taskid))
+		{
+			taskResponses[taskid] = await _editors[taskid].GetValue();
+		}
+	}
+
+	private async Task EditorOnDidInit(Guid taskid)
+	{
+		if (_editors.ContainsKey(taskid))
+		{
+			await _editors[taskid].AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) =>
+			{
+				Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
+			});
+		}
+	}
+
+    private void OnContextMenu(EditorMouseEvent eventArg)
+    {
+        Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
+    }
 
     protected override async void OnAfterRender(bool firstRender)
     {
@@ -282,7 +350,7 @@
         }).ToList();
         var updateTaskResponses = vacancy.VacancyTasks.Select(task => new TaskResponseDto
         {
-            TaskId = task.Id, Code = taskResponses[task.Title]
+            TaskId = task.Id, Code = taskResponses[task.Id]
         }).ToList();
         application.TaskResponses = updateTaskResponses;
         application.VacancyResponses = updatedResponses;

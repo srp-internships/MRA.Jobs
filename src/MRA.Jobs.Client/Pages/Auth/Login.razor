@@ -3,9 +3,10 @@
 @using MRA.Identity.Application.Contract.User.Commands.LoginUser
 @using MRA.Jobs.Client.Components.Auth
 @using MRA.Jobs.Client.Services.Auth
+
 @inject IAuthService AuthService
 @inject ISnackbar Snackbar
-
+@inject IContentService ContentService
 <div class="container">
     <div class="row" style="margin-top:20px;">
         <div Class="d-flex align-center justify-center mud-width-full py-8">
@@ -16,22 +17,24 @@
                     <MudCard Style="padding-top:15px;">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <center>
+                                <div style="text-align: center;">
                                     <MudImage Src="./images/SRP_icon.png" Width="100"/><br/>
                                     <MudText Typo="Typo.h4">
-                                        <strong>Sign In</strong>
+                                        <strong>@ContentService["SignIn:SignIn"]</strong>
                                     </MudText>
-                                </center>
+                                </div>
                             </CardHeaderContent>
                         </MudCardHeader>
                         <MudCardContent>
-                            <MudTextField Label="UserName"
+                            <MudTextField Label="@ContentService["SignIn:UserName"]"
                                           @bind-Value="_model.Username" For="@(() => _model.Username)"/>
 
-                            <MudTextField Label="Password"
+                            <MudTextField Label="@ContentService["SignIn:Password"]"
                                           @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
                             <br/>
-                            <MudText Typo="Typo.body2">Forgot your password? <a href="/resetPassword">Reset Password</a></MudText>
+                            <MudText Typo="Typo.body2">
+                                @ContentService["SignIn:LabelForgot"]<a href="/resetPassword">@ContentService["SignIn:LinkReset"]</a>
+                            </MudText>
                         </MudCardContent>
                         <MudCardActions>
                             <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" FullWidth="true">
@@ -42,19 +45,19 @@
                                 }
                                 else
                                 {
-                                    <MudText>Sign In</MudText>
+                                    <MudText>@ContentService["SignIn:SignIn"]</MudText>
                                 }
                             </MudButton>
 
                         </MudCardActions>
 
                         <div style="padding:5px">
-                            <center>
+                            <div style="text-align: center;">
                                 <ExternalLoginCard Title="Continue With"/>
                                 <small>
-                                    Don't have an account? Go to <a href="sign-up">Sign Up</a>
+                                    @ContentService["SignIn:LabelDontAccount"] <a href="sign-up">@ContentService["SignIn:LinkSignUp"]</a>
                                 </small>
-                            </center> <br/>
+                            </div> <br/>
                         </div>
                     </MudCard>
 

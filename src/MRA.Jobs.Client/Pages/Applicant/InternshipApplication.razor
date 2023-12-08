@@ -1,9 +1,7 @@
 ﻿@page "/internships/apply/{Slug}"
 @using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 @layout MainLayout
-@inject NavigationManager NavigationManager
 @inject IInternshipService InternshipService
-@inject IApplicationService ApplicationService
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
 
@@ -21,7 +19,7 @@ else
 	private VacancyApplicationResponse internship;
 	private CreateApplicationCommand application;
 	public Dictionary<string, string> questionResponses = new();
-	public Dictionary<string, string> tasksResponses = new();
+	public Dictionary<Guid, string> tasksResponses = new();
 
 
 	[Parameter]
@@ -29,6 +27,8 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+await base.OnInitializedAsync();
+		await base.OnInitializedAsync();
 		try
 		{
 			var response = await InternshipService.GetBySlug(Slug);
@@ -68,7 +68,7 @@ else
 				}
 				foreach (var task in internship.VacancyTasks)
 				{
-					tasksResponses[task.Title] = task.Template;
+					tasksResponses[task.Id] = task.Template;
 				}
 			}
 		}

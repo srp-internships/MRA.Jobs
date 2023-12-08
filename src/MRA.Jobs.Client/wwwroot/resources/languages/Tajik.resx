@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+
+    <!-- header -->
+    <data name="Header:Home" xml:space="preserve">
+        <value>Асосӣ</value>
+    </data>
+    <data name="Header:Internships" xml:space="preserve">
+        <value>Таҷрибаомӯзӣ</value>
+    </data>
+    <data name="Header:Jobs" xml:space="preserve">
+        <value>Ҷойҳои корӣ</value>
+    </data>
+    <data name="Header:Trainings" xml:space="preserve">
+        <value>Тренингҳо</value>
+    </data>
+    <data name="Header:Team" xml:space="preserve">
+        <value>Тим</value>
+    </data>
+    <!-- header -->
+
+    <!-- UserButton -->
+    <data name="UserButton:Profile" xml:space="preserve">
+        <value>Хуҷраи шахсӣ</value>
+    </data>
+    <data name="UserButton:Applications" xml:space="preserve">
+        <value>Ҷавобҳо</value>
+    </data>
+    <data name="UserButton:Logout" xml:space="preserve">
+        <value>Баромад</value>
+    </data>
+    <data name="UserButton:Sign In" xml:space="preserve">
+        <value>Воридшавӣ</value>
+    </data>
+    <data name="UserButton:Sign Up" xml:space="preserve">
+        <value>Бақайдгирӣ</value>
+    </data>
+    <!-- UserButton -->
+
+    <!--SignIn-->
+    <data name="SignIn:UserName" xml:space="preserve">
+    <value>Номи корбар</value>
+</data>
+    <data name="SignIn:Password" xml:space="preserve">
+    <value>Калимаи убур</value>
+</data>
+    <data name="SignIn:LabelForgot" xml:space="preserve">
+    <value>Калимаи убуратонро фаромуш кардед?</value>
+</data>
+    <data name="SignIn:LinkReset" xml:space="preserve">
+    <value> Бозгузории калимаи убур</value>
+</data>
+    <data name="SignIn:SignIn" xml:space="preserve">
+    <value>Ворид шудан</value>
+</data>
+    <data name="SignIn:LabelDontAccount" xml:space="preserve">
+    <value>Ҳисоботи шумо вуҷуд надорад? Ба</value>
+</data>
+    <data name="SignIn:LinkSignUp" xml:space="preserve">
+    <value>Бақайдгирӣ</value>
+</data>
+    <!--SignIn-->
+
+    <!--SignUp-->
+    <data name="SignUp:LabelSignUp" xml:space="preserve">
+    <value>Бақайдгирӣ</value>
+</data>
+    <data name="SignUp:LabelHaveAccount" xml:space="preserve">
+    <value>Ҳисоботи шумо вуҷуд дорад? </value>
+</data>
+    <data name="SignUp:LinkSignIn" xml:space="preserve">
+    <value>Ворид шудан</value>
+</data>
+    <data name="SignUp:FirstName" xml:space="preserve">
+    <value>Ном</value>
+</data>
+    <data name="SignUp:FirstName_HelperText" xml:space="preserve">
+    <value>Номи худро ворид кунед</value>
+</data>
+    <data name="SignUp:LastName" xml:space="preserve">
+    <value>Насаб</value>
+</data>
+    <data name="SignUp:LastName_HelperText" xml:space="preserve">
+    <value>Насаби худро ворид кунед</value>
+</data>
+    <data name="SignUp:Email" xml:space="preserve">
+    <value>Почтеи элоктронӣ</value>
+</data>
+    <data name="SignUp:Phone" xml:space="preserve">
+    <value>Телефон</value>
+</data>
+    <data name="SignUp:Phone_HelperText" xml:space="preserve">
+    <value>Рақами телефони худро ворид кунед</value>
+</data>
+    <data name="SignUp:UserName" xml:space="preserve">
+    <value>Номи корбар</value>
+</data>
+    <data name="SignUp:Password" xml:space="preserve">
+    <value>Калимаи убур</value>
+</data>
+    <data name="SignUp:Password_HelperText" xml:space="preserve">
+    <value>Калимаи убур</value>
+</data>
+    <data name="SignUp:ConfirmPassword" xml:space="preserve">
+    <value>Тасдиқи калимаи убур</value>
+</data>
+    <data name="SignUp:ConfirmPassword_HelperText" xml:space="preserve">
+    <value>Тасдиқи калимаи убур</value>
+</data>
+    <data name="SignUp:ButtonNext" xml:space="preserve">
+    <value>Ба пеш</value>
+</data>
+    <data name="SignUp:ExternalLoginCard">
+        <value>Идома бо</value>
+    </data>
+    <data name="signUp:messageText" xml:space="preserve">
+    <value>Мо ба ин рақам коди тасдиқро фиристодем: $phone$. Лутфан, шиносоии худро тасдиқ кунед</value>
+</data>
+    <data name="SignUp:Code" xml:space="preserve">
+    <value>Код</value>
+</data>
+    <data name="SignUp:Apply" xml:space="preserve">
+    <value>Тасдиқ кардан</value>
+</data>
+    <data name="SignUp:ResendCode" xml:space="preserve">
+    <value>Кодро боз фиристонидан</value>
+</data>
+    <data name="SignUp:Secconds" xml:space="preserve">
+    <value>сония барои боз фиристодани код боқӣ мондааст.</value>
+</data>
+    <!--SignUp-->
+
+    <!-- VacanciesList -->
+        <data name="VacanciesList:All" xml:space="preserve">
+    <value>Ҳама</value>
+</data>
+    <data name="VacanciesList:NoJobs" xml:space="preserve">
+    <value>Ҳоло вазифаҳо барои кор дастрас намешаванд. Илтимос баъдтар санҷед :)</value>
+</data>
+    <data name="VacanciesList:Search" xml:space="preserve">
+    <value>Ҷустуҷӯ</value>
+</data>
+    <data name="VacanciesList:Posted" xml:space="preserve">
+    <value>Нашр шудааст</value>
+</data>
+    <data name="VacanciesList:month(s)" xml:space="preserve">
+    <value>моҳ(ҳо)</value>
+</data>
+    <data name="VacanciesList:Duration" xml:space="preserve">
+    <value>Давомият</value>
+</data>
+    <data name="VacanciesList:Deadline" xml:space="preserve">
+    <value>Муддати бақайдгирӣ</value>
+</data>
+    <data name="VacanciesList:End date" xml:space="preserve">
+    <value>Санаи тамоми</value>
+</data>
+    <!-- VacanciesList -->
+
+    <!-- Jobs -->
+    <data name="Jobs:Jobs" xml:space="preserve">
+        <value>Ҷойҳои холии корӣ</value>
+    </data>
+    <!-- Jobs -->
+
+    <!-- Internships -->
+    <data name="Internships:Internships" xml:space="preserve">
+        <value>Тачрибаомузихо</value>
+    </data>
+    <!-- Internships -->
+
+    <!-- Trainings -->
+    <data name="Trainings:Trainings" xml:space="preserve">
+        <value>Машваратхо</value>
+    </data>
+    <!-- Trainings -->
+    
+    <!-- VacancyApplication -->
+
+    <data name="VacancyApplication:Posted" xml:space="preserve">
+    <value>Опубликовано</value>
+</data>
+    <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
+    <value>Тафсилоти вазифа</value>
+</data>
+    <data name="VacancyApplication:month(s)" xml:space="preserve">
+    <value>моҳ(ҳо)</value>
+</data>
+    <data name="VacancyApplication:Duration" xml:space="preserve">
+    <value>Давомият</value>
+</data>
+    <data name="VacancyApplication:Deadline" xml:space="preserve">
+    <value>Муддати бақайдгирӣ</value>
+</data>
+    <data name="VacancyApplication:year(s)" xml:space="preserve">
+    <value>сол(ҳо)</value>
+</data>
+    <data name="VacancyApplication:Required year of experience" xml:space="preserve">
+    <value>Талаботи солҳои таҷриба</value>
+</data>
+    <data name="VacancyApplication:Fees" xml:space="preserve">
+    <value>Суҳбат</value>
+</data>
+    <data name="VacancyApplication:End Date" xml:space="preserve">
+    <value>Санаи тамоми</value>
+</data>
+    <data name="VacancyApplication:Additional Details" xml:space="preserve">
+    <value>Тафсилоти иловагӣ</value>
+</data>
+    <data name="VacancyApplication:Cover Letter" xml:space="preserve">
+    <value>Номи пешниҳод</value>
+</data>
+    <data name="VacancyApplication:Questions" xml:space="preserve">
+    <value>Саволҳо</value>
+</data>
+    <data name="VacancyApplication:Apply using profile" xml:space="preserve">
+    <value>Истифодабарандагии профили худро истифода баред</value>
+</data>
+    <data name="VacancyApplication:Apply with uploading file" xml:space="preserve">
+    <value>Истифодаи файл боркуни</value>
+</data>
+    <data name="VacancyApplication:Upload your CV" xml:space="preserve">
+    <value>Резюмеи худро бор кунед</value>
+</data>
+    <data name="VacancyApplication:Processing" xml:space="preserve">
+    <value>Ишораткунӣ</value>
+</data>
+    <data name="VacancyApplication:Apply" xml:space="preserve">
+    <value>Истифода баред</value>
+</data>
+    <!-- VacancyApplication -->
+    
+    <!--Home-->
+    <data name="Home:Hero_Title_1" xml:space="preserve">
+    <value>Мо дар инҷо ҳастем.</value>
+</data>
+    <data name="Home:Hero_Title_2" xml:space="preserve">
+    <value> Барои кӯмак ба шумо!</value>
+</data>
+    <data name="Home:Hero_Content" xml:space="preserve">
+    <value>Мо нармафзорро тавсия мекунем ва дастгирии барномасозиро фароҳам мекунем.</value>
+</data>
+    <data name="Home:How" xml:space="preserve">
+    <value>Чӣ тавр</value>
+</data>
+    <data name="Home:WeWork" xml:space="preserve">
+    <value> Мо кор мекунем</value>
+</data>
+    <data name="Home:Planning" xml:space="preserve">
+    <value>Барномарезӣ</value>
+</data>
+    <data name="Home:Design" xml:space="preserve">
+    <value>Тарроҳӣ</value>
+</data>
+    <data name="Home:Development" xml:space="preserve">
+    <value>Рушд</value>
+</data>
+    <data name="Home:What" xml:space="preserve">
+    <value>Мо</value>
+</data>
+    <data name="Home:WeDo" xml:space="preserve">
+    <value> чӣ мекунем</value>
+</data>
+    <data name="Home:WebServiceTitle" xml:space="preserve">
+    <value>Рушди веб</value>
+</data>
+    <data name="Home:WebServiceDescription" xml:space="preserve">
+    <value>Мо веб-сайтҳо ва иловаҳои веб-корпоратсияро тавсия мекунем.</value>
+</data>
+    <data name="Home:MobileServiceTitle" xml:space="preserve">
+    <value>Рушди мобилӣ</value>
+</data>
+    <data name="Home:MobileServiceDescription" xml:space="preserve">
+    <value>Мо иловаҳои мобилӣ ва кросс-платформа эҷод мекунем.</value>
+</data>
+    <data name="Home:DesktopServiceTitle" xml:space="preserve">
+    <value>Иловаҳои дасткорӣ</value>
+</data>
+    <data name="Home:DesktopServiceDescription" xml:space="preserve">
+    <value> Мо барои OS интихобкардаи шумо замимаҳо эҷод мекунем.</value>
+</data>
+    <data name="Home:CloudServiceTitle" xml:space="preserve">
+    <value>Рушди абрӣ</value>
+</data>
+    <data name="Home:CloudServiceDescription" xml:space="preserve">
+    <value> Мо бо истифода аз роёниши абрӣ барномаҳои миқёспазир эҷод ва иҷро мекунем.</value>
+</data>
+
+    <data name="Home:About" xml:space="preserve">
+    <value>Дар бораи</value>
+</data>
+    <data name="Home:Us" xml:space="preserve">
+    <value> Мо</value>
+</data>
+    <data name="Home:AboutTitle" xml:space="preserve">
+    <value>Мутахассисони Роҳи Абрешим</value>
+</data>
+    <data name="Home:AboutContent" xml:space="preserve">
+    <value> Мутахассисони Роҳи Абрешим (SRP) - ин ширкати тавсияи нармафзори давраи пурра аст, ки дар соли 2014 тасис ёфтааст. Мо дар Вирджиния, ИМА ва Дехмой, Тоҷикистон қонунӣ сабт шудаанд.</value>
+</data>
+
+    <data name="Home:MissionTitle" xml:space="preserve">
+    <value>МАҚСАДИ МО</value>
+</data>
+    <data name="Home:MissionContent" xml:space="preserve">
+    <value>Ба ҷамъияти маҳаллии мутахассисони IT-и дараи истиъдод дастгирӣ кардан, ки ба шарикони мо хидматҳои барҷастаи IT пешниҳод кунанд</value>
+</data>
+
+    <data name="Home:VisionTitle" xml:space="preserve">
+    <value>ДИДБИНИИ МО</value>
+</data>
+    <data name="Home:VisionContent" xml:space="preserve">
+    <value>Шарикони тиҷоратии моро тавассути пешниҳоди хидматҳои барҷастаи аутсорсинги IT ва аутстаффинг ба сатҳҳои нави муваффақият расонидан</value>
+</data>
+
+
+    <data name="Home:Principles" xml:space="preserve">
+    <value>Принсипҳои асосӣ</value>
+</data>
+
+    <data name="Home:Agile" xml:space="preserve">
+    <value>Фасеҳ</value>
+</data>
+    <data name="Home:AgileDetails" xml:space="preserve">
+    <value>Афзалияти мо қонеъ гардонидани ниёзҳои муштарӣ тавассути интиқоли барвақт ва пайвастаи нармафзори арзишманд мебошад.</value>
+</data>
+
+    <data name="Home:CodeQuality" xml:space="preserve">
+    <value>Сифати код</value>
+</data>
+    <data name="Home:CodeQualityDetails" xml:space="preserve">
+    <value>Мо тамоми кори аз дастамон меомадаро мекунем, то рамзи тавсифӣ, нигоҳдорӣ, камхарҷ ва озмоишшаванда нависем.</value>
+</data>
+
+    <data name="Home:ContinualLearning" xml:space="preserve">
+    <value>Омӯзиши пайваста</value>
+</data>
+    <data name="Home:ContinualLearningDetails" xml:space="preserve">
+    <value> Мо мекӯшем, ки малака ва дониши худро навсозӣ кунем, то ба талаботи мизоҷони худ қонеъ гардонем.</value>
+</data>
+
+    <data name="Home:IntrinsicControl" xml:space="preserve">
+<value>Назорати дохилӣ</value>
+</data>
+    <data name="Home:IntrinsicControlDetails" xml:space="preserve">
+    <value>Мо барномасозони худро ташвиқ мекунем, ки барои такмил додани малакаи худ ва истеҳсоли кори босифат худдорӣ кунанд.</value>
+</data>
+
+    <data name="Home:GlorifyGod" xml:space="preserve">
+    <value>Боварӣ ба Худо</value>
+</data>
+    <data name="Home:GlorifyGodDetails" xml:space="preserve">
+    <value>Мо мехоҳем, ки ҳар коре, ки мо мекунем, Худоро ҷалол диҳад.</value>
+</data>
+
+    <data name="Home:Productivity" xml:space="preserve">
+    <value>Маҳсулнокӣ</value>
+</data>
+    <data name="Home:ProductivityDetails" xml:space="preserve">
+    <value> Мо мекӯшем, ки асбобҳо ва муҳити атрофро фароҳам орем, ки барномасозони мо бояд то ҳадди имкон самаранок бошанд.</value>
+</data>
+
+    <data name="Home:Meet" xml:space="preserve">
+    <value>Шинос шавед</value>
+</data>
+    <data name="Home:OurTeam" xml:space="preserve">
+    <value> Тими мо</value>
+</data>
+    <data name="Home:ViewTeam" xml:space="preserve">
+    <value>Дидани Тим</value>
+</data>
+
+    <data name="Home:Contact" xml:space="preserve">
+    <value>Тамос</value>
+</data>
+    <data name="Home:Address" xml:space="preserve">
+    <value>Суроға</value>
+</data>
+    <data name="Home:Address_p1" xml:space="preserve">
+    <value>Суғд, ноҳияи Ҷаббор Расулов, </value>
+</data>
+    <data name="Home:Address_p2" xml:space="preserve">
+    <value>Деҳмой, кӯчаи Сомонӣ 80</value>
+</data>
+
+    <data name="Home:Email">
+        <value>Ба мо нависед</value>
+    </data>
+    <data name="Home:EmailLink">
+        <value>info@silkroadprofessionals.com</value>
+    </data>
+
+    <data name="Home:WorkingHours">
+        <value>Соатҳои корӣ</value>
+    </data>
+    <data name="Home:WorkingHours1">
+        <value>Душанбе: аз 12:00 то 21:00</value>
+    </data>
+    <data name="Home:WorkingHours2">
+        <value>Сушанбе - Ҷумъа: аз 8:00 то 17:30</value>
+    </data>
+    <data name="Home:WorkingHours3">
+        <value>Шанбе - Якшанбе: истироҳат</value>
+    </data>
+
+    <data name="Home:Client">
+        <value>Мизоҷ</value>
+    </data>
+    <data name="Home:Partner">
+        <value>Ва баррасиҳои шарикон</value>
+    </data>
+
+    <!--Home-->
+
+    <!-- VacancyDetails -->
+    <data name="VacancyDetails:Posted">
+        <value>Опубликовано</value>
+    </data>
+    <data name="VacancyDetails:month(s)">
+        <value>моҳ(ҳо)</value>
+    </data>
+    <data name="VacancyDetails:Duration">
+        <value>Давомият</value>
+    </data>
+    <data name="VacancyDetails:Deadline">
+        <value>Муддати бақайдгирӣ</value>
+    </data>
+    <data name="VacancyDetails:year(s)">
+        <value>сол(ҳо)</value>
+    </data>
+    <data name="VacancyDetails:Required year of experience">
+        <value>Талаботи солҳои тажриба</value>
+    </data>
+    <data name="VacancyDetails:Fees">
+        <value>Хизмати пулидан</value>
+    </data>
+    <data name="VacancyDetails:End Date">
+        <value>Тамомшавии муддат</value>
+    </data>
+    <data name="VacancyDetails:Unfortunately, the deadline has already expired">
+        <value>Мутасиршудагӣ, муддат аллакай гузашт</value>
+    </data>
+    <data name="VacancyDetails:Apply Now">
+        <value>Ҳозир интихоб кунед</value>
+    </data>
+    <data name="VacancyDetails:Are you ready to take your career to the next level with">
+        <value>Оё шумо тайёрӣ доред, карьераро ба дараёи зирзамини оянда гиред бо</value>
+    </data>
+    <data name="VacancyDetails:Write a cover letter, answer few questions and send your application!">
+        <value>Нависед суроғаи муваффақ, якчанд савол ҷавоб диҳед ва сабти зарафшониро рўй бедиҳед!</value>
+    </data>
+    <data name="VacancyDetails:Download CV">
+        <value>CV-ро зеркашӣ кунед</value>
+    </data>
+    <data name="VacancyDetails:Explore">
+        <value>Таҳлили</value>
+    </data>
+    <data name="VacancyDetails:opportunities">
+        <value>имкониятҳо</value>
+    </data>
+    <data name="VacancyDetails:Sign Up">
+        <value>Бақайдгирӣ кунед</value>
+    </data>
+    <data name="VacancyDetails:Already have an account?">
+        <value>Аккаунти шумо аллакай мавҷуд аст?</value>
+    </data>
+    <data name="VacancyDetails:Sign In">
+        <value>Ворид шавед</value>
+    </data>
+    <!-- VacancyDetails -->
+    
+</root>
