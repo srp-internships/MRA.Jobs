@@ -4,7 +4,6 @@ global using MRA.Jobs.Client.Services.VacancyServices;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
-using MatBlazor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MRA.Jobs.Client;
@@ -34,7 +33,7 @@ builder.Services
 
 
 builder.Services.AddMudServices();
-builder.Services.AddMatBlazor();
+
 
 builder.Services.AddAltairCACookieService(options => { options.DefaultExpire = TimeSpan.Zero; });
 builder.RootComponents.Add<App>("#app");
