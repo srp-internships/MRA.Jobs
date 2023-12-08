@@ -68,7 +68,7 @@
         <MudTooltip Duration="1000" Text="Select Language">
             <MudMenu EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="@_selectedLanguage"
                      Dense="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
-                <MudMenuItem OnClick="@(() =>SelectLanguage("En"))">En</MudMenuItem>
+                <MudMenuItem OnClick="@(() => SelectLanguage("En"))">En</MudMenuItem>
                 <MudMenuItem OnClick="@(() => SelectLanguage("Ru"))">Ru</MudMenuItem>
                 <MudMenuItem OnClick="@(() => SelectLanguage("Tj"))">Tj</MudMenuItem>
             </MudMenu>
@@ -139,12 +139,12 @@
 </MudDrawer>
 
 @code {
-    private string _selectedLanguage;
+    private string _selectedLanguage = "En";
 
     private async void SelectLanguage(string lang)
     {
         await LayoutService.ToggleRightToLeft(lang);
-       
+
         StateHasChanged();
     }
 
