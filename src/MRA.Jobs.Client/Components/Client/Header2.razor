@@ -1,59 +1,160 @@
 ﻿@using MRA.Jobs.Client.Services
 @using MRA.Jobs.Client.Enums
+@using MRA.Jobs.Client.wwwroot.resources
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
+
 <MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
 <MudToolBar>
-    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"/>
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+    </MudHidden>
+    <MudHidden Breakpoint="Breakpoint.Xs">
+        <MudItem Style="padding-right:5px;">
+            <MudImage src="images/srp_icon.png" Style="width: 50px"/>
+        </MudItem>
+        <MudItem Style="padding-left:0; margin-right: 40px;">
+            <MudText Style="font-size: 21.5px;">
+                <b>SILK ROAD</b>
+            </MudText>
+            <MudText Style="margin-top: -10px;">
+                <small>
+                    <b>PROFESSIONALS</b>
+                </small>
+            </MudText>
+        </MudItem>
+    </MudHidden>
+    <MudHidden Breakpoint="Breakpoint.SmAndUp">
+        <MudItem Style="padding-right:5px;">
+            <MudImage src="images/srp_icon.png" Style="width: 30px"/>
+        </MudItem>
+        <MudItem Style="padding-left:0; margin-right: 40px;">
+            <MudText Style="font-size: 21.5px;">
+                <b>SRP</b>
+            </MudText>
+        </MudItem>
+    </MudHidden>
 
-    <MudItem Style="padding-right:5px;">
-        <MudImage src="images/srp_icon.png" Style="width: 50px"/>
-    </MudItem>
-    <MudItem Style="padding-left:0; margin-right: 40px;">
-        <MudText Style="font-size: 21.5px;">
-            <b>SILK ROAD</b>
-        </MudText>
-        <MudText Style="margin-top: -10px;">
-            <small>
-                <b>PROFESSIONALS</b>
-            </small>
-        </MudText>
-    </MudItem>
-
-    <MudButton Href="/" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Home)">
-        <MudText>
-            <b>Home</b>
-        </MudText>
-    </MudButton>
-    <MudButton Href="/jobs" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Jobs)">
-        <MudText>
-            <b>Jobs</b>
-        </MudText>
-    </MudButton>
-    <MudButton Href="/internships" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Internships)">
-        <MudText>
-            <b>Internships</b>
-        </MudText>
-    </MudButton>
-    <MudButton Href="/trainings" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Trainings)">
-        <MudText>
-            <b>Trainings</b>
-        </MudText>
-    </MudButton>
-    <MudButton Href="https://www.silkroadprofessionals.com/team/team/s" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Team)">
-        <MudText>
-            <b>Team</b>
-        </MudText>
-    </MudButton>
-
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudButton Href="/" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Home)">
+            <MudText>
+                <b>Home</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="/jobs" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Jobs)">
+            <MudText>
+                <b>Jobs</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="/internships" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Internships)">
+            <MudText>
+                <b>Internships</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="/trainings" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Trainings)">
+            <MudText>
+                <b>Trainings</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="https://www.silkroadprofessionals.com/team/team/s" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Team)">
+            <MudText>
+                <b>Team</b>
+            </MudText>
+        </MudButton>
+    </MudHidden>
     <MudSpacer/>
-    <MudTooltip Duration="1000" Text="@(LayoutService.DarkModeToggle == DarkLightMode.System ? "Switch to Light Theme" : LayoutService.DarkModeToggle == DarkLightMode.Dark ? "Switch to system" : "Switch to Dark Theme")">
-        <MudIconButton Icon="@(LayoutService.DarkModeToggle == DarkLightMode.System ? @Icons.Material.Filled.AutoMode : LayoutService.DarkModeToggle == DarkLightMode.Dark ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@ToggleDarkMode"/>
-    </MudTooltip>
-    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit"/>
+    <MudHidden Breakpoint="Breakpoint.Xs">
+        <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
+        <MudTooltip Duration="1000" Text="Select Language">
+            <MudMenu EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="@_selectedLanguage"
+                     Dense="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+                <MudMenuItem OnClick="@(() =>SelectLanguage("En"))">En</MudMenuItem>
+                <MudMenuItem OnClick="@(() => SelectLanguage("Ru"))">Ru</MudMenuItem>
+                <MudMenuItem OnClick="@(() => SelectLanguage("Tj"))">Tj</MudMenuItem>
+            </MudMenu>
+        </MudTooltip>
+        <MudTooltip Duration="1000" Text="@(LayoutService.DarkModeToggle == DarkLightMode.System ? "Switch to Light Theme" : LayoutService.DarkModeToggle == DarkLightMode.Dark ? "Switch to system" : "Switch to Dark Theme")">
+            <MudIconButton Icon="@(LayoutService.DarkModeToggle == DarkLightMode.System ? @Icons.Material.Filled.AutoMode : LayoutService.DarkModeToggle == DarkLightMode.Dark ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@ToggleDarkMode"/>
+        </MudTooltip>
+    </MudHidden>
+
+    <CascadingAuthenticationState>
+        <AuthorizeView>
+            <Authorized>
+                <MudMenu AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter">
+                    <ActivatorContent>
+                        <MudChip>
+                            <AvatarContent>
+                                <MudAvatar>MK</MudAvatar>
+                            </AvatarContent>
+                            <ChildContent>Avatar</ChildContent>
+                        </MudChip>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.AccountCircle">Profile</MudMenuItem>
+                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Checklist">Applications</MudMenuItem>
+                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Logout">Sign Out</MudMenuItem>
+                    </ChildContent>
+                </MudMenu>
+            </Authorized>
+            <NotAuthorized>
+                <MudMenu >
+                    <ActivatorContent>
+                        <MudChip Icon="@Icons.Material.Filled.Person">Sign In</MudChip>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem>Sign In</MudMenuItem>
+                        <MudMenuItem>Sign Up</MudMenuItem>
+                    </ChildContent>
+                </MudMenu>
+            </NotAuthorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
 </MudToolBar>
 
+<MudDrawer @bind-Open="@open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Temporary"
+           ClipMode="DrawerClipMode.Docked">
+    <MudToolBar Dense="true" Class="docs-gray-bg">
+        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+        <MudSpacer/>
+        <MudTooltip Duration="1000" Text="Select Language">
+            <MudMenu EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="@_selectedLanguage"
+                     Dense="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+                <MudMenuItem OnClick="@(() => SelectLanguage("En"))">En</MudMenuItem>
+                <MudMenuItem OnClick="@(() => SelectLanguage("Ru"))">Ru</MudMenuItem>
+                <MudMenuItem OnClick="@(() => SelectLanguage("Tj"))">Tj</MudMenuItem>
+            </MudMenu>
+        </MudTooltip>
+        <MudTooltip Duration="1000" Text="@(LayoutService.DarkModeToggle == DarkLightMode.System ? "Switch to Light Theme" : LayoutService.DarkModeToggle == DarkLightMode.Dark ? "Switch to system" : "Switch to Dark Theme")">
+            <MudIconButton Icon="@(LayoutService.DarkModeToggle == DarkLightMode.System ? @Icons.Material.Filled.AutoMode : LayoutService.DarkModeToggle == DarkLightMode.Dark ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@ToggleDarkMode"/>
+        </MudTooltip>
+    </MudToolBar>
+    <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
+        <MudNavLink Match="NavLinkMatch.All" Href="/">Home</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/jobs">Jobs</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/internships">Internships</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/trainings">Trainings</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">Team</MudNavLink>
+    </MudNavMenu>
+</MudDrawer>
+
 @code {
+    private string _selectedLanguage;
+
+    private async void SelectLanguage(string lang)
+    {
+        await LayoutService.ToggleRightToLeft(lang);
+       
+        StateHasChanged();
+    }
+
+    bool open = false;
+
+    void ToggleDrawer()
+    {
+        open = !open;
+    }
+
     private DocPages currentPage;
     private MudThemeProvider _mudThemeProvider;
 
@@ -105,7 +206,6 @@
     private async Task ToggleDarkMode()
     {
         await LayoutService.ToggleDarkMode();
-    //    NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
         StateHasChanged();
     }
 

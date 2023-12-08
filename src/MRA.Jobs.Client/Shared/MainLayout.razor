@@ -3,58 +3,58 @@
 @inherits LayoutComponentBase
 @inject IJSRuntime JS
 @inject LayoutService LayoutService
-<Header2/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
-<main id="main" style="min-height: 100vh">
 
-    <MudContainer>
-        @Body
+    <Header2/>
+    <MudDialogProvider/>
+    <MudSnackbarProvider/>
+    <main id="main" style="min-height: 100vh">
+        <MudContainer>
+            @Body
 
-    </MudContainer>
+        </MudContainer>
 
-</main>
+    </main>
 
-<footer class="bg-dark text-light text-center py-5 mt-5">
-    <div class="container">
-        <div class="row w-50" style="margin: 0 auto;">
-            <div class="col">
-                <a href="https://www.facebook.com/SilkRoadProfessionals/" target="_blank" class="text-light mx-2">
-                    <i class="fa fa-facebook-official fa-2x" aria-hidden="true"></i>
-                </a>
+    <footer class="bg-dark text-light text-center py-5 mt-5">
+        <div class="container">
+            <div class="row w-50" style="margin: 0 auto;">
+                <div class="col">
+                    <a href="https://www.facebook.com/SilkRoadProfessionals/" target="_blank" class="text-light mx-2">
+                        <i class="fa fa-facebook-official fa-2x" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="https://t.me/niyozovdilshod" class="text-light mx-2" target="_blank">
+                        <i class="fa fa-telegram fa-2x" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="https://www.instagram.com/silk_road_professionals/" target="_blank" class="text-light mx-2">
+                        <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="https://www.linkedin.com/company/silk-road-professionals-tajikistan/" target="_blank" class="text-light mx-2">
+                        <i class="fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
-            <div class="col">
-                <a href="https://t.me/niyozovdilshod" class="text-light mx-2" target="_blank">
-                    <i class="fa fa-telegram fa-2x" aria-hidden="true"></i>
-                </a>
-            </div>
-            <div class="col">
-                <a href="https://www.instagram.com/silk_road_professionals/" target="_blank" class="text-light mx-2">
-                    <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
-                </a>
-            </div>
-            <div class="col">
-                <a href="https://www.linkedin.com/company/silk-road-professionals-tajikistan/" target="_blank" class="text-light mx-2">
-                    <i class="fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
-                </a>
+            <div class="row mt-4">
+                <div class="col">
+                    <p class="mb-0">© 2023 Silk Road Professionals</p>
+                </div>
             </div>
         </div>
-        <div class="row mt-4">
-            <div class="col">
-                <p class="mb-0">© 2023 Silk Road Professionals</p>
-            </div>
-        </div>
-    </div>
-</footer>
+    </footer>
 
-<!-- End Footer -->
-<!-- Scroll Top Button -->
-<a href="#"
-   id="scroll-top"
-   class="scroll-top d-flex align-items-center justify-content-center">
-    <i class="bi bi-arrow-up-short">
-    </i>
-</a>
+    <!-- End Footer -->
+    <!-- Scroll Top Button -->
+    <a href="#"
+       id="scroll-top"
+       class="scroll-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short">
+        </i>
+    </a>
 
 
 @code
@@ -62,6 +62,7 @@
     private MudTheme _theme = new();
     private bool _isDarkMode;
     private MudThemeProvider _mudThemeProvider;
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -79,5 +80,18 @@
         }
     }
 
+    protected override void OnInitialized()
+    {
+        LayoutService.OnLanguageChanged += UpdateState;
+    }
 
+    private void UpdateState()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        LayoutService.OnLanguageChanged -= UpdateState;
+    }
 }

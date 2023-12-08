@@ -3,15 +3,19 @@
 // See the LICENSE file in the project root for more information.
 
 
+using Microsoft.AspNetCore.Components;
 using MRA.Jobs.Client.Enums;
+using MRA.Jobs.Client.Services.ContentService;
 using MRA.Jobs.Client.Services.UserPreferences;
+using MRA.Jobs.Client.wwwroot.resources;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Services;
 
-public class LayoutService
+public class LayoutService(IUserPreferencesService userPreferencesService , IContentService contentService)
 {
-    private readonly IUserPreferencesService _userPreferencesService;
+    public event Action OnLanguageChanged;
+    
     private UserPreferences.UserPreferences _userPreferences;
     private bool _systemPreferences;
 
@@ -21,13 +25,7 @@ public class LayoutService
     public bool IsDarkMode { get; private set; }
 
     public MudTheme CurrentTheme { get; private set; }
-
-
-    public LayoutService(IUserPreferencesService userPreferencesService)
-    {
-        _userPreferencesService = userPreferencesService;
-    }
-
+    
     public void SetDarkMode(bool value)
     {
         IsDarkMode = value;
@@ -36,7 +34,7 @@ public class LayoutService
     public async Task ApplyUserPreferences(bool isDarkModeDefaultTheme)
     {
         _systemPreferences = isDarkModeDefaultTheme;
-        _userPreferences = await _userPreferencesService.LoadUserPreferences();
+        _userPreferences = await userPreferencesService.LoadUserPreferences();
         if (_userPreferences != null)
         {
             IsDarkMode = _userPreferences.DarkLightTheme switch
@@ -51,7 +49,7 @@ public class LayoutService
         {
             IsDarkMode = isDarkModeDefaultTheme;
             _userPreferences = new UserPreferences.UserPreferences { DarkLightTheme = DarkLightMode.System };
-            await _userPreferencesService.SaveUserPreferences(_userPreferences);
+            await userPreferencesService.SaveUserPreferences(_userPreferences);
         }
     }
 
@@ -68,7 +66,7 @@ public class LayoutService
     public event EventHandler MajorUpdateOccured;
 
     private void OnMajorUpdateOccured() => MajorUpdateOccured?.Invoke(this, EventArgs.Empty);
-
+  
     public async Task ToggleDarkMode()
     {
         switch (DarkModeToggle)
@@ -88,15 +86,20 @@ public class LayoutService
         }
 
         _userPreferences.DarkLightTheme = DarkModeToggle;
-        await _userPreferencesService.SaveUserPreferences(_userPreferences);
+        await userPreferencesService.SaveUserPreferences(_userPreferences);
         OnMajorUpdateOccured();
     }
 
-    public async Task ToggleRightToLeft()
+    public async Task ToggleRightToLeft(string lang)
     {
-        IsRTL = !IsRTL;
-        await _userPreferencesService.SaveUserPreferences(_userPreferences);
-        OnMajorUpdateOccured();
+        if (lang == "Ru") 
+            await contentService.ChangeCulture(ApplicationCulturesNames.Ru);
+        if (lang == "En") 
+            await contentService.ChangeCulture(ApplicationCulturesNames.En);
+        if (lang == "Tj") 
+            await contentService.ChangeCulture(ApplicationCulturesNames.Tj);
+       
+        OnLanguageChanged?.Invoke();
     }
 
     public void SetBaseTheme(MudTheme theme)
@@ -123,5 +126,12 @@ public class LayoutService
         {
             return DocPages.Home;
         }
+    }
+
+    public bool MudDrawerOpen;
+
+    public void ToggleDrawer()
+    {
+        MudDrawerOpen = !MudDrawerOpen;
     }
 }
