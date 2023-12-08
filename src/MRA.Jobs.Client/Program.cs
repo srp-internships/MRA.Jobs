@@ -21,6 +21,8 @@ using Blazored.LocalStorage;
 using Microsoft.FeatureManagement;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Jobs.Client.Identity;
+using MRA.Jobs.Client.Services.ContentService;
+using MRA.Jobs.Client.Services.ConverterService;
 using MRA.Jobs.Client.Services.FileService;
 using MRA.Jobs.Client.Services.HiddenVacancies;
 
