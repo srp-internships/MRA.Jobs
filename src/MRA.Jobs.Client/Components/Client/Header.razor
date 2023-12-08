@@ -105,7 +105,7 @@
                         <MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
                             <MudMenuItem Href="/profile">@ContentService["UserButton:Profile"]</MudMenuItem>
                             <MudMenuItem Href="/applications">@ContentService["UserButton:Applications"]</MudMenuItem>
-                            <MudMenuItem OnClick="Logout">@ContentService["UserButton:Logout"]</MudMenuItem>
+                            <MudMenuItem OnClick="@Logout">@ContentService["UserButton:Logout"]</MudMenuItem>
                         </MudMenu>
                     </Authorized>
                     <NotAuthorized>

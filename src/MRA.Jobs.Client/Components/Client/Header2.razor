@@ -1,8 +1,11 @@
 ﻿@using MRA.Jobs.Client.Services
 @using MRA.Jobs.Client.Enums
 @using MRA.Jobs.Client.wwwroot.resources
+@using AltairCA.Blazor.WebAssembly.Cookie
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
+@inject AuthenticationStateProvider AuthProvider
+@inject IAltairCABlazorCookieUtil CookieUtil
 
 <MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
 <MudToolBar>
@@ -38,27 +41,27 @@
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <MudButton Href="/" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Home)">
             <MudText>
-                <b>Home</b>
+                <b>@ContentService["Header:Home"]</b>
             </MudText>
         </MudButton>
         <MudButton Href="/jobs" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Jobs)">
             <MudText>
-                <b>Jobs</b>
+                <b>@ContentService["Header:Jobs"]</b>
             </MudText>
         </MudButton>
         <MudButton Href="/internships" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Internships)">
             <MudText>
-                <b>Internships</b>
+                <b>@ContentService["Header:Internships"]</b>
             </MudText>
         </MudButton>
         <MudButton Href="/trainings" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Trainings)">
             <MudText>
-                <b>Trainings</b>
+                <b>@ContentService["Header:Trainings"]</b>
             </MudText>
         </MudButton>
         <MudButton Href="https://www.silkroadprofessionals.com/team/team/s" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Team)">
             <MudText>
-                <b>Team</b>
+                <b>@ContentService["Header:Team"]</b>
             </MudText>
         </MudButton>
     </MudHidden>
@@ -91,9 +94,9 @@
                         </MudChip>
                     </ActivatorContent>
                     <ChildContent>
-                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.AccountCircle">Profile</MudMenuItem>
-                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Checklist">Applications</MudMenuItem>
-                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Logout">Sign Out</MudMenuItem>
+                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.AccountCircle" Href="/profile">@ContentService["UserButton:Profile"]</MudMenuItem>
+                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Checklist" Href="/applications">@ContentService["UserButton:Applications"]</MudMenuItem>
+                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Logout" OnClick="@Logout">@ContentService["UserButton:Logout"]</MudMenuItem>
                     </ChildContent>
                 </MudMenu>
             </Authorized>
@@ -103,8 +106,8 @@
                         <MudChip Icon="@Icons.Material.Filled.Person">Sign In</MudChip>
                     </ActivatorContent>
                     <ChildContent>
-                        <MudMenuItem>Sign In</MudMenuItem>
-                        <MudMenuItem>Sign Up</MudMenuItem>
+                        <MudMenuItem Href="/sign-in">@ContentService["UserButton:Sign In"]</MudMenuItem>
+                        <MudMenuItem Href="/sign-up">@ContentService["UserButton:Sign Up"]</MudMenuItem>
                     </ChildContent>
                 </MudMenu>
             </NotAuthorized>
@@ -130,11 +133,11 @@
         </MudTooltip>
     </MudToolBar>
     <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
-        <MudNavLink Match="NavLinkMatch.All" Href="/">Home</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/jobs">Jobs</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/internships">Internships</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/trainings">Trainings</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">Team</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/">@ContentService["Header:Home"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
     </MudNavMenu>
 </MudDrawer>
 
@@ -143,9 +146,11 @@
 
     private async void SelectLanguage(string lang)
     {
+        _selectedLanguage = lang;
         await LayoutService.ToggleRightToLeft(lang);
 
         StateHasChanged();
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     bool open = false;
@@ -207,6 +212,13 @@
     {
         await LayoutService.ToggleDarkMode();
         StateHasChanged();
+    }
+
+    private async Task Logout()
+    {
+        await CookieUtil.RemoveAsync("authToken");
+        await AuthProvider.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("/");
     }
 
 }

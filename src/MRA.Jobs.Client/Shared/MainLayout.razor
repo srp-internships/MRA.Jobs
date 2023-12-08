@@ -6,14 +6,17 @@
 
     <Header2/>
     <MudDialogProvider/>
-    <MudSnackbarProvider/>
-    <main id="main" style="min-height: 100vh">
-        <MudContainer>
-            @Body
-
-        </MudContainer>
-
-    </main>
+<MudSnackbarProvider/>
+<MudMainContent>
+      <main id="main" style="min-height: 100vh">
+            <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+                @Body
+    
+            </MudContainer>
+    
+        </main>
+</MudMainContent>
+  
 
     <footer class="bg-dark text-light text-center py-5 mt-5">
         <div class="container">
