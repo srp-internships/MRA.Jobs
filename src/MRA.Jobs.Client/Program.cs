@@ -24,6 +24,7 @@ using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.ContentService;
 using MRA.Jobs.Client.Services.ConverterService;
 using MRA.Jobs.Client.Services.FileService;
+using MRA.Jobs.Client.Services.HiddenVacancies;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -82,6 +83,7 @@ builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IHiddenVacancyService, HiddenVacancyService>();
 builder.Services.AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
 
 builder.Services.AddBlazoredLocalStorage();

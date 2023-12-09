@@ -24,7 +24,7 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
                 FileName = "213.bytes"
             }
         };
-        RunAsDefaultUserAsync();
+        RunAsDefaultUserAsync("applicant1");
         var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
@@ -59,7 +59,7 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
             }
         };
 
-        RunAsDefaultUserAsync();
+        RunAsDefaultUserAsync("applicant1");
         var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
@@ -107,7 +107,7 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
             }
         };
 
-        RunAsDefaultUserAsync();
+        RunAsDefaultUserAsync("applicant1");
         var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, testSubmit);
 
         response.EnsureSuccessStatusCode();
@@ -123,7 +123,7 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
     {
         var jobId = await AddJobVacancyAsync("newVacancyForDuplicateTest");
 
-        RunAsDefaultUserAsync();
+        RunAsDefaultUserAsync("applicant1");
 
         var createCommand = new CreateApplicationCommand
         {
