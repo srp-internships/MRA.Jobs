@@ -72,8 +72,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Components\Home\" />
-      <Folder Include="CustomMethods\" />
+      <Content Update="Components\Client\Header2.razor">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

@@ -2,13 +2,16 @@
 @using MRA.Jobs.Client.Enums
 @using MRA.Jobs.Client.wwwroot.resources
 @using AltairCA.Blazor.WebAssembly.Cookie
+@using MRA.Identity.Application.Contract.Profile.Responses
+@using MRA.Jobs.Client.Services.Profile
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
 @inject AuthenticationStateProvider AuthProvider
 @inject IAltairCABlazorCookieUtil CookieUtil
 
+
 <MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
-<MudToolBar>
+<MudToolBar Class="toolbar-fixed-blur">
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
         <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
     </MudHidden>
@@ -64,6 +67,11 @@
                 <b>@ContentService["Header:Team"]</b>
             </MudText>
         </MudButton>
+        <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Contact)">
+            <MudText>
+                <b>Contact</b>
+            </MudText>
+        </MudButton>
     </MudHidden>
     <MudSpacer/>
     <MudHidden Breakpoint="Breakpoint.Xs">
@@ -86,12 +94,19 @@
             <Authorized>
                 <MudMenu AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter">
                     <ActivatorContent>
-                        <MudChip>
-                            <AvatarContent>
-                                <MudAvatar>MK</MudAvatar>
-                            </AvatarContent>
-                            <ChildContent>Avatar</ChildContent>
-                        </MudChip>
+                        @if (LayoutService.user == null)
+                        {
+                            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                        }
+                        else
+                        {
+                            <MudChip>
+                                <AvatarContent>
+                                    <MudAvatar>@LayoutService.user.FirstName[0].ToString().ToUpper()@LayoutService.user.LastName[0].ToString().ToUpper()</MudAvatar>
+                                </AvatarContent>
+                                <ChildContent>@LayoutService.user.FirstName</ChildContent>
+                            </MudChip>
+                        }
                     </ActivatorContent>
                     <ChildContent>
                         <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.AccountCircle" Href="/profile">@ContentService["UserButton:Profile"]</MudMenuItem>
@@ -138,6 +153,8 @@
         <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
         <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
         <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/contact">Contact</MudNavLink>
+
     </MudNavMenu>
 </MudDrawer>
 
@@ -162,13 +179,14 @@
 
     private DocPages currentPage;
     private MudThemeProvider _mudThemeProvider;
-
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+      
         await base.OnAfterRenderAsync(firstRender);
-
         if (firstRender)
         {
+           
             await ApplyUserPreferences();
             await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
             StateHasChanged();
@@ -188,6 +206,7 @@
 
     protected override void OnInitialized()
     {
+        StateHasChanged();
         NavigationManager.LocationChanged += HandleLocationChanged;
         base.OnInitialized();
     }

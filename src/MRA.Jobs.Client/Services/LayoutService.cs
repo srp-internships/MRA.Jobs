@@ -4,6 +4,7 @@
 
 
 using Microsoft.AspNetCore.Components;
+using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Jobs.Client.Enums;
 using MRA.Jobs.Client.Services.ContentService;
 using MRA.Jobs.Client.Services.UserPreferences;
@@ -12,10 +13,11 @@ using MudBlazor;
 
 namespace MRA.Jobs.Client.Services;
 
-public class LayoutService(IUserPreferencesService userPreferencesService , IContentService contentService)
+public class LayoutService(IUserPreferencesService userPreferencesService, IContentService contentService)
 {
+    public UserProfileResponse user;
     public event Action OnLanguageChanged;
-    
+
     private UserPreferences.UserPreferences _userPreferences;
     private bool _systemPreferences;
 
@@ -25,7 +27,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService , ICon
     public bool IsDarkMode { get; private set; }
 
     public MudTheme CurrentTheme { get; private set; }
-    
+
     public void SetDarkMode(bool value)
     {
         IsDarkMode = value;
@@ -66,7 +68,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService , ICon
     public event EventHandler MajorUpdateOccured;
 
     private void OnMajorUpdateOccured() => MajorUpdateOccured?.Invoke(this, EventArgs.Empty);
-  
+
     public async Task ToggleDarkMode()
     {
         switch (DarkModeToggle)
@@ -92,13 +94,13 @@ public class LayoutService(IUserPreferencesService userPreferencesService , ICon
 
     public async Task ToggleRightToLeft(string lang)
     {
-        if (lang == "Ru") 
+        if (lang == "Ru")
             await contentService.ChangeCulture(ApplicationCulturesNames.Ru);
-        if (lang == "En") 
+        if (lang == "En")
             await contentService.ChangeCulture(ApplicationCulturesNames.En);
-        if (lang == "Tj") 
+        if (lang == "Tj")
             await contentService.ChangeCulture(ApplicationCulturesNames.Tj);
-       
+
         OnLanguageChanged?.Invoke();
     }
 
@@ -111,21 +113,18 @@ public class LayoutService(IUserPreferencesService userPreferencesService , ICon
     public DocPages GetDocsBasePage(string uri)
     {
         if (uri.Contains("/jobs"))
-        {
             return DocPages.Jobs;
-        }
-        else if (uri.Contains("/internships"))
-        {
+
+        if (uri.Contains("/internships"))
             return DocPages.Internships;
-        }
-        else if (uri.Contains("/trainings"))
-        {
+
+        if (uri.Contains("/trainings"))
             return DocPages.Trainings;
-        }
-        else
-        {
-            return DocPages.Home;
-        }
+
+        if (uri.Contains("/contact"))
+            return DocPages.Contact;
+                
+        return DocPages.Home;
     }
 
     public bool MudDrawerOpen;

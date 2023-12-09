@@ -6,5 +6,6 @@ public enum DocPages
     Jobs,
     Internships,
     Trainings,
-    Team
+    Team,
+    Contact
 }
