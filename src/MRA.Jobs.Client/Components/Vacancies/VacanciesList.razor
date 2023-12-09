@@ -1,9 +1,13 @@
 ﻿@using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Services.ConverterService
+@using MRA.Jobs.Client.Services.HiddenVacancies
+@using MRA.Jobs.Application.Contracts.HiddenVacancies.Responses
 @inject ICategoryService CategoryService
 @inject IVacancyService VacancyService
-@inject IDateTimeConvertToStringService DateTimeConvert
+@inject IDateTimeConvertToStringService DateTimeConvertToStringService
+@inject IHiddenVacancyService HiddenVacancyService
+@inject NavigationManager NavigationManager
 <style>
 	.job-card:hover {
 		background-color: #F5F5F5; /* Change to desired hover color */
@@ -77,7 +81,7 @@ else
                     </MudTabs>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.Md" Invert="true">
-					<MudTabs Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+                    <MudTabs Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
                         <MudTabPanel Text="@ContentService["VacanciesList:All"]"/>
                         @foreach (var jobCats in VacancyCategories)
                         {
@@ -97,7 +101,7 @@ else
                     </MudTabs>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.Lg" Invert="true">
-					<MudTabs Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+                    <MudTabs Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
                         <MudTabPanel Text="@ContentService["VacanciesList:All"]"/>
                         @foreach (var jobCats in VacancyCategories)
                         {
@@ -117,7 +121,7 @@ else
                     </MudTabs>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.Xl" Invert="true">
-					<MudTabs Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
+                    <MudTabs Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
                         <MudTabPanel Text="@ContentService["VacanciesList:All"]"/>
                         @foreach (var jobCats in VacancyCategories)
                         {
@@ -136,37 +140,79 @@ else
                         }
                     </MudTabs>
                 </MudHidden>
-                <MudHidden Breakpoint="Breakpoint.Xxl" Invert="true">
-					<MudTabs Outlined="true" MinimumTabWidth="250px" Position="Position.Left" ActivePanelIndexChanged="@(index => HandleTabSelection(index))">
-                        <MudTabPanel Text="@ContentService["VacanciesList:All"]"/>
-                        @foreach (var jobCats in VacancyCategories)
-                        {
-                            <MudTabPanel>
-                                <TabContent>
-                                    <div class="customTabContainer">
-                                        <div class="customTabContainerLeft">
-                                            <MudText>@jobCats</MudText>
-                                        </div>
-                                        <div class="customTabContainerRight">
-                                            <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(jobCats)"></MudBadge>
-                                        </div>
-                                    </div>
-                                </TabContent>
-                            </MudTabPanel>
-                        }
-                    </MudTabs>
-                </MudHidden>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <CascadingAuthenticationState>
+                            <AuthorizeView>
+                                <Authorized>
+                                    @if (_applicationWithHiddenVacancyStatus == null || !_applicationWithHiddenVacancyStatus.Applied)
+                                    {
+                                        <MudCard>
+                                            <MudCardContent>
+                                                <MudText Typo="Typo.body2">
+                                                    If you would like to nominate yourself, send us your СV.
+                                                </MudText>
+                                            </MudCardContent>
+                                            <MudCardActions>
+                                                <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                                           OnClick="ApplyHiddenVacancy" FullWidth="true">
+                                                    <MudText>Upload CV</MudText>
+                                                </MudButton>
+                                            </MudCardActions>
+                                        </MudCard>
+                                    }
+                                    else
+                                    {
+                                        <MudCard>
+                                            <MudCardContent>
+                                                <MudText Typo="Typo.body2">
+                                                    The status of your CV for your candidacy is <b>@_applicationWithHiddenVacancyStatus.Status.ToString()</b>
+                                                </MudText>
+                                            </MudCardContent>
+                                            @if (_applicationWithHiddenVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Expired
+                                                 || _applicationWithHiddenVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Rejected
+                                                 || _applicationWithHiddenVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Refused)
+                                            {
+                                                <MudCardActions>
+                                                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                                               OnClick="ApplyHiddenVacancy" FullWidth="true">
+                                                        <MudText>Upload New CV</MudText>
+                                                    </MudButton>
+                                                </MudCardActions>
+                                            }
+                                        </MudCard>
+                                    }
+                                </Authorized>
+                                <NotAuthorized>
+                                    <MudCard>
+                                        <MudCardContent>
+                                            <MudText Typo="Typo.body2">
+                                                If you would like to nominate yourself, sign in and send us your СV.
+                                            </MudText>
+                                        </MudCardContent>
+                                        <MudCardActions>
+                                            <MudButton Variant="Variant.Filled" OnClick="SignIn" Color="Color.Primary" FullWidth="true">
+                                                <MudText>Sign In</MudText>
+                                            </MudButton>
+                                        </MudCardActions>
+                                    </MudCard>
+
+                                </NotAuthorized>
+                            </AuthorizeView>
+                        </CascadingAuthenticationState>
+                    </MudItem>
+                </MudGrid>
             </MudItem>
             @if (VacancyCategories.Count == 0)
             {
-                <MudText Typo="Typo.h5" Style="margin:50px;">@ContentService["VacanciesList:NoJobs"]</MudText>
+                <MudText Typo="Typo.h5" Style="margin:50px;">There are currently no job vacancies available. Please check back later :)</MudText>
             }
             else
             {
                 <MudItem xs="12" md="9">
                     <MudGrid>
                         <MudItem xs="12">
-                            <MudTextField @bind-Value="Search" TextChanged="SearchVacancy" Label="@ContentService["VacanciesList:Search"]" Variant="Variant.Outlined" OnAdornmentClick="SearchVacancy" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Info"/>
+                            <MudTextField @bind-Value="Search" TextChanged="SearchVacancy" Label="Search" Variant="Variant.Outlined" OnAdornmentClick="SearchVacancy" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Info"/>
                         </MudItem>
                         @foreach (var Vacancy in GetVisibleVacancies())
                         {
@@ -179,7 +225,7 @@ else
                                             </MudText>
                                             <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
                                                 <small>
-                                                    <b>@ContentService["VacanciesList:Posted"] @DateTimeConvert.GetDisplayPostedDate(Vacancy.PublishDate)</b>
+                                                    <b>Posted @DateTimeConvertToStringService.GetDisplayPostedDate(Vacancy.PublishDate)</b>
                                                 </small>
                                             </MudText>
                                             <br/>
@@ -188,24 +234,24 @@ else
                                                 @if (Vacancy.Duration != 0)
                                                 {
                                                     <MudItem Style="color:rgb(128,128,128)">
-                                                        <MudText Typo="Typo.caption">@ContentService["VacanciesList:Duration"] <b>@Vacancy.Duration month(s)</b></MudText>
+                                                        <MudText Typo="Typo.caption">Duration <b>@Vacancy.Duration month(s)</b></MudText>
                                                     </MudItem>
                                                 }
                                                 @if (Vacancy.Deadline != default(DateTime))
                                                 {
                                                     <MudItem>
                                                         @{
-                                                            var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(Vacancy.Deadline);
+                                                            var deadlineResult = DateTimeConvertToStringService.GetDeadlineOrEndDateDisplayDate(Vacancy.Deadline);
                                                             var deadlineStyle = $"color:{deadlineResult.Color}";
-                                                            <MudText Typo="Typo.caption" Style="@deadlineStyle">@ContentService["VacanciesList:Deadline"] <b>@deadlineResult.DisplayDate</b></MudText>
+                                                            <MudText Typo="Typo.caption" Style="@deadlineStyle">Deadline <b>@deadlineResult.DisplayDate</b></MudText>
                                                         }
                                                     </MudItem>
                                                 }
                                                 <MudItem>
                                                     @{
-                                                        var endDateResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(Vacancy.EndDate);
+                                                        var endDateResult = DateTimeConvertToStringService.GetDeadlineOrEndDateDisplayDate(Vacancy.EndDate);
                                                         var endDateStyle = $"color:{endDateResult.Color}";
-                                                        <MudText Typo="Typo.caption" Style="@endDateStyle">@ContentService["VacanciesList:End date"] <b>@endDateResult.DisplayDate</b></MudText>
+                                                        <MudText Typo="Typo.caption" Style="@endDateStyle">End date <b>@endDateResult.DisplayDate</b></MudText>
                                                     }
                                                 </MudItem>
                                             </MudGrid>
@@ -248,8 +294,11 @@ else
     private string _selectedCategoryText = "All Internships";
     private int _itemsPerPage = 5;
 
+    private ApplicationWithHiddenVacancyStatus _applicationWithHiddenVacancyStatus;
+
     protected override async void OnAfterRender(bool firstRender)
     {
+        _applicationWithHiddenVacancyStatus = await HiddenVacancyService.GetApplicationStatus();
         if (firstRender)
         {
             await Task.Delay(1000);
@@ -314,6 +363,16 @@ else
     private int GetTotalPages()
     {
         return (int)Math.Ceiling((double)FilteredVacancies.Count / _itemsPerPage);
+    }
+
+    private void ApplyHiddenVacancy()
+    {
+        NavigationManager.NavigateTo("/upload-cv");
+    }
+
+    private void SignIn()
+    {
+        NavigationManager.NavigateTo("/sign-in");
     }
 
 }
