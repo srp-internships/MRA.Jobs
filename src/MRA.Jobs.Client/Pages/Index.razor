@@ -366,113 +366,218 @@
             </b>
         </MudText>
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
-        <div style="text-align: center;">
-            <MudButton Href="https://www.silkroadprofessionals.com/team/team/" Variant="Variant.Filled"
-                       Color="Color.Primary" Target="_black" Style="">
-             <MudText>   @ContentService["Home:ViewTeam"]</MudText>
-            </MudButton>
-        </div>
- </MudHidden>
+            <div style="text-align: center;">
+                <MudButton Href="https://www.silkroadprofessionals.com/team/team/" Variant="Variant.Filled"
+                           Color="Color.Primary" Target="_black" Style="">
+                    <MudText> @ContentService["Home:ViewTeam"]</MudText>
+                </MudButton>
+            </div>
+        </MudHidden>
     </MudItem>
     <MudItem xs="12" md="6" Style="padding: 2%">
         <MudImage Src="assets/uploads/2021/09/team-2.jpg" ObjectFit="ObjectFit.Cover" Elevation="25"
                   Class="rounded-lg mud-elevation-4" Style="width: 100%;"/>
         <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                <div style="text-align: center;">
-                    <MudButton Href="https://www.silkroadprofessionals.com/team/team/" Variant="Variant.Filled"
-                               Color="Color.Primary" Target="_black">
-                      <MudText> @ContentService["Home:ViewTeam"]</MudText> 
-                    </MudButton>
-                </div>
-         </MudHidden>
+            <div style="text-align: center;">
+                <MudButton Href="https://www.silkroadprofessionals.com/team/team/" Variant="Variant.Filled"
+                           Color="Color.Primary" Target="_black">
+                    <MudText> @ContentService["Home:ViewTeam"]</MudText>
+                </MudButton>
+            </div>
+        </MudHidden>
     </MudItem>
 </MudGrid>
 
-<div>
-
-    <section id="pricing" class="pricing">
-        <!--  Section Title -->
-        <div class="container section-title">
-            <h2>
+<MudGrid Style="margin-top: 10%">
+    <MudItem xs="12">
+        <MudText Style="text-align: center" Typo="Typo.h2">
+            <b>
                 <span style="color: #129fd7;">@ContentService["Home:Client"]</span> @ContentService["Home:Partner"]
-            </h2>
-        </div>
-        <!-- End Section Title -->
+            </b>
+        </MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudCarousel Class="mud-width-full" Style="height:450px" ShowArrows="@true" ShowBullets="@true"
+                         EnableSwipeGesture="@true" AutoCycle="@true" TData="object">
+                <MudCarouselItem Transition="Transition.Slide" Style="padding: 3% 3% 0 3%">
+                    <MudCard Class="rounded-lg mud-elevation-4">
+                        <MudCardHeader >
+                            <CardHeaderContent>
+                                <div style="text-align: center;">
+                                    <MudImage Src="assets/img/Client&Partner/ParagonLogo.jpg" Style="border-radius: 50%;" Width="75"/>
+                                </div>
 
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="pricing-item">
-
-                        <div class="icon">
-                            <img src="assets/img/Client&Partner/ParagonLogo.jpg"
-                                 alt=""
-                                 class="img-fluid rounded-circle-1"/>
-                        </div>
-
-                        <div class="text-center">
-                            <p>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudText>
                                 "We have found the Silk Road team to be very knowledgeable and
                                 capable of delivering high quality software
                                 that adheres to our specifications and the latest industry standards"
-                            </p>
-                            <h2>Anthony Martin</h2>
-                            <h5>
-                                Manager / Product Development
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Pricing Item -->
+                            </MudText>
+                            <br/>
+                            <div style="text-align: center;">
+                                <MudText Typo="Typo.h5"> Anthony Martin</MudText>
+                                <MudText Typo="Typo.h6" Style="text-align: center">
+                                    Manager / Product Development
+                                </MudText>
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
+                </MudCarouselItem>
+                <MudCarouselItem Transition="Transition.Slide" Style="padding: 3% 3% 0 3%">
+                    <MudCard Class="rounded-lg mud-elevation-4">
+                        <MudCardHeader >
+                            <CardHeaderContent>
+                                <div style="text-align: center;">
+                                    <MudImage Src="assets/img/Client&Partner/Koblelogo-1.jpg" Style="border-radius: 50%;" Width="75"/>
+                                </div>
 
-                <div class="col-lg-4">
-                    <div class="pricing-item ">
-
-                        <div class="icon">
-                            <img src="assets/img/Client&Partner/Koblelogo-1.jpg"
-                                 alt=""
-                                 class="img-fluid rounded-circle-1">
-                        </div>
-
-                        <div class="text-center">
-                            <p>
-                                “Silk Road Professionals has been a valued partner since 2014.
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudText>
+                                "Silk Road Professionals has been a valued partner since 2014.
                                 We are working on a very large business management software project.
                                 It is important to us to have long term programmers that are able to communicate well,
                                 be innovative, and produce quality software for our 8,000+ users.
                                 They have done an excellent job onboarding and keeping quality programmers.
-                                We could not have accomplished this multi-year project without them”
-                            </p>
-                            <h2>Glenn Esh</h2>
-                            <h5>CTO & Product Manager</h5>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Pricing Item -->
+                                We could not have accomplished this multi-year project without them"
+                            </MudText>
+                            <br/>
+                            <div style="text-align: center;">
+                                <MudText Typo="Typo.h5">Glenn Esh</MudText>
+                                <MudText Typo="Typo.h6" Style="text-align: center">
+                                    CTO & Product Manager
+                                </MudText>
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
+                </MudCarouselItem>
+                <MudCarouselItem Transition="Transition.Slide" Style="padding: 3% 3% 0 3%">
+                    <MudCard Class="rounded-lg mud-elevation-4">
+                        <MudCardHeader >
+                            <CardHeaderContent>
+                                <div style="text-align: center;">
+                                    <MudImage Src="assets/img/Client&Partner/PestScanLogo.jpg" Style="border-radius: 50%;" Width="75"/>
+                                </div>
 
-                <div class="col-lg-4">
-                    <div class="pricing-item">
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudText>
+                                "Since 2020 we have been working with Silk Road Professionals. I am very happy we got to
+                                know them and that we decided to work together. Their efforts have boosted our development
+                                and consequently enabled us to faster gain a market share in our field of Pest Control Software.
+                                What I like about SRP is the short communication lines, their productive feedback on what we try
+                                to establish and their positive, cooperative attitude. I just love their core values and
+                                I see how they drive their day-to-day work."
+                            </MudText>
+                            <br/>
+                            <div style="text-align: center;">
+                                <MudText Typo="Typo.h5">Jan Smits</MudText>
+                                <MudText Typo="Typo.h6" Style="text-align: center">
+                                    Founder of PestScan
+                                </MudText>
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
+                </MudCarouselItem>
+            </MudCarousel>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <MudCarousel Class="mud-width-full" Style="height:550px" ShowArrows="@true" ShowBullets="@true"
+                         EnableSwipeGesture="@true" AutoCycle="@true" TData="object">
+                <MudCarouselItem Transition="Transition.Slide" Style="padding: 3% 3% 0 3%">
+                    <MudCard Class="rounded-lg mud-elevation-4">
+                        <MudCardHeader >
+                            <CardHeaderContent>
+                                <div style="text-align: center;">
+                                    <MudImage Src="assets/img/Client&Partner/ParagonLogo.jpg" Style="border-radius: 50%;" Width="75"/>
+                                </div>
 
-                        <div class="icon">
-                            <img src="assets/img/Client&Partner/PestScanLogo.jpg"
-                                 alt=""
-                                 class="img-fluid rounded-circle-1">
-                        </div>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudText>
+                                "We have found the Silk Road team to be very knowledgeable and
+                                capable of delivering high quality software
+                                that adheres to our specifications and the latest industry standards"
+                            </MudText>
+                            <br/>
+                            <div style="text-align: center;">
+                                <MudText Typo="Typo.h5"> Anthony Martin</MudText>
+                                <MudText Typo="Typo.h6" Style="text-align: center">
+                                    Manager / Product Development
+                                </MudText>
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
+                </MudCarouselItem>
+                <MudCarouselItem Transition="Transition.Slide" Style="padding: 3% 3% 0 3%">
+                    <MudCard Class="rounded-lg mud-elevation-4">
+                        <MudCardHeader >
+                            <CardHeaderContent>
+                                <div style="text-align: center;">
+                                    <MudImage Src="assets/img/Client&Partner/Koblelogo-1.jpg" Style="border-radius: 50%;" Width="75"/>
+                                </div>
 
-                        <div class="text-center">
-                            <p>
-                                "Since 2020 we have been working with Silk Road Professionals. I am very happy we got to know them and that we decided to work together. Their efforts have boosted our development and consequently enabled us to faster gain a market share in our field of Pest Control Software. What I like about SRP is the short communication lines, their productive feedback on what we try to establish and their positive, cooperative attitude. I just love their core values and I see how they drive their day-to-day work."
-                            </p>
-                            <h2>Jan Smits</h2>
-                            <h5>Founder of PestScan</h5>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Pricing Item -->
-            </div>
-        </div>
-    </section>
-    <!-- End Pricing Section -->
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudText>
+                                "Silk Road Professionals has been a valued partner since 2014.
+                                We are working on a very large business management software project.
+                                It is important to us to have long term programmers that are able to communicate well,
+                                be innovative, and produce quality software for our 8,000+ users.
+                                They have done an excellent job onboarding and keeping quality programmers.
+                                We could not have accomplished this multi-year project without them"
+                            </MudText>
+                            <br/>
+                            <div style="text-align: center;">
+                                <MudText Typo="Typo.h5">Glenn Esh</MudText>
+                                <MudText Typo="Typo.h6" Style="text-align: center">
+                                    CTO & Product Manager
+                                </MudText>
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
+                </MudCarouselItem>
+                <MudCarouselItem Transition="Transition.Slide" Style="padding: 3% 3% 0 3%">
+                    <MudCard Class="rounded-lg mud-elevation-4">
+                        <MudCardHeader >
+                            <CardHeaderContent>
+                                <div style="text-align: center;">
+                                    <MudImage Src="assets/img/Client&Partner/PestScanLogo.jpg" Style="border-radius: 50%;" Width="75"/>
+                                </div>
+
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudText>
+                                "Since 2020 we have been working with Silk Road Professionals. I am very happy we got to
+                                know them and that we decided to work together. Their efforts have boosted our development
+                                and consequently enabled us to faster gain a market share in our field of Pest Control Software.
+                                What I like about SRP is the short communication lines, their productive feedback on what we try
+                                to establish and their positive, cooperative attitude. I just love their core values and
+                                I see how they drive their day-to-day work."
+                            </MudText>
+                            <br/>
+                            <div style="text-align: center;">
+                                <MudText Typo="Typo.h5">Jan Smits</MudText>
+                                <MudText Typo="Typo.h6" Style="text-align: center">
+                                    Founder of PestScan
+                                </MudText>
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
+                </MudCarouselItem>
+            </MudCarousel>
+        </MudHidden>
+    </MudItem>
+</MudGrid>
+<div>
     <!-- Contact Section - Home Page -->
     <section id="contact" class="contact">
         <!--  Section Title -->

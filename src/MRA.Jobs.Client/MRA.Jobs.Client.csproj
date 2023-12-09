@@ -72,6 +72,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Components\Home\" />
       <Folder Include="CustomMethods\" />
     </ItemGroup>
 
