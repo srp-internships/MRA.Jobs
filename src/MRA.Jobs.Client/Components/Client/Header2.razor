@@ -2,9 +2,15 @@
 @using MRA.Jobs.Client.Enums
 @using MRA.Jobs.Client.wwwroot.resources
 @using AltairCA.Blazor.WebAssembly.Cookie
+@using Blazorise
 @using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using MRA.Jobs.Client.Components.Buttons
+@using Anchor = MudBlazor.Anchor
+@using Breakpoint = MudBlazor.Breakpoint
+@using Color = MudBlazor.Color
+@using DividerType = MudBlazor.DividerType
+@using Size = MudBlazor.Size
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
 @inject AuthenticationStateProvider AuthProvider
@@ -76,8 +82,8 @@
     <MudSpacer/>
     <MudHidden Breakpoint="Breakpoint.Xs">
         <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
-      
-        <ToolBarSettingsButtons />
+
+        <ToolBarSettingsButtons/>
     </MudHidden>
 
     <CascadingAuthenticationState>
@@ -128,7 +134,7 @@
         <MudSpacer/>
         <ToolBarSettingsButtons/>
     </MudToolBar>
-    
+
     <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
         <MudNavLink Match="NavLinkMatch.All" Href="/">@ContentService["Header:Home"]</MudNavLink>
         <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
@@ -141,7 +147,7 @@
 </MudDrawer>
 
 @code {
- 
+
     bool _open = false;
 
     void ToggleDrawer()
@@ -150,10 +156,9 @@
     }
 
     private DocPages currentPage;
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-      
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
@@ -168,11 +173,11 @@
         }
     }
 
-  
-  
 
     protected override void OnInitialized()
     {
+        currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
+      
         StateHasChanged();
         NavigationManager.LocationChanged += HandleLocationChanged;
         base.OnInitialized();
