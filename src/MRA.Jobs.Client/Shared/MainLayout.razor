@@ -4,6 +4,7 @@
 @inject IJSRuntime JS
 @inject LayoutService LayoutService
 
+<MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
 <Header2/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
@@ -28,12 +29,29 @@
 
 @code
 {
-    private MudTheme _theme = new();
+    
+    
+    private MudThemeProvider _mudThemeProvider;
+
+    private async Task ApplyUserPreferences()
+    {
+        var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
+        await LayoutService.ApplyUserPreferences(defaultDarkMode);
+    }
+
+    private async Task OnSystemPreferenceChanged(bool newValue)
+    {
+        await LayoutService.OnSystemPreferenceChanged(newValue);
+    }
   
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            await ApplyUserPreferences();
+            await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
+            StateHasChanged();
+            
             await JS.InvokeVoidAsync("loadScript", "/assets/vendor/bootstrap/js/bootstrap.bundle.min.js");
             await JS.InvokeVoidAsync("loadScript", "/assets/vendor/glightbox/js/glightbox.min.js");
             await JS.InvokeVoidAsync("loadScript", "/assets/vendor/purecounter/purecounter_vanilla.js");
@@ -49,9 +67,14 @@
     protected override void OnInitialized()
     {
         LayoutService.OnLanguageChanged += UpdateState;
+        LayoutService.MajorUpdateOccured += UpdateTheme;
     }
 
     private void UpdateState()
+    {
+        StateHasChanged();
+    }
+    private void UpdateTheme(object sender, EventArgs e)
     {
         StateHasChanged();
     }
@@ -59,5 +82,6 @@
     public void Dispose()
     {
         LayoutService.OnLanguageChanged -= UpdateState;
+        LayoutService.MajorUpdateOccured -= UpdateTheme;
     }
 }
