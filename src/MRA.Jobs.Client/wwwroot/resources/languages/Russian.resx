@@ -151,8 +151,27 @@
     <data name="SignUp:Secconds" xml:space="preserve">
     <value>секунд осталось для повторной отправки кода.</value>
 </data>
-    <!--SignUp-->
 
+  <!--SignUp-->
+  
+  <!--resetPassword-->
+  <data name="ResetPassword:PhoneNumber" xml:space="preserve">
+      <value>Номер телефона</value>
+  </data>
+  <data name="ResetPassword:Sendconfirmationcode" xml:space="preserve">
+        <value>Отправить код подтверждения</value>
+    </data>
+  <data name="ResetPassword:Resendcode" xml:space="preserve">
+        <value>Отправить код еще раз</value>
+    </data>
+  <data name="ResetPassword:NewPassword" xml:space="preserve">
+        <value>Новый пароль</value>
+    </data>
+  <data name="ResetPassword:Changepassword" xml:space="preserve">
+        <value>Изменить пароль</value>
+    </data>
+  <!--resetPassword-->
+  
     <!-- VacanciesList -->
     <data name="VacanciesList:All" xml:space="preserve">
         <value>Все</value>

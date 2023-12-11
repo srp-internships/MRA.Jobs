@@ -152,7 +152,25 @@
     <value>сония барои боз фиристодани код боқӣ мондааст.</value>
 </data>
     <!--SignUp-->
-
+  
+  <!--resetPassword-->
+  <data name="ResetPassword:PhoneNumber" xml:space="preserve">
+        <value>Рақами мобилӣ</value>
+    </data>
+  <data name="ResetPassword:Sendconfirmationcode" xml:space="preserve">
+        <value>Рамзи тасдиқро фиристед</value>
+    </data>
+  <data name="ResetPassword:Resendcode" xml:space="preserve">
+        <value>Рамзи дубора фиристед</value>
+    </data>
+  <data name="ResetPassword:NewPassword" xml:space="preserve">
+        <value>Калидвожаи Нав</value>
+    </data>
+  <data name="ResetPassword:Changepassword" xml:space="preserve">
+        <value>Ивази калидвожа</value>
+    </data>
+  <!--resetPassword-->
+  
     <!-- VacanciesList -->
         <data name="VacanciesList:All" xml:space="preserve">
     <value>Ҳама</value>
