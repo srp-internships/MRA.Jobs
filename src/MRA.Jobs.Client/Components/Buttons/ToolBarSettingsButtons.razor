@@ -1,0 +1,66 @@
+@using MRA.Jobs.Client.Enums
+@using Blazored.LocalStorage
+@using MRA.Jobs.Client.wwwroot.resources
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorage
+@inject LayoutService LayoutService
+
+<MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
+
+<MudTooltip Duration="1000" Text="Select Language">
+    <MudMenu EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="@_selectedLanguage"
+             Dense="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+        <MudMenuItem OnClick="@(() => SelectLanguage("En"))">En</MudMenuItem>
+        <MudMenuItem OnClick="@(() => SelectLanguage("Ru"))">Ru</MudMenuItem>
+        <MudMenuItem OnClick="@(() => SelectLanguage("Tj"))">Tj</MudMenuItem>
+    </MudMenu>
+</MudTooltip>
+
+<MudTooltip Duration="1000" Text="@(LayoutService.DarkModeToggle == DarkLightMode.System ? "Switch to Light Theme" : LayoutService.DarkModeToggle == DarkLightMode.Dark ? "Switch to system" : "Switch to Dark Theme")">
+    <MudIconButton Icon="@(LayoutService.DarkModeToggle == DarkLightMode.System ? @Icons.Material.Filled.AutoMode : LayoutService.DarkModeToggle == DarkLightMode.Dark ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@ToggleDarkMode"/>
+</MudTooltip>
+
+@code {
+    private string _selectedLanguage = "En";
+
+    private async void SelectLanguage(string lang)
+    {
+        _selectedLanguage = lang;
+        await LayoutService.ToggleRightToLeft(lang);
+
+        StateHasChanged();
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
+
+
+    private MudThemeProvider _mudThemeProvider;
+
+    private async Task ApplyUserPreferences()
+    {
+        var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
+        await LayoutService.ApplyUserPreferences(defaultDarkMode);
+    }
+
+    private async Task OnSystemPreferenceChanged(bool newValue)
+    {
+        await LayoutService.OnSystemPreferenceChanged(newValue);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _selectedLanguage = await ContentService.GetCurrentCulture();
+            await ApplyUserPreferences();
+            await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
+            StateHasChanged();
+        }
+    }
+
+    private async Task ToggleDarkMode()
+    {
+        await LayoutService.ToggleDarkMode();
+        StateHasChanged();
+    }
+
+}
