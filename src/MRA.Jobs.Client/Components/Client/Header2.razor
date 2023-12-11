@@ -76,7 +76,17 @@
     <MudSpacer/>
     <MudHidden Breakpoint="Breakpoint.Xs">
         <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
-        
+        <MudTooltip Duration="1000" Text="Select Language">
+            <MudMenu EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="@_selectedLanguage"
+                     Dense="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+                <MudMenuItem OnClick="@(() => SelectLanguage("En"))">En</MudMenuItem>
+                <MudMenuItem OnClick="@(() => SelectLanguage("Ru"))">Ru</MudMenuItem>
+                <MudMenuItem OnClick="@(() => SelectLanguage("Tj"))">Tj</MudMenuItem>
+            </MudMenu>
+        </MudTooltip>
+        <MudTooltip Duration="1000" Text="@(LayoutService.DarkModeToggle == DarkLightMode.System ? "Switch to Light Theme" : LayoutService.DarkModeToggle == DarkLightMode.Dark ? "Switch to system" : "Switch to Dark Theme")">
+            <MudIconButton Icon="@(LayoutService.DarkModeToggle == DarkLightMode.System ? @Icons.Material.Filled.AutoMode : LayoutService.DarkModeToggle == DarkLightMode.Dark ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@ToggleDarkMode"/>
+        </MudTooltip>
     </MudHidden>
 
     <CascadingAuthenticationState>

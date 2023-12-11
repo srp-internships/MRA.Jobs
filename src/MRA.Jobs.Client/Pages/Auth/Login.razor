@@ -3,10 +3,11 @@
 @using MRA.Identity.Application.Contract.User.Commands.LoginUser
 @using MRA.Jobs.Client.Components.Auth
 @using MRA.Jobs.Client.Services.Auth
-
+@layout EmptyLayout;
 @inject IAuthService AuthService
 @inject ISnackbar Snackbar
 @inject IContentService ContentService
+
 <div class="container">
     <div class="row" style="margin-top:20px;">
         <div Class="d-flex align-center justify-center mud-width-full py-8">
