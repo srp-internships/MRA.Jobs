@@ -186,7 +186,14 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            LayoutService.user = await UserProfileService.Get();    
+            try
+            {
+                LayoutService.user = await UserProfileService.Get();
+            }
+            catch (Exception e)
+            {
+            }
+            
             StateHasChanged();
             await ApplyUserPreferences();
             await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
