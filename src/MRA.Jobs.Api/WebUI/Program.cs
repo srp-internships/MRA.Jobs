@@ -48,8 +48,11 @@ else
 
 using (var scope = app.Services.CreateScope())
 {
-    var initialiser = scope.ServiceProvider.GetRequiredService<DbMigration>();
-    await initialiser.InitialiseAsync();
+    var initializer = scope.ServiceProvider.GetRequiredService<DbMigration>();
+    await initializer.InitialiseAsync();
+    
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+    await dbInitializer.SeedAsync();
 }
 
 app.UseHealthChecks("/status", new HealthCheckOptions

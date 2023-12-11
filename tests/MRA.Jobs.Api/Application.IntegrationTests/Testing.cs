@@ -49,18 +49,22 @@ public class Testing
         return _currentUserId;
     }
 
-    public void RunAsDefaultUserAsync()
+    public void RunAsDefaultUserAsync(string username)
     {
         var claims = new List<Claim>
         {
             new(ClaimTypes.Email, "fakeEmail@asd.com"),
-            new(ClaimTypes.Role,ApplicationClaimValues.Applicant),
+            new(ClaimTypes.Role, ApplicationClaimValues.Applicant),
             new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
-            new(ClaimTypes.Id,Guid.NewGuid().ToString())
+            new(ClaimTypes.Id, Guid.NewGuid().ToString()),
+            new(ClaimTypes.Username, username)
         };
         jwtToken = _tokenService.CreateTokenByClaims(claims);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
     }
+    
+ 
+
     public void RunAsReviewerAsync()
     {
         var claims = new List<Claim>
@@ -68,7 +72,9 @@ public class Testing
             new(ClaimTypes.Email, "fakeEmail@asd.com"),
             new(ClaimTypes.Role, ApplicationClaimValues.Reviewer),
             new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
-            new(ClaimTypes.Id,Guid.NewGuid().ToString())
+            new(ClaimTypes.Id, Guid.NewGuid().ToString())     ,
+            new(ClaimTypes.Username, "username")
+
         };
         jwtToken = _tokenService.CreateTokenByClaims(claims);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
@@ -81,13 +87,13 @@ public class Testing
             new(ClaimTypes.Email, "fakeEmail@asd.com"),
             new(ClaimTypes.Role, ApplicationClaimValues.Administrator),
             new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
-            new(ClaimTypes.Id,Guid.NewGuid().ToString())
+            new(ClaimTypes.Id, Guid.NewGuid().ToString()),
+            new(ClaimTypes.Username, "username")
         };
         jwtToken = _tokenService.CreateTokenByClaims(claims);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
     }
 
-    
 
     public static void ResetState()
     {
@@ -123,7 +129,7 @@ public class Testing
     }
 
     public static async Task RemoveAsync<TEntity>(TEntity entity)
-       where TEntity : class
+        where TEntity : class
     {
         using IServiceScope scope = _scopeFactory.CreateScope();
 
@@ -143,7 +149,8 @@ public class Testing
         return await context.Set<TEntity>().CountAsync();
     }
 
-    public static async Task<TEntity> FindFirstOrDefaultAsync<TEntity>(Expression<Func<TEntity, bool>> criteria) where TEntity : class
+    public static async Task<TEntity> FindFirstOrDefaultAsync<TEntity>(Expression<Func<TEntity, bool>> criteria)
+        where TEntity : class
     {
         using IServiceScope scope = _scopeFactory.CreateScope();
         ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
