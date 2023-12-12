@@ -72,7 +72,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="CustomMethods\" />
+      <Content Update="Components\Client\Header.razor">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>

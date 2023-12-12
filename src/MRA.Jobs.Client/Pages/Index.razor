@@ -1,433 +1,73 @@
 ﻿@page "/"
 @using MRA.Jobs.Client.Identity
+@using MRA.Jobs.Client.Components.Home
 
-<div>
-<section id="hero" class="hero">
-    <!-- <img src="assets/img/front-view-people-having-meeting-office.jpg" alt=""  /> -->
-    <img src="assets/img/slider1-min.jpeg" alt=""/>
+<MudGrid Style="margin-top: 5%; margin-bottom: 10%">
+    <MudItem xs="12" md="6" Style="padding: 10% 10% 0% 10%;">
+        <MudText Typo="Typo.h2">
+            <b>
+                @ContentService["Home:Hero_Title_1"]
+            </b>
+        </MudText>
+        <MudText Typo="Typo.h2" Color="Color.Primary">
+            <b>
+                @ContentService["Home:Hero_Title_2"]
+            </b>
+        </MudText>
+        <MudText Typo="Typo.h6">
+            @ContentService["Home:Hero_Content"]
+        </MudText>
+    </MudItem>
+    <MudItem xs="12" md="6" Style="padding: 2%">
+        <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="assets/img/slider1-min.jpeg" Alt="" Elevation="25"
+                  Class="rounded-tr-md rounded-tl-xl rounded-br-xl rounded-bl-md mud-elevation-4"/>
+    </MudItem>
+</MudGrid>
+<MudHidden Breakpoint="Breakpoint.MdAndDown">
+    <MudGrid>
+        <MudItem xs="12" md="6" Style="padding: 2%">
+            <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="//www.silkroadprofessionals.com/wp-content/uploads/2022/03/slider2-min.jpeg"
+                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4"/>
+        </MudItem>
+        <MudItem xs="12" md="6" Style="padding:10%">
+            <MudText Typo="Typo.h2">
+                <b>
+                    Build Amazing <span style="color: var(--mud-palette-primary)">Apps</span>
+                </b>
+            </MudText>
+            <MudText Typo="Typo.h6">
+                Always on the lookout for the hi-tech advancements. Build not only a product that can sell well, but a platform through which to deliver it.
+            </MudText>
+        </MudItem>
+    </MudGrid>
+</MudHidden>
+<MudHidden Breakpoint="Breakpoint.LgAndUp">
+    <MudGrid>
+        <MudItem xs="12" md="6" Style="padding: 10% 10% 0% 10%;">
+            <MudText Typo="Typo.h2">
+                <b>
+                    Build Amazing <span style="color: var(--mud-palette-primary)">Apps</span>
+                </b>
+            </MudText>
+            <MudText Typo="Typo.h6">
+                Always on the lookout for the hi-tech advancements. Build not only a product that can sell well, but a platform through which to deliver it.
+            </MudText>
+        </MudItem>
+        <MudItem xs="12" md="6" Style="padding: 2%">
+            <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="//www.silkroadprofessionals.com/wp-content/uploads/2022/03/slider2-min.jpeg"
+                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4"/>
+        </MudItem>
+    </MudGrid>
+</MudHidden>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10">
-                <h2>@ContentService["Home:Hero_Title_1"]</h2>
-                <h2 style="color: #129fd7">
-                    @ContentService["Home:Hero_Title_2"]
-                </h2>
-                <p> @ContentService["Home:Hero_Content"]</p>
-            </div>
-            <div class="col-lg-5"></div>
-        </div>
-    </div>
-</section>
-<!-- End Hero Section -->
+<HowWeWork/>
+<WhatWeDo/>
+<About/>
+<Principles/>
+<MeetTeam/>
+<Clients/>
+<Contact/>
 
-<section class="about">
-    <div class="container section-title aos-init aos-animate">
-        <h2>
-            <span style="color: #129fd7">@ContentService["Home:How"]</span> @ContentService["Home:WeWork"]
-        </h2>
-    </div>
-    <div class="container">
-        <div class="row gy-5">
-            <div class="col">
-                <div class="member-img d-flex justify-content-center">
-                    <img src="assets/work/planning-min-400x400.png"
-                         class="img-fluid"
-                         alt=""
-                         style="height: 140px; width: 140p"/>
-                </div>
-                <div class="member-info text-center" style="height: 100px">
-                    <h4>@ContentService["Home:Planning"]</h4>
-                </div>
-            </div>
-            <div class="col">
-                <div class="member-img d-flex justify-content-center">
-                    <img src="assets/work/design-min-400x400.png"
-                         class="img-fluid"
-                         alt=""
-                         style="height: 160px; width: 160p"/>
-                </div>
-                <div class="member-info text-center" style="height: 100px">
-                    <h4>@ContentService["Home:Design"]</h4>
-                </div>
-            </div>
-            <div class="col">
-                <div class="member-img d-flex justify-content-center">
-                    <img src="assets/work/develop-min-400x400.png"
-                         class="img-fluid"
-                         alt=""
-                         style="height: 180px; width: 180p"/>
-                </div>
-                <div class="member-info text-center" style="height: 100px">
-                    <h4>@ContentService["Home:Development"]</h4>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="services">
-    <!--  Section Title -->
-    <div class="container section-title aos-init aos-animate">
-        <h2>
-            <span style="color: #129fd7">@ContentService["Home:What"]</span> @ContentService["Home:WeDo"]
-        </h2>
-    </div>
-    <!-- End Section Title -->
-    <div class="container">
-        <div class="row gy-4">
-            <div class="col-lg-6 aos-init aos-animate">
-                <div class="service-item d-flex">
-                    <div class="icon flex-shrink-0">
-                        <i class="bi bi-globe-americas"></i>
-                    </div>
-                    <div>
-                        <h4 class="title">
-                            <a href="https://www.silkroadprofessionals.com/service/web/" target="_blank" class="stretched-link">@ContentService["Home:WebLinkTitle"]</a>
-                        </h4>
-                        <p class="description">
-                            @ContentService["WebServiceDescription"]
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <!-- End Service Item -->
-
-            <div class="col-lg-6 aos-init aos-animate">
-                <div class="service-item d-flex">
-                    <div class="icon flex-shrink-0">
-                        <i class="bi bi-phone"></i>
-                    </div>
-                    <div>
-                        <h4 class="title">
-                            <a href="https://www.silkroadprofessionals.com/service/mobile/" target="_blank" class="stretched-link">@ContentService["Home:MobileServiceTitle"]</a>
-                        </h4>
-                        <p class="description">
-                            @ContentService["Home:MobileServiceDescription"]
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <!-- End Service Item -->
-
-            <div class="col-lg-6 aos-init aos-animate">
-                <div class="service-item d-flex">
-                    <div class="icon flex-shrink-0">
-                        <i class="bi bi-phone"></i>
-                    </div>
-                    <div>
-                        <h4 class="title">
-                            <a href="https://www.silkroadprofessionals.com/service/desktop/" target="_blank" class="stretched-link">@ContentService["Home:DesktopServiceTitle"]</a>
-                        </h4>
-                        <p class="description">
-                            @ContentService["Home:DesktopServiceDescription"]
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <!-- End Service Item -->
-            <div class="col-lg-6 aos-init aos-animate">
-                <div class="service-item d-flex">
-                    <div class="icon flex-shrink-0">
-                        <i class="bi bi-cloud-haze2"></i>
-                    </div>
-                    <div>
-                        <h4 class="title">
-                            <a href="https://www.silkroadprofessionals.com/service/cloud/" target="_blank"
-                               class="stretched-link">
-                                @ContentService["Home:CloudServiceTitle"]
-                            </a>
-
-                        </h4>
-                        <p class="description">
-                            @ContentService["Home:CloudServiceDescription"]
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <!-- End Service Item -->
-        </div>
-    </div>
-</section>
-
-<!-- About Section - Home Page -->
-<section id="about" class="about">
-    <div class="container section-title aos-init aos-animate">
-        <h2>
-            <span style="color: #129fd7">@ContentService["Home:About"]</span> @ContentService["Home:Us"]
-        </h2>
-    </div>
-    <div class="container">
-        <div class="row align-items-xl-center gy-5">
-            <div class="col-xl-5 content">
-
-                <a Href="https://www.silkroadprofessionals.com/" target="_blank" style="a:hover {color: #1784b5 }">
-                    <h2 style="color: #1c92c8">@ContentService["Home:AboutTitle"]</h2>
-                </a>
-
-                <p>
-                    @ContentService["Home:AboutContent"]
-                </p>
-                @*<a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>*@
-
-
-            </div>
-
-
-            <div class="col-md-3">
-                <div class="icon-box">
-                    <i class="bi bi-chevron-contract"></i>
-                    <h3>@ContentService["Home:MissionTitle"]</h3>
-                    <p>
-                        @ContentService["Home:MissionContent"]
-                    </p>
-                </div>
-            </div>
-            <!-- End Icon Box -->
-
-            <div class="col-md-3">
-                <div class="icon-box">
-                    <i class="bi bi-chevron-contract"></i>
-                    <h3>@ContentService["Home:VisionTitle"]</h3>
-                    <p>
-                        @ContentService["Home:VisionContent"]
-                    </p>
-                </div>
-            </div>
-            <!-- End Icon Box -->
-            <!-- End Icon Box -->
-
-        </div>
-
-    </div>
-</section>
-
-<section class="about">
-    <div class="container">
-        <div class="row align-items-xl-center gy-5">
-            <div class="col-xl-12 content">
-                <h2>@ContentService["Home:Principles"]</h2>
-            </div>
-        </div>
-        <MudGrid>
-            <MudItem lg="4" md="6" xs="12">
-                <div class="icon-box">
-                    <i class="bi bi-1-circle"></i>
-                    <h3>@ContentService["Home:Agile"]</h3>
-                    <p>
-                        @ContentService["Home:AgileDetails"]
-                    </p>
-                </div>
-            </MudItem>
-            <MudItem lg="4" md="6" xs="12">
-                <div class="icon-box">
-                    <i class="bi bi-2-circle"></i>
-                    <h3>@ContentService["Home:CodeQuality"]</h3>
-                    <p>
-                        @ContentService["Home:CodeQualityDetails"]
-                    </p>
-                </div>
-            </MudItem>
-            <MudItem lg="4" md="6" xs="12">
-                <div class="icon-box">
-                    <i class="bi bi-3-circle"></i>
-                    <h3>@ContentService["Home:ContinualLearning"]</h3>
-                    <p>
-                        @ContentService["Home:ContinualLearningDetails"]
-                    </p>
-                </div>
-            </MudItem>
-            <MudItem lg="4" md="6" xs="12">
-                <div class="icon-box">
-                    <i class="bi bi-4-circle"></i>
-                    <h3>@ContentService["Home:IntrinsicControl"]</h3>
-                    <p>
-                        @ContentService["Home:IntrinsicControlDetails"]
-                    </p>
-                </div>
-            </MudItem>
-            <MudItem lg="4" md="6" xs="12">
-                <div class="icon-box">
-                    <i class="bi bi-5-circle"></i>
-                    <h3>@ContentService["Home:GlorifyGod"]</h3>
-                    <p>@ContentService["Home:GlorifyGodDetails"]</p>
-                </div>
-            </MudItem>
-            <MudItem lg="4" md="6" xs="12">
-                <div class="icon-box">
-                    <i class="bi bi-6-circle"></i>
-                    <h3>@ContentService["Home:Productivity"]</h3>
-                    <p>
-                        @ContentService["Home:ProductivityDetails"]
-                    </p>
-                </div>
-            </MudItem>
-        </MudGrid>
-
-    </div>
-</section>
-
-<!-- End About Section -->
-<!-- Services Section - Home Page -->
-<!-- Call-to-action Section - Home Page -->
-<section id="call-to-action" class="call-to-action">
-    <img src="assets/uploads/2021/09/team-2.jpg" alt=""/>
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-10">
-                <div class="text-center">
-                    <h3>
-                        <span style="color: #129fd7">@ContentService["Home:Meet"]</span>@ContentService["Home:OurTeam"]
-                    </h3>
-                    <a class="cta-btn" href="https://www.silkroadprofessionals.com/team/team/" target="_blank">@ContentService["Home:ViewTeam"]</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- End Call-to-action Section -->
-<!-- Pricing Section - Home Page -->
-<section id="pricing" class="pricing">
-    <!--  Section Title -->
-    <div class="container section-title">
-        <h2>
-            <span style="color: #129fd7;">@ContentService["Home:Client"]</span> @ContentService["Home:Partner"]
-        </h2>
-    </div>
-    <!-- End Section Title -->
-
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="pricing-item">
-
-                    <div class="icon">
-                        <img src="assets/img/Client&Partner/ParagonLogo.jpg"
-                             alt=""
-                             class="img-fluid rounded-circle-1"/>
-                    </div>
-
-                    <div class="text-center">
-                        <p>
-                            "We have found the Silk Road team to be very knowledgeable and
-                            capable of delivering high quality software
-                            that adheres to our specifications and the latest industry standards"
-                        </p>
-                        <h2>Anthony Martin</h2>
-                        <h5>
-                            Manager / Product Development
-                        </h5>
-                    </div>
-                </div>
-            </div>
-            <!-- End Pricing Item -->
-
-            <div class="col-lg-4">
-                <div class="pricing-item ">
-
-                    <div class="icon">
-                        <img src="assets/img/Client&Partner/Koblelogo-1.jpg"
-                             alt=""
-                             class="img-fluid rounded-circle-1">
-                    </div>
-
-                    <div class="text-center">
-                        <p>
-                            “Silk Road Professionals has been a valued partner since 2014.
-                            We are working on a very large business management software project.
-                            It is important to us to have long term programmers that are able to communicate well,
-                            be innovative, and produce quality software for our 8,000+ users.
-                            They have done an excellent job onboarding and keeping quality programmers.
-                            We could not have accomplished this multi-year project without them”
-                        </p>
-                        <h2>Glenn Esh</h2>
-                        <h5>CTO & Product Manager</h5>
-                    </div>
-                </div>
-            </div>
-            <!-- End Pricing Item -->
-
-            <div class="col-lg-4">
-                <div class="pricing-item">
-
-                    <div class="icon">
-                        <img src="assets/img/Client&Partner/PestScanLogo.jpg"
-                             alt=""
-                             class="img-fluid rounded-circle-1">
-                    </div>
-
-                    <div class="text-center">
-                        <p>
-                            "Since 2020 we have been working with Silk Road Professionals. I am very happy we got to know them and that we decided to work together. Their efforts have boosted our development and consequently enabled us to faster gain a market share in our field of Pest Control Software. What I like about SRP is the short communication lines, their productive feedback on what we try to establish and their positive, cooperative attitude. I just love their core values and I see how they drive their day-to-day work."
-                        </p>
-                        <h2>Jan Smits</h2>
-                        <h5>Founder of PestScan</h5>
-                    </div>
-                </div>
-            </div>
-            <!-- End Pricing Item -->
-        </div>
-    </div>
-</section>
-<!-- End Pricing Section -->
-<!-- Contact Section - Home Page -->
-<section id="contact" class="contact">
-    <!--  Section Title -->
-    <div class="container section-title">
-        <h2>@ContentService["Home:Contact"]</h2>
-    </div>
-    <!-- End Section Title -->
-
-    <div class="container">
-        <div class="row gy-4">
-            <div class="col-lg-6">
-                <div class="row gy-4">
-                    <div class="col-md-6">
-                        <div class="info-item">
-                            <i class="bi bi-geo-alt"></i>
-                            <h3>@ContentService["Home:Address"]</h3>
-                            <p>@ContentService["Home:Address_p1"]</p>
-                            <p>@ContentService["Home:Address_p2"]</p>
-                        </div>
-                    </div>
-                    <!-- End Info Item -->
-                    <!-- End Info Item -->
-
-                    <div class="col-md-6">
-                        <div class="info-item">
-                            <i class="bi bi-envelope"></i>
-                            <h3>@ContentService["Home:Email"]</h3>
-                            <p>
-                                <a href="mailto:@ContentService["Home:EmailLink"]" target="_blank">@ContentService["Home:EmailLink"]</a>
-                            </p>
-                        </div>
-                    </div>
-                    <!-- End Info Item -->
-
-                    <div class="col-md-6">
-                        <div class="info-item">
-                            <i class="bi bi-clock"></i>
-                            <h3>@ContentService["Home:WorkingHours"]</h3>
-                            <p>@ContentService["Home:WorkingHours1"]</p>
-                            <p>@ContentService["Home:WorkingHours2"]</p>
-                            <p>@ContentService["Home:WorkingHours3"]</p>
-                        </div>
-                    </div>
-                    <!-- End Info Item -->
-
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d446.4063398236372!2d69.51875677094101!3d40.21502901489877!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38b1afd1e0b7121b%3A0xb4e73f646b8e290!2sSilk%20Road%20Professionals%20LLC!5e0!3m2!1sru!2s!4v1692352594874!5m2!1sru!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
-            <!-- End Contact Form -->
-        </div>
-    </div>
-</section>
-</div>
-<!-- End Contact Section -->
 
 @code {
 

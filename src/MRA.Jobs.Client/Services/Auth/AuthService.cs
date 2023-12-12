@@ -10,12 +10,13 @@ using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
 using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 using MRA.Identity.Application.Contract.User.Queries.CheckUserDetails;
+using MRA.Jobs.Client.Services.Profile;
 
 namespace MRA.Jobs.Client.Services.Auth;
 
 public class AuthService(IdentityHttpClient identityHttpClient,
         AuthenticationStateProvider authenticationStateProvider, NavigationManager navigationManager,
-        IAltairCABlazorCookieUtil cookieUtil)
+        IAltairCABlazorCookieUtil cookieUtil, LayoutService layoutService, IUserProfileService userProfileService)
     : IAuthService
 {
     public async Task<HttpResponseMessage> ChangePassword(ChangePasswordUserCommand command)
@@ -42,6 +43,7 @@ public class AuthService(IdentityHttpClient identityHttpClient,
                 var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
                 await cookieUtil.SetValueAsync("authToken", response);
                 await authenticationStateProvider.GetAuthenticationStateAsync();
+                layoutService.user=  await userProfileService.Get();
                 if (!newRegister)
                     navigationManager.NavigateTo("/");
                 return null;
@@ -82,7 +84,7 @@ public class AuthService(IdentityHttpClient identityHttpClient,
                     Password = command.Password,
                     Username = command.Username
                 });
-
+                layoutService.user=  await userProfileService.Get();
                 navigationManager.NavigateTo("/profile");
 
                 return "";

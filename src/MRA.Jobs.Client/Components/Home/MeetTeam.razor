@@ -1,0 +1,29 @@
+﻿<MudGrid Style="margin-top: 10%">
+    <MudItem xs="12" md="6" Style="padding-left: 10%; padding-top: 10%;" Class="justify-content-center align-items-center">
+        <MudText Typo="Typo.h2" Style="text-align: center">
+            <b>
+                <span style="color: #129fd7">@ContentService["Home:Meet"]</span>@ContentService["Home:OurTeam"]
+            </b>
+        </MudText>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <div style="text-align: center;">
+                <MudButton Href="https://www.silkroadprofessionals.com/team/team/" Variant="Variant.Filled"
+                           Color="Color.Primary" Target="_black" Style="">
+                    <MudText> @ContentService["Home:ViewTeam"]</MudText>
+                </MudButton>
+            </div>
+        </MudHidden>
+    </MudItem>
+    <MudItem xs="12" md="6" Style="padding: 2%">
+        <MudImage Src="assets/uploads/2021/09/team-2.jpg" ObjectFit="ObjectFit.Cover" Elevation="25"
+                  Class="rounded-lg mud-elevation-4" Style="width: 100%;"/>
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <div style="text-align: center;">
+                <MudButton Href="https://www.silkroadprofessionals.com/team/team/" Variant="Variant.Filled"
+                           Color="Color.Primary" Target="_black">
+                    <MudText> @ContentService["Home:ViewTeam"]</MudText>
+                </MudButton>
+            </div>
+        </MudHidden>
+    </MudItem>
+</MudGrid>
