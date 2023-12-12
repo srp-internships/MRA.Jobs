@@ -10,26 +10,7 @@
 @inject IVacancyService VService
 @inject IJSRuntime jsRuntime
 
-<style>
-	.monaco-editor-container {
-		height: 250px;
-		border: 1px solid gray;
-	}
-
-	.decorationGlyphMarginClass {
-		background: red;
-	}
-
-	.decorationContentClass {
-		background: lightblue;
-	}
-
-	.mud-input-control {
-		margin-bottom: 10px;
-	}
-</style>
-
-<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Jobs</MudText>
+<MudText Typo="Typo.h4"><b>Jobs</b></MudText>
 @if (_serverError)
 {
     <ServerErrorComponent/>
@@ -57,7 +38,7 @@ else
                     <FluentValidationValidator/>
                     <MudGrid>
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                            <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:#808080">
@@ -76,7 +57,7 @@ else
                             </MudCard>
                         </MudItem>
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                             <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color: rgb(128,128,128)">
@@ -140,7 +121,7 @@ else
                     </MudGrid>
                     <MudGrid>
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                            <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:rgb(128,128,128)">
@@ -194,7 +175,7 @@ else
                             </MudCard>
                         </MudItem>
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                              <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:rgb(128,128,128)">

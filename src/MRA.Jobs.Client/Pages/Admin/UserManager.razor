@@ -1,94 +1,103 @@
 ﻿@page "/UserManager"
 
 <MudGrid>
-	@if (_applicationUsers == null || _applicationUsers.Count == 0)
-	{
-		<div class="loader"></div>
-	}
-	else
-	{
-		@foreach (var user in _applicationUsers)
-		{
-			<MudItem sm="12" xs="12" lg="6">
-				<MudCard>
-					<MudCardHeader>
-						<CardHeaderContent>
-							<MudText Typo="Typo.h5"><b>@user.UserName</b></MudText>
-						</CardHeaderContent>
-					</MudCardHeader>
-					<MudCardContent>
-						<style>
+    @if (_applicationUsers == null || _applicationUsers.Count == 0)
+    {
+        <div class="loader"></div>
+    }
+    else
+    {
+        @foreach (var user in _applicationUsers)
+        {
+            <MudItem sm="12" xs="12" lg="6">
+                <MudCard Class="rounded-4 mud-elevation-4">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5">
+                                <b>@user.UserName</b>
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <style>
 							td {
 								vertical-align: top;
 								text-align: left;
 								padding-bottom: 0px;
 							}
 						</style>
-						<table style="align-content:flex-start">
-							<thead>
-								<tr>
-									<th></th>
-									<th style="width:25p;x"></th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Full Name:</td>
-									<td></td>
-									<td> <b>@user.FullName</b></td>
-								</tr>
-								<tr></tr>
-								<tr>
-									<td>Email:</td>
-									<td></td>
-									<td>
-										<b>@user.Email</b>
-										@if (user.EmailConfirmed)
-										{
-											<MudChip Variant="Variant.Text" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
-										}
-										else
-										{
-											<MudChip Variant="Variant.Text" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">UnConfirmed</MudChip>
-										}
-									</td>
-								</tr>
-								<tr>
-									<td>Phone Number:</td>
-									<td></td>
-									<td>
-										<b>@user.PhoneNumber</b>
-										@if (user.PhoneNumberConfirmed)
-										{
-											<MudChip Variant="Variant.Text" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
-										}
-										else
-										{
-											<MudChip Variant="Variant.Text" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">UnConfirmed</MudChip>
-										}
-									</td>
-								</tr>
-							</tbody>
-						</table>
+                        <table style="align-content:flex-start">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th style="width:25px;"></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Full Name:</td>
+                                <td></td>
+                                <td>
+                                    <b>@user.FullName</b>
+                                </td>
+                            </tr>
+                            <tr></tr>
+                            <tr>
+                                <td>Email:</td>
+                                <td></td>
+                                <td>
+                                    <b>@user.Email</b>
+                                    @if (user.EmailConfirmed)
+                                    {
+                                        <MudChip Variant="Variant.Text" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
+                                    }
+                                    else
+                                    {
+                                        <MudChip Variant="Variant.Text" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">UnConfirmed</MudChip>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Phone Number:</td>
+                                <td></td>
+                                <td>
+                                    <b>@user.PhoneNumber</b>
+                                    @if (user.PhoneNumberConfirmed)
+                                    {
+                                        <MudChip Variant="Variant.Text" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
+                                    }
+                                    else
+                                    {
+                                        <MudChip Variant="Variant.Text" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">UnConfirmed</MudChip>
+                                    }
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
 
-						<MudText>
+                        <MudText>
 
-						</MudText>
-					</MudCardContent>
-					<MudCardActions>
-						@{
-							var userRolesLink = $"/UserRoles/{user.UserName}";
-							var userHistoryLink = $"/UserHistory/{user.UserName}";
-							var userClaimsLink = $"/UserClaims/{user.UserName}";
-						}
-						<MatButton class="user-property" Link="@userRolesLink">Roles</MatButton>
-						<MatButton class="user-property" Link="@userHistoryLink">History</MatButton>
-					</MudCardActions>
-				</MudCard>
-			</MudItem>
-		}
-	}
+                        </MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        @{
+                            var userRolesLink = $"/UserRoles/{user.UserName}";
+                            var userHistoryLink = $"/UserHistory/{user.UserName}";
+                            var userClaimsLink = $"/UserClaims/{user.UserName}";
+                        }
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" href="@userRolesLink">
+                            <MudText>Roles</MudText>
+                        </MudButton>
+                        <MudSpacer/>
+                        <MudButton Variant="Variant.Filled" href="@userHistoryLink">
+                            <MudText>History</MudText>
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    }
 
 
 </MudGrid>
