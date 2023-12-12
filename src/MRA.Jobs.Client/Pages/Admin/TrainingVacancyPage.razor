@@ -33,7 +33,7 @@ else
                         <b>Trainings</b>
                     </MudText>
                     <MudSpacer/>
-                    <MudButton hidden="@panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => panelOpenState = true)">
+                    <MudButton Disabled="@panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => panelOpenState = !panelOpenState)">
                         <MudText>Create New Training Vacancy</MudText>
                     </MudButton>
                 </MudCardActions>
@@ -201,31 +201,34 @@ else
                             </MudCard>
                         </MudItem>
                         <MudItem xs="12" lg="12">
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit"
-                                       Id="btnInsert" hidden="@isInserting">
-                                <MudText>
-                                    Create
-                                </MudText>
-                            </MudButton>
-                            <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate"
-                                       Id="btnUpdate" hidden="@isUpdating">
-                                <MudText>
-                                    Save changes
-                                </MudText>
-                            </MudButton>
-                            <MudButton Variant="Variant.Filled" Color="Color.Dark" @onclick="@HandleCancel"
-                                       Id="btnUpdate">
-                                <MudText>
-                                    Cancel
-                                </MudText>
-                            </MudButton>
+                            <MudCardActions>
+                                <div hidden="@isInserting">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit">
+                                        <MudText>
+                                            Create
+                                        </MudText>
+                                    </MudButton>
+                                </div>
+                                <div hidden="@isUpdating">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate">
+                                        <MudText>
+                                            Save changes
+                                        </MudText>
+                                    </MudButton>
+                                </div>
+                                <MudButton Variant="Variant.Filled" Color="Color.Dark" @onclick="@HandleCancel" Style="margin-left: 10px;">
+                                    <MudText>
+                                        Cancel
+                                    </MudText>
+                                </MudButton>
+                            </MudCardActions>
                         </MudItem>
                     </MudGrid>
                 </EditForm>
             </MudItem>
         </MudGrid>
 
-     
+
         <MudTable Items="@trainings" Class="text-center" Breakpoint="Breakpoint.Md" hidden="@panelOpenState">
             <HeaderContent>
                 <MudTh>
@@ -403,7 +406,7 @@ else
             StateHasChanged();
         }
     }
-    
+
 
     private async Task OnEditClick(string slug)
     {
