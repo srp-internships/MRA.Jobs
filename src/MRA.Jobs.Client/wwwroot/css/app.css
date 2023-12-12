@@ -23,10 +23,6 @@ a, .btn-link {
     text-decoration: none;
 }
 
-a :hover {
-    color: #1784b5 !important;
-}
-
 ul, li {
     padding: 0;
     margin: 0;
@@ -146,11 +142,6 @@ ul, li {
 
 .docs-gray-bg {
     background-color: var(--mud-palette-background-grey);
-}
-
-
-.mud-nav-link:hover {
-    color: #1c92c8 !important;
 }
 
 
