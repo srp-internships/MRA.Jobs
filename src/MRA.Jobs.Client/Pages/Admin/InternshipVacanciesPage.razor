@@ -10,16 +10,14 @@
 @inject IJSRuntime jsRuntime
 @inject IInternshipService InternshipService
 @inject ICategoryService CategoryService
+@inject IDialogService DialogService
 
-<MudText Typo="Typo.h4"><b>Internships Vacancy</b></MudText>
 @if (_serverError)
 {
     <ServerErrorComponent/>
 }
 else
 {
-
-
     @if (_categories == null)
     {
          <div style="text-align: center;">
@@ -29,17 +27,18 @@ else
     else
     {
         <MudGrid>
-            <MudItem Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0" lg="12">
-                <MudCardHeader>
+            <MudItem lg="12">
+                <MudCardActions>
+                    <MudText Typo="Typo.h4"><b>Internships Vacancy</b></MudText>
+                    <MudSpacer/>
                     <MudButton hidden="@_panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => _panelOpenState = true)">
                         <MudText>Create New Internship Vacancy</MudText>
                     </MudButton>
-                </MudCardHeader>
+                </MudCardActions>
             </MudItem>
             <MudItem lg="12" hidden="@(!_panelOpenState)">
                 <EditForm Model="@InternshipService.createCommand">
                     <FluentValidationValidator/>
-
                     <MudGrid>
                         <MudItem xs="12" lg="6">
                                <MudCard Class="rounded-4 mud-elevation-4">
@@ -237,7 +236,6 @@ else
                 </EditForm>
             </MudItem>
         </MudGrid>
-        <DeleteConfirmation @bind-IsOpen="@_isDialogOpen" OnConfirm="DeleteItem"/>
         <MudTable Items="@_internships" Class="text-center" Breakpoint="Breakpoint.Md" hidden="@_panelOpenState">
             <HeaderContent>
                 <MudTh><strong>Title</strong></MudTh>
@@ -365,13 +363,11 @@ else
 			}
 		};
 
-		decorationIds = await _editorTest.DeltaDecorations(null, newDecorations);
-		decorationIds = await _editorTemplate.DeltaDecorations(null, newDecorations);
+		await _editorTest.DeltaDecorations(null, newDecorations);
+		await _editorTemplate.DeltaDecorations(null, newDecorations);
 	}
 
-	private string[] decorationIds = new string[0];
-
-	private void OnContextMenu(EditorMouseEvent eventArg)
+    private void OnContextMenu(EditorMouseEvent eventArg)
 	{
 		Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
 	}
@@ -381,39 +377,44 @@ else
         Clear();
         StateHasChanged();
     }
-
-    private bool _isDialogOpen;
-    private string _itemSlugToDelete;
-
-    void OnDeleteClick(string slug)
+    
+    async Task OnDeleteClick(string slug)
     {
-        _itemSlugToDelete = slug;
-        _isDialogOpen = true;
-    }
+            var vacancy = _internships.FirstOrDefault(c => c.Slug == slug);
+            var parameters = new DialogParameters<DialogMudBlazor>();
+            parameters.Add(x => x.ContentText, "Do you really want to delete this vacancy?");
+            parameters.Add(x => x.ButtonText, "Delete");
+            parameters.Add(x => x.Color, Color.Error);
 
-    private async Task DeleteItem()
-    {
-        _isDialogOpen = false;
-        await LoadData();
-        try
-        {
-            var result = await InternshipService.Delete(_itemSlugToDelete);
-            if (result.IsSuccessStatusCode)
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+            var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+            var result = await dialog.Result;
+
+            if (!result.Canceled)
             {
-                Snackbar.Add($"Deleted", Severity.Success);
+                try
+                {
+                    var response = await InternshipService.Delete(slug);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Snackbar.Add($"Deleted", Severity.Success);
+                        _internships.Remove(vacancy);
+                    }
+                    else
+                    {
+                        Snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+                    }
+                    Clear();
+                }
+                catch (Exception)
+                {
+                    Snackbar.Add("Server is not responding, try latter", Severity.Error);
+                }
+                StateHasChanged();
             }
-            else
-            {
-                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
-            }
-            await LoadData();
-            Clear();
-        }
-        catch (Exception)
-        {
-            Snackbar.Add("Server is not responding, try latter", Severity.Error);
-        }
     }
+    
 
     private async Task OnEditClick(string slug)
     {
