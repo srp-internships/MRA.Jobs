@@ -63,7 +63,7 @@
 
   <!--SignIn-->
   <data name="SignIn:UserName" xml:space="preserve">
-    <value>Username</value>
+    <value>User name</value>
     </data>
   <data name="SignIn:Password" xml:space="preserve">
     <value>Password</value>
@@ -170,8 +170,125 @@
   <data name="ResetPassword:Changepassword" xml:space="preserve">
         <value>Change password</value>
     </data>
-  
   <!--resetPassword-->
+  
+  <!--profile-->
+  <data name="Profile:Serverisnotresponding" xml:space="preserve">
+        <value>Server is not responding</value>
+    </data>
+   <data name="Profile:TryAgain" xml:space="preserve">
+        <value>Try Again</value>
+    </data>
+  <data name="Profile:PersonalInformation" xml:space="preserve">
+        <value>Personal Information</value>
+    </data>
+  <data name="Profile:MyProfile" xml:space="preserve">
+        <value>My Profile</value>
+    </data>
+   <data name="Profile:Educations" xml:space="preserve">
+        <value>Educations</value>
+    </data>
+  <data name="Profile:Experience" xml:space="preserve">
+        <value>Experience</value>
+    </data>
+  <data name="Profile:Skills" xml:space="preserve">
+        <value>Skills</value>
+    </data>
+  <data name="Profile:FirstName" xml:space="preserve">
+        <value>First Name</value>
+    </data>
+  <data name="Profile:EmailisnotConfirmed" xml:space="preserve">
+        <value>Email is not Confirmed!</value>
+    </data>
+  <data name="Profile:LastName" xml:space="preserve">
+        <value>Last Name</value>
+    </data>
+  <data name="Profile:DateOfBirth" xml:space="preserve">
+        <value>Date Of Birth</value>
+    </data>
+  <data name="Profile:Confirmed" xml:space="preserve">
+        <value>Confirmed</value>
+    </data>
+  <data name="Profile:PhoneNumberisnotConfirmed" xml:space="preserve">
+        <value>Phone Number is not Confirmed!</value>
+    </data>
+  <data name="Profile:Codesent" xml:space="preserve">
+        <value>Code sent</value>
+    </data>
+  <data name="Profile:Confirmationcode" xml:space="preserve">
+        <value>Confirmation code</value>
+    </data>
+  <data name="Profile:Confirm" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+  <data name="Profile:AboutMyself" xml:space="preserve">
+        <value>About Myself</value>
+    </data>
+    <data name="Profile:Savechanges" xml:space="preserve">
+        <value>Save changes</value>
+    </data>
+  <data name="Profile:Specialty" xml:space="preserve">
+        <value>Specialty</value>
+    </data>
+  <data name="Profile:University" xml:space="preserve">
+        <value>University</value>
+    </data> 
+  <data name="Profile:StartDate" xml:space="preserve">
+        <value>Start Date</value>
+    </data> 
+  <data name="Profile:UntilNow" xml:space="preserve">
+        <value>Until Now</value>
+    </data>
+  <data name="Profile:Update" xml:space="preserve">
+        <value>Update</value>
+    </data>  
+  <data name="Profile:Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>  
+  <data name="Profile:Present" xml:space="preserve">
+        <value>Present</value>
+    </data>  
+  <data name="Profile:AddNewEducation" xml:space="preserve">
+        <value>Add New Education</value>
+    </data> 
+  <data name="Profile:NewEducation" xml:space="preserve">
+        <value>New Education</value>
+    </data>
+  <data name="Profile:Save" xml:space="preserve">
+        <value>Save</value>
+    </data>  
+  <data name="Profile:Experiences" xml:space="preserve">
+        <value>Experiences</value>
+    </data>
+  <data name="Profile:JobTitle" xml:space="preserve">
+        <value>Job Title</value>
+    </data>  
+  <data name="Profile:CompanyName" xml:space="preserve">
+        <value>Company Name</value>
+    </data>
+  <data name="Profile:Description" xml:space="preserve">
+        <value>Description</value>
+    </data> 
+  <data name="Profile:CurrentJob" xml:space="preserve">
+        <value>Current Job</value>
+    </data>
+  <data name="Profile:AddNewExperience" xml:space="preserve">
+        <value>Add New Experience</value>
+    </data>
+  <data name="Profile:NewExperience" xml:space="preserve">
+        <value>New Experience</value>
+    </data> 
+  <data name="Profile:IsCurrentJob" xml:space="preserve">
+        <value>Is Current Job</value>
+    </data> 
+  <data name="Profile:AddSkill" xml:space="preserve">
+        <value>Add Skill</value>
+    </data>
+  
+  <!--profile-->
+  
+  
+ 
   
   <!-- dashboard Applications -->
   <data name="Dashboard:Appilcations:Applications" xml:space="preserve">

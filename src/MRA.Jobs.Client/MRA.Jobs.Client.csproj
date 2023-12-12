@@ -75,4 +75,22 @@
       <Folder Include="CustomMethods\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="wwwroot\resources\languages\English.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>English.resx</DependentUpon>
+      </Content>
+      <Content Update="wwwroot\resources\languages\Russian.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Russian.resx</DependentUpon>
+      </Content>
+      <Content Update="wwwroot\resources\languages\Tajik.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Tajik.resx</DependentUpon>
+      </Content>
+    </ItemGroup>
+
 </Project>

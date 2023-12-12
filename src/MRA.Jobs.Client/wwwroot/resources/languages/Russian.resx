@@ -107,7 +107,7 @@
     <value>Введите вашу фамилию</value>
 </data>
     <data name="SignUp:Email" xml:space="preserve">
-    <value>Email</value>
+    <value>Электронная почта</value>
 </data>
     <data name="SignUp:Phone" xml:space="preserve">
     <value>Телефон</value>
@@ -171,6 +171,118 @@
         <value>Изменить пароль</value>
     </data>
   <!--resetPassword-->
+  
+  <!--profile-->
+  <data name="Profile:TryAgain" xml:space="preserve">
+       <value>Попробуйте снова</value>
+   </data>
+  <data name="Profile:PersonalInformation" xml:space="preserve">
+       <value>Личная информация</value>
+   </data>
+  <data name="Profile:MyProfile" xml:space="preserve">
+       <value>Мой профиль</value>
+   </data>
+  <data name="Profile:Educations" xml:space="preserve">
+       <value>Образование</value>
+   </data>
+  <data name="Profile:Experience" xml:space="preserve">
+       <value>Опыт работы</value>
+   </data>
+  <data name="Profile:Skills" xml:space="preserve">
+       <value>Навыки</value>
+   </data>
+  <data name="Profile:FirstName" xml:space="preserve">
+       <value>Имя</value>
+   </data>
+  <data name="Profile:EmailisnotConfirmed" xml:space="preserve">
+       <value>Email не подтвержден!</value>
+   </data>
+  <data name="Profile:LastName" xml:space="preserve">
+       <value>Фамилия</value>
+   </data>
+  <data name="Profile:DateOfBirth" xml:space="preserve">
+       <value>Дата рождения</value>
+   </data>
+  <data name="Profile:Confirmed" xml:space="preserve">
+       <value>Подтверждено</value>
+   </data>
+  <data name="Profile:PhoneNumberisnotConfirmed" xml:space="preserve">
+       <value>Номер телефона не подтвержден!</value>
+   </data>
+  <data name="Profile:Codesent" xml:space="preserve">
+       <value>Код отправлен</value>
+   </data>
+  <data name="Profile:Confirmationcode" xml:space="preserve">
+       <value>Код подтверждения</value>
+   </data>
+  <data name="Profile:Confirm" xml:space="preserve">
+       <value>Подтвердить</value>
+   </data>
+  <data name="Profile:AboutMyself" xml:space="preserve">
+       <value>О себе</value>
+   </data>
+  <data name="Profile:Savechanges" xml:space="preserve">
+       <value>Сохранить изменения</value>
+   </data>
+  <data name="Profile:Specialty" xml:space="preserve">
+       <value>Специальность</value>
+   </data>
+  <data name="Profile:University" xml:space="preserve">
+       <value>Университет</value>
+   </data>
+  <data name="Profile:StartDate" xml:space="preserve">
+       <value>Дата начала</value>
+   </data>
+  <data name="Profile:UntilNow" xml:space="preserve">
+       <value>До сих пор</value>
+   </data>
+  <data name="Profile:Update" xml:space="preserve">
+       <value>Обновить</value>
+   </data>
+  <data name="Profile:Cancel" xml:space="preserve">
+       <value>Отмена</value>
+   </data>
+  <data name="Profile:Present" xml:space="preserve">
+       <value>Настоящее время</value>
+   </data>
+  <data name="Profile:AddNewEducation" xml:space="preserve">
+       <value>Добавить новое образование</value>
+   </data>
+  <data name="Profile:NewEducation" xml:space="preserve">
+       <value>Новое образование</value>
+   </data>
+  <data name="Profile:Save" xml:space="preserve">
+       <value>Сохранить</value>
+   </data>
+  <data name="Profile:Experiences" xml:space="preserve">
+       <value>Опыт работы</value>
+   </data>
+  <data name="Profile:JobTitle" xml:space="preserve">
+       <value>Должность</value>
+   </data>
+  <data name="Profile:CompanyName" xml:space="preserve">
+       <value>Название компании</value>
+   </data>
+  <data name="Profile:Description" xml:space="preserve">
+       <value>Описание</value>
+   </data>
+  <data name="Profile:CurrentJob" xml:space="preserve">
+       <value>Текущая работа</value>
+   </data>
+  <data name="Profile:AddNewExperience" xml:space="preserve">
+       <value>Добавить новый опыт</value>
+   </data>
+  <data name="Profile:NewExperience" xml:space="preserve">
+       <value>Новый опыт</value>
+   </data>
+  <data name="Profile:IsCurrentJob" xml:space="preserve">
+       <value>Это текущая работа</value>
+   </data>
+  <data name="Profile:AddSkill" xml:space="preserve">
+       <value>Добавить навык</value>
+   </data>
+
+  <!--profile-->
   
     <!-- VacanciesList -->
     <data name="VacanciesList:All" xml:space="preserve">
