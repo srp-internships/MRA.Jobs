@@ -41,44 +41,81 @@ else
 
         <MudItem sm="12" md="3" lg="2">
             <MudGrid>
-                <MudItem xs="12">
+                <MudItem xs="12" sm="6" md="12" lg="12">
                     <MudCard Class="rounded-lg mud-elevation-4">
                         <MudCardContent>
-                            <MudNavMenu Rounded="true" Color="Color.Primary" Class="pa-2">
-                                <MudNavLink OnClick="@(() => SelectCategory())"
-                                            Class="@(_selectedCategory == null ? "mud-chip-text mud-chip-color-primary" : "")">
-                                    <div class="customTabContainer">
-                                        <div class="customTabContainerLeft">
-                                            <MudText>
-                                                <b> @ContentService["VacanciesList:All"]</b>
-                                            </MudText>
-                                        </div>
-                                        <div class="customTabContainerRight">
-
-                                        </div>
-                                    </div>
-
-                                </MudNavLink>
-                                @foreach (var cat in VacancyCategories)
-                                {
-                                    <MudNavLink OnClick="@(() => SelectCategory(cat))" Class="@(_selectedCategory == cat ? "mud-chip-text mud-chip-color-primary" : "")">
+                            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                                <MudNavMenu Rounded="true" Color="Color.Primary" Class="pa-2">
+                                    <MudNavLink OnClick="@(() => SelectCategory())"
+                                                Class="@(_selectedCategory == null ? "mud-chip-text mud-chip-color-primary" : "")">
                                         <div class="customTabContainer">
                                             <div class="customTabContainerLeft">
                                                 <MudText>
-                                                    <b>@cat</b>
+                                                    <b> @ContentService["VacanciesList:All"]</b>
                                                 </MudText>
                                             </div>
                                             <div class="customTabContainerRight">
-                                                <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
+
                                             </div>
                                         </div>
+
                                     </MudNavLink>
-                                }
-                            </MudNavMenu>
+                                    @foreach (var cat in VacancyCategories)
+                                    {
+                                        <MudNavLink OnClick="@(() => SelectCategory(cat))" Class="@(_selectedCategory == cat ? "mud-chip-text mud-chip-color-primary" : "")">
+                                            <div class="customTabContainer">
+                                                <div class="customTabContainerLeft">
+                                                    <MudText>
+                                                        <b>@cat</b>
+                                                    </MudText>
+                                                </div>
+                                                <div class="customTabContainerRight">
+                                                    <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
+                                                </div>
+                                            </div>
+                                        </MudNavLink>
+                                    }
+                                </MudNavMenu>
+                            </MudHidden>
+                            <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                                <MudExpansionPanel Text="Categories">
+                                    <MudNavMenu Rounded="true" Color="Color.Primary" Class="pa-2">
+                                        <MudNavLink OnClick="@(() => SelectCategory())"
+                                                    Class="@(_selectedCategory == null ? "mud-chip-text mud-chip-color-primary" : "")">
+                                            <div class="customTabContainer">
+                                                <div class="customTabContainerLeft">
+                                                    <MudText>
+                                                        <b> @ContentService["VacanciesList:All"]</b>
+                                                    </MudText>
+                                                </div>
+                                                <div class="customTabContainerRight">
+
+                                                </div>
+                                            </div>
+
+                                        </MudNavLink>
+                                        @foreach (var cat in VacancyCategories)
+                                        {
+                                            <MudNavLink OnClick="@(() => SelectCategory(cat))" Class="@(_selectedCategory == cat ? "mud-chip-text mud-chip-color-primary" : "")">
+                                                <div class="customTabContainer">
+                                                    <div class="customTabContainerLeft">
+                                                        <MudText>
+                                                            <b>@cat</b>
+                                                        </MudText>
+                                                    </div>
+                                                    <div class="customTabContainerRight">
+                                                        <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
+                                                    </div>
+                                                </div>
+                                            </MudNavLink>
+                                        }
+                                    </MudNavMenu>
+                                </MudExpansionPanel>
+                            </MudHidden>
                         </MudCardContent>
                     </MudCard>
                 </MudItem>
-                <MudItem xs="12">
+                <MudItem xs="12" sm="6" md="12" lg="12">
                     <CascadingAuthenticationState>
                         <AuthorizeView>
                             <Authorized>
@@ -86,7 +123,7 @@ else
                                 {
                                     <MudCard Class="rounded-lg mud-elevation-4">
                                         <MudCardContent>
-                                            <MudText Typo="Typo.body2">
+                                            <MudText>
                                                 If you would like to nominate yourself, send us your СV.
                                             </MudText>
                                         </MudCardContent>
@@ -102,7 +139,7 @@ else
                                 {
                                     <MudCard Class="rounded-lg mud-elevation-4">
                                         <MudCardContent>
-                                            <MudText Typo="Typo.body2">
+                                            <MudText>
                                                 The status of your CV for your candidacy is <b>@_applicationWithHiddenVacancyStatus.Status.ToString()</b>
                                             </MudText>
                                         </MudCardContent>
@@ -123,7 +160,7 @@ else
                             <NotAuthorized>
                                 <MudCard Class="rounded-lg mud-elevation-4">
                                     <MudCardContent>
-                                        <MudText Typo="Typo.body2">
+                                        <MudText >
                                             If you would like to nominate yourself, sign in and send us your СV.
                                         </MudText>
                                     </MudCardContent>
@@ -151,16 +188,16 @@ else
                 <MudGrid>
                     <MudItem xs="12">
                         <MudCard Class="rounded-lg p-3 mud-elevation-4 p-5">
-                         
-                                <MudTextField @bind-Value="Search" TextChanged="SearchVacancy" Label="Search" Class="rounded-lg"
-                                              Variant="Variant.Outlined" OnAdornmentClick="SearchVacancy" Adornment="Adornment.End"
-                                              AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Info"/>
-                        
+
+                            <MudTextField @bind-Value="Search" TextChanged="SearchVacancy" Label="Search" Class="rounded-lg"
+                                          Variant="Variant.Outlined" OnAdornmentClick="SearchVacancy" Adornment="Adornment.End"
+                                          AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Info"/>
+
                         </MudCard>
                     </MudItem>
                     @foreach (var Vacancy in GetVisibleVacancies())
                     {
-                        <MudItem md="12" lg="6">
+                        <MudItem xs="12" md="12" lg="6">
                             <a href="/@Route/@Vacancy.Slug">
                                 <MudCard Class="rounded-lg mud-elevation-4">
                                     <MudCardContent>
