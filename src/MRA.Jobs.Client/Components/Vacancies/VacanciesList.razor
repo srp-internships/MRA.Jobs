@@ -41,7 +41,7 @@ else
 
         <MudItem sm="12" md="3" lg="2">
             <MudGrid>
-                <MudItem xs="12" sm="6" md="12" lg="12">
+                <MudItem xs="12" sm="12" md="12" lg="12">
                     <MudCard Class="rounded-lg mud-elevation-4">
                         <MudCardContent>
                             <MudHidden Breakpoint="Breakpoint.SmAndDown">
@@ -114,66 +114,6 @@ else
                             </MudHidden>
                         </MudCardContent>
                     </MudCard>
-                </MudItem>
-                <MudItem xs="12" sm="6" md="12" lg="12">
-                    <CascadingAuthenticationState>
-                        <AuthorizeView>
-                            <Authorized>
-                                @if (_applicationWithHiddenVacancyStatus == null || !_applicationWithHiddenVacancyStatus.Applied)
-                                {
-                                    <MudCard Class="rounded-lg mud-elevation-4">
-                                        <MudCardContent>
-                                            <MudText>
-                                                If you would like to nominate yourself, send us your СV.
-                                            </MudText>
-                                        </MudCardContent>
-                                        <MudCardActions>
-                                            <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                                                       OnClick="ApplyHiddenVacancy" FullWidth="true">
-                                                <MudText>Upload CV</MudText>
-                                            </MudButton>
-                                        </MudCardActions>
-                                    </MudCard>
-                                }
-                                else
-                                {
-                                    <MudCard Class="rounded-lg mud-elevation-4">
-                                        <MudCardContent>
-                                            <MudText>
-                                                The status of your CV for your candidacy is <b>@_applicationWithHiddenVacancyStatus.Status.ToString()</b>
-                                            </MudText>
-                                        </MudCardContent>
-                                        @if (_applicationWithHiddenVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Expired
-                                             || _applicationWithHiddenVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Rejected
-                                             || _applicationWithHiddenVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Refused)
-                                        {
-                                            <MudCardActions>
-                                                <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                                                           OnClick="ApplyHiddenVacancy" FullWidth="true">
-                                                    <MudText>Upload New CV</MudText>
-                                                </MudButton>
-                                            </MudCardActions>
-                                        }
-                                    </MudCard>
-                                }
-                            </Authorized>
-                            <NotAuthorized>
-                                <MudCard Class="rounded-lg mud-elevation-4">
-                                    <MudCardContent>
-                                        <MudText >
-                                            If you would like to nominate yourself, sign in and send us your СV.
-                                        </MudText>
-                                    </MudCardContent>
-                                    <MudCardActions>
-                                        <MudButton Variant="Variant.Filled" OnClick="SignIn" Color="Color.Primary" FullWidth="true">
-                                            <MudText>Sign In</MudText>
-                                        </MudButton>
-                                    </MudCardActions>
-                                </MudCard>
-
-                            </NotAuthorized>
-                        </AuthorizeView>
-                    </CascadingAuthenticationState>
                 </MudItem>
             </MudGrid>
 
@@ -274,11 +214,8 @@ else
     private string _selectedCategoryText = "All Internships";
     private int _itemsPerPage = 6;
 
-    private ApplicationWithHiddenVacancyStatus _applicationWithHiddenVacancyStatus;
-
     protected override async void OnAfterRender(bool firstRender)
     {
-        _applicationWithHiddenVacancyStatus = await HiddenVacancyService.GetApplicationStatus();
         if (firstRender)
         {
             await Task.Delay(1000);
@@ -351,16 +288,6 @@ else
     private int GetTotalPages()
     {
         return (int)Math.Ceiling((double)FilteredVacancies.Count / _itemsPerPage);
-    }
-
-    private void ApplyHiddenVacancy()
-    {
-        NavigationManager.NavigateTo("/upload-cv");
-    }
-
-    private void SignIn()
-    {
-        NavigationManager.NavigateTo("/sign-in");
     }
 
 }

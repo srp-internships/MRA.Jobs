@@ -1,5 +1,8 @@
 ﻿@using MRA.Jobs.Client.Services
 @using MRA.Jobs.Client.Enums
+@using MRA.Jobs.Client.Components.Buttons
+@using MRA.Jobs.Client.Components.Client
+@using MudBlazor
 @inherits LayoutComponentBase
 @inject LayoutService LayoutService
 
@@ -23,6 +26,20 @@
     <MudFab StartIcon="@Icons.Material.Filled.KeyboardArrowUp" Color="Color.Primary"/>
 </MudScrollToTop>
 
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+    <div style="position: fixed; bottom: 76px; right: 16px; z-index: 999;">
+        <MudMenu Variant="Variant.Text" AnchorOrigin="Origin.TopLeft" TransformOrigin="Origin.BottomRight"
+                 PopoverClass="docs-layout-menu-shadow"
+                 LockScroll="true">
+            <ActivatorContent>
+                <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile" Label="CV"/>
+            </ActivatorContent>
+            <ChildContent>
+                <HiddenVacancyUploadCV/>
+            </ChildContent>
+        </MudMenu>
+    </div>
+</MudHidden>
 
 @code
 {
@@ -42,7 +59,7 @@
     {
         LayoutService.MajorUpdateOccured -= UpdateState;
     }
-    
+
     private async Task ApplyUserPreferences()
     {
         var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
@@ -64,5 +81,5 @@
         }
     }
 
-   
+
 }

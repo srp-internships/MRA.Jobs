@@ -4,8 +4,10 @@
 @using AltairCA.Blazor.WebAssembly.Cookie
 @using Blazorise
 @using MRA.Identity.Application.Contract.Profile.Responses
+@using MRA.Jobs.Application.Contracts.HiddenVacancies.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using MRA.Jobs.Client.Components.Buttons
+@using MRA.Jobs.Client.Services.HiddenVacancies
 @using Anchor = MudBlazor.Anchor
 @using Breakpoint = MudBlazor.Breakpoint
 @using Color = MudBlazor.Color
@@ -16,6 +18,7 @@
 @inject AuthenticationStateProvider AuthProvider
 @inject IAltairCABlazorCookieUtil CookieUtil
 @inject IUserProfileService UserProfileService
+
 
 <MudToolBar Class="toolbar-fixed-blur">
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -82,14 +85,24 @@
     <MudSpacer/>
     <MudHidden Breakpoint="Breakpoint.Xs">
         <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
-
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+              <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Variant="Variant.Text" 
+                            PopoverClass="docs-layout-menu-shadow"  LockScroll="true">
+                       <ActivatorContent>
+                           <MudChip Icon="@Icons.Material.Filled.UploadFile" Color="Color.Tertiary">CV</MudChip>
+                       </ActivatorContent>
+                       <ChildContent>
+                           <HiddenVacancyUploadCV/>
+                       </ChildContent>
+                   </MudMenu>
+        </MudHidden>
         <ToolBarSettingsButtons/>
     </MudHidden>
 
     <CascadingAuthenticationState>
         <AuthorizeView>
             <Authorized>
-                <MudMenu AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter">
+                <MudMenu AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" LockScroll="true">
                     <ActivatorContent>
                         @if (LayoutService.user == null)
                         {
@@ -127,12 +140,12 @@
     </CascadingAuthenticationState>
 </MudToolBar>
 
-<MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Temporary"
+<MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent"
            ClipMode="DrawerClipMode.Docked">
     <MudToolBar Dense="true" Class="docs-gray-bg">
         <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
         <MudSpacer/>
-        <ToolBarSettingsButtons/>
+     <ToolBarSettingsButtons/>
     </MudToolBar>
 
     <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
@@ -146,6 +159,7 @@
     </MudNavMenu>
 </MudDrawer>
 
+
 @code {
 
     bool _open = false;
@@ -157,9 +171,11 @@
 
     private DocPages currentPage;
 
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
+
         if (firstRender)
         {
             try
@@ -177,7 +193,7 @@
     protected override void OnInitialized()
     {
         currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
-      
+
         StateHasChanged();
         NavigationManager.LocationChanged += HandleLocationChanged;
         base.OnInitialized();
@@ -205,5 +221,7 @@
         await AuthProvider.GetAuthenticationStateAsync();
         NavigationManager.NavigateTo("/");
     }
+
+
 
 }

@@ -7,7 +7,8 @@
 
 <MudTooltip Duration="1000" Text="Select Language">
     <MudMenu EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="@LayoutService._lang"
-             Dense="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+             Dense="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter"
+             LockScroll="true">
         <MudMenuItem OnClick="@(() => SelectLanguage("En"))">En</MudMenuItem>
         <MudMenuItem OnClick="@(() => SelectLanguage("Ru"))">Ru</MudMenuItem>
         <MudMenuItem OnClick="@(() => SelectLanguage("Tj"))">Tj</MudMenuItem>
@@ -19,7 +20,7 @@
 </MudTooltip>
 
 @code {
-  
+
     private async void SelectLanguage(string lang)
     {
         await LayoutService.ChangeLanguage(lang);
@@ -32,4 +33,5 @@
         await LayoutService.ToggleDarkMode();
         StateHasChanged();
     }
+
 }
