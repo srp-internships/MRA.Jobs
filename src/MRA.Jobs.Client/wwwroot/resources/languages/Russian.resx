@@ -281,6 +281,12 @@
   <data name="Profile:AddSkill" xml:space="preserve">
        <value>Добавить навык</value>
    </data>
+  <data name="Profile:Tochangeyourpassword,enteryouroldpassword,andthencreateanew,strongpassword." xml:space="preserve">
+     <value>Чтобы изменить пароль, введите старый пароль, а затем создайте новый, надежный пароль.</value>
+ </data>
+  <data name="Profile:OldPassword" xml:space="preserve">
+     <value>Старый пароль</value>
+ </data>
 
   <!--profile-->
   

@@ -125,7 +125,7 @@
     <value>Калимаи убур</value>
 </data>
     <data name="SignUp:ConfirmPassword" xml:space="preserve">
-    <value>Тасдиқи калимаи убур</value>
+    <value>Калидвожаро Тасдиқ Кунед</value>
 </data>
     <data name="SignUp:ConfirmPassword_HelperText" xml:space="preserve">
     <value>Тасдиқи калимаи убур</value>
@@ -280,6 +280,12 @@
   <data name="Profile:AddSkill" xml:space="preserve">
        <value>Маҳорат илова кунед</value>
    </data>
+  <data name="Profile:Tochangeyourpassword,enteryouroldpassword,andthencreateanew,strongpassword." xml:space="preserve">
+     <value>Барои иваз кардани калидвожаи худ, гузарвожаи кӯҳнаи худро ворид кунед ва пас калидвожаи нави қавӣ эҷод кунед.</value>
+ </data>
+  <data name="Profile:OldPassword" xml:space="preserve">
+     <value>Калидвожаи куҳна</value>
+ </data>
 
   <!--profile-->
   
