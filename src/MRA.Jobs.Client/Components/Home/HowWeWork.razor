@@ -1,0 +1,57 @@
+﻿<MudGrid Style="margin-top: 10%">
+    <MudItem xs="12" lg="12">
+        <div style="text-align: center;">
+            <MudText Typo="Typo.h3">
+                <b>
+                    <span style="color: #129fd7">@ContentService["Home:How"]</span> @ContentService["Home:WeWork"]
+                </b>
+            </MudText>
+        </div>
+    </MudItem>
+    <MudItem xs="12" lg="12">
+        <MudGrid Style="text-align: center">
+            <MudItem xs="12" md="4">
+                <MudCard Class="rounded-lg mud-elevation-4">
+                    <MudCardContent>
+                        <div style="padding: 10%">
+                            <MudImage Src="images/planing.png" Style="width: 60%"/>
+                        </div>
+                        <MudText Typo="Typo.h5">
+                            <b>
+                                @ContentService["Home:Planning"]
+                            </b>
+                        </MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudCard Class="rounded-lg mud-elevation-4">
+                    <MudCardContent>
+                        <div style="padding: 10%">
+                            <MudImage Src="images/design.png" Style="width: 74%"/>
+                        </div>
+                        <MudText Typo="Typo.h5">
+                            <b>
+                                @ContentService["Home:Design"]
+                            </b>
+                        </MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudCard Class="rounded-lg mud-elevation-4">
+                    <MudCardContent>
+                        <div style="padding: 10%">
+                            <MudImage Src="images/development.png" Style="width: 77%"/>
+                        </div>
+                        <MudText Typo="Typo.h5">
+                            <b>
+                                @ContentService["Home:Development"]
+                            </b>
+                        </MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+</MudGrid>

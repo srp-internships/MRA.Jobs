@@ -33,6 +33,18 @@ public class ContentService(IStringLocalizer<English> english, IStringLocalizer<
         await localStorageService.SetItemAsStringAsync(nameof(ApplicationCulturesNames), name);
     }
 
+    public async Task<string> GetCurrentCulture()
+    {
+        var cultureName = await localStorageService.GetItemAsStringAsync(nameof(ApplicationCulturesNames));
+        return cultureName switch
+        {
+            ApplicationCulturesNames.En => "En",
+            ApplicationCulturesNames.Ru => "Ru",
+            ApplicationCulturesNames.Tj => "Tj",
+            _ => "en"
+        };
+    }
+
     public async Task InitializeCultureAsync()
     {
         var cultureName = await localStorageService.GetItemAsStringAsync(nameof(ApplicationCulturesNames));

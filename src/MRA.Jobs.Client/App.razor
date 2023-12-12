@@ -1,40 +1,58 @@
-﻿@using MRA.Jobs.Client.Identity
+﻿@page "/{page}"
+@using MRA.Jobs.Client.Identity
+@inject NavigationManager NavManager
+
 <Router AppAssembly="typeof(Program).Assembly" Context="routeData">
-	<Found>
-			<CascadingAuthenticationState>
-				<AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
-					<Authorized>
-						<RouteView RouteData="routeData" DefaultLayout="typeof(Dashboard)" />
-					</Authorized>
+    <Found>
+        @if (NonLayout())
+        {
+            <RouteView RouteData="routeData" DefaultLayout="typeof(EmptyLayout)"/>
+        }
+        else
+        {
+            <CascadingAuthenticationState>
+                <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
+                    <Authorized>
+                        <RouteView RouteData="routeData" DefaultLayout="typeof(Dashboard)"/>
+                    </Authorized>
 
-					<NotAuthorized>
-						<RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)" />
-					</NotAuthorized>
-				</AuthorizeView>
-			</CascadingAuthenticationState>
-	</Found>
-	<NotFound>
-		<CascadingAuthenticationState>
-			<AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
-				<Authorized>
-					<LayoutView Layout="typeof(Dashboard)">
-						<div class="main">Sorry, there's nothing at this address.</div>
-					</LayoutView>
-				</Authorized>
+                    <NotAuthorized>
+                        <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)"/>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </CascadingAuthenticationState>
+        }
+    </Found>
+    <NotFound>
+        <CascadingAuthenticationState>
+            <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
+                <Authorized>
+                    <LayoutView Layout="typeof(Dashboard)">
+                        <div class="main">Sorry, there's nothing at this address.</div>
+                    </LayoutView>
+                </Authorized>
 
-				<NotAuthorized>
-					<LayoutView Layout="typeof(MainLayout)">
-						<div class="main">Sorry, there's nothing at this address.</div>
-					</LayoutView>
-				</NotAuthorized>
-			</AuthorizeView>
-		</CascadingAuthenticationState>
-	</NotFound>
+                <NotAuthorized>
+                    <LayoutView Layout="typeof(MainLayout)">
+                        <div class="main">Sorry, there's nothing at this address.</div>
+                    </LayoutView>
+                </NotAuthorized>
+            </AuthorizeView>
+        </CascadingAuthenticationState>
+    </NotFound>
 </Router>
+
 @code
 {
-	protected override async Task OnInitializedAsync()
-	{
-		await ContentService.InitializeCultureAsync();
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        await ContentService.InitializeCultureAsync();
+    }
+
+    private bool NonLayout()
+    {
+        var uri = NavManager.ToBaseRelativePath(NavManager.Uri);
+        return uri.Equals("sign-up", StringComparison.OrdinalIgnoreCase) ||
+               uri.Equals("sign-in", StringComparison.OrdinalIgnoreCase);
+    }
 }

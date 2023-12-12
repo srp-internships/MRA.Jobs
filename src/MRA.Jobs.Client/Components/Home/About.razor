@@ -1,0 +1,66 @@
+﻿<MudGrid Style="margin-top: 10%">
+    <MudItem xs="12">
+        <MudGrid>
+            <MudItem xs="12" sm="12" md="6" lg="6" Style="padding: 2% 10% 0% 10%">
+                <MudText Typo="Typo.h3">
+                    <b>
+                        @ContentService["Home:About"] @ContentService["Home:Us"]
+                    </b>
+                </MudText>
+                <MudLink Typo="Typo.h5" Href="https://www.silkroadprofessionals.com/" Target="_blank">
+                    <b>@ContentService["Home:AboutTitle"]</b>
+                </MudLink>
+                <MudText Typo="Typo.h6">
+                    @ContentService["Home:AboutContent"]
+                </MudText>
+            </MudItem>
+            <MudItem xs="12" md="6" lg="3">
+                <MudCard Class="rounded-lg mud-elevation-4" Style="padding: 2%">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <div class="d-flex flex-grow-1">
+                                <div class="flex-none d-flex ">
+                                    <MudIcon Icon="@Icons.Material.Filled.Bolt" Size="Size.Large"/>
+                                </div>
+                                <div class="flex-initial d-flex ">
+                                    <MudText Typo="Typo.h5" Style="padding-top: 3px;">
+                                        <b>@ContentService["Home:MissionTitle"]</b>
+                                    </MudText>
+                                </div>
+                            </div>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6">
+                            @ContentService["Home:MissionContent"]
+                        </MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" md="6" lg="3">
+                <MudCard Class="rounded-lg mud-elevation-4" Style="padding: 2%">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <div class="d-flex flex-grow-1">
+                                <div class="flex-none d-flex ">
+                                    <MudIcon Icon="@Icons.Material.Filled.Bolt" Size="Size.Large"/>
+                                </div>
+                                <div class="flex-initial d-flex ">
+                                    <MudText Typo="Typo.h5" Style="padding-top: 3px;">
+                                        <b>@ContentService["Home:VisionTitle"]</b>
+                                    </MudText>
+                                </div>
+                            </div>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6">
+                            @ContentService["Home:VisionContent"]
+                        </MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+        </MudGrid>
+    </MudItem>
+</MudGrid>

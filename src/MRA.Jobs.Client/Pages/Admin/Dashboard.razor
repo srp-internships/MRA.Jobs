@@ -2,11 +2,8 @@
 @using AltairCA.Blazor.WebAssembly.Cookie
 @inherits LayoutComponentBase
 
-<MudThemeProvider/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
-
-
 <CascadingAuthenticationState>
     <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
         <Authorized>
