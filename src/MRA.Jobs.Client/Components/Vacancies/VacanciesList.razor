@@ -9,25 +9,7 @@
 @inject IDateTimeConvertToStringService DateTimeConvertToStringService
 @inject IHiddenVacancyService HiddenVacancyService
 @inject NavigationManager NavigationManager
-<style>
-	.job-card:hover {
-		background-color: #F5F5F5; /* Change to desired hover color */
-	}
-	.customTabContainer{
-	    display: flex;
-	    width: 100%;
-	    justify-content: space-between;
-	}
-	.customTabContainerLeft{
-	    margin-right: 10px ;
-	    margin-left: 10px;
-	}
-	.customTabContainerRight{
-	    margin-right: 20px;
-	    margin-left: 10px;
-	    display:flex;
-	}
-</style>
+
 
 @if (Vacancies is null)
 {
