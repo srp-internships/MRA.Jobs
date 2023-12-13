@@ -11,6 +11,8 @@
 @inject IInternshipService InternshipService
 @inject ICategoryService CategoryService
 @inject IDialogService DialogService
+@inject LayoutService LayoutService
+@inject IJSRuntime jsRuntime
 
 @if (_serverError)
 {
@@ -390,6 +392,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+		await BlazorMonaco.Editor.Global.SetTheme(jsRuntime, LayoutService.IsDarkMode ? "vs-dark": "vs");
         await LoadData();
         Clear();
         StateHasChanged();
