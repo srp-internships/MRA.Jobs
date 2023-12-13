@@ -3,55 +3,59 @@
 @using MRA.Jobs.Client.Identity;
 @inject IApplicationService applicationService
 
-<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Applications</MudText>
+<MudText Typo="Typo.h4">
+    <b>Applications</b>
+</MudText>
 
 @if (serverError)
 {
-    <ServerErrorComponent />
+    <ServerErrorComponent/>
 }
 else
 {
     @if (applications == null)
     {
-        <div class="loader"></div>
+        <div style="text-align: center;">
+            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
+        </div>
     }
     else
     {
-        <MudContainer Class="text-center">
-            <MudTable Items="@applications.Items" Class="text-center">
-                <ColGroup>
-                    <col style="width: 25%;" />
-                    <col style="width: 25%;" />
-                    <col style="width: 25%;" />
-                    <col style="width: 25%" />
-                    <col />
-                </ColGroup>
-                <HeaderContent>
-                    <MudTh>Applicant username</MudTh>
-                    <MudTh>Vacancy title</MudTh>
-                    <MudTh>Applied at</MudTh>
-                    <MudTh>Status name</MudTh>
-                    <MudTh>Action</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Username">@context.Username</MudTd>
-                    <MudTd DataLabel="Title">@context.VacancyTitle</MudTd>
-                    <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
-                    <MudTd DataLabel="StatusName">@context.StatusName</MudTd>
-                    <MudTd DataLabel="Name"><MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton></MudTd>
-                </RowTemplate>
-                <PagerContent>
-                    <MudTablePager />
-                </PagerContent>
-            </MudTable>
-
-        </MudContainer>
+        <MudTable Items="@applications.Items" Class="text-center rounded-lg mud-elevation-4">
+            <ColGroup>
+                <col style="width: 25%;"/>
+                <col style="width: 25%;"/>
+                <col style="width: 25%;"/>
+                <col style="width: 25%"/>
+                <col/>
+            </ColGroup>
+            <HeaderContent>
+                <MudTh>Applicant username</MudTh>
+                <MudTh>Vacancy title</MudTh>
+                <MudTh>Applied at</MudTh>
+                <MudTh>Status name</MudTh>
+                <MudTh>Action</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Username">@context.Username</MudTd>
+                <MudTd DataLabel="Title">@context.VacancyTitle</MudTd>
+                <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
+                <MudTd DataLabel="StatusName">@context.StatusName</MudTd>
+                <MudTd DataLabel="Name">
+                    <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager/>
+            </PagerContent>
+        </MudTable>
     }
 }
 
 @code {
     private bool serverError;
     private PagedList<ApplicationListDto> applications;
+
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
@@ -89,7 +93,7 @@ else
         }, options);
         var result = await dialog.Result;
 
-        // you can check if the modal was cancelled
+    // you can check if the modal was cancelled
         var isCancelled = result.Canceled;
 
         if (isCancelled)
@@ -98,4 +102,5 @@ else
             StateHasChanged();
         }
     }
+
 }

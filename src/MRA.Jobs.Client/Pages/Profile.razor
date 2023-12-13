@@ -14,50 +14,60 @@
 
 @if (_tryButton)
 {
-    <div class="row" style="margin-top:20px;">
-        <div Class="d-flex align-center justify-center mud-width-full py-8">
-            <div class="col mb-3" style="padding-top:50px;">
-                <center>
+    <div style="text-align: center;">
 
                     <MudText Typo="Typo.h4" Color="Color.Error">
 						<b>@ContentService["Profile:Serverisnotresponding"]</b>
                     </MudText><br/>
 
-                    <MudButton Variant="Variant.Filled" OnClick="Load">
-                        @if (_processing)
-                        {
-                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" Style="color:#fff"/>
-                        }
-                        else
-                        {
-                            <MudIcon Icon="@Icons.Material.Filled.Refresh"/>
-							<MudText>@ContentService["Profile:TryAgain"]</MudText>
-                        }
-                    </MudButton>
-                </center>
-            </div>
-        </div>
+        <MudButton Variant="Variant.Filled" OnClick="Load">
+            @if (_processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" Style="color:#fff"/>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Refresh"/>
+                <MudText>Try Again</MudText>
+            }
+        </MudButton>
     </div>
 }
 else
 {
-    <div class="row">
-    <div class="col-md-3">
-        <MudPaper Width="250px" Class="py-3" Elevation="0">
-            <MudNavMenu>
-					<MudText Typo="Typo.h6" Class="px-4">@ContentService["Profile:MyProfile"]</MudText>
+    <MudGrid>
+    <MudItem xs="12" sm="12" md="4" lg="3">
+        <MudCard Class="rounded-lg mud-evaluation-4">
+            <MudCardContent>
+                <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                    <MudNavMenu>
+                        <MudText>@ContentService["Profile:MyProfile"]</MudText>
 
-                <MudDivider Class="my-2"/>
+                        <MudDivider Class="my-2"/>
 
-						<MudNavLink Class="@((_active == 0) ? "active" : "")" OnClick="() => ActiveNavLink(0)">@ContentService["Profile:PersonalInformation"]</MudNavLink>
-						<MudNavLink Class="@((_active == 1) ? "active" : "")" OnClick="() => ActiveNavLink(1)">@ContentService["Profile:Educations"] </MudNavLink>
-						<MudNavLink Class="@((_active == 2) ? "active" : "")" OnClick="() => ActiveNavLink(2)">@ContentService["Profile:Experience"] </MudNavLink>
-						<MudNavLink Class="@((_active == 3) ? "active" : "")" OnClick="() => ActiveNavLink(3)">@ContentService["Profile:Skills"]</MudNavLink>
-						<MudNavLink Class="@((_active == 4) ? "active" : "")" OnClick="() => ActiveNavLink(4)">@ContentService["ResetPassword:Changepassword"]</MudNavLink>
-            </MudNavMenu>
-        </MudPaper>
-    </div>
-    <div class="col-md-8" style="padding:10px;">
+                       <MudNavLink Class="@((_active == 0) ? "active" : "")" OnClick="() => ActiveNavLink(0)">@ContentService["Profile:PersonalInformation"]</MudNavLink>
+<MudNavLink Class="@((_active == 1) ? "active" : "")" OnClick="() => ActiveNavLink(1)">@ContentService["Profile:Educations"] </MudNavLink>
+<MudNavLink Class="@((_active == 2) ? "active" : "")" OnClick="() => ActiveNavLink(2)">@ContentService["Profile:Experience"] </MudNavLink>
+<MudNavLink Class="@((_active == 3) ? "active" : "")" OnClick="() => ActiveNavLink(3)">@ContentService["Profile:Skills"]</MudNavLink>
+<MudNavLink Class="@((_active == 4) ? "active" : "")" OnClick="() => ActiveNavLink(4)">@ContentService["ResetPassword:Changepassword"]</MudNavLink>
+                    </MudNavMenu>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                    <MudExpansionPanel Text="@ContentService["Profile:MyProfile"]">
+                        <MudNavMenu>
+                           <MudNavLink Class="@((_active == 0) ? "active" : "")" OnClick="() => ActiveNavLink(0)">@ContentService["Profile:PersonalInformation"]</MudNavLink>
+<MudNavLink Class="@((_active == 1) ? "active" : "")" OnClick="() => ActiveNavLink(1)">@ContentService["Profile:Educations"] </MudNavLink>
+<MudNavLink Class="@((_active == 2) ? "active" : "")" OnClick="() => ActiveNavLink(2)">@ContentService["Profile:Experience"] </MudNavLink>
+<MudNavLink Class="@((_active == 3) ? "active" : "")" OnClick="() => ActiveNavLink(3)">@ContentService["Profile:Skills"]</MudNavLink>
+<MudNavLink Class="@((_active == 4) ? "active" : "")" OnClick="() => ActiveNavLink(4)">@ContentService["ResetPassword:Changepassword"]</MudNavLink>
+                        </MudNavMenu>
+                    </MudExpansionPanel>
+                </MudHidden>
+
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12" sm="12" md="8" lg="9">
     @switch (_active)
     {
         case 0:
@@ -97,7 +107,7 @@ else
                 <EditForm Model="@_updateProfileCommand" OnValidSubmit="UpdateProfile">
                     <FluentValidationValidator/>
 
-                    <MudCard>
+                    <MudCard Class="rounded-lg mud-elevation-4">
                         <MudCardContent>
 									<MudText Typo="Typo.body2" Class="mud-text-secondary"> @ContentService["Profile:FirstName"]</MudText>
                             <MudTextField @bind-Value="@_updateProfileCommand.FirstName" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => _updateProfileCommand.FirstName)"/>
@@ -206,13 +216,13 @@ else
 					<MudText Typo="Typo.h4">@ContentService["Profile:Educations"] </MudText>
 
             <br/>
-            <div class="row">
+            <MudGrid>
                 @if (educations == null)
                 {
                     @for (int i = 0; i < 5; i++)
                     {
                         <MudItem xs="6">
-                            <MudCard>
+                            <MudCard Class="rounded-lg mud-elevation-4">
                                 <MudCardHeader>
                                     <MudSkeleton Width="40%" Height="50px"/>
                                 </MudCardHeader>
@@ -234,8 +244,8 @@ else
                     @foreach (UserEducationResponse education in educations)
                     {
                         Guid cardId = education.Id;
-                        <div class="col-md-6 mb-3">
-                            <MudCard>
+                        <MudItem xs="12" sm="12" md="6" lg="4">
+                            <MudCard Class="rounded-lg mud-elevation-4">
                                 <!-- Edit Education -->
                                 @if (editingCardId == cardId)
                                 {
@@ -308,11 +318,11 @@ else
                                     </MudCardContent>
                                 }
                             </MudCard>
-                        </div>
+                        </MudItem>
                     }
                 }
                 <!--Add new Education-->
-                <div class="col-md-6 mb-3">
+                <MudItem xs="12" sm="12" md="6" lg="4">
 
                     @if (addEducation == false)
                     {
@@ -324,9 +334,10 @@ else
                     }
                     else
                     {
-                        <MudCard>
-                            <EditForm Model="createEducation" OnInvalidSubmit="CreateEducationHandle">
-                                <FluentValidationValidator/>
+                        <EditForm Model="createEducation" OnInvalidSubmit="CreateEducationHandle">
+                            <FluentValidationValidator/>
+                            <MudCard Class="rounded-lg mud-elevation-4">
+
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Typo="Typo.h6">
@@ -365,28 +376,28 @@ else
 													<MudText>@ContentService["Profile:Save"]</MudText>
                                         }
                                     </MudButton>
-                                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_CreateEducation">
-												@ContentService["Profile:Cancel"]
-											</MudButton>
+                                    <MudButton Variant="Variant.Filled" Color="Color.Surface" OnClick="CancelButtonClicked_CreateEducation">
+                                        <MudText>@ContentService["Profile:MyProfile"]</MudText>
+                                    </MudButton>
                                 </MudCardActions>
-                            </EditForm>
-                        </MudCard>
+                            </MudCard>
+                        </EditForm>
                     }
 
-                </div>
+                </MudItem>
                 <!--------------------->
-            </div>
+            </MudGrid>
             break;
         case 2:
 					<MudText Typo="Typo.h4"> @ContentService["Profile:Experiences"]</MudText>
             <br/>
-            <div class="row">
+            <MudGrid>
                 @if (experiences == null)
                 {
                     @for (int i = 0; i < 5; i++)
                     {
-                        <div class="col-md-6 mb-3">
-                            <MudCard>
+                        <MudItem xs="12" sm="12" md="6" lg="4">
+                            <MudCard Class="rounded-lg mud-elevation-4">
                                 <MudCardHeader>
                                     <MudSkeleton Width="40%" Height="50px"/>
                                 </MudCardHeader>
@@ -400,7 +411,7 @@ else
                                     <MudSkeleton Width="36px" Height="36px" Class="ml-3"/>
                                 </MudCardActions>
                             </MudCard>
-                        </div>
+                        </MudItem>
                     }
                 }
                 else
@@ -408,8 +419,8 @@ else
                     @foreach (UserExperienceResponse experience in experiences)
                     {
                         Guid cardExperienceId = experience.Id;
-                        <div class="col-md-6 mb-3">
-                            <MudCard>
+                        <MudItem xs="12" sm="12" md="6" lg="4">
+                            <MudCard Class="rounded-lg mud-evaluation-4">
                                 <!-- Edit Experience -->
                                 @if (editingCardExperienceId == cardExperienceId)
                                 {
@@ -495,11 +506,11 @@ else
                                     </MudCardContent>
                                 }
                             </MudCard>
-                        </div>
+                        </MudItem>
                     }
                 }
                 <!--Add new Experience-->
-                <div class="col-md-6 mb-3">
+                <MudItem xs="12" sm="12" md="6" lg="4">
 
                     @if (addExperience == false)
                     {
@@ -508,10 +519,10 @@ else
                         </MudButton>
                     }
                     else
-                    {
-                        <MudCard>
-                            <EditForm Model="createExperience" OnInvalidSubmit="CreateExperienceHandle">
-                                <FluentValidationValidator/>
+                    { <EditForm Model="createExperience" OnInvalidSubmit="CreateExperienceHandle">
+                                                     <FluentValidationValidator/>
+                        <MudCard Class="rounded-lg mud-evaluation-4">
+                           
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Typo="Typo.h6">
@@ -549,16 +560,15 @@ else
                                         }
                                     </MudButton>
                                     <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CancelButtonClicked_CreateExperience">
-                                       @ContentService["Profile:Cancel"] 
+                                      <MudText> @ContentService["Profile:Cancel"]</MudText>  
                                     </MudButton>
                                 </MudCardActions>
-                            </EditForm>
-                        </MudCard>
+                        </MudCard> </EditForm>
                     }
 
-                </div>
+                </MudItem>
                 <!--------------------->
-            </div>
+            </MudGrid>
             break;
         case 3:
 					<MudText Typo="Typo.h4">@ContentService["Profile:Skills"] </MudText>
@@ -593,7 +603,6 @@ else
             <ChangePassword/>
             break;
     }
-
-    </div>
-    </div>
+    </MudItem>
+    </MudGrid>
 }

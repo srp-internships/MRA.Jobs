@@ -1,0 +1,97 @@
+﻿<MudGrid Style="margin-top: 10%">
+    <MudItem xs="12">
+        <MudText Typo="Typo.h3" Style="text-align: center">
+            <b>
+                <span style="color: var(--mud-palette-primary);">@ContentService["Home:What"]</span> @ContentService["Home:WeDo"]
+            </b>
+        </MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <MudGrid>
+            <MudItem xs="12" md="6">
+                <a Href="https://www.silkroadprofessionals.com/service/web/" Target="_blank">
+                    <MudCard Class="rounded-lg mud-elevation-4" Style="padding: 10px;">
+                        <MudCardContent>
+                            <div class="d-flex flex-grow-1">
+                                <div class="flex-none d-flex ">
+                                    <MudIcon Icon="@Icons.Material.Filled.Language" Size="Size.Large"/>
+                                </div>
+                                <div class="flex-initial d-flex ">
+                                    <MudText Typo="Typo.h5" Style="padding-top: 3px;">
+                                        <b> @ContentService["Home:WebServiceTitle"]</b>
+                                    </MudText>
+                                </div>
+                            </div>
+                            <MudText Typo="Typo.h6">
+                                @ContentService["Home:WebServiceDescription"]
+                            </MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </a>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <a Href="https://www.silkroadprofessionals.com/service/mobile/" Target="_blank">
+                    <MudCard Class="rounded-lg mud-elevation-4" Style="padding: 10px;">
+                        <MudCardContent>
+                            <div class="d-flex flex-grow-1">
+                                <div class="flex-none d-flex ">
+                                    <MudIcon Icon="@Icons.Material.Filled.Smartphone" Size="Size.Large"/>
+                                </div>
+                                <div class="flex-initial d-flex ">
+                                    <MudText Typo="Typo.h5" Style="padding-top: 3px;">
+                                        <b> @ContentService["Home:MobileServiceTitle"]</b>
+                                    </MudText>
+                                </div>
+                            </div>
+                            <MudText Typo="Typo.h6">
+                                @ContentService["Home:MobileServiceDescription"]
+                            </MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </a>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <a Href="https://www.silkroadprofessionals.com/service/desktop/" Target="_blank">
+                    <MudCard Class="rounded-lg mud-elevation-4" Style="padding: 10px;">
+                        <MudCardContent>
+                            <div class="d-flex flex-grow-1">
+                                <div class="flex-none d-flex ">
+                                    <MudIcon Icon="@Icons.Material.Filled.Laptop" Size="Size.Large"/>
+                                </div>
+                                <div class="flex-initial d-flex ">
+                                    <MudText Typo="Typo.h5" Style="padding-top: 3px;">
+                                        <b> @ContentService["Home:DesktopServiceTitle"]</b>
+                                    </MudText>
+                                </div>
+                            </div>
+                            <MudText Typo="Typo.h6">
+                                @ContentService["Home:DesktopServiceDescription"]
+                            </MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </a>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <a Href="https://www.silkroadprofessionals.com/service/cloud/" Target="_blank">
+                    <MudCard Class="rounded-lg mud-elevation-4" Style="padding: 10px;">
+                        <MudCardContent>
+                            <div class="d-flex flex-grow-1">
+                                <div class="flex-none d-flex ">
+                                    <MudIcon Icon="@Icons.Material.Filled.Cloud" Size="Size.Large"/>
+                                </div>
+                                <div class="flex-initial d-flex ">
+                                    <MudText Typo="Typo.h5" Style="padding-top: 3px;">
+                                        <b> @ContentService["Home:CloudServiceTitle"]</b>
+                                    </MudText>
+                                </div>
+                            </div>
+                            <MudText Typo="Typo.h6">
+                                @ContentService["Home:CloudServiceDescription"]
+                            </MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </a>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+</MudGrid>

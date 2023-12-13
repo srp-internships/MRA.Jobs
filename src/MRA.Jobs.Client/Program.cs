@@ -4,7 +4,6 @@ global using MRA.Jobs.Client.Services.VacancyServices;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
-using MatBlazor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MRA.Jobs.Client;
@@ -23,7 +22,9 @@ using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.ContentService;
 using MRA.Jobs.Client.Services.ConverterService;
+using MRA.Jobs.Client.Services;
 using MRA.Jobs.Client.Services.FileService;
+using MRA.Jobs.Client.Services.UserPreferences;
 using MRA.Jobs.Client.Services.HiddenVacancies;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -35,7 +36,6 @@ builder.Services
 
 
 builder.Services.AddMudServices();
-builder.Services.AddMatBlazor();
 
 builder.Services.AddAltairCACookieService(options => { options.DefaultExpire = TimeSpan.Zero; });
 builder.RootComponents.Add<App>("#app");
@@ -83,6 +83,8 @@ builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<LayoutService>();
+
 builder.Services.AddScoped<IHiddenVacancyService, HiddenVacancyService>();
 builder.Services.AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
 
@@ -91,6 +93,7 @@ builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddLocalization();
 builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IDateTimeConvertToStringService, DateTimeConverterToStringService>();
+builder.Services.AddScoped<IUserPreferencesService, UserPreferencesService>();
 builder.Services.AddBlazoredLocalStorage();
 
 await builder.Build().RunAsync();

@@ -1,47 +1,98 @@
 ﻿@using MRA.Jobs.Client.Identity
 @using AltairCA.Blazor.WebAssembly.Cookie
+@using MRA.Jobs.Client.Components.Buttons;
 @inherits LayoutComponentBase
+@inject LayoutService LayoutService
 
-<MudThemeProvider/>
+<MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <br/>
+    <br/>
+    <CascadingAuthenticationState>
+        <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
+            <Authorized>
+                <MudGrid>
+                    <MudItem xs="12" md="4" lg="3">
+                        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                            <MudCard Class="rounded-lg mud-elevation-4">
+                                <MudCardHeader>
+                                    <CardHeaderActions>
+                                        <ToolBarSettingsButtons/>
+                                        <UserButton/>
+                                    </CardHeaderActions>
+                                    <CardHeaderContent>
+                                        <MudText> Dashboard </MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    <MudNavMenu Bordered="true">
+                                        <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
+                                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">Applications</MudNavLink>
+                                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">Jobs</MudNavLink>
+                                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">Internships</MudNavLink>
+                                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">Trainings</MudNavLink>
 
+                                        <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
+                                            <MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
+                                        </AuthorizeView>
+                                    </MudNavMenu>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudHidden>
 
-<CascadingAuthenticationState>
-    <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
-        <Authorized>
+                        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                            <MudText Typo="Typo.h6">
+                                <b>Dashboard</b>
+                            </MudText>
+                        </MudHidden>
+                        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                            <MudCard Class="rounded-lg mud-elevation-4">
+                                <MudCardContent>
+                                    <MudExpansionPanel >
+                                        <TitleContent>
+                                            <MudStack Row="true" AlignItems="AlignItems.Center">
+                                                <MudHidden Breakpoint="Breakpoint.Xs">
+                                                    <MudText> Dashboard </MudText>
+                                                    <MudSpacer/>
+                                                </MudHidden>
+                                                <ToolBarSettingsButtons/>
+                                                <UserButton/>
+                                            </MudStack>
+                                        </TitleContent>
+                                        <ChildContent>
+                                            <MudNavMenu Bordered="true">
+                                                <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
+                                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">Applications</MudNavLink>
+                                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">Jobs</MudNavLink>
+                                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">Internships</MudNavLink>
+                                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">Trainings</MudNavLink>
 
-            <div class="container" style="padding-top:25px;">
-                <div class="row">
-                    <div class="col-md-2">
-                        <MudPaper Elevation="0">
-                            <MudNavMenu Bordered="true">
-                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard" Disabled="true" hidden="true">Dashboard</MudNavLink>
-                                <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
-                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">Applications</MudNavLink>
-                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">Jobs</MudNavLink>
-                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">Internships</MudNavLink>
-                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">Trainings</MudNavLink>
+                                                <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
+                                                    <MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
+                                                </AuthorizeView>
+                                            </MudNavMenu>
+                                        </ChildContent>
 
-                                <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-                                    <MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
-                                </AuthorizeView>
+                                    </MudExpansionPanel>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudHidden>
 
-                                <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="@LogOut">Log out</MudNavLink>
-                            </MudNavMenu>
-                        </MudPaper>
-                    </div>
-                    <div class="col-md-10" style="margin: 0 auto;">
+                    </MudItem>
+                    <MudItem xs="12" md="8" lg="9">
                         @Body
-                    </div>
-                </div>
-            </div>
-        </Authorized>
-        <NotAuthorized>
-            Sorry, there's nothing at this address.
-        </NotAuthorized>
-    </AuthorizeView>
-</CascadingAuthenticationState>
+                    </MudItem>
+                </MudGrid>
+
+            </Authorized>
+            <NotAuthorized>
+                Sorry, there's nothing at this address.
+            </NotAuthorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
+</MudContainer>
 
 @code {
 
@@ -61,6 +112,45 @@
         await CookieUtil.RemoveAsync("authToken");
         await _authStateProvider.GetAuthenticationStateAsync();
         _navigationManager.NavigateTo("/");
+    }
+
+
+    private MudThemeProvider _mudThemeProvider;
+
+    protected override void OnInitialized()
+    {
+        LayoutService.MajorUpdateOccured += UpdateState;
+    }
+
+    private void UpdateState(object sender, EventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        LayoutService.MajorUpdateOccured -= UpdateState;
+    }
+
+    private async Task ApplyUserPreferences()
+    {
+        var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
+        await LayoutService.ApplyUserPreferences(defaultDarkMode);
+    }
+
+    private async Task OnSystemPreferenceChanged(bool newValue)
+    {
+        await LayoutService.OnSystemPreferenceChanged(newValue);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ApplyUserPreferences();
+            await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
+            StateHasChanged();
+        }
     }
 
 }

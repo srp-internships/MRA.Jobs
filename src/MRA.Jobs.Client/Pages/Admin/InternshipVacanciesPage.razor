@@ -10,54 +10,40 @@
 @inject IJSRuntime jsRuntime
 @inject IInternshipService InternshipService
 @inject ICategoryService CategoryService
+@inject IDialogService DialogService
 
-<MudText Typo="Typo.h4" Color="Color.Primary">Internships Vacancy</MudText>
 @if (_serverError)
 {
     <ServerErrorComponent/>
 }
 else
 {
-    <style>
-		.monaco-editor-container {
-			height: 250px;
-			border: 1px solid gray;
-		}
-
-		.decorationGlyphMarginClass {
-			background: red;
-		}
-
-		.decorationContentClass {
-			background: lightblue;
-		}
-
-		.mud-input-control {
-			margin-bottom: 10px;
-		}
-	</style>
-
     @if (_categories == null)
     {
-        <div class="loader"></div>
+        <div style="text-align: center;">
+            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
+        </div>
     }
     else
     {
         <MudGrid>
-            <MudItem Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0" lg="12">
-                <MudCardHeader>
-                    <MudButton hidden="@_panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => _panelOpenState = true)">
+            <MudItem lg="12">
+                <MudCardActions>
+                    <MudText Typo="Typo.h4">
+                        <b>Internships Vacancy</b>
+                    </MudText>
+                    <MudSpacer/>
+                    <MudButton Disabled="@_panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => _panelOpenState = !_panelOpenState)">
                         <MudText>Create New Internship Vacancy</MudText>
                     </MudButton>
-                </MudCardHeader>
+                </MudCardActions>
             </MudItem>
             <MudItem lg="12" hidden="@(!_panelOpenState)">
                 <EditForm Model="@InternshipService.createCommand">
                     <FluentValidationValidator/>
-
                     <MudGrid>
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                            <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:rgb(128,128,128)">
@@ -76,7 +62,7 @@ else
                             </MudCard>
                         </MudItem>
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                            <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:rgb(128,128,128)">
@@ -149,7 +135,7 @@ else
                     <MudGrid>
 
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                            <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:rgb(128,128,128)">
@@ -182,27 +168,27 @@ else
                                             </MudExpansionPanel>
                                         }
                                     </MudExpansionPanels>
-									@if (_panelOpenState != false)
-									{
-										<br />
-										<MudTextField @bind-Value="newTitle" OnKeyDown="@OnKeyDown" Label="Title"
-													  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
-										<MudTextField Lines="5" @bind-Value="newDescription" OnKeyDown="@OnKeyDown" Label="Description"
-													  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
-										<MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Template</MudText>
-										<StandaloneCodeEditor @ref="_editorTemplate" Id="sample-code-editor-123" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
-										<MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Test</MudText>
-										<StandaloneCodeEditor @ref="_editorTest" Id="sample-code-editor-456" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
-										<MudButton Variant="Variant.Filled" Color="Color.Primary"
-												   @onclick="@AddTask" Id="AddTask">
-											<MudText>Add Task</MudText>
-										</MudButton>
-									}
+                                    @if (_panelOpenState != false)
+                                    {
+                                        <br/>
+                                        <MudTextField @bind-Value="newTitle" OnKeyDown="@OnKeyDown" Label="Title"
+                                                      Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
+                                        <MudTextField Lines="5" @bind-Value="newDescription" OnKeyDown="@OnKeyDown" Label="Description"
+                                                      Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
+                                        <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Template</MudText>
+                                        <StandaloneCodeEditor @ref="_editorTemplate" Id="sample-code-editor-123" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu"/>
+                                        <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Test</MudText>
+                                        <StandaloneCodeEditor @ref="_editorTest" Id="sample-code-editor-456" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu"/>
+                                        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                                   @onclick="@AddTask" Id="AddTask">
+                                            <MudText>Add Task</MudText>
+                                        </MudButton>
+                                    }
                                 </MudCardContent>
                             </MudCard>
                         </MudItem>
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                            <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:rgb(128,128,128)">
@@ -229,40 +215,59 @@ else
                         </MudItem>
 
                         <MudItem xs="12" lg="12">
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit"
-                                       Id="btnInsert" hidden="@_isInserting">
-                                <MudText>
-                                    Create
-                                </MudText>
-                            </MudButton>
-                            <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate"
-                                       Id="btnUpdate" hidden="@_isUpdating">
-                                <MudText>
-                                    Save changes
-                                </MudText>
-                            </MudButton>
-                            <MudButton Variant="Variant.Filled" Color="Color.Dark" @onclick="@HandleCancel"
-                                       Id="btnUpdate">
-                                <MudText>
-                                    Cancel
-                                </MudText>
-                            </MudButton>
+                            <MudCardActions>
+                                <div hidden="@_isInserting">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit">
+                                        <MudText>
+                                            Create
+                                        </MudText>
+                                    </MudButton>
+                                </div >
+                                <div hidden="@_isUpdating">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate">
+                                        <MudText>
+                                            Save changes
+                                        </MudText>
+                                    </MudButton>
+                                </div>
+                                <MudButton Variant="Variant.Filled" Color="Color.Dark" @onclick="@HandleCancel" Style="margin-left: 10px;">
+                                    <MudText>
+                                        Cancel
+                                    </MudText>
+                                </MudButton>
+                            </MudCardActions>
+
                         </MudItem>
                     </MudGrid>
                 </EditForm>
             </MudItem>
         </MudGrid>
-        <DeleteConfirmation @bind-IsOpen="@_isDialogOpen" OnConfirm="DeleteItem"/>
         <MudTable Items="@_internships" Class="text-center" Breakpoint="Breakpoint.Md" hidden="@_panelOpenState">
             <HeaderContent>
-                <MudTh><strong>Title</strong></MudTh>
-                <MudTh><strong>Short description</strong></MudTh>
-                <MudTh><strong>Duration</strong></MudTh>
-                <MudTh><strong>Stipend</strong></MudTh>
-                <MudTh><strong>Category</strong></MudTh>
-                <MudTh><strong>Publish date</strong></MudTh>
-                <MudTh><strong>Application deadline</strong></MudTh>
-                <MudTh><strong>End date</strong></MudTh>
+                <MudTh>
+                    <strong>Title</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Short description</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Duration</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Stipend</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Category</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Publish date</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Application deadline</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>End date</strong>
+                </MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
@@ -296,10 +301,10 @@ else
     string _updateSlug;
     private string _selectedCategory = "";
     private string _newQuestion = string.Empty;
-	private string newDescription = string.Empty;
-	private string newTemplate = string.Empty;
-	private string newTest = string.Empty;
-	private string newTitle = string.Empty;
+    private string newDescription = string.Empty;
+    private string newTemplate = string.Empty;
+    private string newTest = string.Empty;
+    private string newTitle = string.Empty;
     private List<VacancyQuestionDto> _questions = new();
     private List<CategoryResponse> _categories;
     private List<InternshipVacancyListResponse> _internships;
@@ -309,87 +314,80 @@ else
     private TimeSpan? _endDateTime;
     private string _createOrEditHeader = "New Internship Vacancy";
 
-	private StandaloneCodeEditor _editorTemplate = null!;
-	private StandaloneCodeEditor _editorTest = null!;
-	private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
-	{
-		if (editor == _editorTest)
-		{
-			return new StandaloneEditorConstructionOptions
-				{
-					Language = "csharp",
-					GlyphMargin = true,
-					AutomaticLayout = true,
-					Value = "using Microsoft.VisualStudio.TestTools.UnitTesting;\n\n" +
-						"namespace TestProject\n" +
-						"{\n" +
-						"    [TestClass]\n" +
-						"    public class UnitTest1\n" +
-						"    {\n" +
-						"        [TestMethod]\n" +
-						"        public void TestMethod1()\n" +
-						"        {\n" +
-						"        //You can write a test here  \n" +
-						"        }\n" +
-						"    }\n" +
-						"}\n"
-				};
-		}
-		else
-		{
-			return new StandaloneEditorConstructionOptions
-				{
-					Language = "csharp",
-					GlyphMargin = true,
-					AutomaticLayout = true,
-					Value = "using System;\n\n" +
-									"public class Program\n" +
-									"{\n" +
-									"    public static void Main()\n" +
-									"    {\n" +
-									"        Console.WriteLine(\"Hello, world!\");\n" +
-									"    }\n" +
-									"}\n"
-				};
-		}
+    private StandaloneCodeEditor _editorTemplate = null!;
+    private StandaloneCodeEditor _editorTest = null!;
 
-	}
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        if (editor == _editorTest)
+        {
+            return new StandaloneEditorConstructionOptions
+            {
+                Language = "csharp",
+                GlyphMargin = true,
+                AutomaticLayout = true,
+                Value = "using Microsoft.VisualStudio.TestTools.UnitTesting;\n\n" +
+                        "namespace TestProject\n" +
+                        "{\n" +
+                        "    [TestClass]\n" +
+                        "    public class UnitTest1\n" +
+                        "    {\n" +
+                        "        [TestMethod]\n" +
+                        "        public void TestMethod1()\n" +
+                        "        {\n" +
+                        "        //You can write a test here  \n" +
+                        "        }\n" +
+                        "    }\n" +
+                        "}\n"
+            };
+        }
+        else
+        {
+            return new StandaloneEditorConstructionOptions
+            {
+                Language = "csharp",
+                GlyphMargin = true,
+                AutomaticLayout = true,
+                Value = "using System;\n\n" +
+                        "public class Program\n" +
+                        "{\n" +
+                        "    public static void Main()\n" +
+                        "    {\n" +
+                        "        Console.WriteLine(\"Hello, world!\");\n" +
+                        "    }\n" +
+                        "}\n"
+            };
+        }
+    }
 
-	private async Task EditorOnDidInit()
-	{
-		await _editorTest.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) =>
-		{
-			Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
-		});
-		await _editorTemplate.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) =>
-		{
-			Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
-		});
+    private async Task EditorOnDidInit()
+    {
+        await _editorTest.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) => { Console.WriteLine("Ctrl+H : Initial editor command is triggered."); });
+        await _editorTemplate.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) => { Console.WriteLine("Ctrl+H : Initial editor command is triggered."); });
 
-		var newDecorations = new ModelDeltaDecoration[]
-		{
-			new ModelDeltaDecoration
-			{
-				Range = new BlazorMonaco.Range(3,1,3,1),
-				Options = new ModelDecorationOptions
-				{
-					IsWholeLine = true,
-					ClassName = "decorationContentClass",
-					GlyphMarginClassName = "decorationGlyphMarginClass"
-				}
-			}
-		};
+        var newDecorations = new ModelDeltaDecoration[]
+        {
+            new ModelDeltaDecoration
+            {
+                Range = new BlazorMonaco.Range(3, 1, 3, 1),
+                Options = new ModelDecorationOptions
+                {
+                    IsWholeLine = true,
+                    ClassName = "decorationContentClass",
+                    GlyphMarginClassName = "decorationGlyphMarginClass"
+                }
+            }
+        };
 
-		decorationIds = await _editorTest.DeltaDecorations(null, newDecorations);
-		decorationIds = await _editorTemplate.DeltaDecorations(null, newDecorations);
-	}
+        await _editorTest.DeltaDecorations(null, newDecorations);
+        await _editorTemplate.DeltaDecorations(null, newDecorations);
+    }
 
-	private string[] decorationIds = new string[0];
+    private void OnContextMenu(EditorMouseEvent eventArg)
+    {
+        Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
+    }
 
-	private void OnContextMenu(EditorMouseEvent eventArg)
-	{
-		Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
-	}
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
@@ -397,38 +395,43 @@ else
         StateHasChanged();
     }
 
-    private bool _isDialogOpen;
-    private string _itemSlugToDelete;
-
-    void OnDeleteClick(string slug)
+    async Task OnDeleteClick(string slug)
     {
-        _itemSlugToDelete = slug;
-        _isDialogOpen = true;
+        var vacancy = _internships.FirstOrDefault(c => c.Slug == slug);
+        var parameters = new DialogParameters<DialogMudBlazor>();
+        parameters.Add(x => x.ContentText, "Do you really want to delete this vacancy?");
+        parameters.Add(x => x.ButtonText, "Delete");
+        parameters.Add(x => x.Color, Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            try
+            {
+                var response = await InternshipService.Delete(slug);
+                if (response.IsSuccessStatusCode)
+                {
+                    Snackbar.Add($"Deleted", Severity.Success);
+                    _internships.Remove(vacancy);
+                }
+                else
+                {
+                    Snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+                }
+                Clear();
+            }
+            catch (Exception)
+            {
+                Snackbar.Add("Server is not responding, try latter", Severity.Error);
+            }
+            StateHasChanged();
+        }
     }
 
-    private async Task DeleteItem()
-    {
-        _isDialogOpen = false;
-        await LoadData();
-        try
-        {
-            var result = await InternshipService.Delete(_itemSlugToDelete);
-            if (result.IsSuccessStatusCode)
-            {
-                Snackbar.Add($"Deleted", Severity.Success);
-            }
-            else
-            {
-                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
-            }
-            await LoadData();
-            Clear();
-        }
-        catch (Exception)
-        {
-            Snackbar.Add("Server is not responding, try latter", Severity.Error);
-        }
-    }
 
     private async Task OnEditClick(string slug)
     {
@@ -578,8 +581,8 @@ else
         {
             Title = newTitle,
             Description = newDescription,
-				Template = await _editorTemplate.GetValue(),
-				Test = await _editorTest.GetValue()
+            Template = await _editorTemplate.GetValue(),
+            Test = await _editorTest.GetValue()
         });
         newTitle = "";
         newDescription = "";

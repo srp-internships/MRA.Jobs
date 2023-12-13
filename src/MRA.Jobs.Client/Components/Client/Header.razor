@@ -1,163 +1,182 @@
-﻿@inject AuthenticationStateProvider AuthProvider
-@inject IAltairCABlazorCookieUtil CookieUtil
-@inject NavigationManager NavigationManager
-@using Microsoft.AspNetCore.Components.Authorization
-@using MRA.Jobs.Client.Identity
-@using AltairCA.Blazor.WebAssembly.Cookie
+﻿@using MRA.Jobs.Client.Services
+@using MRA.Jobs.Client.Enums
 @using MRA.Jobs.Client.wwwroot.resources
-@inject IContentService ContentService
-@inject IJSRuntime JsRuntime
-
-<style>
-	@@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
-
-	.logo-text {
-		font-family: 'Poppins', sans-serif;
-	}
-
-	.navbar-nav .nav-link {
-		color: white;
-		margin-right: 10px;
-		text-align: center;
-	}
-
-	h3 {
-		font-weight: bold;
-	}
-
-	#navbarSupportedContent {
-		text-align: center;
-	}
-
-	.navbar-toggler,
-	.navbar-toggler:focus,
-	.navbar-toggler:active,
-	.navbar-toggler-icon:focus {
-		outline: none;
-		box-shadow: none;
-		border: none;
-	}
-
-	ul {
-		margin: 0 auto;
-		display: flex;
-		align-content: space-around;
-	}
-
-	.active {
-		color: #129fd7;
-	}
+@using AltairCA.Blazor.WebAssembly.Cookie
+@using Blazorise
+@using MRA.Identity.Application.Contract.Profile.Responses
+@using MRA.Jobs.Application.Contracts.HiddenVacancies.Responses
+@using MRA.Jobs.Client.Services.Profile
+@using MRA.Jobs.Client.Components.Buttons
+@using MRA.Jobs.Client.Services.HiddenVacancies
+@using Anchor = MudBlazor.Anchor
+@using Breakpoint = MudBlazor.Breakpoint
+@using Color = MudBlazor.Color
+@using DividerType = MudBlazor.DividerType
+@using Size = MudBlazor.Size
+@inject NavigationManager NavigationManager
+@inject LayoutService LayoutService
+@inject IUserProfileService UserProfileService
 
 
-	#user_icon .mud-svg-icon {
-		color: white;
-	}
+<MudToolBar Class="toolbar-fixed-blur">
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+    </MudHidden>
+    <MudHidden Breakpoint="Breakpoint.Xs">
+        <MudItem Style="padding-right:5px;">
+            <MudImage src="images/srp_icon.png" Style="width: 50px"/>
+        </MudItem>
+        <MudItem Style="padding-left:0; margin-right: 40px;">
+            <MudText Style="font-size: 21.5px;">
+                <b>SILK ROAD</b>
+            </MudText>
+            <MudText Style="margin-top: -10px;">
+                <small>
+                    <b>PROFESSIONALS</b>
+                </small>
+            </MudText>
+        </MudItem>
+    </MudHidden>
+    <MudHidden Breakpoint="Breakpoint.SmAndUp">
+        <MudItem Style="padding-right:5px;">
+            <MudImage src="images/srp_icon.png" Style="width: 30px"/>
+        </MudItem>
+        <MudItem Style="padding-left:0; margin-right: 40px;">
+            <MudText Style="font-size: 21.5px;">
+                <b>SRP</b>
+            </MudText>
+        </MudItem>
+    </MudHidden>
 
-</style>
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudButton Href="/" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Home)">
+            <MudText>
+                <b>@ContentService["Header:Home"]</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="/jobs" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Jobs)">
+            <MudText>
+                <b>@ContentService["Header:Jobs"]</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="/internships" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Internships)">
+            <MudText>
+                <b>@ContentService["Header:Internships"]</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="/trainings" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Trainings)">
+            <MudText>
+                <b>@ContentService["Header:Trainings"]</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Team)">
+            <MudText>
+                <b>@ContentService["Header:Team"]</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Contact)">
+            <MudText>
+                <b>Contact</b>
+            </MudText>
+        </MudButton>
+    </MudHidden>
+    <MudSpacer/>
+    <MudHidden Breakpoint="Breakpoint.Xs">
+        <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+              <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Variant="Variant.Text" 
+                            PopoverClass="docs-layout-menu-shadow"  LockScroll="true">
+                       <ActivatorContent>
+                           <MudChip Icon="@Icons.Material.Filled.UploadFile" Color="Color.Tertiary">CV</MudChip>
+                       </ActivatorContent>
+                       <ChildContent>
+                           <HiddenVacancyUploadCV/>
+                       </ChildContent>
+                   </MudMenu>
+        </MudHidden>
+        <ToolBarSettingsButtons/>
+    </MudHidden>
+
+    <UserButton/>
+</MudToolBar>
+
+<MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent"
+           ClipMode="DrawerClipMode.Docked">
+    <MudToolBar Dense="true" Class="docs-gray-bg">
+        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+        <MudSpacer/>
+     <ToolBarSettingsButtons/>
+    </MudToolBar>
+
+    <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
+        <MudNavLink Match="NavLinkMatch.All" Href="/">@ContentService["Header:Home"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/contact">Contact</MudNavLink>
+
+    </MudNavMenu>
+</MudDrawer>
 
 
-<nav class="navbar bg-dark navbar-expand-lg">
-    <div class="container-fluid">
-        <a class="navbar-brand">
-            <img src="images/srp_icon.png" width="70"/>
-        </a>
-        <div style="text-align: center">
-            <h3 class="text-white logo-text">SILK ROAD</h3>
-            <h4 style="font-size: 18px" class="logo-text text-white">PROFESSIONALS</h4>
-        </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="100" viewBox="0 0 50 50" fill="white">
-                <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
-            </svg>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">@ContentService["Header:Home"]</NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/internships">@ContentService["Header:Internships"]</NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/jobs">@ContentService["Header:Jobs"]</NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/trainings">@ContentService["Header:Trainings"]</NavLink>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://www.silkroadprofessionals.com/team/team/" target="_blank">@ContentService["Header:Team"]</a>
-                </li>
-            </ul>
-
-            @* language switch *@
-            <div class="parent">
-                <div class="switch_3_ways_v2">
-                    <div id="monthly2" class="switch2 monthly" @onclick="SwitchToEnglish">English</div>
-                    <div class="switch2 semester" id="semester2" @onclick="SwitchToRussian">Русский</div>
-                    <div id="annual2" class="switch2 annual" @onclick="SwitchToTajik">Тоҷикӣ</div>
-                    <div id="selector" class="selector"></div>
-                </div>
-            </div>
-            @* language switch *@
-
-            <CascadingAuthenticationState>
-                <AuthorizeView>
-                    <Authorized>
-                        <MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
-                            <MudMenuItem Href="/profile">@ContentService["UserButton:Profile"]</MudMenuItem>
-                            <MudMenuItem Href="/applications">@ContentService["UserButton:Applications"]</MudMenuItem>
-                            <MudMenuItem OnClick="Logout">@ContentService["UserButton:Logout"]</MudMenuItem>
-                        </MudMenu>
-                    </Authorized>
-                    <NotAuthorized>
-                        <MudMenu Icon="@Icons.Material.Filled.Person" id="user_icon">
-                            <MudMenuItem Href="/sign-in">@ContentService["UserButton:Sign In"]</MudMenuItem>
-                            <MudMenuItem Href="/sign-up">@ContentService["UserButton:Sign Up"]</MudMenuItem>
-                        </MudMenu>
-                    </NotAuthorized>
-                </AuthorizeView>
-            </CascadingAuthenticationState>
-        </div>
-    </div>
-</nav>
-
-<script>
-
-</script>
 @code {
+
+    bool _open = false;
+
+    void ToggleDrawer()
+    {
+        _open = !_open;
+    }
+
+    private DocPages currentPage;
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JsRuntime.InvokeVoidAsync("InitLocation");
         await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            try
+            {
+                LayoutService.User = await UserProfileService.Get();
+            }
+            catch (Exception e)
+            {
+            }
+            StateHasChanged();
+        }
     }
 
-    private async Task Logout()
+
+    protected override void OnInitialized()
     {
-        await CookieUtil.RemoveAsync("authToken");
-        await AuthProvider.GetAuthenticationStateAsync();
-        NavigationManager.NavigateTo("/");
+        currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
+
+        StateHasChanged();
+        NavigationManager.LocationChanged += HandleLocationChanged;
+        base.OnInitialized();
     }
 
-    private async Task SwitchToEnglish()
+    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
-        await JsRuntime.InvokeVoidAsync("change_period2", "English");
-        await ContentService.ChangeCulture(ApplicationCulturesNames.En);
-        await JsRuntime.InvokeVoidAsync("location.reload", true);
+        currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
+        StateHasChanged();
     }
 
-    private async Task SwitchToRussian()
+    private string GetActiveClass(DocPages page)
     {
-        await JsRuntime.InvokeVoidAsync("change_period2", "Русский");
-        await ContentService.ChangeCulture(ApplicationCulturesNames.Ru);
-        await JsRuntime.InvokeVoidAsync("location.reload", true);
+        return page == currentPage ? "mud-chip-text mud-chip-color-primary mx-1 px-3" : "mx-1 px-3";
     }
 
-    private async Task SwitchToTajik()
+    public void Dispose()
     {
-        await JsRuntime.InvokeVoidAsync("change_period2", "Тоҷикӣ");
-        await ContentService.ChangeCulture(ApplicationCulturesNames.Tj);
-        await JsRuntime.InvokeVoidAsync("location.reload", true);
+        NavigationManager.LocationChanged -= HandleLocationChanged;
     }
+
+   
+
+
 
 }
