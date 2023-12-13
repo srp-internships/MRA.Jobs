@@ -15,8 +15,6 @@
 @using Size = MudBlazor.Size
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
-@inject AuthenticationStateProvider AuthProvider
-@inject IAltairCABlazorCookieUtil CookieUtil
 @inject IUserProfileService UserProfileService
 
 
@@ -99,45 +97,7 @@
         <ToolBarSettingsButtons/>
     </MudHidden>
 
-    <CascadingAuthenticationState>
-        <AuthorizeView>
-            <Authorized>
-                <MudMenu AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" LockScroll="true">
-                    <ActivatorContent>
-                        @if (LayoutService.user == null)
-                        {
-                            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
-                        }
-                        else
-                        {
-                            <MudChip>
-                                <AvatarContent>
-                                    <MudAvatar>@LayoutService.user.FirstName[0].ToString().ToUpper()@LayoutService.user.LastName[0].ToString().ToUpper()</MudAvatar>
-                                </AvatarContent>
-                                <ChildContent>@LayoutService.user.FirstName</ChildContent>
-                            </MudChip>
-                        }
-                    </ActivatorContent>
-                    <ChildContent>
-                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.AccountCircle" Href="/profile">@ContentService["UserButton:Profile"]</MudMenuItem>
-                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Checklist" Href="/applications">@ContentService["UserButton:Applications"]</MudMenuItem>
-                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Logout" OnClick="@Logout">@ContentService["UserButton:Logout"]</MudMenuItem>
-                    </ChildContent>
-                </MudMenu>
-            </Authorized>
-            <NotAuthorized>
-                <MudMenu >
-                    <ActivatorContent>
-                        <MudChip Icon="@Icons.Material.Filled.Person">Sign In</MudChip>
-                    </ActivatorContent>
-                    <ChildContent>
-                        <MudMenuItem Href="/sign-in">@ContentService["UserButton:Sign In"]</MudMenuItem>
-                        <MudMenuItem Href="/sign-up">@ContentService["UserButton:Sign Up"]</MudMenuItem>
-                    </ChildContent>
-                </MudMenu>
-            </NotAuthorized>
-        </AuthorizeView>
-    </CascadingAuthenticationState>
+    <UserButton/>
 </MudToolBar>
 
 <MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent"
@@ -180,7 +140,7 @@
         {
             try
             {
-                LayoutService.user = await UserProfileService.Get();
+                LayoutService.User = await UserProfileService.Get();
             }
             catch (Exception e)
             {
@@ -215,12 +175,7 @@
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 
-    private async Task Logout()
-    {
-        await CookieUtil.RemoveAsync("authToken");
-        await AuthProvider.GetAuthenticationStateAsync();
-        NavigationManager.NavigateTo("/");
-    }
+   
 
 
 

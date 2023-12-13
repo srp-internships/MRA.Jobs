@@ -43,7 +43,7 @@ public class AuthService(IdentityHttpClient identityHttpClient,
                 var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
                 await cookieUtil.SetValueAsync("authToken", response);
                 await authenticationStateProvider.GetAuthenticationStateAsync();
-                layoutService.user=  await userProfileService.Get();
+                layoutService.User=  await userProfileService.Get();
                 if (!newRegister)
                     navigationManager.NavigateTo("/");
                 return null;
@@ -84,7 +84,7 @@ public class AuthService(IdentityHttpClient identityHttpClient,
                     Password = command.Password,
                     Username = command.Username
                 });
-                layoutService.user=  await userProfileService.Get();
+                layoutService.User=  await userProfileService.Get();
                 navigationManager.NavigateTo("/profile");
 
                 return "";
