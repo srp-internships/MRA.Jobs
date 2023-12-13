@@ -107,7 +107,7 @@
     <value>Насаби худро ворид кунед</value>
 </data>
     <data name="SignUp:Email" xml:space="preserve">
-    <value>Почтеи элоктронӣ</value>
+    <value>Почтаи электронӣ</value>
 </data>
     <data name="SignUp:Phone" xml:space="preserve">
     <value>Телефон</value>
@@ -125,7 +125,7 @@
     <value>Калимаи убур</value>
 </data>
     <data name="SignUp:ConfirmPassword" xml:space="preserve">
-    <value>Тасдиқи калимаи убур</value>
+    <value>Калидвожаро Тасдиқ Кунед</value>
 </data>
     <data name="SignUp:ConfirmPassword_HelperText" xml:space="preserve">
     <value>Тасдиқи калимаи убур</value>
@@ -152,7 +152,170 @@
     <value>сония барои боз фиристодани код боқӣ мондааст.</value>
 </data>
     <!--SignUp-->
+  
+  <!--resetPassword-->
+  <data name="ResetPassword:PhoneNumber" xml:space="preserve">
+        <value>Рақами мобилӣ</value>
+    </data>
+  <data name="ResetPassword:Sendconfirmationcode" xml:space="preserve">
+        <value>Рамзи тасдиқро фиристед</value>
+    </data>
+  <data name="ResetPassword:Resendcode" xml:space="preserve">
+        <value>Рамзи дубора фиристед</value>
+    </data>
+  <data name="ResetPassword:NewPassword" xml:space="preserve">
+        <value>Калидвожаи Нав</value>
+    </data>
+  <data name="ResetPassword:Changepassword" xml:space="preserve">
+        <value>Ивази калидвожа</value>
+    </data>
+  <!--resetPassword-->
+  
+  <!--profile-->
+  <data name="Profile:TryAgain" xml:space="preserve">
+       <value>Боз кӯшиш кунед</value>
+   </data>
+  <data name="Profile:PersonalInformation" xml:space="preserve">
+       <value>Маълумоти шахсӣ</value>
+   </data>
+  <data name="Profile:MyProfile" xml:space="preserve">
+       <value>Профили ман</value>
+   </data>
+  <data name="Profile:Educations" xml:space="preserve">
+       <value>Таълим</value>
+   </data>
+  <data name="Profile:Experience" xml:space="preserve">
+       <value>Таҷриба</value>
+   </data>
+  <data name="Profile:Skills" xml:space="preserve">
+       <value>Маҳоратҳо</value>
+   </data>
+  <data name="Profile:FirstName" xml:space="preserve">
+       <value>Ном</value>
+   </data>
+  <data name="Profile:EmailisnotConfirmed" xml:space="preserve">
+       <value>Имейл тасдиқ нашудааст!</value>
+   </data>
+  <data name="Profile:LastName" xml:space="preserve">
+       <value>Насаб</value>
+   </data>
+  <data name="Profile:DateOfBirth" xml:space="preserve">
+       <value>Санаи таваллуд</value>
+   </data>
+  <data name="Profile:Confirmed" xml:space="preserve">
+       <value>Тасдиқ шуд</value>
+   </data>
+  <data name="Profile:PhoneNumberisnotConfirmed" xml:space="preserve">
+       <value>Рақами телефон тасдиқ нашудааст!</value>
+   </data>
+  <data name="Profile:Codesent" xml:space="preserve">
+       <value>Код фиристода шуд</value>
+   </data>
+  <data name="Profile:Confirmationcode" xml:space="preserve">
+       <value>Коди тасдиқ</value>
+   </data>
+  <data name="Profile:Confirm" xml:space="preserve">
+       <value>Тасдиқ кунед</value>
+   </data>
+  <data name="Profile:AboutMyself" xml:space="preserve">
+       <value>Дар бораи худ</value>
+   </data>
+  <data name="Profile:Savechanges" xml:space="preserve">
+       <value>Тағйиротро захира кунед</value>
+   </data>
+  <data name="Profile:Specialty" xml:space="preserve">
+       <value>Ихтисос</value>
+   </data>
+  <data name="Profile:University" xml:space="preserve">
+       <value>Донишгоҳ</value>
+   </data>
+  <data name="Profile:StartDate" xml:space="preserve">
+       <value>Санаи оғоз</value>
+   </data>
+  <data name="Profile:UntilNow" xml:space="preserve">
+       <value>То ҳозир</value>
+   </data>
+  <data name="Profile:Update" xml:space="preserve">
+       <value>Навсозӣ</value>
+   </data>
+  <data name="Profile:Cancel" xml:space="preserve">
+       <value>Бекор кунед</value>
+   </data>
+  <data name="Profile:Present" xml:space="preserve">
+       <value>Ҳозир</value>
+   </data>
+  <data name="Profile:AddNewEducation" xml:space="preserve">
+       <value>Таълими нав илова кунед</value>
+   </data>
+  <data name="Profile:NewEducation" xml:space="preserve">
+       <value>Таълими нав</value>
+   </data>
+  <data name="Profile:Save" xml:space="preserve">
+       <value>Сабт кардан</value>
+   </data>
+  <data name="Profile:Experiences" xml:space="preserve">
+       <value>Таҷриба</value>
+   </data>
+  <data name="Profile:JobTitle" xml:space="preserve">
+       <value>Сарвазир</value>
+   </data>
+  <data name="Profile:CompanyName" xml:space="preserve">
+       <value>Номи ширкат</value>
+   </data>
+  <data name="Profile:Description" xml:space="preserve">
+       <value>Тавсиф</value>
+   </data>
+  <data name="Profile:CurrentJob" xml:space="preserve">
+       <value>Кори ҷорӣ</value>
+   </data>
+  <data name="Profile:AddNewExperience" xml:space="preserve">
+       <value>Таҷрибаи нав илова кунед</value>
+   </data>
+  <data name="Profile:NewExperience" xml:space="preserve">
+       <value>Таҷрибаи нав</value>
+   </data>
+  <data name="Profile:IsCurrentJob" xml:space="preserve">
+       <value>Ин кори ҷорӣ аст</value>
+   </data>
+  <data name="Profile:AddSkill" xml:space="preserve">
+       <value>Маҳорат илова кунед</value>
+   </data>
+  <data name="Profile:Tochangeyourpassword,enteryouroldpassword,andthencreateanew,strongpassword." xml:space="preserve">
+     <value>Барои иваз кардани калидвожаи худ, гузарвожаи кӯҳнаи худро ворид кунед ва пас калидвожаи нави қавӣ эҷод кунед.</value>
+ </data>
+  <data name="Profile:OldPassword" xml:space="preserve">
+     <value>Калидвожаи куҳна</value>
+ </data>
+<data name="Profile:Ifyouwouldliketonominateyourself,sendusyourСV." xml:space="preserve">
+    <value>Агар шумо хоҳед, ки худро номинатсия кунед, ба мо CV-и худро фиристед.</value>
+</data>
+<data name="Profile:UploadCV" xml:space="preserve">
+    <value>CV-ро боргузорӣ кунед</value>
+</data>
+<data name="Profile:ThestatusofyourCVforyourcandidacyis" xml:space="preserve">
+    <value>Ҳолати CV барои номзадии шумо</value>
+</data>
+<data name="Profile:UploadNewCV" xml:space="preserve">
+    <value>CV-и навро боргузорӣ кунед</value>
+</data>
+<data name="Profile:Ifyouwouldliketonominateyourself,signinandsendusyourСV." xml:space="preserve">
+    <value>Агар шумо хоҳед, ки худро номинатсия кунед, вуруд шавед ва ба мо CV-и худро фиристед.</value>
+</data>
+<data name="Profile:SwitchtoLightTheme" xml:space="preserve">
+    <value>Ба темаи рӯшан гузаред</value>
+</data>
+<data name="Profile:Switchtosystem" xml:space="preserve">
+    <value>Ба систем гузаред</value>
+</data>
+<data name="Profile:SwitchtoDarkTheme" xml:space="preserve">
+    <value>Ба темаи торик гузаред</value>
+</data>
+<data name="Profile:SelectLanguage" xml:space="preserve">
+    <value>Забонро интихоб кунед</value>
+</data>
 
+  <!--profile-->
+  
     <!-- VacanciesList -->
         <data name="VacanciesList:All" xml:space="preserve">
     <value>Ҳама</value>
@@ -246,7 +409,7 @@
     <value>Резюмеи худро бор кунед</value>
 </data>
     <data name="VacancyApplication:Processing" xml:space="preserve">
-    <value>Ишораткунӣ</value>
+    <value>Коркард</value>
 </data>
     <data name="VacancyApplication:Apply" xml:space="preserve">
     <value>Истифода баред</value>
@@ -335,7 +498,6 @@
     <data name="Home:VisionContent" xml:space="preserve">
     <value>Шарикони тиҷоратии моро тавассути пешниҳоди хидматҳои барҷастаи аутсорсинги IT ва аутстаффинг ба сатҳҳои нави муваффақият расонидан</value>
 </data>
-
 
     <data name="Home:Principles" xml:space="preserve">
     <value>Принсипҳои асосӣ</value>
@@ -432,6 +594,15 @@
     <data name="Home:Partner">
         <value>Ва баррасиҳои шарикон</value>
     </data>
+ <data name="Home:BuildAmazing" xml:space="preserve">
+    <value>Сохтаи шгаванд</value>
+</data>
+<data name="Home:Apps" xml:space="preserve">
+    <value>Барномаҳо</value>
+</data>
+<data name="Home:Alwaysonthelookoutforthehi-techadvancements.Buildnotonlyaproductthatcansellwell,butaplatformthroughwhichtodeliverit." xml:space="preserve">
+    <value>Ҳамеша дар ҷустуҷӯи пешрафтҳои технологии боланд. Танҳо маҳсулотеро сохтан, ки хуб фурӯхт мешавад, балки платформаро, ки тавассути он метавон онро тақсим кард.</value>
+</data>
 
     <!--Home-->
 
