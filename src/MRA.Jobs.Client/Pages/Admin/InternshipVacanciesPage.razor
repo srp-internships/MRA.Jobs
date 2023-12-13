@@ -5,14 +5,12 @@
 @using MRA.Jobs.Client.Identity;
 @using BlazorMonaco
 @using BlazorMonaco.Editor
-@using BlazorMonaco.Languages
 @inject ISnackbar Snackbar;
-@inject IJSRuntime jsRuntime
 @inject IInternshipService InternshipService
 @inject ICategoryService CategoryService
 @inject IDialogService DialogService
 @inject LayoutService LayoutService
-@inject IJSRuntime jsRuntime
+@inject IJSRuntime JsRuntime
 
 @if (_serverError)
 {
@@ -392,7 +390,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-		await BlazorMonaco.Editor.Global.SetTheme(jsRuntime, LayoutService.IsDarkMode ? "vs-dark": "vs");
+		await BlazorMonaco.Editor.Global.SetTheme(JsRuntime, LayoutService.IsDarkMode ? "vs-dark": "vs");
         await LoadData();
         Clear();
         StateHasChanged();
