@@ -91,7 +91,7 @@
         <value>Do you have an account? Go to</value>
     </data>
     <data name="SignUp:LinkSignIn" xml:space="preserve">
-        <value>Sign In</value>
+        <value> Sign In</value>
     </data>
     <data name="SignUp:FirstName" xml:space="preserve">
         <value>Firs name</value>

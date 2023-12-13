@@ -23,12 +23,11 @@ public class ApplicationDbContextInitializer
         _context = context;
     }
 
-
     public async Task SeedAsync()
     {
         await CreateRolesAsync();
 
-        await CreateSuperAdminAsync();
+        await CreateSuperAdminAsync();  
 
         await CreateApplicationAdmin("MraJobs", "mrajobs12@@34,.$3#A");
         await CreateApplicationAdmin("MraOnlinePlatform", "mraonline2@f@34,/.$3#A");

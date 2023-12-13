@@ -17,7 +17,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     private readonly ICurrentUserService _currentUserService;
     private readonly ISlugGeneratorService _slugService;
     private readonly MRA.Configurations.Common.Interfaces.Services.IEmailService _emailService;
-    private readonly IHtmlService _htmlService;  
+    private readonly IHtmlService _htmlService;
     private readonly ICvService _cvService;
     private readonly IVacancyTaskService _vacancyTaskService;
     private readonly IidentityService _identityService;
@@ -26,7 +26,8 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
     public CreateApplicationCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
         ICurrentUserService currentUserService, ISlugGeneratorService slugService,
         MRA.Configurations.Common.Interfaces.Services.IEmailService emailService, IHtmlService htmlService,
-        ICvService cvService, IVacancyTaskService vacancyTaskService, IidentityService identityService, IConfiguration configuration)
+        ICvService cvService, IVacancyTaskService vacancyTaskService, IidentityService identityService,
+        IConfiguration configuration)
     {
         _context = context;
         _mapper = mapper;
@@ -49,9 +50,14 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         application.Slug = GenerateSlug(_currentUserService.GetUserName(), vacancy);
 
-
         if (await ApplicationExits(application.Slug))
             throw new ConflictException("Duplicate Apply. You have already submitted your application!");
+
+        if (vacancy.Discriminator == "HiddenVacancy")
+        {
+            var count = _context.Applications.Count(a => a.Slug.Contains("hidden_vacancy"));
+            application.Slug += count + 1;
+        }
 
         application.ApplicantId = _currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = _currentUserService.GetUserName() ?? string.Empty;
@@ -73,7 +79,8 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
         string hostName = _configuration["HostName:SvPath"];
         await _emailService.SendEmailAsync(new[] { vacancy.CreatedByEmail },
-            _htmlService.GenerateApplyVacancyContent_CreateApplication(hostName, application.Slug, vacancy.Title, await _cvService.GetCvByCommandAsync(ref request), await _identityService.ApplicantDetailsInfo()),
+            _htmlService.GenerateApplyVacancyContent_CreateApplication(hostName, application.Slug, vacancy.Title,
+                await _cvService.GetCvByCommandAsync(ref request), await _identityService.ApplicantDetailsInfo()),
             "New Apply");
 
         return application.Id;
@@ -81,9 +88,17 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
     private async Task<bool> ApplicationExits(string applicationSlug)
     {
-        var application = await _context.Applications.FirstOrDefaultAsync(a => a.Slug.Equals(applicationSlug));
+        var application = await _context.Applications.Include(a => a.Vacancy)
+            .FirstOrDefaultAsync(a => a.Slug.Equals(applicationSlug));
+
         if (application == null)
             return false;
+
+        if (application.Vacancy.Discriminator == "HiddenVacancy" && (application.Status == ApplicationStatus.Expired ||
+                                                                     application.Status == ApplicationStatus.Refused ||
+                                                                     application.Status == ApplicationStatus.Rejected))
+            return false;
+
         return true;
     }
 

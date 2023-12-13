@@ -33,7 +33,6 @@ public static class ConfigureServices
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
-       
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             string dbConnectionString = configuration["CS"];
@@ -43,6 +42,7 @@ public static class ConfigureServices
                 options.UseSqlServer(dbConnectionString);
         });
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+        services.AddScoped<ApplicationDbContextInitializer>();
         services.AddScoped<DbMigration>();
         services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
         services.AddTransient<IDateTime, DateTimeService>();
@@ -58,6 +58,7 @@ public static class ConfigureServices
         {
             services.AddScoped<IFileService, FileService>();
         }
+
         return services;
     }
 

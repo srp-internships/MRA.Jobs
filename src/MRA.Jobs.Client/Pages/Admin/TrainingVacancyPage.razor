@@ -4,43 +4,46 @@
 @using MRA.Jobs.Client.Components.Dialogs;
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @using MRA.Jobs.Client.Identity
+@using BlazorMonaco
+@using BlazorMonaco.Editor
 @inject ITrainingService TrainingService
 @inject ICategoryService CategoryService
 @inject ISnackbar Snackbar
+@inject IDialogService DialogService
 
-<MudText Typo="Typo.h4" Color="Color.Primary">Trainings</MudText>
+
 @if (serverError)
 {
     <ServerErrorComponent/>
 }
 else
 {
-    <style>
-		.mud-input-control {
-			margin-bottom: 10px;
-		}
-	</style>
-
     @if (categories == null)
     {
-        <div class="loader"></div>
+        <div style="text-align: center;">
+            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
+        </div>
     }
     else
     {
         <MudGrid>
-            <MudItem Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0" lg="12">
-                <MudCardHeader>
-                    <MudButton hidden="@panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => panelOpenState = true)">
+            <MudItem lg="12">
+                <MudCardActions>
+                    <MudText Typo="Typo.h4">
+                        <b>Trainings</b>
+                    </MudText>
+                    <MudSpacer/>
+                    <MudButton Disabled="@panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => panelOpenState = !panelOpenState)">
                         <MudText>Create New Training Vacancy</MudText>
                     </MudButton>
-                </MudCardHeader>
+                </MudCardActions>
             </MudItem>
             <MudItem lg="12" hidden="@(!panelOpenState)">
                 <EditForm Model="@TrainingService.createCommand">
                     <FluentValidationValidator/>
                     <MudGrid>
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                            <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:#808080">
@@ -59,7 +62,7 @@ else
                             </MudCard>
                         </MudItem>
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                            <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <MatCardContent>
                                         <MudText Style="color: #808080">
@@ -118,7 +121,7 @@ else
                     </MudGrid>
                     <MudGrid>
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                            <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:rgb(128,128,128)">
@@ -151,24 +154,28 @@ else
                                             </MudExpansionPanel>
                                         }
                                     </MudExpansionPanels>
-                                    <MudTextField @bind-Value="newTitle" OnKeyDown="@OnKeyDown" Label="Title"
-                                                  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                                    <MudTextField Lines="5" @bind-Value="newDescription" OnKeyDown="@OnKeyDown" Label="Description"
-                                                  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                                    <MudTextField Lines="5" @bind-Value="newTemplate" OnKeyDown="@OnKeyDown" Label="Template"
-                                                  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                                    <MudTextField Lines="5" @bind-Value="newTest" OnKeyDown="@OnKeyDown" Label="Test"
-                                                  Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                                               @onclick="@AddTask" Id="AddTask">
-                                        <MudText>Add Task</MudText>
-                                    </MudButton>
+                                    @if (panelOpenState != false)
+                                    {
+                                        <br/>
+                                        <MudTextField @bind-Value="newTitle" OnKeyDown="@OnKeyDown" Label="Title"
+                                                      Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
+                                        <MudTextField Lines="5" @bind-Value="newDescription" OnKeyDown="@OnKeyDown" Label="Description"
+                                                      Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
+                                        <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Template</MudText>
+                                        <StandaloneCodeEditor @ref="_editorTemplate" Id="sample-code-editor-123" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu"/>
+                                        <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Test</MudText>
+                                        <StandaloneCodeEditor @ref="_editorTest" Id="sample-code-editor-456" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu"/>
+                                        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                                   @onclick="@AddTask" Id="AddTask">
+                                            <MudText>Add Task</MudText>
+                                        </MudButton>
+                                    }
 
                                 </MudCardContent>
                             </MudCard>
                         </MudItem>
                         <MudItem xs="12" lg="6">
-                            <MudCard>
+                            <MudCard Class="rounded-4 mud-elevation-4">
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:rgb(128,128,128)">
@@ -194,40 +201,57 @@ else
                             </MudCard>
                         </MudItem>
                         <MudItem xs="12" lg="12">
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit"
-                                       Id="btnInsert" hidden="@isInserting">
-                                <MudText>
-                                    Create
-                                </MudText>
-                            </MudButton>
-                            <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate"
-                                       Id="btnUpdate" hidden="@isUpdating">
-                                <MudText>
-                                    Save changes
-                                </MudText>
-                            </MudButton>
-                            <MudButton Variant="Variant.Filled" Color="Color.Dark" @onclick="@HandleCancel"
-                                       Id="btnUpdate">
-                                <MudText>
-                                    Cancel
-                                </MudText>
-                            </MudButton>
+                            <MudCardActions>
+                                <div hidden="@isInserting">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit">
+                                        <MudText>
+                                            Create
+                                        </MudText>
+                                    </MudButton>
+                                </div>
+                                <div hidden="@isUpdating">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate">
+                                        <MudText>
+                                            Save changes
+                                        </MudText>
+                                    </MudButton>
+                                </div>
+                                <MudButton Variant="Variant.Filled" Color="Color.Dark" @onclick="@HandleCancel" Style="margin-left: 10px;">
+                                    <MudText>
+                                        Cancel
+                                    </MudText>
+                                </MudButton>
+                            </MudCardActions>
                         </MudItem>
                     </MudGrid>
                 </EditForm>
             </MudItem>
         </MudGrid>
 
-        <DeleteConfirmation @bind-IsOpen="@isDialogOpen" OnConfirm="DeleteItem"/>
+
         <MudTable Items="@trainings" Class="text-center" Breakpoint="Breakpoint.Md" hidden="@panelOpenState">
             <HeaderContent>
-                <MudTh><strong>Title</strong></MudTh>
-                <MudTh><strong>Short description</strong></MudTh>
-                <MudTh><strong>Category</strong></MudTh>
-                <MudTh><strong>Publish date</strong></MudTh>
-                <MudTh><strong>End date</strong></MudTh>
-                <MudTh><strong>Duration</strong></MudTh>
-                <MudTh><strong>Fees</strong></MudTh>
+                <MudTh>
+                    <strong>Title</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Short description</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Category</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Publish date</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>End date</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Duration</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Fees</strong>
+                </MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
@@ -264,38 +288,125 @@ else
     private string newTemplate = string.Empty;
     private string newTest = string.Empty;
     private string newTitle = string.Empty;
-
-    private string createOrEditHeader = "New Internship Vacancy";
-
+    private string createOrEditHeader = "New Training Vacancy";
     private List<VacancyQuestionDto> Questions = new();
     private List<CategoryResponse> categories;
     private List<TrainingVacancyListDto> trainings;
     private List<VacancyTaskDto> Tasks = new();
-
     private TimeSpan? publishDate_Time;
     private TimeSpan? endDate_Time;
+    private StandaloneCodeEditor _editorTemplate = null!;
+    private StandaloneCodeEditor _editorTest = null!;
 
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        if (editor == _editorTest)
+        {
+            return new StandaloneEditorConstructionOptions
+            {
+                Language = "csharp",
+                GlyphMargin = true,
+                AutomaticLayout = true,
+                Value = "using Microsoft.VisualStudio.TestTools.UnitTesting;\n\n" +
+                        "namespace TestProject\n" +
+                        "{\n" +
+                        "    [TestClass]\n" +
+                        "    public class UnitTest1\n" +
+                        "    {\n" +
+                        "        [TestMethod]\n" +
+                        "        public void TestMethod1()\n" +
+                        "        {\n" +
+                        "        //You can write a test here  \n" +
+                        "        }\n" +
+                        "    }\n" +
+                        "}\n"
+            };
+        }
+        else
+        {
+            return new StandaloneEditorConstructionOptions
+            {
+                Language = "csharp",
+                GlyphMargin = true,
+                AutomaticLayout = true,
+                Value = "using System;\n\n" +
+                        "public class Program\n" +
+                        "{\n" +
+                        "    public static void Main()\n" +
+                        "    {\n" +
+                        "        Console.WriteLine(\"Hello, world!\");\n" +
+                        "    }\n" +
+                        "}\n"
+            };
+        }
+    }
+
+    private async Task EditorOnDidInit()
+    {
+        await _editorTest.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) => { Console.WriteLine("Ctrl+H : Initial editor command is triggered."); });
+        await _editorTemplate.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) => { Console.WriteLine("Ctrl+H : Initial editor command is triggered."); });
+
+        var newDecorations = new ModelDeltaDecoration[]
+        {
+            new ModelDeltaDecoration
+            {
+                Range = new BlazorMonaco.Range(3, 1, 3, 1),
+                Options = new ModelDecorationOptions
+                {
+                    IsWholeLine = true,
+                    ClassName = "decorationContentClass",
+                    GlyphMarginClassName = "decorationGlyphMarginClass"
+                }
+            }
+        };
+
+        await _editorTest.DeltaDecorations(null, newDecorations);
+        await _editorTemplate.DeltaDecorations(null, newDecorations);
+    }
+
+    private void OnContextMenu(EditorMouseEvent eventArg)
+    {
+        Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
+    }
 
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
     }
 
-    private bool isDialogOpen;
-    private string itemSlugToDelete;
 
-    void OnDeleteClick(string slug)
+    async Task OnDeleteClick(string slug)
     {
-        itemSlugToDelete = slug;
-        isDialogOpen = true;
+        var vacancy = trainings.FirstOrDefault(c => c.Slug == slug);
+        var parameters = new DialogParameters<DialogMudBlazor>();
+        parameters.Add(x => x.ContentText, "Do you really want to delete this vacancy?");
+        parameters.Add(x => x.ButtonText, "Delete");
+        parameters.Add(x => x.Color, Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            try
+            {
+                await TrainingService.Delete(slug);
+
+                Snackbar.Add($"Deleted", Severity.Success);
+                trainings.Remove(vacancy);
+
+                Clear();
+            }
+            catch (Exception)
+            {
+                Snackbar.Add("Server is not responding, try latter", Severity.Error);
+            }
+            StateHasChanged();
+        }
     }
 
-    private async Task DeleteItem()
-    {
-        await TrainingService.Delete(itemSlugToDelete);
-        isDialogOpen = false;
-        await LoadData();
-    }
 
     private async Task OnEditClick(string slug)
     {
@@ -411,19 +522,17 @@ else
         newQuestion = "";
     }
 
-    public void AddTask()
+    public async void AddTask()
     {
         Tasks.Add(new VacancyTaskDto
         {
             Title = newTitle,
             Description = newDescription,
-            Template = newTemplate,
-            Test = newTest
+            Template = await _editorTemplate.GetValue(),
+            Test = await _editorTest.GetValue()
         });
         newTitle = "";
         newDescription = "";
-        newTemplate = "";
-        newTest = "";
     }
 
     private async Task OnKeyDown(KeyboardEventArgs e)

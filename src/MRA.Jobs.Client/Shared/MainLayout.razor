@@ -1,72 +1,85 @@
-﻿@inherits LayoutComponentBase
-@inject IJSRuntime JS
+﻿@using MRA.Jobs.Client.Services
+@using MRA.Jobs.Client.Enums
+@using MRA.Jobs.Client.Components.Buttons
+@using MRA.Jobs.Client.Components.Client
+@using MudBlazor
+@inherits LayoutComponentBase
+@inject LayoutService LayoutService
 
-<Header></Header>
-<MudThemeProvider/>
+<MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
+<Header/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
-<main id="main" style="min-height: 100vh">
-    @Body
-</main>
+<MudMainContent>
+    <main id="main" style="min-height: 100vh">
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+            @Body
+        </MudContainer>
+    </main>
+</MudMainContent>
 
-<footer class="bg-dark text-light text-center py-5 mt-5">
-    <div class="container">
-        <div class="row w-50" style="margin: 0 auto;">
-            <div class="col">
-                <a href="https://www.facebook.com/SilkRoadProfessionals/" target="_blank" class="text-light mx-2">
-                    <i class="fa fa-facebook-official fa-2x" aria-hidden="true"></i>
-                </a>
-            </div>
-            <div class="col">
-                <a href="https://t.me/niyozovdilshod" class="text-light mx-2" target="_blank">
-                    <i class="fa fa-telegram fa-2x" aria-hidden="true"></i>
-                </a>
-            </div>
-            <div class="col">
-                <a href="https://www.instagram.com/silk_road_professionals/" target="_blank" class="text-light mx-2">
-                    <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
-                </a>
-            </div>
-            <div class="col">
-                <a href="https://www.linkedin.com/company/silk-road-professionals-tajikistan/" target="_blank" class="text-light mx-2">
-                    <i class="fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
-                </a>
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col">
-                <p class="mb-0">© 2023 Silk Road Professionals</p>
-            </div>
-        </div>
+<MudText Style="text-align: center; padding-top: 3%">
+    © 2023 Silk Road Professionals
+</MudText>
+
+<MudScrollToTop>
+    <MudFab StartIcon="@Icons.Material.Filled.KeyboardArrowUp" Color="Color.Primary"/>
+</MudScrollToTop>
+
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+    <div style="position: fixed; bottom: 76px; right: 16px; z-index: 999;">
+        <MudMenu Variant="Variant.Text" AnchorOrigin="Origin.TopLeft" TransformOrigin="Origin.BottomRight"
+                 PopoverClass="docs-layout-menu-shadow"
+                 LockScroll="true">
+            <ActivatorContent>
+                <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile" Label="CV"/>
+            </ActivatorContent>
+            <ChildContent>
+                <HiddenVacancyUploadCV/>
+            </ChildContent>
+        </MudMenu>
     </div>
-</footer>
-
-<!-- End Footer -->
-<!-- Scroll Top Button -->
-<a href="#"
-   id="scroll-top"
-   class="scroll-top d-flex align-items-center justify-content-center">
-    <i class="bi bi-arrow-up-short">
-    </i>
-</a>
-
+</MudHidden>
 
 @code
 {
+    private MudThemeProvider _mudThemeProvider;
+
+    protected override void OnInitialized()
+    {
+        LayoutService.MajorUpdateOccured += UpdateState;
+    }
+
+    private void UpdateState(object sender, EventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        LayoutService.MajorUpdateOccured -= UpdateState;
+    }
+
+    private async Task ApplyUserPreferences()
+    {
+        var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
+        await LayoutService.ApplyUserPreferences(defaultDarkMode);
+    }
+
+    private async Task OnSystemPreferenceChanged(bool newValue)
+    {
+        await LayoutService.OnSystemPreferenceChanged(newValue);
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("loadScript", "/assets/vendor/bootstrap/js/bootstrap.bundle.min.js");
-            await JS.InvokeVoidAsync("loadScript", "/assets/vendor/glightbox/js/glightbox.min.js");
-            await JS.InvokeVoidAsync("loadScript", "/assets/vendor/purecounter/purecounter_vanilla.js");
-            await JS.InvokeVoidAsync("loadScript", "/assets/vendor/isotope-layout/isotope.pkgd.min.js");
-            await JS.InvokeVoidAsync("loadScript", "/assets/vendor/swiper/swiper-bundle.min.js");
-            await JS.InvokeVoidAsync("loadScript", "/assets/vendor/aos/aos.js");
-            await JS.InvokeVoidAsync("loadScript", "/assets/vendor/php-email-form/validate.js");
-            await JS.InvokeVoidAsync("loadScript", "/assets/js/main.js");
-            await JS.InvokeVoidAsync("loadScript", "/javascript.js");
+            await ApplyUserPreferences();
+            await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
+            StateHasChanged();
         }
     }
+
 
 }
