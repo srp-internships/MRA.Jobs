@@ -9,12 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj"/>
-        <ProjectReference Include="..\Infrastructure\MRA.Jobs.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj" />
+        <ProjectReference Include="..\Infrastructure\MRA.Jobs.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="MRA.Jobs.Application.IntegrationTests"/>
+        <InternalsVisibleTo Include="MRA.Jobs.Application.IntegrationTests" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,27 +23,19 @@
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
         <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0"/>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="wwwroot\api\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="wwwroot\api\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Remove="wwwroot\api\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="wwwroot\api\**" />
+        <Folder Include="wwwroot\api\"/>
     </ItemGroup>
 
     <PropertyGroup>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+        <UserSecretsId>b368f32f-5997-4ac9-a39a-607fb3e2757b</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
 
 </Project>
