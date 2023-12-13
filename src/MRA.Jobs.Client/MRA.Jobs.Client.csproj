@@ -74,6 +74,7 @@
       <Content Update="Components\Client\Header.razor">
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </Content>
+      <Content Remove="wwwroot\images\development.png" />
     </ItemGroup>
 
     <ItemGroup>
