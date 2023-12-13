@@ -28,7 +28,7 @@ public static class DependencyInitializer
 
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            string dbConnectionString = configurations["CS"];
+            string dbConnectionString = configurations.GetConnectionString("DefaultConnection");
             if (configurations["UseInMemoryDatabase"] == "true")
                 options.UseInMemoryDatabase("testDB");
             else
