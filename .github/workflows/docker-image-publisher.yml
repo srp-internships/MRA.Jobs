@@ -1,11 +1,6 @@
 name: Publish image to Docker Hub
 
-on:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
+on: push
 
 jobs:
   publish_image:
@@ -23,23 +18,23 @@ jobs:
     
       - name: build docker image for Identity Service
         run: |
-          docker build -t adheem/mra-identity-api:${{ steps.taggerDryRun.outputs.new_tag }} .
+          docker build -t silkroadprofessionals.azurecr.io/mra-identity-api:${{ steps.taggerDryRun.outputs.new_tag }} .
         working-directory: ./src/MRA.Jobs.Identity
 
-      - name: Publish Identity Service to Docker Hub
+      - name: Publish Identity Service to ACR
         run: |
-          docker login -u adheem -p ${{ secrets.DOCKER_HUB_TOKEN }}
-          docker push adheem/mra-identity-api:${{ steps.taggerDryRun.outputs.new_tag }}
+          docker login silkroadprofessionals.azurecr.io -u silkroadprofessionals -p ${{ secrets.ACR_PASS }}
+          docker push silkroadprofessionals.azurecr.io/mra-identity-api:${{ steps.taggerDryRun.outputs.new_tag }}
       
       - name: build docker image for Web API
         run: |
-          docker build -t adheem/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }} .
+          docker build -t silkroadprofessionals.azurecr.io/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }} .
         working-directory: ./src
 
-      - name: Publish Web API to Docker Hub
+      - name: Publish Web API to ACR
         run: |
-          docker login -u adheem -p ${{ secrets.DOCKER_HUB_TOKEN }}
-          docker push adheem/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }}
+          docker login -u silkroadprofessionals.azurecr.io -p ${{ secrets.ACR_PASS }}
+          docker push silkroadprofessionals.azurecr.io/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }}
 
       - name: Update infrastructure image version
         uses: peter-evans/repository-dispatch@v2
