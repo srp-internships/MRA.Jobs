@@ -11,7 +11,8 @@
 @inject IInternshipService InternshipService
 @inject IApplicationService ApplicationService
 @inject IDateTimeConvertToStringService DateTimeConvert
-@inject IJSRuntime JsRuntime
+@inject LayoutService LayoutService
+@inject IJSRuntime jsRuntime
 
 @if (vacancy is null)
 {
@@ -351,6 +352,7 @@ else
 
     protected override async void OnAfterRender(bool firstRender)
     {
+		await BlazorMonaco.Editor.Global.SetTheme(jsRuntime, LayoutService.IsDarkMode ? "vs-dark" : "vs");
         if (firstRender)
         {
             await Task.Delay(1000);

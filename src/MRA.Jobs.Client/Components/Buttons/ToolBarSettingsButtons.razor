@@ -4,8 +4,9 @@
 @inject NavigationManager NavigationManager
 @inject ILocalStorageService LocalStorage
 @inject LayoutService LayoutService
+@inject IContentService ContentService
 
-<MudTooltip Duration="1000" Text="Select Language">
+<MudTooltip Duration="1000" Text="@ContentService["Profile:SelectLanguage"]">
     <MudMenu EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="@LayoutService._lang"
              Dense="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter"
              LockScroll="true">
@@ -15,7 +16,7 @@
     </MudMenu>
 </MudTooltip>
 
-<MudTooltip Duration="1000" Text="@(LayoutService.DarkModeToggle == DarkLightMode.System ? "Switch to Light Theme" : LayoutService.DarkModeToggle == DarkLightMode.Dark ? "Switch to system" : "Switch to Dark Theme")">
+<MudTooltip Duration="1000" Text="@(LayoutService.DarkModeToggle == DarkLightMode.System ? ContentService["Profile:SwitchtoLightTheme"] : LayoutService.DarkModeToggle == DarkLightMode.Dark ? ContentService["Profile:Switchtosystem"] : ContentService["Profile:SwitchtoDarkTheme"])">
     <MudIconButton Icon="@(LayoutService.DarkModeToggle == DarkLightMode.System ? @Icons.Material.Filled.AutoMode : LayoutService.DarkModeToggle == DarkLightMode.Dark ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@ToggleDarkMode"/>
 </MudTooltip>
 

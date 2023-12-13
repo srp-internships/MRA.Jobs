@@ -10,8 +10,8 @@
 @inject ICategoryService CategoryService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
-
-
+@inject LayoutService LayoutService
+@inject IJSRuntime jsRuntime
 @if (serverError)
 {
     <ServerErrorComponent/>
@@ -227,7 +227,7 @@ else
                 </EditForm>
             </MudItem>
         </MudGrid>
-
+		
 
         <MudTable Items="@trainings"  Breakpoint="Breakpoint.Md" hidden="@panelOpenState">
             <HeaderContent>
@@ -372,6 +372,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
+		await BlazorMonaco.Editor.Global.SetTheme(jsRuntime, LayoutService.IsDarkMode ? "vs-dark": "vs");
     }
 
 
