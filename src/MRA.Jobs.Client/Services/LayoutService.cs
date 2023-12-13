@@ -16,12 +16,12 @@ namespace MRA.Jobs.Client.Services;
 
 public class LayoutService(IUserPreferencesService userPreferencesService, IContentService contentService)
 {
-    public UserProfileResponse user;
+    public UserProfileResponse User;
   
     private UserPreferences.UserPreferences _userPreferences;
     private bool _systemPreferences;
 
-    public bool IsRTL { get; private set; } = false;
+    public bool IsRtl { get; private set; } = false;
     public DarkLightMode DarkModeToggle = DarkLightMode.System;
 
     public bool IsDarkMode { get; private set; }

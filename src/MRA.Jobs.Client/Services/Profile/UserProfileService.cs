@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using MatBlazor;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Educations.Responses;
@@ -57,13 +56,13 @@ public class UserProfileService : IUserProfileService
     public async Task<UserProfileResponse> Get(string userName = null)
     {
         var result = await _identityHttpClient
-          .GetJsonAsync<UserProfileResponse>($"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
+          .GetFromJsonAsync<UserProfileResponse>($"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
         return result;
     }
 
     public async Task<List<UserEducationResponse>> GetEducationsByUser()
     {
-        var result = await _identityHttpClient.GetJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
+        var result = await _identityHttpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
         return result;
     }
 
@@ -93,7 +92,7 @@ public class UserProfileService : IUserProfileService
 
     public async Task<List<UserExperienceResponse>> GetExperiencesByUser()
     {
-        var result = await _identityHttpClient.GetJsonAsync<List<UserExperienceResponse>>("Profile/GetExperiencesByUser");
+        var result = await _identityHttpClient.GetFromJsonAsync<List<UserExperienceResponse>>("Profile/GetExperiencesByUser");
         return result;
     }
 
@@ -112,7 +111,7 @@ public class UserProfileService : IUserProfileService
     public async Task<UserSkillsResponse> GetUserSkills(string userName = null)
     {
         var response = await _identityHttpClient
-            .GetJsonAsync<UserSkillsResponse>($"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
+            .GetFromJsonAsync<UserSkillsResponse>($"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
         return response;
     }
 
@@ -143,25 +142,25 @@ public class UserProfileService : IUserProfileService
 
     public async Task<SmsVerificationCodeStatus> CheckConfirmationCode(string phoneNumber, int? code)
     {
-        var response = await _identityHttpClient.GetJsonAsync<SmsVerificationCodeStatus>($"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
+        var response = await _identityHttpClient.GetFromJsonAsync<SmsVerificationCodeStatus>($"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
         return response;
     }
 
     public async Task<List<UserEducationResponse>> GetAllEducations()
     {
-        var result = await _identityHttpClient.GetJsonAsync<List<UserEducationResponse>>("Profile/GetAllEducations");
+        var result = await _identityHttpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetAllEducations");
         return result;
     }
 
     public async Task<List<UserExperienceResponse>> GetAllExperiences()
     {
-        var result = await _identityHttpClient.GetJsonAsync<List<UserExperienceResponse>>("Profile/GetAllExperiences");
+        var result = await _identityHttpClient.GetFromJsonAsync<List<UserExperienceResponse>>("Profile/GetAllExperiences");
         return result;
     }
 
     public async Task<UserSkillsResponse> GetAllSkills()
     {
-        var response = await _identityHttpClient.GetJsonAsync<UserSkillsResponse>("Profile/GetAllSkills");
+        var response = await _identityHttpClient.GetFromJsonAsync<UserSkillsResponse>("Profile/GetAllSkills");
         return response;
     }
 }
