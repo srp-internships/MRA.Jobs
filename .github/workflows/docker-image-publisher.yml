@@ -1,6 +1,7 @@
-name: Publish image to Docker Hub
-
-on: push
+name: Publish image to Azure
+on:
+  push:
+    branches: [ "production" ]
 
 jobs:
   publish_image:
