@@ -1,20 +1,19 @@
 ﻿@page "/applications"
-@using MRA.Jobs.Client.Identity;
-@inject HttpClient httpClient
 @inject IApplicationService applicationService
-
-<MudText Typo="Typo.h3" Style="margin:50px; color: #129fd7; text-align: center; font-weight: 900">Applications</MudText>
+<MudText Typo="Typo.h4">
+    <b>Applications</b>
+</MudText>
 
 @if (applications.Items.Count == 0)
 {
-    <MudText Typo="Typo.h5" Style="margin:50px;">You do not have any active applications</MudText>
+    <MudText Typo="Typo.h5" Style="text-align: center">You do not have any active applications</MudText>
 }
 else
 {
-    <MudContainer Class="text-center">
-        <MudTable Items="@applications.Items" Class="text-center" Breakpoint="Breakpoint.Md">
+    <MudContainer>
+        <MudTable Items="@applications.Items" Breakpoint="Breakpoint.Md">
             <HeaderContent>
-                <MudTh>Appliant username</MudTh>
+                <MudTh>Applicant username</MudTh>
                 <MudTh>Vacancy title</MudTh>
                 <MudTh>Applied at</MudTh>
                 <MudTh>Status name</MudTh>
@@ -25,19 +24,22 @@ else
                 <MudTd DataLabel="Vacancy title">@context.VacancyTitle</MudTd>
                 <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
                 <MudTd DataLabel="Status">@context.StatusName</MudTd>
-                <MudTd DataLabel="Action"><MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton></MudTd>
+                <MudTd DataLabel="Action">
+                    <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton>
+                </MudTd>
             </RowTemplate>
             <PagerContent>
-                <MudTablePager />
+                <MudTablePager/>
             </PagerContent>
         </MudTable>
-
     </MudContainer>
 }
+
 
 @code {
 
     private PagedList<ApplicationListDto> applications;
+
     protected override async Task OnInitializedAsync()
     {
         var response = await applicationService.GetAllApplications();
@@ -46,10 +48,12 @@ else
             applications = response;
         }
     }
+
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     private void OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
     {
         Dialog.Show<MyDialog>("Applicant response", new DialogParameters { { "CoverLetter", coverLetter }, { "VacancyResponses", vacancyResponses }, { "Slug", slug }, { "StatusName", statusName }, { "isApplicant", true } }, options);
     }
+
 }

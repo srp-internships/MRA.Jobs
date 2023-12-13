@@ -100,7 +100,7 @@
     <UserButton/>
 </MudToolBar>
 
-<MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent"
+<MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent" Style="position:fixed;height: 100%"
            ClipMode="DrawerClipMode.Docked">
     <MudToolBar Dense="true" Class="docs-gray-bg">
         <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
