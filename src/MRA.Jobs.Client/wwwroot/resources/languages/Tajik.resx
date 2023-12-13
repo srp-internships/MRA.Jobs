@@ -310,6 +310,9 @@
 <data name="Profile:SwitchtoDarkTheme" xml:space="preserve">
     <value>Ба темаи торик гузаред</value>
 </data>
+<data name="Profile:SelectLanguage" xml:space="preserve">
+    <value>Забонро интихоб кунед</value>
+</data>
 
   <!--profile-->
   

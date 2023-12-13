@@ -314,6 +314,9 @@
   <data name="Profile:SwitchtoDarkTheme" xml:space="preserve">
      <value> Switch to Dark Theme</value>
  </data>
+  <data name="Profile:SelectLanguage" xml:space="preserve">
+     <value>Select Language</value>
+ </data>
 
   
   <!--profile-->

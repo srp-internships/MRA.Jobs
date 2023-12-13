@@ -311,6 +311,9 @@
   <data name="Profile:SwitchtoDarkTheme" xml:space="preserve">
     <value>Переключиться на темную тему</value>
 </data>
+  <data name="Profile:SelectLanguage" xml:space="preserve">
+    <value>Выберите язык</value>
+</data>
 
 
   <!--profile-->
