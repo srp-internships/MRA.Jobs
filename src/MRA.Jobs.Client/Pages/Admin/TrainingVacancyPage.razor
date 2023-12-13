@@ -10,7 +10,7 @@
 @inject ICategoryService CategoryService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
-
+@inject LayoutService LayoutService
 
 @if (serverError)
 {
@@ -227,7 +227,7 @@ else
                 </EditForm>
             </MudItem>
         </MudGrid>
-
+		@LayoutService.IsDarkMode
 
         <MudTable Items="@trainings" Class="text-center" Breakpoint="Breakpoint.Md" hidden="@panelOpenState">
             <HeaderContent>

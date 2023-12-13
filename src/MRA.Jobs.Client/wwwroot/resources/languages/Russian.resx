@@ -287,6 +287,31 @@
   <data name="Profile:OldPassword" xml:space="preserve">
      <value>Старый пароль</value>
  </data>
+  <data name="Profile:Ifyouwouldliketonominateyourself,sendusyourСV." xml:space="preserve">
+    <value>Если вы хотите выдвинуть себя, отправьте нам свое резюме.</value>
+</data>
+  <data name="Profile:UploadCV" xml:space="preserve">
+    <value>Загрузить резюме</value>
+</data>
+  <data name="Profile:ThestatusofyourCVforyourcandidacyis" xml:space="preserve">
+    <value>Статус вашего резюме для вашей кандидатуры</value>
+</data>
+  <data name="Profile:UploadNewCV" xml:space="preserve">
+    <value>Загрузить новое резюме</value>
+</data>
+  <data name="Profile:Ifyouwouldliketonominateyourself,signinandsendusyourСV." xml:space="preserve">
+    <value>Если вы хотите выдвинуть себя, войдите в систему и отправьте нам свое резюме.</value>
+</data>
+  <data name="Profile:SwitchtoLightTheme" xml:space="preserve">
+    <value>Переключиться на светлую тему</value>
+</data>
+  <data name="Profile:Switchtosystem" xml:space="preserve">
+    <value>Переключиться на систему</value>
+</data>
+  <data name="Profile:SwitchtoDarkTheme" xml:space="preserve">
+    <value>Переключиться на темную тему</value>
+</data>
+
 
   <!--profile-->
   
@@ -568,7 +593,17 @@
     <data name="Home:Partner">
         <value>И отзывы партнеров</value>
     </data>
-    <!--Home-->
+  <data name="Home:BuildAmazing" xml:space="preserve">
+    <value>Создавайте удивительное</value>
+</data>
+  <data name="Home:Apps" xml:space="preserve">
+    <value>Приложения</value>
+</data>
+  <data name="Home:Alwaysonthelookoutforthehi-techadvancements.Buildnotonlyaproductthatcansellwell,butaplatformthroughwhichtodeliverit." xml:space="preserve">
+    <value>Всегда в поисках передовых технологий. Создавайте не только продукт, который хорошо продается, но и платформу для его доставки.</value>
+</data>
+
+  <!--Home-->
 
     <!-- VacancyDetails -->
     <data name="VacancyDetails:Posted">

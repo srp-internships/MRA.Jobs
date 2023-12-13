@@ -289,7 +289,33 @@
  </data>
 <data name="Profile:OldPassword" xml:space="preserve">
      <value>Old Password</value>
+ </data>
+  <data name="Profile:Ifyouwouldliketonominateyourself,sendusyourСV." xml:space="preserve">
+     <value>If you would like to nominate yourself, send us your СV.</value>
+ </data>
+  <data name="Profile:UploadCV" xml:space="preserve">
+     <value>Upload CV</value>
  </data> 
+  <data name="Profile:ThestatusofyourCVforyourcandidacyis" xml:space="preserve">
+     <value> The status of your CV for your candidacy is</value>
+ </data>
+  <data name="Profile:UploadNewCV" xml:space="preserve">
+     <value> Upload New CV</value>
+ </data>
+  <data name="Profile:Ifyouwouldliketonominateyourself,signinandsendusyourСV." xml:space="preserve">
+     <value> If you would like to nominate yourself, sign in and send us your СV.</value>
+ </data>  
+  <data name="Profile:SwitchtoLightTheme" xml:space="preserve">
+     <value> Switch to Light Theme</value>
+ </data>
+  <data name="Profile:Switchtosystem" xml:space="preserve">
+     <value> Switch to system</value>
+ </data> 
+  <data name="Profile:SwitchtoDarkTheme" xml:space="preserve">
+     <value> Switch to Dark Theme</value>
+ </data>
+
+  
   <!--profile-->
   
   
@@ -622,7 +648,15 @@
   <data name="Home:Partner">
     <value> And Partner Testimonials</value>
   </data>
-
+  <data name="Home:BuildAmazing" xml:space="preserve">
+     <value>Build Amazing</value>
+ </data>
+  <data name="Home:Apps" xml:space="preserve">
+     <value>Apps</value>
+ </data>
+  <data name="Home:Alwaysonthelookoutforthehi-techadvancements.Buildnotonlyaproductthatcansellwell,butaplatformthroughwhichtodeliverit." xml:space="preserve">
+     <value> Always on the lookout for the hi-tech advancements. Build not only a product that can sell well, but a platform through which to deliver it.</value>
+ </data>
   <!--Home-->
 
 

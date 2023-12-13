@@ -286,6 +286,30 @@
   <data name="Profile:OldPassword" xml:space="preserve">
      <value>Калидвожаи куҳна</value>
  </data>
+<data name="Profile:Ifyouwouldliketonominateyourself,sendusyourСV." xml:space="preserve">
+    <value>Агар шумо хоҳед, ки худро номинатсия кунед, ба мо CV-и худро фиристед.</value>
+</data>
+<data name="Profile:UploadCV" xml:space="preserve">
+    <value>CV-ро боргузорӣ кунед</value>
+</data>
+<data name="Profile:ThestatusofyourCVforyourcandidacyis" xml:space="preserve">
+    <value>Ҳолати CV барои номзадии шумо</value>
+</data>
+<data name="Profile:UploadNewCV" xml:space="preserve">
+    <value>CV-и навро боргузорӣ кунед</value>
+</data>
+<data name="Profile:Ifyouwouldliketonominateyourself,signinandsendusyourСV." xml:space="preserve">
+    <value>Агар шумо хоҳед, ки худро номинатсия кунед, вуруд шавед ва ба мо CV-и худро фиристед.</value>
+</data>
+<data name="Profile:SwitchtoLightTheme" xml:space="preserve">
+    <value>Ба темаи рӯшан гузаред</value>
+</data>
+<data name="Profile:Switchtosystem" xml:space="preserve">
+    <value>Ба систем гузаред</value>
+</data>
+<data name="Profile:SwitchtoDarkTheme" xml:space="preserve">
+    <value>Ба темаи торик гузаред</value>
+</data>
 
   <!--profile-->
   
@@ -472,7 +496,6 @@
     <value>Шарикони тиҷоратии моро тавассути пешниҳоди хидматҳои барҷастаи аутсорсинги IT ва аутстаффинг ба сатҳҳои нави муваффақият расонидан</value>
 </data>
 
-
     <data name="Home:Principles" xml:space="preserve">
     <value>Принсипҳои асосӣ</value>
 </data>
@@ -568,6 +591,15 @@
     <data name="Home:Partner">
         <value>Ва баррасиҳои шарикон</value>
     </data>
+ <data name="Home:BuildAmazing" xml:space="preserve">
+    <value>Сохтаи шгаванд</value>
+</data>
+<data name="Home:Apps" xml:space="preserve">
+    <value>Барномаҳо</value>
+</data>
+<data name="Home:Alwaysonthelookoutforthehi-techadvancements.Buildnotonlyaproductthatcansellwell,butaplatformthroughwhichtodeliverit." xml:space="preserve">
+    <value>Ҳамеша дар ҷустуҷӯи пешрафтҳои технологии боланд. Танҳо маҳсулотеро сохтан, ки хуб фурӯхт мешавад, балки платформаро, ки тавассути он метавон онро тақсим кард.</value>
+</data>
 
     <!--Home-->
 
