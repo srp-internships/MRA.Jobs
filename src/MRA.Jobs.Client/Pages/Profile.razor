@@ -120,20 +120,22 @@ else
                             <br/>
                             <MudText Typo="Typo.body2" Class="mud-text-secondary">@ContentService["SignUp:Email"]</MudText>
                             <MudGrid>
-                                <MudItem lg="8">
+                                <MudItem lg="6" xs="12">
                                     <MudTextField @bind-Value="@_updateProfileCommand.Email" Variant="Variant.Outlined" Margin="Margin.Dense" For="@(() => _updateProfileCommand.Email)"/>
                                 </MudItem>
-                                <MudItem lg="4" style="align-content:end; padding-top:10px;">
+                                <MudItem lg="6" xs="12">
                                     @if (!_profile.EmailConfirmed)
                                     {
-                                        <MudStack Row="true" Justify="Justify.Center" AlignItems="AlignItems.Center">
-                                            <MudText  Color="Color.Warning">
-                                                <MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Warning"/>
+                                        <MudStack Row="true">
+                                            <MudStack Row="true" Style="padding-top: 10px;">
+                                            <MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Warning"/>
+                                            <MudText Color="Color.Warning">
                                                 @ContentService["Profile:EmailisnotConfirmed"]
                                             </MudText>
-                                            <MudLink OnClick="SendEmailConfirms">
+                                            </MudStack>
+                                            <MudButton Variant="Variant.Filled" OnClick="SendEmailConfirms">
                                                 <MudText>Send verification email</MudText>
-                                            </MudLink>
+                                            </MudButton>
                                         </MudStack>
                                     }
                                     else
