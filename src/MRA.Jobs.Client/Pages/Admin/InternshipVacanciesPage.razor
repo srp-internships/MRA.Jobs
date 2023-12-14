@@ -5,12 +5,12 @@
 @using MRA.Jobs.Client.Identity;
 @using BlazorMonaco
 @using BlazorMonaco.Editor
-@using BlazorMonaco.Languages
 @inject ISnackbar Snackbar;
-@inject IJSRuntime jsRuntime
 @inject IInternshipService InternshipService
 @inject ICategoryService CategoryService
 @inject IDialogService DialogService
+@inject LayoutService LayoutService
+@inject IJSRuntime JsRuntime
 
 @if (_serverError)
 {
@@ -242,7 +242,7 @@ else
                 </EditForm>
             </MudItem>
         </MudGrid>
-        <MudTable Items="@_internships" Class="text-center" Breakpoint="Breakpoint.Md" hidden="@_panelOpenState">
+        <MudTable Items="@_internships"  Breakpoint="Breakpoint.Md" hidden="@_panelOpenState">
             <HeaderContent>
                 <MudTh>
                     <strong>Title</strong>
@@ -390,6 +390,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+		await BlazorMonaco.Editor.Global.SetTheme(JsRuntime, LayoutService.IsDarkMode ? "vs-dark": "vs");
         await LoadData();
         Clear();
         StateHasChanged();

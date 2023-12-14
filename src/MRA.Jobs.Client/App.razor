@@ -1,5 +1,6 @@
 ﻿@page "/{page}"
 @using MRA.Jobs.Client.Identity
+@using MRA.Jobs.Client.Components.Extra
 @inject NavigationManager NavManager
 
 <Router AppAssembly="typeof(Program).Assembly" Context="routeData">
@@ -28,13 +29,13 @@
             <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
                 <Authorized>
                     <LayoutView Layout="typeof(Dashboard)">
-                        <div class="main">Sorry, there's nothing at this address.</div>
+                        <NotFound/>
                     </LayoutView>
                 </Authorized>
 
                 <NotAuthorized>
                     <LayoutView Layout="typeof(MainLayout)">
-                        <div class="main">Sorry, there's nothing at this address.</div>
+                        <NotFound/>
                     </LayoutView>
                 </NotAuthorized>
             </AuthorizeView>

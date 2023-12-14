@@ -16,66 +16,66 @@
     else
     {
         <MudContainer>
-        <EditForm Model="@application" OnValidSubmit="CreateApplication">
-            <FluentValidationValidator/>
+            <EditForm Model="@application" OnValidSubmit="CreateApplication">
+                <FluentValidationValidator/>
 
-            <MudCard Class="rounded-lg mud-evaluation-4">
-                <MudCardContent>
-                    <MudText Style="color:rgb(128,128,128)">
-                        <b>Additional Details</b>
-                    </MudText>
-                    <MudText Typo="Typo.h6">
-                        <b><span class="text-danger">*</span>Cover Letter</b>
-                    </MudText>
-                    <MudTextField T="string" Lines="7" Variant="Variant.Outlined" @bind-Value="@application.CoverLetter"
-                                  For="@(() => application.CoverLetter)"/>
-                </MudCardContent>
-            </MudCard>
-
-            @* cv *@
-            <br/>
-            <MudCard Class="rounded-lg mud-evaluation-4">
-                <MudCardHeader>
-                    <CardHeaderContent>
+                <MudCard Class="rounded-lg mud-evaluation-4">
+                    <MudCardContent>
                         <MudText Style="color:rgb(128,128,128)">
-                            <b>CV and Apply</b>
+                            <b>Additional Details</b>
                         </MudText>
-                    </CardHeaderContent>
-                </MudCardHeader>
-                <MudCardActions>
-                      <MudCardActions @bind-SelectedOption="_isUploadCvMode">
-                                    <MudRadio Option="@(false)" Color="Color.Primary">Apply using profile</MudRadio>
-                                    <MudRadio Option="@(true)" Color="Color.Primary">Apply with uploading file</MudRadio>
-                                </MudCardActions>
-                                @if (_isUploadCvMode)
-                                {
-                                    <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
-                                        <ButtonTemplate Context="anotherContext">
-                                            <MudButton HtmlTag="label"
-                                                       Variant="Variant.Filled"
-                                                       Color="Color.Primary"
-                                                       StartIcon="@Icons.Material.Filled.CloudUpload"
-                                                       for="@anotherContext">
-                                                Upload your CV
-                                            </MudButton>
-                                        </ButtonTemplate>
-                                    </MudFileUpload>
-                                }
-                                <MudSpacer/>
-                                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
-                                                    @if (_processing)
-                                                    {
-                                                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                                                        <MudText Class="ms-2">Processing</MudText>
-                                                    }
-                                                    else
-                                                    {
-                                                        <MudText>Apply</MudText>
-                                                    }
-                                                </MudButton>
-                </MudCardActions>
-            </MudCard>
-        </EditForm>
+                        <MudText Typo="Typo.h6">
+                            <b><span class="text-danger">*</span>Cover Letter</b>
+                        </MudText>
+                        <MudTextField T="string" Lines="7" Variant="Variant.Outlined" @bind-Value="@application.CoverLetter"
+                                      For="@(() => application.CoverLetter)"/>
+                    </MudCardContent>
+                </MudCard>
+
+                @* cv *@
+                <br/>
+                <MudCard Class="rounded-lg mud-evaluation-4">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Style="color:rgb(128,128,128)">
+                                <b>CV and Apply</b>
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardActions>
+                        <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
+                            <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
+                            <MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio>
+                        </MudRadioGroup>
+                        @if (_isUploadCvMode)
+                        {
+                            <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
+                                <ButtonTemplate Context="anotherContext">
+                                    <MudButton HtmlTag="label"
+                                               Variant="Variant.Filled"
+                                               Color="Color.Primary"
+                                               StartIcon="@Icons.Material.Filled.CloudUpload"
+                                               for="@anotherContext">
+                                        Upload your CV
+                                    </MudButton>
+                                </ButtonTemplate>
+                            </MudFileUpload>
+                        }
+                        <MudSpacer/>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
+                            @if (_processing)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                                <MudText Class="ms-2">Processing</MudText>
+                            }
+                            else
+                            {
+                                <MudText>Apply</MudText>
+                            }
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </EditForm>
         </MudContainer>
     }
 </div>

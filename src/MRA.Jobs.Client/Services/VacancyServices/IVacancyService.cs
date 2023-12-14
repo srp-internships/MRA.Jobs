@@ -17,7 +17,7 @@ public interface IVacancyService
     List<JobVacancyListDto> Vacanceies { get; set; }
     //  CreateVacancyCategoryCommand creatingEntity { get; set; }
     public int FilteredVacanciesCount { get; set; }
-    CreateJobVacancyCommand creatingNewJob { get; set; }
+    CreateJobVacancyCommand creatingNewJob { get; set; } 
     Task<List<JobVacancyListDto>> GetAllVacancy();
     /* Renamed version of the upper method name with a typo */
     Task<List<JobVacancyListDto>> GetAllVacancies();
@@ -25,7 +25,7 @@ public interface IVacancyService
     Task<List<CategoryResponse>> GetAllCategory();
 
     Task<List<JobVacancyListDto>> GetVacancyByTitle(string title);
-    Task OnSaveCreateClick();
+    Task<HttpResponseMessage> OnSaveCreateClick();
     Task OnDelete(string slug);
     Task<List<JobVacancyListDto>> GetJobs();
     Task<List<InternshipVacancyListResponse>> GetInternship();

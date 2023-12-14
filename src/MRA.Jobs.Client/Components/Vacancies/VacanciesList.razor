@@ -45,15 +45,12 @@ else
                                     @foreach (var cat in VacancyCategories)
                                     {
                                         <MudNavLink OnClick="@(() => SelectCategory(cat))" Class="@(_selectedCategory == cat ? "mud-chip-text mud-chip-color-primary" : "")">
-                                            <div class="customTabContainer">
-                                                <div class="customTabContainerLeft">
-                                                    <MudText>
-                                                        <b>@cat</b>
-                                                    </MudText>
-                                                </div>
-                                                <div class="customTabContainerRight">
-                                                    <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
-                                                </div>
+                                            <div class="d-flex flex-grow-1">
+                                                <MudText>
+                                                    <b>@cat</b>
+                                                </MudText>
+                                                <MudSpacer/>
+                                                <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
                                             </div>
                                         </MudNavLink>
                                     }
@@ -79,15 +76,12 @@ else
                                         @foreach (var cat in VacancyCategories)
                                         {
                                             <MudNavLink OnClick="@(() => SelectCategory(cat))" Class="@(_selectedCategory == cat ? "mud-chip-text mud-chip-color-primary" : "")">
-                                                <div class="customTabContainer">
-                                                    <div class="customTabContainerLeft">
-                                                        <MudText>
-                                                            <b>@cat</b>
-                                                        </MudText>
-                                                    </div>
-                                                    <div class="customTabContainerRight">
-                                                        <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
-                                                    </div>
+                                                <div class="d-flex flex-grow-1">
+                                                    <MudText>
+                                                        <b>@cat</b>
+                                                    </MudText>
+                                                    <MudSpacer/>
+                                                    <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
                                                 </div>
                                             </MudNavLink>
                                         }
