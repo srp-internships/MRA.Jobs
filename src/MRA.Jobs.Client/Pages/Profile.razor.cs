@@ -1,5 +1,6 @@
 using System.Net;
 using Blazorise.Extensions;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
@@ -14,6 +15,7 @@ using MRA.Identity.Application.Contract.Skills.Responses;
 using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Jobs.Client.Components.Dialogs;
 using MRA.Jobs.Client.Identity;
+using MRA.Jobs.Client.Services.Auth;
 using MudBlazor;
 using Newtonsoft.Json;
 
@@ -21,6 +23,8 @@ namespace MRA.Jobs.Client.Pages;
 
 public partial class Profile
 {
+    [Inject] private IAuthService AuthService { get; set; }
+
     private bool _processing;
     private bool _tryButton;
     private bool _codeSent;
@@ -47,6 +51,15 @@ public partial class Profile
     {
         bool response = await UserProfileService.SendConfirmationCode(_profile.PhoneNumber);
         if (response) _codeSent = true;
+    }
+
+    private async Task SendEmailConfirms()
+    {
+        var response = await AuthService.ResendVerificationEmail();
+        if (response.IsSuccessStatusCode)
+            Snackbar.Add("Please check your email, we are send verification", Severity.Info);
+        else
+            Snackbar.Add("Server not responding, try again latter", Severity.Error);
     }
 
     private async Task Verify()
@@ -272,7 +285,8 @@ public partial class Profile
         educationUpdate = new UpdateEducationDetailCommand()
         {
             EndDate = educationResponse.EndDate.HasValue ? educationResponse.EndDate.Value : default(DateTime),
-            StartDate = educationResponse.StartDate.HasValue ? educationResponse.StartDate.Value : default(DateTime),
+            StartDate =
+                educationResponse.StartDate.HasValue ? educationResponse.StartDate.Value : default(DateTime),
             University = educationResponse.University,
             Speciality = educationResponse.Speciality,
             Id = educationResponse.Id,

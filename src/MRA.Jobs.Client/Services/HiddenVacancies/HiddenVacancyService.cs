@@ -22,7 +22,6 @@ public class HiddenVacancyService(HttpClient httpClient, ISnackbar snackbar) : I
         {
             snackbar.Add("Server is not responding, please try later", Severity.Error);
         }
-
         return vacancy;
     }
 
