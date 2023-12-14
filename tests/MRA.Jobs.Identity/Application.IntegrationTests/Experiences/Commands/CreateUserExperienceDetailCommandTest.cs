@@ -22,7 +22,7 @@ public class CreateUserExperienceDetailCommandTest : BaseTest
             EndDate = DateTime.Now.AddYears(-1),
         };
 
-        var response = await _client.PostAsJsonAsync("/api/Profile/СreateExperienceDetail", command);
+        var response = await _client.PostAsJsonAsync("/api/Profile/CreateExperienceDetail", command);
         response.EnsureSuccessStatusCode();
     }
 
@@ -42,13 +42,13 @@ public class CreateUserExperienceDetailCommandTest : BaseTest
             EndDate = DateTime.Now.AddYears(-1),
         };
 
-        var response = await _client.PostAsJsonAsync("/api/Profile/СreateExperienceDetail", command);
+        var response = await _client.PostAsJsonAsync("/api/Profile/CreateExperienceDetail", command);
         response.EnsureSuccessStatusCode();
 
         command.CompanyName = "srp";
         command.JobTitle = "backend developer";
 
-        response = await _client.PostAsJsonAsync("/api/Profile/СreateExperienceDetail", command);
+        response = await _client.PostAsJsonAsync("/api/Profile/CreateExperienceDetail", command);
         Assert.AreEqual(response.StatusCode, HttpStatusCode.BadRequest);
         Assert.IsTrue((await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains("Experience detail already exists"));
 
