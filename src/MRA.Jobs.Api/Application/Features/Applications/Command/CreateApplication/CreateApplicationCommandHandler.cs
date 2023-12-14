@@ -44,7 +44,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
 
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
-        var vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
+       var vacancy = await _context.Vacancies.FindAsync(request.VacancyId);
         _ = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
         var application = _mapper.Map<Application>(request);
 
@@ -57,7 +57,7 @@ public class CreateApplicationCommandHandler : IRequestHandler<CreateApplication
         {
             var count = _context.Applications.Count(a => a.Slug.Contains("hidden_vacancy"));
             application.Slug += count + 1;
-        }
+       }
 
         application.ApplicantId = _currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = _currentUserService.GetUserName() ?? string.Empty;
