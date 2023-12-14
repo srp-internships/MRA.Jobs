@@ -6,6 +6,7 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
 public class VacancyService : IVacancyService
@@ -21,7 +22,7 @@ public class VacancyService : IVacancyService
             Title = "",
             Description = "",
             ShortDescription = "",
-            WorkSchedule = new() { },
+            WorkSchedule = WorkSchedule.FullTime,
             CategoryId = Guid.NewGuid(),
             RequiredYearOfExperience = 0,
             EndDate = DateTime.Now,
@@ -110,9 +111,9 @@ public class VacancyService : IVacancyService
         return result.Items;
     }
 
-    public async Task OnSaveCreateClick()
+    public async Task<HttpResponseMessage> OnSaveCreateClick()
     {
-        await _http.PostAsJsonAsync("jobs", creatingNewJob);
+        return await _http.PostAsJsonAsync("jobs", creatingNewJob);
     }
 
     public async Task<List<JobVacancyListDto>> GetJobs()
