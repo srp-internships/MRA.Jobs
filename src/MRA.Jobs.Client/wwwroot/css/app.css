@@ -194,6 +194,7 @@ ul, li {
     backdrop-filter: blur(15px);
     position: fixed;
     width: 100%;
+    z-index: 999;
 }
 
 .docs-appbar-special-menu {
