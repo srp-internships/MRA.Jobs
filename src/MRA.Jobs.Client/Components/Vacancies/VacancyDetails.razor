@@ -257,14 +257,18 @@ else
 
     public bool Applied { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        _cvUrl = await ApplicationService.GetCvLinkAsync(Slug);
+        Applied = !_cvUrl.IsNullOrEmpty();
+    }
+
     protected override async void OnAfterRender(bool firstRender)
     {
         try
         {
             if (firstRender)
             {
-                _cvUrl = await ApplicationService.GetCvLinkAsync(Slug);
-                Applied = !_cvUrl.IsNullOrEmpty();
                 await Task.Delay(1000);
                 _showLoader = true;
                 StateHasChanged();

@@ -14,28 +14,19 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Client.Services.ApplicationService;
 
-public class ApplicationService : IApplicationService
+public class ApplicationService(
+    HttpClient httpClient,
+    AuthenticationStateProvider authenticationState,
+    ISnackbar snackbar,
+    NavigationManager navigationManager,
+    IConfiguration configuration)
+    : IApplicationService
 {
-    private readonly HttpClient _httpClient;
-    private readonly AuthenticationStateProvider _authenticationState;
-    private readonly ISnackbar _snackbar;
-    private readonly NavigationManager _navigationManager;
-    private readonly IConfiguration _configuration;
-
-
-    public ApplicationService(HttpClient httpClient, AuthenticationStateProvider authenticationState,
-        ISnackbar snackbar, NavigationManager navigationManager, IConfiguration configuration)
-    {
-        _httpClient = httpClient;
-        _authenticationState = authenticationState;
-        _snackbar = snackbar;
-        _navigationManager = navigationManager;
-        _configuration = configuration;
-    }
+    private const string ApplicationsEndPoint = "applications";
 
     public async Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync($"api/applications/{status}");
+        HttpResponseMessage response = await httpClient.GetAsync($"{ApplicationsEndPoint}/{status}");
 
         List<ApplicationListStatus> result = await response.Content.ReadFromJsonAsync<List<ApplicationListStatus>>();
         return result;
@@ -55,32 +46,32 @@ public class ApplicationService : IApplicationService
             }
             //set cv
 
-            var response = await _httpClient.PostAsJsonAsync("/api/applications", application);
+            var response = await httpClient.PostAsJsonAsync(ApplicationsEndPoint, application);
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
-                    _snackbar.Add("Applications sent successfully!", Severity.Success);
-                    _navigationManager.NavigateTo(_navigationManager.Uri.Replace("/apply/", "/"));
+                    snackbar.Add("Applications sent successfully!", Severity.Success);
+                    navigationManager.NavigateTo(navigationManager.Uri.Replace("/apply/", "/"));
                     break;
                 case HttpStatusCode.Conflict:
-                    _snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,
+                    snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,
                         Severity.Error);
                     break;
                 default:
-                    _snackbar.Add("Something went wrong", Severity.Error);
+                    snackbar.Add("Something went wrong", Severity.Error);
                     break;
             }
         }
         catch (Exception e)
         {
-            _snackbar.Add("Server is not responding, please try later", Severity.Error);
+            snackbar.Add("Server is not responding, please try later", Severity.Error);
             Console.WriteLine(e.Message);
         }
     }
 
     private async Task<byte[]> GetFileBytesAsync(IBrowserFile file)
     {
-        if (file.Size <= int.Parse(_configuration["CvSettings:MaxFileSize"]!) * 1024 * 1024)
+        if (file.Size <= int.Parse(configuration["CvSettings:MaxFileSize"]!) * 1024 * 1024)
         {
             var ms = new MemoryStream();
             await file.OpenReadStream().CopyToAsync(ms);
@@ -93,8 +84,8 @@ public class ApplicationService : IApplicationService
 
     public async Task<PagedList<ApplicationListDto>> GetAllApplications()
     {
-        await _authenticationState.GetAuthenticationStateAsync();
-        HttpResponseMessage response = await _httpClient.GetAsync("/api/applications/");
+        await authenticationState.GetAuthenticationStateAsync();
+        HttpResponseMessage response = await httpClient.GetAsync(ApplicationsEndPoint);
         PagedList<ApplicationListDto>
             result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
         return result;
@@ -102,9 +93,9 @@ public class ApplicationService : IApplicationService
 
     public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
     {
-        await _authenticationState.GetAuthenticationStateAsync();
+        await authenticationState.GetAuthenticationStateAsync();
         HttpResponseMessage response =
-            await _httpClient.PutAsJsonAsync($"/api/applications/{updateApplicationStatus.Slug}/update-status",
+            await httpClient.PutAsJsonAsync($"{ApplicationsEndPoint}/{updateApplicationStatus.Slug}/update-status",
                 updateApplicationStatus);
         bool result = await response.Content.ReadFromJsonAsync<bool>();
         return result;
@@ -112,8 +103,8 @@ public class ApplicationService : IApplicationService
 
     public async Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug)
     {
-        await _authenticationState.GetAuthenticationStateAsync();
-        HttpResponseMessage response = await _httpClient.GetAsync($"/api/applications/{applicationSlug}");
+        await authenticationState.GetAuthenticationStateAsync();
+        HttpResponseMessage response = await httpClient.GetAsync($"{ApplicationsEndPoint}/{applicationSlug}");
         if (response.StatusCode == HttpStatusCode.OK)
         {
             var application = await response.Content.ReadFromJsonAsync<ApplicationDetailsDto>();
@@ -131,12 +122,12 @@ public class ApplicationService : IApplicationService
         {
             return "";
         }
-        return $"{_httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
+        return $"{httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
     }
 
     private async Task<string> GetCurrentUserName()
     {
-        var authState = await _authenticationState.GetAuthenticationStateAsync();
+        var authState = await authenticationState.GetAuthenticationStateAsync();
         var user = authState.User;
 
         if (user.Identity.IsAuthenticated)
