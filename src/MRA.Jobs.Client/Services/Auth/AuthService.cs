@@ -124,4 +124,10 @@ public class AuthService(IdentityHttpClient identityHttpClient,
         var result = await identityHttpClient.GetAsync($"User/CheckUserDetails/{query.UserName}/{query.PhoneNumber}/{query.Email}");
         return result;
     }
+
+    public async Task<HttpResponseMessage> ResendVerificationEmail()
+    {
+        var result = await identityHttpClient.PostAsync("Auth/VerifyEmail",null);
+        return result;
+    }
 }
