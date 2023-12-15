@@ -5,22 +5,9 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
 
     public async Task SeedAsync()
     {
-        await RemoveHiddenVacancy();
         await CreateNoVacancy("NoVacancy");
     }
-
-    private async Task RemoveHiddenVacancy()
-    {
-        // Выполните SQL-запрос для удаления всех связанных записей TimelineEvents
-       await dbContext.Database.ExecuteSqlRawAsync("DELETE FROM TimelineEvents WHERE ApplicationId IN (SELECT Id FROM Applications WHERE VacancyId IN (SELECT Id FROM Vacancies WHERE Discriminator = 'HiddenVacancy'))");
-
-        // Выполните SQL-запрос для удаления всех связанных записей Applications
-       await dbContext.Database.ExecuteSqlRawAsync("DELETE FROM Applications WHERE VacancyId IN (SELECT Id FROM Vacancies WHERE Discriminator = 'HiddenVacancy')");
-
-        // Теперь вы можете безопасно удалить запись HiddenVacancy
-       await dbContext.Database.ExecuteSqlRawAsync("DELETE FROM Vacancies WHERE Discriminator = 'HiddenVacancy'");
-    }
-
+    
     private async Task CreateNoVacancy(string vacancyTitle)
     {
         var noCategory = await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == "NoVacancy");
@@ -45,6 +32,7 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
                 Slug = "no_vacancy",
                 CategoryId = noCategory.Id,
                 CreatedAt = DateTime.Now,
+                CreatedByEmail = "mrajobsadmin@silkroadprofessionals.com"
             };
 
             await dbContext.NoVacancies.AddAsync(vacancy);
