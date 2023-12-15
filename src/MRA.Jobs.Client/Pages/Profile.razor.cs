@@ -57,7 +57,7 @@ public partial class Profile
     {
         var response = await AuthService.ResendVerificationEmail();
         if (response.IsSuccessStatusCode)
-            Snackbar.Add("Please check your email, we are send verification", Severity.Info);
+            Snackbar.Add("Please check your email, we sent verification link", Severity.Info);
         else
             Snackbar.Add("Server not responding, try again latter", Severity.Error);
     }

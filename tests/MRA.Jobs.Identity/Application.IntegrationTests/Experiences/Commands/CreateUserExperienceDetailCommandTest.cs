@@ -52,6 +52,5 @@ public class CreateUserExperienceDetailCommandTest : BaseTest
         Assert.AreEqual(response.StatusCode, HttpStatusCode.BadRequest);
         Assert.IsTrue((await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains("Experience detail already exists"));
 
-
     }
 }
