@@ -92,7 +92,7 @@
     <value>Ҳисоботи шумо вуҷуд дорад? </value>
 </data>
     <data name="SignUp:LinkSignIn" xml:space="preserve">
-    <value>Ворид шудан</value>
+    <value> Ворид шудан</value>
 </data>
     <data name="SignUp:FirstName" xml:space="preserve">
     <value>Ном</value>
