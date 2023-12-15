@@ -5,23 +5,23 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
 
     public async Task SeedAsync()
     {
-        await CreateHiddenVacancy("HiddenVacancy");
+        await CreateNoVacancy("NoVacancy");
     }
-
-    private async Task CreateHiddenVacancy(string vacancyTitle)
+    
+    private async Task CreateNoVacancy(string vacancyTitle)
     {
-        var hiddenCategory = await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == "Hidden Category");
-        if (hiddenCategory == null)
+        var noCategory = await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == "NoVacancy");
+        if (noCategory == null)
         {
-            var category = new VacancyCategory() { Name = "Hidden Category", Slug = "hidden_category" };
+            var category = new VacancyCategory() { Name = "NoVacancy", Slug = "no_vacancy" };
             await dbContext.Categories.AddAsync(category);
-            hiddenCategory = category;
+            noCategory = category;
         }
 
-        var hiddenVacancy = await dbContext.HiddenVacancies.FirstOrDefaultAsync(hv => hv.Title == vacancyTitle);
-        if (hiddenVacancy == null)
+        var noVacancy = await dbContext.NoVacancies.FirstOrDefaultAsync(hv => hv.Title == vacancyTitle);
+        if (noVacancy == null)
         {
-            var vacancy = new HiddenVacancy()
+            var vacancy = new NoVacancy()
             {
                 Id = Guid.NewGuid(),
                 Title = vacancyTitle,
@@ -29,12 +29,13 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
                 EndDate = new DateTime(2099, 12, 31),
                 ShortDescription = "",
                 Description = "",
-                Slug = "hidden_vacancy",
-                CategoryId = hiddenCategory.Id,
+                Slug = "no_vacancy",
+                CategoryId = noCategory.Id,
                 CreatedAt = DateTime.Now,
+                CreatedByEmail = "mrajobsadmin@silkroadprofessionals.com"
             };
 
-            await dbContext.HiddenVacancies.AddAsync(vacancy);
+            await dbContext.NoVacancies.AddAsync(vacancy);
         }
 
         await dbContext.SaveChangesAsync();

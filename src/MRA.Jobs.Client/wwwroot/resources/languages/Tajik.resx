@@ -173,11 +173,11 @@
   </data>
   <data name="SignUp:LabelHaveAccount" xml:space="preserve">
     <value>Ҳисоботи шумо вуҷуд дорад? </value>
-  </data>
-  <data name="SignUp:LinkSignIn" xml:space="preserve">
-    <value>Ворид шудан</value>
-  </data>
-  <data name="SignUp:FirstName" xml:space="preserve">
+</data>
+    <data name="SignUp:LinkSignIn" xml:space="preserve">
+    <value> Ворид шудан</value>
+</data>
+    <data name="SignUp:FirstName" xml:space="preserve">
     <value>Ном</value>
   </data>
   <data name="SignUp:FirstName_HelperText" xml:space="preserve">

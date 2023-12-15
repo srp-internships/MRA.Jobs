@@ -1,8 +1,8 @@
 ﻿@page "/upload-cv"
-@using MRA.Jobs.Client.Services.HiddenVacancies
-@using MRA.Jobs.Application.Contracts.HiddenVacancies.Responses
+@using MRA.Jobs.Client.Services.NoVacancies
+@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
 @using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication
-@inject IHiddenVacancyService HiddenVacancyService
+@inject INoVacancyService NoVacancyService
 @inject IConfiguration Configuration
 @inject IApplicationService ApplicationService
 @inject NavigationManager NavigationManager
@@ -87,14 +87,14 @@
     private IBrowserFile _cv;
     private bool _processing = false;
 
-    HiddenVacancyResponse vacancy = new();
+    NoVacancyResponse vacancy = new();
     private bool serverError;
     private CreateApplicationCommand application;
 
 
     protected override async Task OnInitializedAsync()
     {
-        vacancy = await HiddenVacancyService.GetHiddenVacancy();
+        vacancy = await NoVacancyService.GetNoVacancy();
         if (vacancy.Slug == null)
         {
             serverError = true;

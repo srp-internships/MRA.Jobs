@@ -4,10 +4,10 @@
 @using AltairCA.Blazor.WebAssembly.Cookie
 @using Blazorise
 @using MRA.Identity.Application.Contract.Profile.Responses
-@using MRA.Jobs.Application.Contracts.HiddenVacancies.Responses
+@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using MRA.Jobs.Client.Components.Buttons
-@using MRA.Jobs.Client.Services.HiddenVacancies
+@using MRA.Jobs.Client.Services.NoVacancies
 @using Anchor = MudBlazor.Anchor
 @using Breakpoint = MudBlazor.Breakpoint
 @using Color = MudBlazor.Color
@@ -90,7 +90,7 @@
                            <MudChip Icon="@Icons.Material.Filled.UploadFile" Color="Color.Tertiary">CV</MudChip>
                        </ActivatorContent>
                        <ChildContent>
-                           <HiddenVacancyUploadCV/>
+                           <NoVacancyUploadCV/>
                        </ChildContent>
                    </MudMenu>
         </MudHidden>

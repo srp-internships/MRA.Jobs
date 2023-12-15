@@ -1,20 +1,20 @@
 ﻿using System.Net;
-using MRA.Jobs.Application.Contracts.HiddenVacancies.Responses;
+using MRA.Jobs.Application.Contracts.NoVacancies.Responses;
 using MRA.Jobs.Client.Identity;
 using MudBlazor;
 
-namespace MRA.Jobs.Client.Services.HiddenVacancies;
+namespace MRA.Jobs.Client.Services.NoVacancies;
 
-public class HiddenVacancyService(HttpClient httpClient, ISnackbar snackbar) : IHiddenVacancyService
+public class NoVacancyService(HttpClient httpClient, ISnackbar snackbar) : INoVacancyService
 {
-    public async Task<HiddenVacancyResponse> GetHiddenVacancy()
+    public async Task<NoVacancyResponse> GetNoVacancy()
     {
-        var vacancy = new HiddenVacancyResponse();
+        var vacancy = new NoVacancyResponse();
         try
         {
-            var response = await httpClient.GetAsync("hiddenvacancies");
+            var response = await httpClient.GetAsync("NoVacancies");
             if (response.IsSuccessStatusCode)
-                vacancy = await response.Content.ReadFromJsonAsync<HiddenVacancyResponse>();
+                vacancy = await response.Content.ReadFromJsonAsync<NoVacancyResponse>();
             else
                 snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
         }
@@ -25,14 +25,14 @@ public class HiddenVacancyService(HttpClient httpClient, ISnackbar snackbar) : I
         return vacancy;
     }
 
-    public async Task<ApplicationWithHiddenVacancyStatus> GetApplicationStatus()
+    public async Task<ApplicationWithNoVacancyStatus> GetApplicationStatus()
     {
-        ApplicationWithHiddenVacancyStatus status = null;
+        ApplicationWithNoVacancyStatus status = null;
         try
         {
-            var response = await httpClient.GetAsync("HiddenVacancies/GetApplicationStatus");
+            var response = await httpClient.GetAsync("NoVacancies/GetApplicationStatus");
             if (response.IsSuccessStatusCode)
-                status = await response.Content.ReadFromJsonAsync<ApplicationWithHiddenVacancyStatus>();
+                status = await response.Content.ReadFromJsonAsync<ApplicationWithNoVacancyStatus>();
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
             }

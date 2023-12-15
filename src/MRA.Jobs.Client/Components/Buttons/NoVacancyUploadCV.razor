@@ -1,0 +1,51 @@
+﻿@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
+@using MRA.Jobs.Client.Services.NoVacancies
+@inject NavigationManager NavigationManager
+@inject INoVacancyService NoVacancyService
+@inject IContentService ContentService
+
+
+  <CascadingAuthenticationState>
+            <AuthorizeView>
+                <Authorized>
+                        <MudCardContent>
+                            <MudText>
+						@ContentService["Profile:Ifyouwouldliketonominateyourself,sendusyourСV."]
+                            </MudText>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                       OnClick="ApplyNoVacancy" FullWidth="true">
+						<MudText>@ContentService["Profile:UploadCV"]</MudText>
+                            </MudButton>
+                        </MudCardActions>
+                </Authorized>
+                <NotAuthorized>
+                    <MudCardContent>
+                        <MudText >
+					@ContentService["Profile:Ifyouwouldliketonominateyourself,signinandsendusyourСV."]
+                        </MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Filled" OnClick="SignIn" Color="Color.Primary" FullWidth="true">
+					<MudText>@ContentService["VacancyDetails:Sign In"]</MudText>
+                        </MudButton>
+                    </MudCardActions>
+                </NotAuthorized>
+            </AuthorizeView>
+        </CascadingAuthenticationState>
+
+@code {
+    private ApplicationWithNoVacancyStatus _applicationWithNoVacancyStatus;
+
+ private void ApplyNoVacancy()
+    {
+        NavigationManager.NavigateTo("/upload-cv");
+    }
+
+    private void SignIn()
+    {
+        NavigationManager.NavigateTo("/sign-in");
+    }
+
+}

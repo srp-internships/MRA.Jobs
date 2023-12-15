@@ -10,5 +10,5 @@ public enum DocPages
     Contact,
     Profile,
     Applications,
-    HiddenVacancyUploadCv
+    NoVacancyUploadCv
 }

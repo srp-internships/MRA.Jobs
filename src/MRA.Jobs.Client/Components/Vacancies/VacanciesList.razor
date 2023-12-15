@@ -1,13 +1,13 @@
 ﻿@using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Services.ConverterService
-@using MRA.Jobs.Client.Services.HiddenVacancies
-@using MRA.Jobs.Application.Contracts.HiddenVacancies.Responses
+@using MRA.Jobs.Client.Services.NoVacancies
+@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
 @using Blazorise.Extensions
 @inject ICategoryService CategoryService
 @inject IVacancyService VacancyService
 @inject IDateTimeConvertToStringService DateTimeConvertToStringService
-@inject IHiddenVacancyService HiddenVacancyService
+@inject INoVacancyService NoVacancyService
 @inject NavigationManager NavigationManager
 
 
