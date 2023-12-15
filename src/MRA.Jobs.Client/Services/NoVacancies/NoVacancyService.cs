@@ -22,7 +22,6 @@ public class NoVacancyService(HttpClient httpClient, ISnackbar snackbar) : INoVa
         {
             snackbar.Add("Server is not responding, please try later", Severity.Error);
         }
-
         return vacancy;
     }
 
