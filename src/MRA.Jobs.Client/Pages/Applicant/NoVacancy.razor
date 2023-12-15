@@ -94,7 +94,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        vacancy = await NoVacancyService.GetHiddenVacancy();
+        vacancy = await NoVacancyService.GetNoVacancy();
         if (vacancy.Slug == null)
         {
             serverError = true;

@@ -15,7 +15,7 @@
                         </MudCardContent>
                         <MudCardActions>
                             <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                                       OnClick="ApplyHiddenVacancy" FullWidth="true">
+                                       OnClick="ApplyNoVacancy" FullWidth="true">
 						<MudText>@ContentService["Profile:UploadCV"]</MudText>
                             </MudButton>
                         </MudCardActions>
@@ -38,12 +38,7 @@
 @code {
     private ApplicationWithNoVacancyStatus _applicationWithNoVacancyStatus;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        _applicationWithNoVacancyStatus = await NoVacancyService.GetApplicationStatus();
-    }
-
-    private void ApplyHiddenVacancy()
+ private void ApplyNoVacancy()
     {
         NavigationManager.NavigateTo("/upload-cv");
     }

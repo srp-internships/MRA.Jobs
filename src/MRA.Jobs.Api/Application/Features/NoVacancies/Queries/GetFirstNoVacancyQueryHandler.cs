@@ -12,7 +12,7 @@ public class GetFirstNoVacancyQueryHandler
         CancellationToken cancellationToken)
     {
         var vacancy =
-            await dbContext.HiddenVacancies.FirstOrDefaultAsync(x => x.Slug == "no_vacancy", cancellationToken);
+            await dbContext.NoVacancies.FirstOrDefaultAsync(x => x.Slug == "no_vacancy", cancellationToken);
 
         if (vacancy == null)
             throw new NullReferenceException();

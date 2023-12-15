@@ -5,21 +5,34 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
 
     public async Task SeedAsync()
     {
+        await RemoveHiddenVacancy();
         await CreateNoVacancy("NoVacancy");
+    }
+
+    private async Task RemoveHiddenVacancy()
+    {
+        // Выполните SQL-запрос для удаления всех связанных записей TimelineEvents
+       await dbContext.Database.ExecuteSqlRawAsync("DELETE FROM TimelineEvents WHERE ApplicationId IN (SELECT Id FROM Applications WHERE VacancyId IN (SELECT Id FROM Vacancies WHERE Discriminator = 'HiddenVacancy'))");
+
+        // Выполните SQL-запрос для удаления всех связанных записей Applications
+       await dbContext.Database.ExecuteSqlRawAsync("DELETE FROM Applications WHERE VacancyId IN (SELECT Id FROM Vacancies WHERE Discriminator = 'HiddenVacancy')");
+
+        // Теперь вы можете безопасно удалить запись HiddenVacancy
+       await dbContext.Database.ExecuteSqlRawAsync("DELETE FROM Vacancies WHERE Discriminator = 'HiddenVacancy'");
     }
 
     private async Task CreateNoVacancy(string vacancyTitle)
     {
-        var hiddenCategory = await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == "NoVacancy");
-        if (hiddenCategory == null)
+        var noCategory = await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == "NoVacancy");
+        if (noCategory == null)
         {
             var category = new VacancyCategory() { Name = "NoVacancy", Slug = "no_vacancy" };
             await dbContext.Categories.AddAsync(category);
-            hiddenCategory = category;
+            noCategory = category;
         }
 
-        var hiddenVacancy = await dbContext.HiddenVacancies.FirstOrDefaultAsync(hv => hv.Title == vacancyTitle);
-        if (hiddenVacancy == null)
+        var noVacancy = await dbContext.NoVacancies.FirstOrDefaultAsync(hv => hv.Title == vacancyTitle);
+        if (noVacancy == null)
         {
             var vacancy = new NoVacancy()
             {
@@ -30,11 +43,11 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
                 ShortDescription = "",
                 Description = "",
                 Slug = "no_vacancy",
-                CategoryId = hiddenCategory.Id,
+                CategoryId = noCategory.Id,
                 CreatedAt = DateTime.Now,
             };
 
-            await dbContext.HiddenVacancies.AddAsync(vacancy);
+            await dbContext.NoVacancies.AddAsync(vacancy);
         }
 
         await dbContext.SaveChangesAsync();

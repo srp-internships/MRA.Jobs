@@ -11,7 +11,7 @@ namespace MRA.Jobs.Application.IntegrationTests.NoVacancies.Queries;
 public class GetStatusApplicationWithNoVacancyQueryTest : CreateApplicationTestsBase
 {
     [Test]
-    public async Task GetStatusApplicationWithHiddenVacancyQuery_1_Return_Unauthorized()
+    public async Task GetStatusApplicationWithNoVacancyQuery_1_Return_Unauthorized()
     {
         var response = await _httpClient.GetAsync("api/NoVacancies/GetApplicationStatus");
 
@@ -19,7 +19,7 @@ public class GetStatusApplicationWithNoVacancyQueryTest : CreateApplicationTests
     }
 
     [Test]
-    public async Task GetStatusApplicationWithHiddenVacancyQuery_2_Return_AppliedFalse()
+    public async Task GetStatusApplicationWithNoVacancyQuery_2_Return_AppliedFalse()
     {
         
         RunAsDefaultUserAsync("applicant3");
@@ -31,7 +31,7 @@ public class GetStatusApplicationWithNoVacancyQueryTest : CreateApplicationTests
     }
 
     [Test]
-    public async Task GetStatusApplicationWithHiddenVacancyQuery_3_Return_ApplicationStatusNotNull()
+    public async Task GetStatusApplicationWithNoVacancyQuery_3_Return_ApplicationStatusNotNull()
     {
         var noVacancyResponse = await _httpClient.GetAsync("api/NoVacancies");
         noVacancyResponse.EnsureSuccessStatusCode();

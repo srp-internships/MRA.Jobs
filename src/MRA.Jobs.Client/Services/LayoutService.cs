@@ -125,7 +125,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         if (uri.Contains("/contact")) return DocPages.Contact;
         if (uri.Contains("/profile")) return DocPages.Profile;
         if (uri.Contains("/applications")) return DocPages.Applications;
-        if (uri.Contains("/upload-cv")) return DocPages.HiddenVacancyUploadCv;
+        if (uri.Contains("/upload-cv")) return DocPages.NoVacancyUploadCv;
         return DocPages.Home;
     }
     

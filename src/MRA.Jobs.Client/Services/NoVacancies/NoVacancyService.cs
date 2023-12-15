@@ -7,12 +7,12 @@ namespace MRA.Jobs.Client.Services.NoVacancies;
 
 public class NoVacancyService(HttpClient httpClient, ISnackbar snackbar) : INoVacancyService
 {
-    public async Task<NoVacancyResponse> GetHiddenVacancy()
+    public async Task<NoVacancyResponse> GetNoVacancy()
     {
         var vacancy = new NoVacancyResponse();
         try
         {
-            var response = await httpClient.GetAsync("hiddenvacancies");
+            var response = await httpClient.GetAsync("NoVacancies");
             if (response.IsSuccessStatusCode)
                 vacancy = await response.Content.ReadFromJsonAsync<NoVacancyResponse>();
             else
@@ -30,7 +30,7 @@ public class NoVacancyService(HttpClient httpClient, ISnackbar snackbar) : INoVa
         ApplicationWithNoVacancyStatus status = null;
         try
         {
-            var response = await httpClient.GetAsync("HiddenVacancies/GetApplicationStatus");
+            var response = await httpClient.GetAsync("NoVacancies/GetApplicationStatus");
             if (response.IsSuccessStatusCode)
                 status = await response.Content.ReadFromJsonAsync<ApplicationWithNoVacancyStatus>();
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
