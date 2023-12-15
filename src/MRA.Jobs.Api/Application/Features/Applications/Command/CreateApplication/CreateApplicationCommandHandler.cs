@@ -18,7 +18,7 @@ public class CreateApplicationCommandHandler(IApplicationDbContext context, IMap
 {
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
-       var vacancy = await context.Vacancies.FindAsync(request.VacancyId);
+        var vacancy = await context.Vacancies.FindAsync(request.VacancyId);
         _ = vacancy ?? throw new NotFoundException(nameof(Vacancy), request.VacancyId);
         var application = mapper.Map<Application>(request);
 
@@ -31,7 +31,7 @@ public class CreateApplicationCommandHandler(IApplicationDbContext context, IMap
         {
             var count = context.Applications.Count(a => a.Slug.Contains("no_vacancy"));
             application.Slug += count + 1;
-       }
+        }
 
         application.ApplicantId = currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = currentUserService.GetUserName() ?? string.Empty;
@@ -69,8 +69,8 @@ public class CreateApplicationCommandHandler(IApplicationDbContext context, IMap
             return false;
 
         if (application.Vacancy.Discriminator == "NoVacancy" && (application.Status == ApplicationStatus.Expired ||
-                                                                     application.Status == ApplicationStatus.Refused ||
-                                                                     application.Status == ApplicationStatus.Rejected))
+                                                                 application.Status == ApplicationStatus.Refused ||
+                                                                 application.Status == ApplicationStatus.Rejected))
             return false;
 
         return true;
