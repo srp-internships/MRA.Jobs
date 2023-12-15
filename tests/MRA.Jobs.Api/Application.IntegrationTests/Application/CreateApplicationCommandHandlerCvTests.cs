@@ -47,7 +47,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
     }
 
     [Test]
-    public async Task CreateApplicationWithHiddenVacancy_2_ShouldRequestToIdentity_ReturnsDuplicateException()
+    public async Task CreateApplicationWithHiddenVacancy_2_ShouldRequestToIdentity_ReturnsOk()
     {
         var hiddenVacancy = await GetNoVacancy();
 
@@ -85,8 +85,8 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
         var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createApplicationCommand);
         var exception = await response.Content.ReadAsStringAsync();
 
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.Conflict);
-        Assert.IsTrue(exception.Contains("Duplicate"));
+        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+       
     }
     
     [Test]

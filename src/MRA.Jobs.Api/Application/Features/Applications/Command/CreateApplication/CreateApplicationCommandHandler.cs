@@ -68,9 +68,7 @@ public class CreateApplicationCommandHandler(IApplicationDbContext context, IMap
         if (application == null)
             return false;
 
-        if (application.Vacancy.Discriminator == "NoVacancy" && (application.Status == ApplicationStatus.Expired ||
-                                                                 application.Status == ApplicationStatus.Refused ||
-                                                                 application.Status == ApplicationStatus.Rejected))
+        if (application.Vacancy.Discriminator == "NoVacancy")
             return false;
 
         return true;
