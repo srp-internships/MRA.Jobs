@@ -8,8 +8,6 @@
   <CascadingAuthenticationState>
             <AuthorizeView>
                 <Authorized>
-                    @if (_applicationWithNoVacancyStatus == null || !_applicationWithNoVacancyStatus.Applied)
-                    {
                         <MudCardContent>
                             <MudText>
 						@ContentService["Profile:Ifyouwouldliketonominateyourself,sendusyourСV."]
@@ -21,29 +19,8 @@
 						<MudText>@ContentService["Profile:UploadCV"]</MudText>
                             </MudButton>
                         </MudCardActions>
-                    }
-                    else
-                    {
-                        <MudCardContent>
-                            <MudText>
-						@ContentService["Profile:ThestatusofyourCVforyourcandidacyis"] <b>@_applicationWithNoVacancyStatus.Status.ToString()</b>
-                            </MudText>
-                        </MudCardContent>
-                        @if (_applicationWithNoVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Expired
-                             || _applicationWithNoVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Rejected
-                             || _applicationWithNoVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Refused)
-                        {
-                            <MudCardActions>
-                                <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                                           OnClick="ApplyHiddenVacancy" FullWidth="true">
-							<MudText>@ContentService["Profile:UploadNewCV"]</MudText>
-                                </MudButton>
-                            </MudCardActions>
-                        }
-                    }
                 </Authorized>
                 <NotAuthorized>
-
                     <MudCardContent>
                         <MudText >
 					@ContentService["Profile:Ifyouwouldliketonominateyourself,signinandsendusyourСV."]
@@ -54,8 +31,6 @@
 					<MudText>@ContentService["VacancyDetails:Sign In"]</MudText>
                         </MudButton>
                     </MudCardActions>
-
-
                 </NotAuthorized>
             </AuthorizeView>
         </CascadingAuthenticationState>
