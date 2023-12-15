@@ -1,6 +1,6 @@
-﻿namespace MRA.Jobs.Application.Contracts.HiddenVacancies.Responses;
+﻿namespace MRA.Jobs.Application.Contracts.NoVacancies.Responses;
 
-public class HiddenVacancyResponse
+public class NoVacancyResponse
 {
     public Guid Id { get; set; }
     public string Slug { get; set; }

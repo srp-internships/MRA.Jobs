@@ -29,7 +29,7 @@ public interface IApplicationDbContext
     public DbSet<VacancyTask> VacancyTasks { get; set; }
     public DbSet<VacancyTaskDetail> VacancyTaskDetails { get; set; }
     public DbSet<TaskResponse> TaskResponses { get; set; }
-    public DbSet<HiddenVacancy> HiddenVacancies { get; set; }
+    public DbSet<NoVacancy> HiddenVacancies { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 

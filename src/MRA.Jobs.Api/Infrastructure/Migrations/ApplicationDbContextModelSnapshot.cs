@@ -622,13 +622,6 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("VacancyTimelineEvent");
                 });
 
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.HiddenVacancy", b =>
-                {
-                    b.HasBaseType("MRA.Jobs.Domain.Entities.Vacancy");
-
-                    b.HasDiscriminator().HasValue("HiddenVacancy");
-                });
-
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.InternshipVacancy", b =>
                 {
                     b.HasBaseType("MRA.Jobs.Domain.Entities.Vacancy");
@@ -662,6 +655,13 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("JobVacancy");
+                });
+
+            modelBuilder.Entity("MRA.Jobs.Domain.Entities.NoVacancy", b =>
+                {
+                    b.HasBaseType("MRA.Jobs.Domain.Entities.Vacancy");
+
+                    b.HasDiscriminator().HasValue("NoVacancy");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.TrainingVacancy", b =>

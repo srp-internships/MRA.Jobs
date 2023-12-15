@@ -25,7 +25,7 @@ using MRA.Jobs.Client.Services.ConverterService;
 using MRA.Jobs.Client.Services;
 using MRA.Jobs.Client.Services.FileService;
 using MRA.Jobs.Client.Services.UserPreferences;
-using MRA.Jobs.Client.Services.HiddenVacancies;
+using MRA.Jobs.Client.Services.NoVacancies;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -85,7 +85,7 @@ builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<LayoutService>();
 
-builder.Services.AddScoped<IHiddenVacancyService, HiddenVacancyService>();
+builder.Services.AddScoped<INoVacancyService, NoVacancyService>();
 builder.Services.AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
 
 builder.Services.AddBlazoredLocalStorage();

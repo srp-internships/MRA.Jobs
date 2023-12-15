@@ -32,7 +32,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
     [Test]
     public async Task CreateApplicationWithHiddenVacancy_1_ShouldRequestToIdentity_ReturnsOk()
     {
-        var hiddenVacancy = await GetHiddenVacancy();
+        var hiddenVacancy = await GetNoVacancy();
         var createApplicationCommand = new CreateApplicationCommand
         {
             VacancyId = hiddenVacancy.Id, CoverLetter = RandomString(150), Cv = { IsUploadCvMode = false, }
@@ -49,7 +49,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
     [Test]
     public async Task CreateApplicationWithHiddenVacancy_2_ShouldRequestToIdentity_ReturnsDuplicateException()
     {
-        var hiddenVacancy = await GetHiddenVacancy();
+        var hiddenVacancy = await GetNoVacancy();
 
         var application =
             new Domain.Entities.Application
@@ -61,7 +61,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
                 LastModifiedAt = null,
                 LastModifiedBy = default,
                 CoverLetter = null,
-                Slug = "applicant1-hidden_vacancy",
+                Slug = "applicant1-no_vacancy",
                 VacancyResponses = null,
                 TaskResponses = null,
                 CV = null,
@@ -92,7 +92,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
     [Test]
     public async Task CreateApplicationWithHiddenVacancy_3_ShouldRequestToIdentity_ReturnsOk_IfStatusExpired()
     {
-        var hiddenVacancy = await GetHiddenVacancy();
+        var noVacancy = await GetNoVacancy();
         
         var application =
             new Domain.Entities.Application
@@ -104,7 +104,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
                 LastModifiedAt = null,
                 LastModifiedBy = default,
                 CoverLetter = null,
-                Slug = "applicant2-hidden_vacancy",
+                Slug = "applicant2-no_vacancy",
                 VacancyResponses = null,
                 TaskResponses = null,
                 CV = null,
@@ -112,7 +112,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
                 Status = ApplicationStatus.Expired,
                 ApplicantUsername = null,
                 Vacancy = null,
-                VacancyId = hiddenVacancy.Id,
+                VacancyId = noVacancy.Id,
                 ApplicantId = default,
                 TestResult = null,
                 History = null,
@@ -122,7 +122,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
 
         var createApplicationCommand = new CreateApplicationCommand
         {
-            VacancyId = hiddenVacancy.Id, CoverLetter = RandomString(150), Cv = { IsUploadCvMode = false, }
+            VacancyId = noVacancy.Id, CoverLetter = RandomString(150), Cv = { IsUploadCvMode = false, }
         };
         RunAsDefaultUserAsync("applicant2");
         var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createApplicationCommand);

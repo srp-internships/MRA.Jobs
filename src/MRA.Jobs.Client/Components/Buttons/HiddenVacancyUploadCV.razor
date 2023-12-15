@@ -1,14 +1,14 @@
-﻿@using MRA.Jobs.Application.Contracts.HiddenVacancies.Responses
-@using MRA.Jobs.Client.Services.HiddenVacancies
+﻿@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
+@using MRA.Jobs.Client.Services.NoVacancies
 @inject NavigationManager NavigationManager
-@inject IHiddenVacancyService HiddenVacancyService
+@inject INoVacancyService NoVacancyService
 @inject IContentService ContentService
 
 
   <CascadingAuthenticationState>
             <AuthorizeView>
                 <Authorized>
-                    @if (_applicationWithHiddenVacancyStatus == null || !_applicationWithHiddenVacancyStatus.Applied)
+                    @if (_applicationWithNoVacancyStatus == null || !_applicationWithNoVacancyStatus.Applied)
                     {
                         <MudCardContent>
                             <MudText>
@@ -26,12 +26,12 @@
                     {
                         <MudCardContent>
                             <MudText>
-						@ContentService["Profile:ThestatusofyourCVforyourcandidacyis"] <b>@_applicationWithHiddenVacancyStatus.Status.ToString()</b>
+						@ContentService["Profile:ThestatusofyourCVforyourcandidacyis"] <b>@_applicationWithNoVacancyStatus.Status.ToString()</b>
                             </MudText>
                         </MudCardContent>
-                        @if (_applicationWithHiddenVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Expired
-                             || _applicationWithHiddenVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Rejected
-                             || _applicationWithHiddenVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Refused)
+                        @if (_applicationWithNoVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Expired
+                             || _applicationWithNoVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Rejected
+                             || _applicationWithNoVacancyStatus.Status == ApplicationStatusDto.ApplicationStatus.Refused)
                         {
                             <MudCardActions>
                                 <MudButton Variant="Variant.Filled" Color="Color.Primary"
@@ -61,11 +61,11 @@
         </CascadingAuthenticationState>
 
 @code {
-    private ApplicationWithHiddenVacancyStatus _applicationWithHiddenVacancyStatus;
+    private ApplicationWithNoVacancyStatus _applicationWithNoVacancyStatus;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _applicationWithHiddenVacancyStatus = await HiddenVacancyService.GetApplicationStatus();
+        _applicationWithNoVacancyStatus = await NoVacancyService.GetApplicationStatus();
     }
 
     private void ApplyHiddenVacancy()
