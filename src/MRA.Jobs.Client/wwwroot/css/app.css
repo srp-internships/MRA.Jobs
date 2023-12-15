@@ -174,7 +174,7 @@ ul, li {
 }
 
 .background-image-color {
-    background-image: url('../assets/img/slider1-min.jpeg');
+    background-image: url('../images/team/team1.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
