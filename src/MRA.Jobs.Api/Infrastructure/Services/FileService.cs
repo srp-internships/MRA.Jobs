@@ -16,7 +16,7 @@ public class FileService : IFileService
 
     public async Task<string> UploadAsync(byte[] fileBytes, string fileName)
     {
-        var fileId = $"{DateTime.Now:yyyyMMddhhmmss}_{_currentUserService.GetUserName()}_{fileName.Split('.').Last()}";
+        var fileId = $"{DateTime.Now:yyyyMMddhhmmss}_{_currentUserService.GetUserName()}.{fileName.Split('.').Last()}";
         var filePath = Path.Combine(_uploadFolderPath, fileId);
 
         using var ms = new MemoryStream(fileBytes);

@@ -8,7 +8,7 @@ public class AzureFileService(IConfiguration configurations,ICurrentUserService 
 {
     public async Task<string> UploadAsync(byte[] fileBytes, string fileName)
     {
-        var fileId = $"{DateTime.Now:yyyyMMddhhmmss}_{currentUserService.GetUserName()}_{fileName.Split('.').Last()}";
+        var fileId = $"{DateTime.Now:yyyyMMddhhmmss}_{currentUserService.GetUserName()}.{fileName.Split('.').Last()}";
         var blobClient = new BlobContainerClient(configurations["AzureBlob:AzureWebJobsStorage"],
             configurations["AzureBlob:ContainerName"]);
         var blob = blobClient.GetBlobClient(fileId);
