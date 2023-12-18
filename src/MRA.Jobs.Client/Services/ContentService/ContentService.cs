@@ -2,8 +2,8 @@ using System.Globalization;
 using Blazored.LocalStorage;
 using Blazorise.Extensions;
 using Microsoft.Extensions.Localization;
-using MRA.Jobs.Client.wwwroot.resources;
-using MRA.Jobs.Client.wwwroot.resources.languages;
+using MRA.Jobs.Client.Resources;
+using MRA.Jobs.Client.Resources.Languages;
 
 namespace MRA.Jobs.Client.Services.ContentService;
 

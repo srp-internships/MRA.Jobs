@@ -1,6 +1,12 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": [ "/img/*.{png,jpg,gif}", "/css/*" ]
+    "exclude": [ 
+      "/images/client&partner/*", 
+      "/images/how_we_work/*", 
+      "/images/srp/*", 
+      "/images/team/*", 
+      "/css/*"
+    ]
   }
 }
