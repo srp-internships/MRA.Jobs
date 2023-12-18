@@ -4,20 +4,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace MRA.Jobs.Infrastructure.Services;
 
-public class AzureFileService : IFileService
+public class AzureFileService(IConfiguration configurations,ICurrentUserService currentUserService) : IFileService
 {
-    private readonly IConfiguration _configuration;
-
-    public AzureFileService(IConfiguration configurations)
-    {
-        _configuration = configurations;
-    }
-
     public async Task<string> UploadAsync(byte[] fileBytes, string fileName)
     {
-        string fileId = $"{Guid.NewGuid()}_{fileName}";
-        var blobClient = new BlobContainerClient(_configuration["AzureBlob:AzureWebJobsStorage"],
-            _configuration["AzureBlob:ContainerName"]);
+        var fileId = $"{DateTime.Now:yyyyMMddhhmmss}_{currentUserService.GetUserName()}_{fileName.Split('.').Last()}";
+        var blobClient = new BlobContainerClient(configurations["AzureBlob:AzureWebJobsStorage"],
+            configurations["AzureBlob:ContainerName"]);
         var blob = blobClient.GetBlobClient(fileId);
         var ms = new MemoryStream(fileBytes);
         await blob.UploadAsync(ms); //TODO check the status and handle exceptions 
@@ -26,8 +19,8 @@ public class AzureFileService : IFileService
 
     public async Task<byte[]> Download(string key)
     {
-        var blobServiceClient = new BlobServiceClient(_configuration["AzureBlob:AzureWebJobsStorage"]);
-        var containerClient = blobServiceClient.GetBlobContainerClient(_configuration["AzureBlob:ContainerName"]);
+        var blobServiceClient = new BlobServiceClient(configurations["AzureBlob:AzureWebJobsStorage"]);
+        var containerClient = blobServiceClient.GetBlobContainerClient(configurations["AzureBlob:ContainerName"]);
 
         var blobClient = containerClient.GetBlobClient(key); //key is filename
 
@@ -40,8 +33,8 @@ public class AzureFileService : IFileService
 
     public async Task<bool> FileExistsAsync(string key)
     {
-        var blobServiceClient = new BlobServiceClient(_configuration["AzureBlob:AzureWebJobsStorage"]);
-        var containerClient = blobServiceClient.GetBlobContainerClient(_configuration["AzureBlob:ContainerName"]);
+        var blobServiceClient = new BlobServiceClient(configurations["AzureBlob:AzureWebJobsStorage"]);
+        var containerClient = blobServiceClient.GetBlobContainerClient(configurations["AzureBlob:ContainerName"]);
         return await containerClient.GetBlobClient(key).ExistsAsync();
     }
 }
