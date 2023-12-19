@@ -32,7 +32,7 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 
         long elapsedMilliseconds = _timer.ElapsedMilliseconds;
 
-        if (elapsedMilliseconds > 3000)
+        if (elapsedMilliseconds > 500)
         {
             string requestName = typeof(TRequest).Name;
             Guid? userId = _userHttpContextAccessor.GetUserId();
