@@ -27,12 +27,6 @@ public class CreateApplicationCommandHandler(IApplicationDbContext context, IMap
         if (await ApplicationExits(application.Slug))
             throw new ConflictException("Duplicate Apply. You have already submitted your application!");
 
-        if (vacancy.Discriminator == "NoVacancy")
-        {
-            var count = context.Applications.Count(a => a.Slug.Contains("no_vacancy"));
-            application.Slug += count + 1;
-        }
-
         application.ApplicantId = currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = currentUserService.GetUserName() ?? string.Empty;
         application.CV = await cvService.GetCvByCommandAsync(ref request);
@@ -67,9 +61,7 @@ public class CreateApplicationCommandHandler(IApplicationDbContext context, IMap
 
         if (application == null)
             return false;
-
-        if (application.Vacancy.Discriminator == "NoVacancy")
-            return false;
+        
 
         return true;
     }

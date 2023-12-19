@@ -29,68 +29,9 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
         application.Should().NotBeNull();
     }
 
-    [Test]
-    public async Task CreateApplicationWithNoVacancy_1_ShouldRequestToIdentity_ReturnsOk()
-    {
-        var noVacancy = await GetNoVacancy();
-        var createApplicationCommand = new CreateApplicationCommand
-        {
-            VacancyId = noVacancy.Id, CoverLetter = RandomString(150), Cv = { IsUploadCvMode = false, }
-        };
-        RunAsDefaultUserAsync("applicant1");
-        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createApplicationCommand);
-        response.EnsureSuccessStatusCode();
-
-        var application = await FindFirstOrDefaultAsync<Domain.Entities.Application>(s =>
-            s.VacancyId == createApplicationCommand.VacancyId && s.CoverLetter == createApplicationCommand.CoverLetter);
-        application.Should().NotBeNull();
-    }
-
-    [Test]
-    public async Task CreateApplicationWithNoVacancy_2_ShouldRequestToIdentity_ReturnsOk()
-    {
-        var noVacancy = await GetNoVacancy();
-
-        var application =
-            new Domain.Entities.Application
-            {
-                Id = default,
-                IsDeleted = false,
-                CreatedAt = default,
-                CreatedBy = default,
-                LastModifiedAt = null,
-                LastModifiedBy = default,
-                CoverLetter = null,
-                Slug = "applicant1-no_vacancy",
-                VacancyResponses = null,
-                TaskResponses = null,
-                CV = null,
-                AppliedAt = DateTime.Now,
-                Status = ApplicationStatus.Submitted,
-                ApplicantUsername = null,
-                Vacancy = null,
-                VacancyId = noVacancy.Id,
-                ApplicantId = default,
-                TestResult = null,
-                History = null,
-
-            };
-        await AddAsync(application);
-
-        var createApplicationCommand = new CreateApplicationCommand
-        {
-            VacancyId = noVacancy.Id, CoverLetter = RandomString(150), Cv = { IsUploadCvMode = false, }
-        };
-        RunAsDefaultUserAsync("applicant1");
-        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createApplicationCommand);
-        var exception = await response.Content.ReadAsStringAsync();
-
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
-       
-    }
     
     [Test]
-    public async Task CreateApplicationWithNoVacancy_3_ShouldRequestToIdentity_ReturnsOk_IfStatusExpired()
+    public async Task CreateApplicationWithNoVacancy_ShouldRequestToIdentity_ReturnsOk_IfStatusExpired()
     {
         var noVacancy = await GetNoVacancy();
         
@@ -104,7 +45,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
                 LastModifiedAt = null,
                 LastModifiedBy = default,
                 CoverLetter = null,
-                Slug = "applicant2-no_vacancy",
+                Slug = "1-no_vacancy",
                 VacancyResponses = null,
                 TaskResponses = null,
                 CV = null,

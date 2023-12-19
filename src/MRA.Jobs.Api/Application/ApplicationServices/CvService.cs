@@ -20,6 +20,16 @@ public class CvService(IFileService fileService, IConfiguration configuration, I
         return DownloadFromIdentityServerAsync();
     }
 
+    public Task<string> GetCvByCommandNoVacancyAsync(ref CreateApplicationNoVacancyCommand command)
+    {
+        if (command.Cv.IsUploadCvMode)
+        {
+            return fileService.UploadAsync(command.Cv.CvBytes, command.Cv.FileName);
+        }
+
+        return DownloadFromIdentityServerAsync();
+    }
+
     private async Task<string> DownloadFromIdentityServerAsync()
     {
         using var identityHttpClient = factory.CreateClient("IdentityHttpClient");

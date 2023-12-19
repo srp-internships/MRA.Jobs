@@ -17,11 +17,19 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
             await dbContext.Categories.AddAsync(category);
             noCategory = category;
         }
-
-        var noVacancy = await dbContext.NoVacancies.FirstOrDefaultAsync(hv => hv.Title == vacancyTitle);
+      
+        List<VacancyQuestion> question = new()
+        {
+            new VacancyQuestion() { Question = "Your name" },
+            new VacancyQuestion() { Question = "Your phone number" }
+        };
+        
+        var noVacancy = await dbContext.NoVacancies
+            .Include(vacancy => vacancy.VacancyQuestions)
+            .FirstOrDefaultAsync(hv => hv.Title == vacancyTitle);
         if (noVacancy == null)
         {
-            var vacancy = new NoVacancy()
+          var vacancy = new NoVacancy()
             {
                 Id = Guid.NewGuid(),
                 Title = vacancyTitle,
@@ -32,12 +40,16 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
                 Slug = "no_vacancy",
                 CategoryId = noCategory.Id,
                 CreatedAt = DateTime.Now,
-                CreatedByEmail = "mrajobsadmin@silkroadprofessionals.com"
+                CreatedByEmail = "mrajobsadmin@silkroadprofessionals.com",
+                VacancyQuestions = question
             };
 
             await dbContext.NoVacancies.AddAsync(vacancy);
         }
 
+        if (noVacancy != null && !noVacancy.VacancyQuestions.Any())
+            noVacancy.VacancyQuestions = question;
+        
         await dbContext.SaveChangesAsync();
     }
 }

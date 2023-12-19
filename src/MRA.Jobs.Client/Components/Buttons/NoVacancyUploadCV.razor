@@ -1,51 +1,132 @@
 ﻿@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
 @using MRA.Jobs.Client.Services.NoVacancies
+@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication
+@using MRA.Jobs.Application.Contracts.Dtos.Responses
 @inject NavigationManager NavigationManager
-@inject INoVacancyService NoVacancyService
 @inject IContentService ContentService
+@inject IConfiguration Configuration
+@inject INoVacancyService NoVacancyService
 
+<MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
+    <MudText>Send us your CV</MudText>
+</MudButton>
+<MudDialog IsVisible="_isOpen" Options="@(new DialogOptions() { DisableBackdropClick = true })">
+    <DialogContent>
+        <EditForm Model="@_application">
+            <FluentValidationValidator/>
 
-  <CascadingAuthenticationState>
-            <AuthorizeView>
-                <Authorized>
-                        <MudCardContent>
-                            <MudText>
-						@ContentService["Profile:Ifyouwouldliketonominateyourself,sendusyourСV."]
-                            </MudText>
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                                       OnClick="ApplyNoVacancy" FullWidth="true">
-						<MudText>@ContentService["Profile:UploadCV"]</MudText>
-                            </MudButton>
-                        </MudCardActions>
-                </Authorized>
-                <NotAuthorized>
-                    <MudCardContent>
-                        <MudText >
-					@ContentService["Profile:Ifyouwouldliketonominateyourself,signinandsendusyourСV."]
-                        </MudText>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Variant="Variant.Filled" OnClick="SignIn" Color="Color.Primary" FullWidth="true">
-					<MudText>@ContentService["VacancyDetails:Sign In"]</MudText>
+            @foreach (var question in _vacancy.VacancyQuestions)
+            {
+                <MudTextField Label=@($"{question.Question} *") @bind-Value="@_questionsResponses[question]" Variant="Variant.Outlined"/>
+            }
+            <MudTextField T="string" Lines="3" Label="Cover letter *" Variant="Variant.Outlined" @bind-Value="@_application.CoverLetter"
+                          For="@(() => _application.CoverLetter)"/>
+
+            @* <MudRadioGroup @bind-SelectedOption="_isUploadCvMode"> *@
+            @*     <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio> *@
+            @*     <MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio> *@
+            @* </MudRadioGroup> *@
+
+            @* @if (_isUploadCvMode) *@
+            @* { *@
+                <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
+                    <ButtonTemplate Context="anotherContext">
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.CloudUpload"
+                                   for="@anotherContext">
+                            Upload your CV
                         </MudButton>
-                    </MudCardActions>
-                </NotAuthorized>
-            </AuthorizeView>
-        </CascadingAuthenticationState>
+                    </ButtonTemplate>
+                </MudFileUpload>
+            @* } *@
+
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" Class="ml-auto" OnClick="CreateApplication">
+            @if (_processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                <MudText Class="ms-2">Processing</MudText>
+            }
+            else
+            {
+                <MudText>Apply</MudText>
+            }
+        </MudButton>
+        <MudButton OnClick="CloseDialog">
+            <MudText>Close</MudText>
+        </MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
-    private ApplicationWithNoVacancyStatus _applicationWithNoVacancyStatus;
 
- private void ApplyNoVacancy()
+    private ApplicationWithNoVacancyStatus _applicationWithNoVacancyStatus;
+    private bool _isOpen;
+
+    private void OpenDialog()
     {
-        NavigationManager.NavigateTo("/upload-cv");
+        _isOpen = true;
+        StateHasChanged();
     }
 
-    private void SignIn()
+    private void CloseDialog()
     {
-        NavigationManager.NavigateTo("/sign-in");
+        _isOpen = false;
+        StateHasChanged();
+    }
+    
+
+    private bool _isUploadCvMode = true;
+    private bool _showLoader = false;
+
+    private IBrowserFile _cv;
+    private bool _processing = false;
+
+    NoVacancyResponse _vacancy = new();
+    private bool _serverError;
+    private CreateApplicationNoVacancyCommand _application;
+
+    private Dictionary<VacancyQuestionResponseDto, string> _questionsResponses = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _vacancy = await NoVacancyService.GetNoVacancy();
+        if (_vacancy.Slug == null)
+        {
+            _serverError = true;
+            return;
+        }
+        _application = new CreateApplicationNoVacancyCommand();
+       
+        foreach (var question in _vacancy.VacancyQuestions)
+        {
+            _questionsResponses.Add(question, "");
+        }
+    }
+
+    private async Task CreateApplication()
+    {
+        if (string.IsNullOrWhiteSpace(_application.CoverLetter) || (_cv == null && _isUploadCvMode))
+        {
+            return; // Do not proceed with submission if any required fields are empty.
+        }
+
+        var vacancyResponses = _questionsResponses.Select(val => new VacancyResponseDto()
+        {
+            VacancyQuestion = new VacancyQuestionDto { Question = val.Key.Question }, Response = val.Value
+        }).ToList();
+
+        _application.VacancyResponses = vacancyResponses;
+        _application.Cv.IsUploadCvMode = _isUploadCvMode;
+        _processing = true;
+        await NoVacancyService.CreateApplicationNoVacancy(_application, _cv);
+        _processing = false;
+        NavigationManager.NavigateTo("");
+        StateHasChanged();
     }
 
 }

@@ -50,6 +50,14 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
     {
         return await Mediator.Send(request, cancellationToken);
     }
+    
+    [HttpPost("CreateApplicationNoVacancy")]
+    [AllowAnonymous]
+    public async Task<ActionResult<Guid>> CreateApplicationNoVacancy(CreateApplicationNoVacancyCommand request,
+        CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(request, cancellationToken);
+    }
 
     [HttpPut("{slug}")]
     public async Task<ActionResult<Guid>> UpdateApplication(string slug, UpdateApplicationCommand request,
