@@ -2,6 +2,8 @@
 @using MRA.Jobs.Client.Identity;
 @inject IApplicationService applicationService
 @using MRA.Jobs.Client.Components.Extra
+
+
 <CascadingAuthenticationState>
     <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="contextAuth">
         <Authorized>
@@ -82,7 +84,7 @@
 
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
-    private async void OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
+    private async Task OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
     {
         var dialog = Dialog.Show<MyDialog>("Applicant response", new DialogParameters
         {
@@ -96,7 +98,6 @@
 
         // you can check if the modal was cancelled
         var isCancelled = result.Canceled;
-
         if (isCancelled)
         {
             await LoadData();

@@ -24,16 +24,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="wwwroot\images\SRP_icon.png" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\MRA.Jobs.Api\Application.Contracts\MRA.Jobs.Application.Contracts.csproj" />
       <ProjectReference Include="..\MRA.Jobs.Identity\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\File\FileUpload.razor" />
+      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+      <_ContentIncludedByDefault Remove="Components\Admin\Cards\ApplicationCards.razor" />
+      <_ContentIncludedByDefault Remove="Components\Admin\NavMenu.razor" />
     </ItemGroup>
 
     <ItemGroup>
