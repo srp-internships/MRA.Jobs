@@ -15,6 +15,7 @@
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
 @inject IUserProfileService UserProfileService
+@inject IFeatureManager FeatureManager
 
 
 <MudToolBar Class="toolbar-fixed-blur">
@@ -119,9 +120,10 @@
 </MudDrawer>
 
 
-@code {
+    @code {
 
     bool _open = false;
+    string version = string.Empty;
 
     void ToggleDrawer()
     {
@@ -151,6 +153,7 @@
 
     protected override void OnInitialized()
     {
+        version = await FeatureManager.IsEnabledAsync(FeatureFlags.Version);
         currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
 
         StateHasChanged();
