@@ -48,9 +48,8 @@ public class CreateApplicationNoVacancyCommandHandler(
 
         string hostName = configuration["HostName:SvPath"];
         await emailService.SendEmailAsync(new[] { vacancy.CreatedByEmail },
-            htmlService.GenerateApplyVacancyContent_CreateApplication(hostName, application.Slug, vacancy.Title,
-                await cvService.GetCvByCommandNoVacancyAsync(ref request),
-                await identityService.ApplicantDetailsInfo()),
+            htmlService.GenerateApplyVacancyContent_NoVacancy(hostName, application.Slug,
+                await cvService.GetCvByCommandNoVacancyAsync(ref request), request),
             "New Apply");
 
         return application.Id;
