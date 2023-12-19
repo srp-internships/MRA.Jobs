@@ -3,13 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 
-using Microsoft.AspNetCore.Components;
 using Microsoft.IdentityModel.Tokens;
 using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Jobs.Client.Enums;
+using MRA.Jobs.Client.Resources;
 using MRA.Jobs.Client.Services.ContentService;
 using MRA.Jobs.Client.Services.UserPreferences;
-using MRA.Jobs.Client.wwwroot.resources;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Services;
@@ -125,7 +124,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         if (uri.Contains("/contact")) return DocPages.Contact;
         if (uri.Contains("/profile")) return DocPages.Profile;
         if (uri.Contains("/applications")) return DocPages.Applications;
-        if (uri.Contains("/upload-cv")) return DocPages.HiddenVacancyUploadCv;
+        if (uri.Contains("/upload-cv")) return DocPages.NoVacancyUploadCv;
         return DocPages.Home;
     }
     

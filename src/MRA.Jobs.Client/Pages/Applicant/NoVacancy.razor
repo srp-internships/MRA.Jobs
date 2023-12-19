@@ -1,0 +1,122 @@
+﻿@page "/upload-cv"
+@using MRA.Jobs.Client.Services.NoVacancies
+@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
+@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication
+@inject INoVacancyService NoVacancyService
+@inject IConfiguration Configuration
+@inject IApplicationService ApplicationService
+@inject NavigationManager NavigationManager
+
+<div class="container w-75 mt-4">
+
+    @if (serverError)
+    {
+        <ServerErrorComponent/>
+    }
+    else
+    {
+        <MudContainer>
+            <EditForm Model="@application" OnValidSubmit="CreateApplication">
+                <FluentValidationValidator/>
+
+                <MudCard Class="rounded-lg mud-evaluation-4">
+                    <MudCardContent>
+                        <MudText Style="color:rgb(128,128,128)">
+                            <b>Additional Details</b>
+                        </MudText>
+                        <MudText Typo="Typo.h6">
+                            <b><span class="text-danger">*</span>Cover Letter</b>
+                        </MudText>
+                        <MudTextField T="string" Lines="7" Variant="Variant.Outlined" @bind-Value="@application.CoverLetter"
+                                      For="@(() => application.CoverLetter)"/>
+                    </MudCardContent>
+                </MudCard>
+
+                @* cv *@
+                <br/>
+                <MudCard Class="rounded-lg mud-evaluation-4">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Style="color:rgb(128,128,128)">
+                                <b>CV and Apply</b>
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardActions>
+                        <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
+                            <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
+                            <MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio>
+                        </MudRadioGroup>
+                        @if (_isUploadCvMode)
+                        {
+                            <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
+                                <ButtonTemplate Context="anotherContext">
+                                    <MudButton HtmlTag="label"
+                                               Variant="Variant.Filled"
+                                               Color="Color.Primary"
+                                               StartIcon="@Icons.Material.Filled.CloudUpload"
+                                               for="@anotherContext">
+                                        Upload your CV
+                                    </MudButton>
+                                </ButtonTemplate>
+                            </MudFileUpload>
+                        }
+                        <MudSpacer/>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
+                            @if (_processing)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                                <MudText Class="ms-2">Processing</MudText>
+                            }
+                            else
+                            {
+                                <MudText>Apply</MudText>
+                            }
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </EditForm>
+        </MudContainer>
+    }
+</div>
+
+@code {
+    private bool _isUploadCvMode = true;
+    private bool _showLoader = false;
+
+    private IBrowserFile _cv;
+    private bool _processing = false;
+
+    NoVacancyResponse vacancy = new();
+    private bool serverError;
+    private CreateApplicationCommand application;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        vacancy = await NoVacancyService.GetNoVacancy();
+        if (vacancy.Slug == null)
+        {
+            serverError = true;
+        }
+        application = new CreateApplicationCommand
+        {
+            VacancyId = vacancy.Id,
+        };
+    }
+
+    private async Task CreateApplication()
+    {
+        if (string.IsNullOrWhiteSpace(application.CoverLetter) || (_cv == null && _isUploadCvMode))
+        {
+            return; // Do not proceed with submission if any required fields are empty.
+        }
+
+        application.Cv.IsUploadCvMode = _isUploadCvMode;
+        _processing = true;
+        await ApplicationService.CreateApplication(application, _cv);
+        _processing = false;
+        NavigationManager.NavigateTo("");
+    }
+
+}

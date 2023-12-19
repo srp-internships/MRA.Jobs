@@ -44,9 +44,9 @@ public class CreateApplicationTestsBase : Testing
         return internshipVacancy.Id;
     }
 
-    protected async Task<HiddenVacancy> GetHiddenVacancy()
+    protected async Task<NoVacancy> GetNoVacancy()
     {
-        var vacancy = await FindFirstOrDefaultAsync<HiddenVacancy>(v => v.Slug == "hidden_vacancy");
+        var vacancy = await FindFirstOrDefaultAsync<NoVacancy>(v => v.Slug == "no_vacancy");
         return vacancy;
     }
 }

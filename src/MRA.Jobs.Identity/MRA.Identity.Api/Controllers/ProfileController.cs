@@ -108,7 +108,7 @@ public class ProfileController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("СreateExperienceDetail")]
+    [HttpPost("CreateExperienceDetail")]
     public async Task<IActionResult> CreateExperienceDetail([FromBody] CreateExperienceDetailCommand command)
     {
         var result = await _mediator.Send(command);
