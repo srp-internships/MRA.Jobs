@@ -78,7 +78,7 @@
         _isOpen = false;
         StateHasChanged();
     }
-    
+
 
     private bool _isUploadCvMode = true;
     private bool _showLoader = false;
@@ -101,7 +101,7 @@
             return;
         }
         _application = new CreateApplicationNoVacancyCommand();
-       
+
         foreach (var question in _vacancy.VacancyQuestions)
         {
             _questionsResponses.Add(question, "");
@@ -125,8 +125,7 @@
         _processing = true;
         await NoVacancyService.CreateApplicationNoVacancy(_application, _cv);
         _processing = false;
-        NavigationManager.NavigateTo("");
-        StateHasChanged();
+        CloseDialog();
     }
 
 }
