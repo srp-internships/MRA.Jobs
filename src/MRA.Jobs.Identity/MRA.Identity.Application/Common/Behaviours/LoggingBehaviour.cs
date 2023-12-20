@@ -18,10 +18,10 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
     {
         string requestName = typeof(TRequest).Name;
         Guid? userId = _userHttpContextAccessor.GetUserId();
-        string userName = _userHttpContextAccessor.GetUserName() ?? "";
+        string userName = _userHttpContextAccessor.GetUserName() ?? string.Empty;
         await Task.CompletedTask;
 
-        _logger.LogInformation("MRA.Jobs Request: {Name} {@UserId} {@UserName} {@Request}",
+        _logger.LogInformation("MRA.Jobs Request: {Name} {UserId} {UserName} {Request}",
             requestName, userId, userName, request);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using System.Diagnostics;
@@ -8,21 +9,23 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
     where TRequest : IRequest<TResponse>
 {
     private readonly IUserHttpContextAccessor _userHttpContextAccessor;
+    private readonly IConfiguration _configuration;
     private readonly ILogger<TRequest> _logger;
     private readonly Stopwatch _timer;
 
     public PerformanceBehaviour(
         ILogger<TRequest> logger,
-        IUserHttpContextAccessor userHttpContextAccessor)
+        IUserHttpContextAccessor userHttpContextAccessor, IConfiguration configuration)
     {
         _timer = new Stopwatch();
 
         _logger = logger;
         _userHttpContextAccessor = userHttpContextAccessor;
+        _configuration = configuration;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken )
     {
         _timer.Start();
 
@@ -31,14 +34,14 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         _timer.Stop();
 
         long elapsedMilliseconds = _timer.ElapsedMilliseconds;
-
-        if (elapsedMilliseconds > 500)
+        int threshold = _configuration.GetValue<int>("LongRunningRequestThreshold");
+        if (elapsedMilliseconds > threshold)
         {
             string requestName = typeof(TRequest).Name;
             Guid? userId = _userHttpContextAccessor.GetUserId();
             string userName = _userHttpContextAccessor.GetUserName();
-            _logger.LogWarning(
-                "MRA.Jobs Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
+            _logger.LogError(
+                "MRA.Identity Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {UserId} {UserName} {Request}",
                 requestName, elapsedMilliseconds, userId, userName, request);
         }
 
