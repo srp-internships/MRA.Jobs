@@ -4,7 +4,7 @@ using MRA.Jobs.Application.Common.Exceptions;
 
 namespace MRA.Jobs.Web.Filters;
 
-public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
+public class ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> logger) : ExceptionFilterAttribute
 {
     public override void OnException(ExceptionContext context)
     {
@@ -33,6 +33,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             Detail = context.Exception.Message
         };
         context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status400BadRequest };
+        logger.LogError(context.Exception, nameof(HandleGenericException));
 
         return true;
     }
@@ -83,6 +84,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         };
 
         context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status500InternalServerError };
+        logger.LogError(context.Exception, nameof(HandleUnknownException));
 
         return true;
     }
