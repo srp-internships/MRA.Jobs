@@ -1,4 +1,4 @@
-namespace MRA.Jobs.Client.wwwroot.resources;
+namespace MRA.Jobs.Client.Resources;
 
 public class ApplicationCulturesNames
 {

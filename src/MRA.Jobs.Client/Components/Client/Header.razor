@@ -1,6 +1,5 @@
 ﻿@using MRA.Jobs.Client.Services
 @using MRA.Jobs.Client.Enums
-@using MRA.Jobs.Client.wwwroot.resources
 @using AltairCA.Blazor.WebAssembly.Cookie
 @using Blazorise
 @using MRA.Identity.Application.Contract.Profile.Responses
@@ -12,19 +11,21 @@
 @using Breakpoint = MudBlazor.Breakpoint
 @using Color = MudBlazor.Color
 @using DividerType = MudBlazor.DividerType
+@using Microsoft.FeatureManagement
 @using Size = MudBlazor.Size
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
 @inject IUserProfileService UserProfileService
+@inject IFeatureManager FeatureManager
 
 
 <MudToolBar Class="toolbar-fixed-blur">
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
-        <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+        <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
     </MudHidden>
     <MudHidden Breakpoint="Breakpoint.Xs">
         <MudItem Style="padding-right:5px;">
-            <MudImage src="/images/srp/srp_icon.png" Style="width: 50px"/>
+            <MudImage src="/images/srp/srp_icon.png" Style="width: 50px" />
         </MudItem>
         <MudItem Style="padding-left:0; margin-right: 40px;">
             <MudText Style="font-size: 21.5px;">
@@ -39,7 +40,7 @@
     </MudHidden>
     <MudHidden Breakpoint="Breakpoint.SmAndUp">
         <MudItem Style="padding-right:5px;">
-            <MudImage src="/images/srp/srp_icon.png" Style="width: 30px"/>
+            <MudImage src="/images/srp/srp_icon.png" Style="width: 30px" />
         </MudItem>
         <MudItem Style="padding-left:0; margin-right: 40px;">
             <MudText Style="font-size: 21.5px;">
@@ -80,49 +81,59 @@
             </MudText>
         </MudButton>
     </MudHidden>
-    <MudSpacer/>
+    <MudSpacer />
     <MudHidden Breakpoint="Breakpoint.Xs">
-        <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
+        @if (betaVersion)
+        {
+            <MudChip Disabled="true" Color="Color.Warning">Beta</MudChip>
+        }
+
+        <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4" />
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
-              <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Variant="Variant.Text" 
-                            PopoverClass="docs-layout-menu-shadow"  LockScroll="true">
-                       <ActivatorContent>
-                           <MudChip Icon="@Icons.Material.Filled.UploadFile" Color="Color.Tertiary">CV</MudChip>
-                       </ActivatorContent>
-                       <ChildContent>
-                           <NoVacancyUploadCV/>
-                       </ChildContent>
-                   </MudMenu>
+            <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Variant="Variant.Text"
+                     PopoverClass="docs-layout-menu-shadow" LockScroll="true">
+                <ActivatorContent>
+                    <MudChip Icon="@Icons.Material.Filled.UploadFile" Color="Color.Tertiary">CV</MudChip>
+                </ActivatorContent>
+                <ChildContent>
+                    <NoVacancyUploadCV />
+                </ChildContent>
+            </MudMenu>
         </MudHidden>
-        <ToolBarSettingsButtons/>
+        <ToolBarSettingsButtons />
     </MudHidden>
 
-    <UserButton/>
+    <UserButton />
 </MudToolBar>
 
 <MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent" Style="position:fixed;height: 100%"
            ClipMode="DrawerClipMode.Docked">
     <MudToolBar Dense="true" Class="docs-gray-bg">
-        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
-        <MudSpacer/>
-     <ToolBarSettingsButtons/>
+        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        <MudSpacer />
+        <ToolBarSettingsButtons />
     </MudToolBar>
 
     <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
         <MudNavLink Match="NavLinkMatch.All" Href="/">@ContentService["Header:Home"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/contact">Contact</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="/contact">Contact</MudNavLink>
 
-    </MudNavMenu>
+        </MudNavMenu>
+    @if (betaVersion)
+    {
+        <MudChip Disabled="true" Color="Color.Warning">Beta</MudChip>
+    }
 </MudDrawer>
 
 
 @code {
 
     bool _open = false;
+    private bool betaVersion;
 
     void ToggleDrawer()
     {
@@ -150,9 +161,9 @@
     }
 
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
+        betaVersion = await FeatureManager.IsEnabledAsync(FeatureFlags.BetaVersion);
 
         StateHasChanged();
         NavigationManager.LocationChanged += HandleLocationChanged;
@@ -175,7 +186,7 @@
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 
-   
+
 
 
 
