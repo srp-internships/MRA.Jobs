@@ -24,27 +24,33 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         _configuration = configuration;
     }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken )
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         _timer.Start();
 
-        TResponse response = await next();
-
-        _timer.Stop();
-
-        long elapsedMilliseconds = _timer.ElapsedMilliseconds;
-        int threshold = _configuration.GetValue<int>("LongRunningRequestThreshold");
-        if (elapsedMilliseconds > threshold)
+        try
         {
-            string requestName = typeof(TRequest).Name;
-            Guid? userId = _userHttpContextAccessor.GetUserId();
-            string userName = _userHttpContextAccessor.GetUserName();
-            _logger.LogError(
-                "MRA.Identity Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {UserId} {UserName} {Request}",
-                requestName, elapsedMilliseconds, userId, userName, request);
+            TResponse response = await next();
+            return response;
         }
+        finally
+        {
+            _timer.Stop();
 
-        return response;
+            long elapsedMilliseconds = _timer.ElapsedMilliseconds;
+            int threshold = _configuration.GetValue<int>("LongRunningRequestThreshold");
+
+            if (elapsedMilliseconds > threshold)
+            {
+                string requestName = typeof(TRequest).Name;
+                Guid? userId = _userHttpContextAccessor.GetUserId();
+                string userName = _userHttpContextAccessor.GetUserName();
+
+                _logger.LogError(
+                    "MRA.Identity Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {UserId} {UserName} {Request}",
+                    requestName, elapsedMilliseconds, userId, userName, request);
+            }
+        }
     }
+
 }
