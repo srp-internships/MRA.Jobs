@@ -27,7 +27,7 @@
         <MudHidden Breakpoint="Breakpoint.Xs">
             <MudStack Row="true">
                 <MudItem Style="padding-right:5px;">
-                    <MudImage src="/images/srp/srp_icon.png" Style="width: 50px"/>
+                    <MudImage src="/images/srp/srp_icon.png" Style="width: 50px" />
                 </MudItem>
                 <MudItem Style="padding-left:0; margin-right: 40px;">
                     <MudText Style="font-size: 21.5px;">
@@ -44,7 +44,7 @@
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudStack Row="true">
                 <MudItem Style="padding-right:5px;">
-                    <MudImage src="/images/srp/srp_icon.png" Style="width: 30px"/>
+                    <MudImage src="/images/srp/srp_icon.png" Style="width: 30px" />
                 </MudItem>
                 <MudItem Style="padding-left:0; margin-right: 40px;">
                     <MudText Style="font-size: 21.5px;">
@@ -88,19 +88,23 @@
     </MudHidden>
     <MudSpacer />
     <MudHidden Breakpoint="Breakpoint.Xs">
-        <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
+        @if (betaVersion)
+        {
+            <MudChip Disabled="true" Color="Color.Warning">Beta</MudChip>
+        }
+        <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4" />
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
-              <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Variant="Variant.Text" 
-                            PopoverClass="docs-layout-menu-shadow"  LockScroll="true">
-                       <ActivatorContent>
-                           <MudChip Icon="@Icons.Material.Filled.UploadFile" Color="Color.Tertiary">CV</MudChip>
-                       </ActivatorContent>
-                       <ChildContent>
-                           <NoVacancyUploadCV/>
-                       </ChildContent>
-                   </MudMenu>
+            <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Variant="Variant.Text"
+                     PopoverClass="docs-layout-menu-shadow" LockScroll="true">
+                <ActivatorContent>
+                    <MudChip Icon="@Icons.Material.Filled.UploadFile" Color="Color.Tertiary">CV</MudChip>
+                </ActivatorContent>
+                <ChildContent>
+                    <NoVacancyUploadCV />
+                </ChildContent>
+            </MudMenu>
         </MudHidden>
-        <ToolBarSettingsButtons/>
+        <ToolBarSettingsButtons />
     </MudHidden>
 
     <UserButton />
@@ -109,9 +113,9 @@
 <MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent" Style="position:fixed;height: 100%"
            ClipMode="DrawerClipMode.Docked">
     <MudToolBar Dense="true" Class="docs-gray-bg">
-        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
-        <MudSpacer/>
-     <ToolBarSettingsButtons/>
+        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        <MudSpacer />
+        <ToolBarSettingsButtons />
     </MudToolBar>
 
     <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
@@ -123,7 +127,7 @@
             <MudNavLink Match="NavLinkMatch.All" Href="/contact">Contact</MudNavLink>
 
         </MudNavMenu>
-    @if (betaVersion)
+        @if (betaVersion)
     {
         <MudChip Disabled="true" Color="Color.Warning">Beta</MudChip>
     }
