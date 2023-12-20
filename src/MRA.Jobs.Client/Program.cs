@@ -86,7 +86,7 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<LayoutService>();
 
 builder.Services.AddScoped<INoVacancyService, NoVacancyService>();
-builder.Services.AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
+builder.Services.AddFeatureManagement();
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<IContentService, ContentService>();
