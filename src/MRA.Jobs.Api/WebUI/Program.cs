@@ -13,6 +13,7 @@ using MRA.Jobs.Infrastructure.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
 {
+    builder.Configuration.AddAzureAppConfiguration(options => options.Connect("AppConfigConnectionString"));
     builder.Configuration.ConfigureAzureKeyVault(ApplicationClaimValues.ApplicationName);
     builder.Logging.AddApiApplicationInsights(builder.Configuration);
 }
@@ -22,7 +23,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddWebUiServices(builder.Configuration);
 
-builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("Sieve"));
+builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("MraJobs-Sieve"));
 
 
 
