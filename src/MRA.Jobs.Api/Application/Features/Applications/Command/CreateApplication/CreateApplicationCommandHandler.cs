@@ -92,8 +92,7 @@ public class CreateApplicationCommandHandler(
     {
         if (vacancySlug != CommonVacanciesSlugs.NoVacancySlug)
         {
-            if (await context.Applications.Include(a => a.Vacancy)
-                    .FirstOrDefaultAsync(a => a.Slug.Equals(applicationSlug)) == null)
+            if (await context.Applications.FirstOrDefaultAsync(a => a.Slug.Equals(applicationSlug)) != null)
             {
                 throw new ConflictException("Duplicate Apply. You have already submitted your application!");
             }
