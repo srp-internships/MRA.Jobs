@@ -17,6 +17,7 @@
 @inject LayoutService LayoutService
 @inject IUserProfileService UserProfileService
 @inject IFeatureManager FeatureManager
+@inject IConfiguration Configuration
 
 
 <MudToolBar Class="toolbar-fixed-blur">
@@ -75,6 +76,12 @@
                 <b>@ContentService["Header:Team"]</b>
             </MudText>
         </MudButton>
+		<MudButton Href="@Configuration["Academy:Address"]" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+			<MudText>
+				<b>@ContentService["Header:Academy"] </b>
+			</MudText>
+		</MudButton>
+
         <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Contact)">
             <MudText>
                 <b>Contact</b>
@@ -120,6 +127,7 @@
             <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
+			<MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Academy:Address"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" Href="/contact">Contact</MudNavLink>
 
         </MudNavMenu>

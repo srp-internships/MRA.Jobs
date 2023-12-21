@@ -132,6 +132,9 @@
   <data name="Header:Team" xml:space="preserve">
     <value>Команда</value>
   </data>
+  <data name="Header:Academy" xml:space="preserve">
+    <value>Академия</value>
+  </data>
   <data name="UserButton:Profile" xml:space="preserve">
     <value>Профиль</value>
   </data>
