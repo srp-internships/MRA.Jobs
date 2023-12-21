@@ -12,8 +12,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsProduction())
 {
-    builder.Configuration.AddAzureAppConfiguration(options => options.Connect("AppConfigConnectionString"));
     builder.Configuration.ConfigureAzureKeyVault("MRAIdentity");
+    builder.Configuration.AddAzureAppConfiguration(options => options.Connect("AppConfigConnectionString"));
     builder.Logging.AddApiApplicationInsights(builder.Configuration);
 }
 builder.Services.AddControllers(options =>

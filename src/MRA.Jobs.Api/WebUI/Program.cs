@@ -13,8 +13,8 @@ using MRA.Jobs.Infrastructure.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
 {
-    builder.Configuration.AddAzureAppConfiguration(options => options.Connect("AppConfigConnectionString"));
     builder.Configuration.ConfigureAzureKeyVault(ApplicationClaimValues.ApplicationName);
+    builder.Configuration.AddAzureAppConfiguration(options => options.Connect("AppConfigConnectionString"));
     builder.Logging.AddApiApplicationInsights(builder.Configuration);
 }
 
