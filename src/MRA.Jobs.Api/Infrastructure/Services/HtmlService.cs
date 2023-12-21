@@ -38,7 +38,7 @@ public class HtmlService : IHtmlService
     }
 
     public string GenerateApplyVacancyContent_NoVacancy(string hostName, string applicationSlug, string cV,
-        CreateApplicationNoVacancyCommand userInfo)
+        CreateApplicationCommand userInfo)
     {
         var content = $"""
                        

@@ -9,5 +9,5 @@ public interface IHtmlService
     string GenerateApplyVacancyContent_CreateApplication(string hostName, string applicationSlug, string vacancyTitle, string cV, UserProfileResponse userInfo );
 
     string GenerateApplyVacancyContent_NoVacancy(string hostName, string applicationSlug,
-        string cV, CreateApplicationNoVacancyCommand createApplicationCommand);
+        string cV, CreateApplicationCommand createApplicationCommand);
 }

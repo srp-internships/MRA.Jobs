@@ -10,69 +10,71 @@
 
 @if (serverError)
 {
-	<ServerErrorComponent />
+    <ServerErrorComponent/>
 }
 else
 {
-	<VacancyApplication vacancyType="jobs" Slug="@Slug" application="@application" questionResponses="@questionResponses" taskResponses="@tasksResponses" vacancy="@job" />
+    <VacancyApplication vacancyType="jobs" Slug="@Slug" application="@application" questionResponses="@questionResponses" taskResponses="@tasksResponses" vacancy="@job"/>
 }
+
 @code {
-	private bool serverError;
-	private VacancyApplicationResponse job;
-	private CreateApplicationCommand application;
-	public Dictionary<string, string> questionResponses = new();
-	public Dictionary<Guid, string> tasksResponses = new();
+    private bool serverError;
+    private VacancyApplicationResponse job;
+    private CreateApplicationCommand application;
+    public Dictionary<string, string> questionResponses = new();
+    public Dictionary<Guid, string> tasksResponses = new();
 
-	[Parameter]
-	public string Slug { get; set; }
+    [Parameter] public string Slug { get; set; }
 
-	protected override async Task OnInitializedAsync()
-	{
-await base.OnInitializedAsync();
-		try
-		{
-			var response = await VacancyService.GetBySlug(Slug);
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        try
+        {
+            var response = await VacancyService.GetBySlug(Slug);
 
-			if (response != null)
-			{
-				job = new VacancyApplicationResponse
-					{
-						Id = response.Id,
-						Title = response.Title,
-						EndDate=response.EndDate,
-						PublishDate=response.PublishDate,
-						RequiredYearOfExperience = response.RequiredYearOfExperience,
-						Description=response.Description,
-						VacancyQuestions = response.VacancyQuestions,
-						VacancyTasks = response.VacancyTasks
-					};
-				application = new CreateApplicationCommand
-					{
-						VacancyId = job.Id,
-						VacancyResponses = job.VacancyQuestions.Select(q => new VacancyResponseDto
-						{
-							VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
-						}),
-						TaskResponses = job.VacancyTasks.Select(t => new TaskResponseDto
-						{
-							TaskId = t.Id,
-							Code = t.Template
-						})
-					};
-				foreach (var question in job.VacancyQuestions)
-				{
-					questionResponses[question.Question] = "";
-				}
-				foreach (var task in job.VacancyTasks)
-				{
-					tasksResponses[task.Id] = task.Template;
-				}
-			}
-		}
-		catch (Exception)
-		{
-			serverError = true;
-			StateHasChanged();
-		}
-	}
+            if (response != null)
+            {
+                job = new VacancyApplicationResponse
+                {
+                    Id = response.Id,
+                    Title = response.Title,
+                    EndDate = response.EndDate,
+                    PublishDate = response.PublishDate,
+                    RequiredYearOfExperience = response.RequiredYearOfExperience,
+                    Description = response.Description,
+                    VacancyQuestions = response.VacancyQuestions,
+                    VacancyTasks = response.VacancyTasks
+                };
+                application = new CreateApplicationCommand
+                {
+                    VacancySlug = Slug,
+                    VacancyResponses = job.VacancyQuestions.Select(q => new VacancyResponseDto
+                    {
+                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+                    }),
+                    TaskResponses = job.VacancyTasks.Select(t => new TaskResponseDto
+                    {
+                        TaskId = t.Id,
+                        Code = t.Template
+                    })
+                };
+                foreach (var question in job.VacancyQuestions)
+                {
+                    questionResponses[question.Question] = "";
+                }
+
+                foreach (var task in job.VacancyTasks)
+                {
+                    tasksResponses[task.Id] = task.Template;
+                }
+            }
+        }
+        catch (Exception)
+        {
+            serverError = true;
+            StateHasChanged();
+        }
+    }
+
 }

@@ -3,10 +3,8 @@
 @using AltairCA.Blazor.WebAssembly.Cookie
 @using Blazorise
 @using MRA.Identity.Application.Contract.Profile.Responses
-@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using MRA.Jobs.Client.Components.Buttons
-@using MRA.Jobs.Client.Services.NoVacancies
 @using Anchor = MudBlazor.Anchor
 @using Breakpoint = MudBlazor.Breakpoint
 @using Color = MudBlazor.Color
@@ -93,17 +91,17 @@
             <MudChip Disabled="true" Color="Color.Warning">Beta</MudChip>
         }
         <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4" />
-        <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Variant="Variant.Text"
-                     PopoverClass="docs-layout-menu-shadow" LockScroll="true">
-                <ActivatorContent>
-                    <MudChip Icon="@Icons.Material.Filled.UploadFile" Color="Color.Tertiary">CV</MudChip>
-                </ActivatorContent>
-                <ChildContent>
-                    <NoVacancyUploadCV />
-                </ChildContent>
-            </MudMenu>
-        </MudHidden>
+        @* <MudHidden Breakpoint="Breakpoint.SmAndDown"> *@
+        @*     <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Variant="Variant.Text" *@
+        @*              PopoverClass="docs-layout-menu-shadow" LockScroll="true"> *@
+        @*         <ActivatorContent> *@
+        @*             <MudChip Icon="@Icons.Material.Filled.UploadFile" Color="Color.Tertiary">CV</MudChip> *@
+        @*         </ActivatorContent> *@
+        @*         <ChildContent> *@
+        @*             <NoVacancyUploadCV /> *@
+        @*         </ChildContent> *@
+        @*     </MudMenu> *@
+        @* </MudHidden> *@
         <ToolBarSettingsButtons />
     </MudHidden>
 

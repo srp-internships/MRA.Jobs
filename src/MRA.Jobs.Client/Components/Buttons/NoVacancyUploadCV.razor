@@ -1,7 +1,7 @@
-﻿@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
-@using MRA.Jobs.Client.Services.NoVacancies
-@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication
+﻿@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication
 @using MRA.Jobs.Application.Contracts.Dtos.Responses
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses
+@using MRA.Jobs.Client.Services.NoVacancies
 @inject NavigationManager NavigationManager
 @inject IContentService ContentService
 @inject IConfiguration Configuration
@@ -64,7 +64,6 @@
 
 @code {
 
-    private ApplicationWithNoVacancyStatus _applicationWithNoVacancyStatus;
     private bool _isOpen;
 
     private void OpenDialog()
@@ -86,21 +85,21 @@
     private IBrowserFile _cv;
     private bool _processing = false;
 
-    NoVacancyResponse _vacancy = new();
+    JobVacancyDetailsDto _vacancy = new();
     private bool _serverError;
-    private CreateApplicationNoVacancyCommand _application;
+    private CreateApplicationCommand _application;
 
     private Dictionary<VacancyQuestionResponseDto, string> _questionsResponses = new();
 
     protected override async Task OnInitializedAsync()
     {
-        _vacancy = await NoVacancyService.GetNoVacancy();
+        _vacancy = await NoVacancyService.GetNoVacancyAsync();
         if (_vacancy.Slug == null)
         {
             _serverError = true;
             return;
         }
-        _application = new CreateApplicationNoVacancyCommand();
+        _application = new CreateApplicationCommand();
 
         foreach (var question in _vacancy.VacancyQuestions)
         {
@@ -121,9 +120,8 @@
         }).ToList();
 
         _application.VacancyResponses = vacancyResponses;
-        _application.Cv.IsUploadCvMode = _isUploadCvMode;
         _processing = true;
-        await NoVacancyService.CreateApplicationNoVacancy(_application, _cv);
+        await NoVacancyService.CreateApplicationNoVacancyAsync(_application, _cv);
         _processing = false;
         CloseDialog();
     }
