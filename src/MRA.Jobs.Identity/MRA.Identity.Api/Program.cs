@@ -12,6 +12,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsProduction())
 {
+    builder.Configuration.AddAzureAppConfiguration(options => options.Connect("AppConfigConnectionString"));
     builder.Configuration.ConfigureAzureKeyVault("MRAIdentity");
     builder.Logging.AddApiApplicationInsights(builder.Configuration);
 }
@@ -19,6 +20,7 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ApiExceptionFilterAttribute>();
 });
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
