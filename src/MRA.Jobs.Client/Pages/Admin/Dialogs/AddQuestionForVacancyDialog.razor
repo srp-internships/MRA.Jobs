@@ -1,0 +1,32 @@
+@using System.Dynamic
+<MudDialog>
+    <DialogContent>
+        <MudStack Justify="Justify.FlexStart" AlignItems="AlignItems.Start">
+            <MudTextField T="string" Lines="1" Label="Question" Variant="Variant.Outlined" @bind-Value="@_newQuestion"
+                                      For="@(() => _newQuestion)"/>
+            <MudCheckBox T="bool" @bind-Checked="_isOptional" Label="Is optional" For="@(() => _isOptional)"></MudCheckBox>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="@Submit">Add</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private string _newQuestion = "";
+    private bool _isOptional;
+
+    private void Submit()
+    {
+        dynamic res = new ExpandoObject();
+        res.NewQuestion = _newQuestion;
+        Console.WriteLine(res.NewQuestion);
+        Console.WriteLine(_newQuestion);
+        res.IsOptional = _isOptional;
+        MudDialog.Close(DialogResult.Ok(res));
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+}
