@@ -17,6 +17,7 @@ public static class DependencyInitializer
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         services.AddScoped<IGoogleTokenService, TokenService>();
+        services.AddScoped<ISmsCodeChecker, SmsCodeChecker>();
 
         services.AddAutoMapper(typeof(UsersProfile).Assembly);
 

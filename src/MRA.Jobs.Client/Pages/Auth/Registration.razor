@@ -174,7 +174,7 @@
 
     private bool _isResendDisabled = true;
     private int _timeLeft = 60;
-    private int? _code;
+    private int _code;
 
     private int _isAvailable = -1;
 
@@ -265,7 +265,7 @@
             else
             {
                 _processing = false;
-                _registerUser.PhoneNumberConfirmed = true;
+                _registerUser.VerificationCode = _code;
                 var error = await AuthService.RegisterUserAsync(_registerUser);
                 Snackbar.Add(error, Severity.Error);
             }

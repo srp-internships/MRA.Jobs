@@ -27,7 +27,10 @@ public class RegistrationTests : BaseTest
             Application = "43wtruigjklf",
             ConfirmPassword = "password@#12P"
         };
+        var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={request.PhoneNumber}");
+        res.EnsureSuccessStatusCode();
 
+        request.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == request.PhoneNumber)).Code;
         // Assert
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -89,7 +92,10 @@ public class RegistrationTests : BaseTest
             Application = "mra.Test",
             ConfirmPassword = "passdsword@#12P"
         };
+        var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={request.PhoneNumber}");
+        res.EnsureSuccessStatusCode();
 
+        request.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == request.PhoneNumber)).Code;
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         response.IsSuccessStatusCode.Should().BeTrue();
 
@@ -123,7 +129,10 @@ public class RegistrationTests : BaseTest
             Application = "mra.Test",
             ConfirmPassword = "passworrrrd@#12P"
         };
+        var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={request.PhoneNumber}");
+        res.EnsureSuccessStatusCode();
 
+        request.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == request.PhoneNumber)).Code;
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         response.IsSuccessStatusCode.Should().BeTrue();
 
