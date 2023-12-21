@@ -131,6 +131,9 @@
   </data>
   <data name="Header:Team" xml:space="preserve">
     <value>Team</value>
+  </data> 
+    <data name="Header:Academy" xml:space="preserve">
+    <value>Academy</value>
   </data>
   <data name="UserButton:Profile" xml:space="preserve">
     <value>Profile</value>
