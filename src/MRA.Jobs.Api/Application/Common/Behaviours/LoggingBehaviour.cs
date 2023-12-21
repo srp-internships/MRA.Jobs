@@ -18,7 +18,7 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
     {
         string requestName = typeof(TRequest).Name;
         Guid? userId = _currentUserService.GetUserId();
-        string userName = _currentUserService.GetUserName() ?? "";
+        string userName = _currentUserService.GetUserName() ?? string.Empty;
         await Task.CompletedTask;
 
         _logger.LogInformation("MRA.Jobs Request: {Name} {@UserId} {@UserName} {@Request}",

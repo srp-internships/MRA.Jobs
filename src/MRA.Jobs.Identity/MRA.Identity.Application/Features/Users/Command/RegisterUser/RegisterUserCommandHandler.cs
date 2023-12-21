@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MRA.Configurations.Common.Constants;
+using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
-using MRA.Identity.Domain.Entities;
-using MRA.Configurations.Common.Constants;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
-using MRA.Identity.Application.Common.Exceptions;
+using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Users.Command.RegisterUser;
 
@@ -16,14 +16,16 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
     private readonly IApplicationDbContext _context;
     private readonly IEmailVerification _emailVerification;
     private readonly RoleManager<ApplicationRole> _roleManager;
+    private readonly ISmsCodeChecker _codeChecker;
 
     public RegisterUserCommandHandler(UserManager<ApplicationUser> userManager, IApplicationDbContext context,
-        IEmailVerification emailVerification, RoleManager<ApplicationRole> roleManager)
+        IEmailVerification emailVerification, RoleManager<ApplicationRole> roleManager, ISmsCodeChecker codeChecker)
     {
         _userManager = userManager;
         _context = context;
         _emailVerification = emailVerification;
         _roleManager = roleManager;
+        _codeChecker = codeChecker;
     }
 
     public async Task<Guid> Handle(RegisterUserCommand request,
@@ -58,9 +60,12 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
             PhoneNumber = request.PhoneNumber,
             FirstName = request.FirstName,
             LastName = request.LastName,
-            DateOfBirth = new DateTime(2000, 1, 1),
-            PhoneNumberConfirmed = request.PhoneNumberConfirmed
+            DateOfBirth = new DateTime(2000, 1, 1)
         };
+        bool phoneVerified = _codeChecker.VerifyPhone(request.VerificationCode, request.PhoneNumber);
+        if (phoneVerified) user.PhoneNumberConfirmed = true;
+        else throw new ValidationException("Phone number is not verified");
+
         IdentityResult result = await _userManager.CreateAsync(user, request.Password);
 
         if (!result.Succeeded)
@@ -88,11 +93,12 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
             }
         }
 
+
         var userRole = new ApplicationUserRole { UserId = user.Id, RoleId = role.Id, Slug = $"{user.UserName}-role" };
         await _context.UserRoles.AddAsync(userRole, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-            await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
-            cancellationToken);
+        await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
+        cancellationToken);
         return user.Id;
     }
 
