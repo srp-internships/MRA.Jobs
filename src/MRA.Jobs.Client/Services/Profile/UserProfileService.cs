@@ -98,7 +98,7 @@ public class UserProfileService : IUserProfileService
 
     public async Task<HttpResponseMessage> CreateExperienceAsync(CreateExperienceDetailCommand command)
     {
-        var response = await _identityHttpClient.PostAsJsonAsync("Profile/СreateExperienceDetail", command);
+        var response = await _identityHttpClient.PostAsJsonAsync("Profile/CreateExperienceDetail", command);
         return response;
     }
 
