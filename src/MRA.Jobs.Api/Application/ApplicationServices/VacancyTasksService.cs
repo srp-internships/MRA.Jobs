@@ -11,7 +11,7 @@ public class VacancyTasksService(IApplicationDbContext context, IConfiguration c
     public async Task CheckVacancyTasksAsync(Guid applicationId, IEnumerable<TaskResponse> taskResponses,
         CancellationToken cancellationToken)
     {
-        _httpClient.DefaultRequestHeaders.Add("API_KEY", configuration["OnlinePlatform:ApiKey"]!);
+        _httpClient.DefaultRequestHeaders.Add("API_KEY", configuration["MraJobs-OnlinePlatform:ApiKey"]!);
 
         foreach (var taskResponse in taskResponses)
         {
@@ -27,7 +27,7 @@ public class VacancyTasksService(IApplicationDbContext context, IConfiguration c
                 var r = new HttpRequestMessage
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = new Uri(configuration["OnlinePlatform:AnalyzeUrl"]!),
+                    RequestUri = new Uri(configuration["MraJobs-OnlinePlatform:AnalyzeUrl"]!),
                     Content = new StringContent(
                         $$"""
                           {

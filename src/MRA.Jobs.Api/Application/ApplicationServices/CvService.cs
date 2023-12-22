@@ -24,7 +24,7 @@ public class CvService(IFileService fileService, IConfiguration configuration, I
     {
         using var identityHttpClient = factory.CreateClient("IdentityHttpClient");
         identityHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", httpContextAccessor.HttpContext?.Request.Headers.Authorization[0]!.Split(' ')[1]);
-        await using var stream = await identityHttpClient.GetStreamAsync(configuration["IdentityApi:DownloadCvEndPoint"]);
+        await using var stream = await identityHttpClient.GetStreamAsync(configuration["MraJobs-IdentityApi:DownloadCvEndPoint"]);
         using var ms = new MemoryStream();
         await stream.CopyToAsync(ms);
         return await fileService.UploadAsync(ms.ToArray(), $"{Guid.NewGuid()}_{httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Username)?.Value}.pdf");
