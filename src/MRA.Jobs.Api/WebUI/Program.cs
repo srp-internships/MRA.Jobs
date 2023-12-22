@@ -9,11 +9,14 @@ using MRA.Configurations.Initializer.Azure.KeyVault;
 using Newtonsoft.Json;
 using Sieve.Models;
 using MRA.Jobs.Infrastructure.Persistence;
+using MRA.Configurations.Initializer.Azure.AppConfig;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsProduction())
 {
     builder.Configuration.ConfigureAzureKeyVault(ApplicationClaimValues.ApplicationName);
+    string appConfigConnectionString = builder.Configuration["AppConfigConnectionString"];
+    builder.Configuration.AddAzureAppConfig(appConfigConnectionString);
     builder.Logging.AddApiApplicationInsights(builder.Configuration);
 }
 
@@ -22,7 +25,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddWebUiServices(builder.Configuration);
 
-builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("Sieve"));
+builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("MraJobs-Sieve"));
 
 
 
