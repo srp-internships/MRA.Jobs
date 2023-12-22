@@ -22,7 +22,7 @@ public record TrainingVacancyListDto
 
     public int Duration { get; set; }
     public int Fees { get; set; }
-    public IEnumerable<VacancyQuestionResponseDto> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
     public IEnumerable<VacancyTaskResponseDto> VacancyTasks { get; set; }
     public string Slug { get; set; }
 }
