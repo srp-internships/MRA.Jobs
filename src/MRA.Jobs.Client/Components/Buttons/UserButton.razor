@@ -52,7 +52,7 @@
         <NotAuthorized Context="notAuthorizedContext">
             <MudMenu >
                 <ActivatorContent>
-                    <MudChip Icon="@Icons.Material.Filled.Person">Sign In</MudChip>
+						<MudChip Icon="@Icons.Material.Filled.Person">@ContentService["UserButton:Sign In"]</MudChip>
                 </ActivatorContent>
                 <ChildContent >
                     <MudMenuItem Href="/sign-in">@ContentService["UserButton:Sign In"]</MudMenuItem>
