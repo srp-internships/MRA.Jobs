@@ -7,13 +7,15 @@ using MRA.Identity.Application.Contract.Skills.Command;
 using FluentValidation.AspNetCore;
 using MRA.Configurations.Initializer.Azure.Insight;
 using MRA.Configurations.Initializer.Azure.KeyVault;
+using MRA.Configurations.Initializer.Azure.AppConfig;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsProduction())
 {
     builder.Configuration.ConfigureAzureKeyVault("MRAIdentity");
-    builder.Configuration.AddAzureAppConfiguration(options => options.Connect("AppConfigConnectionString"));
+    string appConfigConnectionString = builder.Configuration["AppConfigConnectionString"];
+    builder.Configuration.AddAzureAppConfig(appConfigConnectionString);
     builder.Logging.AddApiApplicationInsights(builder.Configuration);
 }
 builder.Services.AddControllers(options =>
