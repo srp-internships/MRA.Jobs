@@ -55,10 +55,19 @@ public class UserProfileService : IUserProfileService
 
     public async Task<UserProfileResponse> Get(string userName = null)
     {
-        var result = await _identityHttpClient
-          .GetFromJsonAsync<UserProfileResponse>($"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
-        return result;
+        var response = await _identityHttpClient.GetAsync($"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<UserProfileResponse>();
+            return result;
+        }
+        else
+        {
+            return null;
+        }
     }
+
+
 
     public async Task<List<UserEducationResponse>> GetEducationsByUser()
     {

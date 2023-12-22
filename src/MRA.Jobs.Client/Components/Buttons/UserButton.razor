@@ -64,15 +64,21 @@
 </CascadingAuthenticationState>
 
 
-@code{
-    
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            LayoutService.User=  await UserProfileService.Get();
-            StateHasChanged();
-        }
+	@code{
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			try
+			{
+				LayoutService.User = await UserProfileService.Get();
+			}
+			catch (Exception e)
+			{
+			}
+			StateHasChanged();
+		}
     }
     
 
