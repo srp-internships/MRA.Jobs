@@ -47,7 +47,7 @@ public static class ConfigureServices
         {
             options.Filters.Add(typeof(BadRequestResponseFilter));
         });
-        var corsAllowedHosts = configuration.GetSection("CORS").Get<string[]>();
+        var corsAllowedHosts = configuration.GetSection("MraJobs-CORS").Get<string[]>();
         services.AddCors(options =>
         {
             options.AddPolicy("CORS_POLICY", policyConfig =>
