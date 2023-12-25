@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using MRA.Identity.Application.Common.Behaviours;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Features.Users;
 using MRA.Identity.Application.Services;
@@ -14,7 +15,9 @@ public static class DependencyInitializer
     {
         services.AddOptions();
         services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         services.AddScoped<IGoogleTokenService, TokenService>();
+        services.AddScoped<ISmsCodeChecker, SmsCodeChecker>();
 
         services.AddAutoMapper(typeof(UsersProfile).Assembly);
 

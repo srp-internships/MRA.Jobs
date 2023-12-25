@@ -45,7 +45,7 @@ public class CreateApplicationCommandHandler(IApplicationDbContext context, IMap
         await context.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
-        string hostName = configuration["HostName:SvPath"];
+        string hostName = configuration["MraJobs-HostName:SvPath"];
         await emailService.SendEmailAsync(new[] { vacancy.CreatedByEmail },
             htmlService.GenerateApplyVacancyContent_CreateApplication(hostName, application.Slug, vacancy.Title,
                 await cvService.GetCvByCommandAsync(ref request), await identityService.ApplicantDetailsInfo()),

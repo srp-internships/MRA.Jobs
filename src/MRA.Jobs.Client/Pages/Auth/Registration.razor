@@ -27,7 +27,7 @@
                         <div class="d-flex flex-grow-1">
                             <div class="flex-none d-flex justify-content-center">
                                 <a href="">
-                                    <MudImage Src="./images/SRP_icon.png" Height="45"/><br/>
+                                    <MudImage Src="/images/srp/srp_icon.png" Height="45"/><br/>
                                 </a>
                             </div>
                             <div class="flex-initial d-flex py-1">
@@ -174,7 +174,7 @@
 
     private bool _isResendDisabled = true;
     private int _timeLeft = 60;
-    private int? _code;
+    private int _code;
 
     private int _isAvailable = -1;
 
@@ -265,7 +265,7 @@
             else
             {
                 _processing = false;
-                _registerUser.PhoneNumberConfirmed = true;
+                _registerUser.VerificationCode = _code;
                 var error = await AuthService.RegisterUserAsync(_registerUser);
                 Snackbar.Add(error, Severity.Error);
             }

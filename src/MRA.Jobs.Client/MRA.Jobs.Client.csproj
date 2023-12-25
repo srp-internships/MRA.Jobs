@@ -24,50 +24,48 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="wwwroot\images\SRP_icon.png" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\MRA.Jobs.Api\Application.Contracts\MRA.Jobs.Application.Contracts.csproj" />
       <ProjectReference Include="..\MRA.Jobs.Identity\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\File\FileUpload.razor" />
+      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+      <_ContentIncludedByDefault Remove="Components\Admin\Cards\ApplicationCards.razor" />
+      <_ContentIncludedByDefault Remove="Components\Admin\NavMenu.razor" />
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="wwwroot\resources\languages\English.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>English.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Include="wwwroot\resources\languages\Russian.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Russian.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Include="wwwroot\resources\languages\Tajik.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Tajik.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Include="wwwroot\resources\ApplicationCulturesNames.cs" />
-      <Compile Include="wwwroot\resources\languages\English.Designer.cs">
+      <Compile Update="Resources\Languages\English.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>English.resx</DependentUpon>
       </Compile>
-      <Compile Include="wwwroot\resources\languages\Russian.Designer.cs">
+      <Compile Update="Resources\Languages\Russian.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Russian.resx</DependentUpon>
       </Compile>
-      <Compile Include="wwwroot\resources\languages\Tajik.Designer.cs">
+      <Compile Update="Resources\Languages\Tajik.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Tajik.resx</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Languages\English.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>English.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Languages\Russian.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Russian.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Languages\Tajik.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Tajik.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
