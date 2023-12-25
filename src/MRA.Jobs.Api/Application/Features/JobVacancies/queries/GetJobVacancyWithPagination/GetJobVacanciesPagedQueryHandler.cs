@@ -28,6 +28,7 @@ public class GetJobVacanciesPagedQueryHandler : IRequestHandler<PagedListQuery<J
             .Include(j => j.Category)
             .Include(j => j.VacancyQuestions)
             .Include(i => i.VacancyTasks)
+            .Where(j=>j.Slug!="no_vacancy")
             .AsNoTracking(),
             _mapper.Map<JobVacancyListDto>);
 
