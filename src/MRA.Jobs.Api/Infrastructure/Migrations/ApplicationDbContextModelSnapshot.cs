@@ -473,6 +473,9 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsOptional")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Question")
                         .HasColumnType("nvarchar(max)");
 
@@ -655,13 +658,6 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("JobVacancy");
-                });
-
-            modelBuilder.Entity("MRA.Jobs.Domain.Entities.NoVacancy", b =>
-                {
-                    b.HasBaseType("MRA.Jobs.Domain.Entities.Vacancy");
-
-                    b.HasDiscriminator().HasValue("NoVacancy");
                 });
 
             modelBuilder.Entity("MRA.Jobs.Domain.Entities.TrainingVacancy", b =>

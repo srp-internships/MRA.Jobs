@@ -8,6 +8,6 @@ public class CreateApplicationCommandValidator : AbstractValidator<CreateApplica
             .NotEmpty()
             .MinimumLength(50);
 
-        RuleFor(v => v.VacancyId).NotEmpty();
+        RuleFor(v => v.VacancySlug).NotEmpty();
     }
 }
