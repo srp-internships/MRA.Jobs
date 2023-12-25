@@ -6,6 +6,7 @@
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
 @inject IUserProfileService UserProfileService
+@inject IConfiguration configuration
 
 <CascadingAuthenticationState>
     <AuthorizeView>
@@ -55,8 +56,8 @@
                     <MudChip Icon="@Icons.Material.Filled.Person">Sign In</MudChip>
                 </ActivatorContent>
                 <ChildContent >
-                    <MudMenuItem Href="/sign-in">@ContentService["UserButton:Sign In"]</MudMenuItem>
-                    <MudMenuItem Href="/sign-up">@ContentService["UserButton:Sign Up"]</MudMenuItem>
+                    <MudMenuItem Href="@($"{configuration["IdentityClient"]}/login")">@ContentService["UserButton:Sign In"]</MudMenuItem>
+                    <MudMenuItem Href="@($"{configuration["IdentityClient"]}/registration")">@ContentService["UserButton:Sign Up"]</MudMenuItem>
                 </ChildContent>
             </MudMenu>
         </NotAuthorized>

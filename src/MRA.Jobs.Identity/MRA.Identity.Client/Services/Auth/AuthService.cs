@@ -16,7 +16,7 @@ namespace MRA.Identity.Client.Services.Auth;
 
 public class AuthService(HttpClient httpClient,
         AuthenticationStateProvider authenticationStateProvider, NavigationManager navigationManager,
-        IAltairCABlazorCookieUtil cookieUtil, /*LayoutService layoutService,*/ IUserProfileService userProfileService)
+        IAltairCABlazorCookieUtil cookieUtil, LayoutService layoutService, IUserProfileService userProfileService, IConfiguration configuration)
     : IAuthService
 {
     public async Task<HttpResponseMessage> ChangePassword(ChangePasswordUserCommand command)
@@ -41,8 +41,9 @@ public class AuthService(HttpClient httpClient,
             if (result.IsSuccessStatusCode)
             {
                 var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
+                navigationManager.NavigateTo($"{configuration["HttpClient:JobsClient"]}?atoken={response.AccessToken}&rtoken={response.RefreshToken}&vdate={response.AccessTokenValidateTo}");
                 await cookieUtil.SetValueAsync("authToken", response);
-                await authenticationStateProvider.GetAuthenticationStateAsync();
+                //await authenticationStateProvider.GetAuthenticationStateAsync();
                 //layoutService.User = await userProfileService.Get();
                 if (!newRegister)
                     navigationManager.NavigateTo("/");
@@ -84,7 +85,7 @@ public class AuthService(HttpClient httpClient,
                     Password = command.Password,
                     Username = command.Username
                 });
-                //layoutService.User = await userProfileService.Get();
+                layoutService.User = await userProfileService.Get();
                 navigationManager.NavigateTo("/profile");
 
                 return "";
