@@ -32,14 +32,14 @@ public class GetJobCategoriesQueryHandler : IRequestHandler<GetJobCategoriesQuer
 
         var jobsWithCategory = new List<JobCategoriesResponse>();
         var categories = await _context.Categories
-            .Where(c => c.Slug != "no_vacancy") // добавлено условие
+            .Where(c => c.Slug != "no_vacancy") 
             .ToListAsync(cancellationToken: cancellationToken);
 
         foreach (var job in sortredJobs)
         {
             var category = categories.Where(c => c.Id == job.Key).FirstOrDefault();
 
-            if (category != null) // проверка на null
+            if (category != null) 
             {
                 jobsWithCategory.Add(new JobCategoriesResponse
                 {
