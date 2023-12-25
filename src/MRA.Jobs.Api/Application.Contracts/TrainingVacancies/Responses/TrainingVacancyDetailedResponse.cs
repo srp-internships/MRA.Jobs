@@ -36,7 +36,7 @@ public record TrainingVacancyDetailedResponse
     public Guid? LastModifiedBy { get; set; }
     public ICollection<TimeLineDetailsDto> History { get; set; }
     public ICollection<TagDto> Tags { get; set; }
-    public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyQuestionResponseDto> VacancyQuestions { get; set; }
     public IEnumerable<VacancyTaskResponseDto> VacancyTasks { get; set; }
     public string Slug { get; set; }
 }

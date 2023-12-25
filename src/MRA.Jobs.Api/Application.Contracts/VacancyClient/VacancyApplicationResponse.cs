@@ -1,5 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.Dtos;
-using MRA.Jobs.Application.Contracts.Dtos.Responses;
+﻿using MRA.Jobs.Application.Contracts.Dtos.Responses;
 
 namespace MRA.Jobs.Application.Contracts.VacancyClient;
 public class VacancyApplicationResponse
@@ -14,6 +13,6 @@ public class VacancyApplicationResponse
     public DateTime Deadline { get; set; }
     public int Fees { get; set; }
     public int RequiredYearOfExperience { get; set; }
-    public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyQuestionResponseDto> VacancyQuestions { get; set; }
     public IEnumerable<VacancyTaskResponseDto> VacancyTasks { get; set; }
 }

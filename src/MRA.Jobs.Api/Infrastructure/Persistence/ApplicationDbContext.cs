@@ -43,6 +43,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<VacancyResponse> VacancyResponses { get; set; }
     public DbSet<VacancyTaskDetail> VacancyTaskDetails { get; set; }
     public DbSet<TaskResponse> TaskResponses { get; set; }
+    public DbSet<NoVacancy> NoVacancies { get; set; }
     public DbSet<VacancyTask> VacancyTasks { get; set; }
 
     #region override

@@ -53,7 +53,7 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
     
     [HttpPost("CreateApplicationNoVacancy")]
     [AllowAnonymous]
-    public async Task<ActionResult<Guid>> CreateApplicationNoVacancy(CreateApplicationCommand request,
+    public async Task<ActionResult<Guid>> CreateApplicationNoVacancy(CreateApplicationNoVacancyCommand request,
         CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);

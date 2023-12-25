@@ -9,14 +9,13 @@ namespace MRA.Jobs.Application.IntegrationTests.Application;
 
 public class CreateApplicationCommandTest : CreateApplicationTestsBase
 {
-    [Ignore("i will fix it later// firuz")]
     [Test]
     public async Task CreateApplicationCommand_CreatingApplication_Success()
     {
-        var vacancySlug = await AddJobVacancyAsync("foobar2");
+        var vacancyId = await AddJobVacancyAsync("foobar2");
         var testSubmit = new CreateApplicationCommand
         {
-            VacancySlug = vacancySlug,
+            VacancyId = vacancyId,
             CoverLetter = RandomString(150),
             Cv =
             {
@@ -35,14 +34,13 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
         responseGuid.Should().NotBeEmpty();
     }
 
-    [Ignore("i will fix it later// firuz")]
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyQuestions_Success()
     {
-        var vacancySlug = await AddJobVacancyAsync("foobar");
+        var vacancyId = await AddJobVacancyAsync("foobar");
         var testSubmit = new CreateApplicationCommand
         {
-            VacancySlug = vacancySlug,
+            VacancyId = vacancyId,
             CoverLetter = RandomString(200),
             VacancyResponses = new List<VacancyResponseDto>
             {
@@ -71,14 +69,13 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
         responseGuid.Should().NotBeEmpty();
     }
 
-    [Ignore("i will fix it later// firuz")]
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyTask_Success()
     {
-        var vacancySlug = await AddJobVacancyAsync("foobar11");
+        var vacancyId = await AddJobVacancyAsync("foobar11");
         var testSubmit = new CreateApplicationCommand
         {
-            VacancySlug = vacancySlug,
+            VacancyId = vacancyId,
             CoverLetter = RandomString(200),
             VacancyResponses = new List<VacancyResponseDto>
             {
@@ -120,18 +117,18 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
         responseGuid.Should().NotBeEmpty();
     }
 
-    [Ignore("i will fix it later// firuz")]
+
     [Test]
     public async Task Handle_DuplicateApplyForUser_ReturnsConflict()
     {
-        var jobSlug = await AddJobVacancyAsync("newVacancyForDuplicateTest");
+        var jobId = await AddJobVacancyAsync("newVacancyForDuplicateTest");
 
         RunAsDefaultUserAsync("applicant1");
 
         var createCommand = new CreateApplicationCommand
         {
             CoverLetter = RandomString(200),
-            VacancySlug = jobSlug,
+            VacancyId = jobId,
             VacancyResponses = null,
             Cv =
             {

@@ -1,13 +1,12 @@
 ﻿namespace MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 
-public class CreateApplicationCommandValidator : AbstractValidator<CreateApplicationCommand>
+public class CreateApplicationNoVacancyCommandValidator : AbstractValidator<CreateApplicationNoVacancyCommand>
 {
-    public CreateApplicationCommandValidator()
+    public CreateApplicationNoVacancyCommandValidator()
     {
         RuleFor(v => v.CoverLetter)
             .NotEmpty()
             .MinimumLength(50);
-
-        RuleFor(v => v.VacancyId).NotEmpty();
+        
     }
 }

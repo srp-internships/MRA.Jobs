@@ -1,7 +1,7 @@
-﻿@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication
-@using MRA.Jobs.Application.Contracts.Dtos.Responses
-@using MRA.Jobs.Application.Contracts.JobVacancies.Responses
+﻿@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
 @using MRA.Jobs.Client.Services.NoVacancies
+@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication
+@using MRA.Jobs.Application.Contracts.Dtos.Responses
 @inject NavigationManager NavigationManager
 @inject IContentService ContentService
 @inject IConfiguration Configuration
@@ -10,17 +10,22 @@
 <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
     <MudText>Send us your CV</MudText>
 </MudButton>
-<MudDialog IsVisible="_isOpen" Options="@(new DialogOptions() { DisableBackdropClick = true })">
+<MudDialog IsVisible="_isOpen" Style="width: 400px;"
+           Options="@(new DialogOptions() { DisableBackdropClick = true })">
     <DialogContent>
+        <MudText Typo="Typo.h5"><b>Send us your CV</b></MudText>
         <EditForm Model="@_application">
             <FluentValidationValidator/>
 
             @foreach (var question in _vacancy.VacancyQuestions)
             {
-                <MudTextField Label=@($"{question.Question} *") @bind-Value="@_questionsResponses[question]" Variant="Variant.Outlined"/>
+                <MudTextField Label=@($"{question.Question} *")
+                @bind-Value="@_questionsResponses[question]" FullWidth="true"
+                              Variant="Variant.Outlined"/>
             }
             <MudTextField T="string" Lines="3" Label="Cover letter *" Variant="Variant.Outlined" @bind-Value="@_application.CoverLetter"
                           For="@(() => _application.CoverLetter)"/>
+
 
             <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
                 <ButtonTemplate Context="anotherContext">
@@ -57,6 +62,7 @@
 
 @code {
 
+    private ApplicationWithNoVacancyStatus _applicationWithNoVacancyStatus;
     private bool _isOpen;
 
     private void OpenDialog()
@@ -70,7 +76,7 @@
         _isOpen = false;
         StateHasChanged();
     }
-
+    
 
     private bool _isUploadCvMode = true;
     private bool _showLoader = false;
@@ -78,23 +84,22 @@
     private IBrowserFile _cv;
     private bool _processing = false;
 
-    JobVacancyDetailsDto _vacancy = new();
+    NoVacancyResponse _vacancy = new();
     private bool _serverError;
-    private CreateApplicationCommand _application;
+    private CreateApplicationNoVacancyCommand _application;
 
-    private Dictionary<VacancyQuestionDto, string> _questionsResponses = new();
+    private Dictionary<VacancyQuestionResponseDto, string> _questionsResponses = new();
 
     protected override async Task OnInitializedAsync()
     {
-        _vacancy = await NoVacancyService.GetNoVacancyAsync();
+        _vacancy = await NoVacancyService.GetNoVacancy();
         if (_vacancy.Slug == null)
         {
             _serverError = true;
             return;
         }
-
-        _application = new CreateApplicationCommand();
-
+        _application = new CreateApplicationNoVacancyCommand();
+       
         foreach (var question in _vacancy.VacancyQuestions)
         {
             _questionsResponses.Add(question, "");
@@ -114,10 +119,12 @@
         }).ToList();
 
         _application.VacancyResponses = vacancyResponses;
+        _application.Cv.IsUploadCvMode = _isUploadCvMode;
         _processing = true;
-        await NoVacancyService.CreateApplicationNoVacancyAsync(_application, _cv);
+        await NoVacancyService.CreateApplicationNoVacancy(_application, _cv);
         _processing = false;
-        CloseDialog();
+        NavigationManager.NavigateTo("");
+        StateHasChanged();
     }
 
 }

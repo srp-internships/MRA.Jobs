@@ -3,8 +3,10 @@
 @using AltairCA.Blazor.WebAssembly.Cookie
 @using Blazorise
 @using MRA.Identity.Application.Contract.Profile.Responses
+@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using MRA.Jobs.Client.Components.Buttons
+@using MRA.Jobs.Client.Services.NoVacancies
 @using Anchor = MudBlazor.Anchor
 @using Breakpoint = MudBlazor.Breakpoint
 @using Color = MudBlazor.Color
@@ -22,8 +24,9 @@
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
         <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
     </MudHidden>
-    <a href="https://www.silkroadprofessionals.com/" target="_blank">
-        <MudHidden Breakpoint="Breakpoint.Xs">
+
+    <MudHidden Breakpoint="Breakpoint.Xs">
+        <a href="https://www.silkroadprofessionals.com/" target="_blank">
             <MudStack Row="true">
                 <MudItem Style="padding-right:5px;">
                     <MudImage src="/images/srp/srp_icon.png" Style="width: 50px"/>
@@ -39,8 +42,10 @@
                     </MudText>
                 </MudItem>
             </MudStack>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+        </a>
+    </MudHidden>
+    <MudHidden Breakpoint="Breakpoint.SmAndUp">
+        <a href="https://www.silkroadprofessionals.com/" target="_blank">
             <MudStack Row="true">
                 <MudItem Style="padding-right:5px;">
                     <MudImage src="/images/srp/srp_icon.png" Style="width: 30px"/>
@@ -51,8 +56,9 @@
                     </MudText>
                 </MudItem>
             </MudStack>
-        </MudHidden>
-    </a>
+        </a>
+    </MudHidden>
+
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <MudButton Href="/" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Home)">
             <MudText>
@@ -97,7 +103,9 @@
         {
             <MudChip Disabled="true" Color="Color.Warning">Beta</MudChip>
         }
+
         <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
+      
         <ToolBarSettingsButtons/>
     </MudHidden>
 
@@ -155,7 +163,6 @@
             catch (Exception e)
             {
             }
-
             StateHasChanged();
         }
     }
@@ -185,6 +192,9 @@
     {
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
+
+
+
 
 
 }

@@ -49,7 +49,7 @@ await base.OnInitializedAsync();
 					};
 				application = new CreateApplicationCommand
 					{
-						VacancySlug = Slug,
+						VacancyId = internship.Id,
 						VacancyResponses = internship.VacancyQuestions.Select(q => new VacancyResponseDto
 						{
 							VacancyQuestion = new VacancyQuestionDto { Question = q.Question }

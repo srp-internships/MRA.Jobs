@@ -25,7 +25,7 @@ public class CreateApplicationTestsBase : Testing
         return vacancyCategory.Id;
     }
 
-    protected async Task<string> AddJobVacancyAsync(string title)
+    protected async Task<Guid> AddJobVacancyAsync(string title)
     {
         var internshipVacancy = new InternshipVacancy
         {
@@ -41,12 +41,12 @@ public class CreateApplicationTestsBase : Testing
             Slug = title.ToLower().Replace(" ", "-")
         };
         await AddAsync(internshipVacancy);
-        return internshipVacancy.Slug;
+        return internshipVacancy.Id;
     }
 
-    protected async Task<JobVacancy> GetNoVacancy()
+    protected async Task<NoVacancy> GetNoVacancy()
     {
-        var vacancy = await FindFirstOrDefaultAsync<JobVacancy>(v => v.Slug == "no_vacancy");
+        var vacancy = await FindFirstOrDefaultAsync<NoVacancy>(v => v.Slug == "no_vacancy");
         return vacancy;
     }
 }

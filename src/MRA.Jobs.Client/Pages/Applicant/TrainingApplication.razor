@@ -1,8 +1,12 @@
 ﻿@page "/trainings/apply/{Slug}"
 @using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+@inject HttpClient httpClient
+@inject IApplicationService ApplicationService;
+@inject ITrainingService _trainingService
+@inject NavigationManager NavigationManager
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
-@inject ITrainingService TrainingService
 
 @if (serverError)
 {
@@ -28,7 +32,7 @@ else
         await base.OnInitializedAsync();
         try
         {
-            var response = await TrainingService.GetBySlug(Slug);
+            var response = await _trainingService.GetBySlug(Slug);
 
             if (response != null)
             {
@@ -46,7 +50,7 @@ else
                 };
                 application = new CreateApplicationCommand
                 {
-                    VacancySlug = Slug,
+                    VacancyId = training.Id,
                     VacancyResponses = training.VacancyQuestions.Select(q => new VacancyResponseDto
                     {
                         VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
