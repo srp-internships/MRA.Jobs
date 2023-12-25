@@ -10,37 +10,35 @@
 <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
     <MudText>Send us your CV</MudText>
 </MudButton>
-<MudDialog IsVisible="_isOpen" Options="@(new DialogOptions() { DisableBackdropClick = true })">
+<MudDialog IsVisible="_isOpen" Style="width: 400px;"
+           Options="@(new DialogOptions() { DisableBackdropClick = true })">
     <DialogContent>
+        <MudText Typo="Typo.h5"><b>Send us your CV</b></MudText>
         <EditForm Model="@_application">
             <FluentValidationValidator/>
 
             @foreach (var question in _vacancy.VacancyQuestions)
             {
-                <MudTextField Label=@($"{question.Question} *") @bind-Value="@_questionsResponses[question]" Variant="Variant.Outlined"/>
+                <MudTextField Label=@($"{question.Question} *")
+                @bind-Value="@_questionsResponses[question]" FullWidth="true"
+                              Variant="Variant.Outlined"/>
             }
             <MudTextField T="string" Lines="3" Label="Cover letter *" Variant="Variant.Outlined" @bind-Value="@_application.CoverLetter"
                           For="@(() => _application.CoverLetter)"/>
 
-            @* <MudRadioGroup @bind-SelectedOption="_isUploadCvMode"> *@
-            @*     <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio> *@
-            @*     <MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio> *@
-            @* </MudRadioGroup> *@
 
-            @* @if (_isUploadCvMode) *@
-            @* { *@
-                <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
-                    <ButtonTemplate Context="anotherContext">
-                        <MudButton HtmlTag="label"
-                                   Variant="Variant.Filled"
-                                   Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.CloudUpload"
-                                   for="@anotherContext">
-                            Upload your CV
-                        </MudButton>
-                    </ButtonTemplate>
-                </MudFileUpload>
-            @* } *@
+            <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
+                <ButtonTemplate Context="anotherContext">
+                    <MudButton HtmlTag="label"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.CloudUpload"
+                               for="@anotherContext">
+                        Upload your CV
+                    </MudButton>
+                </ButtonTemplate>
+            </MudFileUpload>
+
 
         </EditForm>
     </DialogContent>
