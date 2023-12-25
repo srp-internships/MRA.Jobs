@@ -10,7 +10,8 @@
 <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
     <MudText>Send us your CV</MudText>
 </MudButton>
-<MudDialog IsVisible="_isOpen" Options="@(new DialogOptions() { DisableBackdropClick = true })">
+<MudDialog IsVisible="_isOpen" Style="width: 400px;"
+           Options="@(new DialogOptions() { DisableBackdropClick = true })">
     <DialogContent>
         <EditForm Model="@_application">
             <FluentValidationValidator/>

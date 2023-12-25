@@ -20,11 +20,10 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
             noCategory = category;
         }
 
-        List<VacancyQuestion> question =
-        [
+        List<VacancyQuestion> question = new(){
             new VacancyQuestion { Question = "Your name", IsOptional = false },
             new VacancyQuestion { Question = "Your phone number", IsOptional = false }
-        ];
+        };
 
         var noVacancy = await dbContext.JobVacancies
             .Include(vacancy => vacancy.VacancyQuestions)

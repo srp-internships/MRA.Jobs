@@ -22,10 +22,10 @@ public partial class TrainingVacancyPage
     private string _newDescription = string.Empty;
     private string _newTitle = string.Empty;
     private string _createOrEditHeader = "New Training Vacancy";
-    private List<VacancyQuestionDto> _questions = [];
+    private List<VacancyQuestionDto> _questions = new();
     private List<CategoryResponse> _categories;
     private List<TrainingVacancyListDto> _trainings;
-    private List<VacancyTaskDto> _tasks = [];
+    private List<VacancyTaskDto> _tasks = new();
     private TimeSpan? _publishDateTime;
     private TimeSpan? _endDateTime;
     private StandaloneCodeEditor _editorTemplate = null!;
