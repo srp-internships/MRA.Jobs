@@ -1,53 +1,36 @@
-using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Domain.Enums;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Application;
-
 public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
 {
     [Test]
     public async Task CreateUsingProfile_ShouldRequestToIdentity_ReturnsOk()
     {
         await AddVacancyCategoryAsync("category111");
-        var internshipId = await AddJobVacancyAsync("titleInternship");
+        var internshipSlug = await AddJobVacancyAsync("titleInternship");
 
         var createApplicationCommand = new CreateApplicationCommand
         {
-            VacancyId = internshipId, CoverLetter = RandomString(150), Cv = { IsUploadCvMode = false, }
+            VacancySlug = internshipSlug, CoverLetter = RandomString(150), Cv =
+            {
+                IsUploadCvMode = false
+            }
         };
         RunAsDefaultUserAsync("applicant1");
         var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createApplicationCommand);
         response.EnsureSuccessStatusCode();
 
-        var application = await FindFirstOrDefaultAsync<Domain.Entities.Application>(s =>
-            s.VacancyId == createApplicationCommand.VacancyId && s.CoverLetter == createApplicationCommand.CoverLetter);
+        var application = await FindFirstOrDefaultAsync<Domain.Entities.Application>(s => s.CoverLetter == createApplicationCommand.CoverLetter);
         application.Should().NotBeNull();
     }
 
+    [Ignore("At now create NoVacancy application using profile not available")]
     [Test]
-    public async Task CreateApplicationWithNoVacancy_1_ShouldRequestToIdentity_ReturnsOk()
-    {
-        var noVacancy = await GetNoVacancy();
-        var createApplicationCommand = new CreateApplicationCommand
-        {
-            VacancyId = noVacancy.Id, CoverLetter = RandomString(150), Cv = { IsUploadCvMode = false, }
-        };
-        RunAsDefaultUserAsync("applicant1");
-        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createApplicationCommand);
-        response.EnsureSuccessStatusCode();
-
-        var application = await FindFirstOrDefaultAsync<Domain.Entities.Application>(s =>
-            s.VacancyId == createApplicationCommand.VacancyId && s.CoverLetter == createApplicationCommand.CoverLetter);
-        application.Should().NotBeNull();
-    }
-
-    [Test]
-    public async Task CreateApplicationWithNoVacancy_2_ShouldRequestToIdentity_ReturnsOk()
+    public async Task CreateApplicationWithNoVacancy_ShouldRequestToIdentity_ReturnsOk_IfStatusExpired()
     {
         var noVacancy = await GetNoVacancy();
 
@@ -61,50 +44,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
                 LastModifiedAt = null,
                 LastModifiedBy = default,
                 CoverLetter = null,
-                Slug = "applicant1-no_vacancy",
-                VacancyResponses = null,
-                TaskResponses = null,
-                CV = null,
-                AppliedAt = DateTime.Now,
-                Status = ApplicationStatus.Submitted,
-                ApplicantUsername = null,
-                Vacancy = null,
-                VacancyId = noVacancy.Id,
-                ApplicantId = default,
-                TestResult = null,
-                History = null,
-
-            };
-        await AddAsync(application);
-
-        var createApplicationCommand = new CreateApplicationCommand
-        {
-            VacancyId = noVacancy.Id, CoverLetter = RandomString(150), Cv = { IsUploadCvMode = false, }
-        };
-        RunAsDefaultUserAsync("applicant1");
-        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createApplicationCommand);
-        var exception = await response.Content.ReadAsStringAsync();
-
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
-       
-    }
-    
-    [Test]
-    public async Task CreateApplicationWithNoVacancy_3_ShouldRequestToIdentity_ReturnsOk_IfStatusExpired()
-    {
-        var noVacancy = await GetNoVacancy();
-        
-        var application =
-            new Domain.Entities.Application
-            {
-                Id = default,
-                IsDeleted = false,
-                CreatedAt = default,
-                CreatedBy = default,
-                LastModifiedAt = null,
-                LastModifiedBy = default,
-                CoverLetter = null,
-                Slug = "applicant2-no_vacancy",
+                Slug = "1-no_vacancy",
                 VacancyResponses = null,
                 TaskResponses = null,
                 CV = null,
@@ -116,17 +56,20 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
                 ApplicantId = default,
                 TestResult = null,
                 History = null,
-
             };
         await AddAsync(application);
 
         var createApplicationCommand = new CreateApplicationCommand
         {
-            VacancyId = noVacancy.Id, CoverLetter = RandomString(150), Cv = { IsUploadCvMode = false, }
+            VacancySlug = noVacancy.Slug, CoverLetter = RandomString(150),
+            Cv =
+            {
+                IsUploadCvMode = false
+            }
         };
         RunAsDefaultUserAsync("applicant2");
-        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createApplicationCommand);
+        var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint + "/CreateApplicationNoVacancy",
+            createApplicationCommand);
         response.EnsureSuccessStatusCode();
     }
-    
 }

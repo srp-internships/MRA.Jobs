@@ -12,13 +12,13 @@
 @inject IDialogService DialogService
 @inject LayoutService LayoutService
 @inject IJSRuntime jsRuntime
-@if (serverError)
+@if (_serverError)
 {
     <ServerErrorComponent/>
 }
 else
 {
-    @if (categories == null)
+    @if (_categories == null)
     {
         <div style="text-align: center;">
             <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
@@ -33,12 +33,12 @@ else
                         <b>Trainings</b>
                     </MudText>
                     <MudSpacer/>
-                    <MudButton Disabled="@panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => panelOpenState = !panelOpenState)">
+                    <MudButton Disabled="@_panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => _panelOpenState = !_panelOpenState)">
                         <MudText>Create New Training Vacancy</MudText>
                     </MudButton>
                 </MudCardActions>
             </MudItem>
-            <MudItem lg="12" hidden="@(!panelOpenState)">
+            <MudItem lg="12" hidden="@(!_panelOpenState)">
                 <EditForm Model="@TrainingService.createCommand">
                     <FluentValidationValidator/>
                     <MudGrid>
@@ -47,7 +47,7 @@ else
                                 <MudCardHeader>
                                     <CardHeaderContent>
                                         <MudText Style="color:#808080">
-                                            <b>@createOrEditHeader</b>
+                                            <b>@_createOrEditHeader</b>
                                         </MudText>
                                     </CardHeaderContent>
                                 </MudCardHeader>
@@ -74,9 +74,9 @@ else
                                     <MudGrid>
                                         <MudItem xs=12 lg="12">
                                             <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Category</MudText>
-                                            <MudSelect T="string" @bind-Value="@selectedCategory"
+                                            <MudSelect T="string" @bind-Value="@_selectedCategory"
                                                        Variant="Variant.Outlined">
-                                                @foreach (var cat in categories)
+                                                @foreach (var cat in _categories)
                                                 {
                                                     <MudSelectItem Value="@cat.Name"/>
                                                 }
@@ -96,7 +96,7 @@ else
                                                                    Label="Date" For="@(() => TrainingService.createCommand.PublishDate)"/>
                                                 </MudItem>
                                                 <MudItem xs=12 lg="6">
-                                                    <MudTimePicker AmPm="true" @bind-Time="publishDate_Time" Variant="Variant.Outlined" Label="Time"/>
+                                                    <MudTimePicker AmPm="true" @bind-Time="_publishDateTime" Variant="Variant.Outlined" Label="Time"/>
                                                 </MudItem>
                                             </MudGrid>
                                         </MudItem>
@@ -109,7 +109,7 @@ else
 
                                                 </MudItem>
                                                 <MudItem xs=12 lg="6">
-                                                    <MudTimePicker AmPm="true" @bind-Time="endDate_Time" Variant="Variant.Outlined" Label="Time"/>
+                                                    <MudTimePicker AmPm="true" @bind-Time="_endDateTime" Variant="Variant.Outlined" Label="Time"/>
                                                 </MudItem>
                                             </MudGrid>
                                         </MudItem>
@@ -131,7 +131,7 @@ else
                                 </MudCardHeader>
                                 <MudCardContent>
                                     <MudExpansionPanels MultiExpansion="true">
-                                        @foreach (var task in Tasks)
+                                        @foreach (var task in _tasks)
                                         {
                                             <MudExpansionPanel Text="@task.Title">
                                                 <MudText> Description: @task.Description</MudText>
@@ -154,12 +154,12 @@ else
                                             </MudExpansionPanel>
                                         }
                                     </MudExpansionPanels>
-                                    @if (panelOpenState != false)
+                                    @if (_panelOpenState)
                                     {
                                         <br/>
-                                        <MudTextField @bind-Value="newTitle" OnKeyDown="@OnKeyDown" Label="Title"
+                                        <MudTextField @bind-Value="_newTitle" OnKeyDown="@OnKeyDown" Label="Title"
                                                       Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                                        <MudTextField Lines="5" @bind-Value="newDescription" OnKeyDown="@OnKeyDown" Label="Description"
+                                        <MudTextField Lines="5" @bind-Value="_newDescription" OnKeyDown="@OnKeyDown" Label="Description"
                                                       Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
                                         <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Template</MudText>
                                         <StandaloneCodeEditor @ref="_editorTemplate" Id="sample-code-editor-123" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu"/>
@@ -184,7 +184,7 @@ else
                                     </CardHeaderContent>
                                 </MudCardHeader>
                                 <MudCardContent>
-                                    @foreach (var ques in Questions)
+                                    @foreach (var ques in _questions)
                                     {
                                         <MudText Typo="Typo.subtitle1">
                                             <MudChip>
@@ -196,20 +196,22 @@ else
                                         </MudText>
                                         <MudDivider/>
                                     }
-                                    <MudTextField @bind-Value="newQuestion" OnKeyDown="@OnKeyDown" OnAdornmentClick="AddQuestions" Label="New question" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary"/>
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="NewQuestionAsync">
+                                        <MudText>Add Question</MudText>
+                                    </MudButton>
                                 </MudCardContent>
                             </MudCard>
                         </MudItem>
                         <MudItem xs="12" lg="12">
                             <MudCardActions>
-                                <div hidden="@isInserting">
+                                <div hidden="@_isInserting">
                                     <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit">
                                         <MudText>
                                             Create
                                         </MudText>
                                     </MudButton>
                                 </div>
-                                <div hidden="@isUpdating">
+                                <div hidden="@_isUpdating">
                                     <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate">
                                         <MudText>
                                             Save changes
@@ -227,9 +229,9 @@ else
                 </EditForm>
             </MudItem>
         </MudGrid>
-		
 
-        <MudTable Items="@trainings"  Breakpoint="Breakpoint.Md" hidden="@panelOpenState">
+
+        <MudTable Items="@_trainings" Breakpoint="Breakpoint.Md" hidden="@_panelOpenState">
             <HeaderContent>
                 <MudTh>
                     <strong>Title</strong>
@@ -277,296 +279,6 @@ else
 }
 
 @code {
-    private bool serverError;
-    bool panelOpenState;
-    bool isInserting;
-    bool isUpdating = true;
-    string UpdateSlug;
-    string selectedCategory = "Select category";
-    private string newQuestion = string.Empty;
-    private string newDescription = string.Empty;
-    private string newTemplate = string.Empty;
-    private string newTest = string.Empty;
-    private string newTitle = string.Empty;
-    private string createOrEditHeader = "New Training Vacancy";
-    private List<VacancyQuestionDto> Questions = new();
-    private List<CategoryResponse> categories;
-    private List<TrainingVacancyListDto> trainings;
-    private List<VacancyTaskDto> Tasks = new();
-    private TimeSpan? publishDate_Time;
-    private TimeSpan? endDate_Time;
-    private StandaloneCodeEditor _editorTemplate = null!;
-    private StandaloneCodeEditor _editorTest = null!;
-
-    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
-    {
-        if (editor == _editorTest)
-        {
-            return new StandaloneEditorConstructionOptions
-            {
-                Language = "csharp",
-                GlyphMargin = true,
-                AutomaticLayout = true,
-                Value = "using Microsoft.VisualStudio.TestTools.UnitTesting;\n\n" +
-                        "namespace TestProject\n" +
-                        "{\n" +
-                        "    [TestClass]\n" +
-                        "    public class UnitTest1\n" +
-                        "    {\n" +
-                        "        [TestMethod]\n" +
-                        "        public void TestMethod1()\n" +
-                        "        {\n" +
-                        "        //You can write a test here  \n" +
-                        "        }\n" +
-                        "    }\n" +
-                        "}\n"
-            };
-        }
-        else
-        {
-            return new StandaloneEditorConstructionOptions
-            {
-                Language = "csharp",
-                GlyphMargin = true,
-                AutomaticLayout = true,
-                Value = "using System;\n\n" +
-                        "public class Program\n" +
-                        "{\n" +
-                        "    public static void Main()\n" +
-                        "    {\n" +
-                        "        Console.WriteLine(\"Hello, world!\");\n" +
-                        "    }\n" +
-                        "}\n"
-            };
-        }
-    }
-
-    private async Task EditorOnDidInit()
-    {
-        await _editorTest.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) => { Console.WriteLine("Ctrl+H : Initial editor command is triggered."); });
-        await _editorTemplate.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (args) => { Console.WriteLine("Ctrl+H : Initial editor command is triggered."); });
-
-        var newDecorations = new ModelDeltaDecoration[]
-        {
-            new ModelDeltaDecoration
-            {
-                Range = new BlazorMonaco.Range(3, 1, 3, 1),
-                Options = new ModelDecorationOptions
-                {
-                    IsWholeLine = true,
-                    ClassName = "decorationContentClass",
-                    GlyphMarginClassName = "decorationGlyphMarginClass"
-                }
-            }
-        };
-
-        await _editorTest.DeltaDecorations(null, newDecorations);
-        await _editorTemplate.DeltaDecorations(null, newDecorations);
-    }
-
-    private void OnContextMenu(EditorMouseEvent eventArg)
-    {
-        Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadData();
-		await BlazorMonaco.Editor.Global.SetTheme(jsRuntime, LayoutService.IsDarkMode ? "vs-dark": "vs");
-    }
-
-
-    async Task OnDeleteClick(string slug)
-    {
-        var vacancy = trainings.FirstOrDefault(c => c.Slug == slug);
-        var parameters = new DialogParameters<DialogMudBlazor>();
-        parameters.Add(x => x.ContentText, "Do you really want to delete this vacancy?");
-        parameters.Add(x => x.ButtonText, "Delete");
-        parameters.Add(x => x.Color, Color.Error);
-
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-
-        var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
-        var result = await dialog.Result;
-
-        if (!result.Canceled)
-        {
-            try
-            {
-                await TrainingService.Delete(slug);
-
-                Snackbar.Add($"Deleted", Severity.Success);
-                trainings.Remove(vacancy);
-
-                Clear();
-            }
-            catch (Exception)
-            {
-                Snackbar.Add("Server is not responding, try latter", Severity.Error);
-            }
-            StateHasChanged();
-        }
-    }
-
-
-    private async Task OnEditClick(string slug)
-    {
-        var vacancy = await TrainingService.GetBySlug(slug);
-        if (vacancy != null)
-        {
-            createOrEditHeader = $"Edit {vacancy.Title}";
-            TrainingService.createCommand.Title = vacancy.Title;
-            TrainingService.createCommand.ShortDescription = vacancy.ShortDescription;
-            TrainingService.createCommand.Description = vacancy.Description;
-            TrainingService.createCommand.Duration = vacancy.Duration;
-            TrainingService.createCommand.EndDate = vacancy.EndDate;
-            TrainingService.createCommand.PublishDate = vacancy.PublishDate;
-            TrainingService.createCommand.CategoryId = vacancy.CategoryId;
-            TrainingService.createCommand.Fees = vacancy.Fees;
-            isInserting = true;
-            isUpdating = false;
-            panelOpenState = true;
-            UpdateSlug = slug;
-            Questions = vacancy.VacancyQuestions.Select(v =>
-                new VacancyQuestionDto
-                {
-                    Question = v.Question
-                }
-                ).ToList();
-            Tasks = vacancy.VacancyTasks.Select(v =>
-                new VacancyTaskDto
-                {
-                    Title = v.Title,
-                    Description = v.Description,
-                    Template = v.Template,
-                    Test = v.Test
-                }).ToList();
-        }
-    }
-
-    private void RemoveQuestion(string question)
-    {
-        var q = Questions.FirstOrDefault(t => t.Question == question);
-        Questions.Remove(q);
-    }
-
-    private void RemoveTask(string title)
-    {
-        var r = Tasks.FirstOrDefault(t => t.Title == title);
-        Tasks.Remove(r);
-    }
-
-    private async Task LoadData()
-    {
-        try
-        {
-            trainings = (await TrainingService.GetAll()).Items;
-            categories = await CategoryService.GetAllCategory();
-        }
-        catch (Exception)
-        {
-            serverError = true;
-            StateHasChanged();
-        }
-    }
-
-    private async Task HandleSubmit()
-    {
-        if (endDate_Time.HasValue)
-            TrainingService.createCommand.EndDate += endDate_Time.Value;
-
-        if (publishDate_Time.HasValue)
-            TrainingService.createCommand.PublishDate += publishDate_Time.Value;
-        try
-        {
-            var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
-            TrainingService.createCommand.CategoryId = catId;
-            TrainingService.createCommand.VacancyQuestions = Questions;
-            TrainingService.createCommand.VacancyTasks = Tasks;
-            var result = await TrainingService.Create();
-            if (result.IsSuccessStatusCode)
-            {
-                Snackbar.Add($"{TrainingService.createCommand.Title} created", Severity.Success);
-            }
-            else
-            {
-                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
-            }
-            await LoadData();
-            Clear();
-        }
-        catch (Exception)
-        {
-            Snackbar.Add("Server is not responding, try latter", Severity.Error);
-        }
-    }
-
-    private async Task HandleUpdate()
-    {
-        if (endDate_Time.HasValue)
-            TrainingService.createCommand.EndDate += endDate_Time.Value;
-
-        if (publishDate_Time.HasValue)
-            TrainingService.createCommand.PublishDate += publishDate_Time.Value;
-        TrainingService.createCommand.VacancyQuestions = Questions;
-        TrainingService.createCommand.VacancyTasks = Tasks;
-        var catId = categories.FirstOrDefault(c => c.Name == selectedCategory).Id;
-        TrainingService.createCommand.CategoryId = catId;
-        await TrainingService.Update(UpdateSlug);
-        await LoadData();
-        Clear();
-    }
-
-    public void AddQuestions()
-    {
-        Questions.Add(new VacancyQuestionDto { Question = newQuestion });
-        newQuestion = "";
-    }
-
-    public async void AddTask()
-    {
-        Tasks.Add(new VacancyTaskDto
-        {
-            Title = newTitle,
-            Description = newDescription,
-            Template = await _editorTemplate.GetValue(),
-            Test = await _editorTest.GetValue()
-        });
-        newTitle = "";
-        newDescription = "";
-    }
-
-    private async Task OnKeyDown(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter")
-        {
-            await Task.Delay(1);
-            AddQuestions();
-            AddTask();
-        }
-    }
-
-    void HandleCancel()
-    {
-        Clear();
-    }
-
-    private void Clear()
-    {
-        createOrEditHeader = "New Internship Vacancy";
-        TrainingService.createCommand.Title = string.Empty;
-        TrainingService.createCommand.ShortDescription = string.Empty;
-        TrainingService.createCommand.Description = string.Empty;
-        TrainingService.createCommand.Fees = 0;
-        TrainingService.createCommand.Duration = 0;
-        TrainingService.createCommand.EndDate = DateTime.Now;
-        TrainingService.createCommand.PublishDate = DateTime.Now;
-        isInserting = false;
-        isUpdating = true;
-        panelOpenState = false;
-        UpdateSlug = string.Empty;
-        Questions.Clear();
-        Tasks.Clear();
-    }
+  
 
 }

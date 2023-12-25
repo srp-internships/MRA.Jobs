@@ -1,42 +1,54 @@
-﻿namespace MRA.Jobs.Infrastructure.Persistence;
+﻿using MRA.Jobs.Application.Contracts.JobVacancies;
+
+namespace MRA.Jobs.Infrastructure.Persistence;
 
 public class ApplicationDbContextInitializer(ApplicationDbContext dbContext)
 {
-
-    public async Task SeedAsync()
+    public Task SeedAsync()
     {
-        await CreateNoVacancy("NoVacancy");
+        return CreateNoVacancy("NoVacancy");
     }
-    
+
     private async Task CreateNoVacancy(string vacancyTitle)
     {
-        var noCategory = await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == "NoVacancy");
+        var noCategory =
+            await dbContext.Categories.FirstOrDefaultAsync(c => c.Slug == CommonVacanciesSlugs.NoVacancySlug);
         if (noCategory == null)
         {
-            var category = new VacancyCategory() { Name = "NoVacancy", Slug = "no_vacancy" };
+            var category = new VacancyCategory { Name = "NoVacancy", Slug = CommonVacanciesSlugs.NoVacancySlug };
             await dbContext.Categories.AddAsync(category);
             noCategory = category;
         }
 
-        var noVacancy = await dbContext.NoVacancies.FirstOrDefaultAsync(hv => hv.Title == vacancyTitle);
+        List<VacancyQuestion> question = new(){
+            new VacancyQuestion { Question = "Your name", IsOptional = false },
+            new VacancyQuestion { Question = "Your phone number", IsOptional = false }
+        };
+
+        var noVacancy = await dbContext.JobVacancies
+            .Include(vacancy => vacancy.VacancyQuestions)
+            .FirstOrDefaultAsync(hv => hv.Slug == CommonVacanciesSlugs.NoVacancySlug);
         if (noVacancy == null)
         {
-            var vacancy = new NoVacancy()
+            var vacancy = new JobVacancy
             {
-                Id = Guid.NewGuid(),
                 Title = vacancyTitle,
                 PublishDate = DateTime.Now,
                 EndDate = new DateTime(2099, 12, 31),
                 ShortDescription = "",
                 Description = "",
-                Slug = "no_vacancy",
+                Slug = CommonVacanciesSlugs.NoVacancySlug,
                 CategoryId = noCategory.Id,
                 CreatedAt = DateTime.Now,
-                CreatedByEmail = "mrajobsadmin@silkroadprofessionals.com"
+                CreatedByEmail = "mrajobsadmin@silkroadprofessionals.com",
+                VacancyQuestions = question
             };
 
-            await dbContext.NoVacancies.AddAsync(vacancy);
+            await dbContext.JobVacancies.AddAsync(vacancy);
         }
+
+        if (noVacancy != null && !noVacancy.VacancyQuestions.Any())
+            noVacancy.VacancyQuestions = question;
 
         await dbContext.SaveChangesAsync();
     }

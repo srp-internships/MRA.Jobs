@@ -5,6 +5,7 @@ using MRA.Identity.Domain.Entities;
 using MRA.Configurations.Services;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
+using MRA.Identity.Application.Contract.User.Queries;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
@@ -22,9 +23,13 @@ public class EmailTest : BaseTest
             FirstName = "Alex",
             Username = "@Alex221",
             LastName = "Makedonsky1",
-            PhoneNumber = "+992223456789",
+            PhoneNumber = "+992323456789",
             ConfirmPassword = "password@#12P"
         };
+        var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={request.PhoneNumber}");
+        res.EnsureSuccessStatusCode();
+
+        request.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == request.PhoneNumber)).Code;
 
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         var splitted = SendEmailData.Body.Split("'")[1].Split("token=")[1];
@@ -56,6 +61,10 @@ public class EmailTest : BaseTest
             ConfirmPassword = "password@#12P"
         };
         // Act
+        var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={request.PhoneNumber}");
+        res.EnsureSuccessStatusCode();
+
+        request.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == request.PhoneNumber)).Code;
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
         var userId = (await response.Content.ReadAsStringAsync()).Replace("\"", "");
         var splitted = "aaaa1";

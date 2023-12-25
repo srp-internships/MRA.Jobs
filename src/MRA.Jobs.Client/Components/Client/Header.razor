@@ -3,10 +3,8 @@
 @using AltairCA.Blazor.WebAssembly.Cookie
 @using Blazorise
 @using MRA.Identity.Application.Contract.Profile.Responses
-@using MRA.Jobs.Application.Contracts.NoVacancies.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using MRA.Jobs.Client.Components.Buttons
-@using MRA.Jobs.Client.Services.NoVacancies
 @using Anchor = MudBlazor.Anchor
 @using Breakpoint = MudBlazor.Breakpoint
 @using Color = MudBlazor.Color
@@ -17,38 +15,44 @@
 @inject LayoutService LayoutService
 @inject IUserProfileService UserProfileService
 @inject IFeatureManager FeatureManager
+@inject IConfiguration Configuration
 
 
 <MudToolBar Class="toolbar-fixed-blur">
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
-        <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
     </MudHidden>
-    <MudHidden Breakpoint="Breakpoint.Xs">
-        <MudItem Style="padding-right:5px;">
-            <MudImage src="/images/srp/srp_icon.png" Style="width: 50px" />
-        </MudItem>
-        <MudItem Style="padding-left:0; margin-right: 40px;">
-            <MudText Style="font-size: 21.5px;">
-                <b>SILK ROAD</b>
-            </MudText>
-            <MudText Style="margin-top: -10px;">
-                <small>
-                    <b>PROFESSIONALS</b>
-                </small>
-            </MudText>
-        </MudItem>
-    </MudHidden>
-    <MudHidden Breakpoint="Breakpoint.SmAndUp">
-        <MudItem Style="padding-right:5px;">
-            <MudImage src="/images/srp/srp_icon.png" Style="width: 30px" />
-        </MudItem>
-        <MudItem Style="padding-left:0; margin-right: 40px;">
-            <MudText Style="font-size: 21.5px;">
-                <b>SRP</b>
-            </MudText>
-        </MudItem>
-    </MudHidden>
-
+    <a href="https://www.silkroadprofessionals.com/" target="_blank">
+        <MudHidden Breakpoint="Breakpoint.Xs">
+            <MudStack Row="true">
+                <MudItem Style="padding-right:5px;">
+                    <MudImage src="/images/srp/srp_icon.png" Style="width: 50px"/>
+                </MudItem>
+                <MudItem Style="padding-left:0; margin-right: 40px;">
+                    <MudText Style="font-size: 21.5px;">
+                        <b>SILK ROAD</b>
+                    </MudText>
+                    <MudText Style="margin-top: -10px;">
+                        <small>
+                            <b>PROFESSIONALS</b>
+                        </small>
+                    </MudText>
+                </MudItem>
+            </MudStack>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+            <MudStack Row="true">
+                <MudItem Style="padding-right:5px;">
+                    <MudImage src="/images/srp/srp_icon.png" Style="width: 30px"/>
+                </MudItem>
+                <MudItem Style="padding-left:0; margin-right: 40px;">
+                    <MudText Style="font-size: 21.5px;">
+                        <b>SRP</b>
+                    </MudText>
+                </MudItem>
+            </MudStack>
+        </MudHidden>
+    </a>
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <MudButton Href="/" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Home)">
             <MudText>
@@ -75,54 +79,49 @@
                 <b>@ContentService["Header:Team"]</b>
             </MudText>
         </MudButton>
+        <MudButton Href="@Configuration["Academy:Address"]" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+            <MudText>
+                <b>@ContentService["Header:Academy"] </b>
+            </MudText>
+        </MudButton>
+
         <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Contact)">
             <MudText>
                 <b>Contact</b>
             </MudText>
         </MudButton>
     </MudHidden>
-    <MudSpacer />
+    <MudSpacer/>
     <MudHidden Breakpoint="Breakpoint.Xs">
         @if (betaVersion)
         {
             <MudChip Disabled="true" Color="Color.Warning">Beta</MudChip>
         }
-
-        <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4" />
-        <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Variant="Variant.Text"
-                     PopoverClass="docs-layout-menu-shadow" LockScroll="true">
-                <ActivatorContent>
-                    <MudChip Icon="@Icons.Material.Filled.UploadFile" Color="Color.Tertiary">CV</MudChip>
-                </ActivatorContent>
-                <ChildContent>
-                    <NoVacancyUploadCV />
-                </ChildContent>
-            </MudMenu>
-        </MudHidden>
-        <ToolBarSettingsButtons />
+        <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
+        <ToolBarSettingsButtons/>
     </MudHidden>
 
-    <UserButton />
+    <UserButton/>
 </MudToolBar>
 
 <MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent" Style="position:fixed;height: 100%"
            ClipMode="DrawerClipMode.Docked">
     <MudToolBar Dense="true" Class="docs-gray-bg">
-        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
-        <MudSpacer />
-        <ToolBarSettingsButtons />
+        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+        <MudSpacer/>
+        <ToolBarSettingsButtons/>
     </MudToolBar>
 
     <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
         <MudNavLink Match="NavLinkMatch.All" Href="/">@ContentService["Header:Home"]</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="/contact">Contact</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Academy:Address"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/contact">Contact</MudNavLink>
 
-        </MudNavMenu>
+    </MudNavMenu>
     @if (betaVersion)
     {
         <MudChip Disabled="true" Color="Color.Warning">Beta</MudChip>
@@ -156,6 +155,7 @@
             catch (Exception e)
             {
             }
+
             StateHasChanged();
         }
     }
@@ -185,9 +185,6 @@
     {
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
-
-
-
 
 
 }

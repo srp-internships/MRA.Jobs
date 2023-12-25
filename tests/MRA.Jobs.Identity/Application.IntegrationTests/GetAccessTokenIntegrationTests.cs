@@ -1,9 +1,11 @@
 ﻿using System.Net.Http.Json;
+using Azure.Core;
 using FluentAssertions;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Application.Contract.User.Responses;
+using MRA.Identity.Domain.Entities;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
@@ -29,6 +31,10 @@ public class GetAccessTokenIntegrationTests : BaseTest
                 Role = "wqu;k65",
                 ConfirmPassword = "password@#12P"
             };
+            var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={registerCommand1.PhoneNumber}");
+            res.EnsureSuccessStatusCode();
+
+            registerCommand1.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == registerCommand1.PhoneNumber)).Code;
             var loginCommand1 = new LoginUserCommand { Username = "@Alex111122", Password = "password@#12P" };
 
             await RegisterUser(registerCommand1);
@@ -102,6 +108,10 @@ public class GetAccessTokenIntegrationTests : BaseTest
             Role = "wqu;k65",
             ConfirmPassword = "password@#12P2"
         };
+        var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={registerCommand2.PhoneNumber}");
+        res.EnsureSuccessStatusCode();
+
+        registerCommand2.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == registerCommand2.PhoneNumber)).Code;
         var loginCommand2 = new LoginUserCommand { Username = "@Alex222", Password = "password@#12P2" };
 
         await RegisterUser(registerCommand2);

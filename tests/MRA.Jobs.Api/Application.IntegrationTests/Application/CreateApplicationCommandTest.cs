@@ -12,10 +12,10 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
     [Test]
     public async Task CreateApplicationCommand_CreatingApplication_Success()
     {
-        var vacancyId = await AddJobVacancyAsync("foobar2");
+        var vacancySlug = await AddJobVacancyAsync("foobar2");
         var testSubmit = new CreateApplicationCommand
         {
-            VacancyId = vacancyId,
+            VacancySlug = vacancySlug,
             CoverLetter = RandomString(150),
             Cv =
             {
@@ -37,10 +37,10 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyQuestions_Success()
     {
-        var vacancyId = await AddJobVacancyAsync("foobar");
+        var vacancySlug = await AddJobVacancyAsync("foobar");
         var testSubmit = new CreateApplicationCommand
         {
-            VacancyId = vacancyId,
+            VacancySlug = vacancySlug,
             CoverLetter = RandomString(200),
             VacancyResponses = new List<VacancyResponseDto>
             {
@@ -72,10 +72,10 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyTask_Success()
     {
-        var vacancyId = await AddJobVacancyAsync("foobar11");
+        var vacancySlug = await AddJobVacancyAsync("foobar11");
         var testSubmit = new CreateApplicationCommand
         {
-            VacancyId = vacancyId,
+            VacancySlug = vacancySlug,
             CoverLetter = RandomString(200),
             VacancyResponses = new List<VacancyResponseDto>
             {
@@ -117,18 +117,17 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
         responseGuid.Should().NotBeEmpty();
     }
 
-
     [Test]
     public async Task Handle_DuplicateApplyForUser_ReturnsConflict()
     {
-        var jobId = await AddJobVacancyAsync("newVacancyForDuplicateTest");
+        var jobSlug = await AddJobVacancyAsync("newVacancyForDuplicateTest");
 
         RunAsDefaultUserAsync("applicant1");
 
         var createCommand = new CreateApplicationCommand
         {
             CoverLetter = RandomString(200),
-            VacancyId = jobId,
+            VacancySlug = jobSlug,
             VacancyResponses = null,
             Cv =
             {
