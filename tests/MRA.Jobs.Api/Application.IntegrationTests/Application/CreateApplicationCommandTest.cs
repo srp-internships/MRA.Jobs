@@ -9,7 +9,6 @@ namespace MRA.Jobs.Application.IntegrationTests.Application;
 
 public class CreateApplicationCommandTest : CreateApplicationTestsBase
 {
-    [Ignore("i will fix it later// firuz")]
     [Test]
     public async Task CreateApplicationCommand_CreatingApplication_Success()
     {
@@ -35,7 +34,6 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
         responseGuid.Should().NotBeEmpty();
     }
 
-    [Ignore("i will fix it later// firuz")]
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyQuestions_Success()
     {
@@ -71,7 +69,6 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
         responseGuid.Should().NotBeEmpty();
     }
 
-    [Ignore("i will fix it later// firuz")]
     [Test]
     public async Task CreateApplicationCommand_CreateApplicationWithVacancyTask_Success()
     {
@@ -120,7 +117,6 @@ public class CreateApplicationCommandTest : CreateApplicationTestsBase
         responseGuid.Should().NotBeEmpty();
     }
 
-    [Ignore("i will fix it later// firuz")]
     [Test]
     public async Task Handle_DuplicateApplyForUser_ReturnsConflict()
     {
