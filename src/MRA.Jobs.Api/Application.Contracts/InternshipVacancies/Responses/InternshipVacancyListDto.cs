@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using MRA.Jobs.Application.Contracts.Converter.Converter;
+using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.Dtos.Responses;
 
 namespace MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
@@ -20,7 +21,7 @@ public record InternshipVacancyListDto
 
     public int Duration { get; set; }
     public int Fees { get; set; }
-    public IEnumerable<VacancyQuestionResponseDto> VacancyQuestions { get; set; }
+    public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
     public IEnumerable<VacancyTaskResponseDto> VacancyTasks { get; set; }
     public string Slug { get; set; }
 }

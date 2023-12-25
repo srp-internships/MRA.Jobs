@@ -2,46 +2,49 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
-using MRA.Jobs.Application.Contracts.NoVacancies.Responses;
+using MRA.Jobs.Application.Contracts.JobVacancies;
+using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Client.Identity;
 using MudBlazor;
 
-
 namespace MRA.Jobs.Client.Services.NoVacancies;
 
-public class NoVacancyService(HttpClient httpClient, ISnackbar snackbar, NavigationManager navigationManager,
+public class NoVacancyService(
+    ISnackbar snackbar,
+    HttpClient httpClient,
+    NavigationManager navigationManager,
     IConfiguration configuration) : INoVacancyService
 {
-    public async Task<NoVacancyResponse> GetNoVacancy()
+    public async Task<JobVacancyDetailsDto> GetNoVacancyAsync()
     {
-        var vacancy = new NoVacancyResponse();
+        var vacancy = new JobVacancyDetailsDto();
         try
         {
-            var response = await httpClient.GetAsync("NoVacancies");
+            var response = await httpClient.GetAsync($"jobs/{CommonVacanciesSlugs.NoVacancySlug}");
             if (response.IsSuccessStatusCode)
-                vacancy = await response.Content.ReadFromJsonAsync<NoVacancyResponse>();
+                vacancy = await response.Content.ReadFromJsonAsync<JobVacancyDetailsDto>();
             else
                 snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
         }
         catch (Exception e)
         {
             snackbar.Add("Server is not responding, please try later", Severity.Error);
+            Console.WriteLine(e);
         }
 
         return vacancy;
     }
 
-    public async Task CreateApplicationNoVacancy(CreateApplicationNoVacancyCommand application, IBrowserFile file)
+    public async Task CreateApplicationNoVacancyAsync(CreateApplicationCommand application, IBrowserFile file)
     {
         try
         {
             //set cv
-            if (application.Cv.IsUploadCvMode)
-            {
-                var fileBytes = await GetFileBytesAsync(file);
-                application.Cv.CvBytes = fileBytes;
-                application.Cv.FileName = file.Name;
-            }
+            var fileBytes = await GetFileBytesAsync(file);
+            application.Cv.IsUploadCvMode = true;
+            application.VacancySlug = CommonVacanciesSlugs.NoVacancySlug;
+            application.Cv.CvBytes = fileBytes;
+            application.Cv.FileName = file.Name;
             //set cv
 
             var response = await httpClient.PostAsJsonAsync("Applications/CreateApplicationNoVacancy", application);
@@ -66,6 +69,7 @@ public class NoVacancyService(HttpClient httpClient, ISnackbar snackbar, Navigat
             Console.WriteLine(e.Message);
         }
     }
+
     private async Task<byte[]> GetFileBytesAsync(IBrowserFile file)
     {
         if (file.Size <= int.Parse(configuration["CvSettings:MaxFileSize"]!) * 1024 * 1024)

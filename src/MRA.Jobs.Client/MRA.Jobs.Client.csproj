@@ -51,6 +51,12 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Tajik.resx</DependentUpon>
       </Compile>
+      <Compile Update="Pages\Admin\TrainingVacancyPage.cs">
+        <DependentUpon>TrainingVacancyPage.razor</DependentUpon>
+      </Compile>
+      <Compile Update="Pages\Admin\VacancyPage.cs">
+        <DependentUpon>VacancyPage.razor</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
