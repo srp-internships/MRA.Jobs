@@ -13,6 +13,7 @@
 @inject IUserProfileService UserProfileService
 @inject IAuthService AuthService
 @inject IContentService ContentService
+@inject IConfiguration configuration
 
 <MudGrid Justify="Justify.Center" Class="align-items-center">
     <MudItem xs="12" sm="8" md="6" lg="4">
@@ -37,7 +38,7 @@
                             </div>
                         </div>
                         <MudText >
-                            @ContentService["SignUp:LabelHaveAccount"]<MudLink Href="sign-in"> @ContentService["SignUp:LinkSignIn"]</MudLink>
+                            @ContentService["SignUp:LabelHaveAccount"]<MudLink Href=@($"{configuration["IdentityClient"]}/login")> @ContentService["SignUp:LinkSignIn"]</MudLink>
                         </MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
