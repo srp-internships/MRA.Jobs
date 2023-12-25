@@ -5,7 +5,9 @@
 </MudText>
 @if (applications == null)
 {
-	<p>Loading...</p>
+	<div style="text-align: center;">
+		<MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+	</div>
 }
 else if (applications.Items.Count == 0)
 {
