@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
-using MRA.Jobs.Application.Contracts.NoVacancies.Responses;
+using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 
 namespace MRA.Jobs.Client.Services.NoVacancies;
 
 public interface INoVacancyService
 {
-    Task<NoVacancyResponse> GetNoVacancy();
+    Task<JobVacancyDetailsDto> GetNoVacancyAsync();
 
-    Task CreateApplicationNoVacancy(CreateApplicationNoVacancyCommand command, IBrowserFile file);
+    Task CreateApplicationNoVacancyAsync(CreateApplicationCommand command, IBrowserFile file);
 }
