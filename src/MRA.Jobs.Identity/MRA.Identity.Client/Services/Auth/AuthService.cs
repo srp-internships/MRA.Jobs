@@ -43,8 +43,8 @@ public class AuthService(HttpClient httpClient,
                 var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
                 navigationManager.NavigateTo($"{configuration["HttpClient:JobsClient"]}?atoken={response.AccessToken}&rtoken={response.RefreshToken}&vdate={response.AccessTokenValidateTo}");
                 await cookieUtil.SetValueAsync("authToken", response);
-                //await authenticationStateProvider.GetAuthenticationStateAsync();
-                //layoutService.User = await userProfileService.Get();
+                await authenticationStateProvider.GetAuthenticationStateAsync();
+                layoutService.User = await userProfileService.Get();
                 if (!newRegister)
                     navigationManager.NavigateTo("/");
                 return null;

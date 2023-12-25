@@ -10,3 +10,11 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await ContentService.InitializeCultureAsync();
+    }
+}

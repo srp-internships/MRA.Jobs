@@ -24,6 +24,7 @@ builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IUserPreferencesService, UserPreferencesService>();
 builder.Services.AddLocalization();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddAuthorizationCore();
 
 
 builder.RootComponents.Add<App>("#app");

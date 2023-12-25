@@ -5,9 +5,8 @@
 @inject IContentService ContentService
 @inject LayoutService LayoutService
 @inject NavigationManager navigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<br/> 
-<br/> 
 <MudGrid Justify="Justify.Center" Class="align-items-center">
     <MudItem xs="12" sm="8" md="6" lg="3">
         <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
@@ -31,7 +30,7 @@
                             </div>
                         </div>
                         <MudText>
-                            @ContentService["SignIn:LabelDontAccount"] <MudLink Href="sign-up"> @ContentService["SignIn:LinkSignUp"]</MudLink>
+                            @ContentService["SignIn:LabelDontAccount"] <MudLink Href="registration"> @ContentService["SignIn:LinkSignUp"]</MudLink>
                         </MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
@@ -105,6 +104,18 @@
             Snackbar.Add(loginMessage, MudBlazor.Severity.Error);
         _processing = false;
         StateHasChanged();
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("profile");
+            return;
+        }
     }
 
 }

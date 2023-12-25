@@ -3,6 +3,9 @@
 @inject IUserProfileService UserProfileService
 @inject IAuthService AuthService
 @inject IContentService ContentService
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
 
 <MudGrid Justify="Justify.Center" Class="align-items-center">
     <MudItem xs="12" sm="8" md="6" lg="4">
@@ -223,6 +226,18 @@
         {
             _processing = false;
             StateHasChanged();
+        }
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("profile");
+            return;
         }
     }
 

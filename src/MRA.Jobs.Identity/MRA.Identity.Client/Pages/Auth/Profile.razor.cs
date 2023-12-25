@@ -592,5 +592,12 @@ public partial class Profile
             .ToList();
     }
 
+    private async Task LogOut()
+    {
+        await CookieUtil.RemoveAsync("authToken");
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        Navigation.NavigateTo("login");
+    }
+
     #endregion
 }

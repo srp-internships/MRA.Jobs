@@ -1,4 +1,5 @@
 ﻿@page "/profile"
+
 @inject IContentService ContentService
 @inject ISnackbar Snackbar
 
@@ -6,6 +7,15 @@
 @inject IDialogService DialogService;
 @inject IUserProfileService UserProfileService;
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IAltairCABlazorCookieUtil CookieUtil
+
+<AuthorizeView>
+    <NotAuthorized>
+        @{
+            Navigation.NavigateTo("login");
+        }
+    </NotAuthorized>
+</AuthorizeView>
 
 @if (_tryButton)
 {
@@ -45,6 +55,7 @@ else
                         <MudNavLink Class="@((_active == 2) ? "active" : "")" OnClick="() => ActiveNavLink(2)">@ContentService["Profile:Experience"] </MudNavLink>
                         <MudNavLink Class="@((_active == 3) ? "active" : "")" OnClick="() => ActiveNavLink(3)">@ContentService["Profile:Skills"]</MudNavLink>
                         <MudNavLink Class="@((_active == 4) ? "active" : "")" OnClick="() => ActiveNavLink(4)">@ContentService["ResetPassword:Changepassword"]</MudNavLink>
+                        <MudButton OnClick="LogOut" Variant="Variant.Filled">Logout</MudButton>
                     </MudNavMenu>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -55,6 +66,7 @@ else
                             <MudNavLink Class="@((_active == 2) ? "active" : "")" OnClick="() => ActiveNavLink(2)">@ContentService["Profile:Experience"] </MudNavLink>
                             <MudNavLink Class="@((_active == 3) ? "active" : "")" OnClick="() => ActiveNavLink(3)">@ContentService["Profile:Skills"]</MudNavLink>
                             <MudNavLink Class="@((_active == 4) ? "active" : "")" OnClick="() => ActiveNavLink(4)">@ContentService["ResetPassword:Changepassword"]</MudNavLink>
+                                    <MudButton OnClick="LogOut" Variant="Variant.Filled">Logout</MudButton>
                         </MudNavMenu>
                     </MudExpansionPanel>
                 </MudHidden>
