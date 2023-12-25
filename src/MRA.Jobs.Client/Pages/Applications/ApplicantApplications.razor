@@ -3,8 +3,11 @@
 <MudText Typo="Typo.h4">
     <b>Applications</b>
 </MudText>
-
-@if (applications.Items.Count == 0)
+@if (applications == null)
+{
+	<p>Loading...</p>
+}
+else if (applications.Items.Count == 0)
 {
     <MudText Typo="Typo.h5" Style="text-align: center">You do not have any active applications</MudText>
 }

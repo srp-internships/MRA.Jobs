@@ -84,11 +84,23 @@ public class ApplicationService(
 
     public async Task<PagedList<ApplicationListDto>> GetAllApplications()
     {
-        await authenticationState.GetAuthenticationStateAsync();
-        HttpResponseMessage response = await httpClient.GetAsync(ApplicationsEndPoint);
-        PagedList<ApplicationListDto>
-            result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
-        return result;
+        try
+        {
+            await authenticationState.GetAuthenticationStateAsync();
+            HttpResponseMessage response = await httpClient.GetAsync(ApplicationsEndPoint);
+            response.EnsureSuccessStatusCode();
+            PagedList<ApplicationListDto> result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
+            return result;
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"HTTP запрос не удался: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Произошла ошибка: {ex.Message}");
+        }
+        return null;
     }
 
     public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
