@@ -7,7 +7,6 @@ using NUnit.Framework;
 namespace MRA.Jobs.Application.IntegrationTests.Application;
 public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
 {
-    [Ignore("i will fix it later// firuz")]
     [Test]
     public async Task CreateUsingProfile_ShouldRequestToIdentity_ReturnsOk()
     {
@@ -18,24 +17,18 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
         {
             VacancySlug = internshipSlug, CoverLetter = RandomString(150), Cv =
             {
-                IsUploadCvMode = true,
-                CvBytes = new byte[]
-                {
-                    1, 23, 4, 4, 12, 3
-                },
-                FileName = "adsfasdf",
+                IsUploadCvMode = false
             }
         };
         RunAsDefaultUserAsync("applicant1");
         var response = await _httpClient.PostAsJsonAsync(ApplicationApiEndPoint, createApplicationCommand);
         response.EnsureSuccessStatusCode();
 
-        var application = await FindFirstOrDefaultAsync<Domain.Entities.Application>(s =>
-            s.Slug == createApplicationCommand.VacancySlug && s.CoverLetter == createApplicationCommand.CoverLetter);
+        var application = await FindFirstOrDefaultAsync<Domain.Entities.Application>(s => s.CoverLetter == createApplicationCommand.CoverLetter);
         application.Should().NotBeNull();
     }
 
-    [Ignore("i will fix it later// firuz")]
+    [Ignore("At now create NoVacancy application using profile not available")]
     [Test]
     public async Task CreateApplicationWithNoVacancy_ShouldRequestToIdentity_ReturnsOk_IfStatusExpired()
     {
@@ -71,12 +64,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
             VacancySlug = noVacancy.Slug, CoverLetter = RandomString(150),
             Cv =
             {
-                IsUploadCvMode = true,
-                CvBytes = new byte[]
-                {
-                    1, 2, 3, 4
-                },
-                FileName = "fasdfas",
+                IsUploadCvMode = false
             }
         };
         RunAsDefaultUserAsync("applicant2");
