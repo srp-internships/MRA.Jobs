@@ -26,20 +26,11 @@
     <MudFab StartIcon="@Icons.Material.Filled.KeyboardArrowUp" Color="Color.Primary"/>
 </MudScrollToTop>
 
-<MudHidden Breakpoint="Breakpoint.MdAndUp">
+
     <div style="position: fixed; bottom: 76px; right: 16px; z-index: 999;">
-        <MudMenu Variant="Variant.Text" AnchorOrigin="Origin.TopLeft" TransformOrigin="Origin.BottomRight"
-                 PopoverClass="docs-layout-menu-shadow"
-                 LockScroll="true">
-            <ActivatorContent>
-                <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile" Label="CV"/>
-            </ActivatorContent>
-            <ChildContent>
-                <NoVacancyUploadCV/>
-            </ChildContent>
-        </MudMenu>
-    </div>
-</MudHidden>
+        <NoVacancyUploadCV/>
+           </div>
+
 
 @code
 {

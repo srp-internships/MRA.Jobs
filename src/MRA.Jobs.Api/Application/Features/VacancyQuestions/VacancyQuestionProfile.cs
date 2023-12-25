@@ -8,8 +8,8 @@ public class VacancyQuestionProfile : Profile
     {
         CreateMap<VacancyQuestionDto, VacancyQuestion>();
         CreateMap<VacancyQuestion, VacancyQuestionDto>();
-        CreateMap<VacancyQuestionResponseDto, VacancyQuestion>();
-        CreateMap<VacancyQuestion, VacancyQuestionResponseDto>();
-        CreateMap<VacancyQuestionDto, VacancyQuestionResponseDto>();
+        // CreateMap<VacancyQuestionDto, VacancyQuestion>();
+        // CreateMap<VacancyQuestion, VacancyQuestionResponseDto>();
+        // CreateMap<VacancyQuestionDto, VacancyQuestionResponseDto>();
     }
 }

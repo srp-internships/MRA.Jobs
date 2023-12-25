@@ -3,4 +3,5 @@ public class VacancyQuestion
 {
     public Guid Id { get; set; }
     public string Question { get; set; }
+    public bool IsOptional { get; set; }
 }
