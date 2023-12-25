@@ -24,8 +24,8 @@ using MRA.Jobs.Client.Services.ContentService;
 using MRA.Jobs.Client.Services.ConverterService;
 using MRA.Jobs.Client.Services;
 using MRA.Jobs.Client.Services.FileService;
-using MRA.Jobs.Client.Services.UserPreferences;
 using MRA.Jobs.Client.Services.NoVacancies;
+using MRA.Jobs.Client.Services.UserPreferences;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
