@@ -26,6 +26,7 @@ using MRA.Jobs.Client.Services;
 using MRA.Jobs.Client.Services.FileService;
 using MRA.Jobs.Client.Services.NoVacancies;
 using MRA.Jobs.Client.Services.UserPreferences;
+using MRA.Jobs.Client.Services.HttpClients;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -35,6 +36,7 @@ builder.Services
     .AddFontAwesomeIcons();
 
 
+builder.Services.AddScoped<IHttpClientService, HttpClientService>();
 builder.Services.AddMudServices();
 
 builder.Services.AddAltairCACookieService(options => { options.DefaultExpire = TimeSpan.Zero; });
