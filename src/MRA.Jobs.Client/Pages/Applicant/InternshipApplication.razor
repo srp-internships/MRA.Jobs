@@ -5,21 +5,22 @@
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
 
-@if (serverError)
+@if (_serverError)
 {
 	<ServerErrorComponent />
 }
 else
 {
-	<VacancyApplication vacancyType="internships" Slug="@Slug" application="@application" taskResponses="@tasksResponses" questionResponses="@questionResponses" vacancy="@internship" />
+	<VacancyApplication VacancyType="internships" Slug="@Slug" Application="@_application" TaskResponses="@TasksResponses" QuestionResponses="@QuestionResponses" Vacancy="@_internship" />
 }
 
+
 @code {
-	private bool serverError;
-	private VacancyApplicationResponse internship;
-	private CreateApplicationCommand application;
-	public Dictionary<string, string> questionResponses = new();
-	public Dictionary<Guid, string> tasksResponses = new();
+	private bool _serverError;
+	private VacancyApplicationResponse _internship;
+	private CreateApplicationCommand _application;
+	public readonly Dictionary<string, string> QuestionResponses = new();
+	public readonly Dictionary<Guid, string> TasksResponses = new();
 
 
 	[Parameter]
@@ -35,7 +36,7 @@ await base.OnInitializedAsync();
 
 			if (response != null)
 			{
-				internship = new VacancyApplicationResponse
+				_internship = new VacancyApplicationResponse
 					{
 						Id = response.Id,
 						Title = response.Title,
@@ -47,14 +48,14 @@ await base.OnInitializedAsync();
 						VacancyQuestions = response.VacancyQuestions,
 						VacancyTasks = response.VacancyTasks
 					};
-				application = new CreateApplicationCommand
+				_application = new CreateApplicationCommand
 					{
 						VacancySlug = Slug,
-						VacancyResponses = internship.VacancyQuestions.Select(q => new VacancyResponseDto
+						VacancyResponses = _internship.VacancyQuestions.Select(q => new VacancyResponseDto
 						{
 							VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
 						}),
-						TaskResponses = internship.VacancyTasks.Select(t => new TaskResponseDto
+						TaskResponses = _internship.VacancyTasks.Select(t => new TaskResponseDto
 						{
 							TaskId = t.Id,
 							Code = t.Template
@@ -62,19 +63,19 @@ await base.OnInitializedAsync();
 
 					};
 
-				foreach (var question in internship.VacancyQuestions)
+				foreach (var question in _internship.VacancyQuestions)
 				{
-					questionResponses[question.Question] = "";
+					QuestionResponses[question.Question] = "";
 				}
-				foreach (var task in internship.VacancyTasks)
+				foreach (var task in _internship.VacancyTasks)
 				{
-					tasksResponses[task.Id] = task.Template;
+					TasksResponses[task.Id] = task.Template;
 				}
 			}
 		}
 		catch (Exception)
 		{
-			serverError = true;
+			_serverError = true;
 			StateHasChanged();
 		}
 	}

@@ -15,11 +15,11 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 namespace MRA.Jobs.Client.Services.ApplicationService;
 
 public class ApplicationService(
-    HttpClient httpClient,
-    AuthenticationStateProvider authenticationState,
-    ISnackbar snackbar,
-    NavigationManager navigationManager,
-    IConfiguration configuration)
+        HttpClient httpClient,
+        AuthenticationStateProvider authenticationState,
+        ISnackbar snackbar,
+        NavigationManager navigationManager,
+        IConfiguration configuration)
     : IApplicationService
 {
     private const string ApplicationsEndPoint = "applications";
@@ -68,17 +68,15 @@ public class ApplicationService(
             Console.WriteLine(e.Message);
         }
     }
-
+    
     private async Task<byte[]> GetFileBytesAsync(IBrowserFile file)
     {
-        if (file.Size <= int.Parse(configuration["CvSettings:MaxFileSize"]!) * 1024 * 1024)
-        {
+        if (file.Size <= int.Parse(configuration["CvSettings:MaxFileSize"]!)) {
             var ms = new MemoryStream();
             await file.OpenReadStream().CopyToAsync(ms);
             var res = ms.ToArray();
             return res;
         }
-
         return null;
     }
 
@@ -122,6 +120,7 @@ public class ApplicationService(
         {
             return "";
         }
+
         return $"{httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
     }
 
