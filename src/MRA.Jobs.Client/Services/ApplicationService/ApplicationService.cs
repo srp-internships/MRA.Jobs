@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
@@ -7,7 +8,6 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStat
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Client.Identity;
-using MRA.Jobs.Client.Services.HttpClients;
 using MudBlazor;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
@@ -15,7 +15,7 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 namespace MRA.Jobs.Client.Services.ApplicationService;
 
 public class ApplicationService(
-       IHttpClientService httpClientService,
+        HttpClient httpClient,
         AuthenticationStateProvider authenticationState,
         ISnackbar snackbar,
         NavigationManager navigationManager,
@@ -26,8 +26,10 @@ public class ApplicationService(
 
     public async Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status)
     {
-        var response = await httpClientService.GetAsJsonAsync<List<ApplicationListStatus>>($"{ApplicationsEndPoint}/{status}", null);
-        return response?.Result;
+        HttpResponseMessage response = await httpClient.GetAsync($"{ApplicationsEndPoint}/{status}");
+
+        List<ApplicationListStatus> result = await response.Content.ReadFromJsonAsync<List<ApplicationListStatus>>();
+        return result;
     }
 
 
@@ -80,26 +82,14 @@ public class ApplicationService(
 
     public async Task<PagedList<ApplicationListDto>> GetAllApplications()
     {
-        try
-        {
-            await authenticationState.GetAuthenticationStateAsync();
-            HttpResponseMessage response = await httpClient.GetAsync(ApplicationsEndPoint);
-            response.EnsureSuccessStatusCode();
-            PagedList<ApplicationListDto> result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
-            return result;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"HTTP запрос не удался: {ex.Message}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Произошла ошибка: {ex.Message}");
-        }
-        return null;
+        await authenticationState.GetAuthenticationStateAsync();
+        HttpResponseMessage response = await httpClient.GetAsync(ApplicationsEndPoint);
+        PagedList<ApplicationListDto>
+            result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
+        return result;
     }
 
-    public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
+        public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
     {
         await authenticationState.GetAuthenticationStateAsync();
         HttpResponseMessage response =
