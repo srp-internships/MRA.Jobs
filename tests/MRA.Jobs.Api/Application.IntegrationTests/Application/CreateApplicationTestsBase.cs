@@ -1,3 +1,4 @@
+using MRA.Jobs.Application.Contracts.JobVacancies;
 using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.IntegrationTests.Application;
@@ -46,7 +47,7 @@ public class CreateApplicationTestsBase : Testing
 
     protected async Task<JobVacancy> GetNoVacancy()
     {
-        var vacancy = await FindFirstOrDefaultAsync<JobVacancy>(v => v.Slug == "no_vacancy");
+        var vacancy = await FindFirstOrDefaultAsync<JobVacancy>(v => v.Slug == CommonVacanciesSlugs.NoVacancySlug);
         return vacancy;
     }
 }

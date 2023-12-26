@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.JobVacancies;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobCategories;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
@@ -32,7 +33,7 @@ public class GetJobCategoriesQueryHandler : IRequestHandler<GetJobCategoriesQuer
 
         var jobsWithCategory = new List<JobCategoriesResponse>();
         var categories = await _context.Categories
-            .Where(c => c.Slug != "no_vacancy") 
+            .Where(c => c.Slug != CommonVacanciesSlugs.NoVacancySlug) 
             .ToListAsync(cancellationToken: cancellationToken);
 
         foreach (var job in sortredJobs)
