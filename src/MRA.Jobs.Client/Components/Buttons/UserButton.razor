@@ -53,7 +53,7 @@
         <NotAuthorized Context="notAuthorizedContext">
             <MudMenu >
                 <ActivatorContent>
-                    <MudChip Icon="@Icons.Material.Filled.Person">Sign In</MudChip>
+						<MudChip Icon="@Icons.Material.Filled.Person">@ContentService["UserButton:Sign In"]</MudChip>
                 </ActivatorContent>
                 <ChildContent >
                     <MudMenuItem Href="@($"{configuration["IdentityClient"]}/login")">@ContentService["UserButton:Sign In"]</MudMenuItem>
@@ -65,15 +65,15 @@
 </CascadingAuthenticationState>
 
 
-@code{
-    
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            LayoutService.User=  await UserProfileService.Get();
-            StateHasChanged();
-        }
+	@code{
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			LayoutService.User = await UserProfileService.Get();
+			StateHasChanged();
+		}
     }
     
 

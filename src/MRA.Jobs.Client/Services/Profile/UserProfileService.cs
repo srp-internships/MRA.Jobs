@@ -135,14 +135,13 @@ public class UserProfileService : IUserProfileService
             var result = JsonConvert.DeserializeObject<UserSkillsResponse>(content);
             return result;
         }
-
         return null;
     }
 
     public async Task<bool> SendConfirmationCode(string phoneNumber)
     {
         var response = await _identityHttpClient.GetFromJsonAsync<bool>($"sms/send_code?PhoneNumber={phoneNumber}");
-
+       
         return response;
     }
 
