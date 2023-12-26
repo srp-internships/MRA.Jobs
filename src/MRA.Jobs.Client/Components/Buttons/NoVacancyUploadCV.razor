@@ -84,7 +84,7 @@
     private bool _processing = false;
 
     JobVacancyDetailsDto _vacancy = new();
-    private bool _serverError;
+
     private CreateApplicationCommand _application;
 
     private Dictionary<VacancyQuestionDto, string> _questionsResponses = new();
@@ -94,7 +94,6 @@
         _vacancy = await NoVacancyService.GetNoVacancyAsync();
         if (_vacancy.Slug == null)
         {
-            _serverError = true;
             return;
         }
 

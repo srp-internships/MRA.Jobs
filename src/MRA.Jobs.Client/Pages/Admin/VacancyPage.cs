@@ -21,7 +21,6 @@ public partial class VacancyPage
 
     private List<CategoryResponse> _category;
     private List<JobVacancyListDto> _vacancies;
-    private bool _isDialogOpen;
     private bool _panelOpenState;
     private bool _isInserting;
     private bool _isUpdating = true;
@@ -109,7 +108,6 @@ public partial class VacancyPage
 
     async Task OnDeleteClick(string slug)
     {
-        _isDialogOpen = true;
         var vacancy = _vacancies.FirstOrDefault(c => c.Slug == slug);
         var parameters = new DialogParameters<DialogMudBlazor>
         {
@@ -198,45 +196,39 @@ public partial class VacancyPage
 
     public async Task OnEditClick(string slug)
     {
-        // Получение данных о выбранной вакансии
         var vacancy = await VService.GetBySlug(slug);
         _createOrEditHeader = $"Edit {vacancy.Title}";
-        if (vacancy != null)
+        VService.creatingNewJob.Title = vacancy.Title;
+        VService.creatingNewJob.ShortDescription = vacancy.ShortDescription;
+        VService.creatingNewJob.Description = vacancy.Description;
+        VService.creatingNewJob.RequiredYearOfExperience = vacancy.RequiredYearOfExperience;
+        VService.creatingNewJob.WorkSchedule = vacancy.WorkSchedule;
+        if (vacancy.CategoryId.HasValue)
         {
-            // Отображение данных о выбранной вакансии в форме
-            VService.creatingNewJob.Title = vacancy.Title;
-            VService.creatingNewJob.ShortDescription = vacancy.ShortDescription;
-            VService.creatingNewJob.Description = vacancy.Description;
-            VService.creatingNewJob.RequiredYearOfExperience = vacancy.RequiredYearOfExperience;
-            VService.creatingNewJob.WorkSchedule = vacancy.WorkSchedule;
-            if (vacancy.CategoryId.HasValue)
-            {
-                VService.creatingNewJob.CategoryId = vacancy.CategoryId.Value;
-            }
-
-            VService.creatingNewJob.EndDate = vacancy.EndDate;
-            VService.creatingNewJob.PublishDate = vacancy.PublishDate;
-            _selectedCategory = _category.First(c => c.Id == vacancy.CategoryId).Name;
-            // Открытие панели формы
-            _panelOpenState = true;
-            _isInserting = true;
-            _isUpdating = false;
-            _updateSlug = slug;
-            _questions = vacancy.VacancyQuestions.Select(v =>
-                new VacancyQuestionDto
-                {
-                    Question = v.Question
-                }
-            ).ToList();
-            _tasks = vacancy.VacancyTasks.Select(v =>
-                new VacancyTaskDto
-                {
-                    Title = v.Title,
-                    Description = v.Description,
-                    Template = v.Template,
-                    Test = v.Test
-                }).ToList();
+            VService.creatingNewJob.CategoryId = vacancy.CategoryId.Value;
         }
+
+        VService.creatingNewJob.EndDate = vacancy.EndDate;
+        VService.creatingNewJob.PublishDate = vacancy.PublishDate;
+        _selectedCategory = _category.First(c => c.Id == vacancy.CategoryId).Name;
+        _panelOpenState = true;
+        _isInserting = true;
+        _isUpdating = false;
+        _updateSlug = slug;
+        _questions = vacancy.VacancyQuestions.Select(v =>
+            new VacancyQuestionDto
+            {
+                Question = v.Question
+            }
+        ).ToList();
+        _tasks = vacancy.VacancyTasks.Select(v =>
+            new VacancyTaskDto
+            {
+                Title = v.Title,
+                Description = v.Description,
+                Template = v.Template,
+                Test = v.Test
+            }).ToList();
     }
 
     private void RemoveQuestion(string question)

@@ -139,7 +139,7 @@
         _open = !_open;
     }
 
-    private DocPages currentPage;
+    private DocPages _currentPage;
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -148,14 +148,7 @@
 
         if (firstRender)
         {
-            try
-            {
-                LayoutService.User = await UserProfileService.Get();
-            }
-            catch (Exception e)
-            {
-            }
-
+            LayoutService.User = await UserProfileService.Get();
             StateHasChanged();
         }
     }
@@ -167,18 +160,18 @@
 
         StateHasChanged();
         NavigationManager.LocationChanged += HandleLocationChanged;
-        base.OnInitialized();
+        await base.OnInitializedAsync();
     }
 
     private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
-        currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
+        _currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
         StateHasChanged();
     }
 
     private string GetActiveClass(DocPages page)
     {
-        return page == currentPage ? "mud-chip-text mud-chip-color-primary mx-1 px-3" : "mx-1 px-3";
+        return page == _currentPage ? "mud-chip-text mud-chip-color-primary mx-1 px-3" : "mx-1 px-3";
     }
 
     public void Dispose()
