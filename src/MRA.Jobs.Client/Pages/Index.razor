@@ -1,6 +1,10 @@
 ﻿@page "/"
+@using AltairCA.Blazor.WebAssembly.Cookie
+@using MRA.Identity.Application.Contract.User.Responses
 @using MRA.Jobs.Client.Identity
 @using MRA.Jobs.Client.Components.Home
+@using Microsoft.AspNetCore.WebUtilities
+@inject IAltairCABlazorCookieUtil cookieUtil
 
 <MudGrid Style="margin-top: 5%; margin-bottom: 10%">
     <MudItem xs="12" md="6" Style="padding: 10% 10% 0% 10%;">
@@ -79,6 +83,23 @@
 
     protected override async Task OnInitializedAsync()
     {
+        JwtTokenResponse token = new();
+        var currentUri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("atoken", out var atoken))
+        {
+            token.AccessToken = atoken;
+        }
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("rtoken", out var rtoken))
+        {
+            token.RefreshToken = rtoken;
+        }
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("vdate", out var vdate))
+        {
+            DateTime oDate = Convert.ToDateTime(vdate);
+            token.AccessTokenValidateTo = oDate;
+            await cookieUtil.SetValueAsync("authToken", token);
+        }
+
         var state = await authStateProvider.GetAuthenticationStateAsync();
         if (state.User.IsInRole(ApplicationClaimValues.Administrator) || state.User.IsInRole(ApplicationClaimValues.SuperAdmin))
         {
