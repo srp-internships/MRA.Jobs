@@ -7,7 +7,6 @@
 @using MRA.Jobs.Client.Services.Auth
 @using MRA.Jobs.Client.Services.Profile;
 @using System.Globalization;
-@using MRA.Jobs.Client.Components.Buttons
 
 @inject ISnackbar Snackbar
 @inject IUserProfileService UserProfileService
@@ -64,10 +63,10 @@
                                       @bind-Value="_registerUser.Username" For="@(() => _registerUser.Username)"
                                       OnBlur="CheckUserName"/>
 
-                        <MudTextField Label="@ContentService["SignUp:Password"]" HelperText="@ContentService["SignUp:Password_HelperText"]" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
+                        <MudTextField Label="@ContentService["SignUp:Password"]" HelperText="@ContentService["SignUp:Password_HelperText"]" Class="mt-3" AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@_passwordInput" Adornment="Adornment.End"
                                       @bind-Value="_registerUser.Password" For="@(() => _registerUser.Password)"/>
 
-                        <MudTextField Label="@ContentService["SignUp:ConfirmPassword"]" HelperText="@ContentService["SignUp:ConfirmPassword_HelperText"]" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
+                        <MudTextField Label="@ContentService["SignUp:ConfirmPassword"]" HelperText="@ContentService["SignUp:ConfirmPassword_HelperText"]" Class="mt-3" AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@_passwordInput" Adornment="Adornment.End"
                                       @bind-Value="_registerUser.ConfirmPassword" For="@(() => _registerUser.ConfirmPassword)"/>
 
                     </EditForm>
@@ -145,11 +144,10 @@
     private FluentValidationValidator _fluentValidationValidator;
     private int _step;
     private bool _processing;
-    private bool _processing2;
 
-    bool isShow;
-    InputType PasswordInput = InputType.Password;
-    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+    bool _isShow;
+    InputType _passwordInput = InputType.Password;
+    string _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
 
     void Back()
     {
@@ -159,17 +157,17 @@
 
     void ButtonTestclick()
     {
-        @if (isShow)
+        @if (_isShow)
         {
-            isShow = false;
-            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
-            PasswordInput = InputType.Password;
+            _isShow = false;
+            _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+            _passwordInput = InputType.Password;
         }
         else
         {
-            isShow = true;
-            PasswordInputIcon = Icons.Material.Filled.Visibility;
-            PasswordInput = InputType.Text;
+            _isShow = true;
+            _passwordInputIcon = Icons.Material.Filled.Visibility;
+            _passwordInput = InputType.Text;
         }
     }
 
@@ -306,7 +304,6 @@
             _isAvailable = -1;
             ServerNotResponding();
         }
-        _processing2 = false;
         StateHasChanged();
     }
 

@@ -22,7 +22,7 @@ else
 {
     <MudContainer>
         <MudGrid>
-            <MudItem xs="12" lg="9" sm="6" md="8">
+            <MudItem xs="12" lg="9" sm="12" md="8">
                 <MudCard Class="rounded-lg mud-elevation-4">
                     <MudCardHeader>
 
@@ -162,7 +162,7 @@ else
             </MudItem>
 
 
-            <MudItem xs="12" lg="3" sm="6" md="4">
+            <MudItem xs="12" lg="3" sm="12" md="4">
                 @if (vacancyDetails.Deadline != default && (
                     DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
                     || DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"

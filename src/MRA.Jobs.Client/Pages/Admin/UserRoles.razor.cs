@@ -20,16 +20,14 @@ public partial class UserRoles
     [Inject] private IUserProfileService UserProfileService { get; set; }
     private string NewRoleName { get; set; }
 
-    private bool _isOpened;
-
-    private UserProfileResponse personalData = new UserProfileResponse();
-    private UserSkillsResponse userSkills = new UserSkillsResponse();
+    private UserProfileResponse _personalData = new UserProfileResponse();
+    private UserSkillsResponse _userSkills = new UserSkillsResponse();
 
     protected override async Task OnInitializedAsync()
     {
         await ReloadDataAsync();
-        personalData = await UserProfileService.Get(Username);
-        userSkills= await UserProfileService.GetUserSkills(Username);
+        _personalData = await UserProfileService.Get(Username);
+        _userSkills= await UserProfileService.GetUserSkills(Username);
     }
 
     private async Task ReloadDataAsync()

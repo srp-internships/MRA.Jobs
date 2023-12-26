@@ -7,6 +7,7 @@
 @inject IDateTimeConvertToStringService DateTimeConvertToStringService
 @inject NavigationManager NavigationManager
 
+<NoVacancyUploadCV/>
 
 @if (Vacancies is null)
 {
@@ -18,7 +19,7 @@ else
 {
     <MudGrid Spacing="4">
 
-        <MudItem sm="12" md="3" lg="2">
+        <MudItem xs="12" sm="12" md="3" lg="2">
             <MudGrid>
                 <MudItem xs="12" sm="12" md="12" lg="12">
                     <MudCard Class="rounded-lg mud-elevation-4">
@@ -108,34 +109,34 @@ else
 
                         </MudCard>
                     </MudItem>
-                    @foreach (var Vacancy in GetVisibleVacancies())
+                    @foreach (var vacancy in GetVisibleVacancies())
                     {
                         <MudItem xs="12" md="12" lg="6">
-                            <a href="/@Route/@Vacancy.Slug">
+                            <a href="/@Route/@vacancy.Slug">
                                 <MudCard Class="rounded-lg mud-elevation-4">
                                     <MudCardContent>
                                         <MudText Style="color: #129fd7;" Typo="Typo.h5">
-                                            <b>@Vacancy.Title</b>
+                                            <b>@vacancy.Title</b>
                                         </MudText>
                                         <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
                                             <small>
-                                                <b>Posted @DateTimeConvertToStringService.GetDisplayPostedDate(Vacancy.PublishDate)</b>
+                                                <b>Posted @DateTimeConvertToStringService.GetDisplayPostedDate(vacancy.PublishDate)</b>
                                             </small>
                                         </MudText>
                                         <br/>
-                                        <MudText>@Vacancy.ShortDescription</MudText>
+                                        <MudText>@vacancy.ShortDescription</MudText>
                                         <MudGrid>
-                                            @if (Vacancy.Duration != 0)
+                                            @if (vacancy.Duration != 0)
                                             {
                                                 <MudItem Style="color:rgb(128,128,128)">
-                                                    <MudText Typo="Typo.caption">Duration <b>@Vacancy.Duration month(s)</b></MudText>
+                                                    <MudText Typo="Typo.caption">Duration <b>@vacancy.Duration month(s)</b></MudText>
                                                 </MudItem>
                                             }
-                                            @if (Vacancy.Deadline != default(DateTime))
+                                            @if (vacancy.Deadline != default(DateTime))
                                             {
                                                 <MudItem>
                                                     @{
-                                                        var deadlineResult = DateTimeConvertToStringService.GetDeadlineOrEndDateDisplayDate(Vacancy.Deadline);
+                                                        var deadlineResult = DateTimeConvertToStringService.GetDeadlineOrEndDateDisplayDate(vacancy.Deadline);
                                                         var deadlineStyle = $"color:{deadlineResult.Color}";
                                                         <MudText Typo="Typo.caption" Style="@deadlineStyle">Deadline <b>@deadlineResult.DisplayDate</b></MudText>
                                                     }
@@ -143,7 +144,7 @@ else
                                             }
                                             <MudItem>
                                                 @{
-                                                    var endDateResult = DateTimeConvertToStringService.GetDeadlineOrEndDateDisplayDate(Vacancy.EndDate);
+                                                    var endDateResult = DateTimeConvertToStringService.GetDeadlineOrEndDateDisplayDate(vacancy.EndDate);
                                                     var endDateStyle = $"color:{endDateResult.Color}";
                                                     <MudText Typo="Typo.caption" Style="@endDateStyle">End date <b>@endDateResult.DisplayDate</b></MudText>
                                                 }
@@ -169,7 +170,6 @@ else
 @code {
     private int _selected = 1;
     public string Search { get; set; }
-    private bool showLoader = false;
 
     [Parameter]
     public List<string> VacancyCategories { get; set; }
@@ -192,7 +192,6 @@ else
         if (firstRender)
         {
             await Task.Delay(1000);
-            showLoader = true;
             StateHasChanged();
         }
     }
