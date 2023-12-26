@@ -6,10 +6,13 @@
 @inject IContentService ContentService
 @inject IConfiguration Configuration
 @inject INoVacancyService NoVacancyService
+@inject ISnackbar Snackbar
 
-<MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
-    <MudText>Send us your CV</MudText>
-</MudButton>
+<div style="position: fixed; bottom: 76px; right: 16px; z-index: 999;">
+    <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
+        <MudText>Send us your CV</MudText>
+    </MudButton>
+</div>
 <MudDialog IsVisible="_isOpen" Style="width: 400px;"
            Options="@(new DialogOptions() { DisableBackdropClick = true })">
     <DialogContent>
@@ -70,8 +73,8 @@
     {
         _isOpen = false;
         StateHasChanged();
+        Clear();
     }
-
 
     private bool _isUploadCvMode = true;
     private bool _showLoader = false;
@@ -94,6 +97,12 @@
             return;
         }
 
+        Clear();
+    }
+
+    private void Clear()
+    {
+        _cv = null;
         _application = new CreateApplicationCommand();
 
         foreach (var question in _vacancy.VacancyQuestions)
@@ -104,6 +113,11 @@
 
     private async Task CreateApplication()
     {
+        if (_isUploadCvMode && _cv == null)
+        {
+            Snackbar.Add("Please upload your sv", Severity.Error);
+            return;
+        }
         if (string.IsNullOrWhiteSpace(_application.CoverLetter) || (_cv == null && _isUploadCvMode))
         {
             return; // Do not proceed with submission if any required fields are empty.
