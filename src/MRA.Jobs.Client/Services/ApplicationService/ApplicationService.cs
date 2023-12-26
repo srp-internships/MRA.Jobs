@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Security.Cryptography;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
@@ -8,6 +7,7 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStat
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Client.Identity;
+using MRA.Jobs.Client.Services.HttpClients;
 using MudBlazor;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
@@ -15,7 +15,7 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 namespace MRA.Jobs.Client.Services.ApplicationService;
 
 public class ApplicationService(
-        HttpClient httpClient,
+       IHttpClientService httpClientService,
         AuthenticationStateProvider authenticationState,
         ISnackbar snackbar,
         NavigationManager navigationManager,
@@ -26,10 +26,8 @@ public class ApplicationService(
 
     public async Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status)
     {
-        HttpResponseMessage response = await httpClient.GetAsync($"{ApplicationsEndPoint}/{status}");
-
-        List<ApplicationListStatus> result = await response.Content.ReadFromJsonAsync<List<ApplicationListStatus>>();
-        return result;
+        var response = await httpClientService.GetAsJsonAsync<List<ApplicationListStatus>>($"{ApplicationsEndPoint}/{status}", null);
+        return response?.Result;
     }
 
 
