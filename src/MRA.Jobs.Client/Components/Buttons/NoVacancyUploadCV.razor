@@ -9,7 +9,7 @@
 @inject ISnackbar Snackbar
 
 <div style="position: fixed; bottom: 76px; right: 16px; z-index: 999;">
-    <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
+    <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
         <MudText>Send us your CV</MudText>
     </MudButton>
 </div>
@@ -43,7 +43,7 @@
         </EditForm>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Primary" Class="ml-auto" OnClick="CreateApplication">
+        <MudButton Color="Color.Primary" Class="ml-auto" OnClick="@CreateApplication">
             @if (_processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -54,7 +54,7 @@
                 <MudText>Apply</MudText>
             }
         </MudButton>
-        <MudButton OnClick="CloseDialog">
+        <MudButton OnClick="@CloseDialog">
             <MudText>Close</MudText>
         </MudButton>
     </DialogActions>
@@ -78,7 +78,6 @@
     }
 
     private bool _isUploadCvMode = true;
-    private bool _showLoader = false;
 
     private IBrowserFile _cv;
     private bool _processing = false;
