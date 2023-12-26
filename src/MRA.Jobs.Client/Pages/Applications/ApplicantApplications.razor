@@ -1,21 +1,16 @@
 ﻿@page "/applications"
 @inject IApplicationService applicationService
-<MudText Typo="Typo.h4">
-    <b>Applications</b>
-</MudText>
-@if (applications == null)
-{
-	<div style="text-align: center;">
-		<MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
-	</div>
-}
-else if (applications.Items.Count == 0)
-{
-    <MudText Typo="Typo.h5" Style="text-align: center">You do not have any active applications</MudText>
-}
-else
-{
-    <MudContainer>
+<MudContainer>
+    <MudText Typo="Typo.h4">
+        <b>Applications</b>
+    </MudText>
+    <br/>
+    @if (applications.Items.Count == 0)
+    {
+        <MudText Typo="Typo.h5" Style="text-align: center">You do not have any active applications</MudText>
+    }
+    else
+    {
         <MudTable Items="@applications.Items" Breakpoint="Breakpoint.Md">
             <HeaderContent>
                 <MudTh>Vacancy title</MudTh>
@@ -35,9 +30,9 @@ else
                 <MudTablePager/>
             </PagerContent>
         </MudTable>
-    </MudContainer>
-}
+    }
 
+</MudContainer>
 
 @code {
 

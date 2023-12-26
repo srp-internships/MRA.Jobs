@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
+using MRA.Jobs.Application.Contracts.JobVacancies;
 using MRA.Jobs.Domain.Enums;
 using NUnit.Framework;
 
@@ -44,7 +45,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
                 LastModifiedAt = null,
                 LastModifiedBy = default,
                 CoverLetter = null,
-                Slug = "1-no_vacancy",
+                Slug = $"1-{CommonVacanciesSlugs.NoVacancySlug}",
                 VacancyResponses = null,
                 TaskResponses = null,
                 CV = null,

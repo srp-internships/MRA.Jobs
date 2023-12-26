@@ -6,13 +6,17 @@
 @inject IContentService ContentService
 @inject IConfiguration Configuration
 @inject INoVacancyService NoVacancyService
+@inject ISnackbar Snackbar
 
-<MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
-    <MudText>Send us your CV</MudText>
-</MudButton>
+<div style="position: fixed; bottom: 76px; right: 16px; z-index: 999;">
+    <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
+        <MudText>Send us your CV</MudText>
+    </MudButton>
+</div>
 <MudDialog IsVisible="_isOpen" Style="width: 400px;"
            Options="@(new DialogOptions() { DisableBackdropClick = true })">
     <DialogContent>
+        <MudText Typo="Typo.h6">Send us your CV</MudText>
         <EditForm Model="@_application">
             <FluentValidationValidator/>
 
@@ -39,7 +43,7 @@
         </EditForm>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Primary" Class="ml-auto" OnClick="CreateApplication">
+        <MudButton Color="Color.Primary" Class="ml-auto" OnClick="@CreateApplication">
             @if (_processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -50,7 +54,7 @@
                 <MudText>Apply</MudText>
             }
         </MudButton>
-        <MudButton OnClick="CloseDialog">
+        <MudButton OnClick="@CloseDialog">
             <MudText>Close</MudText>
         </MudButton>
     </DialogActions>
@@ -70,17 +74,16 @@
     {
         _isOpen = false;
         StateHasChanged();
+        Clear();
     }
 
-
     private bool _isUploadCvMode = true;
-    private bool _showLoader = false;
 
     private IBrowserFile _cv;
     private bool _processing = false;
 
     JobVacancyDetailsDto _vacancy = new();
-    private bool _serverError;
+
     private CreateApplicationCommand _application;
 
     private Dictionary<VacancyQuestionDto, string> _questionsResponses = new();
@@ -90,10 +93,15 @@
         _vacancy = await NoVacancyService.GetNoVacancyAsync();
         if (_vacancy.Slug == null)
         {
-            _serverError = true;
             return;
         }
 
+        Clear();
+    }
+
+    private void Clear()
+    {
+        _cv = null;
         _application = new CreateApplicationCommand();
 
         foreach (var question in _vacancy.VacancyQuestions)
@@ -104,6 +112,11 @@
 
     private async Task CreateApplication()
     {
+        if (_isUploadCvMode && _cv == null)
+        {
+            Snackbar.Add("Please upload your sv", Severity.Error);
+            return;
+        }
         if (string.IsNullOrWhiteSpace(_application.CoverLetter) || (_cv == null && _isUploadCvMode))
         {
             return; // Do not proceed with submission if any required fields are empty.

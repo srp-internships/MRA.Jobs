@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Contracts.JobVacancies;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobCategories;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
@@ -17,7 +18,6 @@ public class GetJobCategoriesQueryHandler : IRequestHandler<GetJobCategoriesQuer
 
     public async Task<List<JobCategoriesResponse>> Handle(GetJobCategoriesQuery request, CancellationToken cancellationToken)
     {
-
         IEnumerable<JobVacancy> jobsQuery = _context.JobVacancies;
 
         if (request.CheckDate)
@@ -27,25 +27,31 @@ public class GetJobCategoriesQueryHandler : IRequestHandler<GetJobCategoriesQuer
         }
 
         var sortredJobs = (from j in jobsQuery
-                           group j by j.CategoryId).ToList();
+            group j by j.CategoryId).ToList();
 
         var jobs = jobsQuery.ToList();
 
         var jobsWithCategory = new List<JobCategoriesResponse>();
-        var categories = await _context.Categories.ToListAsync();
+        var categories = await _context.Categories
+            .Where(c => c.Slug != CommonVacanciesSlugs.NoVacancySlug) 
+            .ToListAsync(cancellationToken: cancellationToken);
 
         foreach (var job in sortredJobs)
         {
             var category = categories.Where(c => c.Id == job.Key).FirstOrDefault();
 
-            jobsWithCategory.Add(new JobCategoriesResponse
+            if (category != null) 
             {
-                CategoryId = job.Key,
-                Category = _mapper.Map<CategoryResponse>(category),
-                JobsCount = jobs.Count()
-            });
+                jobsWithCategory.Add(new JobCategoriesResponse
+                {
+                    CategoryId = job.Key,
+                    Category = _mapper.Map<CategoryResponse>(category),
+                    JobsCount = jobs.Count()
+                });
+            }
         }
 
         return jobsWithCategory;
     }
+
 }
