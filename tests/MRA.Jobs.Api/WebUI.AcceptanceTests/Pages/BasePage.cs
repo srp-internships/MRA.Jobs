@@ -2,7 +2,7 @@
 
 public abstract class BasePage
 {
-    public static string BaseUrl => ConfigurationHelper.GetBaseUrl();
+    public static string? BaseUrl => ConfigurationHelper.GetBaseUrl();
 
     public abstract string PagePath { get; }
 

@@ -14,11 +14,8 @@ using Newtonsoft.Json;
 
 namespace MRA.Jobs.Client.Services.Profile;
 
-
-
 public class UserProfileService : IUserProfileService
 {
-
     private readonly IdentityHttpClient _identityHttpClient;
 
     public UserProfileService(IdentityHttpClient identityHttpClient)
@@ -39,7 +36,6 @@ public class UserProfileService : IUserProfileService
                 return result.RequestMessage.ToString();
 
             return "Server is not responding, please try later";
-
         }
         catch (HttpRequestException ex)
         {
@@ -55,23 +51,21 @@ public class UserProfileService : IUserProfileService
 
     public async Task<UserProfileResponse> Get(string userName = null)
     {
-        var response = await _identityHttpClient.GetAsync($"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
-        if (response.IsSuccessStatusCode)
+        var result =
+            await _identityHttpClient.GetAsync(
+                $"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
+        if (result.IsSuccessStatusCode)
         {
-            var result = await response.Content.ReadFromJsonAsync<UserProfileResponse>();
-            return result;
+            return await result.Content.ReadFromJsonAsync<UserProfileResponse>();
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
-
-
 
     public async Task<List<UserEducationResponse>> GetEducationsByUser()
     {
-        var result = await _identityHttpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
+        var result =
+            await _identityHttpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
         return result;
     }
 
@@ -101,7 +95,8 @@ public class UserProfileService : IUserProfileService
 
     public async Task<List<UserExperienceResponse>> GetExperiencesByUser()
     {
-        var result = await _identityHttpClient.GetFromJsonAsync<List<UserExperienceResponse>>("Profile/GetExperiencesByUser");
+        var result =
+            await _identityHttpClient.GetFromJsonAsync<List<UserExperienceResponse>>("Profile/GetExperiencesByUser");
         return result;
     }
 
@@ -120,7 +115,8 @@ public class UserProfileService : IUserProfileService
     public async Task<UserSkillsResponse> GetUserSkills(string userName = null)
     {
         var response = await _identityHttpClient
-            .GetFromJsonAsync<UserSkillsResponse>($"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
+            .GetFromJsonAsync<UserSkillsResponse>(
+                $"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
         return response;
     }
 
@@ -139,31 +135,36 @@ public class UserProfileService : IUserProfileService
             var result = JsonConvert.DeserializeObject<UserSkillsResponse>(content);
             return result;
         }
+
         return null;
     }
 
     public async Task<bool> SendConfirmationCode(string phoneNumber)
     {
         var response = await _identityHttpClient.GetFromJsonAsync<bool>($"sms/send_code?PhoneNumber={phoneNumber}");
-       
+
         return response;
     }
 
     public async Task<SmsVerificationCodeStatus> CheckConfirmationCode(string phoneNumber, int? code)
     {
-        var response = await _identityHttpClient.GetFromJsonAsync<SmsVerificationCodeStatus>($"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
+        var response =
+            await _identityHttpClient.GetFromJsonAsync<SmsVerificationCodeStatus>(
+                $"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
         return response;
     }
 
     public async Task<List<UserEducationResponse>> GetAllEducations()
     {
-        var result = await _identityHttpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetAllEducations");
+        var result =
+            await _identityHttpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetAllEducations");
         return result;
     }
 
     public async Task<List<UserExperienceResponse>> GetAllExperiences()
     {
-        var result = await _identityHttpClient.GetFromJsonAsync<List<UserExperienceResponse>>("Profile/GetAllExperiences");
+        var result =
+            await _identityHttpClient.GetFromJsonAsync<List<UserExperienceResponse>>("Profile/GetAllExperiences");
         return result;
     }
 

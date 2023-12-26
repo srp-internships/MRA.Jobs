@@ -57,7 +57,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         _lang = lang.IsNullOrEmpty() ? "En" : lang;
     }
 
-    public async Task OnSystemPreferenceChanged(bool newValue)
+    public Task OnSystemPreferenceChanged(bool newValue)
     {
         _systemPreferences = newValue;
         if (DarkModeToggle == DarkLightMode.System)
@@ -65,6 +65,8 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
             IsDarkMode = newValue;
             OnMajorUpdateOccured();
         }
+
+        return Task.CompletedTask;
     }
 
     public event EventHandler MajorUpdateOccured;
