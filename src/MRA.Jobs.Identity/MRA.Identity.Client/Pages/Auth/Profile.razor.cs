@@ -501,10 +501,9 @@ public partial class Profile
 
     private UserSkillsResponse UserSkills;
     private UserSkillsResponse allSkills;
-    bool isEditing = false;
     string newSkills = "";
     bool isAdding = false;
-    List<string> FoundSkills = new List<string>();
+    readonly List<string> FoundSkills = new List<string>();
 
     private async Task GetSkills()
     {
@@ -568,7 +567,6 @@ public partial class Profile
                     Snackbar.Add("Add Skills successfully.", MudBlazor.Severity.Success);
 
                     newSkills = "";
-                    isEditing = false;
                     UserSkills = result;
                     StateHasChanged();
                 }

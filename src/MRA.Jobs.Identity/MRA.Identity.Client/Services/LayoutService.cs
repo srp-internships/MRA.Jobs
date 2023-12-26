@@ -52,7 +52,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         _lang = lang.IsNullOrEmpty() ? "En" : lang;
     }
 
-    public async Task OnSystemPreferenceChanged(bool newValue)
+    public void OnSystemPreferenceChanged(bool newValue)
     {
         _systemPreferences = newValue;
         if (DarkModeToggle == DarkLightMode.System)

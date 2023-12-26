@@ -137,7 +137,6 @@
     private FluentValidationValidator _fluentValidationValidator;
     private int _step;
     private bool _processing;
-    private bool _processing2;
 
     bool isShow;
     InputType PasswordInput = InputType.Password;
@@ -310,7 +309,6 @@
             _isAvailable = -1;
             ServerNotResponding();
         }
-        _processing2 = false;
         StateHasChanged();
     }
 

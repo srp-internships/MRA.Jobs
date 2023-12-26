@@ -36,9 +36,9 @@
         await LayoutService.ApplyUserPreferences(defaultDarkMode);
     }
 
-    private async Task OnSystemPreferenceChanged(bool newValue)
+    private void OnSystemPreferenceChanged(bool newValue)
     {
-        await LayoutService.OnSystemPreferenceChanged(newValue);
+        LayoutService.OnSystemPreferenceChanged(newValue);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
