@@ -10,6 +10,16 @@ a, .btn-link {
     color: #0071c1;
 }
 
+:root {
+    --mdc-theme-primary: #1c92c8 !important;
+    --mdc-theme-default: #1c92c8 !important;
+    --mud-palette-primary: #1c92c8 !important;
+    --mud-palette-default: #1c92c8 !important;
+    --mud-palette-primary-darken: #1784b5 !important;
+    --mud-palette-default-darken: #1784b5 !important;
+    --mud-palette-background-grey: rgba(0, 0, 0, 0.1) !important;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
