@@ -16,6 +16,7 @@
 <MudDialog IsVisible="_isOpen" Style="width: 400px;"
            Options="@(new DialogOptions() { DisableBackdropClick = true })">
     <DialogContent>
+        <MudText Typo="Typo.h6">Send us your CV</MudText>
         <EditForm Model="@_application">
             <FluentValidationValidator/>
 
