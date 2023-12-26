@@ -89,7 +89,7 @@ public class ApplicationService(
         return result;
     }
 
-    public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
+        public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
     {
         await authenticationState.GetAuthenticationStateAsync();
         HttpResponseMessage response =

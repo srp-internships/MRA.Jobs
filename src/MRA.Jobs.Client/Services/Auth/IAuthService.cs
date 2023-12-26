@@ -9,6 +9,7 @@ namespace MRA.Jobs.Client.Services.Auth;
 
 public interface IAuthService
 {
+    public const string TokenLocalStorageKey = "TokenLocalStorageKey";
     Task<string> RegisterUserAsync(RegisterUserCommand command);
     Task<string> LoginUserAsync(LoginUserCommand command, bool newRegister = false);
     Task<HttpResponseMessage> ChangePassword(ChangePasswordUserCommand command);
