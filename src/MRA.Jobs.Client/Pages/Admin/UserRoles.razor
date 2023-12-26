@@ -1,7 +1,7 @@
 ﻿@page "/UserRoles/{Username}"
 <MudText Typo="Typo.h4"><b>@Username</b></MudText>
 
-@if (userSkills == null)
+@if (_userSkills == null)
 {
     <div style="text-align: center;">
         <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
@@ -40,19 +40,19 @@ else{
                             <tr>
                                 <td>First Name:</td>
                                 <td></td>
-                                <td>@personalData.FirstName</td>
+                                <td>@_personalData.FirstName</td>
                             </tr>
                             <tr>
                                 <td>Last Name:</td>
                                 <td></td>
-                                <td>@personalData.LastName</td>
+                                <td>@_personalData.LastName</td>
                             </tr>
                             <tr>
                                 <td>Email:</td>
                                 <td></td>
                                 <td>
-                                    @personalData.Email<br/>
-                                    @if (personalData.EmailConfirmed)
+                                    @_personalData.Email<br/>
+                                    @if (_personalData.EmailConfirmed)
                                     {
                                         <MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
                                     }
@@ -66,8 +66,8 @@ else{
                                 <td>Phone Number:</td>
                                 <td></td>
                                 <td>
-                                    @personalData.PhoneNumber<br/>
-                                    @if (personalData.PhoneNumberConfirmed)
+                                    @_personalData.PhoneNumber<br/>
+                                    @if (_personalData.PhoneNumberConfirmed)
                                     {
                                         <MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
                                     }
@@ -80,17 +80,17 @@ else{
                             <tr>
                                 <td>DateOfBirth:</td>
                                 <td></td>
-                                <td>@personalData.DateOfBirth.ToShortDateString()</td>
+                                <td>@_personalData.DateOfBirth.ToShortDateString()</td>
                             </tr>
                             <tr>
                                 <td>Gender:</td>
                                 <td></td>
-                                <td>@personalData.Gender</td>
+                                <td>@_personalData.Gender</td>
                             </tr>
                             <tr>
                                 <td>About:</td>
                                 <td></td>
-                                <td>@personalData.AboutMyself</td>
+                                <td>@_personalData.AboutMyself</td>
                             </tr>
                             </tbody>
                         </table>
@@ -138,7 +138,7 @@ else{
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
-                        @foreach (var skill in userSkills.Skills)
+                        @foreach (var skill in _userSkills.Skills)
                         {
                             <MudChip>@skill</MudChip>
                         }

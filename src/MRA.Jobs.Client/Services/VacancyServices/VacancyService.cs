@@ -12,9 +12,9 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
-public class VacancyService(HttpClient http,ISnackbar snackbar) : IVacancyService
+public class VacancyService(HttpClient http) : IVacancyService
 {
-    public List<CategoryResponse> Categories { get; set; }
+    private List<CategoryResponse> Categories { get; set; }
     
     public List<JobVacancyListDto> Vacanceies { get; set; }
     public int FilteredVacanciesCount { get; set; } = 0;
@@ -63,7 +63,7 @@ public class VacancyService(HttpClient http,ISnackbar snackbar) : IVacancyServic
     {
         var result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Title@={title}");
         Vacanceies = result.Items;
-        OnChange.Invoke();
+        OnChange?.Invoke();
         return Vacanceies;
     }
 

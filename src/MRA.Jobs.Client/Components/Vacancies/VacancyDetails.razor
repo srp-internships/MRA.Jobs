@@ -8,6 +8,7 @@
 @inject AuthenticationStateProvider Provider
 @inject IApplicationService ApplicationService
 @inject IDateTimeConvertToStringService DateTimeConvert
+@inject IConfiguration configuration
 @if (vacancyDetails is null || vacancy == null)
 {
     if (_showLoader)
@@ -21,7 +22,7 @@ else
 {
     <MudContainer>
         <MudGrid>
-            <MudItem xs="12" lg="9" sm="6" md="8">
+            <MudItem xs="12" lg="9" sm="12" md="8">
                 <MudCard Class="rounded-lg mud-elevation-4">
                     <MudCardHeader>
 
@@ -161,7 +162,7 @@ else
             </MudItem>
 
 
-            <MudItem xs="12" lg="3" sm="6" md="4">
+            <MudItem xs="12" lg="3" sm="12" md="4">
                 @if (vacancyDetails.Deadline != default && (
                     DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
                     || DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"
@@ -219,7 +220,7 @@ else
                                         </MudText>
                                     </MudCardHeader>
                                     <MudCardActions>
-                                        <MudButton Variant="Variant.Filled" href="sign-up" Color="Color.Primary" FullWidth="true">
+                                        <MudButton Variant="Variant.Filled" Href=@($"{configuration["IdentityClient"]}/registration") Color="Color.Primary" FullWidth="true">
                                             <MudText>
                                                 <b>@ContentService["VacancyDetails:Sign Up"]</b>
                                             </MudText>
@@ -227,7 +228,7 @@ else
                                     </MudCardActions>
                                     <MudText Typo="Typo.body2" Style="padding:0 10px 10px 10px">
                                         @ContentService["VacancyDetails:Already have an account?"]
-                                        <MudLink Typo="Typo.body2" href=@($"/sign-in?returnUrl={vacancy}|{Slug}") Color="Color.Primary">
+                                        <MudLink Typo="Typo.body2" Href=@($"{configuration["IdentityClient"]}/login") Color="Color.Primary">
                                             <b>@ContentService["VacancyDetails:Sign In"]</b>
                                         </MudLink>
                                     </MudText>
