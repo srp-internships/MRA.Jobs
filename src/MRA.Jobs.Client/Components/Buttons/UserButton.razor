@@ -70,13 +70,7 @@
 	{
 		if (firstRender)
 		{
-			try
-			{
-				LayoutService.User = await UserProfileService.Get();
-			}
-			catch (Exception e)
-			{
-			}
+			LayoutService.User = await UserProfileService.Get();
 			StateHasChanged();
 		}
     }
