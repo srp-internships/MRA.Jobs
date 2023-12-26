@@ -705,4 +705,22 @@
   <data name="Dashboard:Appilcations:More:CVButton" xml:space="preserve">
     <value>CV-и довталабро зеркашӣ кунед</value>
   </data>
+    <data name="SendCV:Title">
+        <value>CV-и худро ба мо фиристед</value>
+    </data>
+    <data name="SendCV:Your name">
+        <value>Номи шумо</value>
+    </data>
+    <data name="SendCV:Your phone number">
+        <value>номери телефони шумо</value>
+    </data>
+    <data name="SendCV:CoverLetter">
+        <value>Паёми шумо</value>
+    </data>
+    <data name="SendCV:Close">
+        <value>Бекор кардан</value>
+    </data>
+    <data name="SendCV:IfFileNull">
+        <value>Лутфан CV-и худро бор кунед</value>
+    </data>
 </root>

@@ -705,4 +705,22 @@
   <data name="Dashboard:Appilcations:More:CVButton" xml:space="preserve">
     <value>Скачать резюме кандидата</value>
   </data>
+    <data name="SendCV:Title">
+        <value>Отправьте нам ваш CV</value>
+    </data>
+    <data name="SendCV:Your name">
+        <value>Ваше имя</value>
+    </data>
+    <data name="SendCV:Your phone number">
+        <value>Ваш номер телефона</value>
+    </data>
+    <data name="SendCV:CoverLetter">
+        <value>Ваше сообщение</value>
+    </data>
+    <data name="SendCV:Close">
+        <value>Закрыть</value>
+    </data>
+    <data name="SendCV:IfFileNull">
+        <value>Пожалуйста, загрузите свое резюме</value>
+    </data>
 </root>
