@@ -53,12 +53,13 @@
 
         /* Стили для анимации индикатора загрузки */
         .loader {
-            border: 16px solid #f3f3f3;
+            margin-top: 15px;
+            border: 14px solid #f3f3f3;
             border-radius: 50%;
-            border-top: 16px solid #3498db;
-            width: 120px;
-            height: 120px;
-            animation: spin 2s linear infinite;
+            border-top: 14px solid #3498db;
+            width: 70px;
+            height: 70px;
+            animation: spin 1.5s linear infinite;
         }
 
         @keyframes spin {
@@ -66,14 +67,13 @@
             100% { transform: rotate(360deg); }
         }
     </style>
-
 </head>
 
 <body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
 
     <div id="app">
         <div class="center-screen">
-            <img src="images/srp/srp_icon.png" style="width: 300px;"/>
+            <img src="images/srp/srp_icon.png" style="width: 200px;"/>
             <div class="loader"></div>
         </div>
     </div>
