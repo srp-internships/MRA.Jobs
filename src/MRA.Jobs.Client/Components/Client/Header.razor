@@ -104,8 +104,7 @@
     <UserButton/>
 </MudToolBar>
 
-<MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent" Style="position:fixed;height: 100%"
-           ClipMode="DrawerClipMode.Docked">
+<MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="1" Style="position:fixed;height: 100%">
     <MudToolBar Dense="true" Class="docs-gray-bg">
         <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
         <MudSpacer/>
@@ -119,7 +118,7 @@
         <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
         <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
         <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Academy:Address"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/contact">Contact</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/contact">@ContentService["Home:Contact"]</MudNavLink>
 
     </MudNavMenu>
     @if (betaVersion)
