@@ -376,7 +376,7 @@ else
     {
         if (_isUploadCvMode && _cv == null)
         {
-            Snackbar.Add("Please upload your sv", Severity.Error);
+            Snackbar.Add(ContentService["SendCV:IfFileNull"], Severity.Error);
             return;
         }
 
