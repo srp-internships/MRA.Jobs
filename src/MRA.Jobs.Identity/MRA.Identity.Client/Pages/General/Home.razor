@@ -1,0 +1,24 @@
+﻿@page "/"
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager navigationManager
+
+<MudText Typo="Typo.caption">message = "Please wait... you will be redirected shortly";</MudText>
+
+@code {
+    string message = string.Empty;
+    protected async override Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("profile");
+            return;
+        } else
+        {
+            navigationManager.NavigateTo("login");
+            return;
+        }
+    }
+}

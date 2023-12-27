@@ -98,6 +98,7 @@
             DateTime oDate = Convert.ToDateTime(vdate);
             token.AccessTokenValidateTo = oDate;
             await cookieUtil.SetValueAsync("authToken", token);
+            StateHasChanged();
         }
 
         var state = await authStateProvider.GetAuthenticationStateAsync();

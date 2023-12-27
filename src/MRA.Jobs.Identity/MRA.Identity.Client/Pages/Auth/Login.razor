@@ -86,11 +86,6 @@
         public string Password { get; set; }
     }
 
-    protected override void OnInitialized()
-    {
-        StateHasChanged();
-    }
-
     private async Task OnValidSubmit(EditContext context)
     {
         _processing = true;
@@ -116,6 +111,7 @@
             navigationManager.NavigateTo("profile");
             return;
         }
+        StateHasChanged();
     }
 
 }

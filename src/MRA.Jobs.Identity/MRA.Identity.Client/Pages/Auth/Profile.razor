@@ -47,7 +47,7 @@ else
                         <MudNavLink Class="@((_active == 2) ? "active" : "")" OnClick="() => ActiveNavLink(2)">@ContentService["Profile:Experience"] </MudNavLink>
                         <MudNavLink Class="@((_active == 3) ? "active" : "")" OnClick="() => ActiveNavLink(3)">@ContentService["Profile:Skills"]</MudNavLink>
                         <MudNavLink Class="@((_active == 4) ? "active" : "")" OnClick="() => ActiveNavLink(4)">@ContentService["ResetPassword:Changepassword"]</MudNavLink>
-                                <MudNavLink OnClick="() => LogOut()">@ContentService["UserButton:Logout"]</MudNavLink>
+                                <MudNavLink Href="logout">@ContentService["UserButton:Logout"]</MudNavLink>
                     </MudNavMenu>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -58,7 +58,7 @@ else
                             <MudNavLink Class="@((_active == 2) ? "active" : "")" OnClick="() => ActiveNavLink(2)">@ContentService["Profile:Experience"] </MudNavLink>
                             <MudNavLink Class="@((_active == 3) ? "active" : "")" OnClick="() => ActiveNavLink(3)">@ContentService["Profile:Skills"]</MudNavLink>
                             <MudNavLink Class="@((_active == 4) ? "active" : "")" OnClick="() => ActiveNavLink(4)">@ContentService["ResetPassword:Changepassword"]</MudNavLink>
-                                    <MudNavLink OnClick="() => LogOut()">@ContentService["UserButton:Logout"]</MudNavLink>
+                                    <MudNavLink Href="logout">@ContentService["UserButton:Logout"]</MudNavLink>
                         </MudNavMenu>
                     </MudExpansionPanel>
                 </MudHidden>
