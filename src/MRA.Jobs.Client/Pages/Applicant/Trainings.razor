@@ -39,7 +39,7 @@ await base.OnInitializedAsync();
                         PublishDate = r.PublishDate,
                         Duration = r.Duration
 					}).ToList();
-				filteredtrainings = allTrainings.Select(r => new VacancyClientResponse
+				filteredtrainings = allTrainings.Where(s=>s.EndDate>=DateTime.Now).Select(r => new VacancyClientResponse
 					{
 						Category = r.Category,
 						Title = r.Title,
