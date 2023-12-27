@@ -56,8 +56,8 @@
 						<MudChip Icon="@Icons.Material.Filled.Person">@ContentService["UserButton:Sign In"]</MudChip>
                 </ActivatorContent>
                 <ChildContent >
-                    <MudMenuItem Href="@($"{configuration["IdentityClient"]}/login")">@ContentService["UserButton:Sign In"]</MudMenuItem>
-                    <MudMenuItem Href="@($"{configuration["IdentityClient"]}/registration")">@ContentService["UserButton:Sign Up"]</MudMenuItem>
+                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/login?callback={NavigationManager.BaseUri}")" Target="_blank">@ContentService["UserButton:Sign In"]</MudMenuItem>
+                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/registration?callback={NavigationManager.BaseUri}")" Target="_blank">@ContentService["UserButton:Sign Up"]</MudMenuItem>
                 </ChildContent>
             </MudMenu>
         </NotAuthorized>
@@ -81,7 +81,7 @@
     {
         await CookieUtil.RemoveAsync("authToken");
         await AuthProvider.GetAuthenticationStateAsync();
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo($"{configuration["IdentityCLient"]}/logout");
     }
 
 }

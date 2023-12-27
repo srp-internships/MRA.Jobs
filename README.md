@@ -31,4 +31,4 @@ The main goal of this platform is to have a centralized and easy way to handle t
   - I'm reviewing the student's request and looking at his/her history to make sure this is a good candidate to approve for the next step.  
 
 # Other
-![image.png](/.attachments/image-0d327bc9-4324-48ad-8fcc-2542b9cdb08d.png)
+![Project Banner](./.attachments/banner.png)
