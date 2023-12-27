@@ -1,4 +1,5 @@
 ﻿@page "/login"
+@using Microsoft.AspNetCore.WebUtilities
 @layout MainLayout
 @inject IAuthService AuthService
 @inject ISnackbar Snackbar
@@ -30,7 +31,7 @@
                             </div>
                         </div>
                         <MudText>
-                            @ContentService["SignIn:LabelDontAccount"] <MudLink Href="registration"> @ContentService["SignIn:LinkSignUp"]</MudLink>
+                            @ContentService["SignIn:LabelDontAccount"] <MudLink Href="@($"registration?callback={callback}")"> @ContentService["SignIn:LinkSignUp"]</MudLink>
                         </MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
@@ -75,6 +76,7 @@
 @code {
     private readonly LoginForm _model = new();
     private bool _processing;
+    string callback = string.Empty;
 
     public class LoginForm
     {
@@ -110,6 +112,11 @@
         {
             navigationManager.NavigateTo("profile");
             return;
+        }
+        var currentUri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("callback", out var param))
+        {
+            callback = param;
         }
         StateHasChanged();
     }
