@@ -56,8 +56,8 @@
 						<MudChip Icon="@Icons.Material.Filled.Person">@ContentService["UserButton:Sign In"]</MudChip>
                 </ActivatorContent>
                 <ChildContent >
-                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/login")" Target="_blank">@ContentService["UserButton:Sign In"]</MudMenuItem>
-                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/registration")" Target="_blank">@ContentService["UserButton:Sign Up"]</MudMenuItem>
+                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/login?callback={NavigationManager.BaseUri}")" Target="_blank">@ContentService["UserButton:Sign In"]</MudMenuItem>
+                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/registration?callback={NavigationManager.BaseUri}")" Target="_blank">@ContentService["UserButton:Sign Up"]</MudMenuItem>
                 </ChildContent>
             </MudMenu>
         </NotAuthorized>
