@@ -1,21 +1,26 @@
-﻿using MRA.Jobs.Application.Contracts.Common;
+﻿using System.Net.Http;
+using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.DeleteVacancyCategory;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.UpdateVacancyCategory;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+using MRA.Jobs.Client.Services.HttpClients;
 
 namespace MRA.Jobs.Client.Services.CategoryServices;
 
 public class CategoryService : ICategoryService
 {
     private readonly HttpClient _http;
+    private readonly IHttpClientService _httpClient;
 
-    public CategoryService(HttpClient http)
+    public CategoryService(HttpClient http, IHttpClientService httpClient )
     {
         _http = http;
+        _httpClient = httpClient;
     }
     public List<CategoryResponse> Category { get; set; }
     public UpdateVacancyCategoryCommand updatingEntity { get; set; }
@@ -28,6 +33,11 @@ public class CategoryService : ICategoryService
         creatingEntity = new() { Name = "" };
         return result.Items;
     }
+    public async Task<ApiResponse<List<CategoryResponse>>> GetAllCategory(GetVacancyCategoryByIdQuery query)
+    {
+        return await _httpClient.GetFromJsonAsync<List<CategoryResponse>>($"categories", query);
+    }
+
     public void OnUpdateClick(CategoryResponse updateEntity)
     {
         updatingEntity = new()
@@ -94,4 +104,6 @@ public class CategoryService : ICategoryService
         var responce = await _http.GetFromJsonAsync<List<JobCategoriesResponse>>("categories/job?CheckDate=true");
         return responce;
     }
+
+  
 }
