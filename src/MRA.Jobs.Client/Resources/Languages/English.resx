@@ -450,21 +450,6 @@
     <data name="VacanciesList:Search" xml:space="preserve">
     <value>Search</value>
   </data>
-    <data name="VacanciesList:Posted" xml:space="preserve">
-    <value>Posted</value>
-  </data>
-    <data name="VacanciesList:month(s)" xml:space="preserve">
-    <value>month(s)</value>
-  </data>
-    <data name="VacanciesList:Duration" xml:space="preserve">
-    <value>Duration</value>
-  </data>
-    <data name="VacanciesList:Deadline" xml:space="preserve">
-    <value>Deadline</value>
-  </data>
-    <data name="VacanciesList:End date" xml:space="preserve">
-    <value>End date</value>
-  </data>
     <data name="Jobs:Jobs" xml:space="preserve">
     <value>Jobs</value>
   </data>
@@ -474,20 +459,8 @@
     <data name="Trainings:Trainings" xml:space="preserve">
     <value>Trainings</value>
   </data>
-    <data name="VacancyApplication:Posted" xml:space="preserve">
-    <value>Posted</value>
-  </data>
-    <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
+   <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
     <value>Vacancy Details</value>
-  </data>
-    <data name="VacancyApplication:month(s)" xml:space="preserve">
-    <value>month(s)</value>
-  </data>
-    <data name="VacancyApplication:Duration" xml:space="preserve">
-    <value>Duration</value>
-  </data>
-    <data name="VacancyApplication:Deadline" xml:space="preserve">
-    <value>Deadline</value>
   </data>
     <data name="VacancyApplication:year(s)" xml:space="preserve">
     <value>year(s)</value>
@@ -771,5 +744,64 @@
     </data>
     <data name="SendCV:IfFileNull">
         <value>Please upload your CV</value>
+    </data>
+     <data name="Application:Success">
+        <value>Application sent successfully!</value>
+    </data>
+     <data name="SomethingWentWrong">
+        <value>Something went wrong!</value>
+    </data>
+     <data name="ServerIsNotResponding">
+        <value>Server is not responding, please try later</value>
+    </data>
+     <data name="ErrorDelete">
+        <value>Deleting error</value>
+    </data>
+     <data name="DuplicateRole">
+        <value>Add error may be you entered duplicate role</value>
+    </data>
+     <data name="GoogleAuthFailed">
+        <value>Google authorization failed. Please try again later.</value>
+    </data>
+
+     <data name="ConverterService:SecondsAgo">
+        <value>seconds ago</value>
+    </data>
+      <data name="ConverterService:MinAgo">
+        <value>min ago</value>
+    </data>
+ <data name="ConverterService:HourAgo">
+        <value>hour ago</value>
+    </data>
+     <data name="ConverterService:HoursAgo">
+        <value>hours ago</value>
+    </data>
+    <data name="ConverterService:TodayAt">
+        <value>Today at</value>
+    </data>
+     <data name="ConverterService:Yesterday">
+        <value>Yesterday</value>
+    </data>
+
+    <data name="ConverterService:SecondsLeft">
+        <value>seconds left</value>
+    </data>
+      <data name="ConverterService:MinLeft">
+        <value>min left</value>
+    </data>
+ <data name="ConverterService:HourLeft">
+        <value>hour left</value>
+    </data>
+     <data name="ConverterService:HoursLeft">
+        <value>hours left</value>
+    </data>
+    <data name="ConverterService:TodayAt">
+        <value>Today at</value>
+    </data>
+     <data name="ConverterService:Tomorrow">
+        <value>Tomorrow</value>
+    </data>
+     <data name="ConverterService:On">
+        <value>on</value>
     </data>
 </root>

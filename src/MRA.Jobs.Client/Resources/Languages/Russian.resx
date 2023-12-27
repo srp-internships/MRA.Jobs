@@ -723,4 +723,63 @@
     <data name="SendCV:IfFileNull">
         <value>Пожалуйста, загрузите свое резюме</value>
     </data>
+      <data name="Application:Success">
+        <value>Заявка успешно отправлена!</value>
+    </data>
+      <data name="SomethingWentWrong">
+        <value>Что-то пошло не так</value>
+    </data>
+      <data name="ServerIsNotResponding">
+        <value>Сервер не отвечает, попробуйте позже</value>
+    </data>
+      <data name="ErrorDelete">
+        <value>Ошибка удаление</value>
+    </data>
+     <data name="DuplicateRole">
+        <value>Ошибка добавления, возможно, вы ввели дублирующую роль.</value>
+    </data>
+     <data name="GoogleAuthFailed">
+        <value>Авторизация Google не удалась. Пожалуйста, повторите попытку позже.</value>
+    </data>
+
+
+<data name="ConverterService:SecondsAgo">
+    <value>секунд(ы) назад</value>
+</data>
+<data name="ConverterService:MinAgo">
+    <value>минут(а)(у) назад</value>
+</data>
+<data name="ConverterService:HourAgo">
+    <value>час назад</value>
+</data>
+<data name="ConverterService:HoursAgo">
+    <value>час(а)(ов) назад</value>
+</data>
+<data name="ConverterService:TodayAt">
+    <value>Сегодня в</value>
+</data>
+<data name="ConverterService:Yesterday">
+    <value>Вчера</value>
+</data>
+<data name="ConverterService:SecondsLeft">
+    <value>секунд осталось</value>
+</data>
+<data name="ConverterService:MinLeft">
+    <value>минут осталось</value>
+</data>
+<data name="ConverterService:HourLeft">
+    <value>час остался</value>
+</data>
+<data name="ConverterService:HoursLeft">
+    <value>час(а)(ов) осталось</value>
+</data>
+<data name="ConverterService:Tomorrow">
+    <value>Завтра</value>
+</data>
+<data name="ConverterService:On">
+    <value>в</value>
+</data>
+
+
+
 </root>

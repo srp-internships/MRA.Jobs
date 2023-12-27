@@ -402,21 +402,6 @@
   <data name="VacanciesList:Search" xml:space="preserve">
     <value>Ҷустуҷӯ</value>
   </data>
-  <data name="VacanciesList:Posted" xml:space="preserve">
-    <value>Нашр шудааст</value>
-  </data>
-  <data name="VacanciesList:month(s)" xml:space="preserve">
-    <value>моҳ(ҳо)</value>
-  </data>
-  <data name="VacanciesList:Duration" xml:space="preserve">
-    <value>Давомият</value>
-  </data>
-  <data name="VacanciesList:Deadline" xml:space="preserve">
-    <value>Муддати бақайдгирӣ</value>
-  </data>
-  <data name="VacanciesList:End date" xml:space="preserve">
-    <value>Санаи тамоми</value>
-  </data>
   <data name="Jobs:Jobs" xml:space="preserve">
     <value>Ҷойҳои холии корӣ</value>
   </data>
@@ -426,20 +411,8 @@
   <data name="Trainings:Trainings" xml:space="preserve">
     <value>Машваратхо</value>
   </data>
-  <data name="VacancyApplication:Posted" xml:space="preserve">
-    <value>Опубликовано</value>
-  </data>
-  <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
-    <value>Тафсилоти вазифа</value>
-  </data>
-  <data name="VacancyApplication:month(s)" xml:space="preserve">
-    <value>моҳ(ҳо)</value>
-  </data>
-  <data name="VacancyApplication:Duration" xml:space="preserve">
-    <value>Давомият</value>
-  </data>
-  <data name="VacancyApplication:Deadline" xml:space="preserve">
-    <value>Муддати бақайдгирӣ</value>
+   <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
+    <value>Тафсилот</value>
   </data>
   <data name="VacancyApplication:year(s)" xml:space="preserve">
     <value>сол(ҳо)</value>
@@ -451,7 +424,7 @@
     <value>Суҳбат</value>
   </data>
   <data name="VacancyApplication:End Date" xml:space="preserve">
-    <value>Санаи тамоми</value>
+    <value>Тамомшавии муддат</value>
   </data>
   <data name="VacancyApplication:Additional Details" xml:space="preserve">
     <value>Тафсилоти иловагӣ</value>
@@ -649,7 +622,7 @@
     <value>Ҳамеша дар ҷустуҷӯи пешрафтҳои технологии боланд. Танҳо маҳсулотеро сохтан, ки хуб фурӯхт мешавад, балки платформаро, ки тавассути он метавон онро тақсим кард.</value>
   </data>
   <data name="VacancyDetails:Posted" xml:space="preserve">
-    <value>Опубликовано</value>
+    <value>Нашр шудааст</value>
   </data>
   <data name="VacancyDetails:month(s)" xml:space="preserve">
     <value>моҳ(ҳо)</value>
@@ -723,4 +696,60 @@
     <data name="SendCV:IfFileNull">
         <value>Лутфан CV-и худро бор кунед</value>
     </data>
+      <data name="Application:Success">
+        <value>Ариза бомуваффақият фиристода шуд!</value>
+    </data>
+     <data name="SomethingWentWrong">
+        <value>Чизе хато рафт</value>
+    </data>
+      <data name="ServerIsNotResponding">
+        <value>Сервер ҷавоб намедиҳад, лутфан дертар такрор кунед</value>
+    </data>
+     <data name="ErrorDelete">
+        <value>Нобудкунии хато</value>
+    </data>
+     <data name="DuplicateRole">
+        <value>Хатои илова кардан мумкин аст, ки шумо нақши такрориро ворид кардаед</value>
+    </data>
+     <data name="GoogleAuthFailed">
+        <value>Иҷозати Google ноком шуд. Лутфан баъдтар бори дигар такрор кунед.</value>
+    </data>
+
+   
+<data name="ConverterService:SecondsAgo">
+    <value>сония пеш</value>
+</data>
+<data name="ConverterService:MinAgo">
+    <value>дақиқа пеш</value>
+</data>
+<data name="ConverterService:HourAgo">
+    <value>соат пеш</value>
+</data>
+<data name="ConverterService:HoursAgo">
+    <value>соат пеш</value>
+</data>
+<data name="ConverterService:TodayAt">
+    <value>Имрӯз дар</value>
+</data>
+<data name="ConverterService:Yesterday">
+    <value>Дирӯз</value>
+</data>
+<data name="ConverterService:SecondsLeft">
+    <value>сония боқӣ монд</value>
+</data>
+<data name="ConverterService:MinLeft">
+    <value>дақиқа боқӣ монд</value>
+</data>
+<data name="ConverterService:HourLeft">
+    <value>соат боқӣ монд</value>
+</data>
+<data name="ConverterService:HoursLeft">
+    <value>соат боқӣ монд</value>
+</data>
+<data name="ConverterService:Tomorrow">
+    <value>Пагоҳ</value>
+</data>
+<data name="ConverterService:On">
+    <value></value>
+</data>
 </root>

@@ -38,7 +38,7 @@ else
                                 <b> @Vacancy.Title</b>
                             </MudText>
                             <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
-                                <b> @ContentService["VacancyApplication:Posted"] @DateTimeConvert.GetDisplayPostedDate(Vacancy.PublishDate)</b>
+                                <b> @ContentService["VacancyDetails:Posted"] @DateTimeConvert.GetDisplayPostedDate(Vacancy.PublishDate)</b>
                             </MudText>
                         </div>
                     </div>
@@ -64,10 +64,10 @@ else
                                 </MudItem>
                                 <MudItem Style="padding:0;">
                                     <MudText>
-                                        <b>@Vacancy.Duration @ContentService["VacancyApplication:month(s)"]</b>
+                                        <b>@Vacancy.Duration @ContentService["VacancyDetails:month(s)"]</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2">
-                                        <small>@ContentService["VacancyApplication:Duration"]</small>
+                                        <small>@ContentService["VacancyDetails:Duration"]</small>
                                     </MudText>
                                 </MudItem>
                             </MudGrid>
@@ -89,7 +89,7 @@ else
                                             <b>@deadlineResult.DisplayDate</b>
                                         </MudText>
                                         <MudText Typo="Typo.body2">
-                                            <small>@ContentService["VacancyApplication:Deadline"]</small>
+                                            <small>@ContentService["VacancyDetails:Deadline"]</small>
                                         </MudText>
                                     </MudItem>
                                 </MudGrid>
@@ -148,7 +148,7 @@ else
                                         <b>@endDateResult.DisplayDate</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2">
-                                        <small>@ContentService["VacancyApplication:End Date"]</small>
+                                        <small>@ContentService["VacancyDetails:End Date"]</small>
                                     </MudText>
                                 </MudItem>
                             </MudGrid>
