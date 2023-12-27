@@ -3,6 +3,7 @@ using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
 using MRA.Jobs.Client.Identity;
@@ -30,7 +31,9 @@ public partial class TrainingVacancyPage
     private TimeSpan? _endDateTime;
     private StandaloneCodeEditor _editorTemplate = null!;
     private StandaloneCodeEditor _editorTest = null!;
-
+    private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
+    private string errorMessage;
+    private bool isError;
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
         if (editor == _editorTest)
@@ -191,13 +194,25 @@ public partial class TrainingVacancyPage
         var r = _tasks.FirstOrDefault(t => t.Title == title);
         _tasks.Remove(r);
     }
-
+    private void ShowError(string error)
+    {
+        errorMessage = error;
+        isError = true;
+    }
     private async Task LoadData()
     {
         try
         {
             _trainings = (await TrainingService.GetAll()).Items;
-            _categories = await CategoryService.GetAllCategory();
+            var response = await CategoryService.GetAllCategory(getVacancyCategoryByIdQuery);
+            if (response.Success)
+            {
+                _categories = response.Result;
+            }
+            else
+            {
+                ShowError(response.Error);
+            }
         }
         catch (Exception)
         {

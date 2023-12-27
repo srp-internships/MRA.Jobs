@@ -9,6 +9,7 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
 using MudBlazor;
 using MudBlazor.Extensions;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
 
 namespace MRA.Jobs.Client.Pages.Admin;
 
@@ -26,6 +27,7 @@ public partial class InternshipVacanciesPage
     private List<CategoryResponse> _categories;
     private List<InternshipVacancyListResponse> _internships;
     private List<VacancyTaskDto> _tasks = new();
+    private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
     private TimeSpan? _applicationDeadlineTime;
     private TimeSpan? _publishDateTime;
     private TimeSpan? _endDateTime;
@@ -198,13 +200,27 @@ public partial class InternshipVacanciesPage
         var q = _questions.FirstOrDefault(t => t.Question == question);
         _questions.Remove(q);
     }
-
+    private string errorMessage;
+    private bool isError;
+    private void ShowError(string error)
+    {
+        errorMessage = error;
+        isError = true;
+    }
     private async Task LoadData()
     {
         try
         {
             _internships = await InternshipService.GetAll();
-            _categories = await CategoryService.GetAllCategory();
+            var response = await CategoryService.GetAllCategory(getVacancyCategoryByIdQuery);
+            if (response.Success)
+            {
+                _categories = response.Result;
+            }
+            else
+            {
+                ShowError(response.Error);
+            }
         }
         catch (Exception)
         {

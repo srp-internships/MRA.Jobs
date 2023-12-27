@@ -1,4 +1,6 @@
-﻿@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+﻿@using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+
 @inject ICategoryService CategoryService
 
 
@@ -23,12 +25,28 @@
 </section>
 
 @code {
-
+	private string errorMessage;
+	private bool isError;
+	private void ShowError(string error)
+	{
+		errorMessage = error;
+		isError = true;
+	}
     private List<CategoryResponse> _categoryResponses;
+	private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
 
     protected override async Task OnInitializedAsync()
     {
-        _categoryResponses = await CategoryService.GetAllCategory();
+		var response = await CategoryService.GetAllCategory(getVacancyCategoryByIdQuery);
+		if (response.Success)
+		{
+			_categoryResponses = response.Result;
+		}
+		else
+		{
+			ShowError(response.Error);
+		}
+
     }
 
 

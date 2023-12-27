@@ -1,5 +1,6 @@
 ﻿@page "/dashboard/categories"
 @layout Dashboard
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId
 @using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 @using MRA.Jobs.Client.Components.Dialogs;
 @inject ICategoryService CService
@@ -43,15 +44,29 @@ else
 @code {
     private bool serverError = false;
     private List<CategoryResponse> _category;
-
+	private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
     private string newCategory { get; set; }
-
+	private string errorMessage;
+	private bool isError;
+	private void ShowError(string error)
+	{
+		errorMessage = error;
+		isError = true;
+	}
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         try
         {
-            _category = await CService.GetAllCategory();
+			var response = await CService.GetAllCategory(getVacancyCategoryByIdQuery);
+			if (response.Success)
+			{
+				_category = response.Result;
+			}
+			else
+			{
+				ShowError(response.Error);
+			}
         }
         catch (Exception)
         {
