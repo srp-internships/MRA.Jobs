@@ -40,7 +40,7 @@ await base.OnInitializedAsync();
                         Duration = r.Duration,
                         Deadline = r.ApplicationDeadline
 					}).ToList();
-				filteredInternships = allJobs.Select(r => new VacancyClientResponse
+				filteredInternships = allJobs.Where(s=>s.EndDate>=DateTime.Now && s.ApplicationDeadline>=DateTime.Now).Select(r => new VacancyClientResponse
 					{
 						Category = r.Category,
 						Title = r.Title,
