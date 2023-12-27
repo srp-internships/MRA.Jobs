@@ -79,11 +79,29 @@
                 <b>@ContentService["Header:Team"]</b>
             </MudText>
         </MudButton>
-		<MudButton Href="@Configuration["Academy:Address"]" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+        <MudButton Href="@Configuration["Academy:Address"]" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
             <MudText>
                 <b>@ContentService["Header:Academy"] </b>
             </MudText>
         </MudButton>
+        @if (_betaVersion)
+        {
+            <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+                    <MudText>
+                        <b>@ContentService["Home:Contact"] </b>
+                    </MudText>
+                </MudButton>
+            </MudHidden>
+        }
+        else
+        {
+            <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+                <MudText>
+                    <b>@ContentService["Home:Contact"] </b>
+                </MudText>
+            </MudButton>
+        }
     </MudHidden>
     <MudSpacer/>
     <MudHidden Breakpoint="Breakpoint.Xs">
@@ -123,7 +141,7 @@
 
 @code {
 
-    bool _open = false;   
+    bool _open = false;
 
     private bool _betaVersion;
 
