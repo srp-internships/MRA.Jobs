@@ -73,10 +73,11 @@ public class ApplicationService(
 
     private async Task<byte[]> GetFileBytesAsync(IBrowserFile file)
     {
-        if (file.Size <= int.Parse(configuration["CvSettings:MaxFileSize"]!))
+        var allowedSize = int.Parse(configuration["CvSettings:MaxFileSize"]!);
+        if (file.Size <= allowedSize)
         {
             var ms = new MemoryStream();
-            await file.OpenReadStream().CopyToAsync(ms);
+            await file.OpenReadStream(allowedSize).CopyToAsync(ms);
             var res = ms.ToArray();
             return res;
         }
