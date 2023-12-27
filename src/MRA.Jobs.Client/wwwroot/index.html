@@ -42,12 +42,28 @@
     <base href="/"/>
 
     <style>
-        .navmenu ul li a.active {
-            color: #129fd7;
+        /* Стили для центрирования элементов на странице */
+        .center-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
         }
 
-        #app {
-            min-height: 100vh;
+        /* Стили для анимации индикатора загрузки */
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 
@@ -56,11 +72,9 @@
 <body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
 
     <div id="app">
-        <div id="preloader">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+        <div class="center-screen">
+            <img src="images/srp/srp_icon.png" style="width: 300px;"/>
+            <div class="loader"></div>
         </div>
     </div>
 
