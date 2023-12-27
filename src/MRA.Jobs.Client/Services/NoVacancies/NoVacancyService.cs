@@ -74,22 +74,15 @@ public class NoVacancyService(
         
     private async Task<byte[]> GetFileBytesAsync(IBrowserFile file)
     {
-        try
+        var allowedSize = int.Parse(configuration["CvSettings:MaxFileSize"]!);
+        if (file.Size <= allowedSize)
         {
-            if (file.Size <= int.Parse(configuration["CvSettings:MaxFileSize"]!))
-            {
-                var ms = new MemoryStream();
-                await file.OpenReadStream().CopyToAsync(ms);
-                var res = ms.ToArray();
-                return res;
-            }
+            var ms = new MemoryStream();
+            await file.OpenReadStream(allowedSize).CopyToAsync(ms);
+            var res = ms.ToArray();
+            return res;
         }
-        catch (Exception ex)
-        {
-            var ms = ex.Message.ToString();
-            var msg = ms;
-        }
-        
+
         return null;
     }
 }
