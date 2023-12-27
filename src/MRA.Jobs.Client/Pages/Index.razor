@@ -5,6 +5,7 @@
 @using MRA.Jobs.Client.Components.Home
 @using Microsoft.AspNetCore.WebUtilities
 @inject IAltairCABlazorCookieUtil cookieUtil
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <MudGrid Style="margin-top: 5%; margin-bottom: 10%">
     <MudItem xs="12" md="6" Style="padding: 10% 10% 0% 10%;">
@@ -98,6 +99,7 @@
             DateTime oDate = Convert.ToDateTime(vdate);
             token.AccessTokenValidateTo = oDate;
             await cookieUtil.SetValueAsync("authToken", token);
+            await AuthenticationStateProvider.GetAuthenticationStateAsync();
             StateHasChanged();
         }
 
