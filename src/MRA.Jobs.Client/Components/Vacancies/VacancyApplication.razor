@@ -267,7 +267,7 @@ else
                         </MudRadioGroup>
                         @if (_isUploadCvMode)
                     {
-                        <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
+                        <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@(Configuration["CvSettings:ExceptedFormats"]!)">
                             <ButtonTemplate Context="anotherContext">
                                 <MudButton HtmlTag="label"
                                            Variant="Variant.Filled"
@@ -328,7 +328,7 @@ else
     private IBrowserFile _cv;
     private bool _processing;
 
-    private Dictionary<Guid, StandaloneCodeEditor> _editors = new Dictionary<Guid, StandaloneCodeEditor>();
+    private Dictionary<Guid, StandaloneCodeEditor> _editors = new();
 
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor, string initialValue)
     {
@@ -380,6 +380,11 @@ else
             return;
         }
 
+        if (_cv.Size>=int.Parse(Configuration["CvSettings:MaxFileSize"]!)&& _isUploadCvMode)
+        {
+            Snackbar.Add("File size must be equal or lower than 5MB", Severity.Error);
+        }
+
         if (string.IsNullOrWhiteSpace(Application.CoverLetter))
         {
             return; // Do not proceed with submission if any required fields are empty.
@@ -390,7 +395,8 @@ else
         var updatedResponses = Application.VacancyResponses.Select(vr => new VacancyResponseDto
             {
                 VacancyQuestion = vr.VacancyQuestion,
-                Response = QuestionResponses[vr.VacancyQuestion.Question]
+                Response = QuestionResponses[vr.VacancyQuestion.Question],
+                
             }).ToList();
         if (updatedResponses.Any(s => !s.VacancyQuestion.IsOptional && s.Response.IsNullOrEmpty()))
         {

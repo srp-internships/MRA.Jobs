@@ -1,27 +1,36 @@
 ﻿@page "/trainings/apply/{Slug}"
 @using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
+@using MRA.Jobs.Client.Components.Extra
 @using MRA.Jobs.Client.Components.Vacancies
 @inject ITrainingService TrainingService
 
-@if (serverError)
+@if (_serverError)
 {
     <ServerErrorComponent/>
 }
 else
 {
-    <VacancyApplication VacancyType="trainings" Slug="@Slug" Application="@application" QuestionResponses="@questionResponses" TaskResponses="@tasksResponses" Vacancy="@training"/>
+    <CascadingAuthenticationState>
+        <AuthorizeView>
+            <Authorized>
+                <VacancyApplication VacancyType="trainings" Slug="@Slug" Application="@_application" QuestionResponses="@_questionResponses" TaskResponses="@_tasksResponses" Vacancy="@_training"/>
+            </Authorized>
+            <NotAuthorized>
+                <NotFound></NotFound>
+            </NotAuthorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
 }
 
 @code {
-    private bool serverError;
-    private VacancyApplicationResponse training;
-    private CreateApplicationCommand application;
-    public Dictionary<string, string> questionResponses = new();
-	public Dictionary<Guid, string> tasksResponses = new();
+    private bool _serverError;
+    private VacancyApplicationResponse _training;
+    private CreateApplicationCommand _application;
+    private readonly Dictionary<string, string> _questionResponses = new();
+    private readonly Dictionary<Guid, string> _tasksResponses = new();
 
-    [Parameter]
-    public string Slug { get; set; }
+    [Parameter] public string Slug { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -32,7 +41,7 @@ else
 
             if (response != null)
             {
-                training = new VacancyApplicationResponse
+                _training = new VacancyApplicationResponse
                 {
                     Id = response.Id,
                     Title = response.Title,
@@ -44,33 +53,34 @@ else
                     PublishDate = response.PublishDate,
                     EndDate = response.EndDate
                 };
-                application = new CreateApplicationCommand
+                _application = new CreateApplicationCommand
                 {
                     VacancySlug = Slug,
-                    VacancyResponses = training.VacancyQuestions.Select(q => new VacancyResponseDto
+                    VacancyResponses = _training.VacancyQuestions.Select(q => new VacancyResponseDto
                     {
-                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question, IsOptional = q.IsOptional }
                     }),
-                    TaskResponses = training.VacancyTasks.Select(t => new TaskResponseDto
+                    TaskResponses = _training.VacancyTasks.Select(t => new TaskResponseDto
                     {
                         TaskId = t.Id,
                         Code = t.Template
                     })
                 };
 
-                foreach (var question in training.VacancyQuestions)
+                foreach (var question in _training.VacancyQuestions)
                 {
-                    questionResponses[question.Question] = "";
+                    _questionResponses[question.Question] = "";
                 }
-                foreach (var task in training.VacancyTasks)
+
+                foreach (var task in _training.VacancyTasks)
                 {
-                    tasksResponses[task.Id] = task.Template;
+                    _tasksResponses[task.Id] = task.Template;
                 }
             }
         }
         catch (Exception)
         {
-            serverError = true;
+            _serverError = true;
             StateHasChanged();
         }
     }

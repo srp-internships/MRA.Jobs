@@ -1,28 +1,35 @@
 ﻿@page "/jobs/apply/{Slug}"
 @using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
-@using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-@inject HttpClient httpClient
-@inject IApplicationService ApplicationService;
-@inject IVacancyService VacancyService
-@inject NavigationManager NavigationManager
 @using MRA.Jobs.Application.Contracts.VacancyClient;
+@using MRA.Jobs.Client.Components.Extra
 @using MRA.Jobs.Client.Components.Vacancies
 
-@if (serverError)
+@inject IVacancyService VacancyService
+
+@if (_serverError)
 {
     <ServerErrorComponent/>
 }
 else
 {
-    <VacancyApplication VacancyType="jobs" Slug="@Slug" Application="@application" QuestionResponses="@questionResponses" TaskResponses="@tasksResponses" Vacancy="@job"/>
+    <CascadingAuthenticationState>
+        <AuthorizeView>
+            <Authorized>
+                <VacancyApplication VacancyType="jobs" Slug="@Slug" Application="@_application" QuestionResponses="@QuestionResponses" TaskResponses="@TasksResponses" Vacancy="@_job"/>
+            </Authorized>
+            <NotAuthorized>
+                <NotFound></NotFound>
+            </NotAuthorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
 }
 
 @code {
-    private bool serverError;
-    private VacancyApplicationResponse job;
-    private CreateApplicationCommand application;
-    public Dictionary<string, string> questionResponses = new();
-    public Dictionary<Guid, string> tasksResponses = new();
+    private bool _serverError;
+    private VacancyApplicationResponse _job;
+    private CreateApplicationCommand _application;
+    public Dictionary<string, string> QuestionResponses = new();
+    public Dictionary<Guid, string> TasksResponses = new();
 
     [Parameter] public string Slug { get; set; }
 
@@ -35,7 +42,7 @@ else
 
             if (response != null)
             {
-                job = new VacancyApplicationResponse
+                _job = new VacancyApplicationResponse
                 {
                     Id = response.Id,
                     Title = response.Title,
@@ -46,33 +53,33 @@ else
                     VacancyQuestions = response.VacancyQuestions,
                     VacancyTasks = response.VacancyTasks
                 };
-                application = new CreateApplicationCommand
+                _application = new CreateApplicationCommand
                 {
                     VacancySlug = Slug,
-                    VacancyResponses = job.VacancyQuestions.Select(q => new VacancyResponseDto
+                    VacancyResponses = _job.VacancyQuestions.Select(q => new VacancyResponseDto
                     {
-                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question }
+                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question, IsOptional = q.IsOptional }
                     }),
-                    TaskResponses = job.VacancyTasks.Select(t => new TaskResponseDto
+                    TaskResponses = _job.VacancyTasks.Select(t => new TaskResponseDto
                     {
                         TaskId = t.Id,
                         Code = t.Template
                     })
                 };
-                foreach (var question in job.VacancyQuestions)
+                foreach (var question in _job.VacancyQuestions)
                 {
-                    questionResponses[question.Question] = "";
+                    QuestionResponses[question.Question] = "";
                 }
 
-                foreach (var task in job.VacancyTasks)
+                foreach (var task in _job.VacancyTasks)
                 {
-                    tasksResponses[task.Id] = task.Template;
+                    TasksResponses[task.Id] = task.Template;
                 }
             }
         }
         catch (Exception)
         {
-            serverError = true;
+            _serverError = true;
             StateHasChanged();
         }
     }
