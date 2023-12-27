@@ -133,7 +133,7 @@ public partial class VacancyPage
             }
             catch (Exception)
             {
-                Snackbar.Add("Server is not responding, try latter", Severity.Error);
+                Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
             }
 
             StateHasChanged();
