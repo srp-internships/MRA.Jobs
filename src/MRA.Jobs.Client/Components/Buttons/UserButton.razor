@@ -56,8 +56,8 @@
 						<MudChip Icon="@Icons.Material.Filled.Person">@ContentService["UserButton:Sign In"]</MudChip>
                 </ActivatorContent>
                 <ChildContent >
-                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/login?callback={NavigationManager.BaseUri}")" Target="_blank">@ContentService["UserButton:Sign In"]</MudMenuItem>
-                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/registration?callback={NavigationManager.BaseUri}")" Target="_blank">@ContentService["UserButton:Sign Up"]</MudMenuItem>
+                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/login?callback={NavigationManager.BaseUri}")" >@ContentService["UserButton:Sign In"]</MudMenuItem>
+                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/registration?callback={NavigationManager.BaseUri}")" >@ContentService["UserButton:Sign Up"]</MudMenuItem>
                 </ChildContent>
             </MudMenu>
         </NotAuthorized>
@@ -65,16 +65,13 @@
 </CascadingAuthenticationState>
 
 
-	@code{
-
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender)
-		{
-			LayoutService.User = await UserProfileService.Get();
-			StateHasChanged();
-		}
+    @code{
+    protected override async Task OnInitializedAsync()
+    {
+        LayoutService.User = await UserProfileService.Get();
+        StateHasChanged();
     }
+    
     
 
     private async Task Logout()
