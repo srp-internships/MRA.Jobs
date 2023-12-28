@@ -1,35 +1,46 @@
 ﻿@page "/applications"
 @inject IApplicationService applicationService
+
+
+
 <MudContainer>
     <MudText Typo="Typo.h4">
         <b>Applications</b>
     </MudText>
     <br/>
-    @if (applications.Items.Count == 0)
+    @if (applications is null)
     {
-        <MudText Typo="Typo.h5" Style="text-align: center">You do not have any active applications</MudText>
-    }
-    else
+        <div style="text-align: center;">
+            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+        </div>
+    } else
     {
-        <MudTable Items="@applications.Items" Breakpoint="Breakpoint.Md">
-            <HeaderContent>
-                <MudTh>Vacancy title</MudTh>
-                <MudTh>Applied at</MudTh>
-                <MudTh>Status name</MudTh>
-                <MudTh>Action</MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd DataLabel="Vacancy title">@context.VacancyTitle</MudTd>
-                <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
-                <MudTd DataLabel="Status">@context.StatusName</MudTd>
-                <MudTd DataLabel="Action">
-                    <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton>
-                </MudTd>
-            </RowTemplate>
-            <PagerContent>
-                <MudTablePager/>
-            </PagerContent>
-        </MudTable>
+        @if (applications.Items.Count == 0)
+        {
+            <MudText Typo="Typo.h5" Style="text-align: center">You do not have any active applications</MudText>
+        }
+        else
+        {
+            <MudTable Items="@applications.Items" Breakpoint="Breakpoint.Md">
+                <HeaderContent>
+                    <MudTh>Vacancy title</MudTh>
+                    <MudTh>Applied at</MudTh>
+                    <MudTh>Status name</MudTh>
+                    <MudTh>Action</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Vacancy title">@context.VacancyTitle</MudTd>
+                        <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
+                        <MudTd DataLabel="Status">@context.StatusName</MudTd>
+                        <MudTd DataLabel="Action">
+                            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton>
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+        }
     }
 
 </MudContainer>
