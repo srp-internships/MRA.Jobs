@@ -33,5 +33,45 @@ public class GetAllInternshipVacancyQueryTest : Testing
         Assert.IsNotNull(internshipVacancies);
         Assert.IsNotEmpty(internshipVacancies.Items);
     }
+    
+    [Test]
+    public async Task GetAllJobVacancyQuery_ReturnsJobVacanciesCount2_ForApplicant()
+    {
+        ResetState();
+        await _context.GetInternship("Internship1", DateTime.Now.AddDays(2));
+        await _context.GetInternship("Internship2", DateTime.Now.AddDays(3));
+        await _context.GetInternship("Internship3", DateTime.Now.AddDays(-2));
+
+        RunAsDefaultUserAsync("applicant");
+        //Act
+        var response = await _httpClient.GetAsync("/api/internships");
+
+        //Assert
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        var internshipVacancies = await response.Content.ReadFromJsonAsync<PagedList<InternshipVacancyListResponse>>();
+
+        Assert.IsNotNull(internshipVacancies);
+        Assert.AreEqual(internshipVacancies.Items.Count, 2);
+    }
+    
+    [Test]
+    public async Task GetAllJobVacancyQuery_ReturnsJobVacanciesCount3_ForReviewer()
+    {
+        ResetState();
+        await _context.GetInternship("Internship1", DateTime.Now.AddDays(2));
+        await _context.GetInternship("Internship2", DateTime.Now.AddDays(3));
+        await _context.GetInternship("Internship3", DateTime.Now.AddDays(-1));
+
+        RunAsReviewerAsync();
+        //Act
+        var response = await _httpClient.GetAsync("/api/internships");
+
+        //Assert
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        var inertnshipVacancies = await response.Content.ReadFromJsonAsync<PagedList<InternshipVacancyListResponse>>();
+
+        Assert.IsNotNull(inertnshipVacancies);
+        Assert.AreEqual(inertnshipVacancies.Items.Count, 3);
+    }
 
 }

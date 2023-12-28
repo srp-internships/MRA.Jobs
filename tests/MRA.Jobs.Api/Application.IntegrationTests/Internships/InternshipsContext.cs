@@ -6,6 +6,11 @@ public class InternshipsContext : Testing
 {
     public async Task<InternshipVacancy> GetInternship(string title)
     {
+        return await GetInternship(title, DateTime.Now.AddDays(2));
+    }
+
+    public async Task<InternshipVacancy> GetInternship(string title, DateTime endDate)
+    {
         var category = new CategoryContext();
         var internship = await FindFirstOrDefaultAsync<InternshipVacancy>(i => i.Title == title);
         if (internship != null)
@@ -17,17 +22,17 @@ public class InternshipsContext : Testing
             ShortDescription = "short Description",
             Description = "Description",
             PublishDate = DateTime.Now,
-            EndDate = DateTime.Now.AddDays(2),
+            EndDate =endDate,
             CategoryId = await category.GetCategoryId("Category1"),
             ApplicationDeadline = DateTime.Now.AddDays(20),
             Duration = 10,
             Stipend = 100,
             VacancyQuestions = new List<VacancyQuestion> {
                 new VacancyQuestion
-                    {
-                        Id=Guid.NewGuid(),
-                        Question="Question 1?"
-                    },
+                {
+                    Id=Guid.NewGuid(),
+                    Question="Question 1?"
+                },
                 new VacancyQuestion
                 {
                     Id = Guid.NewGuid(),
@@ -41,5 +46,4 @@ public class InternshipsContext : Testing
 
         return newInternship;
     }
-
 }
