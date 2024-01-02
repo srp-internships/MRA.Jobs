@@ -1,6 +1,5 @@
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
-using MRA.Jobs.Client.Identity;
 using BlazorMonaco;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
@@ -8,8 +7,8 @@ using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
 using MudBlazor;
-using MudBlazor.Extensions;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug;
 
 namespace MRA.Jobs.Client.Pages.Admin;
 
@@ -28,6 +27,7 @@ public partial class InternshipVacanciesPage
     private List<InternshipVacancyListResponse> _internships;
     private List<VacancyTaskDto> _tasks = new();
     private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
+    private GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery=new();
     private TimeSpan? _applicationDeadlineTime;
     private TimeSpan? _publishDateTime;
     private TimeSpan? _endDateTime;
@@ -119,11 +119,11 @@ public partial class InternshipVacanciesPage
     {
         var vacancy = _internships.FirstOrDefault(c => c.Slug == slug);
         var parameters = new DialogParameters<DialogMudBlazor>
-        {
-            { x => x.ContentText, "Do you really want to delete this vacancy?" },
-            { x => x.ButtonText, "Delete" },
-            { x => x.Color, Color.Error }
-        };
+    {
+        { x => x.ContentText, "Do you really want to delete this vacancy?" },
+        { x => x.ButtonText, "Delete" },
+        { x => x.Color, Color.Error }
+    };
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
@@ -135,22 +135,21 @@ public partial class InternshipVacanciesPage
             try
             {
                 var response = await InternshipService.Delete(slug);
-                if (response.IsSuccessStatusCode)
+                if (response.Success)
                 {
                     Snackbar.Add($"Deleted", Severity.Success);
                     _internships.Remove(vacancy);
                 }
                 else
                 {
-                    Snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,
-                        Severity.Error);
+                    Snackbar.Add(response.Error ?? "An error occurred while deleting the internship", Severity.Error);
                 }
 
                 Clear();
             }
             catch (Exception)
             {
-                Snackbar.Add("Server is not responding, try latter", Severity.Error);
+                Snackbar.Add("Server is not responding, try later", Severity.Error);
             }
 
             StateHasChanged();
@@ -158,9 +157,10 @@ public partial class InternshipVacanciesPage
     }
 
 
+
     private async Task OnEditClick(string slug)
     {
-        var vacancy = await InternshipService.GetBySlug(slug);
+        var vacancy = await InternshipService.GetBySlug(slug,getInternshipVacancyBySlugQuery);
         if (vacancy != null)
         {
             _createOrEditHeader = $"Edit {vacancy.Title}";
@@ -200,34 +200,39 @@ public partial class InternshipVacanciesPage
         var q = _questions.FirstOrDefault(t => t.Question == question);
         _questions.Remove(q);
     }
-    private string errorMessage;
-    private bool isError;
-    private void ShowError(string error)
-    {
-        errorMessage = error;
-        isError = true;
-    }
+
     private async Task LoadData()
     {
         try
         {
-            _internships = await InternshipService.GetAll();
-            var response = await CategoryService.GetAllCategory(getVacancyCategoryByIdQuery);
-            if (response.Success)
+            var internshipsResponse = await InternshipService.GetAll(getInternshipVacancyBySlugQuery);
+            if (internshipsResponse.Success)
             {
-                _categories = response.Result;
+                _internships = internshipsResponse.Result;
             }
             else
             {
-                ShowError(response.Error);
+                Snackbar.Add($"Error loading internships: {internshipsResponse.Error}", Severity.Error);
+            }
+
+            var categoriesResponse = await CategoryService.GetAllCategory(getVacancyCategoryByIdQuery);
+            if (categoriesResponse.Success)
+            {
+                _categories = categoriesResponse.Result;
+            }
+            else
+            {
+                Snackbar.Add($"Error loading categories: {categoriesResponse.Error}", Severity.Error);
             }
         }
         catch (Exception)
         {
+            Snackbar.Add("Server is not responding, try later", Severity.Error);
             _serverError = true;
             StateHasChanged();
         }
     }
+
 
     private void RemoveTask(string title)
     {
@@ -249,17 +254,18 @@ public partial class InternshipVacanciesPage
 
         if (_publishDateTime.HasValue)
             InternshipService.createCommand.PublishDate += _publishDateTime.Value;
+
         try
         {
             InternshipService.createCommand.VacancyTasks = _tasks;
             var result = await InternshipService.Create();
-            if (result.IsSuccessStatusCode)
+            if (result.Success)
             {
                 Snackbar.Add($"{InternshipService.createCommand.Title} created", Severity.Success);
             }
             else
             {
-                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+                Snackbar.Add(result.Error ?? "An error occurred while creating the internship", Severity.Error);
             }
 
             await LoadData();
@@ -267,9 +273,10 @@ public partial class InternshipVacanciesPage
         }
         catch (Exception)
         {
-            Snackbar.Add("Server is not responding, try latter", Severity.Error);
+            Snackbar.Add("Server is not responding, try later", Severity.Error);
         }
     }
+
 
     private async Task HandleUpdate()
     {
@@ -283,18 +290,20 @@ public partial class InternshipVacanciesPage
 
         if (_publishDateTime.HasValue)
             InternshipService.createCommand.PublishDate += _publishDateTime.Value;
+
         var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
         InternshipService.createCommand.CategoryId = catId;
+
         try
         {
             var result = await InternshipService.Update(_updateSlug);
-            if (result.StatusCode == System.Net.HttpStatusCode.Created)
+            if (result.Success)
             {
                 Snackbar.Add("Updated", Severity.Success);
             }
             else
             {
-                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+                Snackbar.Add(result.Error ?? "An error occurred while updating the internship", Severity.Error);
             }
 
             await LoadData();
@@ -303,9 +312,10 @@ public partial class InternshipVacanciesPage
         catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
-            Snackbar.Add("Server is not responding, try latter", Severity.Error);
+            Snackbar.Add("Server is not responding, try later", Severity.Error);
         }
     }
+
 
     private async Task NewQuestionAsync()
     {

@@ -1,19 +1,21 @@
-﻿using System.Net.Http;
-using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Delete;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+using MRA.Jobs.Client.Services.HttpClients;
 
 namespace MRA.Jobs.Client.Services.InternshipsServices;
-
 public class InternshipService : IInternshipService
 {
-    private readonly HttpClient _http;
+    private readonly IHttpClientService _httpClientService;
+    public CreateInternshipVacancyCommand createCommand { get; set; }
+    public UpdateInternshipVacancyCommand UpdateCommand { get; set; }
+    public DeleteInternshipVacancyCommand DeleteCommand { get; set; }
 
-    public InternshipService(HttpClient http)
+    public InternshipService(IHttpClientService httpClientService)
     {
-        _http = http;
+        _httpClientService = httpClientService;
         createCommand = new CreateInternshipVacancyCommand
         {
             Title = "",
@@ -26,36 +28,37 @@ public class InternshipService : IInternshipService
             Duration = 0,
             Stipend = 0
         };
-
     }
 
-    public CreateInternshipVacancyCommand createCommand { get; set; }
-    public UpdateInternshipVacancyCommand UpdateCommand { get; set; }
-    public DeleteInternshipVacancyCommand DeleteCommand { get; set; }
-
-
-    public async Task<HttpResponseMessage> Create()
+    public async Task<ApiResponse> Create()
     {
-        return await _http.PostAsJsonAsync("internships", createCommand);
+        return await _httpClientService.PostAsJsonAsync<ApiResponse>("internships", createCommand);
     }
 
-    public async Task<HttpResponseMessage> Delete(string slug)
+    public async Task<ApiResponse> Delete(string slug)
     {
-        return await _http.DeleteAsync($"internships/{slug}");
+        return await _httpClientService.DeleteAsync($"internships/{slug}");
     }
 
-    public async Task<List<InternshipVacancyListResponse>> GetAll()
+    public async Task<ApiResponse<List<InternshipVacancyListResponse>>> GetAll(GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery)
     {
-        var result = await _http.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>("internships");
-        return result.Items;
+        return await _httpClientService.GetAsJsonAsync<List<InternshipVacancyListResponse>>("internships", getInternshipVacancyBySlugQuery);
     }
 
-    public async Task<InternshipVacancyResponse> GetBySlug(string slug)
+    public async Task<InternshipVacancyResponse> GetBySlug(string slug, GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery)
     {
-        return await _http.GetFromJsonAsync<InternshipVacancyResponse>($"internships/{slug}");
+        var response = await _httpClientService.GetAsJsonAsync<InternshipVacancyResponse>($"internships/{slug}", getInternshipVacancyBySlugQuery);
+        if (response.Success)
+        {
+            return response.Result;
+        }
+        else
+        {
+            return null;
+        }
     }
 
-    public async Task<HttpResponseMessage> Update(string slug)
+    public async Task<ApiResponse> Update(string slug)
     {
         var updateCommand = new UpdateInternshipVacancyCommand
         {
@@ -71,10 +74,8 @@ public class InternshipService : IInternshipService
             Stipend = createCommand.Stipend,
             VacancyQuestions = createCommand.VacancyQuestions,
             VacancyTasks = createCommand.VacancyTasks
-            
         };
 
-        return await _http.PutAsJsonAsync($"internships/{slug}", updateCommand);
+        return await _httpClientService.PutAsJsonAsync<ApiResponse>($"internships/{slug}", updateCommand);
     }
-
 }
