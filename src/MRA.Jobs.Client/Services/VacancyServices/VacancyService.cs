@@ -1,18 +1,21 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternships;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
-using MRA.Jobs.Application.Contracts.JobVacancies;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-using MRA.Jobs.Client.Identity;
-using MudBlazor;
+using MRA.Jobs.Client.Services.HttpClients;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
-public class VacancyService(HttpClient http) : IVacancyService
+public class VacancyService(IHttpClientService httpClient) : IVacancyService
 {
     private List<CategoryResponse> Categories { get; set; }
     
@@ -33,114 +36,147 @@ public class VacancyService(HttpClient http) : IVacancyService
 
     public event Action OnChange;
     public string guidId { get; set; } = string.Empty;
-
-    public async Task<List<JobVacancyListDto>> GetAllVacancy()
-    {
-        var result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>("jobs");
-        Vacanceies = result.Items;
-        return Vacanceies;
-    }
-
     public int PagesCount { get; set; }
     const float PageSize = 10f;
 
-    public async Task<List<CategoryResponse>> GetAllCategory()
+    public async Task<List<JobVacancyListDto>> GetAllVacancy(GetJobsQueryOptions getJobsQuery)
     {
-        var result = await http.GetFromJsonAsync<PagedList<CategoryResponse>>("categories");
-        Categories = result.Items;
-        return Categories;
-    }
-
-    /* Modified and renamed version of the upper method name with a typo in the name and getting vacancies just the 20 first ones instead of all of them */
-    public async Task<List<JobVacancyListDto>> GetAllVacancies()
-    {
-        var result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?PageSize={int.MaxValue}");
-        return result.Items;
-    }
-
-
-    public async Task<List<JobVacancyListDto>> GetVacancyByTitle(string title)
-    {
-        var result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Title@={title}");
-        Vacanceies = result.Items;
-        OnChange?.Invoke();
-        return Vacanceies;
-    }
-
-    /* Two upper methods optimized for Vacancy page and merged to one method with default parameters */
-    public async Task<List<JobVacancyListDto>> GetFilteredVacancies(string title = "",
-        string categoryName = "All categories", int page = 1)
-    {
-        PagedList<JobVacancyListDto> result;
-        if (title == "")
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>("jobs",getJobsQuery);
+        if (result.Success)
         {
-            if (categoryName == "All categories")
-            {
-                if (page == 1)
-                {
-                    FilteredVacanciesCount =
-                        (await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?PageSize={int.MaxValue}"))
-                        .TotalCount;
-                    PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
-                }
-
-                result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?PageSize=10&Page={page}");
-            }
-            else
-            {
-                if (page == 1)
-                {
-                    FilteredVacanciesCount =
-                        (await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>(
-                            $"jobs?Filters=Category@={categoryName}&PageSize={int.MaxValue}")).TotalCount;
-                    PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
-                }
-
-                result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>(
-                    $"jobs?Filters=Category@={categoryName}&PageSize=10&Page={page}");
-            }
+            Vacanceies = result.Result.Items;
+            return Vacanceies;
         }
         else
         {
-            if (page == 1)
-            {
-                FilteredVacanciesCount =
-                    (await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>(
-                        $"jobs?Filters=Title@={title}&PageSize={int.MaxValue}")).TotalCount;
-                PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
-            }
-
-            result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>(
-                $"jobs?Filters=Title@={title}&PageSize=10&Page={page}");
+            return null;
         }
+       
+    }
 
+
+    public async Task<List<CategoryResponse>> GetAllCategory(GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery)
+    {
+        var result = await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>("categories", getVacancyCategoryByIdQuery);
+        if (result.Success)
+        {
+            Categories = result.Result.Items;
+            return Categories;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /* Modified and renamed version of the upper method name with a typo in the name and getting vacancies just the 20 first ones instead of all of them */
+    //public async Task<List<JobVacancyListDto>> GetAllVacancies()
+    //{
+    //    var result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?PageSize={int.MaxValue}");
+    //    return result.Items;
+    //}
+
+
+    public async Task<List<JobVacancyListDto>> GetVacancyByTitle(string title, GetJobsQueryOptions getJobsQuery)
+    {
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Title@={title}", getJobsQuery);
+        if (result.Success)
+        {
+        Vacanceies = result.Result.Items;
         OnChange?.Invoke();
-        return result.Items;
+        return Vacanceies;
+        }
+        else { return null; }
     }
 
-    public async Task<HttpResponseMessage> OnSaveCreateClick()
+    /* Two upper methods optimized for Vacancy page and merged to one method with default parameters */
+    //public async Task<List<JobVacancyListDto>> GetFilteredVacancies(string title = "",
+    //    string categoryName = "All categories", int page = 1)
+    //{
+    //    PagedList<JobVacancyListDto> result;
+    //    if (title == "")
+    //    {
+    //        if (categoryName == "All categories")
+    //        {
+    //            if (page == 1)
+    //            {
+    //                FilteredVacanciesCount =
+    //                    (await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?PageSize={int.MaxValue}"))
+    //                    .TotalCount;
+    //                PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
+    //            }
+
+    //            result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>($"jobs?PageSize=10&Page={page}");
+    //        }
+    //        else
+    //        {
+    //            if (page == 1)
+    //            {
+    //                FilteredVacanciesCount =
+    //                    (await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>(
+    //                        $"jobs?Filters=Category@={categoryName}&PageSize={int.MaxValue}")).TotalCount;
+    //                PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
+    //            }
+
+    //            result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>(
+    //                $"jobs?Filters=Category@={categoryName}&PageSize=10&Page={page}");
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (page == 1)
+    //        {
+    //            FilteredVacanciesCount =
+    //                (await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>(
+    //                    $"jobs?Filters=Title@={title}&PageSize={int.MaxValue}")).TotalCount;
+    //            PagesCount = (int)Math.Ceiling(FilteredVacanciesCount / PageSize);
+    //        }
+
+    //        result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>(
+    //            $"jobs?Filters=Title@={title}&PageSize=10&Page={page}");
+    //    }
+
+    //    OnChange?.Invoke();
+    //    return result.Items;
+    //}
+
+    public async Task<ApiResponse> OnSaveCreateClick()
     {
-        return await http.PostAsJsonAsync("jobs", creatingNewJob);
+        return await httpClient.PostAsJsonAsync<CreateJobVacancyCommand>("jobs", creatingNewJob);
     }
 
-    public async Task<List<JobVacancyListDto>> GetJobs()
+    public async Task<List<JobVacancyListDto>> GetJobs(GetJobsQueryOptions getJobsQuery)
     {
-        var result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>("jobs");
-        return result.Items;
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>("jobs", getJobsQuery);
+        if (result.Success)
+        {
+        return result.Result.Items;
+        }
+        else
+        {
+            return null;
+        }
     }
 
-    public async Task OnDelete(string slug)
+    public async Task<ApiResponse> OnDelete(string slug)
     {
-        await http.DeleteAsync($"jobs/{slug}");
+        return await httpClient.DeleteAsync($"jobs/{slug}");
     }
 
-    public async Task<JobVacancyDetailsDto> GetBySlug(string slug)
+    public async Task<JobVacancyDetailsDto> GetBySlug(string slug, GetJobVacancyBySlugQuery getJobVacancyBySlug)
     {
-        var result = await http.GetFromJsonAsync<JobVacancyDetailsDto>($"jobs/{slug}");
-        return result;
+        var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>($"jobs/{slug}", getJobVacancyBySlug);
+        if (response.Success)
+        {
+            return response.Result;
+        }
+        else
+        {
+            return null;
+        }
     }
 
-    public async Task UpdateJobVacancy(string slug)
+    public async Task<ApiResponse> UpdateJobVacancy(string slug)
     {
         var update = new UpdateJobVacancyCommand
         {
@@ -156,18 +192,18 @@ public class VacancyService(HttpClient http) : IVacancyService
             VacancyQuestions = creatingNewJob.VacancyQuestions,
             VacancyTasks = creatingNewJob.VacancyTasks
         };
-        await http.PutAsJsonAsync($"jobs/{slug}", update);
+       return await httpClient.PutAsJsonAsync<UpdateJobVacancyCommand>($"jobs/{slug}", update);
     }
 
-    public async Task<List<InternshipVacancyListResponse>> GetInternship()
+    public async Task<List<InternshipVacancyListResponse>> GetInternship(GetInternshipsQueryOptions getInternshipsQuery)
     {
-        var result = await http.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>("internships");
-        return result.Items;
+        var result=await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>("internships",getInternshipsQuery);
+        return result.Result.Items;
     }
 
-    public async Task<List<TrainingVacancyListDto>> GetTrainings()
+    public async Task<List<TrainingVacancyListDto>> GetTrainings(GetTrainingsQueryOptions getTrainingsQuery)
     {
-        var result = await http.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
-        return result.Items;
+        var result = await httpClient.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>("trainings", getTrainingsQuery);
+        return result.Result.Items;
     }
 }

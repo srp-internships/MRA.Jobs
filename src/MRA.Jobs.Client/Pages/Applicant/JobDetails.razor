@@ -14,18 +14,18 @@ else
 
 @code {
     private bool _serverError;
-
+	
     [Parameter]
     public string Slug { get; set; }
 
     private VacancyDetailsResponse _details;
-
+	private GetJobVacancyBySlugQuery getJobVacancyBySlug=new();
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         try
         {
-            var response = await VacancyService.GetBySlug(Slug);
+			var response = await VacancyService.GetBySlug(Slug, getJobVacancyBySlug);
             if (response is not null)
             {
                 _details = new VacancyDetailsResponse

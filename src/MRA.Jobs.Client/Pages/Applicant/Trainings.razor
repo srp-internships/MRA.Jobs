@@ -19,13 +19,14 @@ else
 	private List<VacancyClientResponse> trainings { get; set; }
 	private List<VacancyClientResponse> filteredtrainings;
 	private GetTrainingCategoriesQuery getTrainingCategoriesQuery = new();
+	private GetTrainingsQueryOptions getTrainingsQuery = new();
 	protected override async Task OnInitializedAsync()
 	{
 await base.OnInitializedAsync();
 		try
 		{
 			var result = await categoryService.GetTrainingCategoriesSinceCheckDate(getTrainingCategoriesQuery);
-			var allTrainings = await vacancyService.GetTrainings();
+			var allTrainings = await vacancyService.GetTrainings(getTrainingsQuery);
 			if (result is not null && allTrainings is not null)
 			{
 				TrainingCategories = result.Select(r => r.Category.Name).ToList();

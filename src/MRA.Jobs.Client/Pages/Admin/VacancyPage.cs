@@ -3,11 +3,15 @@ using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
+using MRA.Jobs.Client.Pages.Applicant;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Pages.Admin;
@@ -36,7 +40,9 @@ public partial class VacancyPage
     private TimeSpan? _endDateTime;
     private StandaloneCodeEditor _editorTemplate = null!;
     private StandaloneCodeEditor _editorTest = null!;
-
+    private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
+    private GetJobsQueryOptions getJobsQuery=new();
+    private GetJobVacancyBySlugQuery getJobVacancyBySlug=new();
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
         if (editor == _editorTest)
@@ -125,10 +131,17 @@ public partial class VacancyPage
         {
             try
             {
-                await VService.OnDelete(slug);
 
-                Snackbar.Add($"Deleted", Severity.Success);
-                _vacancies.Remove(vacancy);
+                var response = await VService.OnDelete(slug);
+                if (response.Success)
+                {
+                    Snackbar.Add($"Deleted", Severity.Success);
+                    _vacancies.Remove(vacancy);
+                }
+                else
+                {
+                    Snackbar.Add(response.Error ?? "An error occurred while deleting the job", Severity.Error);
+                }
                 Clear();
             }
             catch (Exception)
@@ -145,8 +158,8 @@ public partial class VacancyPage
         await Global.SetTheme(JsRuntime, LayoutService.IsDarkMode ? "vs-dark" : "vs");
         try
         {
-            _category = await VService.GetAllCategory();
-            _vacancies = await VService.GetJobs();
+            _category =await VService.GetAllCategory(getVacancyCategoryByIdQuery);
+            _vacancies = await VService.GetJobs(getJobsQuery);
         }
         catch (Exception)
         {
@@ -170,13 +183,13 @@ public partial class VacancyPage
             VService.creatingNewJob.VacancyQuestions = _questions;
             VService.creatingNewJob.VacancyTasks = _tasks;
             var result = await VService.OnSaveCreateClick();
-            if (result.IsSuccessStatusCode)
+            if (result.Success)
             {
                 Snackbar.Add($"{VService.creatingNewJob.Title} created", Severity.Success);
             }
             else
             {
-                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+                Snackbar.Add(result.Error ?? "An error occurred while creating the job", Severity.Error);
             }
 
             await LoadData();
@@ -190,47 +203,50 @@ public partial class VacancyPage
 
     private async Task LoadData()
     {
-        _vacancies = await VService.GetJobs();
+        _vacancies = await VService.GetJobs(getJobsQuery);
     }
 
 
     public async Task OnEditClick(string slug)
     {
-        var vacancy = await VService.GetBySlug(slug);
-        _createOrEditHeader = $"Edit {vacancy.Title}";
-        VService.creatingNewJob.Title = vacancy.Title;
-        VService.creatingNewJob.ShortDescription = vacancy.ShortDescription;
-        VService.creatingNewJob.Description = vacancy.Description;
-        VService.creatingNewJob.RequiredYearOfExperience = vacancy.RequiredYearOfExperience;
-        VService.creatingNewJob.WorkSchedule = vacancy.WorkSchedule;
-        if (vacancy.CategoryId.HasValue)
+
+        var vacancy = await VService.GetBySlug(slug, getJobVacancyBySlug);
+        if (vacancy != null)
         {
-            VService.creatingNewJob.CategoryId = vacancy.CategoryId.Value;
-        }
-
-        VService.creatingNewJob.EndDate = vacancy.EndDate;
-        VService.creatingNewJob.PublishDate = vacancy.PublishDate;
-        _selectedCategory = _category.First(c => c.Id == vacancy.CategoryId).Name;
-        _panelOpenState = true;
-        _isInserting = true;
-        _isUpdating = false;
-        _updateSlug = slug;
-        _questions = vacancy.VacancyQuestions.Select(v =>
-            new VacancyQuestionDto
+            _createOrEditHeader = $"Edit {vacancy.Title}";
+            VService.creatingNewJob.Title = vacancy.Title;
+            VService.creatingNewJob.ShortDescription = vacancy.ShortDescription;
+            VService.creatingNewJob.Description = vacancy.Description;
+            VService.creatingNewJob.RequiredYearOfExperience = vacancy.RequiredYearOfExperience;
+            VService.creatingNewJob.WorkSchedule = vacancy.WorkSchedule;
+            if (vacancy.CategoryId.HasValue)
             {
-                Question = v.Question
+                VService.creatingNewJob.CategoryId = vacancy.CategoryId.Value;
             }
-        ).ToList();
-        _tasks = vacancy.VacancyTasks.Select(v =>
-            new VacancyTaskDto
-            {
-                Title = v.Title,
-                Description = v.Description,
-                Template = v.Template,
-                Test = v.Test
-            }).ToList();
-    }
 
+            VService.creatingNewJob.EndDate = vacancy.EndDate;
+            VService.creatingNewJob.PublishDate = vacancy.PublishDate;
+            _selectedCategory = _category.First(c => c.Id == vacancy.CategoryId).Name;
+            _panelOpenState = true;
+            _isInserting = true;
+            _isUpdating = false;
+            _updateSlug = slug;
+            _questions = vacancy.VacancyQuestions.Select(v =>
+                new VacancyQuestionDto
+                {
+                    Question = v.Question
+                }
+            ).ToList();
+            _tasks = vacancy.VacancyTasks.Select(v =>
+                new VacancyTaskDto
+                {
+                    Title = v.Title,
+                    Description = v.Description,
+                    Template = v.Template,
+                    Test = v.Test
+                }).ToList();
+        }
+    }
     private void RemoveQuestion(string question)
     {
         var q = _questions.FirstOrDefault(t => t.Question == question);

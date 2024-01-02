@@ -59,12 +59,12 @@
 
 @code {
 
-    private List<JobVacancyListDto> _vacancies;
-    public string Title;
-
-    protected override async Task OnInitializedAsync()
+	private List<JobVacancyListDto> _vacancies;
+	public string Title;
+	private GetJobsQueryOptions getJobsQuery = new();
+	protected override async Task OnInitializedAsync()
     {
-        _vacancies = await VacancyService.GetAllVacancy();
+		_vacancies = await VacancyService.GetAllVacancy(getJobsQuery);
     }
 
 
