@@ -63,8 +63,6 @@ public class Testing
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
     }
     
- 
-
     public void RunAsReviewerAsync()
     {
         var claims = new List<Claim>
@@ -94,12 +92,15 @@ public class Testing
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
     }
 
-
     public static void ResetState()
     {
         try
         {
-            //await _checkpoint.ResetAsync(_configuration.GetConnectionString("DefaultConnection"));
+            using IServiceScope scope = _scopeFactory.CreateScope();
+            ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
         }
         catch (Exception) { }
 

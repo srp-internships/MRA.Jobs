@@ -9,7 +9,8 @@ public class DeleteJobVacancyCommandTest : Testing
     {
         var Jobs = new JobsContext();
         RunAsReviewerAsync();
-        var response = await _httpClient.DeleteAsync($"/api/jobs/{(await Jobs.GetJob("JobVacancy")).Slug}");
+        var response = await _httpClient.DeleteAsync($"/api/jobs/{(
+            await Jobs.GetJob("job1", DateTime.Now.AddDays(2))).Slug}");
             
         response.EnsureSuccessStatusCode();
     }

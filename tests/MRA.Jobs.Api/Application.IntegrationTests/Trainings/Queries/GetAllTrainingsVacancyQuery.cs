@@ -19,10 +19,10 @@ public class GetAllTrainingsVacancyQuery : Testing
     [Test]
     public async Task GetAllTrainingsVacancyQuery_ReturnsTrainingsVacancies()
     {
-        await _context.GetTraining("C#");
-        await _context.GetTraining("Pyton");
-        await _context.GetTraining("F#");
-        await _context.GetTraining("C++");
+        await _context.GetTraining("C#", DateTime.Now.AddDays(1));
+        await _context.GetTraining("Pyton", DateTime.Now.AddDays(1));
+        await _context.GetTraining("F#", DateTime.Now.AddDays(1));
+        await _context.GetTraining("C++", DateTime.Now.AddDays(1));
         //Act
         RunAsReviewerAsync();
         var response = await _httpClient.GetAsync("/api/Trainings");
@@ -34,6 +34,7 @@ public class GetAllTrainingsVacancyQuery : Testing
         Assert.IsNotEmpty(trainingVacancies.Items);
     }
     [Test]
+    
     public async Task GetAllTrainingsVacancyQuery_ReturnsEmptyList_WhenNoTrainingsExist()
     {
         // Arrange
@@ -45,7 +46,7 @@ public class GetAllTrainingsVacancyQuery : Testing
             ShortDescription = "Hi",
             PublishDate = DateTime.Now.AddDays(-5),
             EndDate = DateTime.Now.AddDays(-2),
-            CategoryId = await category.GetCategoryId("jobvacancy"),
+            CategoryId = await category.GetCategoryId("trainingVacancy"),
             Duration = 10,
             Fees = 100,
             VacancyQuestions = new List<VacancyQuestion> {
@@ -65,6 +66,46 @@ public class GetAllTrainingsVacancyQuery : Testing
         var specificTraining = trainingVacancies.Items.Find(t => t.EndDate<DateTime.Now);
         Assert.IsNotNull(specificTraining);
         
+    }
+    
+    [Test]
+    public async Task GetAllTrainingVacanciesQuery_ReturnsTrainingVacanciesCount2_ForApplicant()
+    {
+        ResetState();
+        await _context.GetTraining("training1", DateTime.Now.AddDays(2));
+        await _context.GetTraining("training2", DateTime.Now.AddDays(3));
+        await _context.GetTraining("training3", DateTime.Now.AddDays(-1));
+
+        RunAsDefaultUserAsync("applicant");
+        //Act
+        var response = await _httpClient.GetAsync("/api/Trainings");
+
+        //Assert
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        var trainingVacancies = await response.Content.ReadFromJsonAsync<PagedList<TrainingVacancyListDto>>();
+
+        Assert.IsNotNull(trainingVacancies);
+        Assert.AreEqual(trainingVacancies.Items.Count, 2);
+    }
+    
+    [Test]
+    public async Task GetAllTrainingVacanciesQuery_ReturnsTrainingVacanciesCount3_ForReviewer()
+    {
+        ResetState();
+        await _context.GetTraining("training1", DateTime.Now.AddDays(2));
+        await _context.GetTraining("training2", DateTime.Now.AddDays(3));
+        await _context.GetTraining("training3", DateTime.Now.AddDays(-1));
+
+        RunAsReviewerAsync();
+        //Act
+        var response = await _httpClient.GetAsync("/api/Trainings");
+
+        //Assert
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        var trainingVacancies = await response.Content.ReadFromJsonAsync<PagedList<TrainingVacancyListDto>>();
+
+        Assert.IsNotNull(trainingVacancies);
+        Assert.AreEqual(trainingVacancies.Items.Count, 3);
     }
 }
 

@@ -6,6 +6,7 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.DeleteJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Infrastructure.Identity;
@@ -28,7 +29,7 @@ public class JobsController : ApiControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> Get([FromQuery] PagedListQuery<JobVacancyListDto> query)
+    public async Task<IActionResult> Get([FromQuery] GetJobsQueryOptions query)
     {
         var categories = await Mediator.Send(query);
         return Ok(categories);
