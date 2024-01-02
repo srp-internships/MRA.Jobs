@@ -2,12 +2,15 @@ using BlazorMonaco;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
 using MRA.Jobs.Application.Contracts.Dtos;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
+using MRA.Jobs.Client.Pages.Applicant;
+using MRA.Jobs.Client.Services.InternshipsServices;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Pages.Admin;
@@ -32,8 +35,8 @@ public partial class TrainingVacancyPage
     private StandaloneCodeEditor _editorTemplate = null!;
     private StandaloneCodeEditor _editorTest = null!;
     private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
-    private string errorMessage;
-    private bool isError;
+    private GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug=new();
+   
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
         if (editor == _editorTest)
@@ -131,10 +134,16 @@ public partial class TrainingVacancyPage
         {
             try
             {
-                await TrainingService.Delete(slug);
-
-                Snackbar.Add($"Deleted", Severity.Success);
+                var response= await TrainingService.Delete(slug);
+                if (response.Success)
+                {
+                    Snackbar.Add($"Deleted", Severity.Success);
                 _trainings.Remove(vacancy);
+                }
+                else
+                {
+                    Snackbar.Add(response.Error ?? "An error occurred while deleting the training", Severity.Error);
+                }
 
                 Clear();
             }
@@ -150,7 +159,7 @@ public partial class TrainingVacancyPage
 
     private async Task OnEditClick(string slug)
     {
-        var vacancy = await TrainingService.GetBySlug(slug);
+        var vacancy = await TrainingService.GetBySlug(slug, getTrainingVacancyBySlug);
         if (vacancy != null)
         {
             _createOrEditHeader = $"Edit {vacancy.Title}";
@@ -194,32 +203,39 @@ public partial class TrainingVacancyPage
         var r = _tasks.FirstOrDefault(t => t.Title == title);
         _tasks.Remove(r);
     }
-    private void ShowError(string error)
-    {
-        errorMessage = error;
-        isError = true;
-    }
+   
     private async Task LoadData()
     {
         try
         {
-            _trainings = (await TrainingService.GetAll()).Items;
-            var response = await CategoryService.GetAllCategory(getVacancyCategoryByIdQuery);
-            if (response.Success)
+            var trainingsResponse = await TrainingService.GetAll(getTrainingVacancyBySlug);
+            if (trainingsResponse.Success)
             {
-                _categories = response.Result;
+                _trainings = trainingsResponse.Result.Items;
             }
             else
             {
-                ShowError(response.Error);
+                Snackbar.Add($"Error loading trainings: {trainingsResponse.Error}", Severity.Error);
+            }
+
+            var categoriesResponse = await CategoryService.GetAllCategory(getVacancyCategoryByIdQuery);
+            if (categoriesResponse.Success)
+            {
+                _categories = categoriesResponse.Result;
+            }
+            else
+            {
+                Snackbar.Add($"Error loading categories: {categoriesResponse.Error}", Severity.Error);
             }
         }
         catch (Exception)
         {
+            Snackbar.Add("Server is not responding, try later", Severity.Error);
             _serverError = true;
             StateHasChanged();
         }
     }
+
 
     private async Task HandleSubmit()
     {
@@ -235,13 +251,13 @@ public partial class TrainingVacancyPage
             TrainingService.createCommand.VacancyQuestions = _questions;
             TrainingService.createCommand.VacancyTasks = _tasks;
             var result = await TrainingService.Create();
-            if (result.IsSuccessStatusCode)
+            if (result.Success)
             {
                 Snackbar.Add($"{TrainingService.createCommand.Title} created", Severity.Success);
             }
             else
             {
-                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+                Snackbar.Add(result.Error ?? "An error occurred while creating the training", Severity.Error);
             }
 
             await LoadData();
@@ -264,9 +280,26 @@ public partial class TrainingVacancyPage
         TrainingService.createCommand.VacancyTasks = _tasks;
         var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
         TrainingService.createCommand.CategoryId = catId;
-        await TrainingService.Update(_updateSlug);
-        await LoadData();
-        Clear();
+        try
+        {
+            var result = await TrainingService.Update(_updateSlug);
+            if (result.Success)
+            {
+                Snackbar.Add("Updated", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add(result.Error ?? "An error occurred while updating the training ", Severity.Error);
+            }
+
+            await LoadData();
+            Clear();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            Snackbar.Add("Server is not responding, try later", Severity.Error);
+        }
     }
 
     private async void AddTask()

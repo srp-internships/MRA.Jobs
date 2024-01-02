@@ -24,11 +24,12 @@ else
 }
 
 @code {
-    private bool _serverError;
-    private VacancyApplicationResponse _training;
-    private CreateApplicationCommand _application;
-    private readonly Dictionary<string, string> _questionResponses = new();
-    private readonly Dictionary<Guid, string> _tasksResponses = new();
+	private bool _serverError;
+	private VacancyApplicationResponse _training;
+	private CreateApplicationCommand _application;
+	private readonly Dictionary<string, string> _questionResponses = new();
+	private readonly Dictionary<Guid, string> _tasksResponses = new();
+	private GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug = new();
 
     [Parameter] public string Slug { get; set; }
 
@@ -37,7 +38,7 @@ else
         await base.OnInitializedAsync();
         try
         {
-            var response = await TrainingService.GetBySlug(Slug);
+			var response = await TrainingService.GetBySlug(Slug,getTrainingVacancyBySlug);
 
             if (response != null)
             {

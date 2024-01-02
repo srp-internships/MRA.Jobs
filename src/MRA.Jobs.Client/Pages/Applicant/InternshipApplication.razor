@@ -31,7 +31,7 @@ else
     private CreateApplicationCommand _application;
     public readonly Dictionary<string, string> QuestionResponses = new();
     public readonly Dictionary<Guid, string> TasksResponses = new();
-
+	private GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery = new();
 
     [Parameter] public string Slug { get; set; }
 
@@ -41,7 +41,7 @@ else
         await base.OnInitializedAsync();
         try
         {
-            var response = await InternshipService.GetBySlug(Slug);
+			var response = await InternshipService.GetBySlug(Slug, getInternshipVacancyBySlugQuery);
 
             if (response != null)
             {

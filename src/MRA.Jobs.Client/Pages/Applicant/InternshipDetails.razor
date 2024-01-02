@@ -21,14 +21,14 @@ else
 	[Parameter]
 	public string Slug { get; set; }
 	private VacancyDetailsResponse details;
-
+	private GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery = new();
 	protected override async Task OnInitializedAsync()
 	{
 await base.OnInitializedAsync();
 		try
 		{
 
-			var response = await InternshipService.GetBySlug(Slug);
+			var response = await InternshipService.GetBySlug(Slug, getInternshipVacancyBySlugQuery);
 			if (response is not null)
 			{
 				details = new VacancyDetailsResponse

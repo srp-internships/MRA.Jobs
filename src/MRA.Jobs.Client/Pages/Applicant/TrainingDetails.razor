@@ -23,6 +23,7 @@ else
 	[Parameter]
 	public string Slug { get; set; }
 	private VacancyDetailsResponse details;
+	private GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug = new();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -31,7 +32,7 @@ await base.OnInitializedAsync();
 		try
 		{
 
-			var response = await _trainingService.GetBySlug(Slug);
+			var response = await _trainingService.GetBySlug(Slug, getTrainingVacancyBySlug);
 			if (response is not null)
 			{
 				details = new VacancyDetailsResponse
