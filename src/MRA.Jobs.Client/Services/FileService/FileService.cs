@@ -2,18 +2,19 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Components.Forms;
+using MRA.Jobs.Client.Services.HttpClients;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Services.FileService;
 
 public class FileService : IFileService
 {
-    private readonly HttpClient _client;
+    private readonly IHttpClientService _httpClientService;
     private readonly ISnackbar _snackbar;
 
-    public FileService(HttpClient client, ISnackbar snackbar)
+    public FileService(IHttpClientService httpClientService, ISnackbar snackbar)
     {
-        _client = client;
+        _httpClientService = httpClientService;
         _snackbar = snackbar;
     }
 
@@ -24,12 +25,12 @@ public class FileService : IFileService
         var content = new MultipartFormDataContent();
         content.Add(fileContent, "\"file\"", file.Name);
 
-        var fileUploadResponse = await _client.PostAsync("/api/File/upload", content);
-        switch (fileUploadResponse.StatusCode)
+        var fileUploadResponse = await _httpClientService.PostAsJsonAsync<FileUploadResponse>("/api/File/upload", content);
+        switch (fileUploadResponse.HttpStatusCode)
         {
             case HttpStatusCode.OK:
                 _snackbar.Add("CV upload success", Severity.Success);
-                return (await fileUploadResponse.Content.ReadFromJsonAsync<FileUploadResponse>()).Key;
+                return fileUploadResponse.Result.Key;
             default:
                 _snackbar.Add("CV upload error", Severity.Error);
                 return "";
