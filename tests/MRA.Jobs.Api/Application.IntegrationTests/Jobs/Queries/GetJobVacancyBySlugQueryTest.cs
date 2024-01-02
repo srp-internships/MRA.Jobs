@@ -5,9 +5,9 @@ using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Jobs.Queries;
+
 public class GetJobVacancyBySlugQueryTest : Testing
 {
-
     private JobsContext _context;
 
     [SetUp]
@@ -33,7 +33,11 @@ public class GetJobVacancyBySlugQueryTest : Testing
     public async Task GetJobVacancyBySlug_IfFound_ReturnJobVacancy()
     {
         //Arrange 
-        var query = new GetJobVacancyBySlugQuery { Slug = (await _context.GetJob("Backend Developer")).Slug };
+        var query = new GetJobVacancyBySlugQuery
+        {
+            Slug = (
+                await _context.GetJob("Backend Developer", DateTime.Now.AddDays(2))).Slug
+        };
 
         //Act
         var response = await _httpClient.GetAsync($"/api/jobs/{query.Slug}");
@@ -43,5 +47,4 @@ public class GetJobVacancyBySlugQueryTest : Testing
         var jobVacancy = await response.Content.ReadFromJsonAsync<JobVacancy>();
         Assert.AreEqual(query.Slug, jobVacancy.Slug);
     }
-
 }

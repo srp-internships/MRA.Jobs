@@ -8,7 +8,7 @@ public class DeleteTrainingVacancyCommandTest : Testing
     public async Task DeleteTrainingVacancyCommand_ShouldDeleteTrainingVacancyCommand_Success()
     {
         var trainings = new TrainingsContext();
-        var training = await trainings.GetTraining("TrainingVacancy");
+        var training = await trainings.GetTraining("TrainingVacancy", DateTime.Now.AddDays(1));
         var deleteTraining = new DeleteTrainingVacancyCommand
         {
             Slug = training.Slug,
