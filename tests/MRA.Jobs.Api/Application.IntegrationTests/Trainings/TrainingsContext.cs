@@ -5,7 +5,7 @@ using MRA.Jobs.Domain.Entities;
 namespace MRA.Jobs.Application.IntegrationTests.Trainings;
 public class TrainingsContext : Testing
 {
-    public async Task<TrainingVacancy> GetTraining(string title)
+    public async Task<TrainingVacancy> GetTraining(string title, DateTime endDate)
     {
         var category = new CategoryContext();
         var Training = await FindFirstOrDefaultAsync<TrainingVacancy>(t => t.Title == title);
@@ -18,8 +18,8 @@ public class TrainingsContext : Testing
             Description = "Hello",
             ShortDescription = "Hi",
             PublishDate = DateTime.Now,
-            EndDate = DateTime.Now.AddDays(2),
-            CategoryId = await category.GetCategoryId("jobvacancy"),
+            EndDate =endDate,
+            CategoryId = await category.GetCategoryId("trainingVacancy"),
             Duration = 10,
             Fees = 100,
             VacancyQuestions = new List<VacancyQuestion> {

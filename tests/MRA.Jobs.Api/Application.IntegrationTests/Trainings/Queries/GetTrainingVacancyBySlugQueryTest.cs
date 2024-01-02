@@ -32,7 +32,8 @@ public class GetTrainingVacancyBySlugQueryTest : Testing
     public async Task GetTrainingsVacancyBySlug_IfFound_ReturnTrainingsVacancy()
     {
         //Arrange 
-        var query = new GetInternshipVacancyBySlugQuery { Slug = (await _context.GetTraining("Autumn Trainings")).Slug };
+        var query = new GetInternshipVacancyBySlugQuery { Slug = (
+            await _context.GetTraining("Autumn Trainings", DateTime.Now.AddDays(2))).Slug };
 
         //Act
         RunAsReviewerAsync();
