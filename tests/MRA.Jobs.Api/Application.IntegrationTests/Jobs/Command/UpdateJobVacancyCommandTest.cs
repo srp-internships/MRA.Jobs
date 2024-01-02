@@ -11,11 +11,11 @@ public class UpdateJobVacancyCommandTest : Testing
     public async Task UpdateJobVacancyCommand_UpdatingJobVacancyCommand_Success()
     {
         JobsContext jobs = new JobsContext();
-        var job = await jobs.GetJob("JobVacncy");
+        var job = await jobs.GetJob("job1", DateTime.Now.AddDays(2));
 
         var updateCommand = new UpdateJobVacancyCommand
         {
-            Title = "JobVacncy Updated",
+            Title = "job2",
             ShortDescription = job.ShortDescription,
             Description = job.ShortDescription,
             WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime,

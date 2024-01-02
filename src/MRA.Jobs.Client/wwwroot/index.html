@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
-    <title>Mra Jobs</title>
+    <title>MRA Jobs</title>
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
 
@@ -41,26 +41,37 @@
 
     <base href="/"/>
 
-    <style>
-        .navmenu ul li a.active {
-            color: #129fd7;
+    <style>     
+        .center-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }    
+        .loader {
+            margin-top: 15px;
+            border: 14px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 14px solid #3498db;
+            width: 70px;
+            height: 70px;
+            animation: spin 1.5s linear infinite;
         }
 
-        #app {
-            min-height: 100vh;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
-
 </head>
 
 <body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
 
     <div id="app">
-        <div id="preloader">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+        <div class="center-screen">
+            <img src="images/srp/srp_icon.png" style="width: 200px;"/>
+            <div class="loader"></div>
         </div>
     </div>
 

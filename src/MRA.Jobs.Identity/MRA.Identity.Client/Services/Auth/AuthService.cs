@@ -1,6 +1,8 @@
 ﻿using AltairCA.Blazor.WebAssembly.Cookie;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.IdentityModel.Tokens;
 using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
@@ -9,6 +11,7 @@ using MRA.Identity.Application.Contract.User.Queries.CheckUserDetails;
 using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Identity.Client.Services.Profile;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -40,8 +43,18 @@ public class AuthService(HttpClient httpClient,
             var result = await httpClient.PostAsJsonAsync("Auth/login", command);
             if (result.IsSuccessStatusCode)
             {
+                string callbackUrl = string.Empty;
+                var currentUri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+                if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("callback", out var param))
+                {
+                    callbackUrl = param;
+                }
+                if (callbackUrl.IsNullOrEmpty()) callbackUrl = configuration["HttpClient:JobsClient"];
+
                 var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
-                navigationManager.NavigateTo($"{configuration["HttpClient:JobsClient"]}?atoken={response.AccessToken}&rtoken={response.RefreshToken}&vdate={response.AccessTokenValidateTo}");
+                
+                navigationManager.NavigateTo($"{callbackUrl}?atoken={response.AccessToken}&rtoken={response.RefreshToken}&vdate={response.AccessTokenValidateTo}");
+                
                 await cookieUtil.SetValueAsync("authToken", response);
                 await authenticationStateProvider.GetAuthenticationStateAsync();
                 layoutService.User = await userProfileService.Get();

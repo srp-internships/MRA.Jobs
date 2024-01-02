@@ -5,6 +5,7 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.JobVacancies;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Client.Identity;
+using MRA.Jobs.Client.Services.ContentService;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Services.NoVacancies;
@@ -13,7 +14,8 @@ public class NoVacancyService(
     ISnackbar snackbar,
     HttpClient httpClient,
     NavigationManager navigationManager,
-    IConfiguration configuration) : INoVacancyService
+    IConfiguration configuration,
+    IContentService contentService) : INoVacancyService
 {
     public async Task<JobVacancyDetailsDto> GetNoVacancyAsync()
     {
@@ -28,7 +30,7 @@ public class NoVacancyService(
         }
         catch (Exception e)
         {
-            snackbar.Add("Server is not responding, please try later", Severity.Error);
+            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
             Console.WriteLine(e);
         }
 
@@ -51,7 +53,7 @@ public class NoVacancyService(
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
-                    snackbar.Add("Applications sent successfully!", Severity.Success);
+                    snackbar.Add(contentService["Application:Success"], Severity.Success);
                     navigationManager.NavigateTo(navigationManager.Uri.Replace("/apply/", "/"));
                     break;
                 case HttpStatusCode.Conflict:
@@ -59,35 +61,28 @@ public class NoVacancyService(
                         Severity.Error);
                     break;
                 default:
-                    snackbar.Add("Something went wrong", Severity.Error);
+                    snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
                     break;
             }
         }
         catch (Exception e)
         {
-            snackbar.Add("Server is not responding, please try later", Severity.Error);
+            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
             Console.WriteLine(e.Message);
         }
     }
-
+        
     private async Task<byte[]> GetFileBytesAsync(IBrowserFile file)
     {
-        try
+        var allowedSize = int.Parse(configuration["CvSettings:MaxFileSize"]!);
+        if (file.Size <= allowedSize)
         {
-            if (file.Size <= int.Parse(configuration["CvSettings:MaxFileSize"]!))
-            {
-                var ms = new MemoryStream();
-                await file.OpenReadStream().CopyToAsync(ms);
-                var res = ms.ToArray();
-                return res;
-            }
+            var ms = new MemoryStream();
+            await file.OpenReadStream(allowedSize).CopyToAsync(ms);
+            var res = ms.ToArray();
+            return res;
         }
-        catch (Exception ex)
-        {
-            var ms = ex.Message.ToString();
-            var msg = ms;
-        }
-        
+
         return null;
     }
 }

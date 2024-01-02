@@ -8,6 +8,7 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStat
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Client.Identity;
+using MRA.Jobs.Client.Services.ContentService;
 using MudBlazor;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
@@ -19,7 +20,8 @@ public class ApplicationService(
         AuthenticationStateProvider authenticationState,
         ISnackbar snackbar,
         NavigationManager navigationManager,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IContentService contentService)
     : IApplicationService
 {
     private const string ApplicationsEndPoint = "applications";
@@ -50,7 +52,7 @@ public class ApplicationService(
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
-                    snackbar.Add("Applications sent successfully!", Severity.Success);
+                    snackbar.Add(contentService["Application:Success"], Severity.Success);
                     navigationManager.NavigateTo(navigationManager.Uri.Replace("/apply/", "/"));
                     break;
                 case HttpStatusCode.Conflict:
@@ -58,25 +60,28 @@ public class ApplicationService(
                         Severity.Error);
                     break;
                 default:
-                    snackbar.Add("Something went wrong", Severity.Error);
+                    snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
                     break;
             }
         }
         catch (Exception e)
         {
-            snackbar.Add("Server is not responding, please try later", Severity.Error);
+            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
             Console.WriteLine(e.Message);
         }
     }
-    
+
     private async Task<byte[]> GetFileBytesAsync(IBrowserFile file)
     {
-        if (file.Size <= int.Parse(configuration["CvSettings:MaxFileSize"]!)) {
+        var allowedSize = int.Parse(configuration["CvSettings:MaxFileSize"]!);
+        if (file.Size <= allowedSize)
+        {
             var ms = new MemoryStream();
-            await file.OpenReadStream().CopyToAsync(ms);
+            await file.OpenReadStream(allowedSize).CopyToAsync(ms);
             var res = ms.ToArray();
             return res;
         }
+
         return null;
     }
 

@@ -1,6 +1,9 @@
-﻿namespace MRA.Jobs.Client.Services.ConverterService;
+﻿using MRA.Jobs.Client.Services.ContentService;
 
-public class DateTimeConverterToStringService : IDateTimeConvertToStringService
+namespace MRA.Jobs.Client.Services.ConverterService;
+
+public class DateTimeConverterToStringService(IContentService contentService)
+    : IDateTimeConvertToStringService
 {
     public  string GetDisplayPostedDate(DateTime publishDate)
     {
@@ -11,28 +14,28 @@ public class DateTimeConverterToStringService : IDateTimeConvertToStringService
         {
             if (publishDate.Minute == currentDate.Minute)
             {
-                displayDate = $"{currentDate.Second - publishDate.Second} seconds ago";
+                displayDate = $"{currentDate.Second - publishDate.Second} {contentService["ConverterService:SecondsAgo"]}";
             }
             else if (publishDate.Hour == currentDate.Hour)
             {
-                displayDate = $"{currentDate.Minute - publishDate.Minute} min ago";
+                displayDate = $"{currentDate.Minute - publishDate.Minute} {contentService["ConverterService:MinAgo"]}";
             }
             else if ((currentDate.Hour - publishDate.Hour) == 1)
             {
-                displayDate = $"1 hour ago";
+                displayDate = $"1 {contentService["ConverterService:HourAgo"]}";
             }
             else if ((currentDate.Hour - publishDate.Hour) <= 5)
             {
-                displayDate = $"{currentDate.Hour - publishDate.Hour} hours ago";
+                displayDate = $"{currentDate.Hour - publishDate.Hour} {contentService["ConverterService:HoursAgo"]}";
             }
             else
             {
-                displayDate = $"Today at {publishDate:HH:mm}";
+                displayDate = $"{contentService["ConverterService:TodayAt"]} {publishDate:HH:mm}";
             }
         }
         else if (publishDate.Date == currentDate.AddDays(-1).Date)
         {
-            displayDate = $"Yesterday";
+            displayDate = contentService["ConverterService:Yesterday"];
         }
         else
         {
@@ -52,36 +55,36 @@ public class DateTimeConverterToStringService : IDateTimeConvertToStringService
         {
             if (value.Minute == currentDate.Minute)
             {
-                displayDate = $"{value.Second - currentDate.Second} seconds left";
+                displayDate = $"{value.Second - currentDate.Second} {contentService["ConverterService:SecondsLeft"]}";
                 color = "orange";
             }
             else if (value.Hour == currentDate.Hour)
             {
-                displayDate = $"{value.Minute - currentDate.Minute} min left";
+                displayDate = $"{value.Minute - currentDate.Minute} {contentService["ConverterService:MinLeft"]}";
                 color = "orange";
             }
             else if ((value.Hour - currentDate.Hour) == 1)
             {
-                displayDate = $"1 hour left";
+                displayDate = $"1 {contentService["ConverterService:HourLeft"]}";
                 color = "orange";
             }
             else if ((value.Hour - currentDate.Hour) <= 5)
             {
-                displayDate = $"{value.Hour - currentDate.Hour} hours left";
+                displayDate = $"{value.Hour - currentDate.Hour} {contentService["ConverterService:HoursLeft"]}";
                 color = "orange";
             }
             else
             {
-                displayDate = $"Today at {value:HH:mm}";
+                displayDate = $"{contentService["ConverterService:TodayAt"]} {value:HH:mm}";
             }
         }
         else if (value.Date == currentDate.AddDays(1).Date)
         {
-            displayDate = $"Tomorrow";
+            displayDate = contentService["ConverterService:Tomorrow"];
         }
         else
         {
-            displayDate = $"on {value:dd.MM.yyyy}";
+            displayDate = $"{contentService["ConverterService:On"]} {value:dd.MM.yyyy}";
         }
 
         if (value <= currentDate)

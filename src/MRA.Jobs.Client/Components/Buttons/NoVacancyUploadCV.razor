@@ -10,21 +10,21 @@
 
 <div style="position: fixed; bottom: 76px; right: 16px; z-index: 999;">
     <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
-        <MudText>Send us your CV</MudText>
+        <MudText>@ContentService["SendCV:Title"]</MudText>
     </MudButton>
 </div>
 <MudDialog IsVisible="_isOpen" Style="width: 400px;"
            Options="@(new DialogOptions() { DisableBackdropClick = true })">
     <DialogContent>
-        <MudText Typo="Typo.h6">Send us your CV</MudText>
+        <MudText Typo="Typo.h6">@ContentService["SendCV:Title"]</MudText>
         <EditForm Model="@_application">
             <FluentValidationValidator/>
 
             @foreach (var question in _vacancy.VacancyQuestions)
             {
-                <MudTextField Label=@($"{question.Question} *") @bind-Value="@_questionsResponses[question]" Variant="Variant.Outlined"/>
+                <MudTextField Label=@(ContentService[$"SendCV:{question.Question}"] + " *") @bind-Value="@_questionsResponses[question]" Variant="Variant.Outlined"/>
             }
-            <MudTextField T="string" Lines="3" Label="Cover letter *" Variant="Variant.Outlined" @bind-Value="@_application.CoverLetter"
+            <MudTextField T="string" Lines="3" Label="@(ContentService["SendCV:CoverLetter"] + " *")" Variant="@Variant.Outlined" @bind-Value="@_application.CoverLetter"
                           For="@(() => _application.CoverLetter)"/>
 
             <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
@@ -34,7 +34,7 @@
                                Color="Color.Primary"
                                StartIcon="@Icons.Material.Filled.CloudUpload"
                                for="@anotherContext">
-                        Upload your CV
+                    @ContentService["VacancyApplication:Upload your CV"]
                     </MudButton>
                 </ButtonTemplate>
             </MudFileUpload>
@@ -47,15 +47,15 @@
             @if (_processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                <MudText Class="ms-2">Processing</MudText>
+                <MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
             }
             else
             {
-                <MudText>Apply</MudText>
+                <MudText>@ContentService["VacancyApplication:Apply"]</MudText>
             }
         </MudButton>
         <MudButton OnClick="@CloseDialog">
-            <MudText>Close</MudText>
+            <MudText>@ContentService["SendCV:Close"]</MudText>
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -114,7 +114,7 @@
     {
         if (_isUploadCvMode && _cv == null)
         {
-            Snackbar.Add("Please upload your sv", Severity.Error);
+            Snackbar.Add(@ContentService["SendCV:IfFileNull"], Severity.Error);
             return;
         }
         if (string.IsNullOrWhiteSpace(_application.CoverLetter) || (_cv == null && _isUploadCvMode))

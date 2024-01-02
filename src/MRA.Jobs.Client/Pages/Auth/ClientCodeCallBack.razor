@@ -19,7 +19,7 @@
         var code = http["code"];
         if (code.IsNullOrEmpty())
         {
-            Snackbar.Add("Google authorization failed. Please try again later.", Severity.Error);
+            Snackbar.Add(ContentService["GoogleAuthFailed"], Severity.Error);
             StateHasChanged();
             return;
         }

@@ -6,25 +6,27 @@
 @inject LayoutService LayoutService
 
 <MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
-<Header/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
-<MudMainContent>
-    <main id="main" style="min-height: 100vh">
-        <MudContainer MaxWidth="MaxWidth.ExtraLarge">
-            @Body
-        </MudContainer>
-    </main>
-</MudMainContent>
+<MudLayout>
+    <Header></Header>
+    <MudDialogProvider/>
+    <MudSnackbarProvider/>
+    <MudMainContent>
+        <main id="main" style="min-height: 100vh">
+            <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+                @Body
+            </MudContainer>
+        </main>
+    </MudMainContent>
 
-<MudText Style="text-align: center; padding-top: 3%">
-    © 2023 Silk Road Professionals
-</MudText>
+    <MudText Style="text-align: center; padding-top: 3%">
+        © 2023 Silk Road Professionals
+    </MudText>
 
-<MudScrollToTop>
-    <MudFab StartIcon="@Icons.Material.Filled.KeyboardArrowUp" Color="Color.Primary"/>
-</MudScrollToTop>
+    <MudScrollToTop>
+        <MudFab StartIcon="@Icons.Material.Filled.KeyboardArrowUp" Color="Color.Primary"/>
+    </MudScrollToTop>
 
+</MudLayout>
 @code
 {
     private MudThemeProvider _mudThemeProvider;

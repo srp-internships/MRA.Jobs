@@ -23,7 +23,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
     </MudHidden>
     <a href="">
-        <MudHidden Breakpoint="Breakpoint.Xs">
+        <MudHidden Breakpoint="Breakpoint.MdAndDown">
             <MudStack Row="true">
                 <MudItem Style="padding-right:5px;">
                     <MudImage src="/images/srp/srp_icon.png" Style="width: 50px"/>
@@ -40,7 +40,7 @@
                 </MudItem>
             </MudStack>
         </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+        <MudHidden Breakpoint="Breakpoint.LgAndUp">
             <MudStack Row="true">
                 <MudItem Style="padding-right:5px;">
                     <MudImage src="/images/srp/srp_icon.png" Style="width: 30px"/>
@@ -79,33 +79,43 @@
                 <b>@ContentService["Header:Team"]</b>
             </MudText>
         </MudButton>
-        <MudButton Href="@Configuration["Academy:Address"]" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+        <MudButton Href="@Configuration["Academy:Address"]" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
             <MudText>
                 <b>@ContentService["Header:Academy"] </b>
             </MudText>
         </MudButton>
-
-        <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Contact)">
-            <MudText>
-                <b>Contact</b>
-            </MudText>
-        </MudButton>
+        @if (_betaVersion)
+        {
+            <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+                    <MudText>
+                        <b>@ContentService["Home:Contact"] </b>
+                    </MudText>
+                </MudButton>
+            </MudHidden>
+        }
+        else
+        {
+            <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+                <MudText>
+                    <b>@ContentService["Home:Contact"] </b>
+                </MudText>
+            </MudButton>
+        }
     </MudHidden>
     <MudSpacer/>
     <MudHidden Breakpoint="Breakpoint.Xs">
-        @if (betaVersion)
+        @if (_betaVersion)
         {
             <MudChip Disabled="true" Color="Color.Warning">Beta</MudChip>
         }
         <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
         <ToolBarSettingsButtons/>
     </MudHidden>
-
     <UserButton/>
 </MudToolBar>
 
-<MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent" Style="position:fixed;height: 100%"
-           ClipMode="DrawerClipMode.Docked">
+<MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="2" Style="position:fixed;height: 100%">
     <MudToolBar Dense="true" Class="docs-gray-bg">
         <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
         <MudSpacer/>
@@ -119,10 +129,10 @@
         <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
         <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
         <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Academy:Address"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/contact">Contact</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/contact">@ContentService["Home:Contact"]</MudNavLink>
 
     </MudNavMenu>
-    @if (betaVersion)
+    @if (_betaVersion)
     {
         <MudChip Disabled="true" Color="Color.Warning">Beta</MudChip>
     }
@@ -132,7 +142,8 @@
 @code {
 
     bool _open = false;
-    private bool betaVersion;
+
+    private bool _betaVersion;
 
     void ToggleDrawer()
     {
@@ -156,7 +167,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        betaVersion = await FeatureManager.IsEnabledAsync(FeatureFlags.BetaVersion);
+        _betaVersion = await FeatureManager.IsEnabledAsync(FeatureFlags.BetaVersion);
 
         StateHasChanged();
         NavigationManager.LocationChanged += HandleLocationChanged;

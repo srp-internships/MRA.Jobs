@@ -53,13 +53,13 @@ public partial class UserRoles
                 var deleteResult = await HttpClient.DeleteAsync($"UserRoles/{contextSlug}");
                 if (!deleteResult.IsSuccessStatusCode)
                 {
-                    Snackbar.Add("Deleting error", Severity.Error);
+                    Snackbar.Add(ContentService["ErrorDelete"], Severity.Error);
                     return;
                 }
             }
             catch (Exception)
             {
-                Snackbar.Add("Server is not responding, please try later", Severity.Error);
+                Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
                 return;
             }
 
@@ -80,13 +80,13 @@ public partial class UserRoles
                 var userRoleResponse = await HttpClient.PostAsJsonAsync("UserRoles", userRoleCommand);
                 if (!userRoleResponse.IsSuccessStatusCode)
                 {
-                    Snackbar.Add("Add error may be you entered duplicate role");
+                    Snackbar.Add(ContentService["DuplicateRole"]);
                     return;
                 }
             }
             catch (Exception)
             {
-                Snackbar.Add("Server is not responding, please try later", Severity.Error);
+                Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
                 return;
             }
 
