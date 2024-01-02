@@ -48,6 +48,7 @@ public static class ConfigureServices
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<ISmsService, GenericSmsService>();
         services.AddScoped<IHtmlService, HtmlService>();
+        services.AddScoped<IUserHttpContextAccessor, UserHttpContextAccessor>();
         services.AddHttpClient();
 
         if (configuration["UseAzureBlobStorage"] == "true")

@@ -9,7 +9,7 @@ public class JobsContext : Testing
    /// </summary>
    /// <param name="title"></param>
    /// <returns></returns>
-    public async Task<JobVacancy> GetJob(string title)
+    public async Task<JobVacancy> GetJob(string title,DateTime endDate)
     {
         var category = new CategoryContext();
         var Job = await FindFirstOrDefaultAsync<JobVacancy>(j => j.Title == title);
@@ -23,7 +23,7 @@ public class JobsContext : Testing
             Description = "Description",
             ShortDescription = "ShortDescription",
             PublishDate = DateTime.Now,
-            EndDate = DateTime.Now.AddDays(2),
+            EndDate =endDate,
             CategoryId = await category.GetCategoryId("jobvacancy"),
             VacancyQuestions = new List<VacancyQuestion> {
                 new VacancyQuestion{
@@ -35,8 +35,7 @@ public class JobsContext : Testing
         newJob.Slug = newJob.Title.ToLower().Replace(" ", "-");
 
         await AddAsync(newJob);
-
+        
         return newJob;
     }
-
 }

@@ -11,24 +11,24 @@ public class UpdateTrainingVacancyCommandTest : Testing
     [Test]
     public async Task UpdateTrainingVacancyCommand_UpdatingTrainingVacancyCommand_Success()
     {
-        TrainingsContext Trainings = new TrainingsContext();
-        var Training = await Trainings.GetTraining("TrainingVacncy");
+        TrainingsContext trainings = new TrainingsContext();
+        var training = await trainings.GetTraining("TrainingVacancy", DateTime.Now.AddDays(1));
 
         var updateCommand = new UpdateTrainingVacancyCommand
         {
-            Title = "TrainingVacncy Updated",
-            ShortDescription = Training.ShortDescription,
-            Description = Training.ShortDescription,
-            Duration = Training.Duration,
-            Fees = Training.Fees,
-            EndDate = Training.EndDate,
-            PublishDate = Training.PublishDate,
-            CategoryId = Training.CategoryId,
-            Slug = Training.Slug,
+            Title = "TrainingVacancy Updated",
+            ShortDescription = training.ShortDescription,
+            Description = training.ShortDescription,
+            Duration = training.Duration,
+            Fees = training.Fees,
+            EndDate = training.EndDate,
+            PublishDate = training.PublishDate,
+            CategoryId = training.CategoryId,
+            Slug = training.Slug,
         };
 
         RunAsReviewerAsync();
-        var response = await _httpClient.PutAsJsonAsync($"/api/Trainings/{Training.Slug}", updateCommand);
+        var response = await _httpClient.PutAsJsonAsync($"/api/Trainings/{training.Slug}", updateCommand);
 
         response.EnsureSuccessStatusCode();
 
