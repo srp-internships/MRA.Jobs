@@ -1,6 +1,8 @@
-﻿using MRA.Jobs.Application.Contracts.Common;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobCategories;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.DeleteVacancyCategory;
@@ -13,19 +15,21 @@ namespace MRA.Jobs.Client.Services.CategoryServices;
 
 public class CategoryService : ICategoryService
 {
-    private readonly HttpClient _http;
+    
     private readonly IHttpClientService _httpClient;
 
-    public CategoryService(HttpClient http, IHttpClientService httpClient )
+    public CategoryService(IHttpClientService httpClient )
     {
-        _http = http;
+    
         _httpClient = httpClient;
     }
     public List<CategoryResponse> Category { get; set; }
     public UpdateVacancyCategoryCommand updatingEntity { get; set; }
     public DeleteVacancyCategoryCommand deletingEntity { get; set; }
     public CreateVacancyCategoryCommand creatingEntity { get; set; }
-   
+    public GetVacancyCategoryByIdQuery query {  get; set; }
+
+
     public async Task<ApiResponse<List<CategoryResponse>>> GetAllCategory(GetVacancyCategoryByIdQuery query)
     {
         return await _httpClient.GetAsJsonAsync<List<CategoryResponse>>($"categories", query);
@@ -41,62 +45,61 @@ public class CategoryService : ICategoryService
     }
     public async Task OnSaveUpdateClick()
     {
-        var result = await _http.PutAsJsonAsync($"categories/{updatingEntity.Slug}", updatingEntity);
-        result.EnsureSuccessStatusCode();
+        var result = await _httpClient.PutAsJsonAsync<CategoryResponse>($"categories/{updatingEntity.Slug}", updatingEntity);
+        if (result.Success)
+        {
         updatingEntity = null;
-        var result2 = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>($"categories");
-        Category = result2.Items;
+        }
+        var result2 = await _httpClient.GetAsJsonAsync<List<CategoryResponse>>($"categories", query);
+        Category = result2.Result;
     }
     public async Task OnDeleteClick(string slug)
     {
-        await _http.DeleteAsync($"categories/{slug}");
-        var result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>($"categories");
-        Category = result.Items;
+        await _httpClient.DeleteAsync($"categories/{slug}");
+        var result = await _httpClient.GetAsJsonAsync<List<CategoryResponse>>($"categories", query);
+        Category = result.Result;
     }
     public async Task OnSaveCreateClick()
     {
         if (creatingEntity is not null)
-            await _http.PostAsJsonAsync("categories", creatingEntity);
+            await _httpClient.PostAsJsonAsync<CategoryResponse>("categories", creatingEntity);
         creatingEntity.Name = string.Empty;
-        var result = await _http.GetFromJsonAsync<PagedList<CategoryResponse>>($"categories");
-        Category = result.Items;
+        var result = await _httpClient.GetAsJsonAsync<List<CategoryResponse>>($"categories", query);
+        Category = result.Result;
     }
 
-    public async Task<List<TrainingCategoriesResponce>> GetTrainingCategories()
+    public async Task<ApiResponse<List<TrainingCategoriesResponce>>> GetTrainingCategories(GetTrainingCategoriesQuery getTrainingCategoriesQuery)
     {
-        var responce = await _http.GetFromJsonAsync<List<TrainingCategoriesResponce>>("categories/training");
-        return responce;
+        return await _httpClient.GetAsJsonAsync<List<TrainingCategoriesResponce>>("categories/training", getTrainingCategoriesQuery);
+        
     }
 
-    public async Task<List<TrainingCategoriesResponce>> GetTrainingCategoriesSinceCheckDate()
+    public async Task<ApiResponse<List<TrainingCategoriesResponce>>> GetTrainingCategoriesSinceCheckDate(GetTrainingCategoriesQuery getTrainingCategoriesQuery)
     {
-        var responce = await _http.GetFromJsonAsync<List<TrainingCategoriesResponce>>("categories/training?CheckDate=true");
-        return responce;
+        return await _httpClient.GetAsJsonAsync<List<TrainingCategoriesResponce>>("categories/training?CheckDate=true", getTrainingCategoriesQuery);
+        
     }
 
-    public async Task<List<InternshipCategoriesResponce>> GetInternshipCategories()
+    public async Task<ApiResponse<List<InternshipCategoriesResponce>>> GetInternshipCategories(GetInternshipCategoriesQuery getInternshipCategoriesQuery)
     {
-        var responce = await _http.GetFromJsonAsync<List<InternshipCategoriesResponce>>("categories/internships");
-        return responce;
+        return await _httpClient.GetAsJsonAsync<List<InternshipCategoriesResponce>>("categories/internships", getInternshipCategoriesQuery);
+         
     }
 
-    public async Task<List<InternshipCategoriesResponce>> GetInternshipCategoriesSinceCheckDate()
+    public async Task<ApiResponse<List<InternshipCategoriesResponce>>> GetInternshipCategoriesSinceCheckDate(GetInternshipCategoriesQuery getInternshipCategoriesQuery)
     {
-        var responce = await _http.GetFromJsonAsync<List<InternshipCategoriesResponce>>("categories/internships?CheckDate=true");
-        return responce;
+        return await _httpClient.GetAsJsonAsync<List<InternshipCategoriesResponce>>("categories/internships?CheckDate=true", getInternshipCategoriesQuery);
+        
     }
 
-    public async Task<List<JobCategoriesResponse>> GetJobCategories()
+    public async Task<ApiResponse<List<JobCategoriesResponse>>> GetJobCategories(GetJobCategoriesQuery getJobCategoriesQuery)
     {
-        var responce = await _http.GetFromJsonAsync<List<JobCategoriesResponse>>("categories/job");
-        return responce;
+        return await _httpClient.GetAsJsonAsync<List<JobCategoriesResponse>>("categories/job", getJobCategoriesQuery);
+        
     }
 
-    public async Task<List<JobCategoriesResponse>> GetJobCategoriesSinceCheckDate()
+    public async Task<ApiResponse<List<JobCategoriesResponse>>> GetJobCategoriesSinceCheckDate(GetJobCategoriesQuery getJobCategoriesQuery)
     {
-        var responce = await _http.GetFromJsonAsync<List<JobCategoriesResponse>>("categories/job?CheckDate=true");
-        return responce;
+        return await _httpClient.GetAsJsonAsync<List<JobCategoriesResponse>>("categories/job?CheckDate=true",getJobCategoriesQuery);
     }
-
-  
 }

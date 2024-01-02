@@ -19,13 +19,13 @@ else
 	private List<string> jobCategories;
 	private List<VacancyClientResponse> jobs;
 	private List<VacancyClientResponse> filteredJobs;
-
+	private GetJobCategoriesQuery getJobCategoriesQuery = new();
 	protected override async Task OnInitializedAsync()
 	{
 await base.OnInitializedAsync();
 		try
 		{
-			var result = await categoryService.GetJobCategoriesSinceCheckDate();
+			var result = await categoryService.GetJobCategoriesSinceCheckDate(getJobCategoriesQuery);
 			var allJobs = await vacancyService.GetJobs();
 			if (result is not null && allJobs is not null)
 			{

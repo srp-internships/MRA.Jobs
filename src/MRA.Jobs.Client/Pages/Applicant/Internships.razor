@@ -18,13 +18,14 @@ else
 	public List<string> internshipCategories { get; set; }
 	public List<VacancyClientResponse> internships { get; set; }
 	private List<VacancyClientResponse> filteredInternships;
+	private GetInternshipCategoriesQuery getInternshipCategoriesQuery = new();
 	protected override async Task OnInitializedAsync()
 	{
 await base.OnInitializedAsync();
 		try
 		{
 
-			var result = await categoryService.GetInternshipCategoriesSinceCheckDate();
+			var result = await categoryService.GetInternshipCategoriesSinceCheckDate(getInternshipCategoriesQuery);
 			var allJobs = await vacancyService.GetInternship();
 			if (result is not null && allJobs is not null)
 			{
