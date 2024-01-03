@@ -30,8 +30,8 @@ builder.Services.AddAuthorizationCore();
 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
-
+var app = builder.Build();
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 logger.LogWarning("Protocol {0}", ServicePointManager.SecurityProtocol);
 
-await builder.Build().RunAsync();
+await app.RunAsync();
