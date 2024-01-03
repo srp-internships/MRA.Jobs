@@ -1,5 +1,6 @@
 ﻿@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication
 @using MRA.Jobs.Application.Contracts.Dtos.Responses
+@using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @using MRA.Jobs.Client.Services.NoVacancies
 @inject NavigationManager NavigationManager
@@ -85,12 +86,12 @@
 	JobVacancyDetailsDto _vacancy = new();
 
 	private CreateApplicationCommand _application;
-
+	private GetJobVacancyBySlugQuery getJobVacancyBySlugQuery = new();
 	private Dictionary<VacancyQuestionDto, string> _questionsResponses = new();
 
 	protected override async Task OnInitializedAsync()
 	{
-		_vacancy = await NoVacancyService.GetNoVacancyAsync();
+		_vacancy = await NoVacancyService.GetNoVacancyAsync(getJobVacancyBySlugQuery);
 		if (_vacancy.Slug == null)
 		{
 			return;

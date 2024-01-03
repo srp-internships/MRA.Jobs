@@ -3,6 +3,7 @@
 @inject NavigationManager navigationManager
 @inject HttpClient httpClient
 @using System.Net
+@using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug
 
 <MudDialog>
 	<DialogContent>
@@ -64,7 +65,7 @@
 	public string cvURL;
 
 	private UpdateApplicationStatus applicationStatus;
-
+	private GetBySlugApplicationQuery getBySlugApplicationQuery = new();
 	private void HandleSelectValueChanged(string value)
 	{
 		selectedStatus = value;
@@ -72,7 +73,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		var app = await applicationService.GetApplicationDetails(Slug);
+		var app = await applicationService.GetApplicationDetails(Slug, getBySlugApplicationQuery);
 		cvURL = $"{httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
 	}
 

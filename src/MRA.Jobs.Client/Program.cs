@@ -48,8 +48,8 @@ builder.Services.AddValidatorsFromAssembly(typeof(RemoveUserSkillCommand).Assemb
 
 builder.Services.AddScoped(_ =>
     new IdentityHttpClient { BaseAddress = new Uri(builder.Configuration["IdentityHttpClient:BaseAddress"]!) });
-//builder.Services.AddScoped(_ =>
-//    new HttpClient { BaseAddress = new Uri(builder.Configuration["HttpClient:BaseAddress"]!) });
+builder.Services.AddScoped(_ =>
+    new HttpClient { BaseAddress = new Uri(builder.Configuration["HttpClient:BaseAddress"]!) });
 
 builder.Services.AddScoped<IHttpClientService, HttpClientService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();

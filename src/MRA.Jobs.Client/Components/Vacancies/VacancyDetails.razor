@@ -1,4 +1,5 @@
-﻿@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+﻿@using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Identity;
 @using Microsoft.AspNetCore.Components.Authorization;
@@ -11,273 +12,273 @@
 @inject IConfiguration configuration
 @if (vacancyDetails is null || vacancy == null)
 {
-    if (_showLoader)
-    {
-        <div style="text-align: center;">
-            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
-        </div>
-    }
+	if (_showLoader)
+	{
+		<div style="text-align: center;">
+			<MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+		</div>
+	}
 }
 else
 {
-    <MudContainer>
-        <MudGrid>
-            <MudItem xs="12" lg="9" sm="12" md="8">
-                <MudCard Class="rounded-lg mud-elevation-4">
-                    <MudCardHeader>
+	<MudContainer>
+		<MudGrid>
+			<MudItem xs="12" lg="9" sm="12" md="8">
+				<MudCard Class="rounded-lg mud-elevation-4">
+					<MudCardHeader>
 
-                        <CardHeaderContent>
-                            <div class="d-flex flex-grow-1">
-                                <div class="flex-none d-flex py-lg-3">
-                                    <MudLink Href="@("/" + vacancy)">
-                                        <MudIcon Icon="@Icons.Material.Filled.ArrowBackIosNew" Size="Size.Large"></MudIcon>
-                                    </MudLink>
-                                </div>
-                                <div class="">
-                                    <MudText Typo="Typo.h5" Style="padding-top: 3px;">
-                                        <b>@vacancyDetails.Title</b>
-                                    </MudText>
-                                    <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
-                                        <b> @ContentService["VacancyDetails:Posted"] @DateTimeConvert.GetDisplayPostedDate(vacancyDetails.PublishDate)</b>
-                                    </MudText>
-                                </div>
-                            </div>
+						<CardHeaderContent>
+							<div class="d-flex flex-grow-1">
+								<div class="flex-none d-flex py-lg-3">
+									<MudLink Href="@("/" + vacancy)">
+										<MudIcon Icon="@Icons.Material.Filled.ArrowBackIosNew" Size="Size.Large"></MudIcon>
+									</MudLink>
+								</div>
+								<div class="">
+									<MudText Typo="Typo.h5" Style="padding-top: 3px;">
+										<b>@vacancyDetails.Title</b>
+									</MudText>
+									<MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
+										<b> @ContentService["VacancyDetails:Posted"] @DateTimeConvert.GetDisplayPostedDate(vacancyDetails.PublishDate)</b>
+									</MudText>
+								</div>
+							</div>
 
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <MudDivider/>
-                        <br/>
-                        <MudText>@((MarkupString)vacancyDetails.Description)</MudText>
-                        <br/>
-                        <MudDivider Style="padding:10px;"/>
-                        <MudGrid Style="padding:10px 10px;color:rgb(128,128,128);">
-                            @if (vacancyDetails.Duration != 0)
-                            {
-                                <MudItem lg="4" md="6" xs="6">
-                                    <MudGrid>
-                                        <MudItem Style="padding:0;">
-                                            <MudIcon Icon="@Icons.Material.Outlined.Timelapse"/>
-                                        </MudItem>
-                                        <MudItem Style="padding:0;">
-                                            <MudText>
-                                                <b>@vacancyDetails.Duration @ContentService["VacancyDetails:month(s)"]</b>
-                                            </MudText>
-                                            <MudText Typo="Typo.body2">
-                                                <small>@ContentService["VacancyDetails:Duration"]</small>
-                                            </MudText>
-                                        </MudItem>
-                                    </MudGrid>
-                                </MudItem>
-                            }
-                            @if (vacancyDetails.Deadline != default)
-                            {
-                                <MudItem lg="4" md="6" xs="6">
-                                    @{
-                                        var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline);
-                                        var deadlineStyle = $"color:{deadlineResult.Color}";
+						</CardHeaderContent>
+					</MudCardHeader>
+					<MudCardContent>
+						<MudDivider />
+						<br />
+						<MudText>@((MarkupString)vacancyDetails.Description)</MudText>
+						<br />
+						<MudDivider Style="padding:10px;" />
+						<MudGrid Style="padding:10px 10px;color:rgb(128,128,128);">
+							@if (vacancyDetails.Duration != 0)
+							{
+								<MudItem lg="4" md="6" xs="6">
+									<MudGrid>
+										<MudItem Style="padding:0;">
+											<MudIcon Icon="@Icons.Material.Outlined.Timelapse" />
+										</MudItem>
+										<MudItem Style="padding:0;">
+											<MudText>
+												<b>@vacancyDetails.Duration @ContentService["VacancyDetails:month(s)"]</b>
+											</MudText>
+											<MudText Typo="Typo.body2">
+												<small>@ContentService["VacancyDetails:Duration"]</small>
+											</MudText>
+										</MudItem>
+									</MudGrid>
+								</MudItem>
+							}
+							@if (vacancyDetails.Deadline != default)
+							{
+								<MudItem lg="4" md="6" xs="6">
+									@{
+										var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline);
+										var deadlineStyle = $"color:{deadlineResult.Color}";
 
-                                        <MudGrid Style="@deadlineStyle">
-                                            <MudItem Style="padding:0;">
-                                                <MudIcon Icon="@Icons.Material.Outlined.Alarm"/>
-                                            </MudItem>
-                                            <MudItem Style="padding:0;">
-                                                <MudText>
-                                                    <b>@deadlineResult.DisplayDate</b>
-                                                </MudText>
-                                                <MudText Typo="Typo.body2">
-                                                    <small>@ContentService["VacancyDetails:Deadline"]</small>
-                                                </MudText>
-                                            </MudItem>
-                                        </MudGrid>
-                                    }
-                                </MudItem>
-                            }
+										<MudGrid Style="@deadlineStyle">
+											<MudItem Style="padding:0;">
+												<MudIcon Icon="@Icons.Material.Outlined.Alarm" />
+											</MudItem>
+											<MudItem Style="padding:0;">
+												<MudText>
+													<b>@deadlineResult.DisplayDate</b>
+												</MudText>
+												<MudText Typo="Typo.body2">
+													<small>@ContentService["VacancyDetails:Deadline"]</small>
+												</MudText>
+											</MudItem>
+										</MudGrid>
+									}
+								</MudItem>
+							}
 
-                            @if (vacancyDetails.RequiredYearOfExperience != 0)
-                            {
-                                <MudItem lg="4" md="6" xs="6">
-                                    <MudGrid>
-                                        <MudItem Style="padding:0;">
-                                            <MudIcon Icon="@Icons.Material.Outlined.Work"/>
-                                        </MudItem>
-                                        <MudItem Style="padding:0;">
-                                            <MudText>
-                                                <b>@vacancyDetails.RequiredYearOfExperience @ContentService["VacancyDetails:year(s)"]</b>
-                                            </MudText>
-                                            <MudText Typo="Typo.body2">
-                                                <small>@ContentService["VacancyDetails:Required year of experience"]</small>
-                                            </MudText>
-                                        </MudItem>
-                                    </MudGrid>
-                                </MudItem>
-                            }
-                            @if (vacancyDetails.Fees != 0)
-                            {
-                                <MudItem lg="4" md="6" xs="6">
-                                    <MudGrid>
-                                        <MudItem Style="padding:0;">
-                                            <MudIcon Icon="@Icons.Material.Outlined.AttachMoney"/>
-                                        </MudItem>
-                                        <MudItem Style="padding:0;">
-                                            <MudText>
-                                                <b>@vacancyDetails.Fees</b>
-                                            </MudText>
-                                            <MudText Typo="Typo.body2">
-                                                <small>@ContentService["VacancyDetails:Fees"]</small>
-                                            </MudText>
-                                        </MudItem>
-                                    </MudGrid>
-                                </MudItem>
-                            }
+							@if (vacancyDetails.RequiredYearOfExperience != 0)
+							{
+								<MudItem lg="4" md="6" xs="6">
+									<MudGrid>
+										<MudItem Style="padding:0;">
+											<MudIcon Icon="@Icons.Material.Outlined.Work" />
+										</MudItem>
+										<MudItem Style="padding:0;">
+											<MudText>
+												<b>@vacancyDetails.RequiredYearOfExperience @ContentService["VacancyDetails:year(s)"]</b>
+											</MudText>
+											<MudText Typo="Typo.body2">
+												<small>@ContentService["VacancyDetails:Required year of experience"]</small>
+											</MudText>
+										</MudItem>
+									</MudGrid>
+								</MudItem>
+							}
+							@if (vacancyDetails.Fees != 0)
+							{
+								<MudItem lg="4" md="6" xs="6">
+									<MudGrid>
+										<MudItem Style="padding:0;">
+											<MudIcon Icon="@Icons.Material.Outlined.AttachMoney" />
+										</MudItem>
+										<MudItem Style="padding:0;">
+											<MudText>
+												<b>@vacancyDetails.Fees</b>
+											</MudText>
+											<MudText Typo="Typo.body2">
+												<small>@ContentService["VacancyDetails:Fees"]</small>
+											</MudText>
+										</MudItem>
+									</MudGrid>
+								</MudItem>
+							}
 
-                            <MudItem lg="4" md="6" xs="6">
-                                @{
-                                    var endDateResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate);
-                                    var endDatelineStyle = $"color:{endDateResult.Color}";
+							<MudItem lg="4" md="6" xs="6">
+								@{
+									var endDateResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate);
+									var endDatelineStyle = $"color:{endDateResult.Color}";
 
-                                    <MudGrid Style="@endDatelineStyle">
-                                        <MudItem Style="padding:0;">
-                                            <MudIcon Icon="@Icons.Material.Outlined.DateRange"/>
-                                        </MudItem>
-                                        <MudItem Style="padding:0;">
-                                            <MudText>
-                                                <b>@endDateResult.DisplayDate</b>
-                                            </MudText>
-                                            <MudText Typo="Typo.body2">
-                                                <small>@ContentService["VacancyDetails:End Date"]</small>
-                                            </MudText>
-                                        </MudItem>
-                                    </MudGrid>
-                                }
-                            </MudItem>
+									<MudGrid Style="@endDatelineStyle">
+										<MudItem Style="padding:0;">
+											<MudIcon Icon="@Icons.Material.Outlined.DateRange" />
+										</MudItem>
+										<MudItem Style="padding:0;">
+											<MudText>
+												<b>@endDateResult.DisplayDate</b>
+											</MudText>
+											<MudText Typo="Typo.body2">
+												<small>@ContentService["VacancyDetails:End Date"]</small>
+											</MudText>
+										</MudItem>
+									</MudGrid>
+								}
+							</MudItem>
 
-                        </MudGrid>
-
-
-                    </MudCardContent>
-                </MudCard>
+						</MudGrid>
 
 
-            </MudItem>
+					</MudCardContent>
+				</MudCard>
 
 
-            <MudItem xs="12" lg="3" sm="12" md="4">
-                @if (vacancyDetails.Deadline != default && (
-                    DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
-                    || DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"
-                    ))
-                {
-                    <MudCard Class="rounded-lg mud-elevation-4">
-                        <MudCardContent>
-                            <MudText>@ContentService["VacancyDetails:Unfortunately, the deadline has already expired"]</MudText>
-                            <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" Disabled="true">@ContentService["VacancyDetails:Apply Now"]</MudButton>
-                        </MudCardContent>
-                    </MudCard>
-                }
-                else
-                {
-                    <CascadingAuthenticationState>
-                        <AuthorizeView>
-                            <Authorized>
-                                <MudCard Class="rounded-lg mud-elevation-4">
-                                    <MudCardHeader>
-                                        <CardHeaderContent>
-                                            <MudText>@ContentService["VacancyDetails:Are you ready to take your career to the next level with"] <b> Silk Road Professionals</b>?</MudText>
+			</MudItem>
 
-                                        </CardHeaderContent>
-                                    </MudCardHeader>
-                                    <MudCardContent>
-                                        <MudText Typo="Typo.body2">@ContentService["VacancyDetails:Write a cover letter, answer few questions and send your application!"]</MudText>
 
-                                    </MudCardContent>
-                                    <MudCardActions Style="flex-direction: column">
+			<MudItem xs="12" lg="3" sm="12" md="4">
+				@if (vacancyDetails.Deadline != default && (
+						DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
+						|| DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"
+						))
+				{
+					<MudCard Class="rounded-lg mud-elevation-4">
+						<MudCardContent>
+							<MudText>@ContentService["VacancyDetails:Unfortunately, the deadline has already expired"]</MudText>
+								<MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" Disabled="true">@ContentService["VacancyDetails:Apply Now"]</MudButton>
+							</MudCardContent>
+						</MudCard>
+				}
+				else
+				{
+					<CascadingAuthenticationState>
+						<AuthorizeView>
+							<Authorized>
+								<MudCard Class="rounded-lg mud-elevation-4">
+									<MudCardHeader>
+										<CardHeaderContent>
+											<MudText>@ContentService["VacancyDetails:Are you ready to take your career to the next level with"] <b> Silk Road Professionals</b>?</MudText>
 
-                                        @if (Applied)
-                                        {
-                                            <MudButton Variant="Variant.Filled" Color="Color.Surface" style="margin-bottom: 10px" href="@_cvUrl">
-                                                <MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>@ContentService["VacancyDetails:Download CV"]
-                                            </MudButton>
-                                            <MudChip Icon="@Icons.Material.Filled.Check" Color="Color.Success">Applied</MudChip>
-                                        }
-                                        else
-                                        {
-                                            <MudButton Variant="Variant.Filled" href=@($"/{vacancy}/apply/{Slug}") Color="Color.Primary" FullWidth="true">
-                                                <MudText>
-                                                    <b>@ContentService["VacancyDetails:Apply Now"]</b>
-                                                </MudText>
-                                            </MudButton>
-                                        }
+										</CardHeaderContent>
+									</MudCardHeader>
+									<MudCardContent>
+										<MudText Typo="Typo.body2">@ContentService["VacancyDetails:Write a cover letter, answer few questions and send your application!"]</MudText>
 
-                                    </MudCardActions>
-                                </MudCard>
-                            </Authorized>
-                            <NotAuthorized>
-                                <MudCard Class="rounded-lg mud-elevation-4">
-                                    <MudCardHeader>
-                                        <MudText>
-                                            @ContentService["VacancyDetails:Explore"] <b>Silk Road Professionals</b> @ContentService["VacancyDetails:opportunities"]
-                                        </MudText>
-                                    </MudCardHeader>
-                                    <MudCardActions>
-                                        <MudButton Variant="Variant.Filled" Href=@($"{configuration["IdentityClient"]}/registration") Color="Color.Primary" FullWidth="true">
-                                            <MudText>
-                                                <b>@ContentService["VacancyDetails:Sign Up"]</b>
-                                            </MudText>
-                                        </MudButton>
-                                    </MudCardActions>
-                                    <MudText Typo="Typo.body2" Style="padding:0 10px 10px 10px">
-                                        @ContentService["VacancyDetails:Already have an account?"]
-                                        <MudLink Typo="Typo.body2" Href=@($"{configuration["IdentityClient"]}/login") Color="Color.Primary">
-                                            <b>@ContentService["VacancyDetails:Sign In"]</b>
-                                        </MudLink>
-                                    </MudText>
-                                </MudCard>
-                            </NotAuthorized>
-                        </AuthorizeView>
-                    </CascadingAuthenticationState>
-                }
-            </MudItem>
-        </MudGrid>
-    </MudContainer>
+										</MudCardContent>
+										<MudCardActions Style="flex-direction: column">
+
+											@if (Applied)
+										{
+											<MudButton Variant="Variant.Filled" Color="Color.Surface" style="margin-bottom: 10px" href="@_cvUrl">
+												<MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>@ContentService["VacancyDetails:Download CV"]
+											</MudButton>
+											<MudChip Icon="@Icons.Material.Filled.Check" Color="Color.Success">Applied</MudChip>
+										}
+										else
+										{
+											<MudButton Variant="Variant.Filled" href=@($"/{vacancy}/apply/{Slug}") Color="Color.Primary" FullWidth="true">
+												<MudText>
+													<b>@ContentService["VacancyDetails:Apply Now"]</b>
+												</MudText>
+											</MudButton>
+										}
+
+									</MudCardActions>
+								</MudCard>
+							</Authorized>
+							<NotAuthorized>
+								<MudCard Class="rounded-lg mud-elevation-4">
+									<MudCardHeader>
+										<MudText>
+											@ContentService["VacancyDetails:Explore"] <b>Silk Road Professionals</b> @ContentService["VacancyDetails:opportunities"]
+										</MudText>
+									</MudCardHeader>
+									<MudCardActions>
+										<MudButton Variant="Variant.Filled" Href=@($"{configuration["IdentityClient"]}/registration") Color="Color.Primary" FullWidth="true">
+											<MudText>
+												<b>@ContentService["VacancyDetails:Sign Up"]</b>
+											</MudText>
+										</MudButton>
+									</MudCardActions>
+									<MudText Typo="Typo.body2" Style="padding:0 10px 10px 10px">
+										@ContentService["VacancyDetails:Already have an account?"]
+										<MudLink Typo="Typo.body2" Href=@($"{configuration["IdentityClient"]}/login") Color="Color.Primary">
+											<b>@ContentService["VacancyDetails:Sign In"]</b>
+										</MudLink>
+									</MudText>
+								</MudCard>
+							</NotAuthorized>
+						</AuthorizeView>
+					</CascadingAuthenticationState>
+				}
+			</MudItem>
+		</MudGrid>
+	</MudContainer>
 }
 
 @code {
-    private bool _showLoader = false;
+	private bool _showLoader = false;
 
-    [Parameter]
-    public string Slug { get; set; }
+	[Parameter]
+	public string Slug { get; set; }
 
-    private string _cvUrl;
+	private string _cvUrl;
 
-    [Parameter]
-    public VacancyDetailsResponse vacancyDetails { get; set; }
+	[Parameter]
+	public VacancyDetailsResponse vacancyDetails { get; set; }
 
-    [Parameter]
-    public string vacancy { get; set; }
+	[Parameter]
+	public string vacancy { get; set; }
 
-    public bool Applied { get; set; }
+	public bool Applied { get; set; }
+	private GetBySlugApplicationQuery getBySlugApplicationQuery = new();
+	protected override async Task OnInitializedAsync()
+	{
+		_cvUrl = await ApplicationService.GetCvLinkAsync(Slug, getBySlugApplicationQuery);
+		Applied = !_cvUrl.IsNullOrEmpty();
+	}
 
-    protected override async Task OnInitializedAsync()
-    {
-        _cvUrl = await ApplicationService.GetCvLinkAsync(Slug);
-        Applied = !_cvUrl.IsNullOrEmpty();
-    }
-
-    protected override async void OnAfterRender(bool firstRender)
-    {
-        try
-        {
-            if (firstRender)
-            {
-                await Task.Delay(1000);
-                _showLoader = true;
-                StateHasChanged();
-            }
-        }
-        catch (Exception)
-        {
-        }
-    }
+	protected override async void OnAfterRender(bool firstRender)
+	{
+		try
+		{
+			if (firstRender)
+			{
+				await Task.Delay(1000);
+				_showLoader = true;
+				StateHasChanged();
+			}
+		}
+		catch (Exception)
+		{
+		}
+	}
 
 }
