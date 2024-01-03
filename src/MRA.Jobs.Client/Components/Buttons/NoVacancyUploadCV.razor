@@ -91,7 +91,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _vacancy = await NoVacancyService.GetNoVacancyAsync();
+		_vacancy = await NoVacancyService.GetNoVacancyAsync(getJobVacancyBySlugQuery);
         if (_vacancy.Slug == null)
         {
             return;
