@@ -18,8 +18,8 @@ namespace MRA.Jobs.Client.Services.VacancyServices;
 public class VacancyService(IHttpClientService httpClient) : IVacancyService
 {
     private List<CategoryResponse> Categories { get; set; }
-    
-    public List<JobVacancyListDto> Vacanceies { get; set; }
+
+    public List<JobVacancyListDto> Vacancies { get; set; }
     public int FilteredVacanciesCount { get; set; } = 0;
 
     public CreateJobVacancyCommand creatingNewJob { get; set; } = new()
@@ -41,17 +41,17 @@ public class VacancyService(IHttpClientService httpClient) : IVacancyService
 
     public async Task<List<JobVacancyListDto>> GetAllVacancy(GetJobsQueryOptions getJobsQuery)
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>("jobs",getJobsQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>("jobs", getJobsQuery);
         if (result.Success)
         {
-            Vacanceies = result.Result.Items;
-            return Vacanceies;
+            Vacancies = result.Result.Items;
+            return Vacancies;
         }
         else
         {
             return null;
         }
-       
+
     }
 
 
@@ -82,9 +82,9 @@ public class VacancyService(IHttpClientService httpClient) : IVacancyService
         var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Title@={title}", getJobsQuery);
         if (result.Success)
         {
-        Vacanceies = result.Result.Items;
-        OnChange?.Invoke();
-        return Vacanceies;
+            Vacancies = result.Result.Items;
+            OnChange?.Invoke();
+            return Vacancies;
         }
         else { return null; }
     }
@@ -150,7 +150,7 @@ public class VacancyService(IHttpClientService httpClient) : IVacancyService
         var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>("jobs", getJobsQuery);
         if (result.Success)
         {
-        return result.Result.Items;
+            return result.Result.Items;
         }
         else
         {
@@ -192,12 +192,12 @@ public class VacancyService(IHttpClientService httpClient) : IVacancyService
             VacancyQuestions = creatingNewJob.VacancyQuestions,
             VacancyTasks = creatingNewJob.VacancyTasks
         };
-       return await httpClient.PutAsJsonAsync<UpdateJobVacancyCommand>($"jobs/{slug}", update);
+        return await httpClient.PutAsJsonAsync<UpdateJobVacancyCommand>($"jobs/{slug}", update);
     }
 
     public async Task<List<InternshipVacancyListResponse>> GetInternship(GetInternshipsQueryOptions getInternshipsQuery)
     {
-        var result=await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>("internships",getInternshipsQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>("internships", getInternshipsQuery);
         return result.Result.Items;
     }
 

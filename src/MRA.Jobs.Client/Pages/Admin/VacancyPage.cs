@@ -18,7 +18,7 @@ namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class VacancyPage
 {
-      private string _createOrEditHeader = "New Job vacancy";
+    private string _createOrEditHeader = "New Job vacancy";
     private bool _serverError;
     private readonly ApplicationStatusDto.WorkSchedule[] _value2Items = Enum.GetValues(typeof(ApplicationStatusDto.WorkSchedule)).Cast<ApplicationStatusDto.WorkSchedule>().ToArray();
 
@@ -40,9 +40,9 @@ public partial class VacancyPage
     private TimeSpan? _endDateTime;
     private StandaloneCodeEditor _editorTemplate = null!;
     private StandaloneCodeEditor _editorTest = null!;
-    private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
-    private GetJobsQueryOptions getJobsQuery=new();
-    private GetJobVacancyBySlugQuery getJobVacancyBySlug=new();
+    private readonly GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
+    private readonly GetJobsQueryOptions getJobsQuery = new();
+    private readonly GetJobVacancyBySlugQuery getJobVacancyBySlug = new();
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
         if (editor == _editorTest)
@@ -158,7 +158,7 @@ public partial class VacancyPage
         await Global.SetTheme(JsRuntime, LayoutService.IsDarkMode ? "vs-dark" : "vs");
         try
         {
-            _category =await VService.GetAllCategory(getVacancyCategoryByIdQuery);
+            _category = await VService.GetAllCategory(getVacancyCategoryByIdQuery);
             _vacancies = await VService.GetJobs(getJobsQuery);
         }
         catch (Exception)
@@ -323,6 +323,6 @@ public partial class VacancyPage
     {
         var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
-        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional});
+        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
 }

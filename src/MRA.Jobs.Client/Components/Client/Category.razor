@@ -6,22 +6,22 @@
 
 <!--- Category -->
 <section id="category">
-    <div class="w-100">
-        <h4 class="mb-2 text-dark">Category</h4>
-        @if (_categoryResponses is null)
-        {
-            <div></div>
-        }
-        else
-        {
-            <ul class="d-flex flex-column">
-                @foreach (var category in CategoryService.Category)
-                {
-                    <li class="p-2 m-2 d-flex">@category.Name</li>
-                }
-            </ul>
-        }
-    </div>
+	<div class="w-100">
+		<h4 class="mb-2 text-dark">Category</h4>
+		@if (_categoryResponses is null)
+		{
+			<div></div>
+		}
+		else
+		{
+			<ul class="d-flex flex-column">
+				@foreach (var category in CategoryService.Category)
+				{
+					<li class="p-2 m-2 d-flex">@category.Name</li>
+				}
+			</ul>
+		}
+	</div>
 </section>
 
 @code {
@@ -32,11 +32,11 @@
 		errorMessage = error;
 		isError = true;
 	}
-    private List<CategoryResponse> _categoryResponses;
+	private List<CategoryResponse> _categoryResponses;
 	private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
 
-    protected override async Task OnInitializedAsync()
-    {
+	protected override async Task OnInitializedAsync()
+	{
 		var response = await CategoryService.GetAllCategory(getVacancyCategoryByIdQuery);
 		if (response.Success)
 		{
@@ -47,7 +47,7 @@
 			ShowError(response.Error);
 		}
 
-    }
+	}
 
 
 }

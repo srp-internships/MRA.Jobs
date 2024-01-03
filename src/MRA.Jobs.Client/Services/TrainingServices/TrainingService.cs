@@ -61,9 +61,9 @@ public class TrainingService : ITrainingService
             CategoryId = createCommand.CategoryId,
             Fees = createCommand.Fees,
             VacancyQuestions = createCommand.VacancyQuestions,
-            VacancyTasks=createCommand.VacancyTasks
+            VacancyTasks = createCommand.VacancyTasks
         };
-        
+
         await _authenticationStateProvider.GetAuthenticationStateAsync();
         return await _httpClientService.PutAsJsonAsync<ApiResponse>($"trainings/{slug}", UpdateCommand);
     }
@@ -75,10 +75,10 @@ public class TrainingService : ITrainingService
         return result;
     }
 
-    public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug,GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug)
+    public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug, GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug)
     {
         await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var  response = await _httpClientService.GetAsJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}",getTrainingVacancyBySlug);
+        var response = await _httpClientService.GetAsJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}", getTrainingVacancyBySlug);
         if (response.Success)
         {
             return response.Result;

@@ -1,11 +1,12 @@
 ﻿@page "/trainings"
 @inject ICategoryService categoryService
 @inject IVacancyService vacancyService
+@using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
 
 <MudText Typo="Typo.h4" Style="margin:50px; text-align: center; font-weight: 900">@ContentService["Trainings:Trainings"]</MudText>
-@if (serverError)
+	@if (serverError)
 {
 	<ServerErrorComponent />
 }
@@ -22,33 +23,33 @@ else
 	private GetTrainingsQueryOptions getTrainingsQuery = new();
 	protected override async Task OnInitializedAsync()
 	{
-await base.OnInitializedAsync();
+		await base.OnInitializedAsync();
 		try
 		{
 			var result = await categoryService.GetTrainingCategoriesSinceCheckDate(getTrainingCategoriesQuery);
 			var allTrainings = await vacancyService.GetTrainings(getTrainingsQuery);
 			if (result is not null && allTrainings is not null)
 			{
-				TrainingCategories = result.Select(r => r.Category.Name).ToList();
+				TrainingCategories = result.Result.Select(r => r.Category.Name).ToList();
 				trainings = allTrainings.Select(r => new VacancyClientResponse
 					{
 						Category = r.Category,
 						Title = r.Title,
 						ShortDescription = r.ShortDescription,
 						Slug = r.Slug,
-                        EndDate = r.EndDate,
-                        PublishDate = r.PublishDate,
-                        Duration = r.Duration
+						EndDate = r.EndDate,
+						PublishDate = r.PublishDate,
+						Duration = r.Duration
 					}).ToList();
-				filteredtrainings = allTrainings.Where(s=>s.EndDate>=DateTime.Now).Select(r => new VacancyClientResponse
+				filteredtrainings = allTrainings.Where(s => s.EndDate >= DateTime.Now).Select(r => new VacancyClientResponse
 					{
 						Category = r.Category,
 						Title = r.Title,
 						ShortDescription = r.ShortDescription,
 						Slug = r.Slug,
-                        EndDate = r.EndDate,
-                        PublishDate = r.PublishDate,
-                        Duration = r.Duration
+						EndDate = r.EndDate,
+						PublishDate = r.PublishDate,
+						Duration = r.Duration
 					}).ToList();
 
 			}

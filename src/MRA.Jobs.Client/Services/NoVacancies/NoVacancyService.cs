@@ -71,7 +71,7 @@ public class NoVacancyService(
             Console.WriteLine(e.Message);
         }
     }
-        
+
     private async Task<byte[]> GetFileBytesAsync(IBrowserFile file)
     {
         var allowedSize = int.Parse(configuration["CvSettings:MaxFileSize"]!);

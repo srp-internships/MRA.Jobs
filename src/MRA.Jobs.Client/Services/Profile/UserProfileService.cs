@@ -141,7 +141,7 @@ public class UserProfileService : IUserProfileService
     public async Task<bool> SendConfirmationCode(string phoneNumber)
     {
         var response = await _identityHttpClient.GetFromJsonAsync<bool>($"sms/send_code?PhoneNumber={phoneNumber}");
-       
+
         return response;
     }
 

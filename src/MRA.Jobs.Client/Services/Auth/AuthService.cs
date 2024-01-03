@@ -43,7 +43,7 @@ public class AuthService(IdentityHttpClient identityHttpClient,
                 var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
                 await cookieUtil.SetValueAsync("authToken", response);
                 await authenticationStateProvider.GetAuthenticationStateAsync();
-                layoutService.User=  await userProfileService.Get();
+                layoutService.User = await userProfileService.Get();
                 if (!newRegister)
                     navigationManager.NavigateTo("/");
                 return null;
@@ -84,7 +84,7 @@ public class AuthService(IdentityHttpClient identityHttpClient,
                     Password = command.Password,
                     Username = command.Username
                 });
-                layoutService.User=  await userProfileService.Get();
+                layoutService.User = await userProfileService.Get();
                 navigationManager.NavigateTo("/profile");
 
                 return "";
@@ -127,7 +127,7 @@ public class AuthService(IdentityHttpClient identityHttpClient,
 
     public async Task<HttpResponseMessage> ResendVerificationEmail()
     {
-        var result = await identityHttpClient.PostAsync("Auth/VerifyEmail",null);
+        var result = await identityHttpClient.PostAsync("Auth/VerifyEmail", null);
         return result;
     }
 }

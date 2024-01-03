@@ -26,8 +26,8 @@ public partial class InternshipVacanciesPage
     private List<CategoryResponse> _categories;
     private List<InternshipVacancyListResponse> _internships;
     private List<VacancyTaskDto> _tasks = new();
-    private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
-    private GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery=new();
+    private readonly GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
+    private readonly GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery = new();
     private TimeSpan? _applicationDeadlineTime;
     private TimeSpan? _publishDateTime;
     private TimeSpan? _endDateTime;
@@ -160,7 +160,7 @@ public partial class InternshipVacanciesPage
 
     private async Task OnEditClick(string slug)
     {
-        var vacancy = await InternshipService.GetBySlug(slug,getInternshipVacancyBySlugQuery);
+        var vacancy = await InternshipService.GetBySlug(slug, getInternshipVacancyBySlugQuery);
         if (vacancy != null)
         {
             _createOrEditHeader = $"Edit {vacancy.Title}";
@@ -321,7 +321,7 @@ public partial class InternshipVacanciesPage
     {
         var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
-        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional});
+        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
 
     private async void AddTask()

@@ -1,4 +1,5 @@
 ﻿@page "/internships/{Slug}"
+@using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @layout MainLayout
 @inject NavigationManager NavigationManager
@@ -24,7 +25,7 @@ else
 	private GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery = new();
 	protected override async Task OnInitializedAsync()
 	{
-await base.OnInitializedAsync();
+		await base.OnInitializedAsync();
 		try
 		{
 
@@ -37,7 +38,7 @@ await base.OnInitializedAsync();
 						Description = response.Description,
 						Duration = response.Duration,
 						EndDate = response.EndDate,
-						Deadline=response.ApplicationDeadline,
+						Deadline = response.ApplicationDeadline,
 						PublishDate = response.PublishDate
 					};
 			}

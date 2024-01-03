@@ -17,7 +17,7 @@ namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class TrainingVacancyPage
 {
-      private bool _serverError;
+    private bool _serverError;
     private bool _panelOpenState;
     private bool _isInserting;
     private bool _isUpdating = true;
@@ -35,8 +35,8 @@ public partial class TrainingVacancyPage
     private StandaloneCodeEditor _editorTemplate = null!;
     private StandaloneCodeEditor _editorTest = null!;
     private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
-    private GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug=new();
-   
+    private GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug = new();
+
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
         if (editor == _editorTest)
@@ -134,11 +134,11 @@ public partial class TrainingVacancyPage
         {
             try
             {
-                var response= await TrainingService.Delete(slug);
+                var response = await TrainingService.Delete(slug);
                 if (response.Success)
                 {
                     Snackbar.Add($"Deleted", Severity.Success);
-                _trainings.Remove(vacancy);
+                    _trainings.Remove(vacancy);
                 }
                 else
                 {
@@ -203,7 +203,7 @@ public partial class TrainingVacancyPage
         var r = _tasks.FirstOrDefault(t => t.Title == title);
         _tasks.Remove(r);
     }
-   
+
     private async Task LoadData()
     {
         try
@@ -350,6 +350,6 @@ public partial class TrainingVacancyPage
     {
         var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
-        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional});
+        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
 }

@@ -36,7 +36,7 @@ public class GetTrainingVacanciesQueryHandler(
         var userRoles = userHttpContextAccessor.GetUserRoles();
         if (userRoles.Any(role => role == "Applicant"))
             request.CheckDate = true;
-        
+
         if (request.CheckDate)
         {
             DateTime now = DateTime.Now;

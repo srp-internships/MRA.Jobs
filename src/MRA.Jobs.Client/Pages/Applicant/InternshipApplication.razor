@@ -2,91 +2,92 @@
 @using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 @layout MainLayout
 @inject IInternshipService InternshipService
+@using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Extra
 @using MRA.Jobs.Client.Components.Vacancies
 
 @if (_serverError)
 {
-    <ServerErrorComponent/>
+	<ServerErrorComponent />
 }
 else
 {
-    <CascadingAuthenticationState>
-        <AuthorizeView>
-            <Authorized>
-                <VacancyApplication VacancyType="internships" Slug="@Slug" Application="@_application" TaskResponses="@TasksResponses" QuestionResponses="@QuestionResponses" Vacancy="@_internship"/>
-            </Authorized>
-            <NotAuthorized>
-                <NotFound></NotFound>
-            </NotAuthorized>
-        </AuthorizeView>
-    </CascadingAuthenticationState>
+	<CascadingAuthenticationState>
+		<AuthorizeView>
+			<Authorized>
+				<VacancyApplication VacancyType="internships" Slug="@Slug" Application="@_application" TaskResponses="@TasksResponses" QuestionResponses="@QuestionResponses" Vacancy="@_internship" />
+			</Authorized>
+			<NotAuthorized>
+				<NotFound></NotFound>
+			</NotAuthorized>
+		</AuthorizeView>
+	</CascadingAuthenticationState>
 }
 
 
 @code {
-    private bool _serverError;
-    private VacancyApplicationResponse _internship;
-    private CreateApplicationCommand _application;
-    public readonly Dictionary<string, string> QuestionResponses = new();
-    public readonly Dictionary<Guid, string> TasksResponses = new();
+	private bool _serverError;
+	private VacancyApplicationResponse _internship;
+	private CreateApplicationCommand _application;
+	public readonly Dictionary<string, string> QuestionResponses = new();
+	public readonly Dictionary<Guid, string> TasksResponses = new();
 	private GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery = new();
 
-    [Parameter] public string Slug { get; set; }
+	[Parameter] public string Slug { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        await base.OnInitializedAsync();
-        try
-        {
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		await base.OnInitializedAsync();
+		try
+		{
 			var response = await InternshipService.GetBySlug(Slug, getInternshipVacancyBySlugQuery);
 
-            if (response != null)
-            {
-                _internship = new VacancyApplicationResponse
-                {
-                    Id = response.Id,
-                    Title = response.Title,
-                    Description = response.Description,
-                    PublishDate = response.PublishDate,
-                    EndDate = response.EndDate,
-                    Duration = response.Duration,
-                    Stipend = response.Stipend,
-                    VacancyQuestions = response.VacancyQuestions,
-                    VacancyTasks = response.VacancyTasks
-                };
-                _application = new CreateApplicationCommand
-                {
-                    VacancySlug = Slug,
-                    VacancyResponses = _internship.VacancyQuestions.Select(q => new VacancyResponseDto
-                    {
-                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question, IsOptional = q.IsOptional }
-                    }),
-                    TaskResponses = _internship.VacancyTasks.Select(t => new TaskResponseDto
-                    {
-                        TaskId = t.Id,
-                        Code = t.Template
-                    })
-                };
+			if (response != null)
+			{
+				_internship = new VacancyApplicationResponse
+					{
+						Id = response.Id,
+						Title = response.Title,
+						Description = response.Description,
+						PublishDate = response.PublishDate,
+						EndDate = response.EndDate,
+						Duration = response.Duration,
+						Stipend = response.Stipend,
+						VacancyQuestions = response.VacancyQuestions,
+						VacancyTasks = response.VacancyTasks
+					};
+				_application = new CreateApplicationCommand
+					{
+						VacancySlug = Slug,
+						VacancyResponses = _internship.VacancyQuestions.Select(q => new VacancyResponseDto
+						{
+							VacancyQuestion = new VacancyQuestionDto { Question = q.Question, IsOptional = q.IsOptional }
+						}),
+						TaskResponses = _internship.VacancyTasks.Select(t => new TaskResponseDto
+						{
+							TaskId = t.Id,
+							Code = t.Template
+						})
+					};
 
-                foreach (var question in _internship.VacancyQuestions)
-                {
-                    QuestionResponses[question.Question] = "";
-                }
+				foreach (var question in _internship.VacancyQuestions)
+				{
+					QuestionResponses[question.Question] = "";
+				}
 
-                foreach (var task in _internship.VacancyTasks)
-                {
-                    TasksResponses[task.Id] = task.Template;
-                }
-            }
-        }
-        catch (Exception)
-        {
-            _serverError = true;
-            StateHasChanged();
-        }
-    }
+				foreach (var task in _internship.VacancyTasks)
+				{
+					TasksResponses[task.Id] = task.Template;
+				}
+			}
+		}
+		catch (Exception)
+		{
+			_serverError = true;
+			StateHasChanged();
+		}
+	}
 
 }

@@ -1,5 +1,6 @@
 ﻿@page "/jobs/apply/{Slug}"
 @using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
+@using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Extra
 @using MRA.Jobs.Client.Components.Vacancies
@@ -8,80 +9,80 @@
 
 @if (_serverError)
 {
-    <ServerErrorComponent/>
+	<ServerErrorComponent />
 }
 else
 {
-    <CascadingAuthenticationState>
-        <AuthorizeView>
-            <Authorized>
-                <VacancyApplication VacancyType="jobs" Slug="@Slug" Application="@_application" QuestionResponses="@QuestionResponses" TaskResponses="@TasksResponses" Vacancy="@_job"/>
-            </Authorized>
-            <NotAuthorized>
-                <NotFound></NotFound>
-            </NotAuthorized>
-        </AuthorizeView>
-    </CascadingAuthenticationState>
+	<CascadingAuthenticationState>
+		<AuthorizeView>
+			<Authorized>
+				<VacancyApplication VacancyType="jobs" Slug="@Slug" Application="@_application" QuestionResponses="@QuestionResponses" TaskResponses="@TasksResponses" Vacancy="@_job" />
+			</Authorized>
+			<NotAuthorized>
+				<NotFound></NotFound>
+			</NotAuthorized>
+		</AuthorizeView>
+	</CascadingAuthenticationState>
 }
 
 @code {
-    private bool _serverError;
-    private VacancyApplicationResponse _job;
-    private CreateApplicationCommand _application;
-    public Dictionary<string, string> QuestionResponses = new();
-    public Dictionary<Guid, string> TasksResponses = new();
+	private bool _serverError;
+	private VacancyApplicationResponse _job;
+	private CreateApplicationCommand _application;
+	public Dictionary<string, string> QuestionResponses = new();
+	public Dictionary<Guid, string> TasksResponses = new();
 	private GetJobVacancyBySlugQuery getJobVacancyBySlug = new();
-    [Parameter] public string Slug { get; set; }
+	[Parameter] public string Slug { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        try
-        {
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		try
+		{
 			var response = await VacancyService.GetBySlug(Slug, getJobVacancyBySlug);
 
-            if (response != null)
-            {
-                _job = new VacancyApplicationResponse
-                {
-                    Id = response.Id,
-                    Title = response.Title,
-                    EndDate = response.EndDate,
-                    PublishDate = response.PublishDate,
-                    RequiredYearOfExperience = response.RequiredYearOfExperience,
-                    Description = response.Description,
-                    VacancyQuestions = response.VacancyQuestions,
-                    VacancyTasks = response.VacancyTasks
-                };
-                _application = new CreateApplicationCommand
-                {
-                    VacancySlug = Slug,
-                    VacancyResponses = _job.VacancyQuestions.Select(q => new VacancyResponseDto
-                    {
-                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question, IsOptional = q.IsOptional }
-                    }),
-                    TaskResponses = _job.VacancyTasks.Select(t => new TaskResponseDto
-                    {
-                        TaskId = t.Id,
-                        Code = t.Template
-                    })
-                };
-                foreach (var question in _job.VacancyQuestions)
-                {
-                    QuestionResponses[question.Question] = "";
-                }
+			if (response != null)
+			{
+				_job = new VacancyApplicationResponse
+					{
+						Id = response.Id,
+						Title = response.Title,
+						EndDate = response.EndDate,
+						PublishDate = response.PublishDate,
+						RequiredYearOfExperience = response.RequiredYearOfExperience,
+						Description = response.Description,
+						VacancyQuestions = response.VacancyQuestions,
+						VacancyTasks = response.VacancyTasks
+					};
+				_application = new CreateApplicationCommand
+					{
+						VacancySlug = Slug,
+						VacancyResponses = _job.VacancyQuestions.Select(q => new VacancyResponseDto
+						{
+							VacancyQuestion = new VacancyQuestionDto { Question = q.Question, IsOptional = q.IsOptional }
+						}),
+						TaskResponses = _job.VacancyTasks.Select(t => new TaskResponseDto
+						{
+							TaskId = t.Id,
+							Code = t.Template
+						})
+					};
+				foreach (var question in _job.VacancyQuestions)
+				{
+					QuestionResponses[question.Question] = "";
+				}
 
-                foreach (var task in _job.VacancyTasks)
-                {
-                    TasksResponses[task.Id] = task.Template;
-                }
-            }
-        }
-        catch (Exception)
-        {
-            _serverError = true;
-            StateHasChanged();
-        }
-    }
+				foreach (var task in _job.VacancyTasks)
+				{
+					TasksResponses[task.Id] = task.Template;
+				}
+			}
+		}
+		catch (Exception)
+		{
+			_serverError = true;
+			StateHasChanged();
+		}
+	}
 
 }

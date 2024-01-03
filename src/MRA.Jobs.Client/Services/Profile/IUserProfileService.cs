@@ -14,7 +14,7 @@ namespace MRA.Jobs.Client.Services.Profile;
 
 public interface IUserProfileService
 {
-    Task<UserProfileResponse> Get(string userName=null);
+    Task<UserProfileResponse> Get(string userName = null);
     Task<string> Update(UpdateProfileCommand command);
 
     Task<List<UserEducationResponse>> GetEducationsByUser();
@@ -33,7 +33,7 @@ public interface IUserProfileService
 
     Task<HttpResponseMessage> UpdateExperienceAsync(UpdateExperienceDetailCommand command);
 
-    Task<UserSkillsResponse> GetUserSkills(string userName=null);
+    Task<UserSkillsResponse> GetUserSkills(string userName = null);
     Task<UserSkillsResponse> GetAllSkills();
     Task<HttpResponseMessage> RemoveSkillAsync(string skill);
 
