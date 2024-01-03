@@ -50,8 +50,6 @@ builder.Services.AddScoped(_ =>
     new IdentityHttpClient { BaseAddress = new Uri(builder.Configuration["IdentityHttpClient:BaseAddress"]!) });
 builder.Services.AddScoped(_ =>
     new HttpClient { BaseAddress = new Uri(builder.Configuration["HttpClient:BaseAddress"]!) });
-
-builder.Services.AddScoped<IHttpClientService, HttpClientService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddOptions();
@@ -78,6 +76,8 @@ builder.Services.AddAuthorizationCore(s =>
         .RequireClaim(ClaimTypes.Id).RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Username));
 });
 
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<IHttpClientService, HttpClientService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
