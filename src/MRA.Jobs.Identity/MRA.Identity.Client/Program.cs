@@ -1,3 +1,4 @@
+using System.Net;
 using AltairCA.Blazor.WebAssembly.Cookie.Framework;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -30,6 +31,7 @@ builder.Services.AddAuthorizationCore();
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogWarning("Protocol {0}", ServicePointManager.SecurityProtocol);
 
 await builder.Build().RunAsync();
