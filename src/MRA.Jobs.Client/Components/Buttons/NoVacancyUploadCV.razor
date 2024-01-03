@@ -9,64 +9,95 @@
 @inject ISnackbar Snackbar
 
 <div style="position: fixed; bottom: 76px; right: 16px; z-index: 999;">
-    <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
-        <MudText>@ContentService["SendCV:Title"]</MudText>
-    </MudButton>
+    @if (_loading)
+    {
+        <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" Disabled="true">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+            <MudText>@ContentService["SendCV:Title"]</MudText>
+        </MudButton>
+    }
+    else
+    {
+        <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
+            <MudText>@ContentService["SendCV:Title"]</MudText>
+        </MudButton>
+    }
+
 </div>
 <MudDialog IsVisible="_isOpen" Style="width: 400px;"
            Options="@(new DialogOptions() { DisableBackdropClick = true })">
     <DialogContent>
-        <MudText Typo="Typo.h6">@ContentService["SendCV:Title"]</MudText>
-        <EditForm Model="@_application">
-            <FluentValidationValidator/>
+        @if (_questionsResponses.Any())
+        {
+            <MudText Typo="Typo.h6">@ContentService["SendCV:Title"]</MudText>
+            <EditForm Model="@_application">
+                <FluentValidationValidator/>
 
-            @foreach (var question in _vacancy.VacancyQuestions)
-            {
-                <MudTextField Label=@(ContentService[$"SendCV:{question.Question}"] + " *") @bind-Value="@_questionsResponses[question]" Variant="Variant.Outlined"/>
-            }
-            <MudTextField T="string" Lines="3" Label="@(ContentService["SendCV:CoverLetter"] + " *")" Variant="@Variant.Outlined" @bind-Value="@_application.CoverLetter"
-                          For="@(() => _application.CoverLetter)"/>
+                @foreach (var question in _vacancy.VacancyQuestions)
+                {
+                    <MudTextField Label=@(ContentService[$"SendCV:{question.Question}"] + " *") @bind-Value="@_questionsResponses[question]" Variant="Variant.Outlined"/>
+                }
+                <MudTextField T="string" Lines="3" Label="@(ContentService["SendCV:CoverLetter"] + " *")" Variant="@Variant.Outlined" @bind-Value="@_application.CoverLetter"
+                              For="@(() => _application.CoverLetter)"/>
 
-            <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
-                <ButtonTemplate Context="anotherContext">
-                    <MudButton HtmlTag="label"
-                               Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               StartIcon="@Icons.Material.Filled.CloudUpload"
-                               for="@anotherContext">
-                    @ContentService["VacancyApplication:Upload your CV"]
-                    </MudButton>
-                </ButtonTemplate>
-            </MudFileUpload>
+                <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
+                    <ButtonTemplate Context="anotherContext">
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.CloudUpload"
+                                   for="@anotherContext">
+                            @ContentService["VacancyApplication:Upload your CV"]
+                        </MudButton>
+                    </ButtonTemplate>
+                </MudFileUpload>
 
 
-        </EditForm>
+            </EditForm>
+        }
+        else
+        {
+            <MudText>@ContentService["ServerIsNotResponding"]</MudText>
+        }
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Primary" Class="ml-auto" OnClick="@CreateApplication">
-            @if (_processing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                <MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
-            }
-            else
-            {
-                <MudText>@ContentService["VacancyApplication:Apply"]</MudText>
-            }
-        </MudButton>
-        <MudButton OnClick="@CloseDialog">
-            <MudText>@ContentService["SendCV:Close"]</MudText>
-        </MudButton>
+        @if (_questionsResponses.Any())
+        {
+            <MudButton Color="Color.Primary" Class="ml-auto" OnClick="@CreateApplication">
+                @if (_processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                    <MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
+                }
+                else
+                {
+                    <MudText>@ContentService["VacancyApplication:Apply"]</MudText>
+                }
+            </MudButton>
+            <MudButton OnClick="@CloseDialog">
+                <MudText>@ContentService["SendCV:Close"]</MudText>
+            </MudButton>
+        }
+        else
+        {
+            <MudButton OnClick="@CloseDialog" Color="Color.Primary">
+                <MudText>@ContentService["SendCV:Close"]</MudText>
+            </MudButton>
+        }
     </DialogActions>
 </MudDialog>
 
 @code {
 
+    private bool _loading;
     private bool _isOpen;
 
-    private void OpenDialog()
+    private async Task OpenDialog()
     {
+        _loading = true;
+        await Load();
         _isOpen = true;
+        _loading = false;
         StateHasChanged();
     }
 
@@ -90,6 +121,12 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await Load();
+    }
+
+    private async Task Load()
+    {
+      
         _vacancy = await NoVacancyService.GetNoVacancyAsync();
         if (_vacancy.Slug == null)
         {
@@ -104,6 +141,9 @@
         _cv = null;
         _application = new CreateApplicationCommand();
 
+        if (_vacancy?.VacancyQuestions == null)
+            return;
+        
         foreach (var question in _vacancy.VacancyQuestions)
         {
             _questionsResponses.Add(question, "");
