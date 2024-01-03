@@ -1,109 +1,212 @@
 ﻿@page "/dashboard/applications"
 @using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination
 @using MRA.Jobs.Client.Identity;
-@inject IApplicationService applicationService
+@inject IApplicationService ApplicationService
 @using MRA.Jobs.Client.Components.Extra
 
 
 <CascadingAuthenticationState>
-	<AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="contextAuth">
-		<Authorized>
-			<MudText Typo="Typo.h4">
-				<b>Applications</b>
-			</MudText>
+    <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
+        <Authorized>
+            @if (_serverError)
+            {
+                <ServerErrorComponent/>
+            }
+            else
+            {
+                @if (_applications == null)
+                {
+                    <div style="text-align: center;">
+                        <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
+                    </div>
+                }
+                else
+                {
+                    <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                        <MudCard Class="rounded-lg mud-elevation-4">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText>
+                                        <b>Filter</b>
+                                    </MudText>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardContent>
 
-			@if (serverError)
-			{
-				<ServerErrorComponent />
-			}
-			else
-			{
-				@if (applications == null)
-				{
-					<div style="text-align: center;">
-						<MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
-					</div>
-				}
-				else
-				{
-					<MudTable Items="@applications.Items" Class="text-center rounded-lg mud-elevation-4">
-						<HeaderContent>
-							<MudTh>Applicant username</MudTh>
-							<MudTh>Vacancy title</MudTh>
-							<MudTh>Applied at</MudTh>
-							<MudTh>Status name</MudTh>
-							<MudTh>Action</MudTh>
-						</HeaderContent>
-						<RowTemplate>
-							<MudTd DataLabel="Username">@context.Username</MudTd>
-								<MudTd DataLabel="Title">@context.VacancyTitle</MudTd>
-								<MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
-								<MudTd DataLabel="StatusName">@context.StatusName</MudTd>
-								<MudTd DataLabel="Name">
-									<MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton>
-								</MudTd>
-							</RowTemplate>
-							<PagerContent>
-								<MudTablePager />
-							</PagerContent>
-						</MudTable>
-				}
-			}
-		</Authorized>
-		<NotAuthorized>
-			<NotFound />
-		</NotAuthorized>
-	</AuthorizeView>
+                            </MudCardContent>
+                        </MudCard>
+                        <br/>
+                    </MudHidden>
+
+                   <MudTable ServerData="@(new Func<TableState, Task<TableData<ApplicationListDto>>>(ServerReload))"
+                              Hover="true" @ref="_table">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h5">
+                                <b>Applications</b>
+                            </MudText>
+                            <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                                <MudSpacer/>
+                                <MudItem>
+                                    <MudGrid>
+                                        <MudItem>
+                                            <MudTextField T="string" ValueChanged="@(OnSearchUsername)"
+                                                          Placeholder="Username" Adornment="Adornment.Start"
+                                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" 
+                                                          Class="mt-0" Immediate="true"/>
+                                        </MudItem>
+                                        <MudItem>
+                                            <MudTextField T="string" ValueChanged="@(OnSearchVacancyTitle)"
+                                                          Placeholder="Vacancy title" Adornment="Adornment.Start"
+                                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" 
+                                                          Class="mt-0" Immediate="true"/>
+                                        </MudItem>
+                                        <MudItem>
+                                            <MudTextField T="string" ValueChanged="@(OnSearchStatusName)" 
+                                                          Placeholder="Status name" Adornment="Adornment.Start"
+                                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" 
+                                                          Class="mt-0" Immediate="true"/>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudItem>
+                            </MudHidden>
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Applicant username</MudTh>
+                            <MudTh>Vacancy title</MudTh>
+                            <MudTh>Applied at</MudTh>
+                            <MudTh>Status name</MudTh>
+                            <MudTh>Action</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Username">@context.Username</MudTd>
+                            <MudTd DataLabel="Title">@context.VacancyTitle</MudTd>
+                            <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
+                            <MudTd DataLabel="StatusName">@context.StatusName</MudTd>
+                            <MudTd DataLabel="Name">
+                                <MudButton Variant="Variant.Filled" OnClick="@((_) => OpenDialog(_maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton>
+                            </MudTd>
+                        </RowTemplate>
+                        <NoRecordsContent>
+                            <MudText>No matching records found</MudText>
+                        </NoRecordsContent>
+                        <LoadingContent>
+                            <MudText>Loading...</MudText>
+                        </LoadingContent>
+                        <PagerContent>
+                            <MudTablePager/>
+                        </PagerContent>
+                    </MudTable>
+                }
+            }
+        </Authorized>
+        <NotAuthorized>
+            <NotFound/>
+        </NotAuthorized>
+    </AuthorizeView>
 </CascadingAuthenticationState>
 
 @code {
-	private bool serverError;
-	private PagedList<ApplicationListDto> applications;
-	private GetApplicationsQuery getApplicationsQuery = new();
-	protected override async Task OnInitializedAsync()
-	{
-		await LoadData();
-	}
+
+    private IEnumerable<ApplicationListDto> _pagedData;
+    private MudTable<ApplicationListDto> _table;
+
+    private int _totalItems;
+    
+    private string _searchUsername;
+    private string _searchVacancyTitle;
+    private string _searchStatusName;
+
+    private void OnSearchUsername(string text)
+    {
+        _searchUsername = text;
+        _table.ReloadServerData();
+    }
+
+    private void OnSearchVacancyTitle(string text)
+    {
+        _searchVacancyTitle = text;
+        _table.ReloadServerData();
+    }
+
+    private void OnSearchStatusName(string text)
+    {
+        _searchStatusName = text;
+        _table.ReloadServerData();
+    }
+
+    private async Task<TableData<ApplicationListDto>> ServerReload(TableState state)
+    {
+        IEnumerable<ApplicationListDto> data = _applications.Items;
+        await Task.Delay(300);
+        data = data.Where(element =>
+        {
+            if (!string.IsNullOrWhiteSpace(_searchUsername) && !element.Username.Contains(_searchUsername, StringComparison.OrdinalIgnoreCase))
+                return false;
+            if (!string.IsNullOrWhiteSpace(_searchVacancyTitle) && !element.VacancyTitle.Contains(_searchVacancyTitle, StringComparison.OrdinalIgnoreCase))
+                return false;
+            if (!string.IsNullOrWhiteSpace(_searchStatusName) && !element.StatusName.Contains(_searchStatusName, StringComparison.OrdinalIgnoreCase))
+                return false;
+            return true;
+        }).ToArray();
+        _totalItems = data.Count();
+
+        _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+        return new TableData<ApplicationListDto>() { TotalItems = _totalItems, Items = _pagedData };
+    }
+  
+    private bool _serverError;
+
+    private PagedList<ApplicationListDto> _applications;
 
 
-	private async Task LoadData()
-	{
-		try
-		{
-			var response = await applicationService.GetAllApplications(getApplicationsQuery);
-			if (response is not null)
-			{
-				applications = response;
-			}
-		}
-		catch (Exception)
-		{
-			serverError = true;
-			StateHasChanged();
-		}
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+    
+    private async Task LoadData()
+    {
+        try
+        {
+            var response = await ApplicationService.GetAllApplications();
+            if (response is not null)
+            {
+                _applications = response;
+            }
+        }
+        catch (Exception)
+        {
+            _serverError = true;
+            StateHasChanged();
+        }
+    }
 
-	DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+    readonly DialogOptions _maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
-	private async Task OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
-	{
-		var dialog = Dialog.Show<MyDialog>("Applicant response", new DialogParameters
-		{
-			{ "CoverLetter", coverLetter },
-			{ "VacancyResponses", vacancyResponses },
-			{ "Slug", slug },
-			{ "StatusName", statusName },
-			{ "isApplicant", false }
-		}, options);
-		var result = await dialog.Result;
+    public Applications()
+    {
+        _searchStatusName = null;
+    }
 
-		// you can check if the modal was cancelled
-		var isCancelled = result.Canceled;
-		if (isCancelled)
-		{
-			await LoadData();
-			StateHasChanged();
-		}
-	}
+    private async Task OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
+    {
+        var dialog = await Dialog.ShowAsync<MyDialog>("Applicant response", new DialogParameters
+        {
+            { "CoverLetter", coverLetter },
+            { "VacancyResponses", vacancyResponses },
+            { "Slug", slug },
+            { "StatusName", statusName },
+            { "isApplicant", false }
+        }, options);
+        var result = await dialog.Result;
+
+    // you can check if the modal was cancelled
+        var isCancelled = result.Canceled;
+        if (isCancelled)
+        {
+            await LoadData();
+            StateHasChanged();
+        }
+    }
 
 }
