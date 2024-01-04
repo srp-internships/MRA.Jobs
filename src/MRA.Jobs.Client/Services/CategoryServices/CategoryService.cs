@@ -76,9 +76,10 @@ public class CategoryService : ICategoryService
 
     }
 
-    public async Task<ApiResponse<List<TrainingCategoriesResponce>>> GetTrainingCategoriesSinceCheckDate(GetTrainingCategoriesQuery getTrainingCategoriesQuery)
+    public async Task<List<TrainingCategoriesResponce>> GetTrainingCategoriesSinceCheckDate(GetTrainingCategoriesQuery getTrainingCategoriesQuery)
     {
-        return await _httpClient.GetAsJsonAsync<List<TrainingCategoriesResponce>>($"{_configuration["HttpClient:BaseAddress"]}categories/training?CheckDate=true", getTrainingCategoriesQuery);
+        var respons = await _httpClient.GetAsJsonAsync<List<TrainingCategoriesResponce>>($"{_configuration["HttpClient:BaseAddress"]}categories/training?CheckDate=true", getTrainingCategoriesQuery);
+        return respons.Success ? respons.Result : null;
 
     }
 
@@ -91,7 +92,7 @@ public class CategoryService : ICategoryService
     public async Task<List<InternshipCategoriesResponce>> GetInternshipCategoriesSinceCheckDate(GetInternshipCategoriesQuery getInternshipCategoriesQuery)
     {
         var respons = await _httpClient.GetAsJsonAsync<List<InternshipCategoriesResponce>>($"{_configuration["HttpClient:BaseAddress"]}categories/internships?CheckDate=true", getInternshipCategoriesQuery);
-        return respons.Result;
+        return respons.Success ? respons.Result : null;
     }
 
     public async Task<ApiResponse<List<JobCategoriesResponse>>> GetJobCategories(GetJobCategoriesQuery getJobCategoriesQuery)
@@ -100,8 +101,9 @@ public class CategoryService : ICategoryService
 
     }
 
-    public async Task<ApiResponse<List<JobCategoriesResponse>>> GetJobCategoriesSinceCheckDate(GetJobCategoriesQuery getJobCategoriesQuery)
+    public async Task<List<JobCategoriesResponse>> GetJobCategoriesSinceCheckDate(GetJobCategoriesQuery getJobCategoriesQuery)
     {
-        return await _httpClient.GetAsJsonAsync<List<JobCategoriesResponse>>($"{_configuration["HttpClient:BaseAddress"]}categories/job?CheckDate=true", getJobCategoriesQuery);
+        var respons= await _httpClient.GetAsJsonAsync<List<JobCategoriesResponse>>($"{_configuration["HttpClient:BaseAddress"]}categories/job?CheckDate=true", getJobCategoriesQuery);
+        return respons.Success ? respons.Result : null;
     }
 }

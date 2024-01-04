@@ -24,10 +24,10 @@ public interface ICategoryService
     Task OnSaveCreateClick();
     void OnUpdateClick(CategoryResponse updateEntity);
     Task<ApiResponse<List<TrainingCategoriesResponce>>> GetTrainingCategories(GetTrainingCategoriesQuery getTrainingCategoriesQuery);
-    Task<ApiResponse<List<TrainingCategoriesResponce>>> GetTrainingCategoriesSinceCheckDate(GetTrainingCategoriesQuery getTrainingCategoriesQuery);
+    Task<List<TrainingCategoriesResponce>> GetTrainingCategoriesSinceCheckDate(GetTrainingCategoriesQuery getTrainingCategoriesQuery);
     Task<ApiResponse<List<InternshipCategoriesResponce>>> GetInternshipCategories(GetInternshipCategoriesQuery getInternshipCategoriesQuery);
     Task<List<InternshipCategoriesResponce>> GetInternshipCategoriesSinceCheckDate(GetInternshipCategoriesQuery getInternshipCategoriesQuery);
 
     Task<ApiResponse<List<JobCategoriesResponse>>> GetJobCategories(GetJobCategoriesQuery getJobCategoriesQuery);
-    Task<ApiResponse<List<JobCategoriesResponse>>> GetJobCategoriesSinceCheckDate(GetJobCategoriesQuery getJobCategoriesQuery);
+    Task<List<JobCategoriesResponse>> GetJobCategoriesSinceCheckDate(GetJobCategoriesQuery getJobCategoriesQuery);
 }

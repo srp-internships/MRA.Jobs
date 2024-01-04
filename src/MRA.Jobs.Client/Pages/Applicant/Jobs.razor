@@ -32,7 +32,7 @@ else
 			var allJobs = await vacancyService.GetJobs(getJobsQuery);
 			if (result is not null && allJobs is not null)
 			{
-				jobCategories = result.Result.Select(r => r.Category.Name).ToList();
+				jobCategories = result.Select(r => r.Category.Name).ToList();
 				jobs = allJobs.Select(r => new VacancyClientResponse
 					{
 						Category = r.Category,

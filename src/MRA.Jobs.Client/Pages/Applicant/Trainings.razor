@@ -30,7 +30,7 @@ else
 			var allTrainings = await vacancyService.GetTrainings(getTrainingsQuery);
 			if (result is not null && allTrainings is not null)
 			{
-				TrainingCategories = result.Result.Select(r => r.Category.Name).ToList();
+				TrainingCategories = result.Select(r => r.Category.Name).ToList();
 				trainings = allTrainings.Select(r => new VacancyClientResponse
 					{
 						Category = r.Category,
