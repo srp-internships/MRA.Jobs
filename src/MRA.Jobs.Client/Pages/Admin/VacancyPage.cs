@@ -184,7 +184,7 @@ public partial class VacancyPage
         }
         catch (Exception)
         {
-            Snackbar.Add("Server is not responding, try latter", Severity.Error);
+            Snackbar.Add("Server is not responding, please try later", Severity.Error);
         }
     }
 
