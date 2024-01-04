@@ -16,28 +16,12 @@ public class ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> lo
             { Exception: ForbiddenAccessException } => HandleForbiddenAccessException(context),
             { Exception: TaskCanceledException } => HandleTaskCanceledException(context),
             { Exception: ConflictException } => HandleConflictException(context),
-            { Exception: Exception } => HandleGenericException(context),
             { ModelState: { IsValid: false } } => HandleInvalidModelStateException(context),
             _ => HandleUnknownException(context)
         };
 
         base.OnException(context);
     }
-    public bool HandleGenericException(ExceptionContext context)
-    {
-        ProblemDetails details = new ProblemDetails
-        {
-            Status = StatusCodes.Status400BadRequest,
-            Title = "BadRequest",
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-            Detail = context.Exception.Message
-        };
-        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status400BadRequest };
-        logger.LogError(context.Exception, nameof(HandleGenericException));
-
-        return true;
-    }
-
 
     private bool HandleConflictException(ExceptionContext context)
     {
@@ -49,7 +33,7 @@ public class ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> lo
             Detail = exception.Message
         };
 
-        context.Result = new ObjectResult(details){StatusCode = StatusCodes.Status409Conflict};
+        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status409Conflict };
 
         return true;
     }
@@ -117,13 +101,10 @@ public class ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> lo
 
     private bool HandleNotFoundException(ExceptionContext context)
     {
-        NotFoundException exception = (NotFoundException)context.Exception;
-
         ProblemDetails details = new ProblemDetails
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
             Title = "The specified resource was not found.",
-            Detail = exception.Message
         };
 
         context.Result = new NotFoundObjectResult(details);

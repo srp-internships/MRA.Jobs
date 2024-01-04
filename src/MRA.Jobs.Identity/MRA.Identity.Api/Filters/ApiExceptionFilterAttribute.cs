@@ -4,6 +4,7 @@ using MRA.Identity.Application.Common.Exceptions;
 
 namespace MRA.Identity.Api.Filters;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> logger) : ExceptionFilterAttribute
 {
     public override void OnException(ExceptionContext context)
@@ -15,29 +16,13 @@ public class ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> lo
             { Exception: UnauthorizedAccessException } => HandleUnauthorizedAccessException(context),
             { Exception: ForbiddenAccessException } => HandleForbiddenAccessException(context),
             { Exception: TaskCanceledException } => HandleTaskCanceledException(context),
-            { Exception: Exception } => HandleGenericException(context),
-            { ModelState: { IsValid: false } } => HandleInvalidModelStateException(context),
+            { ModelState.IsValid: false } => HandleInvalidModelStateException(context),
             _ => HandleUnknownException(context)
         };
         base.OnException(context);
     }
 
-    public bool HandleGenericException(ExceptionContext context)
-    {
-        ProblemDetails details = new ProblemDetails
-        {
-            Status = StatusCodes.Status400BadRequest,
-            Title = "BadRequest",
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-            Detail = context.Exception.Message
-        };
-        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status400BadRequest };
-        logger.LogError(context.Exception, nameof(HandleGenericException));
-        return true;
-    }
-
-
-    public bool HandleTaskCanceledException(ExceptionContext context)
+    private bool HandleTaskCanceledException(ExceptionContext context)
     {
         ProblemDetails details = new ProblemDetails
         {
@@ -51,19 +36,13 @@ public class ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> lo
         return true;
     }
 
-    public bool HandleUnknownException(ExceptionContext context)
+    private bool HandleUnknownException(ExceptionContext context)
     {
         ProblemDetails details = new ProblemDetails
         {
             Status = StatusCodes.Status500InternalServerError,
             Title = "An error occurred while processing your request.",
             Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
-            Detail = context.Exception.Message,
-            Extensions =
-            {
-                { "traceId", context.HttpContext.TraceIdentifier },
-                { "stackTrace", context.Exception.StackTrace }
-            }
         };
 
         context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status500InternalServerError };
