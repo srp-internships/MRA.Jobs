@@ -175,6 +175,12 @@
 
     private async Task SendCode()
     {
+        if (!(await _fluentValidationValidator!.ValidateAsync()) || _isAvailable == 0)
+        {
+            _processing = false;
+            return;
+        }
+
         _processing = true;
         StateHasChanged();
         await CheckUserName();
@@ -189,23 +195,18 @@
             Snackbar.Add("User Name is not available", Severity.Error);
             check = false;
         }
-        if (_userDetailsResponse.IsUserNameTaken)
+        if (_userDetailsResponse.IsPhoneNumberTaken)
         {
             Snackbar.Add("Phone Number is not available", Severity.Error);
             check = false;
         }
+
         if (!check)
         {
             _processing = false;
             return;
         }
 
-
-        if (!(await _fluentValidationValidator!.ValidateAsync()) || _isAvailable == 0)
-        {
-            _processing = false;
-            return;
-        }
         try
         {
             var response = await UserProfileService.SendConfirmationCode(_registerUser.PhoneNumber);
@@ -276,9 +277,9 @@
             }
             else
             {
-                _processing = false;
                 _registerUser.VerificationCode = _code;
                 var error = await AuthService.RegisterUserAsync(_registerUser);
+                _processing = false;
                 Snackbar.Add(error, Severity.Error);
             }
         }

@@ -10,16 +10,29 @@
 @inject ISnackbar Snackbar
 
 <div style="position: fixed; bottom: 76px; right: 16px; z-index: 999;">
-    <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
-        <MudText>@ContentService["SendCV:Title"]</MudText>
-    </MudButton>
+    @if (_loading)
+    {
+        <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" Disabled="true">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+            <MudText>@ContentService["SendCV:Title"]</MudText>
+        </MudButton>
+    }
+    else
+    {
+        <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
+            <MudText>@ContentService["SendCV:Title"]</MudText>
+        </MudButton>
+    }
+
 </div>
 <MudDialog IsVisible="_isOpen" Style="width: 400px;"
            Options="@(new DialogOptions() { DisableBackdropClick = true })">
     <DialogContent>
-        <MudText Typo="Typo.h6">@ContentService["SendCV:Title"]</MudText>
-        <EditForm Model="@_application">
-            <FluentValidationValidator/>
+        @if (_questionsResponses.Any() && _vacancy.VacancyQuestions!=null)
+        {
+            <MudText Typo="Typo.h6">@ContentService["SendCV:Title"]</MudText>
+            <EditForm Model="@_application">
+                <FluentValidationValidator/>
 
             @foreach (var question in _vacancy.VacancyQuestions)
             {
@@ -41,33 +54,51 @@
             </MudFileUpload>
 
 
-        </EditForm>
+            </EditForm>
+        }
+        else
+        {
+            <MudText>@ContentService["ServerIsNotResponding"]</MudText>
+        }
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Primary" Class="ml-auto" OnClick="@CreateApplication">
-            @if (_processing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                <MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
-            }
-            else
-            {
-                <MudText>@ContentService["VacancyApplication:Apply"]</MudText>
-            }
-        </MudButton>
-        <MudButton OnClick="@CloseDialog">
-            <MudText>@ContentService["SendCV:Close"]</MudText>
-        </MudButton>
+        @if (_questionsResponses.Any())
+        {
+            <MudButton Color="Color.Primary" Class="ml-auto" OnClick="@CreateApplication">
+                @if (_processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                    <MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
+                }
+                else
+                {
+                    <MudText>@ContentService["VacancyApplication:Apply"]</MudText>
+                }
+            </MudButton>
+            <MudButton OnClick="@CloseDialog">
+                <MudText>@ContentService["SendCV:Close"]</MudText>
+            </MudButton>
+        }
+        else
+        {
+            <MudButton OnClick="@CloseDialog" Color="Color.Primary">
+                <MudText>@ContentService["SendCV:Close"]</MudText>
+            </MudButton>
+        }
     </DialogActions>
 </MudDialog>
 
 	@code {
 
+    private bool _loading;
     private bool _isOpen;
 
     private void OpenDialog()
     {
+        _loading = true;
+        await Load();
         _isOpen = true;
+        _loading = false;
         StateHasChanged();
     }
 
@@ -93,35 +124,38 @@
     {
 		_vacancy = await NoVacancyService.GetNoVacancyAsync(getJobVacancyBySlugQuery);
         if (_vacancy.Slug == null)
-        {
             return;
-        }
 
 		Clear();
 	}
 
-	private void Clear()
-	{
-		_cv = null;
-		_application = new CreateApplicationCommand();
+    private void Clear()
+    {
+        _cv = null;
+        _application = new CreateApplicationCommand();
+        _questionsResponses.Clear();
 
+        if (_vacancy?.VacancyQuestions == null)
+            return;
+    
         foreach (var question in _vacancy.VacancyQuestions)
         {
             _questionsResponses.Add(question, "");
         }
     }
 
-	private async Task CreateApplication()
-	{
-		if (_isUploadCvMode && _cv == null)
-		{
-			Snackbar.Add(@ContentService["SendCV:IfFileNull"], Severity.Error);
-			return;
-		}
-		if (string.IsNullOrWhiteSpace(_application.CoverLetter) || (_cv == null && _isUploadCvMode))
-		{
-			return; // Do not proceed with submission if any required fields are empty.
-		}
+
+    private async Task CreateApplication()
+    {
+        if (_isUploadCvMode && _cv == null)
+        {
+            Snackbar.Add(@ContentService["SendCV:IfFileNull"], Severity.Error);
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(_application.CoverLetter) || (_cv == null && _isUploadCvMode))
+        {
+            return; // Do not proceed with submission if any required fields are empty.
+        }
 
 		var vacancyResponses = _questionsResponses.Select(val => new VacancyResponseDto()
 			{

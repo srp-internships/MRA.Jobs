@@ -24,21 +24,36 @@
                 {
                     <MudHidden Breakpoint="Breakpoint.LgAndUp">
                         <MudCard Class="rounded-lg mud-elevation-4">
-                            <MudCardHeader>
-                                <CardHeaderContent>
-                                    <MudText>
-                                        <b>Filter</b>
-                                    </MudText>
-                                </CardHeaderContent>
-                            </MudCardHeader>
                             <MudCardContent>
-
+                                <MudText>
+                                    <b>Filters</b>
+                                </MudText>
+                                <MudGrid>
+                                    <MudItem xs="12" sm="6" md="4">
+                                        <MudTextField T="string" ValueChanged="@(OnSearchUsername)"
+                                                      Placeholder="Username" Adornment="Adornment.Start"
+                                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
+                                                      Class="mt-0" Immediate="true"/>
+                                    </MudItem>
+                                    <MudItem xs="12" sm="6" md="4">
+                                        <MudTextField T="string" ValueChanged="@(OnSearchVacancyTitle)"
+                                                      Placeholder="Vacancy title" Adornment="Adornment.Start"
+                                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
+                                                      Class="mt-0" Immediate="true"/>
+                                    </MudItem>
+                                    <MudItem xs="12" sm="6" md="4">
+                                        <MudTextField T="string" ValueChanged="@(OnSearchStatusName)"
+                                                      Placeholder="Status name" Adornment="Adornment.Start"
+                                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
+                                                      Class="mt-0" Immediate="true"/>
+                                    </MudItem>
+                                </MudGrid>
                             </MudCardContent>
                         </MudCard>
                         <br/>
                     </MudHidden>
 
-                   <MudTable ServerData="@(new Func<TableState, Task<TableData<ApplicationListDto>>>(ServerReload))"
+                    <MudTable ServerData="@(new Func<TableState, Task<TableData<ApplicationListDto>>>(ServerReload))"
                               Hover="true" @ref="_table">
                         <ToolBarContent>
                             <MudText Typo="Typo.h5">
@@ -51,19 +66,19 @@
                                         <MudItem>
                                             <MudTextField T="string" ValueChanged="@(OnSearchUsername)"
                                                           Placeholder="Username" Adornment="Adornment.Start"
-                                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" 
+                                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                           Class="mt-0" Immediate="true"/>
                                         </MudItem>
                                         <MudItem>
                                             <MudTextField T="string" ValueChanged="@(OnSearchVacancyTitle)"
                                                           Placeholder="Vacancy title" Adornment="Adornment.Start"
-                                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" 
+                                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                           Class="mt-0" Immediate="true"/>
                                         </MudItem>
                                         <MudItem>
-                                            <MudTextField T="string" ValueChanged="@(OnSearchStatusName)" 
+                                            <MudTextField T="string" ValueChanged="@(OnSearchStatusName)"
                                                           Placeholder="Status name" Adornment="Adornment.Start"
-                                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" 
+                                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                           Class="mt-0" Immediate="true"/>
                                         </MudItem>
                                     </MudGrid>
@@ -111,7 +126,7 @@
     private MudTable<ApplicationListDto> _table;
 	private GetApplicationsQuery getApplicationsQuery = new();
     private int _totalItems;
-    
+
     private string _searchUsername;
     private string _searchVacancyTitle;
     private string _searchStatusName;
@@ -153,7 +168,7 @@
         _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
         return new TableData<ApplicationListDto>() { TotalItems = _totalItems, Items = _pagedData };
     }
-  
+
     private bool _serverError;
 
     private PagedList<ApplicationListDto> _applications;
@@ -163,7 +178,7 @@
     {
         await LoadData();
     }
-    
+
     private async Task LoadData()
     {
         try
@@ -200,7 +215,7 @@
         }, options);
         var result = await dialog.Result;
 
-    // you can check if the modal was cancelled
+        // you can check if the modal was cancelled
         var isCancelled = result.Canceled;
         if (isCancelled)
         {
