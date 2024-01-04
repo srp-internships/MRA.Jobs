@@ -93,10 +93,10 @@
     private bool _loading;
     private bool _isOpen;
 
-    private void OpenDialog()
+	private async void OpenDialog()
     {
         _loading = true;
-        await Load();
+		await Load();
         _isOpen = true;
         _loading = false;
         StateHasChanged();
@@ -120,14 +120,21 @@
 	private GetJobVacancyBySlugQuery getJobVacancyBySlugQuery = new();
 	private Dictionary<VacancyQuestionDto, string> _questionsResponses = new();
 
+
     protected override async Task OnInitializedAsync()
     {
+        await Load();
+    }
+
+    private async Task Load()
+    {
+      
 		_vacancy = await NoVacancyService.GetNoVacancyAsync(getJobVacancyBySlugQuery);
         if (_vacancy.Slug == null)
             return;
 
-		Clear();
-	}
+        Clear();
+    }
 
     private void Clear()
     {
