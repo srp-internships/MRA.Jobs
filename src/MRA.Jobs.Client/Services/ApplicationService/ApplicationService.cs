@@ -32,7 +32,7 @@ public class ApplicationService(
 
     public async Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status, GetApplicationsByStatusQuery getApplicationsByStatusQuery)
     {
-        var response = await httpClient.GetAsJsonAsync<List<ApplicationListStatus>>($"{ApplicationsEndPoint}/{status}", getApplicationsByStatusQuery);
+        var response = await httpClient.GetAsJsonAsync<List<ApplicationListStatus>>($"{configuration["HttpClient:BaseAddress"]}/{ApplicationsEndPoint}/{status}", getApplicationsByStatusQuery);
         return response.Success ? response.Result : null;
     }
 
@@ -49,7 +49,7 @@ public class ApplicationService(
             }
             //set cv
 
-            var response = await httpClient.PostAsJsonAsync<ApiResponse>(ApplicationsEndPoint, application);
+            var response = await httpClient.PostAsJsonAsync<ApiResponse>($"{configuration["HttpClient:BaseAddress"]}/{ApplicationsEndPoint}", application);
             switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:
@@ -88,21 +88,21 @@ public class ApplicationService(
     public async Task<PagedList<ApplicationListDto>> GetAllApplications(GetApplicationsQuery getApplicationsQuery)
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.GetAsJsonAsync<PagedList<ApplicationListDto>>(ApplicationsEndPoint, getApplicationsQuery);
+        var response = await httpClient.GetAsJsonAsync<PagedList<ApplicationListDto>>($"{configuration["HttpClient:BaseAddress"]}/{ApplicationsEndPoint}", getApplicationsQuery);
         return response.Success ? response.Result : null;
     }
 
     public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.PutAsJsonAsync<UpdateApplicationStatus>($"{ApplicationsEndPoint}/{updateApplicationStatus.Slug}/update-status", updateApplicationStatus);
+        var response = await httpClient.PutAsJsonAsync<UpdateApplicationStatus>($"{configuration["HttpClient:BaseAddress"]}/{ApplicationsEndPoint}/{updateApplicationStatus.Slug}/update-status", updateApplicationStatus);
         return response.Success;
     }
 
     public async Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug, GetBySlugApplicationQuery getBySlugApplicationQuery)
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.GetAsJsonAsync<ApplicationDetailsDto>($"{ApplicationsEndPoint}/{applicationSlug}", getBySlugApplicationQuery);
+        var response = await httpClient.GetAsJsonAsync<ApplicationDetailsDto>($"{configuration["HttpClient:BaseAddress"]}/{ApplicationsEndPoint}/{applicationSlug}", getBySlugApplicationQuery);
         if (response.HttpStatusCode == HttpStatusCode.OK)
         {
             return response.Result;
@@ -119,7 +119,7 @@ public class ApplicationService(
             return "";
         }
 
-        return $"{http.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
+        return $"{configuration["HttpClient:BaseAddress"]}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
     }
 
     private async Task<string> GetCurrentUserName()

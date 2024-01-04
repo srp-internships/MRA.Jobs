@@ -13,11 +13,13 @@ public class TrainingService : ITrainingService
 {
     private readonly IHttpClientService _httpClientService;
     private readonly AuthenticationStateProvider _authenticationStateProvider;
+    private readonly IConfiguration _configuration;
 
-    public TrainingService(IHttpClientService httpClientService, AuthenticationStateProvider authenticationStateProvider)
+    public TrainingService(IHttpClientService httpClientService, AuthenticationStateProvider authenticationStateProvider, IConfiguration configuration)
     {
         _httpClientService = httpClientService;
         _authenticationStateProvider = authenticationStateProvider;
+        _configuration = configuration;
         createCommand = new CreateTrainingVacancyCommand
         {
             Title = "",
@@ -38,13 +40,13 @@ public class TrainingService : ITrainingService
     public async Task<ApiResponse> Create()
     {
         await _authenticationStateProvider.GetAuthenticationStateAsync();
-        return await _httpClientService.PostAsJsonAsync<ApiResponse>("trainings", createCommand);
+        return await _httpClientService.PostAsJsonAsync<ApiResponse>($"{_configuration["HttpClient:BaseAddress"]}trainings", createCommand);
     }
 
     public async Task<ApiResponse> Delete(string slug)
     {
         await _authenticationStateProvider.GetAuthenticationStateAsync();
-        return await _httpClientService.DeleteAsync($"trainings/{slug}");
+        return await _httpClientService.DeleteAsync($"{_configuration["HttpClient:BaseAddress"]}trainings/{slug}");
     }
 
     public async Task<ApiResponse> Update(string slug)
@@ -65,20 +67,20 @@ public class TrainingService : ITrainingService
         };
 
         await _authenticationStateProvider.GetAuthenticationStateAsync();
-        return await _httpClientService.PutAsJsonAsync<ApiResponse>($"trainings/{slug}", UpdateCommand);
+        return await _httpClientService.PutAsJsonAsync<ApiResponse>($"{_configuration["HttpClient:BaseAddress"]}trainings/{slug}", UpdateCommand);
     }
 
     public async Task<ApiResponse<PagedList<TrainingVacancyListDto>>> GetAll(GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug)
     {
         await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var result = await _httpClientService.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>("trainings", getTrainingVacancyBySlug);
+        var result = await _httpClientService.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>($"{_configuration["HttpClient:BaseAddress"]}trainings", getTrainingVacancyBySlug);
         return result;
     }
 
     public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug, GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug)
     {
         await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var response = await _httpClientService.GetAsJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}", getTrainingVacancyBySlug);
+        var response = await _httpClientService.GetAsJsonAsync<TrainingVacancyDetailedResponse>($"{_configuration["HttpClient:BaseAddress"]}trainings/{slug}", getTrainingVacancyBySlug);
         if (response.Success)
         {
             return response.Result;

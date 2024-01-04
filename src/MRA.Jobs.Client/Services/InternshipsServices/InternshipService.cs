@@ -9,13 +9,16 @@ namespace MRA.Jobs.Client.Services.InternshipsServices;
 public class InternshipService : IInternshipService
 {
     private readonly IHttpClientService _httpClientService;
+    private readonly IConfiguration _configuration;
+
     public CreateInternshipVacancyCommand createCommand { get; set; }
     public UpdateInternshipVacancyCommand UpdateCommand { get; set; }
     public DeleteInternshipVacancyCommand DeleteCommand { get; set; }
 
-    public InternshipService(IHttpClientService httpClientService)
+    public InternshipService(IHttpClientService httpClientService, IConfiguration configuration)
     {
         _httpClientService = httpClientService;
+        _configuration = configuration;
         createCommand = new CreateInternshipVacancyCommand
         {
             Title = "",
@@ -32,22 +35,22 @@ public class InternshipService : IInternshipService
 
     public async Task<ApiResponse> Create()
     {
-        return await _httpClientService.PostAsJsonAsync<ApiResponse>("internships", createCommand);
+        return await _httpClientService.PostAsJsonAsync<ApiResponse>($"{_configuration["HttpClient:BaseAddress"]}/internships", createCommand);
     }
 
     public async Task<ApiResponse> Delete(string slug)
     {
-        return await _httpClientService.DeleteAsync($"internships/{slug}");
+        return await _httpClientService.DeleteAsync($"{_configuration["HttpClient:BaseAddress"]}/internships/{slug}");
     }
 
     public async Task<ApiResponse<List<InternshipVacancyListResponse>>> GetAll(GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery)
     {
-        return await _httpClientService.GetAsJsonAsync<List<InternshipVacancyListResponse>>("internships", getInternshipVacancyBySlugQuery);
+        return await _httpClientService.GetAsJsonAsync<List<InternshipVacancyListResponse>>($"{_configuration["HttpClient:BaseAddress"]}/internships", getInternshipVacancyBySlugQuery);
     }
 
     public async Task<InternshipVacancyResponse> GetBySlug(string slug, GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery)
     {
-        var response = await _httpClientService.GetAsJsonAsync<InternshipVacancyResponse>($"internships/{slug}", getInternshipVacancyBySlugQuery);
+        var response = await _httpClientService.GetAsJsonAsync<InternshipVacancyResponse>($"{_configuration["HttpClient:BaseAddress"]}/internships/{slug}", getInternshipVacancyBySlugQuery);
         if (response.Success)
         {
             return response.Result;
@@ -76,6 +79,6 @@ public class InternshipService : IInternshipService
             VacancyTasks = createCommand.VacancyTasks
         };
 
-        return await _httpClientService.PutAsJsonAsync<ApiResponse>($"internships/{slug}", updateCommand);
+        return await _httpClientService.PutAsJsonAsync<ApiResponse>($"{_configuration["HttpClient:BaseAddress"]}internships/{slug}", updateCommand);
     }
 }

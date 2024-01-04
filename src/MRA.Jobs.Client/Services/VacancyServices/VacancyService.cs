@@ -15,7 +15,7 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
-public class VacancyService(IHttpClientService httpClient) : IVacancyService
+public class VacancyService(IHttpClientService httpClient, IConfiguration configuration) : IVacancyService
 {
     private List<CategoryResponse> Categories { get; set; }
 
@@ -41,7 +41,7 @@ public class VacancyService(IHttpClientService httpClient) : IVacancyService
 
     public async Task<List<JobVacancyListDto>> GetAllVacancy(GetJobsQueryOptions getJobsQuery)
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>("jobs", getJobsQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}/jobs", getJobsQuery);
         if (result.Success)
         {
             Vacancies = result.Result.Items;
@@ -57,7 +57,7 @@ public class VacancyService(IHttpClientService httpClient) : IVacancyService
 
     public async Task<List<CategoryResponse>> GetAllCategory(GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery)
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>("categories", getVacancyCategoryByIdQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>($"{configuration["HttpClient:BaseAddress"]}/categories", getVacancyCategoryByIdQuery);
         if (result.Success)
         {
             Categories = result.Result.Items;
@@ -79,7 +79,7 @@ public class VacancyService(IHttpClientService httpClient) : IVacancyService
 
     public async Task<List<JobVacancyListDto>> GetVacancyByTitle(string title, GetJobsQueryOptions getJobsQuery)
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Title@={title}", getJobsQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}jobs?Filters=Title@={title}", getJobsQuery);
         if (result.Success)
         {
             Vacancies = result.Result.Items;
@@ -142,12 +142,12 @@ public class VacancyService(IHttpClientService httpClient) : IVacancyService
 
     public async Task<ApiResponse> OnSaveCreateClick()
     {
-        return await httpClient.PostAsJsonAsync<CreateJobVacancyCommand>("jobs", creatingNewJob);
+        return await httpClient.PostAsJsonAsync<CreateJobVacancyCommand>($"{configuration["HttpClient:BaseAddress"]}jobs", creatingNewJob);
     }
 
     public async Task<List<JobVacancyListDto>> GetJobs(GetJobsQueryOptions getJobsQuery)
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>("jobs", getJobsQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}jobs", getJobsQuery);
         if (result.Success)
         {
             return result.Result.Items;
@@ -165,7 +165,7 @@ public class VacancyService(IHttpClientService httpClient) : IVacancyService
 
     public async Task<JobVacancyDetailsDto> GetBySlug(string slug, GetJobVacancyBySlugQuery getJobVacancyBySlug)
     {
-        var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>($"jobs/{slug}", getJobVacancyBySlug);
+        var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>($"{configuration["HttpClient:BaseAddress"]}jobs/{slug}", getJobVacancyBySlug);
         if (response.Success)
         {
             return response.Result;
@@ -192,18 +192,18 @@ public class VacancyService(IHttpClientService httpClient) : IVacancyService
             VacancyQuestions = creatingNewJob.VacancyQuestions,
             VacancyTasks = creatingNewJob.VacancyTasks
         };
-        return await httpClient.PutAsJsonAsync<UpdateJobVacancyCommand>($"jobs/{slug}", update);
+        return await httpClient.PutAsJsonAsync<UpdateJobVacancyCommand>($"{configuration["HttpClient:BaseAddress"]}jobs/{slug}", update);
     }
 
     public async Task<List<InternshipVacancyListResponse>> GetInternship(GetInternshipsQueryOptions getInternshipsQuery)
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>("internships", getInternshipsQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>($"{configuration["HttpClient:BaseAddress"]}internships", getInternshipsQuery);
         return result.Result.Items;
     }
 
     public async Task<List<TrainingVacancyListDto>> GetTrainings(GetTrainingsQueryOptions getTrainingsQuery)
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>("trainings", getTrainingsQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}trainings", getTrainingsQuery);
         return result.Result.Items;
     }
 }

@@ -11,11 +11,13 @@ public class FileService : IFileService
 {
     private readonly IHttpClientService _httpClientService;
     private readonly ISnackbar _snackbar;
+    private readonly IConfiguration _configuration;
 
-    public FileService(IHttpClientService httpClientService, ISnackbar snackbar)
+    public FileService(IHttpClientService httpClientService, ISnackbar snackbar, IConfiguration configuration)
     {
         _httpClientService = httpClientService;
         _snackbar = snackbar;
+        _configuration = configuration;
     }
 
     public async Task<string> UploadAsync(IBrowserFile file)
@@ -25,7 +27,7 @@ public class FileService : IFileService
         var content = new MultipartFormDataContent();
         content.Add(fileContent, "\"file\"", file.Name);
 
-        var fileUploadResponse = await _httpClientService.PostAsJsonAsync<FileUploadResponse>("/api/File/upload", content);
+        var fileUploadResponse = await _httpClientService.PostAsJsonAsync<FileUploadResponse>($"{_configuration["HttpClient:BaseAddress"]}api/File/upload", content);
         switch (fileUploadResponse.HttpStatusCode)
         {
             case HttpStatusCode.OK:
