@@ -148,7 +148,7 @@ public partial class InternshipVacanciesPage
             }
             catch (Exception)
             {
-                Snackbar.Add("Server is not responding, try latter", Severity.Error);
+                Snackbar.Add("Server is not responding, please try later", Severity.Error);
             }
 
             StateHasChanged();
@@ -251,7 +251,7 @@ public partial class InternshipVacanciesPage
         }
         catch (Exception)
         {
-            Snackbar.Add("Server is not responding, try latter", Severity.Error);
+            Snackbar.Add("Server is not responding, please try later", Severity.Error);
         }
     }
 
@@ -287,8 +287,8 @@ public partial class InternshipVacanciesPage
         catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
-            Snackbar.Add("Server is not responding, try latter", Severity.Error);
-        }
+            Snackbar.Add("Server is not responding, please try later", Severity.Error);
+        }   
     }
 
     private async Task NewQuestionAsync()
