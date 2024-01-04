@@ -27,7 +27,7 @@
 <MudDialog IsVisible="_isOpen" Style="width: 400px;"
            Options="@(new DialogOptions() { DisableBackdropClick = true })">
     <DialogContent>
-        @if (_questionsResponses.Any())
+        @if (_questionsResponses.Any() && _vacancy.VacancyQuestions!=null)
         {
             <MudText Typo="Typo.h6">@ContentService["SendCV:Title"]</MudText>
             <EditForm Model="@_application">
@@ -129,9 +129,7 @@
       
         _vacancy = await NoVacancyService.GetNoVacancyAsync();
         if (_vacancy.Slug == null)
-        {
             return;
-        }
 
         Clear();
     }
@@ -140,15 +138,17 @@
     {
         _cv = null;
         _application = new CreateApplicationCommand();
+        _questionsResponses.Clear();
 
         if (_vacancy?.VacancyQuestions == null)
             return;
-        
+    
         foreach (var question in _vacancy.VacancyQuestions)
         {
             _questionsResponses.Add(question, "");
         }
     }
+
 
     private async Task CreateApplication()
     {
