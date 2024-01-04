@@ -11,7 +11,6 @@ using MRA.Identity.Application.Contract.User.Queries.CheckUserDetails;
 using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Identity.Client.Services.Profile;
-using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -143,5 +142,10 @@ public class AuthService(HttpClient httpClient,
     {
         var result = await httpClient.PostAsync("Auth/VerifyEmail", null);
         return result;
+    }
+
+    public async Task SendVerificationEmailToken(string token,string userId)
+    {
+        await httpClient.GetAsync($"Auth/verify?token={WebUtility.UrlEncode(token)}&userid={userId}");
     }
 }
