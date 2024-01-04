@@ -1,103 +1,86 @@
 ﻿@page "/UserManager"
+@using MRA.Identity.Application.Contract.User.Responses
+
 
 <MudGrid>
-    @if (_applicationUsers == null || _applicationUsers.Count == 0)
-    {
-        <div class="loader"></div>
-    }
-    else
-    {
-        @foreach (var user in _applicationUsers)
-        {
-            <MudItem xs="12"  lg="6">
-                <MudCard Class="rounded-4 mud-elevation-4">
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h5">
-                                <b>@user.UserName</b>
-                            </MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <style>
-							td {
-								vertical-align: top;
-								text-align: left;
-								padding-bottom: 0px;
-							}
-						</style>
-                        <table style="align-content:flex-start">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th style="width:25px;"></th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Full Name:</td>
-                                <td></td>
-                                <td>
-                                    <b>@user.FullName</b>
-                                </td>
-                            </tr>
-                            <tr></tr>
-                            <tr>
-                                <td>Email:</td>
-                                <td></td>
-                                <td>
-                                    <b>@user.Email</b>
-                                    @if (user.EmailConfirmed)
-                                    {
-                                        <MudChip Variant="Variant.Text" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
-                                    }
-                                    else
-                                    {
-                                        <MudChip Variant="Variant.Text" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">UnConfirmed</MudChip>
-                                    }
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Phone Number:</td>
-                                <td></td>
-                                <td>
-                                    <b>@user.PhoneNumber</b>
-                                    @if (user.PhoneNumberConfirmed)
-                                    {
-                                        <MudChip Variant="Variant.Text" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
-                                    }
-                                    else
-                                    {
-                                        <MudChip Variant="Variant.Text" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">UnConfirmed</MudChip>
-                                    }
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+    <MudItem xs="12">
+        <MudTable ServerData="@(new Func<TableState, Task<TableData<UserResponse>>>(ServerReload))" Hover="true"
+                  @ref="_table" Breakpoint="Breakpoint.None">
+            <ToolBarContent>
+                <MudText Typo="Typo.h5"><b>Users</b></MudText>
+                <MudSpacer/>
+                <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search by username or full name"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
+                              Class="mt-0" Immediate="true">
+                </MudTextField>
+            </ToolBarContent>
 
-                        <MudText>
-
-                        </MudText>
-                    </MudCardContent>
-                    <MudCardActions>
-                        @{
-                            var userRolesLink = $"/UserRoles/{user.UserName}";
-                            var userHistoryLink = $"/UserHistory/{user.UserName}";
-                            var userClaimsLink = $"/UserClaims/{user.UserName}";
-                        }
-                        <MudButton Color="Color.Primary" Variant="Variant.Filled" href="@userRolesLink">
-                            <MudText>Roles</MudText>
+            <HeaderContent>
+                <MudTh>
+                    <MudTableSortLabel SortLabel="UserName_field" T="UserResponse">Username</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel SortLabel="FullName_field" T="UserResponse">Full Name</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel SortLabel="EmailConfirmed_field" T="UserResponse"></MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel SortLabel="Email_field" T="UserResponse">Email</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel SortLabel="PhoneNumberConfirmed_field" T="UserResponse"></MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel SortLabel="PhoneNumber_field" T="UserResponse">Phone Number</MudTableSortLabel>
+                </MudTh>
+                <MudTh>Roles</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.UserName</MudTd>
+                <MudTd>@context.FullName</MudTd>
+                <MudTd>
+                    @if (context.EmailConfirmed)
+                    {
+                        <MudIcon Icon="@Icons.Filled.CheckCircle" Color="Color.Success"/>
+                    }
+                    else
+                    {
+                        <MudIcon Icon="@Icons.Filled.Warning" Color="Color.Error"/>
+                    }
+                </MudTd>
+                <MudTd>@context.Email</MudTd>
+                <MudTd>
+                    @if (context.PhoneNumberConfirmed)
+                    {
+                        <MudIcon Icon="@Icons.Filled.CheckCircle" Color="Color.Success"/>
+                    }
+                    else
+                    {
+                        <MudIcon Icon="@Icons.Filled.Warning" Color="Color.Error"/>
+                    }
+                </MudTd>
+                <MudTd>@context.PhoneNumber</MudTd>
+                <MudTd>
+                    @{
+                        var userRolesLink = $"/UserRoles/{context.UserName}";
+                    }
+                    <MudStack Row="true">
+                        <MudButton Variant="Variant.Filled" href="@userRolesLink">
+                            <MudIcon Icon="@Icons.Material.Filled.MoreHoriz"/>
                         </MudButton>
-                        <MudSpacer/>
-                        <MudButton Variant="Variant.Filled" href="@userHistoryLink">
-                            <MudText>History</MudText>
-                        </MudButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudItem>
-        }
-    }
-
-
+                    </MudStack>
+                </MudTd>
+            </RowTemplate>
+            <NoRecordsContent>
+                <MudText>No matching records found</MudText>
+            </NoRecordsContent>
+            <LoadingContent>
+                <MudText>Loading...</MudText>
+            </LoadingContent>
+            <PagerContent>
+                <MudTablePager/>
+            </PagerContent>
+        </MudTable>
+    </MudItem>
 </MudGrid>
