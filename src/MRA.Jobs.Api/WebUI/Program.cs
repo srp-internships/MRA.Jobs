@@ -77,7 +77,7 @@ app.UseHealthChecks("/status", new HealthCheckOptions
         await context.Response.WriteAsync(JsonConvert.SerializeObject(result));
     }
 });
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCors("CORS_POLICY");
 

@@ -16,10 +16,26 @@ public class ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> lo
             { Exception: UnauthorizedAccessException } => HandleUnauthorizedAccessException(context),
             { Exception: ForbiddenAccessException } => HandleForbiddenAccessException(context),
             { Exception: TaskCanceledException } => HandleTaskCanceledException(context),
+            { Exception: ExistException } => HandleExistException(context),
             { ModelState.IsValid: false } => HandleInvalidModelStateException(context),
             _ => HandleUnknownException(context)
         };
         base.OnException(context);
+    }
+
+    private bool HandleExistException(ExceptionContext context)
+    {
+        ProblemDetails details = new ProblemDetails
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Title = "The request caused a conflict.",
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.8",
+            Detail = "Data may be already exist."
+        };
+
+        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status409Conflict };
+
+        return true;
     }
 
     private bool HandleTaskCanceledException(ExceptionContext context)

@@ -40,7 +40,7 @@ public class
 
         if (existingEducation != null)
         {
-            throw new DuplicateWaitObjectException("Education detail already exists.");
+            throw new ExistException("Education detail already exists.");
         }
 
         var education = new EducationDetail()
