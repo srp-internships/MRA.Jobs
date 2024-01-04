@@ -27,7 +27,7 @@ public class EmailVerification : IEmailVerification
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var emailBody =
-            $"<p>Пожалуйста, перейдите по следующей ссылке для дальнейших действий: <a href='{_configurations["MraIdentity-HostName"]}/api/Auth/verify?token={WebUtility.UrlEncode(token)}&userId={user.Id}'>Ссылка</a></p>";
+            $"<p>Пожалуйста, перейдите по следующей ссылке для дальнейших действий: <a href='{_configurations["MraIdentity-HostName"]}/Auth/verify?token={WebUtility.UrlEncode(token)}&userId={user.Id}'>Ссылка</a></p>";
         var emailSubject = "Email Verification";
         return await _emailService.SendEmailAsync(new[] { user.Email }, emailBody, emailSubject);
     }
