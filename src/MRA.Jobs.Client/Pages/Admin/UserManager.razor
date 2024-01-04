@@ -42,22 +42,22 @@
                 <MudTd>
                     @if (context.EmailConfirmed)
                     {
-                        <MudIcon Icon="@Icons.Filled.CheckCircle" Color="Color.Success"/>
+                        <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success"/>
                     }
                     else
                     {
-                        <MudIcon Icon="@Icons.Filled.Warning" Color="Color.Error"/>
+                        <MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Error"/>
                     }
                 </MudTd>
                 <MudTd>@context.Email</MudTd>
                 <MudTd>
                     @if (context.PhoneNumberConfirmed)
                     {
-                        <MudIcon Icon="@Icons.Filled.CheckCircle" Color="Color.Success"/>
+                        <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success"/>
                     }
                     else
                     {
-                        <MudIcon Icon="@Icons.Filled.Warning" Color="Color.Error"/>
+                        <MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Error"/>
                     }
                 </MudTd>
                 <MudTd>@context.PhoneNumber</MudTd>
