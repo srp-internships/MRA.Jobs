@@ -42,8 +42,8 @@ app.UseSwaggerUI();
 
 using (var scope = app.Services.CreateScope())
 {
-    var initialiser = scope.ServiceProvider.GetRequiredService<DbMigration>();
-    await initialiser.InitialiseAsync();
+    var initializer = scope.ServiceProvider.GetRequiredService<DbMigration>();
+    await initializer.InitialiseAsync();
 }
 
 var applicationDbContextInitializer = app.Services.CreateAsyncScope().ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
@@ -51,7 +51,7 @@ await applicationDbContextInitializer.SeedAsync();
 
 app.UseCors("CORS_POLICY");
 
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
