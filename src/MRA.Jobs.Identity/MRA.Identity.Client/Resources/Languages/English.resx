@@ -223,7 +223,7 @@
     <value>Continue With</value>
   </data>
   <data name="signUp:messageText" xml:space="preserve">
-    <value>We have sent a confirmation code to this number: $phone$. Please confirm your identity</value>
+    <value>We have sent a confirmation code to this number: $phone$. Please enter the code below to confirm your identity.</value>
   </data>
   <data name="SignUp:Code" xml:space="preserve">
     <value>Code</value>
