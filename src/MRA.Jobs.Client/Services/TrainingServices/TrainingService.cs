@@ -56,9 +56,7 @@ public class TrainingService(
             VacancyQuestions = createCommand.VacancyQuestions,
             VacancyTasks = createCommand.VacancyTasks
         };
-
-        await authenticationStateProvider.GetAuthenticationStateAsync();
-        return await httpClientService.PutAsJsonAsync<ApiResponse>($"trainings/{slug}", UpdateCommand);
+        return await httpClientService.PutAsJsonAsync<string>($"trainings/{slug}", UpdateCommand);
     }
 
     public async Task<ApiResponse<PagedList<TrainingVacancyListDto>>> GetAll()

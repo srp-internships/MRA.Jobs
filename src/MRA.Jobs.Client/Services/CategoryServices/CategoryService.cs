@@ -34,7 +34,7 @@ public class CategoryService(JobsApiHttpClientService httpClient)
     }
     public async Task OnSaveUpdateClick()
     {
-        var result = await httpClient.PutAsJsonAsync<CategoryResponse>("categories/{updatingEntity.Slug}", updatingEntity);
+        var result = await httpClient.PutAsJsonAsync<string>($"categories/{updatingEntity.Slug}", updatingEntity);
         if (result.Success)
         {
             updatingEntity = null;
@@ -44,7 +44,7 @@ public class CategoryService(JobsApiHttpClientService httpClient)
     }
     public async Task OnDeleteClick(string slug)
     {
-        await httpClient.DeleteAsync("categories/{slug}");
+        await httpClient.DeleteAsync($"categories/{slug}");
         var result = await httpClient.GetAsJsonAsync<List<CategoryResponse>>("categories");
         Category = result.Result;
     }

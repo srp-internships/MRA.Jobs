@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
-using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug;
-using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationsByStatus;
-using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;

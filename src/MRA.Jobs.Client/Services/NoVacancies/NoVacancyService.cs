@@ -51,7 +51,7 @@ public class NoVacancyService(
             application.Cv.FileName = file.Name;
             //set cv
 
-            var response = await httpClient.PostAsJsonAsync<CreateApplicationCommand>("Applications/CreateApplicationNoVacancy", application);
+            var response = await httpClient.PostAsJsonAsync<Guid>("Applications/CreateApplicationNoVacancy", application);
             switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:

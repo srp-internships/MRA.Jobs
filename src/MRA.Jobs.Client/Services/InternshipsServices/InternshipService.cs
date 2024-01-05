@@ -65,6 +65,6 @@ public class InternshipService(JobsApiHttpClientService httpClientService)
             VacancyTasks = createCommand.VacancyTasks
         };
 
-        return await httpClientService.PutAsJsonAsync<ApiResponse>($"internships/{slug}", updateCommand);
+        return await httpClientService.PutAsJsonAsync<string>($"internships/{slug}", updateCommand);
     }
 }

@@ -36,7 +36,7 @@ public class VacancyService(JobsApiHttpClientService httpClient, IConfiguration 
 
     public async Task<List<JobVacancyListDto>> GetAllVacancy()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}jobs");
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>("jobs");
         if (result.Success)
         {
             Vacancies = result.Result.Items;
@@ -99,7 +99,7 @@ public class VacancyService(JobsApiHttpClientService httpClient, IConfiguration 
         return response.Success ? response.Result : null;
     }
 
-    public async Task<ApiResponse> UpdateJobVacancy(string slug)
+    public async Task<ApiResponse<string>> UpdateJobVacancy(string slug)
     {
         var update = new UpdateJobVacancyCommand
         {
@@ -115,7 +115,7 @@ public class VacancyService(JobsApiHttpClientService httpClient, IConfiguration 
             VacancyQuestions = creatingNewJob.VacancyQuestions,
             VacancyTasks = creatingNewJob.VacancyTasks
         };
-        return await httpClient.PutAsJsonAsync<UpdateJobVacancyCommand>($"jobs/{slug}", update);
+        return await httpClient.PutAsJsonAsync<string>($"jobs/{slug}", update);
     }
 
     public async Task<List<InternshipVacancyListResponse>> GetInternship()
