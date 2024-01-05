@@ -82,8 +82,9 @@ else
 
     public void AddCategory()
     {
-        if (newCategory == "")
-            return;
+        newCategory = newCategory.Trim();
+        if (newCategory==string.Empty) return;
+
         CService.creatingEntity = new Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory.CreateVacancyCategoryCommand
         {
             Name = newCategory
