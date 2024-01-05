@@ -417,6 +417,9 @@
   <data name="VacancyApplication:year(s)" xml:space="preserve">
     <value>сол(ҳо)</value>
   </data>
+  <data name="VacancyApplication:RequiredQuestionHaventAnswer" xml:space="preserve">
+    <value>Шумо бояд ба саволҳои зарурӣ ҷавоб диҳед</value>
+  </data>
   <data name="VacancyApplication:Required year of experience" xml:space="preserve">
     <value>Талаботи солҳои таҷриба</value>
   </data>

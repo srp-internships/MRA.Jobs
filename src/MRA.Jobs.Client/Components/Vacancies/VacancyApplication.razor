@@ -206,7 +206,7 @@ else
                             @question.Question
                         </MudText>
 
-                        @if (!question.IsOptional)
+                        @if (question.IsOptional)
                         {
                             <MudTextField Variant="Variant.Outlined" T="string" Lines="5" @bind-Value="@QuestionResponses[question.Question]"/>
                         }
@@ -394,7 +394,8 @@ else
         }).ToList();
         if (updatedResponses.Any(s => !s.VacancyQuestion.IsOptional && s.Response.IsNullOrEmpty()))
         {
-            return; // Do not proceed with submission if any required questions are empty.
+            Snackbar.Add(ContentService["VacancyApplication:RequiredQuestionHaventAnswer"], Severity.Error);
+            return;
         }
 
         var updateTaskResponses = Vacancy.VacancyTasks.Select(task => new TaskResponseDto
