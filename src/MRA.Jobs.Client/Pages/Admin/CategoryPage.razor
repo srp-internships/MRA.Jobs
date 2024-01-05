@@ -85,21 +85,22 @@ else
 		}
 	}
 
-	public void AddCategory()
-	{
-		if (newCategory == "")
-			return;
-		CService.creatingEntity = new Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory.CreateVacancyCategoryCommand
-			{
-				Name = newCategory
-			};
-		_category.Add(new CategoryResponse
-			{
-				Name = newCategory
-			});
-		CService.OnSaveCreateClick();
-		newCategory = "";
-	}
+    public void AddCategory()
+    {
+        newCategory = newCategory.Trim();
+        if (newCategory==string.Empty) return;
+
+        CService.creatingEntity = new Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory.CreateVacancyCategoryCommand
+        {
+            Name = newCategory
+        };
+        _category.Add(new CategoryResponse
+        {
+            Name = newCategory
+        });
+        CService.OnSaveCreateClick();
+        newCategory = "";
+    }
 
 	private async Task OnKeyDown(KeyboardEventArgs e)
 	{
