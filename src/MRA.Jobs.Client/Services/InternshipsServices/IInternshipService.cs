@@ -14,8 +14,8 @@ public interface IInternshipService
     Task<ApiResponse> Create();
     Task<ApiResponse> Update(string slug);
     Task<ApiResponse> Delete(string slug);
-    Task<ApiResponse<List<InternshipVacancyListResponse>>> GetAll(GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery);
-    Task<InternshipVacancyResponse> GetBySlug(string slug, GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery);
+    Task<ApiResponse<List<InternshipVacancyListResponse>>> GetAll();
+    Task<InternshipVacancyResponse> GetBySlug(string slug);
     CreateInternshipVacancyCommand createCommand { get; set; }
     UpdateInternshipVacancyCommand UpdateCommand { get; set; }
     DeleteInternshipVacancyCommand DeleteCommand { get; set; }

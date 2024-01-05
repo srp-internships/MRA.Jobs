@@ -3,7 +3,6 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Delete;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Update;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Client.Services.HttpClients;
 
@@ -70,24 +69,17 @@ public class TrainingService : ITrainingService
         return await _httpClientService.PutAsJsonAsync<ApiResponse>($"{_configuration["HttpClient:BaseAddress"]}trainings/{slug}", UpdateCommand);
     }
 
-    public async Task<ApiResponse<PagedList<TrainingVacancyListDto>>> GetAll(GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug)
+    public async Task<ApiResponse<PagedList<TrainingVacancyListDto>>> GetAll()
     {
         await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var result = await _httpClientService.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>($"{_configuration["HttpClient:BaseAddress"]}trainings", getTrainingVacancyBySlug);
+        var result = await _httpClientService.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>($"{_configuration["HttpClient:BaseAddress"]}trainings");
         return result;
     }
 
-    public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug, GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug)
+    public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug)
     {
         await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var response = await _httpClientService.GetAsJsonAsync<TrainingVacancyDetailedResponse>($"{_configuration["HttpClient:BaseAddress"]}trainings/{slug}", getTrainingVacancyBySlug);
-        if (response.Success)
-        {
-            return response.Result;
-        }
-        else
-        {
-            return null;
-        }
+        var response = await _httpClientService.GetAsJsonAsync<TrainingVacancyDetailedResponse>($"{_configuration["HttpClient:BaseAddress"]}trainings/{slug}");
+        return response.Success ? response.Result : null;
     }
 }

@@ -40,8 +40,7 @@ public partial class VacancyPage
     private TimeSpan? _endDateTime;
     private StandaloneCodeEditor _editorTemplate = null!;
     private StandaloneCodeEditor _editorTest = null!;
-    private readonly GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
-    private readonly GetJobsQueryOptions getJobsQuery = new();
+
     private readonly GetJobVacancyBySlugQuery getJobVacancyBySlug = new();
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
@@ -158,8 +157,8 @@ public partial class VacancyPage
         await Global.SetTheme(JsRuntime, LayoutService.IsDarkMode ? "vs-dark" : "vs");
         try
         {
-            _category = await VService.GetAllCategory(getVacancyCategoryByIdQuery);
-            _vacancies = await VService.GetJobs(getJobsQuery);
+            _category = await VService.GetAllCategory();
+            _vacancies = await VService.GetJobs();
         }
         catch (Exception)
         {
@@ -203,14 +202,14 @@ public partial class VacancyPage
 
     private async Task LoadData()
     {
-        _vacancies = await VService.GetJobs(getJobsQuery);
+        _vacancies = await VService.GetJobs();
     }
 
 
     public async Task OnEditClick(string slug)
     {
 
-        var vacancy = await VService.GetBySlug(slug, getJobVacancyBySlug);
+        var vacancy = await VService.GetBySlug(slug);
         if (vacancy != null)
         {
             _createOrEditHeader = $"Edit {vacancy.Title}";

@@ -2,15 +2,10 @@ using BlazorMonaco;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
 using MRA.Jobs.Application.Contracts.Dtos;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
-using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
-using MRA.Jobs.Client.Pages.Applicant;
-using MRA.Jobs.Client.Services.InternshipsServices;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Pages.Admin;
@@ -34,8 +29,7 @@ public partial class TrainingVacancyPage
     private TimeSpan? _endDateTime;
     private StandaloneCodeEditor _editorTemplate = null!;
     private StandaloneCodeEditor _editorTest = null!;
-    private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
-    private GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug = new();
+   
 
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
@@ -159,7 +153,7 @@ public partial class TrainingVacancyPage
 
     private async Task OnEditClick(string slug)
     {
-        var vacancy = await TrainingService.GetBySlug(slug, getTrainingVacancyBySlug);
+        var vacancy = await TrainingService.GetBySlug(slug);
         if (vacancy != null)
         {
             _createOrEditHeader = $"Edit {vacancy.Title}";
@@ -208,7 +202,7 @@ public partial class TrainingVacancyPage
     {
         try
         {
-            var trainingsResponse = await TrainingService.GetAll(getTrainingVacancyBySlug);
+            var trainingsResponse = await TrainingService.GetAll();
             if (trainingsResponse.Success)
             {
                 _trainings = trainingsResponse.Result.Items;
@@ -218,7 +212,7 @@ public partial class TrainingVacancyPage
                 Snackbar.Add($"Error loading trainings: {trainingsResponse.Error}", Severity.Error);
             }
 
-            var categoriesResponse = await CategoryService.GetAllCategory(getVacancyCategoryByIdQuery);
+            var categoriesResponse = await CategoryService.GetAllCategory();
             if (categoriesResponse.Success)
             {
                 _categories = categoriesResponse.Result;

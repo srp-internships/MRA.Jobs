@@ -258,10 +258,10 @@ else
 	public string vacancy { get; set; }
 
 	public bool Applied { get; set; }
-	private GetBySlugApplicationQuery getBySlugApplicationQuery = new();
+	
 	protected override async Task OnInitializedAsync()
 	{
-		_cvUrl = await ApplicationService.GetCvLinkAsync(Slug, getBySlugApplicationQuery);
+		_cvUrl = await ApplicationService.GetCvLinkAsync(Slug);
 		Applied = !_cvUrl.IsNullOrEmpty();
 	}
 

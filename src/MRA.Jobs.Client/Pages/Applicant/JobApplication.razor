@@ -31,7 +31,6 @@ else
 	private CreateApplicationCommand _application;
 	public Dictionary<string, string> QuestionResponses = new();
 	public Dictionary<Guid, string> TasksResponses = new();
-	private GetJobVacancyBySlugQuery getJobVacancyBySlug = new();
 	[Parameter] public string Slug { get; set; }
 
 	protected override async Task OnInitializedAsync()
@@ -39,7 +38,7 @@ else
 		await base.OnInitializedAsync();
 		try
 		{
-			var response = await VacancyService.GetBySlug(Slug, getJobVacancyBySlug);
+			var response = await VacancyService.GetBySlug(Slug);
 
 			if (response != null)
 			{

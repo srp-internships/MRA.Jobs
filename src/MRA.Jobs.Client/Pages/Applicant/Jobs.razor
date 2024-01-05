@@ -21,15 +21,14 @@ else
 	private List<string> jobCategories;
 	private List<VacancyClientResponse> jobs;
 	private List<VacancyClientResponse> filteredJobs;
-	private GetJobCategoriesQuery getJobCategoriesQuery = new();
-	private GetJobsQueryOptions getJobsQuery = new();
+	
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
 		try
 		{
-			var result = await categoryService.GetJobCategoriesSinceCheckDate(getJobCategoriesQuery);
-			var allJobs = await vacancyService.GetJobs(getJobsQuery);
+			var result = await categoryService.GetJobCategoriesSinceCheckDate();
+			var allJobs = await vacancyService.GetJobs();
 			if (result is not null && allJobs is not null)
 			{
 				jobCategories = result.Select(r => r.Category.Name).ToList();

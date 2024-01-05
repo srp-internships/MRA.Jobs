@@ -35,30 +35,23 @@ public class InternshipService : IInternshipService
 
     public async Task<ApiResponse> Create()
     {
-        return await _httpClientService.PostAsJsonAsync<ApiResponse>($"{_configuration["HttpClient:BaseAddress"]}/internships", createCommand);
+        return await _httpClientService.PostAsJsonAsync<ApiResponse>($"{_configuration["HttpClient:BaseAddress"]}internships", createCommand);
     }
 
     public async Task<ApiResponse> Delete(string slug)
     {
-        return await _httpClientService.DeleteAsync($"{_configuration["HttpClient:BaseAddress"]}/internships/{slug}");
+        return await _httpClientService.DeleteAsync($"{_configuration["HttpClient:BaseAddress"]}internships/{slug}");
     }
 
-    public async Task<ApiResponse<List<InternshipVacancyListResponse>>> GetAll(GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery)
+    public async Task<ApiResponse<List<InternshipVacancyListResponse>>> GetAll()
     {
-        return await _httpClientService.GetAsJsonAsync<List<InternshipVacancyListResponse>>($"{_configuration["HttpClient:BaseAddress"]}/internships", getInternshipVacancyBySlugQuery);
+        return await _httpClientService.GetAsJsonAsync<List<InternshipVacancyListResponse>>($"{_configuration["HttpClient:BaseAddress"]}internships");
     }
 
-    public async Task<InternshipVacancyResponse> GetBySlug(string slug, GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery)
+    public async Task<InternshipVacancyResponse> GetBySlug(string slug)
     {
-        var response = await _httpClientService.GetAsJsonAsync<InternshipVacancyResponse>($"{_configuration["HttpClient:BaseAddress"]}/internships/{slug}", getInternshipVacancyBySlugQuery);
-        if (response.Success)
-        {
-            return response.Result;
-        }
-        else
-        {
-            return null;
-        }
+        var response = await _httpClientService.GetAsJsonAsync<InternshipVacancyResponse>($"{_configuration["HttpClient:BaseAddress"]}internships/{slug}");
+        return response.Success ? response.Result : null;
     }
 
     public async Task<ApiResponse> Update(string slug)

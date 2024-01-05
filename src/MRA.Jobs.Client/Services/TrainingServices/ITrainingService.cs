@@ -13,8 +13,8 @@ public interface ITrainingService
     Task<ApiResponse> Create();
     Task<ApiResponse> Update(string slug);
     Task<ApiResponse> Delete(string slug);
-    Task<ApiResponse<PagedList<TrainingVacancyListDto>>> GetAll(GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug);
-    Task<TrainingVacancyDetailedResponse> GetBySlug(string slug, GetTrainingVacancyBySlugQuery getTrainingVacancyBySlug);
+    Task<ApiResponse<PagedList<TrainingVacancyListDto>>> GetAll();
+    Task<TrainingVacancyDetailedResponse> GetBySlug(string slug);
     CreateTrainingVacancyCommand createCommand { get; set; }
     UpdateTrainingVacancyCommand UpdateCommand { get; set; }
     DeleteTrainingVacancyCommand DeleteCommand { get; set; }

@@ -15,13 +15,13 @@ public class HttpClientService : IHttpClientService
         _localStorageService = localStorageService;
     }
 
-    public async Task<ApiResponse<T>> GetAsJsonAsync<T>(string url, object content)
+    public async Task<ApiResponse<T>> GetAsJsonAsync<T>(string url, object content = null)
     {
         try
         {
-            using var _httpClient = await CreateHttpClient();
-            var responseContent = await _httpClient.GetFromJsonAsync<T>(url, content);
-            return ApiResponse<T>.BuildSuccess(responseContent);
+            using var httpClient = await CreateHttpClient();
+            return content == null ? ApiResponse<T>.BuildSuccess(await httpClient.GetFromJsonAsync<T>(url))
+                : ApiResponse<T>.BuildSuccess(await httpClient.GetFromJsonAsync<T>(url, content));
         }
         catch (HttpRequestException ex)
         {

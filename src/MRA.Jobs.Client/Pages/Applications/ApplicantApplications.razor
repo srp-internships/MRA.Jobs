@@ -50,10 +50,9 @@
 @code {
 
 	private PagedList<ApplicationListDto> applications;
-	private GetApplicationsQuery getApplicationsQuery = new();
 	protected override async Task OnInitializedAsync()
 	{
-		var response = await applicationService.GetAllApplications(getApplicationsQuery);
+		var response = await applicationService.GetAllApplications();
 		if (response is not null)
 		{
 			applications = response;

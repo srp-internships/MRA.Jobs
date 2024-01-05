@@ -44,29 +44,19 @@ else
 @code {
 	private bool serverError = false;
 	private List<CategoryResponse> _category;
-	private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
 	private string newCategory { get; set; }
-	private string errorMessage;
-	private bool isError;
-	private void ShowError(string error)
-	{
-		errorMessage = error;
-		isError = true;
-	}
+
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
 		try
 		{
-			var response = await CService.GetAllCategory(getVacancyCategoryByIdQuery);
+			var response = await CService.GetAllCategory();
 			if (response.Success)
 			{
 				_category = response.Result;
 			}
-			else
-			{
-				ShowError(response.Error);
-			}
+			
 		}
 		catch (Exception)
 		{

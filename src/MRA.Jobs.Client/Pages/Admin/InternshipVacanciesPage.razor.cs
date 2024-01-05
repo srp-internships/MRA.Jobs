@@ -7,8 +7,6 @@ using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
 using MudBlazor;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug;
 
 namespace MRA.Jobs.Client.Pages.Admin;
 
@@ -26,8 +24,6 @@ public partial class InternshipVacanciesPage
     private List<CategoryResponse> _categories;
     private List<InternshipVacancyListResponse> _internships;
     private List<VacancyTaskDto> _tasks = new();
-    private readonly GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
-    private readonly GetInternshipVacancyBySlugQuery getInternshipVacancyBySlugQuery = new();
     private TimeSpan? _applicationDeadlineTime;
     private TimeSpan? _publishDateTime;
     private TimeSpan? _endDateTime;
@@ -160,7 +156,7 @@ public partial class InternshipVacanciesPage
 
     private async Task OnEditClick(string slug)
     {
-        var vacancy = await InternshipService.GetBySlug(slug, getInternshipVacancyBySlugQuery);
+        var vacancy = await InternshipService.GetBySlug(slug);
         if (vacancy != null)
         {
             _createOrEditHeader = $"Edit {vacancy.Title}";
@@ -205,7 +201,7 @@ public partial class InternshipVacanciesPage
     {
         try
         {
-            var internshipsResponse = await InternshipService.GetAll(getInternshipVacancyBySlugQuery);
+            var internshipsResponse = await InternshipService.GetAll();
             if (internshipsResponse.Success)
             {
                 _internships = internshipsResponse.Result;
@@ -215,7 +211,7 @@ public partial class InternshipVacanciesPage
                 Snackbar.Add($"Error loading internships: {internshipsResponse.Error}", Severity.Error);
             }
 
-            var categoriesResponse = await CategoryService.GetAllCategory(getVacancyCategoryByIdQuery);
+            var categoriesResponse = await CategoryService.GetAllCategory();
             if (categoriesResponse.Success)
             {
                 _categories = categoriesResponse.Result;

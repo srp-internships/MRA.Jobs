@@ -19,12 +19,12 @@ public class NoVacancyService(
     IConfiguration configuration,
     IContentService contentService) : INoVacancyService
 {
-    public async Task<JobVacancyDetailsDto> GetNoVacancyAsync(GetJobVacancyBySlugQuery getJobVacancyBySlugQuery)
+    public async Task<JobVacancyDetailsDto> GetNoVacancyAsync()
     {
         var vacancy = new JobVacancyDetailsDto();
         try
         {
-            var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>($"{configuration["HttpClient:BaseAddress"]}jobs/{CommonVacanciesSlugs.NoVacancySlug}", getJobVacancyBySlugQuery);
+            var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>($"{configuration["HttpClient:BaseAddress"]}jobs/{CommonVacanciesSlugs.NoVacancySlug}");
             if (response.Success)
                 vacancy = response.Result;
             else
@@ -51,7 +51,7 @@ public class NoVacancyService(
             application.Cv.FileName = file.Name;
             //set cv
 
-            var response = await httpClient.PostAsJsonAsync<CreateApplicationCommand>($"{configuration["HttpClient:BaseAddress"]}/Applications/CreateApplicationNoVacancy", application);
+            var response = await httpClient.PostAsJsonAsync<CreateApplicationCommand>($"{configuration["HttpClient:BaseAddress"]}Applications/CreateApplicationNoVacancy", application);
             switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:

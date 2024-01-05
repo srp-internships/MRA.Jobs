@@ -1,14 +1,9 @@
 ﻿using MRA.Jobs.Application.Contracts.Common;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternships;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
-using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
-using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Services.HttpClients;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
@@ -39,9 +34,9 @@ public class VacancyService(IHttpClientService httpClient, IConfiguration config
     public int PagesCount { get; set; }
     const float PageSize = 10f;
 
-    public async Task<List<JobVacancyListDto>> GetAllVacancy(GetJobsQueryOptions getJobsQuery)
+    public async Task<List<JobVacancyListDto>> GetAllVacancy()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}/jobs", getJobsQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}jobs");
         if (result.Success)
         {
             Vacancies = result.Result.Items;
@@ -55,9 +50,9 @@ public class VacancyService(IHttpClientService httpClient, IConfiguration config
     }
 
 
-    public async Task<List<CategoryResponse>> GetAllCategory(GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery)
+    public async Task<List<CategoryResponse>> GetAllCategory()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>($"{configuration["HttpClient:BaseAddress"]}/categories", getVacancyCategoryByIdQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>($"{configuration["HttpClient:BaseAddress"]}categories");
         if (result.Success)
         {
             Categories = result.Result.Items;
@@ -77,9 +72,9 @@ public class VacancyService(IHttpClientService httpClient, IConfiguration config
     //}
 
 
-    public async Task<List<JobVacancyListDto>> GetVacancyByTitle(string title, GetJobsQueryOptions getJobsQuery)
+    public async Task<List<JobVacancyListDto>> GetVacancyByTitle(string title)
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}jobs?Filters=Title@={title}", getJobsQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}jobs?Filters=Title@={title}");
         if (result.Success)
         {
             Vacancies = result.Result.Items;
@@ -145,17 +140,10 @@ public class VacancyService(IHttpClientService httpClient, IConfiguration config
         return await httpClient.PostAsJsonAsync<CreateJobVacancyCommand>($"{configuration["HttpClient:BaseAddress"]}jobs", creatingNewJob);
     }
 
-    public async Task<List<JobVacancyListDto>> GetJobs(GetJobsQueryOptions getJobsQuery)
+    public async Task<List<JobVacancyListDto>> GetJobs()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}jobs", getJobsQuery);
-        if (result.Success)
-        {
-            return result.Result.Items;
-        }
-        else
-        {
-            return null;
-        }
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}jobs");
+        return result.Success ? result.Result.Items : null;
     }
 
     public async Task<ApiResponse> OnDelete(string slug)
@@ -163,17 +151,10 @@ public class VacancyService(IHttpClientService httpClient, IConfiguration config
         return await httpClient.DeleteAsync($"jobs/{slug}");
     }
 
-    public async Task<JobVacancyDetailsDto> GetBySlug(string slug, GetJobVacancyBySlugQuery getJobVacancyBySlug)
+    public async Task<JobVacancyDetailsDto> GetBySlug(string slug)
     {
-        var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>($"{configuration["HttpClient:BaseAddress"]}jobs/{slug}", getJobVacancyBySlug);
-        if (response.Success)
-        {
-            return response.Result;
-        }
-        else
-        {
-            return null;
-        }
+        var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>($"{configuration["HttpClient:BaseAddress"]}jobs/{slug}");
+        return response.Success ? response.Result : null;
     }
 
     public async Task<ApiResponse> UpdateJobVacancy(string slug)
@@ -195,15 +176,15 @@ public class VacancyService(IHttpClientService httpClient, IConfiguration config
         return await httpClient.PutAsJsonAsync<UpdateJobVacancyCommand>($"{configuration["HttpClient:BaseAddress"]}jobs/{slug}", update);
     }
 
-    public async Task<List<InternshipVacancyListResponse>> GetInternship(GetInternshipsQueryOptions getInternshipsQuery)
+    public async Task<List<InternshipVacancyListResponse>> GetInternship()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>($"{configuration["HttpClient:BaseAddress"]}internships", getInternshipsQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>($"{configuration["HttpClient:BaseAddress"]}internships");
         return result.Result.Items;
     }
 
-    public async Task<List<TrainingVacancyListDto>> GetTrainings(GetTrainingsQueryOptions getTrainingsQuery)
+    public async Task<List<TrainingVacancyListDto>> GetTrainings()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}trainings", getTrainingsQuery);
+        var result = await httpClient.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>($"{configuration["HttpClient:BaseAddress"]}trainings");
         return result.Result.Items;
     }
 }

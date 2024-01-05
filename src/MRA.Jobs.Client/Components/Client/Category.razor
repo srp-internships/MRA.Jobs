@@ -25,29 +25,15 @@
 </section>
 
 @code {
-	private string errorMessage;
-	private bool isError;
-	private void ShowError(string error)
-	{
-		errorMessage = error;
-		isError = true;
-	}
 	private List<CategoryResponse> _categoryResponses;
-	private GetVacancyCategoryByIdQuery getVacancyCategoryByIdQuery = new();
 
 	protected override async Task OnInitializedAsync()
 	{
-		var response = await CategoryService.GetAllCategory(getVacancyCategoryByIdQuery);
+		var response = await CategoryService.GetAllCategory();
 		if (response.Success)
 		{
 			_categoryResponses = response.Result;
 		}
-		else
-		{
-			ShowError(response.Error);
-		}
 
 	}
-
-
 }

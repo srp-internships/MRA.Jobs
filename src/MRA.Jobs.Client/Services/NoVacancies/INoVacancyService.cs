@@ -7,7 +7,7 @@ namespace MRA.Jobs.Client.Services.NoVacancies;
 
 public interface INoVacancyService
 {
-    Task<JobVacancyDetailsDto> GetNoVacancyAsync(GetJobVacancyBySlugQuery getJobVacancyBySlugQuery);
+    Task<JobVacancyDetailsDto> GetNoVacancyAsync();
 
     Task CreateApplicationNoVacancyAsync(CreateApplicationCommand command, IBrowserFile file);
 }

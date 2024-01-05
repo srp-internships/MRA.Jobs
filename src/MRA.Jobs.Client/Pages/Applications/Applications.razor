@@ -124,7 +124,6 @@
 
     private IEnumerable<ApplicationListDto> _pagedData;
     private MudTable<ApplicationListDto> _table;
-	private GetApplicationsQuery getApplicationsQuery = new();
     private int _totalItems;
 
     private string _searchUsername;
@@ -183,7 +182,7 @@
     {
         try
         {
-			var response = await ApplicationService.GetAllApplications(getApplicationsQuery);
+			var response = await ApplicationService.GetAllApplications();
             if (response is not null)
             {
                 _applications = response;
