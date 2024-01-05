@@ -8,12 +8,43 @@ using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
 using MudBlazor;
-using MudBlazor.Extensions;
+
 
 namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class InternshipVacanciesPage
 {
+    
+    private IEnumerable<InternshipVacancyListResponse> _pagedData;
+    private MudTable<InternshipVacancyListResponse> _table;
+
+    private int _totalItems;
+    private string _searchString;
+
+    private async Task<TableData<InternshipVacancyListResponse>> ServerReload(TableState state)
+    {
+        IEnumerable<InternshipVacancyListResponse> data = await InternshipService.GetAll();
+        await Task.Delay(100);
+        data = data.Where(element =>
+        {
+            if (string.IsNullOrWhiteSpace(_searchString))
+                return true;
+            if (element.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }).ToArray();
+        _totalItems = data.Count();
+
+        _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+        return new TableData<InternshipVacancyListResponse>() { TotalItems = _totalItems, Items = _pagedData };
+    }
+
+    private void OnSearch(string text)
+    {
+        _searchString = text;
+        _table.ReloadServerData();
+    }
+    
     private bool _serverError;
     private bool _panelOpenState;
     private bool _isInserting;

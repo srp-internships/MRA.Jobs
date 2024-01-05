@@ -18,7 +18,7 @@ public partial class VacancyPage
     private MudTable<JobVacancyListDto> _table;
 
     private int _totalItems;
-    private string _searchString = null;
+    private string _searchString;
 
     private async Task<TableData<JobVacancyListDto>> ServerReload(TableState state)
     {
