@@ -14,9 +14,42 @@ namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class VacancyPage
 {
-      private string _createOrEditHeader = "New Job vacancy";
+    private IEnumerable<JobVacancyListDto> _pagedData;
+    private MudTable<JobVacancyListDto> _table;
+
+    private int _totalItems;
+    private string _searchString;
+
+    private async Task<TableData<JobVacancyListDto>> ServerReload(TableState state)
+    {
+        IEnumerable<JobVacancyListDto> data = await VService.GetJobs();
+        await Task.Delay(100);
+        data = data.Where(element =>
+        {
+            if (string.IsNullOrWhiteSpace(_searchString))
+                return true;
+            if (element.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }).ToArray();
+        _totalItems = data.Count();
+
+        _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+        return new TableData<JobVacancyListDto>() { TotalItems = _totalItems, Items = _pagedData };
+    }
+
+    private void OnSearch(string text)
+    {
+        _searchString = text;
+        _table.ReloadServerData();
+    }
+
+
+    private string _createOrEditHeader = "New Job vacancy";
     private bool _serverError;
-    private readonly ApplicationStatusDto.WorkSchedule[] _value2Items = Enum.GetValues(typeof(ApplicationStatusDto.WorkSchedule)).Cast<ApplicationStatusDto.WorkSchedule>().ToArray();
+
+    private readonly ApplicationStatusDto.WorkSchedule[] _value2Items = Enum
+        .GetValues(typeof(ApplicationStatusDto.WorkSchedule)).Cast<ApplicationStatusDto.WorkSchedule>().ToArray();
 
 
     private List<CategoryResponse> _category;
@@ -80,8 +113,10 @@ public partial class VacancyPage
 
     private async Task EditorOnDidInit()
     {
-        await _editorTest.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
-        await _editorTemplate.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
+        await _editorTest.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH,
+            _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
+        await _editorTemplate.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH,
+            _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
 
         var newDecorations = new[]
         {
@@ -216,19 +251,14 @@ public partial class VacancyPage
         _isUpdating = false;
         _updateSlug = slug;
         _questions = vacancy.VacancyQuestions.Select(v =>
-            new VacancyQuestionDto
-            {
-                Question = v.Question
-            }
+            new VacancyQuestionDto { Question = v.Question }
         ).ToList();
         _tasks = vacancy.VacancyTasks.Select(v =>
-            new VacancyTaskDto
-            {
-                Title = v.Title,
-                Description = v.Description,
-                Template = v.Template,
-                Test = v.Test
-            }).ToList();
+                new VacancyTaskDto
+                    {
+                        Title = v.Title, Description = v.Description, Template = v.Template, Test = v.Test
+                    })
+            .ToList();
     }
 
     private void RemoveQuestion(string question)
@@ -303,10 +333,12 @@ public partial class VacancyPage
         _tasks.Clear();
         _panelOpenState = false;
     }
+
     private async Task NewQuestionAsync()
     {
-        var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
+        var res =
+            (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
-        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional});
+        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
 }

@@ -13,6 +13,37 @@ namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class TrainingVacancyPage
 {
+      
+    private IEnumerable<TrainingVacancyListDto> _pagedData;
+    private MudTable<TrainingVacancyListDto> _table;
+
+    private int _totalItems;
+    private string _searchString;
+
+    private async Task<TableData<TrainingVacancyListDto>> ServerReload(TableState state)
+    {
+        IEnumerable<TrainingVacancyListDto> data = (await TrainingService.GetAll()).Items;
+        await Task.Delay(100);
+        data = data.Where(element =>
+        {
+            if (string.IsNullOrWhiteSpace(_searchString))
+                return true;
+            if (element.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }).ToArray();
+        _totalItems = data.Count();
+
+        _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+        return new TableData<TrainingVacancyListDto>() { TotalItems = _totalItems, Items = _pagedData };
+    }
+
+    private void OnSearch(string text)
+    {
+        _searchString = text;
+        _table.ReloadServerData();
+    }
+    
       private bool _serverError;
     private bool _panelOpenState;
     private bool _isInserting;
@@ -105,7 +136,7 @@ public partial class TrainingVacancyPage
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
-        await Global.SetTheme(jsRuntime, LayoutService.IsDarkMode ? "vs-dark" : "vs");
+        await Global.SetTheme(JsRuntime, LayoutService.IsDarkMode ? "vs-dark" : "vs");
     }
 
 

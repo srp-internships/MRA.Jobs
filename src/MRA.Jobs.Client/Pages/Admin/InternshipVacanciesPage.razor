@@ -241,7 +241,14 @@ else
                 </EditForm>
             </MudItem>
         </MudGrid>
-        <MudTable Items="@_internships" Breakpoint="Breakpoint.Md" hidden="@_panelOpenState">
+        <MudTable ServerData="@(new Func<TableState, Task<TableData<InternshipVacancyListResponse>>>(ServerReload))" hidden="@_panelOpenState"
+                                    Breakpoint="Breakpoint.Sm" Dense="true" Hover="true" @ref="_table">
+            <ToolBarContent>
+                <MudSpacer/>
+                <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search jobs" Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Immediate="true">
+                </MudTextField>
+            </ToolBarContent>
             <HeaderContent>
                 <MudTh>
                     <strong>Title</strong>
@@ -268,6 +275,7 @@ else
                     <strong>End date</strong>
                 </MudTh>
                 <MudTh></MudTh>
+                <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="Title">@context.Title</MudTd>
@@ -280,11 +288,19 @@ else
                 <MudTd DataLabel="PublishDate">@context.PublishDate.ToString("D")</MudTd>
                 <MudTd DataLabel="Application deadline">@context.ApplicationDeadline</MudTd>
                 <MudTd DataLabel="EndDate">@context.EndDate.ToString("D")</MudTd>
-                <MudTd DataLabel="Action">
-                    <MudIconButton @onclick="() => OnDeleteClick(context.Slug)" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Medium"/>
+                <MudTd>
                     <MudIconButton @onclick="() => OnEditClick(context.Slug)" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium"/>
                 </MudTd>
+                <MudTd>
+                    <MudIconButton @onclick="() => OnDeleteClick(context.Slug)" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Medium"/>
+                </MudTd>
             </RowTemplate>
+            <NoRecordsContent>
+                <MudText>No matching records found</MudText>
+            </NoRecordsContent>
+            <LoadingContent>
+                <MudText>Loading...</MudText>
+            </LoadingContent>
             <PagerContent>
                 <MudTablePager/>
             </PagerContent>
