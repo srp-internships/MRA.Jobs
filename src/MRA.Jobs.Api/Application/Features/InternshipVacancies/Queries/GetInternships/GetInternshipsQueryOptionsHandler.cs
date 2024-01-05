@@ -33,7 +33,7 @@ public class GetInternshipsQueryOptionsHandler(IApplicationDbContext context,
         }
 
         var userRoles = userHttpContextAccessor.GetUserRoles();
-        if (userRoles.Any(role => role == "Applicant"))
+        if (userRoles.Any(role => role == "Applicant")|| !userHttpContextAccessor.IsAuthenticated())
             request.CheckDate = true;
 
 

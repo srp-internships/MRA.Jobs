@@ -35,7 +35,7 @@ public class GetJobsQueryOptionsHandler(
         }
 
         var userRoles = userHttpContextAccessor.GetUserRoles();
-        if (userRoles.Any(role => role == "Applicant"))
+        if (userRoles.Any(role => role == "Applicant") || !userHttpContextAccessor.IsAuthenticated())
             request.CheckDate = true;
 
 
