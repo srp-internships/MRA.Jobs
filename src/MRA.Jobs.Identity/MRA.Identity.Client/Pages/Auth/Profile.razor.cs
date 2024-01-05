@@ -19,6 +19,7 @@ using System.Net.Http.Json;
 using System.Net;
 using Microsoft.IdentityModel.Tokens;
 using MRA.Identity.Client.Components.Dialogs;
+using Blazored.FluentValidation;
 
 namespace MRA.Identity.Client.Pages.Auth;
 
@@ -47,6 +48,7 @@ public partial class Profile
 
     private UserProfileResponse _profile;
     private readonly UpdateProfileCommand _updateProfileCommand = new UpdateProfileCommand();
+    private FluentValidationValidator _fluentValidationValidator;
 
     private async Task SendCode()
     {
@@ -297,16 +299,20 @@ public partial class Profile
 
     private async Task CreateEducationHandle()
     {
+        if (!(await _fluentValidationValidator!.ValidateAsync()))
+        {
+            return;
+        }
         _processing = true;
         try
         {
             if (createEducation.EndDate == null)
-                createEducation.EndDate = default(DateTime);
+                createEducation.UntilNow = true;
 
             var response = await UserProfileService.CreateEducationAsуnc(createEducation);
             if (response.IsSuccessStatusCode)
             {
-                Snackbar.Add("Add Education successfully.", MudBlazor.Severity.Success);
+                Snackbar.Add("Education details added successfully.", MudBlazor.Severity.Success);
                 addEducation = false;
                 createEducation = new CreateEducationDetailCommand();
                 await GetEducations();
@@ -414,16 +420,17 @@ public partial class Profile
 
     private async Task CreateExperienceHandle()
     {
+        if (!(await _fluentValidationValidator!.ValidateAsync())) return;
         _processing = true;
         try
         {
             if (createExperience.EndDate == null)
-                createExperience.EndDate = default(DateTime);
+                createExperience.IsCurrentJob = true;
 
             var response = await UserProfileService.CreateExperienceAsync(createExperience);
             if (response.IsSuccessStatusCode)
             {
-                Snackbar.Add("Add Experience successfully.", MudBlazor.Severity.Success);
+                Snackbar.Add("Experience details added successfully.", MudBlazor.Severity.Success);
 
                 addExperience = false;
                 createExperience = new CreateExperienceDetailCommand();
