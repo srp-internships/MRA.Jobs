@@ -1,7 +1,7 @@
 ﻿@inject IApplicationService applicationService
 @inject ISnackbar Snackbar
 @inject NavigationManager navigationManager
-@inject HttpClient httpClient
+@inject IConfiguration configuration
 @using System.Net
 @using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug
 
@@ -74,7 +74,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		var app = await applicationService.GetApplicationDetails(Slug);
-		cvURL = $"{httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
+		cvURL = $"{configuration["HttpClient:BaseAddress"]}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
 	}
 
 	private async Task ChangeStatus()
