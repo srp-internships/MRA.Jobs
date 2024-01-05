@@ -27,7 +27,7 @@ public class CreateUserExperienceDetailCommandTest : BaseTest
     }
 
     [Test]
-    public async Task CreateUserExperienceDetailCommand_ShouldCreateExperienceDetailCommand_Duplicate()
+    public async Task CreateUserExperienceDetailCommand_WhenRequestWillCreateDuplicateExperience_ReturnsDuplicate()
     {
         await AddApplicantAuthorizationAsync();
 
@@ -49,7 +49,7 @@ public class CreateUserExperienceDetailCommandTest : BaseTest
         command.JobTitle = "backend developer";
 
         response = await _client.PostAsJsonAsync("/api/Profile/CreateExperienceDetail", command);
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.BadRequest);
+        Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         Assert.IsTrue((await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains("Experience detail already exists"));
 
     }

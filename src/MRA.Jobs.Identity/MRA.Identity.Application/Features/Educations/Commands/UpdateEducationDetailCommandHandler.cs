@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Exceptions;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
@@ -9,27 +8,17 @@ using MRA.Identity.Application.Contract.Educations.Command.Update;
 namespace MRA.Identity.Application.Features.Educations.Commands;
 
 public class
-    UpdateEducationDetailCommandHandler : IRequestHandler<UpdateEducationDetailCommand, Guid>
+    UpdateEducationDetailCommandHandler(
+        IApplicationDbContext context,
+        IUserHttpContextAccessor userHttpContextAccessor)
+    : IRequestHandler<UpdateEducationDetailCommand, Guid>
 {
-    private readonly IApplicationDbContext _context;
-    private readonly IUserHttpContextAccessor _userHttpContextAccessor;
-    private readonly IMapper _mapper;
-
-    public UpdateEducationDetailCommandHandler(IApplicationDbContext context,
-        IUserHttpContextAccessor userHttpContextAccessor,
-        IMapper mapper)
-    {
-        _context = context;
-        _userHttpContextAccessor = userHttpContextAccessor;
-        _mapper = mapper;
-    }
-
     public async Task<Guid> Handle(UpdateEducationDetailCommand request, CancellationToken cancellationToken)
     {
-        var userId = _userHttpContextAccessor.GetUserId();
-        var user = await _context.Users
+        var userId = userHttpContextAccessor.GetUserId();
+        var user = await context.Users
             .Include(u => u.Educations)
-            .FirstOrDefaultAsync(u => u.Id.Equals(userId));
+            .FirstOrDefaultAsync(u => u.Id.Equals(userId), cancellationToken: cancellationToken);
         _ = user ?? throw new NotFoundException("user is not found");
 
         var education = user.Educations.FirstOrDefault(e => e.Id.Equals(request.Id));
@@ -46,16 +35,16 @@ public class
 
         if (existingEducation != null)
         {
-            throw new DuplicateWaitObjectException("Education detail already exists.");
+            throw new ValidationException("Education detail already exists.");
         }
 
         education.University = university;
         education.Speciality = speciality;
-        education.StartDate = request.StartDate.HasValue ? request.StartDate.Value : default(DateTime);
-        education.EndDate = request.EndDate.HasValue ? request.EndDate.Value : default(DateTime);
+        education.StartDate = request.StartDate ?? default(DateTime);
+        education.EndDate = request.EndDate ?? default(DateTime);
         education.UntilNow = request.UntilNow;
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
         return education.Id;
     }
 }

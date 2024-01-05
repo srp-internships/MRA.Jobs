@@ -17,4 +17,5 @@ public interface IAuthService
     Task<HttpResponseMessage> CheckUserName(string userName);
     Task<HttpResponseMessage> CheckUserDetails(CheckUserDetailsQuery checkUserDetailsQuery);
     Task<HttpResponseMessage> ResendVerificationEmail();
+    Task SendVerificationEmailToken(string token,string userId);
 }
