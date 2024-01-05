@@ -59,12 +59,6 @@ public class ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> lo
             Status = StatusCodes.Status500InternalServerError,
             Title = "An error occurred while processing your request.",
             Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
-            Detail = context.Exception.Message,
-            Extensions =
-            {
-                { "traceId", context.HttpContext.TraceIdentifier },
-                { "stackTrace", context.Exception.StackTrace }
-            }
         };
 
         context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status500InternalServerError };
