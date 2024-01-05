@@ -64,7 +64,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _vacancies = await VacancyService.GetAllVacancy();
+        _vacancies = await VacancyService.GetJobs();
     }
 
 
