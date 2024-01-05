@@ -35,7 +35,7 @@ public class
 
         if (existingEducation != null)
         {
-            throw new ExistException("Education detail already exists.");
+            throw new ValidationException("Education detail already exists.");
         }
 
         education.University = university;

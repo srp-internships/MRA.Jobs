@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
 
 namespace MRA.Jobs.Application.IntegrationTests.Educations.Commands;
+
 public class CreateUserEducationDetailCommandTest : BaseTest
 {
     [Test]
@@ -45,7 +46,9 @@ public class CreateUserEducationDetailCommandTest : BaseTest
         command.Speciality = "It security";
         command.University = "khujand university";
         response = await _client.PostAsJsonAsync("/api/Profile/CreateEducationDetail", command);
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.Conflict);
-        // Assert.IsTrue((await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains("Education detail already exists"));
+        Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.IsTrue(
+            (await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains(
+                "Education detail already exists"));
     }
 }

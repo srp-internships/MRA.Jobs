@@ -6,6 +6,7 @@ using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 using MRA.Identity.Domain.Entities;
 
 namespace MRA.Jobs.Application.IntegrationTests.Experiences.Commands;
+
 public class UpdateUserExperienceDetailCommandTest : BaseTest
 {
     [Test]
@@ -89,7 +90,9 @@ public class UpdateUserExperienceDetailCommandTest : BaseTest
 
         var response = await _client.PutAsJsonAsync("/api/Profile/UpdateExperienceDetail", command);
 
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.Conflict);
-        // Assert.IsTrue((await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains("Experience detail already exists"));
+        Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.IsTrue(
+            (await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains(
+                "Experience detail already exists"));
     }
 }

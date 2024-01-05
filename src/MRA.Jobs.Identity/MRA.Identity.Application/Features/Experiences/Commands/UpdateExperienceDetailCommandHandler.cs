@@ -7,6 +7,7 @@ using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 
 namespace MRA.Identity.Application.Features.Experiences.Commands;
+
 public class UpdateExperienceDetailCommandHandler(
     IApplicationDbContext context,
     IUserHttpContextAccessor userHttpContextAccessor,
@@ -37,7 +38,7 @@ public class UpdateExperienceDetailCommandHandler(
 
         if (existingExperience != null)
         {
-            throw new ExistException("Experience detail already exists.");
+            throw new ValidationException("Experience detail already exists.");
         }
 
         mapper.Map(request, experienceDetail);

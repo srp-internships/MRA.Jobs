@@ -74,7 +74,7 @@ public class ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> lo
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Status = StatusCodes.Status400BadRequest,
-            Title = exception.Message
+            Detail = exception.Message
         };
 
         context.Result = new BadRequestObjectResult(details);
