@@ -8,33 +8,26 @@ using MRA.Identity.Application.Contract.Experiences.Commands.Create;
 using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Experiences.Commands;
-public class CreateExperienceDetailCommandHandler : IRequestHandler<CreateExperienceDetailCommand, Guid>
-{
-    private readonly IApplicationDbContext _context;
-    private readonly IUserHttpContextAccessor _userHttpContextAccessor;
-    private readonly IMapper _mapper;
 
-    public CreateExperienceDetailCommandHandler(IApplicationDbContext context,
-        IUserHttpContextAccessor userHttpContextAccessor,
-        IMapper mapper)
-    {
-        _context = context;
-        _userHttpContextAccessor = userHttpContextAccessor;
-        _mapper = mapper;
-    }
+public class CreateExperienceDetailCommandHandler(
+    IApplicationDbContext context,
+    IUserHttpContextAccessor userHttpContextAccessor,
+    IMapper mapper)
+    : IRequestHandler<CreateExperienceDetailCommand, Guid>
+{
     public async Task<Guid> Handle(CreateExperienceDetailCommand request, CancellationToken cancellationToken)
     {
-        var userId = _userHttpContextAccessor.GetUserId();
-        var user = await _context.Users
+        var userId = userHttpContextAccessor.GetUserId();
+        var user = await context.Users
             .Include(u => u.Experiences)
-            .FirstOrDefaultAsync(u => u.Id == userId);
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken: cancellationToken);
         _ = user ?? throw new NotFoundException("user is not found");
 
         var textInfo = System.Globalization.CultureInfo.CurrentCulture.TextInfo;
         var jobTitle = textInfo.ToTitleCase(request.JobTitle.Trim());
         var company = textInfo.ToTitleCase(request.CompanyName.Trim());
         request.Description = textInfo.ToTitleCase(request.Description.Trim());
-        request.Address=request.Address.Trim();
+        request.Address = request.Address.Trim();
 
         var existingExperience = user.Experiences.FirstOrDefault(e =>
             e.JobTitle.Equals(jobTitle, StringComparison.OrdinalIgnoreCase) &&
@@ -42,15 +35,15 @@ public class CreateExperienceDetailCommandHandler : IRequestHandler<CreateExperi
 
         if (existingExperience != null)
         {
-            throw new DuplicateWaitObjectException("Experience detail already exists.");
+            throw new ValidationException("Experience detail already exists.");
         }
 
-        var experienceDetail = _mapper.Map<ExperienceDetail>(request);
+        var experienceDetail = mapper.Map<ExperienceDetail>(request);
         experienceDetail.JobTitle = jobTitle;
         experienceDetail.CompanyName = company;
 
         user.Experiences.Add(experienceDetail);
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
         return experienceDetail.Id;
     }
 }
