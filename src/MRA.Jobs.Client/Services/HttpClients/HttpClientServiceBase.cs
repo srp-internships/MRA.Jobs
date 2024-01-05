@@ -56,12 +56,20 @@ public abstract class HttpClientServiceBase(IHttpClientFactory httpClientFactory
         }
     }
 
-    async Task<ApiResponse<T>> GetApiResponseAsync<T>(HttpResponseMessage response)
+    private async Task<ApiResponse<T>> GetApiResponseAsync<T>(HttpResponseMessage response)
     {
         if (response.IsSuccessStatusCode)
         {
-            var responseContent = await response.Content.ReadFromJsonAsync<T>();
-            return ApiResponse<T>.BuildSuccess(responseContent);
+            if (typeof(T) == typeof(string) || typeof(T) == typeof(Guid) || typeof(T) == typeof(bool))
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return ApiResponse<T>.BuildSuccess((T)Convert.ChangeType(responseContent, typeof(T)));
+            }
+            else
+            {
+                var responseContent = await response.Content.ReadFromJsonAsync<T>();
+                return ApiResponse<T>.BuildSuccess(responseContent);
+            }
         }
         else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
         {
@@ -70,6 +78,7 @@ public abstract class HttpClientServiceBase(IHttpClientFactory httpClientFactory
         }
         return ApiResponse<T>.BuildFailed("Error on sending response. Please try again later", response.StatusCode);
     }
+
 
     public async Task<ApiResponse<T>> PutAsJsonAsync<T>(string url, object content)
     {

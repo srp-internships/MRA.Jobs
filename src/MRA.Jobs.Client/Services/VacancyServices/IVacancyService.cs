@@ -26,7 +26,7 @@ public interface IVacancyService
     Task<List<CategoryResponse>> GetAllCategory();
 
     Task<List<JobVacancyListDto>> GetVacancyByTitle(string title);
-    Task<ApiResponse> OnSaveCreateClick();
+    Task<ApiResponse<string>> OnSaveCreateClick();
     Task<ApiResponse> OnDelete(string slug);
     Task<List<JobVacancyListDto>> GetJobs();
     Task<ApiResponse> UpdateJobVacancy(string slug);

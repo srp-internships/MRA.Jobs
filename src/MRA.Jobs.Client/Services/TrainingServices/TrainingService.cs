@@ -28,7 +28,7 @@ public class TrainingService(
     public UpdateTrainingVacancyCommand UpdateCommand { get; set; }
     public DeleteTrainingVacancyCommand DeleteCommand { get; set; }
 
-    public async Task<ApiResponse> Create()
+    public async Task<ApiResponse<string>> Create()
     {
         await authenticationStateProvider.GetAuthenticationStateAsync();
         return await httpClientService.PostAsJsonAsync<string>("trainings", createCommand);

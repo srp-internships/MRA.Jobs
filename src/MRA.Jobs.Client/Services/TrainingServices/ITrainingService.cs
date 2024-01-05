@@ -10,7 +10,7 @@ namespace MRA.Jobs.Client.Services.TrainingServices;
 
 public interface ITrainingService
 {
-    Task<ApiResponse> Create();
+    Task<ApiResponse<string>> Create();
     Task<ApiResponse> Update(string slug);
     Task<ApiResponse> Delete(string slug);
     Task<ApiResponse<PagedList<TrainingVacancyListDto>>> GetAll();

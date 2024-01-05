@@ -223,7 +223,6 @@ public partial class InternshipVacanciesPage
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error: {ex}");
             Snackbar.Add($"Server is not responding, try later", Severity.Error);
             _serverError = true;
             StateHasChanged();

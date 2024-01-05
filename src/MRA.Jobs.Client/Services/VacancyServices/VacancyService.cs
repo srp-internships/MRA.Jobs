@@ -77,9 +77,9 @@ public class VacancyService(JobsApiHttpClientService httpClient, IConfiguration 
     }
 
  
-    public async Task<ApiResponse> OnSaveCreateClick()
+    public async Task<ApiResponse<string>> OnSaveCreateClick()
     {
-        return await httpClient.PostAsJsonAsync<CreateJobVacancyCommand>("jobs", creatingNewJob);
+        return await httpClient.PostAsJsonAsync<string>("jobs", creatingNewJob);
     }
 
     public async Task<List<JobVacancyListDto>> GetJobs()
