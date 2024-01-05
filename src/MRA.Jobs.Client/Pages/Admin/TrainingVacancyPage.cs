@@ -215,7 +215,7 @@ public partial class TrainingVacancyPage
             var categoriesResponse = await CategoryService.GetAllCategory();
             if (categoriesResponse.Success)
             {
-                _categories = categoriesResponse.Result;
+                _categories = categoriesResponse.Result.Items;
             }
             else
             {

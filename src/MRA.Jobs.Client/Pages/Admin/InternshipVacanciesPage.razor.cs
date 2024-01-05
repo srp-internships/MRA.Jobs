@@ -204,7 +204,7 @@ public partial class InternshipVacanciesPage
             var internshipsResponse = await InternshipService.GetAll();
             if (internshipsResponse.Success)
             {
-                _internships = internshipsResponse.Result;
+                _internships = internshipsResponse.Result.Items;
             }
             else
             {
@@ -214,16 +214,17 @@ public partial class InternshipVacanciesPage
             var categoriesResponse = await CategoryService.GetAllCategory();
             if (categoriesResponse.Success)
             {
-                _categories = categoriesResponse.Result;
+                _categories = categoriesResponse.Result.Items;
             }
             else
             {
                 Snackbar.Add($"Error loading categories: {categoriesResponse.Error}", Severity.Error);
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Snackbar.Add("Server is not responding, try later", Severity.Error);
+            Console.WriteLine($"Error: {ex}");
+            Snackbar.Add($"Server is not responding, try later", Severity.Error);
             _serverError = true;
             StateHasChanged();
         }

@@ -1,6 +1,6 @@
 ﻿namespace MRA.Jobs.Client.Services.HttpClients;
 
-public interface IHttpClientService
+public interface IHttpClientServiceBase
 {
     Task<ApiResponse<T>> PostAsJsonAsync<T>(string url, object content);
 
@@ -10,3 +10,5 @@ public interface IHttpClientService
 
     Task<ApiResponse> DeleteAsync(string url);
 }
+
+

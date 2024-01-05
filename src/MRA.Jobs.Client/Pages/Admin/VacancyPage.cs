@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using BlazorMonaco;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
@@ -194,8 +195,9 @@ public partial class VacancyPage
             await LoadData();
             Clear();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine($"Eror: {ex}");
             Snackbar.Add("Server is not responding, please try later", Severity.Error);
         }
     }

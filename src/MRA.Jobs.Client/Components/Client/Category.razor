@@ -32,7 +32,7 @@
 		var response = await CategoryService.GetAllCategory();
 		if (response.Success)
 		{
-			_categoryResponses = response.Result;
+			_categoryResponses = response.Result.Items;
 		}
 
 	}

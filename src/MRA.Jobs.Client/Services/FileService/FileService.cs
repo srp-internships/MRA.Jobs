@@ -7,19 +7,9 @@ using MudBlazor;
 
 namespace MRA.Jobs.Client.Services.FileService;
 
-public class FileService : IFileService
+public class FileService(JobsApiHttpClientService httpClientService, ISnackbar snackbar)
+    : IFileService
 {
-    private readonly IHttpClientService _httpClientService;
-    private readonly ISnackbar _snackbar;
-    private readonly IConfiguration _configuration;
-
-    public FileService(IHttpClientService httpClientService, ISnackbar snackbar, IConfiguration configuration)
-    {
-        _httpClientService = httpClientService;
-        _snackbar = snackbar;
-        _configuration = configuration;
-    }
-
     public async Task<string> UploadAsync(IBrowserFile file)
     {
         var fileContent = new StreamContent(file.OpenReadStream()); //todo check file size;
@@ -27,14 +17,14 @@ public class FileService : IFileService
         var content = new MultipartFormDataContent();
         content.Add(fileContent, "\"file\"", file.Name);
 
-        var fileUploadResponse = await _httpClientService.PostAsJsonAsync<FileUploadResponse>($"{_configuration["HttpClient:BaseAddress"]}api/File/upload", content);
+        var fileUploadResponse = await httpClientService.PostAsJsonAsync<FileUploadResponse>("api/File/upload", content);
         switch (fileUploadResponse.HttpStatusCode)
         {
             case HttpStatusCode.OK:
-                _snackbar.Add("CV upload success", Severity.Success);
+                snackbar.Add("CV upload success", Severity.Success);
                 return fileUploadResponse.Result.Key;
             default:
-                _snackbar.Add("CV upload error", Severity.Error);
+                snackbar.Add("CV upload error", Severity.Error);
                 return "";
         }
     }

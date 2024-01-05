@@ -77,7 +77,8 @@ builder.Services.AddAuthorizationCore(s =>
 });
 
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<IHttpClientService, HttpClientService>();
+builder.Services.AddScoped<JobsApiHttpClientService>();
+builder.Services.AddScoped<IdentityApiHttpClientService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();

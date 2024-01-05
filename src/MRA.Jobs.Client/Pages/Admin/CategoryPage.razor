@@ -54,7 +54,7 @@ else
 			var response = await CService.GetAllCategory();
 			if (response.Success)
 			{
-				_category = response.Result;
+				_category = response.Result.Items;
 			}
 			
 		}

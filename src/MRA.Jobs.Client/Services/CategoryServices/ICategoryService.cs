@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
+﻿using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory;
@@ -14,7 +15,7 @@ public interface ICategoryService
     UpdateVacancyCategoryCommand updatingEntity { get; set; }
     DeleteVacancyCategoryCommand deletingEntity { get; set; }
     CreateVacancyCategoryCommand creatingEntity { get; set; }
-    Task<ApiResponse<List<CategoryResponse>>> GetAllCategory();
+    Task<ApiResponse<PagedList<CategoryResponse>>> GetAllCategory();
     Task OnSaveUpdateClick();
     Task OnDeleteClick(string slug);
     Task OnSaveCreateClick();

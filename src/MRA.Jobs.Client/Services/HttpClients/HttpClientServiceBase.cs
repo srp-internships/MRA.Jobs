@@ -2,19 +2,16 @@
 using MRA.Jobs.Client.Services.Auth;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using AltairCA.Blazor.WebAssembly.Cookie;
+using MRA.Identity.Application.Contract.User.Responses;
 
 namespace MRA.Jobs.Client.Services.HttpClients;
 
-public class HttpClientService : IHttpClientService
+public abstract class HttpClientServiceBase(IHttpClientFactory httpClientFactory, IAltairCABlazorCookieUtil cookieUtil,
+    IConfiguration configuration) : IHttpClientServiceBase
 {
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly ILocalStorageService _localStorageService;
-    public HttpClientService(IHttpClientFactory httpClientFactory, ILocalStorageService localStorageService)
-    {
-        _httpClientFactory = httpClientFactory;
-        _localStorageService = localStorageService;
-    }
-
+    protected abstract string ConfigKey { get; }
+    private string BaseAddress => configuration[ConfigKey];
     public async Task<ApiResponse<T>> GetAsJsonAsync<T>(string url, object content = null)
     {
         try
@@ -33,8 +30,8 @@ public class HttpClientService : IHttpClientService
     {
         try
         {
-            using var _httpClient = await CreateHttpClient();
-            var response = await _httpClient.DeleteAsync(url);
+            using var httpClient = await CreateHttpClient();
+            var response = await httpClient.DeleteAsync(url);
             if (response.IsSuccessStatusCode)
                 return ApiResponse.BuildSuccess();
             return ApiResponse.BuildFailed("Error on sending response. Please try again later", response.StatusCode);
@@ -45,12 +42,12 @@ public class HttpClientService : IHttpClientService
         }
     }
 
-    public async Task<ApiResponse<T>> PostAsJsonAsync<T>(string url, object content)
+    public async Task<ApiResponse<T>> PostAsJsonAsync<T>(string url, Object content)
     {
         try
         {
-            using var _httpClient = await CreateHttpClient();
-            var response = await _httpClient.PostAsJsonAsync(url, content);
+            using var httpClient = await CreateHttpClient();
+            var response = await httpClient.PostAsJsonAsync(url, content);
             return await GetApiResponseAsync<T>(response);
         }
         catch (HttpRequestException ex)
@@ -78,8 +75,8 @@ public class HttpClientService : IHttpClientService
     {
         try
         {
-            using var _httpClient = await CreateHttpClient();
-            var response = await _httpClient.PutAsJsonAsync(url, content);
+            using var httpClient = await CreateHttpClient();
+            var response = await httpClient.PutAsJsonAsync(url, content);
             return await GetApiResponseAsync<T>(response);
         }
         catch (HttpRequestException ex)
@@ -90,10 +87,11 @@ public class HttpClientService : IHttpClientService
 
     private async Task<HttpClient> CreateHttpClient()
     {
-        var _httpClient = _httpClientFactory.CreateClient();
-        string token = await _localStorageService.GetItemAsync<string>(IAuthService.TokenLocalStorageKey);
-        if (!string.IsNullOrEmpty(token))
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        return _httpClient;
+        var httpClient = httpClientFactory.CreateClient();
+        httpClient.BaseAddress= new Uri(BaseAddress);
+        JwtTokenResponse authToken = await cookieUtil.GetValueAsync<JwtTokenResponse>("authToken");
+        if (authToken!=null)
+            httpClient.DefaultRequestHeaders.Authorization =  new AuthenticationHeaderValue("Bearer", authToken.AccessToken.Replace("\"", ""));
+        return httpClient;
     }
 }
