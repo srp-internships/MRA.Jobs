@@ -17,7 +17,7 @@ public interface IVacancyService
     //  CreateVacancyCategoryCommand creatingEntity { get; set; }
     public int FilteredVacanciesCount { get; set; }
     CreateJobVacancyCommand creatingNewJob { get; set; } 
-    Task<List<JobVacancyListDto>> GetAllVacancy();
+   
     /* Renamed version of the upper method name with a typo */
     // Task<List<JobVacancyListDto>> GetAllVacancies();
     // Task<List<JobVacancyListDto>> GetFilteredVacancies(string title = "", string categoryName = "All categories", int page = 1);

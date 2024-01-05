@@ -59,7 +59,7 @@ public static class DependencyInitializer
             services.AddFileSmsService();
         }
         else
-        {
+        {   
             services.AddOsonSmsService();
         }
 

@@ -2,6 +2,7 @@
 
 public interface IUserHttpContextAccessor
 {
+    bool IsAuthenticated();
     Guid GetUserId();
     String GetUserName();
 

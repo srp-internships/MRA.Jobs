@@ -15,7 +15,7 @@ namespace MRA.Jobs.Client.Services.VacancyServices;
 public class VacancyService(HttpClient http) : IVacancyService
 {
     private List<CategoryResponse> Categories { get; set; }
-    
+
     public List<JobVacancyListDto> Vacanceies { get; set; }
     public int FilteredVacanciesCount { get; set; } = 0;
 
@@ -33,13 +33,6 @@ public class VacancyService(HttpClient http) : IVacancyService
 
     public event Action OnChange;
     public string guidId { get; set; } = string.Empty;
-
-    public async Task<List<JobVacancyListDto>> GetAllVacancy()
-    {
-        var result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>("jobs");
-        Vacanceies = result.Items;
-        return Vacanceies;
-    }
 
     public int PagesCount { get; set; }
     const float PageSize = 10f;
@@ -125,7 +118,8 @@ public class VacancyService(HttpClient http) : IVacancyService
 
     public async Task<List<JobVacancyListDto>> GetJobs()
     {
-        var result = await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>("jobs");
+        var result =
+            await http.GetFromJsonAsync<PagedList<JobVacancyListDto>>("jobs");
         return result.Items;
     }
 

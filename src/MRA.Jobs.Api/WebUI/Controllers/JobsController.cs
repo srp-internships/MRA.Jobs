@@ -1,14 +1,12 @@
 ﻿using System.Runtime.InteropServices.JavaScript;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.DeleteJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
-using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Infrastructure.Identity;
 using AddTagsToJobVacancyCommand = MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags.AddTagsToJobVacancyCommand;
 
@@ -20,13 +18,6 @@ namespace MRA.Jobs.Web.Controllers;
 [Authorize(ApplicationPolicies.Reviewer)]
 public class JobsController : ApiControllerBase
 {
-    private readonly ILogger<JobsController> _logger;
-
-    public JobsController(ILogger<JobsController> logger)
-    {
-        _logger = logger;
-    }
-
     [HttpGet]
     [AllowAnonymous]
     public async Task<IActionResult> Get([FromQuery] GetJobsQueryOptions query)
