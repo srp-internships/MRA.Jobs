@@ -37,7 +37,8 @@ public class InternshipService(JobsApiHttpClientService httpClientService)
 
     public async Task<ApiResponse<PagedList<InternshipVacancyListResponse>>> GetAll()
     {
-        return await httpClientService.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>("internships");
+        var response= await httpClientService.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>("internships");
+        return response;
     }
 
     public async Task<InternshipVacancyResponse> GetBySlug(string slug)

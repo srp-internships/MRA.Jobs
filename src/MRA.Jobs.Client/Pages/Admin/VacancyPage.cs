@@ -1,16 +1,13 @@
-using System.Diagnostics;
 using BlazorMonaco;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
-using MRA.Jobs.Client.Pages.Applicant;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Pages.Admin;
@@ -163,6 +160,7 @@ public partial class VacancyPage
         {
             try
             {
+                await VService.OnDelete(slug);
 
                 var response = await VService.OnDelete(slug);
                 if (response.Success)
@@ -227,9 +225,8 @@ public partial class VacancyPage
             await LoadData();
             Clear();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine($"Eror: {ex}");
             Snackbar.Add("Server is not responding, please try later", Severity.Error);
         }
     }
@@ -242,20 +239,17 @@ public partial class VacancyPage
 
     public async Task OnEditClick(string slug)
     {
-
         var vacancy = await VService.GetBySlug(slug);
-        if (vacancy != null)
+        _createOrEditHeader = $"Edit {vacancy.Title}";
+        VService.creatingNewJob.Title = vacancy.Title;
+        VService.creatingNewJob.ShortDescription = vacancy.ShortDescription;
+        VService.creatingNewJob.Description = vacancy.Description;
+        VService.creatingNewJob.RequiredYearOfExperience = vacancy.RequiredYearOfExperience;
+        VService.creatingNewJob.WorkSchedule = vacancy.WorkSchedule;
+        if (vacancy.CategoryId.HasValue)
         {
-            _createOrEditHeader = $"Edit {vacancy.Title}";
-            VService.creatingNewJob.Title = vacancy.Title;
-            VService.creatingNewJob.ShortDescription = vacancy.ShortDescription;
-            VService.creatingNewJob.Description = vacancy.Description;
-            VService.creatingNewJob.RequiredYearOfExperience = vacancy.RequiredYearOfExperience;
-            VService.creatingNewJob.WorkSchedule = vacancy.WorkSchedule;
-            if (vacancy.CategoryId.HasValue)
-            {
-                VService.creatingNewJob.CategoryId = vacancy.CategoryId.Value;
-            }
+            VService.creatingNewJob.CategoryId = vacancy.CategoryId.Value;
+        }
 
         VService.creatingNewJob.EndDate = vacancy.EndDate;
         VService.creatingNewJob.PublishDate = vacancy.PublishDate;
@@ -269,9 +263,12 @@ public partial class VacancyPage
         ).ToList();
         _tasks = vacancy.VacancyTasks.Select(v =>
                 new VacancyTaskDto
-                    {
-                        Title = v.Title, Description = v.Description, Template = v.Template, Test = v.Test
-                    })
+                {
+                    Title = v.Title,
+                    Description = v.Description,
+                    Template = v.Template,
+                    Test = v.Test
+                })
             .ToList();
     }
 

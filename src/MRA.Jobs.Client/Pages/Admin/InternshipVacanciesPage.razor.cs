@@ -22,7 +22,7 @@ public partial class InternshipVacanciesPage
 
     private async Task<TableData<InternshipVacancyListResponse>> ServerReload(TableState state)
     {
-        IEnumerable<InternshipVacancyListResponse> data = await InternshipService.GetAll();
+        IEnumerable<InternshipVacancyListResponse> data = (await InternshipService.GetAll()).Result.Items;
         await Task.Delay(100);
         data = data.Where(element =>
         {

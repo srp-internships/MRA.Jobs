@@ -21,7 +21,7 @@ public partial class TrainingVacancyPage
 
     private async Task<TableData<TrainingVacancyListDto>> ServerReload(TableState state)
     {
-        IEnumerable<TrainingVacancyListDto> data = (await TrainingService.GetAll()).Items;
+        IEnumerable<TrainingVacancyListDto> data = (await TrainingService.GetAll()).Result.Items;
         await Task.Delay(100);
         data = data.Where(element =>
         {
