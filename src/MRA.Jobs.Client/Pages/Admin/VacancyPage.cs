@@ -4,8 +4,6 @@ using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
-using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
-using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
@@ -19,9 +17,42 @@ namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class VacancyPage
 {
+    private IEnumerable<JobVacancyListDto> _pagedData;
+    private MudTable<JobVacancyListDto> _table;
+
+    private int _totalItems;
+    private string _searchString;
+
+    private async Task<TableData<JobVacancyListDto>> ServerReload(TableState state)
+    {
+        IEnumerable<JobVacancyListDto> data = await VService.GetJobs();
+        await Task.Delay(100);
+        data = data.Where(element =>
+        {
+            if (string.IsNullOrWhiteSpace(_searchString))
+                return true;
+            if (element.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }).ToArray();
+        _totalItems = data.Count();
+
+        _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+        return new TableData<JobVacancyListDto>() { TotalItems = _totalItems, Items = _pagedData };
+    }
+
+    private void OnSearch(string text)
+    {
+        _searchString = text;
+        _table.ReloadServerData();
+    }
+
+
     private string _createOrEditHeader = "New Job vacancy";
     private bool _serverError;
-    private readonly ApplicationStatusDto.WorkSchedule[] _value2Items = Enum.GetValues(typeof(ApplicationStatusDto.WorkSchedule)).Cast<ApplicationStatusDto.WorkSchedule>().ToArray();
+
+    private readonly ApplicationStatusDto.WorkSchedule[] _value2Items = Enum
+        .GetValues(typeof(ApplicationStatusDto.WorkSchedule)).Cast<ApplicationStatusDto.WorkSchedule>().ToArray();
 
 
     private List<CategoryResponse> _category;
@@ -42,7 +73,6 @@ public partial class VacancyPage
     private StandaloneCodeEditor _editorTemplate = null!;
     private StandaloneCodeEditor _editorTest = null!;
 
-    private readonly GetJobVacancyBySlugQuery getJobVacancyBySlug = new();
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
         if (editor == _editorTest)
@@ -86,8 +116,10 @@ public partial class VacancyPage
 
     private async Task EditorOnDidInit()
     {
-        await _editorTest.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
-        await _editorTemplate.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
+        await _editorTest.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH,
+            _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
+        await _editorTemplate.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH,
+            _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
 
         var newDecorations = new[]
         {
@@ -225,29 +257,24 @@ public partial class VacancyPage
                 VService.creatingNewJob.CategoryId = vacancy.CategoryId.Value;
             }
 
-            VService.creatingNewJob.EndDate = vacancy.EndDate;
-            VService.creatingNewJob.PublishDate = vacancy.PublishDate;
-            _selectedCategory = _category.First(c => c.Id == vacancy.CategoryId).Name;
-            _panelOpenState = true;
-            _isInserting = true;
-            _isUpdating = false;
-            _updateSlug = slug;
-            _questions = vacancy.VacancyQuestions.Select(v =>
-                new VacancyQuestionDto
-                {
-                    Question = v.Question
-                }
-            ).ToList();
-            _tasks = vacancy.VacancyTasks.Select(v =>
+        VService.creatingNewJob.EndDate = vacancy.EndDate;
+        VService.creatingNewJob.PublishDate = vacancy.PublishDate;
+        _selectedCategory = _category.First(c => c.Id == vacancy.CategoryId).Name;
+        _panelOpenState = true;
+        _isInserting = true;
+        _isUpdating = false;
+        _updateSlug = slug;
+        _questions = vacancy.VacancyQuestions.Select(v =>
+            new VacancyQuestionDto { Question = v.Question }
+        ).ToList();
+        _tasks = vacancy.VacancyTasks.Select(v =>
                 new VacancyTaskDto
-                {
-                    Title = v.Title,
-                    Description = v.Description,
-                    Template = v.Template,
-                    Test = v.Test
-                }).ToList();
-        }
+                    {
+                        Title = v.Title, Description = v.Description, Template = v.Template, Test = v.Test
+                    })
+            .ToList();
     }
+
     private void RemoveQuestion(string question)
     {
         var q = _questions.FirstOrDefault(t => t.Question == question);
@@ -320,9 +347,11 @@ public partial class VacancyPage
         _tasks.Clear();
         _panelOpenState = false;
     }
+
     private async Task NewQuestionAsync()
     {
-        var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
+        var res =
+            (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
         _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }

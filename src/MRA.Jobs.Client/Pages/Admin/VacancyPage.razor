@@ -1,6 +1,7 @@
 ﻿@page "/dashboard/jobs"
 @layout Dashboard
 @using BlazorMonaco.Editor
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @inject IVacancyService VService
 @inject IJSRuntime JsRuntime
 @inject IDialogService DialogService
@@ -231,26 +232,34 @@ else
             </MudItem>
         </MudGrid>
 
-        <MudTable Items="@_vacancies" hidden="@_panelOpenState" Breakpoint="Breakpoint.Md">
+        <MudTable ServerData="@(new Func<TableState, Task<TableData<JobVacancyListDto>>>(ServerReload))" hidden="@_panelOpenState"
+                  Breakpoint="Breakpoint.Sm" Dense="true" Hover="true" @ref="_table">
+            <ToolBarContent>
+                <MudSpacer/>
+                <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search jobs" Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Immediate="true">
+                </MudTextField>
+            </ToolBarContent>
             <HeaderContent>
                 <MudTh>
                     <strong>Title</strong>
                 </MudTh>
                 <MudTh>
-                    <strong>ShortDescription</strong>
+                    <strong>Short Description</strong>
                 </MudTh>
                 <MudTh>
                     <strong>Category</strong>
                 </MudTh>
                 <MudTh>
-                    <strong>PublishDate</strong>
+                    <strong>Publish Date</strong>
                 </MudTh>
                 <MudTh>
-                    <strong>EndDate</strong>
+                    <strong>End Date</strong>
                 </MudTh>
                 <MudTh>
-                    <strong>WorkSchedule</strong>
+                    <strong>Work Schedule</strong>
                 </MudTh>
+                <MudTh></MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
@@ -262,11 +271,22 @@ else
                 <MudTd DataLabel="Publish date">@context.PublishDate.ToString("D")</MudTd>
                 <MudTd DataLabel="End date">@context.EndDate.ToString("D")</MudTd>
                 <MudTd DataLabel="Work schedule">@context.WorkSchedule</MudTd>
-                <MudTd DataLabel="Action">
-                    <MudIconButton @onclick="() => OnDeleteClick(context.Slug)" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Medium"/>
+                <MudTd>
                     <MudIconButton @onclick="() => OnEditClick(context.Slug)" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium"/>
                 </MudTd>
+                <MudTd>
+                    <MudIconButton @onclick="() => OnDeleteClick(context.Slug)" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Medium"/>
+                </MudTd>
             </RowTemplate>
+            <NoRecordsContent>
+                <MudText>No matching records found</MudText>
+            </NoRecordsContent>
+            <LoadingContent>
+                <MudText>Loading...</MudText>
+            </LoadingContent>
+            <PagerContent>
+                <MudTablePager/>
+            </PagerContent>
         </MudTable>
     }
 }

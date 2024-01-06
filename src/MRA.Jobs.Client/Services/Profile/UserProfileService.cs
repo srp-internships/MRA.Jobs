@@ -62,7 +62,7 @@ public class UserProfileService(IdentityHttpClient identityHttpClient) : IUserPr
         return result;
     }
 
-    public async Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command)
+    public async Task<HttpResponseMessage> CreateEducationAsync(CreateEducationDetailCommand command)
     {
         var response = await identityHttpClient.PostAsJsonAsync("Profile/CreateEducationDetail", command);
         return response;

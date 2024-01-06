@@ -1,8 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternships;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
-using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
-using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
@@ -17,8 +15,11 @@ public interface IVacancyService
     List<JobVacancyListDto> Vacancies { get; set; }
  
     public int FilteredVacanciesCount { get; set; }
-    CreateJobVacancyCommand creatingNewJob { get; set; }
-    Task<List<JobVacancyListDto>> GetAllVacancy();
+    CreateJobVacancyCommand creatingNewJob { get; set; } 
+   
+    /* Renamed version of the upper method name with a typo */
+    // Task<List<JobVacancyListDto>> GetAllVacancies();
+    // Task<List<JobVacancyListDto>> GetFilteredVacancies(string title = "", string categoryName = "All categories", int page = 1);
     Task<List<CategoryResponse>> GetAllCategory();
 
     Task<List<JobVacancyListDto>> GetVacancyByTitle(string title);

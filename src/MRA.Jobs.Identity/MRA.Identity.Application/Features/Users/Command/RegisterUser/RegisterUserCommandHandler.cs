@@ -7,43 +7,36 @@ using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Domain.Entities;
+using Newtonsoft.Json;
 
 namespace MRA.Identity.Application.Features.Users.Command.RegisterUser;
 
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Guid>
+public class RegisterUserCommandHandler(
+    UserManager<ApplicationUser> userManager,
+    IApplicationDbContext context,
+    IEmailVerification emailVerification,
+    RoleManager<ApplicationRole> roleManager,
+    ISmsCodeChecker codeChecker)
+    : IRequestHandler<RegisterUserCommand, Guid>
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IApplicationDbContext _context;
-    private readonly IEmailVerification _emailVerification;
-    private readonly RoleManager<ApplicationRole> _roleManager;
-    private readonly ISmsCodeChecker _codeChecker;
-
-    public RegisterUserCommandHandler(UserManager<ApplicationUser> userManager, IApplicationDbContext context,
-        IEmailVerification emailVerification, RoleManager<ApplicationRole> roleManager, ISmsCodeChecker codeChecker)
-    {
-        _userManager = userManager;
-        _context = context;
-        _emailVerification = emailVerification;
-        _roleManager = roleManager;
-        _codeChecker = codeChecker;
-    }
-
     public async Task<Guid> Handle(RegisterUserCommand request,
         CancellationToken cancellationToken)
     {
 
-        var exitingUser = await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber || u.Email == request.Email);
+        var exitingUser = await context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber || u.Email == request.Email, cancellationToken: cancellationToken);
         if (exitingUser != null)
         {
             if (exitingUser.Email == request.Email && exitingUser.PhoneNumber == request.PhoneNumber)
             {
                 throw new DuplicateWaitObjectException($"Email {request.Email} and Phone Number {request.PhoneNumber} are not available!");
             }
-            else if (exitingUser.PhoneNumber == request.PhoneNumber)
+
+            if (exitingUser.PhoneNumber == request.PhoneNumber)
             {
                 throw new DuplicateWaitObjectException($"Phone Number {request.PhoneNumber} is not available!");
             }
-            else if (exitingUser.Email == request.Email)
+
+            if (exitingUser.Email == request.Email)
             {
                 throw new DuplicateWaitObjectException($"Email {request.Email} is not available!");
             }
@@ -62,41 +55,40 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
             LastName = request.LastName,
             DateOfBirth = new DateTime(2000, 1, 1)
         };
-        bool phoneVerified = _codeChecker.VerifyPhone(request.VerificationCode, request.PhoneNumber);
+        bool phoneVerified = codeChecker.VerifyPhone(request.VerificationCode, request.PhoneNumber);
         if (phoneVerified) user.PhoneNumberConfirmed = true;
         else throw new ValidationException("Phone number is not verified");
 
-        IdentityResult result = await _userManager.CreateAsync(user, request.Password);
+        IdentityResult result = await userManager.CreateAsync(user, request.Password);
 
         if (!result.Succeeded)
         {
             throw new UnauthorizedAccessException(result.Errors.First().Description);
         }
 
-        await _emailVerification.SendVerificationEmailAsync(user);
+        await emailVerification.SendVerificationEmailAsync(user);
 
-        var role = await _context.Roles.FirstOrDefaultAsync(s => s.NormalizedName != null && s.NormalizedName.Contains(request.Role.ToUpper()), cancellationToken: cancellationToken);
+        var role = await context.Roles.FirstOrDefaultAsync(s => s.NormalizedName != null && s.NormalizedName.Contains(request.Role.ToUpper()), cancellationToken: cancellationToken);
         if (role == null)
         {
             role = new ApplicationRole
             {
                 Id = Guid.NewGuid(),
                 Name = request.Role,
-                NormalizedName = _roleManager.NormalizeKey(request.Role),
+                NormalizedName = roleManager.NormalizeKey(request.Role),
                 Slug = $"{request.Username}-{request.Role}",
             };
-            var roleResult = await _roleManager.CreateAsync(role);
+            var roleResult = await roleManager.CreateAsync(role);
             if (!roleResult.Succeeded)
             {
                 throw new ValidationException(roleResult.Errors.First().Description);
-
             }
         }
 
 
         var userRole = new ApplicationUserRole { UserId = user.Id, RoleId = role.Id, Slug = $"{user.UserName}-role" };
-        await _context.UserRoles.AddAsync(userRole, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.UserRoles.AddAsync(userRole, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
         await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
         cancellationToken);
         return user.Id;
@@ -135,7 +127,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
                 Slug = $"{username}-application"
             }
         };
-        await _context.UserClaims.AddRangeAsync(userClaims, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.UserClaims.AddRangeAsync(userClaims, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

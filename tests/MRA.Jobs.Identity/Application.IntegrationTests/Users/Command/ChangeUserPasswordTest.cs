@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc;
-using MRA.Identity.Api.Filters;
 using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 
 namespace MRA.Jobs.Application.IntegrationTests.Users.Command;
