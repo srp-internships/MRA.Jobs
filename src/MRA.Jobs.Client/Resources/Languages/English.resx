@@ -798,9 +798,6 @@
      <data name="ConverterService:HoursLeft">
         <value>hours left</value>
     </data>
-    <data name="ConverterService:TodayAt">
-        <value>Today at</value>
-    </data>
      <data name="ConverterService:Tomorrow">
         <value>Tomorrow</value>
     </data>
