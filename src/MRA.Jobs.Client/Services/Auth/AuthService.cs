@@ -5,30 +5,30 @@ using Microsoft.AspNetCore.Components;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Responses;
-using MRA.Jobs.Client.Identity;
 using MRA.Identity.Application.Contract.User.Commands.ChangePassword;
 using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
 using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 using MRA.Identity.Application.Contract.User.Queries.CheckUserDetails;
 using MRA.Jobs.Client.Services.Profile;
+using MRA.Jobs.Client.Services.HttpClients;
 
 namespace MRA.Jobs.Client.Services.Auth;
 
-public class AuthService(IdentityHttpClient identityHttpClient,
+public class AuthService(IdentityApiHttpClientService identityHttpClient,
         AuthenticationStateProvider authenticationStateProvider, NavigationManager navigationManager,
         IAltairCABlazorCookieUtil cookieUtil, LayoutService layoutService, IUserProfileService userProfileService)
     : IAuthService
 {
-    public async Task<HttpResponseMessage> ChangePassword(ChangePasswordUserCommand command)
+    public async Task<ApiResponse<bool>> ChangePassword(ChangePasswordUserCommand command)
     {
 
-        var result = await identityHttpClient.PutAsJsonAsync("Auth/ChangePassword", command);
+        var result = await identityHttpClient.PutAsJsonAsync<bool>("Auth/ChangePassword", command);
         return result;
     }
 
-    public async Task<HttpResponseMessage> IsAvailableUserPhoneNumber(IsAvailableUserPhoneNumberQuery query)
+    public async Task<ApiResponse<bool>> IsAvailableUserPhoneNumber(IsAvailableUserPhoneNumberQuery query)
     {
-        var result = await identityHttpClient.GetAsync($"Auth/IsAvailableUserPhoneNumber/{Uri.EscapeDataString(query.PhoneNumber)}");
+        var result = await identityHttpClient.GetAsJsonAsync<bool>($"Auth/IsAvailableUserPhoneNumber/{Uri.EscapeDataString(query.PhoneNumber)}");
         return result;
     }
 
@@ -37,10 +37,10 @@ public class AuthService(IdentityHttpClient identityHttpClient,
         string errorMessage = null;
         try
         {
-            var result = await identityHttpClient.PostAsJsonAsync("Auth/login", command);
-            if (result.IsSuccessStatusCode)
+            var result = await identityHttpClient.PostAsJsonAsync<JwtTokenResponse>("Auth/login", command);
+            if (result.Success)
             {
-                var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
+                var response = result.Result;
                 await cookieUtil.SetValueAsync("authToken", response);
                 await authenticationStateProvider.GetAuthenticationStateAsync();
                 layoutService.User = await userProfileService.Get();
@@ -49,9 +49,9 @@ public class AuthService(IdentityHttpClient identityHttpClient,
                 return null;
             }
 
-            if (result.StatusCode == HttpStatusCode.Unauthorized)
+            if (result.HttpStatusCode == HttpStatusCode.Unauthorized)
             {
-                errorMessage = (await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail;
+                errorMessage = result.Error;
             }
         }
         catch (HttpRequestException ex)
@@ -76,8 +76,8 @@ public class AuthService(IdentityHttpClient identityHttpClient,
             if (command.PhoneNumber.Length == 9) command.PhoneNumber = "+992" + command.PhoneNumber.Trim();
             else if (command.PhoneNumber.Length == 12 && command.PhoneNumber[0] != '+') command.PhoneNumber = "+" + command.PhoneNumber;
 
-            var result = await identityHttpClient.PostAsJsonAsync("Auth/register", command);
-            if (result.IsSuccessStatusCode)
+            var result = await identityHttpClient.PostAsJsonAsync<Guid>("Auth/register", command);
+            if (result.Success)
             {
                 await LoginUserAsync(new LoginUserCommand()
                 {
@@ -89,11 +89,11 @@ public class AuthService(IdentityHttpClient identityHttpClient,
 
                 return "";
             }
-            if (result.StatusCode is not (HttpStatusCode.Unauthorized or HttpStatusCode.BadRequest))
+            if (result.HttpStatusCode is not (HttpStatusCode.Unauthorized or HttpStatusCode.BadRequest))
                 return "server error, please try again later";
 
-            var response = await result.Content.ReadFromJsonAsync<CustomProblemDetails>();
-            return response.Detail;
+            return result.Error;
+         
         }
         catch (HttpRequestException ex)
         {
@@ -107,27 +107,27 @@ public class AuthService(IdentityHttpClient identityHttpClient,
         }
     }
 
-    public async Task<HttpResponseMessage> ResetPassword(ResetPasswordCommand command)
+    public async Task<ApiResponse<bool>> ResetPassword(ResetPasswordCommand command)
     {
-        var result = await identityHttpClient.PostAsJsonAsync("Auth/ResetPassword", command);
+        var result = await identityHttpClient.PostAsJsonAsync<bool>("Auth/ResetPassword", command);
         return result;
     }
 
-    public async Task<HttpResponseMessage> CheckUserName(string userName)
+    public async Task<ApiResponse> CheckUserName(string userName)
     {
-        var result = await identityHttpClient.GetAsync($"User/CheckUserName/{userName}");
+        var result = await identityHttpClient.GetAsJsonAsync<ApiResponse>($"User/CheckUserName/{userName}");
         return result;
     }
 
-    public async Task<HttpResponseMessage> CheckUserDetails(CheckUserDetailsQuery query)
+    public async Task<ApiResponse<UserDetailsResponse>> CheckUserDetails(CheckUserDetailsQuery query)
     {
-        var result = await identityHttpClient.GetAsync($"User/CheckUserDetails/{query.UserName}/{query.PhoneNumber}/{query.Email}");
+        var result = await identityHttpClient.GetAsJsonAsync<UserDetailsResponse>($"User/CheckUserDetails/{query.UserName}/{query.PhoneNumber}/{query.Email}");
         return result;
     }
 
-    public async Task<HttpResponseMessage> ResendVerificationEmail()
+    public async Task<ApiResponse> ResendVerificationEmail()
     {
-        var result = await identityHttpClient.PostAsync("Auth/VerifyEmail", null);
+        var result = await identityHttpClient.PostAsJsonAsync<ApiResponse>("Auth/VerifyEmail", null);
         return result;
     }
 }

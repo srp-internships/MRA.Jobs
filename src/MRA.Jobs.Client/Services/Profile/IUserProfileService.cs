@@ -17,28 +17,27 @@ public interface IUserProfileService
     Task<UserProfileResponse> Get(string userName = null);
     Task<string> Update(UpdateProfileCommand command);
 
-    Task<List<UserEducationResponse>> GetEducationsByUser();
-    Task<List<UserEducationResponse>> GetAllEducations();
+    Task<ApiResponse<List<UserEducationResponse>>> GetEducationsByUser();
+    Task<ApiResponse<List<UserEducationResponse>>> GetAllEducations();
 
-    Task<HttpResponseMessage> CreateEducationAsync(CreateEducationDetailCommand command);
+    Task<ApiResponse<bool>> CreateEducationAsync(CreateEducationDetailCommand command);
 
-    Task<HttpResponseMessage> UpdateEducationAsync(UpdateEducationDetailCommand command);
-    Task<HttpResponseMessage> DeleteEducationAsync(Guid id);
-    Task<HttpResponseMessage> DeleteExperienceAsync(Guid id);
+    Task<ApiResponse<Guid>> UpdateEducationAsync(UpdateEducationDetailCommand command);
+    Task<ApiResponse> DeleteEducationAsync(Guid id);
 
-    Task<List<UserExperienceResponse>> GetExperiencesByUser();
-    Task<List<UserExperienceResponse>> GetAllExperiences();
+    Task<ApiResponse<List<UserExperienceResponse>>> GetExperiencesByUser();
+    Task<ApiResponse<List<UserExperienceResponse>>> GetAllExperiences();
 
-    Task<HttpResponseMessage> CreateExperienceAsync(CreateExperienceDetailCommand command);
+    Task<ApiResponse<Guid>> CreateExperienceAsync(CreateExperienceDetailCommand command);
 
-    Task<HttpResponseMessage> UpdateExperienceAsync(UpdateExperienceDetailCommand command);
+    Task<ApiResponse<Guid>> UpdateExperienceAsync(UpdateExperienceDetailCommand command);
 
     Task<UserSkillsResponse> GetUserSkills(string userName = null);
-    Task<UserSkillsResponse> GetAllSkills();
-    Task<HttpResponseMessage> RemoveSkillAsync(string skill);
+    Task<ApiResponse<UserSkillsResponse>> GetAllSkills();
+    Task<ApiResponse> RemoveSkillAsync(string skill);
 
     Task<UserSkillsResponse> AddSkills(AddSkillsCommand command);
 
-    Task<bool> SendConfirmationCode(string phoneNumber);
-    Task<SmsVerificationCodeStatus> CheckConfirmationCode(string phoneNumber, int? code);
+    Task<ApiResponse<bool>> SendConfirmationCode(string phoneNumber);
+    Task<ApiResponse<SmsVerificationCodeStatus>> CheckConfirmationCode(string phoneNumber, int? code);
 }
