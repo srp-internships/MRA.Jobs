@@ -1,0 +1,13 @@
+﻿@page "/logout"
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager navigationManager
+@inject IConfiguration configuration
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        HttpContextAccessor.HttpContext?.Response.Cookies.Delete("authToken");
+        navigationManager.NavigateTo(configuration["HttpClient:JobsClient"]);
+    }
+}

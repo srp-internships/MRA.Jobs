@@ -1,0 +1,127 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.WebUtilities
+@using MRA.Identity.Application.Contract.User.Commands.LoginUser
+@using System.ComponentModel.DataAnnotations
+@using MRA.Identity.ClientWebApp.Components.Layout
+@layout MainLayout
+@inject IAuthService AuthService
+@inject ISnackbar Snackbar
+@inject IContentService ContentService
+@inject LayoutService LayoutService
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<MudGrid Justify="Justify.Center" Class="align-items-center">
+    <MudItem xs="12" sm="8" md="6" lg="3">
+        <EditForm FormName="login" Model="@_model" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator/>
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderActions>
+                        <ToolBarSettingsButtons/>
+                    </CardHeaderActions>
+                    <CardHeaderContent>
+                        <div class="d-flex flex-grow-1">
+                            <div class="flex-none d-flex justify-content-center">
+                                <a href="">
+                                    <MudImage Src="/images/srp_icon.png" Height="45"/><br/>
+                                </a>
+                            </div>
+                            <div class="flex-initial d-flex py-1">
+                                <MudText Typo="Typo.h4">
+                                    <strong>@ContentService["SignIn:SignIn"]</strong>
+                                </MudText>
+                            </div>
+                        </div>
+                        <MudText>
+                            @ContentService["SignIn:LabelDontAccount"] <MudLink Href="@($"registration?callback={callback}")"> @ContentService["SignIn:LinkSignUp"]</MudLink>
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTextField Label="@ContentService["SignIn:UserName"]"
+                                  @bind-Value="_model.Username" For="@(() => _model.Username)"/>
+
+                    <MudTextField Label="@ContentService["SignIn:Password"]"
+                                  @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
+                    <br/>
+                    <MudText >
+                        @ContentService["SignIn:LabelForgot"] <MudLink href="/resetPassword">@ContentService["SignIn:LinkReset"]</MudLink>
+                    </MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" FullWidth="true">
+                        @if (_processing)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                            <MudText Class="ms-2">Processing</MudText>
+                        }
+                        else
+                        {
+                            <MudText>@ContentService["SignIn:SignIn"]</MudText>
+                        }
+                    </MudButton>
+                </MudCardActions>
+                <div style="padding:5px">
+                    <div style="text-align: center;">
+                        @* <ExternalLoginCard Title="Continue With"/> *@
+
+                    </div> <br/>
+                </div>
+            </MudCard>
+
+        </EditForm>
+
+    </MudItem>
+</MudGrid>
+
+
+@code {
+    private readonly LoginForm _model = new();
+    private bool _processing;
+    string callback = string.Empty;
+
+    public class LoginForm
+    {
+        [Required]
+        public string Username { get; set; }
+
+        [Required]
+        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+        public string Password { get; set; }
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        _processing = true;
+        StateHasChanged();
+        var loginMessage = await AuthService.LoginUserAsync(new LoginUserCommand
+        {
+            Username = _model.Username,
+            Password = _model.Password
+        });
+        if (loginMessage != "" || loginMessage != null)
+            Snackbar.Add(loginMessage, MudBlazor.Severity.Error);
+        _processing = false;
+        StateHasChanged();
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("profile");
+            return;
+        }
+        var currentUri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("callback", out var param))
+        {
+            callback = param;
+        }
+        StateHasChanged();
+    }
+
+}

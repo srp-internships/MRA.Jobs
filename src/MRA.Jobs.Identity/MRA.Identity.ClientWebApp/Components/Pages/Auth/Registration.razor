@@ -1,0 +1,316 @@
+﻿@page "/registration"
+@using Microsoft.AspNetCore.WebUtilities
+@inject ISnackbar Snackbar
+@inject IUserProfileService UserProfileService
+@inject IAuthService AuthService
+@inject IContentService ContentService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<MudGrid Justify="Justify.Center" Class="align-items-center">
+    <MudItem xs="12" sm="8" md="6" lg="4">
+        @if (_step == 0)
+        {
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderActions>
+                        <ToolBarSettingsButtons/>
+                    </CardHeaderActions>
+                    <CardHeaderContent>
+                        <div class="d-flex flex-grow-1">
+                            <div class="flex-none d-flex justify-content-center">
+                                <a href="">
+                                    <MudImage Src="/images/srp_icon.png" Height="45"/><br/>
+                                </a>
+                            </div>
+                            <div class="flex-initial d-flex py-1">
+                                <MudText Typo="Typo.h4">
+                                    <b>@ContentService["SignUp:LabelSignUp"]</b>
+                                </MudText>
+                            </div>
+                        </div>
+                        <MudText >
+                            @ContentService["SignUp:LabelHaveAccount"]<MudLink Href="@($"login?callback={callback}")"> @ContentService["SignUp:LinkSignIn"]</MudLink>
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <EditForm Model="@_registerUser" OnInvalidSubmit="SendCode">
+                        <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                        <MudTextField Label="@ContentService["SignUp:FirstName"]" HelperText="@ContentService["SignUp:FirstName_HelperText"]"
+                                      @bind-Value="_registerUser.FirstName" For="@(() => _registerUser.FirstName)" InputType="InputType.Text"
+                                      OnBlur="@(_ => _registerUser.FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_registerUser.FirstName))"/>
+
+                        <MudTextField Label="@ContentService["SignUp:LastName"]" HelperText="@ContentService["SignUp:LastName_HelperText"]"
+                                      @bind-Value="_registerUser.LastName" For="@(() => _registerUser.LastName)" InputType="InputType.Text"
+                                      OnBlur="@(_ => _registerUser.LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_registerUser.LastName))"/>
+                        <MudTextField Label="@ContentService["SignUp:Email"]" Class="mt-3"
+                                      @bind-Value="_registerUser.Email" For="@(() => _registerUser.Email)" InputType="InputType.Email"
+                                      OnBlur="CheckUserName"/>
+
+                        <MudTextField Label="@ContentService["SignUp:Phone"]" HelperText="@ContentService["SignUp:Phone_HelperText"]" Class="mt-3"
+                                      @bind-Value="_registerUser.PhoneNumber" For="@(() => _registerUser.PhoneNumber)" InputType="InputType.Telephone"
+                                      OnBlur="CheckUserName"/>
+
+                        <MudTextField Label="@ContentService["SignUp:UserName"]"
+                                      @bind-Value="_registerUser.Username" For="@(() => _registerUser.Username)"
+                                      OnBlur="CheckUserName"/>
+
+                        <MudTextField Label="@ContentService["SignUp:Password"]" HelperText="@ContentService["SignUp:Password_HelperText"]" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
+                                      @bind-Value="_registerUser.Password" For="@(() => _registerUser.Password)"/>
+
+                        <MudTextField Label="@ContentService["SignUp:ConfirmPassword"]" HelperText="@ContentService["SignUp:ConfirmPassword_HelperText"]" Class="mt-3" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" InputType="@PasswordInput" Adornment="Adornment.End"
+                                      @bind-Value="_registerUser.ConfirmPassword" For="@(() => _registerUser.ConfirmPassword)"/>
+
+                    </EditForm>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" OnClick="SendCode" Color="Color.Primary"
+                               Class="ml-auto" FullWidth="true">
+                        @if (_processing)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                            <MudText Class="ms-2">Processing</MudText>
+                        }
+                        else
+                        {
+                            <MudText>@ContentService["SignUp:ButtonNext"]</MudText>
+                        }
+                    </MudButton>
+                </MudCardActions>
+                @* <ExternalLoginCard Title="@ContentService["SignUp:ExternalLoginCard"]"/> *@
+            </MudCard>
+        }
+        @if (_step == 1)
+        {
+            <MudCard>
+                <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" OnClick="Back"></MudIconButton>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText>
+                            <MudText>
+                                @((MarkupString)ContentService["signUp:messageText"].Replace("$phone$", $"<strong>{_registerUser.PhoneNumber}</strong>"))
+                            </MudText>
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTextField Label="@ContentService["SignUp:Code"]" @bind-Value="_code" Clearable/>
+                    <br/>
+                    <br/>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="ConfirmCode">
+                            @if (_processing)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                                <MudText Class="ms-2">Processing</MudText>
+                            }
+                            else
+                            {
+                                <MudText>@ContentService["SignUp:Apply"]</MudText>
+                            }
+                        </MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Info" FullWidth="true" OnClick="SendCode" Disabled="@_isResendDisabled">
+                                <MudText>@ContentService["SignUp:ResendCode"]</MudText>
+                        </MudButton>
+
+                    </MudCardActions>
+                    <div>
+                        <MudText Color="Color.Default">@_timeLeft @ContentService["SignUp:Secconds"]</MudText>
+                    </div>
+                </MudCardContent>
+            </MudCard>
+        }
+    </MudItem>
+</MudGrid>
+
+@code {
+    private readonly RegisterUserCommand _registerUser = new();
+    private FluentValidationValidator _fluentValidationValidator;
+    private int _step;
+    private bool _processing;
+    string callback = string.Empty;
+
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    void Back()
+    {
+        _step = 0;
+        StateHasChanged();
+    }
+
+    void ButtonTestclick()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+
+    private bool _isResendDisabled = true;
+    private int _timeLeft = 60;
+    private int _code;
+
+    private int _isAvailable = -1;
+
+
+    private async Task SendCode()
+    {
+        if (!(await _fluentValidationValidator!.ValidateAsync()) || _isAvailable == 0)
+        {
+            _processing = false;
+            return;
+        }
+
+        _processing = true;
+        StateHasChanged();
+        await CheckUserName();
+        var check = true;
+        if (_userDetailsResponse.IsEmailTaken)
+        {
+            Snackbar.Add("Email is not available", Severity.Error);
+            check = false;
+        }
+        if (_userDetailsResponse.IsUserNameTaken)
+        {
+            Snackbar.Add("User Name is not available", Severity.Error);
+            check = false;
+        }
+        if (_userDetailsResponse.IsPhoneNumberTaken)
+        {
+            Snackbar.Add("Phone Number is not available", Severity.Error);
+            check = false;
+        }
+
+        if (!check)
+        {
+            _processing = false;
+            return;
+        }
+
+        try
+        {
+            var response = await UserProfileService.SendConfirmationCode(_registerUser.PhoneNumber);
+
+            if (response)
+            {
+                _processing = false;
+                _step = 1;
+                _isResendDisabled = true;
+                _timeLeft = 60;
+                await StartCountdown();
+            }
+        }
+        catch (Exception)
+        {
+            ServerNotResponding();
+        }
+        finally
+        {
+            _processing = false;
+            StateHasChanged();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("profile");
+            return;
+        }
+        var currentUri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("callback", out var param))
+        {
+            callback = param;
+        }
+        StateHasChanged();
+    }
+
+    private void ServerNotResponding()
+    {
+        Snackbar.Add("Server is not responding, please try later", Severity.Error);
+    }
+
+    private async Task StartCountdown()
+    {
+        for (_timeLeft = 60; _timeLeft > 0; _timeLeft--)
+        {
+            await Task.Delay(1000);
+            StateHasChanged();
+        }
+        _isResendDisabled = false;
+    }
+
+    private async Task ConfirmCode()
+    {
+        _processing = true;
+        StateHasChanged();
+        try
+        {
+            SmsVerificationCodeStatus response = await UserProfileService.CheckConfirmationCode(_registerUser.PhoneNumber, _code);
+            if (response == SmsVerificationCodeStatus.CodeVerifyFailure)
+            {
+                Snackbar.Add("Code is incorrect or expired", Severity.Error);
+            }
+            else
+            {
+                _registerUser.VerificationCode = _code;
+                var error = await AuthService.RegisterUserAsync(_registerUser);
+                _processing = false;
+                Snackbar.Add(error, Severity.Error);
+            }
+        }
+        catch (Exception)
+        {
+            ServerNotResponding();
+        }
+        finally
+        {
+            _processing = false;
+            StateHasChanged();
+        }
+    }
+
+    private UserDetailsResponse _userDetailsResponse = new();
+
+    private async Task CheckUserName()
+    {
+        StateHasChanged();
+        try
+        {
+            var query = new CheckUserDetailsQuery()
+            {
+                UserName = _registerUser.Username,
+                PhoneNumber = _registerUser.PhoneNumber,
+                Email = _registerUser.Email
+            };
+            var result = await AuthService.CheckUserDetails(query);
+            if (result.IsSuccessStatusCode)
+            {
+                _userDetailsResponse = await result.Content.ReadFromJsonAsync<UserDetailsResponse>();
+            }
+        }
+        catch (Exception)
+        {
+            _isAvailable = -1;
+            ServerNotResponding();
+        }
+        StateHasChanged();
+    }
+
+}

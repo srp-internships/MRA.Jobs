@@ -54,5 +54,11 @@
             <LastGenOutput>Tajik.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
+    
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\css\app.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
+    </ItemGroup>
 
 </Project>
