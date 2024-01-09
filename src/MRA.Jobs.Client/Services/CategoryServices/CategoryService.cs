@@ -21,7 +21,10 @@ public class CategoryService(JobsApiHttpClientService httpClient)
 
     public async Task<ApiResponse<PagedList<CategoryResponse>>> GetAllCategory()
     {
-        return await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>("categories");
+        var result= await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>("categories");
+        Category = result.Result.Items;
+        creatingEntity = new() { Name = "" };
+        return result;
     }
 
     public void OnUpdateClick(CategoryResponse updateEntity)
@@ -39,22 +42,22 @@ public class CategoryService(JobsApiHttpClientService httpClient)
         {
             updatingEntity = null;
         }
-        var result2 = await httpClient.GetAsJsonAsync<List<CategoryResponse>>("categories");
-        Category = result2.Result;
+        var result2 = await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>("categories");
+        Category = result2.Result.Items;
     }
     public async Task OnDeleteClick(string slug)
     {
         await httpClient.DeleteAsync($"categories/{slug}");
-        var result = await httpClient.GetAsJsonAsync<List<CategoryResponse>>("categories");
-        Category = result.Result;
+        var result = await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>("categories");
+        Category = result.Result.Items;
     }
     public async Task OnSaveCreateClick()
     {
         if (creatingEntity is not null)
             await httpClient.PostAsJsonAsync<string>("categories", creatingEntity);
         creatingEntity.Name = string.Empty;
-        var result = await httpClient.GetAsJsonAsync<List<CategoryResponse>>("categories");
-        Category = result.Result;
+        var result = await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>("categories");
+        Category = result.Result.Items;
     }
 
     public async Task<ApiResponse<List<TrainingCategoriesResponce>>> GetTrainingCategories()
@@ -65,8 +68,8 @@ public class CategoryService(JobsApiHttpClientService httpClient)
 
     public async Task<List<TrainingCategoriesResponce>> GetTrainingCategoriesSinceCheckDate()
     {
-        var respons = await httpClient.GetAsJsonAsync<List<TrainingCategoriesResponce>>("categories/training");
-        return respons.Success ? respons.Result : null;
+        var response = await httpClient.GetAsJsonAsync<List<TrainingCategoriesResponce>>("categories/training");
+        return response.Success ? response.Result : null;
 
     }
 

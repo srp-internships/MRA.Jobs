@@ -74,7 +74,9 @@
 	protected override async Task OnInitializedAsync()
 	{
 		var app = await applicationService.GetApplicationDetails(Slug);
-		cvURL = $"{configuration["HttpClient:BaseAddress"]}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
+		string baseAddress = configuration["HttpClient:BaseAddress"];
+		cvURL = $"{baseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
+
 	}
 
 	private async Task ChangeStatus()

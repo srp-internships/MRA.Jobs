@@ -45,7 +45,7 @@ public class ApplicationService(
             }
             //set cv
 
-            var response = await httpClient.PostAsJsonAsync<Guid>($"{ApplicationsEndPoint}", application);
+            var response = await httpClient.PostAsJsonAsync<Guid>(ApplicationsEndPoint, application);
             switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:
@@ -84,7 +84,7 @@ public class ApplicationService(
     public async Task<PagedList<ApplicationListDto>> GetAllApplications()
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.GetAsJsonAsync<PagedList<ApplicationListDto>>($"{ApplicationsEndPoint}");
+        var response = await httpClient.GetAsJsonAsync<PagedList<ApplicationListDto>>(ApplicationsEndPoint);
         return response.Success ? response.Result : null;
     }
 
@@ -97,16 +97,17 @@ public class ApplicationService(
 
     public async Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug)
     {
-        await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.GetAsJsonAsync<ApplicationDetailsDto>($"{ApplicationsEndPoint}");
-        return response.HttpStatusCode == HttpStatusCode.OK ? response.Result : null;
+        var r=await authenticationState.GetAuthenticationStateAsync();
+        var response = await httpClient.GetAsJsonAsync<ApplicationDetailsDto>($"{ApplicationsEndPoint}/{applicationSlug}");
+        return response.Result;
     }
 
     public async Task<string> GetCvLinkAsync(string slug)
     {
         var applicationSlug = $"{await GetCurrentUserName()}-{slug}".ToLower().Trim();
         var app = await GetApplicationDetails(applicationSlug);
-        return app == null ? "" : $"{configuration["HttpClient:BaseAddress"]}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
+        string baseAddress = configuration["HttpClient:BaseAddress"];
+        return app == null ? "" : $"{baseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
     }
 
     private async Task<string> GetCurrentUserName()
