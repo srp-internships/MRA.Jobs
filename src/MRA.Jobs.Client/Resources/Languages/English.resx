@@ -465,6 +465,9 @@
     <data name="VacancyApplication:year(s)" xml:space="preserve">
     <value>year(s)</value>
   </data>
+    <data name="VacancyApplication:RequiredQuestionHaventAnswer" xml:space="preserve">
+    <value>You should give answer for required questions</value>
+  </data>
     <data name="VacancyApplication:Required year of experience" xml:space="preserve">
     <value>Required year of experience</value>
   </data>
@@ -794,9 +797,6 @@
     </data>
      <data name="ConverterService:HoursLeft">
         <value>hours left</value>
-    </data>
-    <data name="ConverterService:TodayAt">
-        <value>Today at</value>
     </data>
      <data name="ConverterService:Tomorrow">
         <value>Tomorrow</value>

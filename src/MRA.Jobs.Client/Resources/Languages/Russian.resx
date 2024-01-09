@@ -429,6 +429,9 @@
   <data name="VacancyApplication:Posted" xml:space="preserve">
     <value>Опубликовано</value>
   </data>
+  <data name="VacancyApplication:RequiredQuestionHaventAnswer" xml:space="preserve">
+    <value>Вы должны дать ответы на необходимые вопросы</value>
+  </data>
   <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
     <value>Детали вакансии</value>
   </data>

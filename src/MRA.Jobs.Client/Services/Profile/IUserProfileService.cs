@@ -20,7 +20,7 @@ public interface IUserProfileService
     Task<List<UserEducationResponse>> GetEducationsByUser();
     Task<List<UserEducationResponse>> GetAllEducations();
 
-    Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command);
+    Task<HttpResponseMessage> CreateEducationAsync(CreateEducationDetailCommand command);
 
     Task<HttpResponseMessage> UpdateEducationAsync(UpdateEducationDetailCommand command);
     Task<HttpResponseMessage> DeleteEducationAsync(Guid id);

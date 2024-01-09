@@ -60,6 +60,123 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application sent successfully!.
+        /// </summary>
+        internal static string Application_Success {
+            get {
+                return ResourceManager.GetString("Application:Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hour ago.
+        /// </summary>
+        internal static string ConverterService_HourAgo {
+            get {
+                return ResourceManager.GetString("ConverterService:HourAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hour left.
+        /// </summary>
+        internal static string ConverterService_HourLeft {
+            get {
+                return ResourceManager.GetString("ConverterService:HourLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hours ago.
+        /// </summary>
+        internal static string ConverterService_HoursAgo {
+            get {
+                return ResourceManager.GetString("ConverterService:HoursAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hours left.
+        /// </summary>
+        internal static string ConverterService_HoursLeft {
+            get {
+                return ResourceManager.GetString("ConverterService:HoursLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to min ago.
+        /// </summary>
+        internal static string ConverterService_MinAgo {
+            get {
+                return ResourceManager.GetString("ConverterService:MinAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to min left.
+        /// </summary>
+        internal static string ConverterService_MinLeft {
+            get {
+                return ResourceManager.GetString("ConverterService:MinLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to on.
+        /// </summary>
+        internal static string ConverterService_On {
+            get {
+                return ResourceManager.GetString("ConverterService:On", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to seconds ago.
+        /// </summary>
+        internal static string ConverterService_SecondsAgo {
+            get {
+                return ResourceManager.GetString("ConverterService:SecondsAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to seconds left.
+        /// </summary>
+        internal static string ConverterService_SecondsLeft {
+            get {
+                return ResourceManager.GetString("ConverterService:SecondsLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Today at.
+        /// </summary>
+        internal static string ConverterService_TodayAt {
+            get {
+                return ResourceManager.GetString("ConverterService:TodayAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tomorrow.
+        /// </summary>
+        internal static string ConverterService_Tomorrow {
+            get {
+                return ResourceManager.GetString("ConverterService:Tomorrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yesterday.
+        /// </summary>
+        internal static string ConverterService_Yesterday {
+            get {
+                return ResourceManager.GetString("ConverterService:Yesterday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action.
         /// </summary>
         internal static string Dashboard_Appilcations_Action {
@@ -182,6 +299,33 @@ namespace MRA.Jobs.Client.Resources.Languages {
         internal static string Dashboard_Appilcations_VacancyResponses {
             get {
                 return ResourceManager.GetString("Dashboard:Appilcations:VacancyResponses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add error may be you entered duplicate role.
+        /// </summary>
+        internal static string DuplicateRole {
+            get {
+                return ResourceManager.GetString("DuplicateRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting error.
+        /// </summary>
+        internal static string ErrorDelete {
+            get {
+                return ResourceManager.GetString("ErrorDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Google authorization failed. Please try again later..
+        /// </summary>
+        internal static string GoogleAuthFailed {
+            get {
+                return ResourceManager.GetString("GoogleAuthFailed", resourceCulture);
             }
         }
         
@@ -1303,6 +1447,15 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server is not responding, please try later.
+        /// </summary>
+        internal static string ServerIsNotResponding {
+            get {
+                return ResourceManager.GetString("ServerIsNotResponding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Don&apos;t have an account? Go to.
         /// </summary>
         internal static string SignIn_LabelDontAccount {
@@ -1564,6 +1717,15 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Something went wrong!.
+        /// </summary>
+        internal static string SomethingWentWrong {
+            get {
+                return ResourceManager.GetString("SomethingWentWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trainings.
         /// </summary>
         internal static string Trainings_Trainings {
@@ -1627,56 +1789,11 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deadline.
-        /// </summary>
-        internal static string VacanciesList_Deadline {
-            get {
-                return ResourceManager.GetString("VacanciesList:Deadline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Duration.
-        /// </summary>
-        internal static string VacanciesList_Duration {
-            get {
-                return ResourceManager.GetString("VacanciesList:Duration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to End date.
-        /// </summary>
-        internal static string VacanciesList_End_date {
-            get {
-                return ResourceManager.GetString("VacanciesList:End date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to month(s).
-        /// </summary>
-        internal static string VacanciesList_month_s_ {
-            get {
-                return ResourceManager.GetString("VacanciesList:month(s)", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to There are currently no job vacancies available. Please check back later :).
         /// </summary>
         internal static string VacanciesList_NoJobs {
             get {
                 return ResourceManager.GetString("VacanciesList:NoJobs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Posted.
-        /// </summary>
-        internal static string VacanciesList_Posted {
-            get {
-                return ResourceManager.GetString("VacanciesList:Posted", resourceCulture);
             }
         }
         
@@ -1735,24 +1852,6 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deadline.
-        /// </summary>
-        internal static string VacancyApplication_Deadline {
-            get {
-                return ResourceManager.GetString("VacancyApplication:Deadline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Duration.
-        /// </summary>
-        internal static string VacancyApplication_Duration {
-            get {
-                return ResourceManager.GetString("VacancyApplication:Duration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
         internal static string VacancyApplication_End_Date {
@@ -1767,24 +1866,6 @@ namespace MRA.Jobs.Client.Resources.Languages {
         internal static string VacancyApplication_Fees {
             get {
                 return ResourceManager.GetString("VacancyApplication:Fees", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to month(s).
-        /// </summary>
-        internal static string VacancyApplication_month_s_ {
-            get {
-                return ResourceManager.GetString("VacancyApplication:month(s)", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Posted.
-        /// </summary>
-        internal static string VacancyApplication_Posted {
-            get {
-                return ResourceManager.GetString("VacancyApplication:Posted", resourceCulture);
             }
         }
         
@@ -1812,6 +1893,15 @@ namespace MRA.Jobs.Client.Resources.Languages {
         internal static string VacancyApplication_Required_year_of_experience {
             get {
                 return ResourceManager.GetString("VacancyApplication:Required year of experience", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You should give answer for required questions.
+        /// </summary>
+        internal static string VacancyApplication_RequiredQuestionHaventAnswer {
+            get {
+                return ResourceManager.GetString("VacancyApplication:RequiredQuestionHaventAnswer", resourceCulture);
             }
         }
         

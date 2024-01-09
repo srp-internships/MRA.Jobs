@@ -4,7 +4,7 @@
 @inject IUserProfileService UserProfileService
 @inject IAuthService AuthService
 @inject IContentService ContentService
-@inject NavigationManager navigationManager
+@inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
@@ -112,15 +112,7 @@
                             }
                         </MudButton>
                         <MudButton Variant="Variant.Text" Color="Color.Info" FullWidth="true" OnClick="SendCode" Disabled="@_isResendDisabled">
-                            @if (_processing)
-                            {
-                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                                <MudText Class="ms-2">Processing</MudText>
-                            }
-                            else
-                            {
                                 <MudText>@ContentService["SignUp:ResendCode"]</MudText>
-                            }
                         </MudButton>
 
                     </MudCardActions>
@@ -231,17 +223,17 @@
         }
     }
 
-    protected async override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
         if (user.Identity.IsAuthenticated)
         {
-            navigationManager.NavigateTo("profile");
+            NavigationManager.NavigateTo("profile");
             return;
         }
-        var currentUri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var currentUri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("callback", out var param))
         {
             callback = param;
