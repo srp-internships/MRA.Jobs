@@ -1,12 +1,14 @@
 ﻿@using MRA.Jobs.Client.Identity
 @using AltairCA.Blazor.WebAssembly.Cookie
-@using MRA.Jobs.Client.Components.Buttons;
+@using MRA.Jobs.Client.Components.Admin
+@using MRA.Jobs.Client.Components.Extra
 @inherits LayoutComponentBase
 @inject LayoutService LayoutService
 
 <MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
+<ToolBar/>
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
     <br/>
     <br/>
@@ -14,81 +16,13 @@
         <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
             <Authorized>
                 <MudGrid>
-                    <MudItem xs="12" md="4" lg="3">
-                        <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                            <MudCard Class="rounded-lg mud-elevation-4">
-                                <MudCardHeader>
-                                    <CardHeaderActions>
-                                        <ToolBarSettingsButtons/>
-                                        <UserButton/>
-                                    </CardHeaderActions>
-                                    <CardHeaderContent>
-                                        <MudText> Dashboard </MudText>
-                                    </CardHeaderContent>
-                                </MudCardHeader>
-                                <MudCardContent>
-                                    <MudNavMenu Bordered="true">
-                                        <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
-                                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">Applications</MudNavLink>
-                                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">Jobs</MudNavLink>
-                                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">Internships</MudNavLink>
-                                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">Trainings</MudNavLink>
-
-                                        <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-                                            <MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
-                                        </AuthorizeView>
-                                    </MudNavMenu>
-                                </MudCardContent>
-                            </MudCard>
-                        </MudHidden>
-
-                        <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                            <MudText Typo="Typo.h6">
-                                <b>Dashboard</b>
-                            </MudText>
-                        </MudHidden>
-                        <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                            <MudCard Class="rounded-lg mud-elevation-4">
-                                <MudCardContent>
-                                    <MudExpansionPanel >
-                                        <TitleContent>
-                                            <MudStack Row="true" AlignItems="AlignItems.Center">
-                                                <MudHidden Breakpoint="Breakpoint.Xs">
-                                                    <MudText> Dashboard </MudText>
-                                                    <MudSpacer/>
-                                                </MudHidden>
-                                                <ToolBarSettingsButtons/>
-                                                <UserButton/>
-                                            </MudStack>
-                                        </TitleContent>
-                                        <ChildContent>
-                                            <MudNavMenu Bordered="true">
-                                                <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
-                                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">Applications</MudNavLink>
-                                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">Jobs</MudNavLink>
-                                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">Internships</MudNavLink>
-                                                <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">Trainings</MudNavLink>
-
-                                                <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-                                                    <MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
-                                                </AuthorizeView>
-                                            </MudNavMenu>
-                                        </ChildContent>
-
-                                    </MudExpansionPanel>
-                                </MudCardContent>
-                            </MudCard>
-                        </MudHidden>
-
-                    </MudItem>
-                    <MudItem xs="12" md="8" lg="9">
+                    <MudItem xs="12" Style="padding-top: 50px;">
                         @Body
                     </MudItem>
                 </MudGrid>
-
             </Authorized>
             <NotAuthorized>
-                Sorry, there's nothing at this address.
+                <NotFound/>
             </NotAuthorized>
         </AuthorizeView>
     </CascadingAuthenticationState>
