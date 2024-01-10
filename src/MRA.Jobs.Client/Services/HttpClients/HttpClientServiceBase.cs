@@ -1,7 +1,4 @@
-﻿using Blazored.LocalStorage;
-using MRA.Jobs.Client.Services.Auth;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using AltairCA.Blazor.WebAssembly.Cookie;
 using MRA.Identity.Application.Contract.User.Responses;
 
@@ -60,15 +57,15 @@ public abstract class HttpClientServiceBase(IHttpClientFactory httpClientFactory
     {
         if (response.IsSuccessStatusCode)
         {
-            if (typeof(T) == typeof(string) || typeof(T) == typeof(Guid) || typeof(T) == typeof(bool))
+            if (typeof(T) == typeof(string))
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
-                return ApiResponse<T>.BuildSuccess((T)Convert.ChangeType(responseContent, typeof(T)));
+                return ApiResponse<T>.BuildSuccess((T)Convert.ChangeType(responseContent, typeof(T)), response.StatusCode);
             }
             else
             {
                 var responseContent = await response.Content.ReadFromJsonAsync<T>();
-                return ApiResponse<T>.BuildSuccess(responseContent);
+                return ApiResponse<T>.BuildSuccess(responseContent, response.StatusCode);
             }
         }
         else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)

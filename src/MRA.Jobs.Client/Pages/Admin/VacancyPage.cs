@@ -160,8 +160,6 @@ public partial class VacancyPage
         {
             try
             {
-                await VService.OnDelete(slug);
-
                 var response = await VService.OnDelete(slug);
                 if (response.Success)
                 {

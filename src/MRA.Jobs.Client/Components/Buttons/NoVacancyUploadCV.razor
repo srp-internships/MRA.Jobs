@@ -93,7 +93,7 @@
     private bool _loading;
     private bool _isOpen;
 
-	private async void OpenDialog()
+	private async Task OpenDialog()
     {
         _loading = true;
 		await Load();
