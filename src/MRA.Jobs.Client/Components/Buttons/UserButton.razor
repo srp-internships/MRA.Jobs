@@ -65,14 +65,17 @@
 </CascadingAuthenticationState>
 
 
-    @code{
-    protected override async Task OnInitializedAsync()
+@code{
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        LayoutService.User = await UserProfileService.Get();
-        StateHasChanged();
+        if (firstRender)
+        {
+            LayoutService.User = await UserProfileService.Get();
+            StateHasChanged();
+        }
     }
-    
-    
+
 
     private async Task Logout()
     {

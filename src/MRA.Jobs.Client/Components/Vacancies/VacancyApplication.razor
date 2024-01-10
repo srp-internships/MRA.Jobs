@@ -250,48 +250,48 @@ else
 				</MudCard>
 			}
 
-			<br />
-			<MudCard Class="rounded-lg mud-elevation-4">
-				<MudCardHeader>
-					<CardHeaderContent>
-						<MudText Style="color:rgb(128,128,128)">
-							<b>CV and Apply </b>
-						</MudText>
-					</CardHeaderContent>
-				</MudCardHeader>
-				<MudCardActions>
-					<MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
-						<MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
-							<MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio>
-						</MudRadioGroup>
-						@if (_isUploadCvMode)
-					{
-						<MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@(Configuration["CvSettings:ExceptedFormats"]!)">
-							<ButtonTemplate Context="anotherContext">
-								<MudButton HtmlTag="label"
-										   Variant="Variant.Filled"
-										   Color="Color.Tertiary"
-										   StartIcon="@Icons.Material.Filled.CloudUpload"
-										   for="@anotherContext">
-									@ContentService["VacancyApplication:Upload your CV"]
-								</MudButton>
-							</ButtonTemplate>
-						</MudFileUpload>
-					}
-					<MudSpacer />
-					<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
-						@if (_processing)
-						{
-							<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-							<MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
-						}
-						else
-						{
-							<MudText>@ContentService["VacancyApplication:Apply"]</MudText>
-						}
-					</MudButton>
-				</MudCardActions>
-			</MudCard>
+        <br/>
+        <MudCard Class="rounded-lg mud-elevation-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Style="color:rgb(128,128,128)">
+                        <b>CV and Apply </b>
+                    </MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardActions>
+                <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
+                    <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
+                    <MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio>
+                </MudRadioGroup>
+                @if (_isUploadCvMode)
+                {
+                    <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@(Configuration["CvSettings:ExceptedFormats"]!)">
+                        <ButtonTemplate Context="anotherContext">
+                            <MudButton HtmlTag="label"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.CloudUpload"
+                                       for="@anotherContext">
+                                @ContentService["VacancyApplication:Upload your CV"]
+                            </MudButton>
+                        </ButtonTemplate>
+                    </MudFileUpload>
+                }
+                <MudSpacer/>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
+                    @if (_processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                        <MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
+                    }
+                    else
+                    {
+                        <MudText>@ContentService["VacancyApplication:Apply"]</MudText>
+                    }
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
 
 		</EditForm>
 	</MudContainer>

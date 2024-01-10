@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Microsoft.AspNetCore.Components.Authorization;
 using MRA.Identity.Application.Contract.Educations.Command.Create;
 using MRA.Identity.Application.Contract.Educations.Command.Update;
 using MRA.Identity.Application.Contract.Educations.Responses;
@@ -15,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace MRA.Jobs.Client.Services.Profile;
 
-public class UserProfileService(IdentityApiHttpClientService identityHttpClient) : IUserProfileService
+public class UserProfileService(IdentityApiHttpClientService identityHttpClient, AuthenticationStateProvider authenticationStateProvider) : IUserProfileService
 {
     public async Task<string> Update(UpdateProfileCommand command)
     {
@@ -45,6 +46,7 @@ public class UserProfileService(IdentityApiHttpClientService identityHttpClient)
 
     public async Task<UserProfileResponse> Get(string userName = null)
     {
+        await authenticationStateProvider.GetAuthenticationStateAsync();
         var result =
             await identityHttpClient.GetAsJsonAsync<UserProfileResponse>(
                 $"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
@@ -59,7 +61,7 @@ public class UserProfileService(IdentityApiHttpClientService identityHttpClient)
     public async Task<ApiResponse<List<UserEducationResponse>>> GetEducationsByUser()
     {
         var result =
-            await identityHttpClient.GetAsJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
+            await _identityHttpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
         return result;
     }
 

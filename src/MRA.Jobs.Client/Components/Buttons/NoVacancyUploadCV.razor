@@ -12,14 +12,14 @@
 <div style="position: fixed; bottom: 76px; right: 16px; z-index: 999;">
     @if (_loading)
     {
-        <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" Disabled="true">
+        <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Primary" Disabled="true">
             <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
             <MudText>@ContentService["SendCV:Title"]</MudText>
         </MudButton>
     }
     else
     {
-        <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.UploadFile">
+        <MudButton OnClick="@OpenDialog" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.UploadFile">
             <MudText>@ContentService["SendCV:Title"]</MudText>
         </MudButton>
     }
