@@ -21,13 +21,9 @@ public class DbMigration
     public async Task InitialiseAsync()
     {
         if (_configuration["Environment"] == "Staging")
-        {
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
-        }
+            await _context.Database.EnsureDeletedAsync();
+
         if (_context.Database.IsSqlServer())
-        {
             await _context.Database.MigrateAsync();
-        }
     }
 }
