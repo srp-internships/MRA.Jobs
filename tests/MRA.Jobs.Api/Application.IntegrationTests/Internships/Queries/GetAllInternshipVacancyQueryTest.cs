@@ -5,21 +5,21 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Internships.Queries;
+
 public class GetAllInternshipVacancyQueryTest : Testing
 {
-
     private InternshipsContext _context;
 
     [SetUp]
     public void SetUp()
     {
-        _context = new InternshipsContext();       
+        _context = new InternshipsContext();
     }
 
 
     [Test]
-    public async Task GetAllInternshipVacancyQuery_ReturnsInternshipVacancies()    {
-     
+    public async Task GetAllInternshipVacancyQuery_ReturnsInternshipVacancies()
+    {
         await _context.GetInternship("Internship1");
         await _context.GetInternship("Internship2");
 
@@ -27,13 +27,13 @@ public class GetAllInternshipVacancyQueryTest : Testing
         var response = await _httpClient.GetAsync("/api/internships");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var internshipVacancies = await response.Content.ReadFromJsonAsync<PagedList<InternshipVacancyListResponse>>();
 
-        Assert.IsNotNull(internshipVacancies);
-        Assert.IsNotEmpty(internshipVacancies.Items);
+        Assert.That(internshipVacancies, Is.Not.Null);
+        Assert.That(internshipVacancies.Items, Is.Not.Empty);
     }
-    
+
     [Test]
     public async Task GetAllJobVacancyQuery_ReturnsJobVacanciesCount2_ForApplicant()
     {
@@ -47,13 +47,13 @@ public class GetAllInternshipVacancyQueryTest : Testing
         var response = await _httpClient.GetAsync("/api/internships");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var internshipVacancies = await response.Content.ReadFromJsonAsync<PagedList<InternshipVacancyListResponse>>();
 
-        Assert.IsNotNull(internshipVacancies);
-        Assert.AreEqual(internshipVacancies.Items.Count, 2);
+        Assert.That(internshipVacancies, Is.Not.Null);
+        Assert.That(internshipVacancies.Items.Count == 2);
     }
-    
+
     [Test]
     public async Task GetAllJobVacancyQuery_ReturnsJobVacanciesCount3_ForReviewer()
     {
@@ -67,11 +67,10 @@ public class GetAllInternshipVacancyQueryTest : Testing
         var response = await _httpClient.GetAsync("/api/internships");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        var inertnshipVacancies = await response.Content.ReadFromJsonAsync<PagedList<InternshipVacancyListResponse>>();
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
+        var internshipVacancies = await response.Content.ReadFromJsonAsync<PagedList<InternshipVacancyListResponse>>();
 
-        Assert.IsNotNull(inertnshipVacancies);
-        Assert.AreEqual(inertnshipVacancies.Items.Count, 3);
+        Assert.That(internshipVacancies, Is.Not.Null);
+        Assert.That(internshipVacancies.Items.Count == 3);
     }
-
 }

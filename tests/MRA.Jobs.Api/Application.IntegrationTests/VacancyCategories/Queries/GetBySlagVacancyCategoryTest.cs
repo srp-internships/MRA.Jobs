@@ -10,6 +10,7 @@ using NUnit.Framework;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MRA.Jobs.Application.IntegrationTests.VacancyCategories.Queries;
+
 public class GetBySlagVacancyCategoryTest : Testing
 {
     private CategoryContext _categoryContext;
@@ -30,7 +31,7 @@ public class GetBySlagVacancyCategoryTest : Testing
         var response = await _httpClient.GetAsync($"/api/categories/{query.Slug}");
 
         //Assert 
-        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.That(HttpStatusCode.NotFound == response.StatusCode);
     }
 
     [Test]
@@ -43,6 +44,6 @@ public class GetBySlagVacancyCategoryTest : Testing
         var response = await _httpClient.GetAsync($"/api/categories/{query.Slug}");
 
         //Assert 
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK== response.StatusCode);
     }
 }

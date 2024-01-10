@@ -32,7 +32,7 @@ public class DeleteJobVacancyCommandHandlerTests : BaseTestFixture
         // Assert
         _dbContextMock.Verify(x => x.JobVacancies.Remove(jobVacancy), Times.Once);
         _dbContextMock.Verify(x => x.SaveChangesAsync(default), Times.Once);
-        Assert.True(result);
+        Assert.That(result);
     }
 
     [Test]
