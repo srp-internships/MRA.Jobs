@@ -136,16 +136,23 @@ public class ApplicationService(
         try
         {
             var response = await httpClient.PostAsJsonAsync($"{ApplicationsEndPoint}/add-note", note);
-            if (response.StatusCode == HttpStatusCode.OK)
+            switch (response.StatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<TimeLineDetailsDto>();
+                case HttpStatusCode.OK:
+                    return await response.Content.ReadFromJsonAsync<TimeLineDetailsDto>();
+                case HttpStatusCode.Conflict:
+                    snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,
+                        Severity.Error);
+                    break;
+                default:
+                    snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
+                    break;
             }
-
-            snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
         }
         catch (Exception e)
         {
             snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
+            Console.WriteLine(e);
         }
 
         return null;
@@ -156,12 +163,19 @@ public class ApplicationService(
         try
         {
             var response = await httpClient.GetAsync($"{ApplicationsEndPoint}/GetTimelineEvents/{slug}");
-            if (response.StatusCode == HttpStatusCode.OK)
+            
+            switch (response.StatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<List<TimeLineDetailsDto>>();
+                case HttpStatusCode.OK:
+                    return await response.Content.ReadFromJsonAsync<List<TimeLineDetailsDto>>();
+                case HttpStatusCode.Conflict:
+                    snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,
+                        Severity.Error);
+                    break;
+                default:
+                    snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
+                    break;
             }
-
-            snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
         }
         catch (Exception e)
         {
