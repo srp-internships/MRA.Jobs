@@ -21,7 +21,7 @@
         <PackageReference Include="MudBlazor" Version="6.11.1" />
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
     </ItemGroup>
 
     <ItemGroup>
