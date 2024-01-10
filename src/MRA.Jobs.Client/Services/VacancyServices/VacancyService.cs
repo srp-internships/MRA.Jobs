@@ -10,7 +10,7 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
-public class VacancyService(JobsApiHttpClientService httpClient, IConfiguration configuration) : IVacancyService
+public class VacancyService(JobsApiHttpClientService httpClient) : IVacancyService
 {
     private List<CategoryResponse> Categories { get; set; }
 

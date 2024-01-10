@@ -253,7 +253,7 @@ public partial class InternshipVacanciesPage
                 Snackbar.Add($"Error loading categories: {categoriesResponse.Error}", Severity.Error);
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             Snackbar.Add($"Server is not responding, try later", Severity.Error);
             _serverError = true;

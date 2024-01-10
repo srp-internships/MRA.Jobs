@@ -61,7 +61,7 @@ public class UserProfileService(IdentityApiHttpClientService identityHttpClient,
     public async Task<ApiResponse<List<UserEducationResponse>>> GetEducationsByUser()
     {
         var result =
-            await _identityHttpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
+            await identityHttpClient.GetAsJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
         return result;
     }
 
