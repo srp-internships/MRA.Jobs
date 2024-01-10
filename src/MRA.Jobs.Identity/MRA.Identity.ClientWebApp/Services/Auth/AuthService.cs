@@ -10,7 +10,6 @@ using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 using MRA.Identity.Application.Contract.User.Responses;
 using System.Net;
 using Microsoft.IdentityModel.Tokens;
-using MRA.Identity.Client.Services;
 using MRA.Identity.ClientWebApp.Services.Profile;
 using Newtonsoft.Json;
 

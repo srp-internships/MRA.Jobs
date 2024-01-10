@@ -15,9 +15,9 @@ using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Responses;
 using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Client;
-using MRA.Identity.Client.Components.Dialogs;
-using MRA.Identity.Client.Services;
-using MRA.Identity.Client.Services.Auth;
+using MRA.Identity.ClientWebApp.Components.Dialogs;
+using MRA.Identity.ClientWebApp.Services;
+using MRA.Identity.ClientWebApp.Services.Auth;
 using MudBlazor;
 using Newtonsoft.Json;
 

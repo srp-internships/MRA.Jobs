@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using MudBlazor
+@using MRA.Identity.ClientWebApp.Services
+@inherits LayoutComponentBase
 @inject LayoutService LayoutService
 <MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
 <MudDialogProvider/>
