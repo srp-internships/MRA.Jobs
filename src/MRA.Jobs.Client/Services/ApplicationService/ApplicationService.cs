@@ -3,10 +3,12 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
+using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.ContentService;
 using MudBlazor;
@@ -16,12 +18,12 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 namespace MRA.Jobs.Client.Services.ApplicationService;
 
 public class ApplicationService(
-        HttpClient httpClient,
-        AuthenticationStateProvider authenticationState,
-        ISnackbar snackbar,
-        NavigationManager navigationManager,
-        IConfiguration configuration,
-        IContentService contentService)
+    HttpClient httpClient,
+    AuthenticationStateProvider authenticationState,
+    ISnackbar snackbar,
+    NavigationManager navigationManager,
+    IConfiguration configuration,
+    IContentService contentService)
     : IApplicationService
 {
     private const string ApplicationsEndPoint = "applications";
@@ -128,6 +130,47 @@ public class ApplicationService(
 
         return $"{httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
     }
+
+    public async Task<TimeLineDetailsDto> AddNote(AddNoteToApplicationCommand note)
+    {
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync($"{ApplicationsEndPoint}/add-note", note);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<TimeLineDetailsDto>();
+            }
+
+            snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+        }
+        catch (Exception e)
+        {
+            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
+        }
+
+        return null;
+    }
+
+    public async Task<List<TimeLineDetailsDto>> GetApplicationTimeLineEvents(string slug)
+    {
+        try
+        {
+            var response = await httpClient.GetAsync($"{ApplicationsEndPoint}/GetTimelineEvents/{slug}");
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<List<TimeLineDetailsDto>>();
+            }
+
+            snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+        }
+        catch (Exception e)
+        {
+            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
+        }
+
+        return null;
+    }
+
 
     private async Task<string> GetCurrentUserName()
     {
