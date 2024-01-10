@@ -28,6 +28,6 @@ public class UpdateVacancyCategoryCommandTest : Testing
 
         RunAsReviewerAsync();
         var response = await _httpClient.PutAsJsonAsync($"/api/categories/{updateCategory.Slug}", updateCategory);
-        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.That(HttpStatusCode.NotFound == response.StatusCode);
     }
 }

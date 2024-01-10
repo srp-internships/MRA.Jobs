@@ -41,14 +41,14 @@ public class CreateUserEducationDetailCommandTest : BaseTest
 
 
         var response = await _client.PostAsJsonAsync("/api/Profile/CreateEducationDetail", command);
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+        Assert.That(response.StatusCode == HttpStatusCode.OK);
 
         command.Speciality = "It security";
         command.University = "khujand university";
         response = await _client.PostAsJsonAsync("/api/Profile/CreateEducationDetail", command);
-        Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
-        Assert.IsTrue(
-            (await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains(
+        Assert.That(HttpStatusCode.BadRequest == response.StatusCode);
+        Assert.That(
+            (await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail!.Contains(
                 "Education detail already exists"));
     }
 }

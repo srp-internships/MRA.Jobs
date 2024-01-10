@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Json;
-using Azure.Core;
 using FluentAssertions;
 using MRA.Identity.Application.Contract.User.Commands.LoginUser;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
@@ -34,7 +33,8 @@ public class GetAccessTokenIntegrationTests : BaseTest
             var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={registerCommand1.PhoneNumber}");
             res.EnsureSuccessStatusCode();
 
-            registerCommand1.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == registerCommand1.PhoneNumber)).Code;
+            registerCommand1.VerificationCode =
+                (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == registerCommand1.PhoneNumber)).Code;
             var loginCommand1 = new LoginUserCommand { Username = "@Alex111122", Password = "password@#12P" };
 
             await RegisterUser(registerCommand1);
@@ -56,7 +56,7 @@ public class GetAccessTokenIntegrationTests : BaseTest
 
         //Assert
         response.EnsureSuccessStatusCode();
-        Assert.IsNotNull(response);
+        Assert.That(response, Is.Not.Null);
     }
 
     [Test]
@@ -111,7 +111,8 @@ public class GetAccessTokenIntegrationTests : BaseTest
         var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={registerCommand2.PhoneNumber}");
         res.EnsureSuccessStatusCode();
 
-        registerCommand2.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == registerCommand2.PhoneNumber)).Code;
+        registerCommand2.VerificationCode =
+            (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == registerCommand2.PhoneNumber)).Code;
         var loginCommand2 = new LoginUserCommand { Username = "@Alex222", Password = "password@#12P2" };
 
         await RegisterUser(registerCommand2);
@@ -140,7 +141,7 @@ public class GetAccessTokenIntegrationTests : BaseTest
         var response = await _client.PostAsJsonAsync("api/Auth/login", command);
 
         response.EnsureSuccessStatusCode();
-        
+
         return await response.Content.ReadFromJsonAsync<JwtTokenResponse>();
     }
 }

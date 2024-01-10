@@ -43,7 +43,7 @@ public class EmailTest : BaseTest
 
         responseEmail.EnsureSuccessStatusCode();
         var user = await GetEntity<ApplicationUser>(s => s.Email == request.Email);
-        Assert.IsTrue(user.EmailConfirmed);
+        Assert.That(user.EmailConfirmed);
     }
 
     [Test]
@@ -75,6 +75,6 @@ public class EmailTest : BaseTest
 
         Assert.That(responseEmail.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         var user = await GetEntity<ApplicationUser>(s => s.Email == request.Email);
-        Assert.IsFalse(user.EmailConfirmed);
+        Assert.That(!user.EmailConfirmed);
     }
 }

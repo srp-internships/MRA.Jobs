@@ -46,6 +46,6 @@ public class DeleteUserRolesCommandTest : BaseTest
         await AddAuthorizationAsync();
         var response = await _client.DeleteAsync("/api/UserRoles/testt10");
 
-        Assert.IsTrue(response.StatusCode == HttpStatusCode.NotFound);
+        Assert.That(response.StatusCode == HttpStatusCode.NotFound);
     }
 }

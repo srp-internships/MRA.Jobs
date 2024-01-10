@@ -26,7 +26,7 @@ public class GetJobVacancyBySlugQueryTest : Testing
         var response = await _httpClient.GetAsync($"/api/jobs/{query.Slug}");
 
         // Assert
-        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.That(HttpStatusCode.NotFound == response.StatusCode);
     }
 
     [Test]
@@ -43,8 +43,8 @@ public class GetJobVacancyBySlugQueryTest : Testing
         var response = await _httpClient.GetAsync($"/api/jobs/{query.Slug}");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var jobVacancy = await response.Content.ReadFromJsonAsync<JobVacancy>();
-        Assert.AreEqual(query.Slug, jobVacancy.Slug);
+        Assert.That(query.Slug== jobVacancy.Slug);
     }
 }

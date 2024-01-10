@@ -7,6 +7,7 @@ using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Trainings.Queries;
+
 public class GetAllTrainingsVacancyQuery : Testing
 {
     private TrainingsContext _context;
@@ -14,8 +15,9 @@ public class GetAllTrainingsVacancyQuery : Testing
     [SetUp]
     public void SetUp()
     {
-        _context = new TrainingsContext(); 
+        _context = new TrainingsContext();
     }
+
     [Test]
     public async Task GetAllTrainingsVacancyQuery_ReturnsTrainingsVacancies()
     {
@@ -27,14 +29,14 @@ public class GetAllTrainingsVacancyQuery : Testing
         RunAsReviewerAsync();
         var response = await _httpClient.GetAsync("/api/Trainings");
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var a = await response.Content.ReadAsStringAsync();
         var trainingVacancies = await response.Content.ReadFromJsonAsync<PagedList<TrainingVacancyListDto>>();
-        Assert.IsNotNull(trainingVacancies);
-        Assert.IsNotEmpty(trainingVacancies.Items);
+        Assert.That(trainingVacancies, Is.Not.Null);
+        Assert.That(trainingVacancies.Items, Is.Not.Empty);
     }
+
     [Test]
-    
     public async Task GetAllTrainingsVacancyQuery_ReturnsEmptyList_WhenNoTrainingsExist()
     {
         // Arrange
@@ -49,10 +51,13 @@ public class GetAllTrainingsVacancyQuery : Testing
             CategoryId = await category.GetCategoryId("trainingVacancy"),
             Duration = 10,
             Fees = 100,
-            VacancyQuestions = new List<VacancyQuestion> {
-                new VacancyQuestion {
+            VacancyQuestions = new List<VacancyQuestion>
+            {
+                new VacancyQuestion
+                {
                     Id = Guid.NewGuid(),
-                    Question = "What is your English proficiency level?" }
+                    Question = "What is your English proficiency level?"
+                }
             },
         };
         await AddAsync(newTraining);
@@ -60,14 +65,13 @@ public class GetAllTrainingsVacancyQuery : Testing
         RunAsReviewerAsync();
         var response = await _httpClient.GetAsync("/api/Trainings");
         // Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var trainingVacancies = await response.Content.ReadFromJsonAsync<PagedList<TrainingVacancyListDto>>();
-        Assert.IsNotNull(trainingVacancies);
-        var specificTraining = trainingVacancies.Items.Find(t => t.EndDate<DateTime.Now);
-        Assert.IsNotNull(specificTraining);
-        
+        Assert.That(trainingVacancies, Is.Not.Null);
+        var specificTraining = trainingVacancies.Items.Find(t => t.EndDate < DateTime.Now);
+        Assert.That(specificTraining, Is.Not.Null);
     }
-    
+
     [Test]
     public async Task GetAllTrainingVacanciesQuery_ReturnsTrainingVacanciesCount2_ForApplicant()
     {
@@ -81,13 +85,13 @@ public class GetAllTrainingsVacancyQuery : Testing
         var response = await _httpClient.GetAsync("/api/Trainings");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var trainingVacancies = await response.Content.ReadFromJsonAsync<PagedList<TrainingVacancyListDto>>();
 
-        Assert.IsNotNull(trainingVacancies);
-        Assert.AreEqual(trainingVacancies.Items.Count, 2);
+        Assert.That(trainingVacancies, Is.Not.Null);
+        Assert.That(trainingVacancies.Items.Count == 2);
     }
-    
+
     [Test]
     public async Task GetAllTrainingVacanciesQuery_ReturnsTrainingVacanciesCount3_ForReviewer()
     {
@@ -101,11 +105,10 @@ public class GetAllTrainingsVacancyQuery : Testing
         var response = await _httpClient.GetAsync("/api/Trainings");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var trainingVacancies = await response.Content.ReadFromJsonAsync<PagedList<TrainingVacancyListDto>>();
 
-        Assert.IsNotNull(trainingVacancies);
-        Assert.AreEqual(trainingVacancies.Items.Count, 3);
+        Assert.That(trainingVacancies, Is.Not.Null);
+        Assert.That(trainingVacancies.Items.Count == 3);
     }
 }
-
