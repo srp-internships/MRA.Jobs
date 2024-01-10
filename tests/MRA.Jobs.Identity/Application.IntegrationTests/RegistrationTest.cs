@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http.HttpResults;
 using MRA.Identity.Application.Contract.User.Commands.RegisterUser;
 using MRA.Identity.Domain.Entities;
 using MRA.Configurations.Common.Constants;
@@ -38,7 +37,7 @@ public class RegistrationTests : BaseTest
         // Assert
         var registeredUser =
             await GetEntity<ApplicationUser>(u => u.Email == request.Email && u.UserName == request.Username);
-        Assert.IsNotNull(registeredUser, "Registered user not found");
+        Assert.That(registeredUser,Is.Not.Null, "Registered user not found");
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
 

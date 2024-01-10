@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.Experiences.Commands.Create;
 
 namespace MRA.Jobs.Application.IntegrationTests.Experiences.Commands;
+
 public class CreateUserExperienceDetailCommandTest : BaseTest
 {
     [Test]
@@ -49,8 +50,9 @@ public class CreateUserExperienceDetailCommandTest : BaseTest
         command.JobTitle = "backend developer";
 
         response = await _client.PostAsJsonAsync("/api/Profile/CreateExperienceDetail", command);
-        Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
-        Assert.IsTrue((await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains("Experience detail already exists"));
-
+        Assert.That(HttpStatusCode.BadRequest == response.StatusCode);
+        Assert.That(
+            (await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail!.Contains(
+                "Experience detail already exists"));
     }
 }

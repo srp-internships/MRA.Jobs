@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Azure;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.Experiences.Commands.Update;
 using MRA.Identity.Domain.Entities;
@@ -90,9 +89,9 @@ public class UpdateUserExperienceDetailCommandTest : BaseTest
 
         var response = await _client.PutAsJsonAsync("/api/Profile/UpdateExperienceDetail", command);
 
-        Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
-        Assert.IsTrue(
-            (await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail.Contains(
+        Assert.That(HttpStatusCode.BadRequest == response.StatusCode);
+        Assert.That(
+            (await response.Content.ReadFromJsonAsync<ProblemDetails>()).Detail!.Contains(
                 "Experience detail already exists"));
     }
 }
