@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - production
-      - Staging
+      - staging
 
 jobs:
   build_and_deploy_job:
