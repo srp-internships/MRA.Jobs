@@ -36,7 +36,7 @@
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardContent>
-                    <EditForm Model="@_registerUser" OnInvalidSubmit="SendCode">
+                    <EditForm Model="@_registerUser" OnInvalidSubmit="SendCode" FormName="signin">
                         <FluentValidationValidator @ref="_fluentValidationValidator"/>
                         <MudTextField Label="@ContentService["SignUp:FirstName"]" HelperText="@ContentService["SignUp:FirstName_HelperText"]"
                                       @bind-Value="_registerUser.FirstName" For="@(() => _registerUser.FirstName)" InputType="InputType.Text"
