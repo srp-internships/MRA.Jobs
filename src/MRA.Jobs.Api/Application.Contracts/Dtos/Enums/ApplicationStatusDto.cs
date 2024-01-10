@@ -7,16 +7,8 @@ public class ApplicationStatusDto
     public enum ApplicationStatus
     {
         Submitted,
-        TestCompleted,
-        Verified,
-        InterviewPassed,
         Approved,
         Hired,
-        Reserved,
-        Expired,
-        Refused,
-        TestFailed,
-        InterviewFailed,
         Rejected
     }
 
