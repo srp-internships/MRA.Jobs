@@ -53,10 +53,12 @@ else
 					}).ToList();
 			}
 		}
-		catch (Exception)
+		catch (Exception ex)
 		{
+			
 			serverError = true;
 			StateHasChanged();
+
 		}
 	}
 }
