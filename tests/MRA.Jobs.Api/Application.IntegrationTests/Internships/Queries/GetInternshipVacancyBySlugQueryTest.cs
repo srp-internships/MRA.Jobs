@@ -5,9 +5,9 @@ using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Internships.Queries;
+
 public class GetInternshipVacancyBySlugQueryTest : Testing
 {
-
     private InternshipsContext _context;
 
     [SetUp]
@@ -26,22 +26,22 @@ public class GetInternshipVacancyBySlugQueryTest : Testing
         var response = await _httpClient.GetAsync($"/api/internships/{query.Slug}");
 
         // Assert
-        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.That(HttpStatusCode.NotFound == response.StatusCode);
     }
 
     [Test]
     public async Task GetInternshipVacancyBySlug_IfFound_ReturnInternshipVacancy()
     {
         //Arrange 
-        var query = new GetInternshipVacancyBySlugQuery { Slug = (await _context.GetInternship("Autumn Internships")).Slug };
+        var query = new GetInternshipVacancyBySlugQuery
+            { Slug = (await _context.GetInternship("Autumn Internships")).Slug };
 
         //Act
         var response = await _httpClient.GetAsync($"/api/internships/{query.Slug}");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        var InternshipVacancy = await response.Content.ReadFromJsonAsync<InternshipVacancy>();
-        Assert.AreEqual(query.Slug, InternshipVacancy.Slug);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
+        var internshipVacancy = await response.Content.ReadFromJsonAsync<InternshipVacancy>();
+        Assert.That(query.Slug == internshipVacancy.Slug);
     }
-
 }

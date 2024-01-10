@@ -16,7 +16,7 @@ public class DeleteVacancyCategoryCommand : Testing
         response.EnsureSuccessStatusCode();
 
         var getResponse = await FindAsync<VacancyCategory>(category.Id);
-        Assert.IsNull(getResponse);
+        Assert.That(getResponse, Is.Null);
     }
 
     [Test]
@@ -24,6 +24,6 @@ public class DeleteVacancyCategoryCommand : Testing
     {
         RunAsReviewerAsync();
         var response = await _httpClient.DeleteAsync("/api/categories/category125");
-        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.That(HttpStatusCode.NotFound == response.StatusCode);
     }
 }
