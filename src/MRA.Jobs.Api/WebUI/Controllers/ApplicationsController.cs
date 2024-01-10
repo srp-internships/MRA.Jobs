@@ -83,12 +83,11 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPost("{slug}/add-note")]
+    [HttpPost("add-note")]
     [Authorize(policy:ApplicationPolicies.Reviewer)]
-    public async Task<ActionResult<bool>> AddNote(string slug, AddNoteToApplicationCommand request,
+    public async Task<ActionResult<bool>> AddNote(AddNoteToApplicationCommand request,
         CancellationToken cancellationToken)
     {
-        request.Slug = slug;
         return await Mediator.Send(request, cancellationToken);
     }
 }
