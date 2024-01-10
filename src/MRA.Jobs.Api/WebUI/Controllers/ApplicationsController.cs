@@ -95,7 +95,7 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
 
     [HttpGet("GetTimelineEvents/{slug}")]
     [Authorize(policy: ApplicationPolicies.Reviewer)]
-    public async Task<ActionResult<List<TimeLineDetailsDto>>> GetTimelineEvents([FromQuery] string slug)
+    public async Task<ActionResult<List<TimeLineDetailsDto>>> GetTimelineEvents( [FromRoute] string slug)
     {
         return await Mediator.Send(new GetListApplicationTimelineEventsQuery() { ApplicationSlug = slug });
     }

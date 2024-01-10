@@ -26,6 +26,7 @@ public class NotesByApplicationsTests : CreateApplicationTestsBase
             await FindFirstOrDefaultAsync<Domain.Entities.Application>(s =>
                 s.CoverLetter == createApplicationCommand.CoverLetter);
         application.Should().NotBeNull();
+
         RunAsAdministratorAsync();
 
         AddNoteToApplicationCommand note = new() { Note = "Add note", Slug = application.Slug };
@@ -33,8 +34,28 @@ public class NotesByApplicationsTests : CreateApplicationTestsBase
         var responseAddNoteCommand =
             await _httpClient.PostAsJsonAsync($"{ApplicationApiEndPoint}/add-note", note);
         responseAddNoteCommand.EnsureSuccessStatusCode();
+
         var timelineDto = (await responseAddNoteCommand.Content.ReadFromJsonAsync<TimeLineDetailsDto>());
+
         Assert.NotNull(timelineDto);
         Assert.AreEqual(timelineDto.Note, "Add note");
+    }
+
+    [Test]
+    public async Task GetApplicationTimelineEvents()
+    {
+        const string applicationSlug = "applicant1-vacancy";
+
+        RunAsAdministratorAsync();
+
+        var response =
+            await _httpClient.GetAsync(
+                $"{ApplicationApiEndPoint}/GetTimelineEvents/{applicationSlug}");
+
+        response.EnsureSuccessStatusCode();
+
+        var list = await response.Content.ReadFromJsonAsync<List<TimeLineDetailsDto>>();
+        
+        Assert.IsNotEmpty(list);
     }
 }
