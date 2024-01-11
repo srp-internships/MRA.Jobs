@@ -76,15 +76,6 @@
                                     </MudAlert>
                                 </ItemContent>
                             </MudTimelineItem>
-                            @* <MudItem xs="12" md="6" lg="4"> *@
-                            @*     <MudCard Style="margin-bottom: 10px;"> *@
-                            @*         <MudCardContent> *@
-                            @*             <MudText Typo="Typo.body2" Style="color: grey">Created At: <b>@item.Time</b></MudText> *@
-                            @*             <MudText Typo="Typo.body2" Style="color: grey">Created By: </MudText> *@
-                            @*             <MudText>@item.Note</MudText> *@
-                            @*         </MudCardContent> *@
-                            @*     </MudCard> *@
-                            @* </MudItem> *@
                         }
                     </MudTimeline>
                 </div>
@@ -133,7 +124,7 @@
     private UpdateApplicationStatus applicationStatus;
     private List<TimeLineDetailsDto> _timelienes;
     private UserProfileResponse _applicant;
-    
+
     private void HandleSelectValueChanged(string value)
     {
         selectedStatus = value;
@@ -144,7 +135,9 @@
         _applicant = await UserProfileService.Get(ApplicationUserName);
         var app = await applicationService.GetApplicationDetails(Slug);
         cvURL = $"{httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
-        _timelienes = (await applicationService.GetApplicationTimeLineEvents(Slug)).OrderBy(t => t.Time).ToList();
+        if (!isApplicant)
+            _timelienes = (await applicationService.GetApplicationTimeLineEvents(Slug))
+                .OrderBy(t => t.Time).ToList();
     }
 
     private async Task OnAddNoteAsync()
@@ -164,7 +157,7 @@
             {
                 ApplicantUserName = _applicant.UserName,
                 Slug = Slug,
-                StatusId = (int)selectedEnumStatus 
+                StatusId = (int)selectedEnumStatus
             };
             var response = await applicationService.UpdateStatus(applicationStatus);
             if (response)

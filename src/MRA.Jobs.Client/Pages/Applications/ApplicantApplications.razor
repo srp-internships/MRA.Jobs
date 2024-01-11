@@ -2,7 +2,6 @@
 @inject IApplicationService applicationService
 
 
-
 <MudContainer>
     <MudText Typo="Typo.h4">
         <b>Applications</b>
@@ -11,9 +10,10 @@
     @if (applications is null)
     {
         <div style="text-align: center;">
-            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
         </div>
-    } else
+    }
+    else
     {
         @if (applications.Items.Count == 0)
         {
@@ -30,16 +30,16 @@
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="Vacancy title">@context.VacancyTitle</MudTd>
-                        <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
-                        <MudTd DataLabel="Status">@context.StatusName</MudTd>
-                        <MudTd DataLabel="Action">
-                            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton>
-                        </MudTd>
-                    </RowTemplate>
-                    <PagerContent>
-                        <MudTablePager />
-                    </PagerContent>
-                </MudTable>
+                    <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
+                    <MudTd DataLabel="Status">@context.StatusName</MudTd>
+                    <MudTd DataLabel="Action">
+                        <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton>
+                    </MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager/>
+                </PagerContent>
+            </MudTable>
         }
     }
 
