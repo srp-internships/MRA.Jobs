@@ -22,18 +22,50 @@ public class HtmlService(IEmailService emailService) : IHtmlService
         string vacancyTitle, string cV, UserProfileResponse userInfo)
     {
         var content = $@"
-            <div style=""display: flex;flex-direction: column;width: 100%"">
-            <h2><strong>New Job Application Received</strong></h2>
-            <h2>{userInfo.UserName} applied to the {vacancyTitle}</h2>
-            <h2>Applicant Details:</h2>
-            <ul>
+<center>
+        <table class='body-wrap' style='text-align:center;width:86%;font-family:arial,sans-serif;border-spacing:4px 20px;'>
+            <tr>
+                <img src='https://jobs.srp.tj/images/srp/srp_icon.png' style='width:25%;'>
+                <td>
+                    <center>
+                        <table bgcolor='#FFFFFF' width='80%' border='0'>
+                            <tbody>                               
+                                <tr style='font-size:14px;'>
+                                    <td>
+                                        <center>
+                                            <h2><strong>New Vacancy Received</strong></h2>                                        
+                                        </center>
+                                    </td>
+                                </tr>
+                                <tr style='font-size:14px;height:45px;'>
+                                    <td>
+                                        <span>{userInfo.UserName} applied to the {vacancyTitle}</span>
+                                    </td>
+                                </tr>
+                                <tr style='font-size:14px;height:45px;'>
+                                    <td>
+                                        <span>Applicant Details:</span>
+<ul>
             <li><strong>Name:</strong> {userInfo.FirstName} {userInfo.LastName}</li>
             <li><strong>Email:</strong> {userInfo.Email}</li>
             <li><strong>PhoneNumber:</strong> {userInfo.PhoneNumber}</li>
             <li><strong>Resume:</strong> <a href='{hostName}applications/downloadCv/{cV}'> Download CV </a> </li>
             </ul>
-            <p>Link to application: <a href='{hostName}dashboard/applications/{applicationSlug}'>{hostName}dashboard/applications/{applicationSlug}</a></p>
-            </div>
+                                    </td>
+                                </tr>
+                                <tr style='text-align:center'>
+                                    <td>
+                                    <a href='https://www.jobs.srp.tj/dashboard/applications' style='display:inline-block;background-color:#1c92c8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:5px;'>Перейти к заявке</a>                                    
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </center>
+                </td>
+            </tr>
+        </table>
+    </center>
+
 ";
         return content;
     }
@@ -101,7 +133,7 @@ public class HtmlService(IEmailService emailService) : IHtmlService
     }
 
     public async Task<bool> EmailRejected(UserProfileResponse applicant)
-     {
+    {
         string htmlContent = $@"
     <center>
         <table class='body-wrap' style='text-align:center;width:86%;font-family:arial,sans-serif;border-spacing:4px 20px;'>
