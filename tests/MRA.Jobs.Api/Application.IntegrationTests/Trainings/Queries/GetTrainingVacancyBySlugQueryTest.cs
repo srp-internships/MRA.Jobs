@@ -5,6 +5,7 @@ using MRA.Jobs.Domain.Entities;
 using System.Net.Http.Json;
 
 namespace MRA.Jobs.Application.IntegrationTests.Trainings.Queries;
+
 public class GetTrainingVacancyBySlugQueryTest : Testing
 {
     private TrainingsContext _context;
@@ -14,6 +15,7 @@ public class GetTrainingVacancyBySlugQueryTest : Testing
     {
         _context = new TrainingsContext();
     }
+
     [Test]
     public async Task GetTrainingsVacancyBySlugQuery_IfNotFound_ReturnNotFoundTrainingsVacancySlug()
     {
@@ -25,23 +27,26 @@ public class GetTrainingVacancyBySlugQueryTest : Testing
         var response = await _httpClient.GetAsync($"/api/Trainings/{query.Slug}");
 
         // Assert
-        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.That(HttpStatusCode.NotFound == response.StatusCode);
     }
 
     [Test]
     public async Task GetTrainingsVacancyBySlug_IfFound_ReturnTrainingsVacancy()
     {
         //Arrange 
-        var query = new GetInternshipVacancyBySlugQuery { Slug = (
-            await _context.GetTraining("Autumn Trainings", DateTime.Now.AddDays(2))).Slug };
+        var query = new GetInternshipVacancyBySlugQuery
+        {
+            Slug = (
+                await _context.GetTraining("Autumn Trainings", DateTime.Now.AddDays(2))).Slug
+        };
 
         //Act
         RunAsReviewerAsync();
         var response = await _httpClient.GetAsync($"/api/Trainings/{query.Slug}");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var trainingsVacancy = await response.Content.ReadFromJsonAsync<TrainingVacancy>();
-        Assert.AreEqual(query.Slug, trainingsVacancy.Slug);
+        Assert.That(query.Slug == trainingsVacancy.Slug);
     }
 }

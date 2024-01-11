@@ -28,11 +28,12 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
         var responseContent = await response.Content.ReadAsStringAsync();
         Assert.Multiple(() =>
         {
-            Assert.AreEqual("true", responseContent, "Expected response content to be 'true'.");
-            Assert.NotNull(TestSmsSandbox.PhoneNumber);
-            Assert.NotNull(TestSmsSandbox.Text);
+            Assert.That("true" == responseContent, "Expected response content to be 'true'.");
+            Assert.That(TestSmsSandbox.PhoneNumber, Is.Not.Null);
+            Assert.That(TestSmsSandbox.Text, Is.Not.Null);
         });
     }
+
     [Test]
     public async Task SendVerificationCodeSmsQueryHandler_SendingSmsWithCorrectPhoneNumberAndDifferentFormat_Success()
     {
@@ -48,9 +49,9 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
         var responseContent = await response.Content.ReadAsStringAsync();
         Assert.Multiple(() =>
         {
-            Assert.AreEqual("true", responseContent, "Expected response content to be 'true'.");
-            Assert.NotNull(TestSmsSandbox.PhoneNumber);
-            Assert.NotNull(TestSmsSandbox.Text);
+            Assert.That("true" == responseContent, "Expected response content to be 'true'.");
+            Assert.That(TestSmsSandbox.PhoneNumber, Is.Not.Null);
+            Assert.That(TestSmsSandbox.Text, Is.Not.Null);
         });
     }
 
@@ -69,9 +70,9 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
         var responseContent = await response.Content.ReadAsStringAsync();
         Assert.Multiple(() =>
         {
-            Assert.AreEqual("true", responseContent, "Expected response content to be 'true'.");
-            Assert.NotNull(TestSmsSandbox.PhoneNumber);
-            Assert.NotNull(TestSmsSandbox.Text);
+            Assert.That("true" == responseContent, "Expected response content to be 'true'.");
+            Assert.That(TestSmsSandbox.PhoneNumber, Is.Not.Null);
+            Assert.That(TestSmsSandbox.Text, Is.Not.Null);
         });
     }
 
@@ -92,6 +93,7 @@ public class SendVerificationCodeSmsQueryTest : BaseTest
         // Assert
         var responseContent = await response.Content.ReadFromJsonAsync<SmsVerificationCodeStatus>();
 
-        Assert.AreEqual(SmsVerificationCodeStatus.CodeVerifySuccess, responseContent, "Expected response content to be 'true'.");
+        Assert.That(SmsVerificationCodeStatus.CodeVerifySuccess == responseContent,
+            "Expected response content to be 'true'.");
     }
 }

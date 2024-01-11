@@ -1,6 +1,7 @@
 ﻿using System.Net;
 
 namespace MRA.Jobs.Application.IntegrationTests.Experiences.Queries;
+
 public class GetUserExperiencesTest : BaseTest
 {
     [Test]
@@ -17,7 +18,7 @@ public class GetUserExperiencesTest : BaseTest
         await AddApplicantAuthorizationAsync();
         var response = await _client.GetAsync($"/api/Profile/GetExperiencesByUser?userName=amir");
 
-        Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
+        Assert.That(HttpStatusCode.Forbidden == response.StatusCode);
     }
 
     [Test]
@@ -35,7 +36,6 @@ public class GetUserExperiencesTest : BaseTest
         await AddReviewerAuthorizationAsync();
         var response = await _client.GetAsync($"/api/Profile/GetExperiencesByUser?userName=@Alex34");
 
-        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.That(HttpStatusCode.NotFound == response.StatusCode);
     }
-
 }

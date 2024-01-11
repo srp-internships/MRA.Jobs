@@ -1,6 +1,7 @@
 ﻿using System.Net;
 
 namespace MRA.Jobs.Application.IntegrationTests.UserProfile;
+
 public class GetProfileUserQueryTest : BaseTest
 {
     [Test]
@@ -18,7 +19,7 @@ public class GetProfileUserQueryTest : BaseTest
         var response = await _client.GetAsync($"/api/Profile?userName=amir");
 
 
-        Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
+        Assert.That(HttpStatusCode.Forbidden == response.StatusCode);
     }
 
     [Test]
@@ -36,6 +37,6 @@ public class GetProfileUserQueryTest : BaseTest
         await AddReviewerAuthorizationAsync();
         var response = await _client.GetAsync($"/api/Profile?userName=@Alex34");
 
-        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.That(HttpStatusCode.NotFound == response.StatusCode);
     }
 }

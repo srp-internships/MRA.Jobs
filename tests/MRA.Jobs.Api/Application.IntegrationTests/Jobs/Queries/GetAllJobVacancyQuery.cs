@@ -27,11 +27,11 @@ public class GetAllJobVacancyQuery : Testing
         var response = await _httpClient.GetAsync("/api/jobs");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var jobVacancies = await response.Content.ReadFromJsonAsync<PagedList<JobVacancyListDto>>();
 
-        Assert.IsNotNull(jobVacancies);
-        Assert.IsNotEmpty(jobVacancies.Items);
+        Assert.That(jobVacancies, Is.Not.Null);
+        Assert.That(jobVacancies.Items, Is.Not.Empty);
     }
 
     [Test]
@@ -47,13 +47,13 @@ public class GetAllJobVacancyQuery : Testing
         var response = await _httpClient.GetAsync("/api/jobs");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var jobVacancies = await response.Content.ReadFromJsonAsync<PagedList<JobVacancyListDto>>();
 
-        Assert.IsNotNull(jobVacancies);
-        Assert.AreEqual(jobVacancies.Items.Count, 2);
+        Assert.That(jobVacancies,Is.Not.Null);
+        Assert.That(jobVacancies.Items.Count== 2);
     }
-    
+
     [Test]
     public async Task GetAllJobVacancyQuery_ReturnsJobVacanciesCount3_ForReviewer()
     {
@@ -67,10 +67,10 @@ public class GetAllJobVacancyQuery : Testing
         var response = await _httpClient.GetAsync("/api/jobs");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var jobVacancies = await response.Content.ReadFromJsonAsync<PagedList<JobVacancyListDto>>();
 
-        Assert.IsNotNull(jobVacancies);
-        Assert.AreEqual(jobVacancies.Items.Count, 3);
+        Assert.That(jobVacancies, Is.Not.Null);
+        Assert.That(jobVacancies.Items.Count == 3);
     }
 }

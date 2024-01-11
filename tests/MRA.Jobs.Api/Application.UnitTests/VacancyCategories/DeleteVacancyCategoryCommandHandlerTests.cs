@@ -32,7 +32,7 @@ public class DeleteVacancyCategoryCommandHandlerTests : BaseTestFixture
         // Assert
         _dbContextMock.Verify(x => x.Categories.Remove(vacancyCategory), Times.Once);
         _dbContextMock.Verify(x => x.SaveChangesAsync(default), Times.Once);
-        Assert.True(result);
+        Assert.That(result);
     }
 
     [Test]
