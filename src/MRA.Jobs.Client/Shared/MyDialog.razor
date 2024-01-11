@@ -101,7 +101,7 @@
         }
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton OnClick="@Cancel">Cancel</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -109,7 +109,6 @@
 
     private AddNoteToApplicationCommand _addNote = new();
     private string selectedStatus { get; set; } = string.Empty;
-    List<string> statuses = new List<string>();
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
@@ -125,10 +124,6 @@
     private List<TimeLineDetailsDto> _timelienes;
     private UserProfileResponse _applicant;
 
-    private void HandleSelectValueChanged(string value)
-    {
-        selectedStatus = value;
-    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -138,6 +133,8 @@
         if (!isApplicant)
             _timelienes = (await applicationService.GetApplicationTimeLineEvents(Slug))
                 .OrderBy(t => t.Time).ToList();
+        selectedStatus = StatusName;
+        StateHasChanged();
     }
 
     private async Task OnAddNoteAsync()
@@ -163,7 +160,7 @@
             if (response)
             {
                 Snackbar.Add("Status updated successfully.", Severity.Success);
-                MudDialog.Cancel();
+                Cancel();
             }
         }
         else

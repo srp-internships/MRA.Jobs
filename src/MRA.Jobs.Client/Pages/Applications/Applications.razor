@@ -97,7 +97,7 @@
                             <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
                             <MudTd DataLabel="StatusName">@context.StatusName</MudTd>
                             <MudTd DataLabel="Name">
-                                <MudButton Variant="Variant.Filled" OnClick="@((_) => OpenDialog(_maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName, context.Username))">More</MudButton>
+                                <MudButton Variant="Variant.Filled" OnClick="@((_) => OpenDialog(context,_maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName, context.Username))">More</MudButton>
                             </MudTd>
                         </RowTemplate>
                         <NoRecordsContent>
@@ -202,7 +202,7 @@
         _searchStatusName = null;
     }
 
-    private async Task OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName, string applicationUserName)
+    private async Task OpenDialog(ApplicationListDto context,DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName, string applicationUserName)
     {
         var dialog = await Dialog.ShowAsync<MyDialog>("Applicant response", new DialogParameters
         {
@@ -214,12 +214,12 @@
             {"ApplicationUserName", applicationUserName }
         }, options);
         var result = await dialog.Result;
-
-        // you can check if the modal was cancelled
+        
         var isCancelled = result.Canceled;
         if (isCancelled)
         {
             await LoadData();
+            await _table.ReloadServerData();
             StateHasChanged();
         }
     }

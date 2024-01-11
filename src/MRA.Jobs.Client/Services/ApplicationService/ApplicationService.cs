@@ -110,13 +110,12 @@ public class ApplicationService(
     {
         await authenticationState.GetAuthenticationStateAsync();
         HttpResponseMessage response = await httpClient.GetAsync($"{ApplicationsEndPoint}/{applicationSlug}");
-        if (response.StatusCode == HttpStatusCode.OK)
-        {
-            var application = await response.Content.ReadFromJsonAsync<ApplicationDetailsDto>();
-            return application;
-        }
+        if (response.StatusCode != HttpStatusCode.OK)
+            return null;
 
-        return null;
+        var application = await response.Content.ReadFromJsonAsync<ApplicationDetailsDto>();
+        return application;
+
     }
 
     public async Task<string> GetCvLinkAsync(string slug)
