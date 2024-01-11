@@ -36,7 +36,7 @@ builder.Services
     .AddFontAwesomeIcons();
 
 
-builder.Services.AddScoped<IHttpClientService, HttpClientService>();
+
 builder.Services.AddMudServices();
 
 builder.Services.AddAltairCACookieService(options => { options.DefaultExpire = TimeSpan.Zero; });
@@ -50,8 +50,6 @@ builder.Services.AddScoped(_ =>
     new IdentityHttpClient { BaseAddress = new Uri(builder.Configuration["IdentityHttpClient:BaseAddress"]!) });
 builder.Services.AddScoped(_ =>
     new HttpClient { BaseAddress = new Uri(builder.Configuration["HttpClient:BaseAddress"]!) });
-
-
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddOptions();
@@ -78,6 +76,9 @@ builder.Services.AddAuthorizationCore(s =>
         .RequireClaim(ClaimTypes.Id).RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Username));
 });
 
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<JobsApiHttpClientService>();
+builder.Services.AddScoped<IdentityApiHttpClientService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
@@ -97,5 +98,6 @@ builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IDateTimeConvertToStringService, DateTimeConverterToStringService>();
 builder.Services.AddScoped<IUserPreferencesService, UserPreferencesService>();
 builder.Services.AddBlazoredLocalStorage();
+
 
 await builder.Build().RunAsync();

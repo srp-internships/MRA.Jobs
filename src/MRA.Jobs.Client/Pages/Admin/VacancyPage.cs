@@ -160,10 +160,16 @@ public partial class VacancyPage
         {
             try
             {
-                await VService.OnDelete(slug);
-
-                Snackbar.Add($"Deleted", Severity.Success);
-                _vacancies.Remove(vacancy);
+                var response = await VService.OnDelete(slug);
+                if (response.Success)
+                {
+                    Snackbar.Add($"Deleted", Severity.Success);
+                    _vacancies.Remove(vacancy);
+                }
+                else
+                {
+                    Snackbar.Add(response.Error ?? "An error occurred while deleting the job", Severity.Error);
+                }
                 Clear();
             }
             catch (Exception)
@@ -205,13 +211,13 @@ public partial class VacancyPage
             VService.creatingNewJob.VacancyQuestions = _questions;
             VService.creatingNewJob.VacancyTasks = _tasks;
             var result = await VService.OnSaveCreateClick();
-            if (result.IsSuccessStatusCode)
+            if (result.Success)
             {
                 Snackbar.Add($"{VService.creatingNewJob.Title} created", Severity.Success);
             }
             else
             {
-                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+                Snackbar.Add(result.Error ?? "An error occurred while creating the job", Severity.Error);
             }
 
             await LoadData();
@@ -255,9 +261,12 @@ public partial class VacancyPage
         ).ToList();
         _tasks = vacancy.VacancyTasks.Select(v =>
                 new VacancyTaskDto
-                    {
-                        Title = v.Title, Description = v.Description, Template = v.Template, Test = v.Test
-                    })
+                {
+                    Title = v.Title,
+                    Description = v.Description,
+                    Template = v.Template,
+                    Test = v.Test
+                })
             .ToList();
     }
 

@@ -4,48 +4,43 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Delete;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+using MRA.Jobs.Client.Services.HttpClients;
 
 namespace MRA.Jobs.Client.Services.TrainingServices;
 
-public class TrainingService : ITrainingService
+public class TrainingService(
+    JobsApiHttpClientService httpClientService,
+    AuthenticationStateProvider authenticationStateProvider)
+    : ITrainingService
 {
-    private readonly HttpClient _httpClient;
-    private readonly AuthenticationStateProvider _authenticationStateProvider;
-
-    public TrainingService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider)
+    public CreateTrainingVacancyCommand createCommand { get; set; } = new()
     {
-        _httpClient = httpClient;
-        _authenticationStateProvider = authenticationStateProvider;
-        createCommand = new CreateTrainingVacancyCommand
-        {
-            Title = "",
-            CategoryId = Guid.NewGuid(),
-            Description = "",
-            ShortDescription = "",
-            Duration = 0,
-            EndDate = DateTime.Now,
-            PublishDate = DateTime.Now,
-            Fees = 0
-        };
-    }
+        Title = "",
+        CategoryId = Guid.NewGuid(),
+        Description = "",
+        ShortDescription = "",
+        Duration = 0,
+        EndDate = DateTime.Now,
+        PublishDate = DateTime.Now,
+        Fees = 0
+    };
 
-    public CreateTrainingVacancyCommand createCommand { get; set; }
     public UpdateTrainingVacancyCommand UpdateCommand { get; set; }
     public DeleteTrainingVacancyCommand DeleteCommand { get; set; }
 
-    public async Task<HttpResponseMessage> Create()
+    public async Task<ApiResponse<string>> Create()
     {
-        await _authenticationStateProvider.GetAuthenticationStateAsync();
-        return await _httpClient.PostAsJsonAsync("trainings", createCommand);
+        await authenticationStateProvider.GetAuthenticationStateAsync();
+        return await httpClientService.PostAsJsonAsync<string>("trainings", createCommand);
     }
 
-    public async Task Delete(string slug)
+    public async Task<ApiResponse> Delete(string slug)
     {
-        await _authenticationStateProvider.GetAuthenticationStateAsync();
-        await _httpClient.DeleteAsync($"trainings/{slug}");
+        await authenticationStateProvider.GetAuthenticationStateAsync();
+        return await httpClientService.DeleteAsync($"trainings/{slug}");
     }
 
-    public async Task<HttpResponseMessage> Update(string slug)
+    public async Task<ApiResponse> Update(string slug)
     {
         UpdateCommand = new UpdateTrainingVacancyCommand
         {
@@ -59,23 +54,22 @@ public class TrainingService : ITrainingService
             CategoryId = createCommand.CategoryId,
             Fees = createCommand.Fees,
             VacancyQuestions = createCommand.VacancyQuestions,
-            VacancyTasks=createCommand.VacancyTasks
+            VacancyTasks = createCommand.VacancyTasks
         };
-        
-        await _authenticationStateProvider.GetAuthenticationStateAsync();
-        return await _httpClient.PutAsJsonAsync($"trainings/{slug}", UpdateCommand);
+        return await httpClientService.PutAsJsonAsync<string>($"trainings/{slug}", UpdateCommand);
     }
 
-    public async Task<PagedList<TrainingVacancyListDto>> GetAll()
+    public async Task<ApiResponse<PagedList<TrainingVacancyListDto>>> GetAll()
     {
-        await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var result = await _httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
+        await authenticationStateProvider.GetAuthenticationStateAsync();
+        var result = await httpClientService.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
         return result;
     }
 
     public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug)
     {
-        await _authenticationStateProvider.GetAuthenticationStateAsync();
-        return await _httpClient.GetFromJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
+        await authenticationStateProvider.GetAuthenticationStateAsync();
+        var response = await httpClientService.GetAsJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
+        return response.Success ? response.Result : null;
     }
 }
