@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using System.Runtime.InteropServices.JavaScript;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
@@ -37,8 +38,8 @@ public class NotesByApplicationsTests : CreateApplicationTestsBase
 
         var timelineDto = (await responseAddNoteCommand.Content.ReadFromJsonAsync<TimeLineDetailsDto>());
 
-        Assert.NotNull(timelineDto);
-        Assert.AreEqual(timelineDto.Note, "Add note");
+        Assert.That(timelineDto is not null);
+        Assert.That(timelineDto is { Note: "Add note" });
     }
 
     [Test]
@@ -56,6 +57,6 @@ public class NotesByApplicationsTests : CreateApplicationTestsBase
 
         var list = await response.Content.ReadFromJsonAsync<List<TimeLineDetailsDto>>();
         
-        Assert.IsNotEmpty(list);
+        Assert.That(list.Count != 0);
     }
 }
