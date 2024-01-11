@@ -19,7 +19,7 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 namespace MRA.Jobs.Client.Services.ApplicationService;
 
 public class ApplicationService(
-        HttpClient httpClient,
+        JobsApiHttpClientService httpClient,
         AuthenticationStateProvider authenticationState,
         ISnackbar snackbar,
         NavigationManager navigationManager,
@@ -88,20 +88,15 @@ public class ApplicationService(
     public async Task<PagedList<ApplicationListDto>> GetAllApplications()
     {
         await authenticationState.GetAuthenticationStateAsync();
-        HttpResponseMessage response = await httpClient.GetAsync(ApplicationsEndPoint);
-        PagedList<ApplicationListDto>
-            result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
-        return result;
+        var response = await httpClient.GetAsJsonAsync<PagedList<ApplicationListDto>>(ApplicationsEndPoint);
+        return response.Success ? response.Result : null;
     }
 
     public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
     {
         await authenticationState.GetAuthenticationStateAsync();
-        HttpResponseMessage response =
-            await httpClient.PutAsJsonAsync($"{ApplicationsEndPoint}/{updateApplicationStatus.Slug}/update-status",
-                updateApplicationStatus);
-        bool result = await response.Content.ReadFromJsonAsync<bool>();
-        return result;
+        var response = await httpClient.PutAsJsonAsync<bool>($"{ApplicationsEndPoint}/{updateApplicationStatus.Slug}/update-status", updateApplicationStatus);
+        return response.Success ? response.Result : false;
     }
 
     public async Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug)
@@ -115,26 +110,21 @@ public class ApplicationService(
     {
         var applicationSlug = $"{await GetCurrentUserName()}-{slug}".ToLower().Trim();
         var app = await GetApplicationDetails(applicationSlug);
-        if (app == null)
-        {
-            return "";
-        }
-
-        return $"{httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
+        string baseAddress = configuration["HttpClient:BaseAddress"];
+        return app == null ? "" : $"{baseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
     }
 
     public async Task<TimeLineDetailsDto> AddNote(AddNoteToApplicationCommand note)
     {
         try
         {
-            var response = await httpClient.PostAsJsonAsync($"{ApplicationsEndPoint}/add-note", note);
-            switch (response.StatusCode)
+            var response = await httpClient.PostAsJsonAsync<TimeLineDetailsDto>($"{ApplicationsEndPoint}/add-note", note);
+            switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:
-                    return await response.Content.ReadFromJsonAsync<TimeLineDetailsDto>();
+                    return  response.Result;
                 case HttpStatusCode.Conflict:
-                    snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,
-                        Severity.Error);
+                    snackbar.Add( response.Error, Severity.Error);
                     break;
                 default:
                     snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
@@ -154,22 +144,11 @@ public class ApplicationService(
     {
         try
         {
-            var response = await httpClient.GetAsync($"{ApplicationsEndPoint}/GetTimelineEvents/{slug}");
-            
-            switch (response.StatusCode)
-            {
-                case HttpStatusCode.OK:
-                    return await response.Content.ReadFromJsonAsync<List<TimeLineDetailsDto>>();
-                case HttpStatusCode.Conflict:
-                    snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,
-                        Severity.Error);
-                    break;
-                default:
-                    snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
-                    break;
-            }
+            var response = await httpClient.GetAsJsonAsync<List<TimeLineDetailsDto>>($"{ApplicationsEndPoint}/GetTimelineEvents/{slug}");
+
+            return response.Result;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
         }

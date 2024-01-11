@@ -131,8 +131,11 @@
         var app = await applicationService.GetApplicationDetails(Slug);
         cvURL = $"{httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
         if (!isApplicant)
-            _timelienes = (await applicationService.GetApplicationTimeLineEvents(Slug))
-                .OrderBy(t => t.Time).ToList();
+        {
+            var timeLineEvents = await applicationService.GetApplicationTimeLineEvents(Slug);
+            _timelienes = timeLineEvents == null ? new List<TimeLineDetailsDto>() : timeLineEvents.OrderBy(t => t.Time).ToList();
+        }
+
         selectedStatus = StatusName;
         StateHasChanged();
     }
@@ -165,7 +168,6 @@
         }
         else
         {
-            // Handle case where selectedStatus cannot be parsed to enum
             Snackbar.Add("Invalid status selected.", Severity.Error);
         }
     }
