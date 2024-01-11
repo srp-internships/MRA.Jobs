@@ -108,9 +108,9 @@
         @if (_betaVersion)
         {
             <MudChip Color="Color.Primary">Beta</MudChip>
+            <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/> 
         }
-        <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
-        <ToolBarSettingsButtons/>
+		<ToolBarSettingsButtons/> 
     </MudHidden>
     <UserButton/>
 </MudToolBar>
@@ -119,7 +119,7 @@
     <MudToolBar Dense="true" Class="docs-gray-bg">
         <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
         <MudSpacer/>
-        <ToolBarSettingsButtons/>
+			<ToolBarSettingsButtons />
     </MudToolBar>
 
     <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
@@ -142,7 +142,6 @@
 @code {
 
     bool _open = false;
-
     private bool _betaVersion;
 
     void ToggleDrawer()
@@ -168,7 +167,6 @@
     protected override async Task OnInitializedAsync()
     {
         _betaVersion = await FeatureManager.IsEnabledAsync(FeatureFlags.BetaVersion);
-
         StateHasChanged();
         NavigationManager.LocationChanged += HandleLocationChanged;
         await base.OnInitializedAsync();
