@@ -21,10 +21,9 @@ else
 	[Parameter]
 	public string Slug { get; set; }
 	private VacancyDetailsResponse details;
-
 	protected override async Task OnInitializedAsync()
 	{
-await base.OnInitializedAsync();
+		await base.OnInitializedAsync();
 		try
 		{
 
@@ -37,7 +36,7 @@ await base.OnInitializedAsync();
 						Description = response.Description,
 						Duration = response.Duration,
 						EndDate = response.EndDate,
-						Deadline=response.ApplicationDeadline,
+						Deadline = response.ApplicationDeadline,
 						PublishDate = response.PublishDate
 					};
 			}

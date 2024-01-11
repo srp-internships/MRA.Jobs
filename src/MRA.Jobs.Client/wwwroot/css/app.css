@@ -223,6 +223,6 @@ ul, li {
     box-shadow: 0 30px 60px rgba(0,0,0,0.12) !important;   
 }
 
-.justify-text {
-    text-align: justify;
+.center-text {
+    text-align: center;
 }

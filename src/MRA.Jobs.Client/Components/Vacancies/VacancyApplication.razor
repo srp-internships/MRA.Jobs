@@ -17,238 +17,238 @@
 
 @if (Vacancy is null)
 {
-    <div style="text-align: center;">
-        <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
-    </div>
+	<div style="text-align: center;">
+		<MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+	</div>
 }
 else
 {
-    <MudContainer>
-    <MudCard Class="rounded-lg mud-elevation-4">
-        <MudCardHeader>
-            <CardHeaderContent>
-                <div class="d-flex flex-grow-1">
-                    <div class="flex-none d-flex py-lg-3">
-                        <MudLink Href="@(VacancyType + "/" + Slug)">
-                            <MudIcon Icon="@Icons.Material.Filled.ArrowBackIosNew" Size="Size.Large"></MudIcon>
-                        </MudLink>
-                    </div>
-                    <div class="">
-                        <MudText Typo="Typo.h5" Style="padding-top: 3px;">
-                            <b> @Vacancy.Title</b>
-                        </MudText>
-                        <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
-                            <b> @ContentService["VacancyDetails:Posted"] @DateTimeConvert.GetDisplayPostedDate(Vacancy.PublishDate)</b>
-                        </MudText>
-                    </div>
-                </div>
-            </CardHeaderContent>
-        </MudCardHeader>
-        <MudCardContent>
-            <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
-                <b>@ContentService["VacancyApplication:Vacancy Details"]</b>
-            </MudText>
-            <MudDivider/>
-            <br/>
-            <MudText>@Vacancy.Description</MudText>
-            <br/>
-            <MudDivider/>
-            <br/>
-            <MudGrid Style="padding:10px 10px; color:rgb(128,128,128);">
-                @if (Vacancy.Duration != 0)
-                {
-                    <MudItem lg="4" md="6" xs="6">
-                        <MudGrid>
-                            <MudItem Style="padding:0;">
-                                <MudIcon Icon="@Icons.Material.Outlined.Timelapse"/>
-                            </MudItem>
-                            <MudItem Style="padding:0;">
-                                <MudText>
-                                    <b>@Vacancy.Duration @ContentService["VacancyDetails:month(s)"]</b>
-                                </MudText>
-                                <MudText Typo="Typo.body2">
-                                    <small>@ContentService["VacancyDetails:Duration"]</small>
-                                </MudText>
-                            </MudItem>
-                        </MudGrid>
-                    </MudItem>
-                }
-                @if (Vacancy.Deadline != default(DateTime))
-                {
-                    <MudItem lg="4" md="6" xs="6">
-                        @{
-                            var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(Vacancy.Deadline);
-                            var deadlineStyle = $"color:{deadlineResult.Color}";
+	<MudContainer>
+		<MudCard Class="rounded-lg mud-elevation-4">
+			<MudCardHeader>
+				<CardHeaderContent>
+					<div class="d-flex flex-grow-1">
+						<div class="flex-none d-flex py-lg-3">
+							<MudLink Href="@(VacancyType + "/" + Slug)">
+								<MudIcon Icon="@Icons.Material.Filled.ArrowBackIosNew" Size="Size.Large"></MudIcon>
+							</MudLink>
+						</div>
+						<div class="">
+							<MudText Typo="Typo.h5" Style="padding-top: 3px;">
+								<b> @Vacancy.Title</b>
+							</MudText>
+							<MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
+								<b> @ContentService["VacancyDetails:Posted"] @DateTimeConvert.GetDisplayPostedDate(Vacancy.PublishDate)</b>
+							</MudText>
+						</div>
+					</div>
+				</CardHeaderContent>
+			</MudCardHeader>
+			<MudCardContent>
+				<MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
+					<b>@ContentService["VacancyApplication:Vacancy Details"]</b>
+				</MudText>
+				<MudDivider />
+				<br />
+				<MudText>@Vacancy.Description</MudText>
+					<br />
+					<MudDivider />
+					<br />
+					<MudGrid Style="padding:10px 10px; color:rgb(128,128,128);">
+						@if (Vacancy.Duration != 0)
+					{
+						<MudItem lg="4" md="6" xs="6">
+							<MudGrid>
+								<MudItem Style="padding:0;">
+									<MudIcon Icon="@Icons.Material.Outlined.Timelapse" />
+								</MudItem>
+								<MudItem Style="padding:0;">
+									<MudText>
+										<b>@Vacancy.Duration @ContentService["VacancyDetails:month(s)"]</b>
+									</MudText>
+									<MudText Typo="Typo.body2">
+										<small>@ContentService["VacancyDetails:Duration"]</small>
+									</MudText>
+								</MudItem>
+							</MudGrid>
+						</MudItem>
+					}
+					@if (Vacancy.Deadline != default(DateTime))
+					{
+						<MudItem lg="4" md="6" xs="6">
+							@{
+								var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(Vacancy.Deadline);
+								var deadlineStyle = $"color:{deadlineResult.Color}";
 
-                            <MudGrid Style="@deadlineStyle">
-                                <MudItem Style="padding:0;">
-                                    <MudIcon Icon="@Icons.Material.Outlined.Alarm"/>
-                                </MudItem>
-                                <MudItem Style="padding:0;">
-                                    <MudText>
-                                        <b>@deadlineResult.DisplayDate</b>
-                                    </MudText>
-                                    <MudText Typo="Typo.body2">
-                                        <small>@ContentService["VacancyDetails:Deadline"]</small>
-                                    </MudText>
-                                </MudItem>
-                            </MudGrid>
-                        }
-                    </MudItem>
-                }
+								<MudGrid Style="@deadlineStyle">
+									<MudItem Style="padding:0;">
+										<MudIcon Icon="@Icons.Material.Outlined.Alarm" />
+									</MudItem>
+									<MudItem Style="padding:0;">
+										<MudText>
+											<b>@deadlineResult.DisplayDate</b>
+										</MudText>
+										<MudText Typo="Typo.body2">
+											<small>@ContentService["VacancyDetails:Deadline"]</small>
+										</MudText>
+									</MudItem>
+								</MudGrid>
+							}
+						</MudItem>
+					}
 
-                @if (Vacancy.RequiredYearOfExperience != 0)
-                {
-                    <MudItem lg="4" md="6" xs="6">
-                        <MudGrid>
-                            <MudItem Style="padding:0;">
-                                <MudIcon Icon="@Icons.Material.Outlined.Work"/>
-                            </MudItem>
-                            <MudItem Style="padding:0;">
-                                <MudText>
-                                    <b>@Vacancy.RequiredYearOfExperience @ContentService["VacancyApplication:year(s)"]</b>
-                                </MudText>
-                                <MudText Typo="Typo.body2">
-                                    <small>@ContentService["VacancyApplication:Required year of experience"]</small>
-                                </MudText>
-                            </MudItem>
-                        </MudGrid>
-                    </MudItem>
-                }
-                @if (Vacancy.Fees != 0)
-                {
-                    <MudItem lg="4" md="6" xs="6">
-                        <MudGrid>
-                            <MudItem Style="padding:0;">
-                                <MudIcon Icon="@Icons.Material.Outlined.AttachMoney"/>
-                            </MudItem>
-                            <MudItem Style="padding:0;">
-                                <MudText>
-                                    <b>@Vacancy.Fees</b>
-                                </MudText>
-                                <MudText Typo="Typo.body2">
-                                    <small>@ContentService["VacancyApplication:Fees"]</small>
-                                </MudText>
-                            </MudItem>
-                        </MudGrid>
-                    </MudItem>
-                }
+					@if (Vacancy.RequiredYearOfExperience != 0)
+					{
+						<MudItem lg="4" md="6" xs="6">
+							<MudGrid>
+								<MudItem Style="padding:0;">
+									<MudIcon Icon="@Icons.Material.Outlined.Work" />
+								</MudItem>
+								<MudItem Style="padding:0;">
+									<MudText>
+										<b>@Vacancy.RequiredYearOfExperience @ContentService["VacancyApplication:year(s)"]</b>
+									</MudText>
+									<MudText Typo="Typo.body2">
+										<small>@ContentService["VacancyApplication:Required year of experience"]</small>
+									</MudText>
+								</MudItem>
+							</MudGrid>
+						</MudItem>
+					}
+					@if (Vacancy.Fees != 0)
+					{
+						<MudItem lg="4" md="6" xs="6">
+							<MudGrid>
+								<MudItem Style="padding:0;">
+									<MudIcon Icon="@Icons.Material.Outlined.AttachMoney" />
+								</MudItem>
+								<MudItem Style="padding:0;">
+									<MudText>
+										<b>@Vacancy.Fees</b>
+									</MudText>
+									<MudText Typo="Typo.body2">
+										<small>@ContentService["VacancyApplication:Fees"]</small>
+									</MudText>
+								</MudItem>
+							</MudGrid>
+						</MudItem>
+					}
 
-                <MudItem lg="4" md="6" xs="6">
-                    @{
-                        var endDateResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(Vacancy.EndDate);
-                        var endDatelineStyle = $"color:{endDateResult.Color}";
+					<MudItem lg="4" md="6" xs="6">
+						@{
+							var endDateResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(Vacancy.EndDate);
+							var endDatelineStyle = $"color:{endDateResult.Color}";
 
-                        <MudGrid Style="@endDatelineStyle">
-                            <MudItem Style="padding:0;">
-                                <MudIcon Icon="@Icons.Material.Outlined.DateRange"/>
-                            </MudItem>
-                            <MudItem Style="padding:0;">
-                                <MudText>
-                                    <b>@endDateResult.DisplayDate</b>
-                                </MudText>
-                                <MudText Typo="Typo.body2">
-                                    <small>@ContentService["VacancyDetails:End Date"]</small>
-                                </MudText>
-                            </MudItem>
-                        </MudGrid>
-                    }
-                </MudItem>
+							<MudGrid Style="@endDatelineStyle">
+								<MudItem Style="padding:0;">
+									<MudIcon Icon="@Icons.Material.Outlined.DateRange" />
+								</MudItem>
+								<MudItem Style="padding:0;">
+									<MudText>
+										<b>@endDateResult.DisplayDate</b>
+									</MudText>
+									<MudText Typo="Typo.body2">
+										<small>@ContentService["VacancyDetails:End Date"]</small>
+									</MudText>
+								</MudItem>
+							</MudGrid>
+						}
+					</MudItem>
 
-            </MudGrid>
-        </MudCardContent>
-    </MudCard>
-    <br/>
+				</MudGrid>
+			</MudCardContent>
+		</MudCard>
+		<br />
 
-    <EditForm Model="@Application" OnValidSubmit="CreateApplication">
-        <FluentValidationValidator/>
-        <MudCard Class="rounded-lg mud-elevation-4">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Style="color:rgb(128,128,128)">
-                        <b>@ContentService["VacancyApplication:Additional Details"]</b>
-                    </MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
+		<EditForm Model="@Application" OnValidSubmit="CreateApplication">
+			<FluentValidationValidator />
+			<MudCard Class="rounded-lg mud-elevation-4">
+				<MudCardHeader>
+					<CardHeaderContent>
+						<MudText Style="color:rgb(128,128,128)">
+							<b>@ContentService["VacancyApplication:Additional Details"]</b>
+						</MudText>
+					</CardHeaderContent>
+				</MudCardHeader>
+				<MudCardContent>
 
-                <MudText>
-                    <b>
-                        <span style="color: red">*</span>@ContentService["VacancyApplication:Cover Letter"]
-                    </b>
-                </MudText>
-                <MudTextField T="string" Lines="7" Variant="Variant.Outlined" @bind-Value="@Application.CoverLetter"
-                              For="@(() => Application.CoverLetter)"/>
-            </MudCardContent>
-        </MudCard>
+					<MudText>
+						<b>
+							<span style="color: red">*</span>@ContentService["VacancyApplication:Cover Letter"]
+						</b>
+					</MudText>
+					<MudTextField T="string" Lines="7" Variant="Variant.Outlined" @bind-Value="@Application.CoverLetter"
+								  For="@(() => Application.CoverLetter)" />
+				</MudCardContent>
+			</MudCard>
 
-        @if (Vacancy.VacancyQuestions.Any())
-        {
-            <br/>
-            <MudCard Class="rounded-lg mud-elevation-4">
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Style="color:rgb(128,128,128)">
-                            <b>@ContentService["VacancyApplication:Questions"]</b>
-                        </MudText>
-                    </CardHeaderContent>
-                </MudCardHeader>
-                <MudCardContent>
-                    @foreach (var question in Vacancy.VacancyQuestions)
-                    {
-                        <MudDivider/>
+			@if (Vacancy.VacancyQuestions.Any())
+			{
+				<br />
+				<MudCard Class="rounded-lg mud-elevation-4">
+					<MudCardHeader>
+						<CardHeaderContent>
+							<MudText Style="color:rgb(128,128,128)">
+								<b>@ContentService["VacancyApplication:Questions"]</b>
+							</MudText>
+						</CardHeaderContent>
+					</MudCardHeader>
+					<MudCardContent>
+						@foreach (var question in Vacancy.VacancyQuestions)
+						{
+							<MudDivider />
 
-                        <MudText>
-                            @if (!question.IsOptional)
-                            {
-                                <span style="color: red">*</span>
-                            }
-                            @question.Question
-                        </MudText>
+							<MudText>
+								@if (!question.IsOptional)
+								{
+									<span style="color: red">*</span>
+								}
+								@question.Question
+							</MudText>
 
-                        @if (question.IsOptional)
-                        {
-                            <MudTextField Variant="Variant.Outlined" T="string" Lines="5" @bind-Value="@QuestionResponses[question.Question]"/>
-                        }
-                        else
-                        {
-                            <MudTextField Variant="Variant.Outlined" T="string" Lines="5" @bind-Value="@QuestionResponses[question.Question]" Required/>
-                        }
-                    }
-                </MudCardContent>
-            </MudCard>
-        }
-        @if (Vacancy.VacancyTasks.Any())
-        {
-            <br/>
-            <MudCard Class="rounded-lg mud-elevation-4">
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Style="color:rgb(128,128,128)">
-                            <b>Task(s)</b>
-                        </MudText>
-                    </CardHeaderContent>
-                </MudCardHeader>
-                <MudCardContent>
-                    @foreach (var task in Vacancy.VacancyTasks)
-                    {
-                        <MudText>
-                            <span style="color:red">*</span>@task.Title
-                        </MudText>
+							@if (!question.IsOptional)
+							{
+								<MudTextField Variant="Variant.Outlined" T="string" Lines="5" @bind-Value="@QuestionResponses[question.Question]" />
+							}
+							else
+							{
+								<MudTextField Variant="Variant.Outlined" T="string" Lines="5" @bind-Value="@QuestionResponses[question.Question]" Required />
+							}
+						}
+					</MudCardContent>
+				</MudCard>
+			}
+			@if (Vacancy.VacancyTasks.Any())
+			{
+				<br />
+				<MudCard Class="rounded-lg mud-elevation-4">
+					<MudCardHeader>
+						<CardHeaderContent>
+							<MudText Style="color:rgb(128,128,128)">
+								<b>Task(s)</b>
+							</MudText>
+						</CardHeaderContent>
+					</MudCardHeader>
+					<MudCardContent>
+						@foreach (var task in Vacancy.VacancyTasks)
+						{
+							<MudText>
+								<span style="color:red">*</span>@task.Title
+							</MudText>
 
-                        <MudText>
-                            @task.Description
-                        </MudText>
+							<MudText>
+								@task.Description
+							</MudText>
 
-                        <StandaloneCodeEditor @ref="_editors[task.Id]" Id="@($"sample-code-editor-{task.Id}")"
-                                              ConstructionOptions="@(options => EditorConstructionOptions(options, task.Template))"
-                                              OnDidInit="@(async () => await EditorOnDidInit(task.Id))" OnContextMenu="@OnContextMenu"
-                                              OnDidChangeModelContent="@(async () => await UpdateTaskResponse(task.Id))"/>
-                        <MudDivider/>
-                    }
-                </MudCardContent>
-            </MudCard>
-        }
+							<StandaloneCodeEditor @ref="_editors[task.Id]" Id="@($"sample-code-editor-{task.Id}")"
+												  ConstructionOptions="@(options => EditorConstructionOptions(options, task.Template))"
+												  OnDidInit="@(async () => await EditorOnDidInit(task.Id))" OnContextMenu="@OnContextMenu"
+												  OnDidChangeModelContent="@(async () => await UpdateTaskResponse(task.Id))" />
+							<MudDivider />
+						}
+					</MudCardContent>
+				</MudCard>
+			}
 
         <br/>
         <MudCard Class="rounded-lg mud-elevation-4">
@@ -293,98 +293,98 @@ else
             </MudCardActions>
         </MudCard>
 
-    </EditForm>
-    </MudContainer>
-    <br/>
-    <br/>
+		</EditForm>
+	</MudContainer>
+	<br />
+	<br />
 }
 
 
 @code {
-    private bool _isUploadCvMode = true;
+	private bool _isUploadCvMode = true;
 
-    [Parameter] public VacancyApplicationResponse Vacancy { get; set; }
+	[Parameter] public VacancyApplicationResponse Vacancy { get; set; }
 
-    [Parameter] public CreateApplicationCommand Application { get; set; }
+	[Parameter] public CreateApplicationCommand Application { get; set; }
 
-    [Parameter] public string Slug { get; set; }
+	[Parameter] public string Slug { get; set; }
 
-    [Parameter] public Dictionary<string, string> QuestionResponses { get; set; }
+	[Parameter] public Dictionary<string, string> QuestionResponses { get; set; }
 
-    [Parameter] public Dictionary<Guid, string> TaskResponses { get; set; }
+	[Parameter] public Dictionary<Guid, string> TaskResponses { get; set; }
 
-    [Parameter] public string VacancyType { get; set; }
+	[Parameter] public string VacancyType { get; set; }
 
-    [Inject] public IConfiguration Configuration { get; set; }
+	[Inject] public IConfiguration Configuration { get; set; }
 
-    private IBrowserFile _cv;
-    private bool _processing;
+	private IBrowserFile _cv;
+	private bool _processing;
 
-    private Dictionary<Guid, StandaloneCodeEditor> _editors = new();
+	private Dictionary<Guid, StandaloneCodeEditor> _editors = new();
 
-    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor, string initialValue)
-    {
-        return new StandaloneEditorConstructionOptions
-        {
-            Language = "csharp",
-            GlyphMargin = true,
-            AutomaticLayout = true,
-            Value = initialValue
-        };
-    }
+	private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor, string initialValue)
+	{
+		return new StandaloneEditorConstructionOptions
+			{
+				Language = "csharp",
+				GlyphMargin = true,
+				AutomaticLayout = true,
+				Value = initialValue
+			};
+	}
 
-    private async Task UpdateTaskResponse(Guid taskId)
-    {
-        if (_editors.ContainsKey(taskId))
-        {
-            TaskResponses[taskId] = await _editors[taskId].GetValue();
-        }
-    }
+	private async Task UpdateTaskResponse(Guid taskId)
+	{
+		if (_editors.ContainsKey(taskId))
+		{
+			TaskResponses[taskId] = await _editors[taskId].GetValue();
+		}
+	}
 
-    private async Task EditorOnDidInit(Guid taskId)
-    {
-        if (_editors.ContainsKey(taskId))
-        {
-            await _editors[taskId].AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (_) => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
-        }
-    }
+	private async Task EditorOnDidInit(Guid taskId)
+	{
+		if (_editors.ContainsKey(taskId))
+		{
+			await _editors[taskId].AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, (_) => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
+		}
+	}
 
-    private void OnContextMenu(EditorMouseEvent eventArg)
-    {
-        Console.WriteLine(@"OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
-    }
+	private void OnContextMenu(EditorMouseEvent eventArg)
+	{
+		Console.WriteLine(@"OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
+	}
 
-    protected override async void OnAfterRender(bool firstRender)
-    {
-        await BlazorMonaco.Editor.Global.SetTheme(JsRuntime, LayoutService.IsDarkMode ? "vs-dark" : "vs");
-        if (firstRender)
-        {
-            await Task.Delay(1000);
-            StateHasChanged();
-        }
-    }
+	protected override async void OnAfterRender(bool firstRender)
+	{
+		await BlazorMonaco.Editor.Global.SetTheme(JsRuntime, LayoutService.IsDarkMode ? "vs-dark" : "vs");
+		if (firstRender)
+		{
+			await Task.Delay(1000);
+			StateHasChanged();
+		}
+	}
 
-    private async Task CreateApplication()
-    {
-        if (_isUploadCvMode && _cv == null)
-        {
-            Snackbar.Add(ContentService["SendCV:IfFileNull"], Severity.Error);
-            return;
-        }
+	private async Task CreateApplication()
+	{
+		if (_isUploadCvMode && _cv == null)
+		{
+			Snackbar.Add(ContentService["SendCV:IfFileNull"], Severity.Error);
+			return;
+		}
 
-        if (_isUploadCvMode)
-        {
-            if (_cv.Size >= int.Parse(Configuration["CvSettings:MaxFileSize"]!) && _isUploadCvMode)
-            {
-                Snackbar.Add("File size must be equal or lower than 5MB", Severity.Error);
-                return;
-            }
-        }
+		if (_isUploadCvMode)
+		{
+			if (_cv.Size >= int.Parse(Configuration["CvSettings:MaxFileSize"]!) && _isUploadCvMode)
+			{
+				Snackbar.Add("File size must be equal or lower than 5MB", Severity.Error);
+				return;
+			}
+		}
 
-        if (string.IsNullOrWhiteSpace(Application.CoverLetter))
-        {
-            return; // Do not proceed with submission if any required fields are empty.
-        }
+		if (string.IsNullOrWhiteSpace(Application.CoverLetter))
+		{
+			return; // Do not proceed with submission if any required fields are empty.
+		}
 
 
         var updatedResponses = Application.VacancyResponses.Select(vr => new VacancyResponseDto
@@ -398,17 +398,17 @@ else
             return;
         }
 
-        var updateTaskResponses = Vacancy.VacancyTasks.Select(task => new TaskResponseDto
-        {
-            TaskId = task.Id,
-            Code = TaskResponses[task.Id]
-        }).ToList();
-        Application.TaskResponses = updateTaskResponses;
-        Application.VacancyResponses = updatedResponses;
-        Application.Cv.IsUploadCvMode = _isUploadCvMode;
-        _processing = true;
-        await ApplicationService.CreateApplication(Application, _cv);
-        _processing = false;
-    }
+		var updateTaskResponses = Vacancy.VacancyTasks.Select(task => new TaskResponseDto
+			{
+				TaskId = task.Id,
+				Code = TaskResponses[task.Id]
+			}).ToList();
+		Application.TaskResponses = updateTaskResponses;
+		Application.VacancyResponses = updatedResponses;
+		Application.Cv.IsUploadCvMode = _isUploadCvMode;
+		_processing = true;
+		await ApplicationService.CreateApplication(Application, _cv);
+		_processing = false;
+	}
 
 }

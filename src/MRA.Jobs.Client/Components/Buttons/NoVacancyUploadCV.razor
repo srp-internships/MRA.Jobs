@@ -1,5 +1,6 @@
 ﻿@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication
 @using MRA.Jobs.Application.Contracts.Dtos.Responses
+@using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @using MRA.Jobs.Client.Services.NoVacancies
 @inject NavigationManager NavigationManager
@@ -33,24 +34,24 @@
             <EditForm Model="@_application">
                 <FluentValidationValidator/>
 
-                @foreach (var question in _vacancy.VacancyQuestions)
-                {
-                    <MudTextField Label=@(ContentService[$"SendCV:{question.Question}"] + " *") @bind-Value="@_questionsResponses[question]" Variant="Variant.Outlined"/>
-                }
-                <MudTextField T="string" Lines="3" Label="@(ContentService["SendCV:CoverLetter"] + " *")" Variant="@Variant.Outlined" @bind-Value="@_application.CoverLetter"
-                              For="@(() => _application.CoverLetter)"/>
+            @foreach (var question in _vacancy.VacancyQuestions)
+            {
+                <MudTextField Label=@(ContentService[$"SendCV:{question.Question}"] + " *") @bind-Value="@_questionsResponses[question]" Variant="Variant.Outlined"/>
+            }
+            <MudTextField T="string" Lines="3" Label="@(ContentService["SendCV:CoverLetter"] + " *")" Variant="@Variant.Outlined" @bind-Value="@_application.CoverLetter"
+                          For="@(() => _application.CoverLetter)"/>
 
-                <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
-                    <ButtonTemplate Context="anotherContext">
-                        <MudButton HtmlTag="label"
-                                   Variant="Variant.Filled"
-                                   Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.CloudUpload"
-                                   for="@anotherContext">
-                            @ContentService["VacancyApplication:Upload your CV"]
-                        </MudButton>
-                    </ButtonTemplate>
-                </MudFileUpload>
+            <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@Configuration["CvSettings:ExceptedFormats"]">
+                <ButtonTemplate Context="anotherContext">
+                    <MudButton HtmlTag="label"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.CloudUpload"
+                               for="@anotherContext">
+                    @ContentService["VacancyApplication:Upload your CV"]
+                    </MudButton>
+                </ButtonTemplate>
+            </MudFileUpload>
 
 
             </EditForm>
@@ -87,37 +88,37 @@
     </DialogActions>
 </MudDialog>
 
-@code {
+	@code {
 
     private bool _loading;
     private bool _isOpen;
 
-    private async Task OpenDialog()
+	private async Task OpenDialog()
     {
         _loading = true;
-        await Load();
+		await Load();
         _isOpen = true;
         _loading = false;
         StateHasChanged();
     }
 
-    private void CloseDialog()
-    {
-        _isOpen = false;
-        StateHasChanged();
-        Clear();
-    }
+	private void CloseDialog()
+	{
+		_isOpen = false;
+		StateHasChanged();
+		Clear();
+	}
 
-    private bool _isUploadCvMode = true;
+	private bool _isUploadCvMode = true;
 
-    private IBrowserFile _cv;
-    private bool _processing = false;
+	private IBrowserFile _cv;
+	private bool _processing = false;
 
-    JobVacancyDetailsDto _vacancy = new();
+	JobVacancyDetailsDto _vacancy = new();
 
-    private CreateApplicationCommand _application;
+	private CreateApplicationCommand _application;
+	private Dictionary<VacancyQuestionDto, string> _questionsResponses = new();
 
-    private Dictionary<VacancyQuestionDto, string> _questionsResponses = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -127,7 +128,7 @@
     private async Task Load()
     {
       
-        _vacancy = await NoVacancyService.GetNoVacancyAsync();
+		_vacancy = await NoVacancyService.GetNoVacancyAsync();
         if (_vacancy.Slug == null)
             return;
 
@@ -162,16 +163,17 @@
             return; // Do not proceed with submission if any required fields are empty.
         }
 
-        var vacancyResponses = _questionsResponses.Select(val => new VacancyResponseDto()
-        {
-            VacancyQuestion = new VacancyQuestionDto { Question = val.Key.Question }, Response = val.Value
-        }).ToList();
+		var vacancyResponses = _questionsResponses.Select(val => new VacancyResponseDto()
+			{
+				VacancyQuestion = new VacancyQuestionDto { Question = val.Key.Question },
+				Response = val.Value
+			}).ToList();
 
-        _application.VacancyResponses = vacancyResponses;
-        _processing = true;
-        await NoVacancyService.CreateApplicationNoVacancyAsync(_application, _cv);
-        _processing = false;
-        CloseDialog();
-    }
+		_application.VacancyResponses = vacancyResponses;
+		_processing = true;
+		await NoVacancyService.CreateApplicationNoVacancyAsync(_application, _cv);
+		_processing = false;
+		CloseDialog();
+	}
 
 }
