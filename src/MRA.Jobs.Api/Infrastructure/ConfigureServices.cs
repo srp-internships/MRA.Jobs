@@ -11,6 +11,7 @@ using MRA.Jobs.Infrastructure.Persistence.Interceptors;
 using MRA.Jobs.Infrastructure.Services;
 using MRA.Configurations.Common.Constants;
 using MRA.Configurations.Initializer.Azure.EmailService;
+using MRA.Configurations.Initializer.OsonSms.SmsService;
 using MRA.Configurations.Initializer.Services;
 
 namespace MRA.Jobs.Infrastructure;
@@ -46,7 +47,6 @@ public static class ConfigureServices
         services.AddScoped<DbMigration>();
         services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
         services.AddTransient<IDateTime, DateTimeService>();
-        services.AddTransient<ISmsService, GenericSmsService>();
         services.AddScoped<IHtmlService, HtmlService>();
         services.AddScoped<IUserHttpContextAccessor, UserHttpContextAccessor>();
         services.AddHttpClient();
@@ -58,6 +58,15 @@ public static class ConfigureServices
         else
         {
             services.AddScoped<IFileService, FileService>();
+        }
+        
+        if (configuration["UseFileSmsService"] == "true")
+        {
+            services.AddFileSmsService();
+        }
+        else
+        {   
+            services.AddOsonSmsService();
         }
 
         return services;
