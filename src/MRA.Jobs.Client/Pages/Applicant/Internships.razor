@@ -5,7 +5,7 @@
 @inject IVacancyService vacancyService
 
 <MudText Typo="Typo.h4" Style="margin:50px; text-align: center; font-weight: 900">@ContentService["Internships:Internships"]</MudText>
-@if (serverError)
+	@if (serverError)
 {
 	<ServerErrorComponent />
 }
@@ -20,7 +20,7 @@ else
 	private List<VacancyClientResponse> filteredInternships;
 	protected override async Task OnInitializedAsync()
 	{
-await base.OnInitializedAsync();
+		await base.OnInitializedAsync();
 		try
 		{
 
@@ -35,28 +35,29 @@ await base.OnInitializedAsync();
 						Title = r.Title,
 						ShortDescription = r.ShortDescription,
 						Slug = r.Slug,
-                        EndDate = r.EndDate,
-                        PublishDate = r.PublishDate,
-                        Duration = r.Duration,
-                        Deadline = r.ApplicationDeadline
+						EndDate = r.EndDate,
+						PublishDate = r.PublishDate,
+						Duration = r.Duration,
+						Deadline = r.ApplicationDeadline
 					}).ToList();
-				filteredInternships = allJobs.Where(s=>s.EndDate>=DateTime.Now && s.ApplicationDeadline>=DateTime.Now).Select(r => new VacancyClientResponse
+				filteredInternships = allJobs.Where(s => s.EndDate >= DateTime.Now && s.ApplicationDeadline >= DateTime.Now).Select(r => new VacancyClientResponse
 					{
 						Category = r.Category,
 						Title = r.Title,
 						ShortDescription = r.ShortDescription,
 						Slug = r.Slug,
-                        EndDate = r.EndDate,
-                        PublishDate = r.PublishDate,
-                        Duration = r.Duration,
-                        Deadline = r.ApplicationDeadline
+						EndDate = r.EndDate,
+						PublishDate = r.PublishDate,
+						Duration = r.Duration,
+						Deadline = r.ApplicationDeadline
 					}).ToList();
 			}
 		}
-		catch (Exception)
+		catch (Exception )
 		{
 			serverError = true;
 			StateHasChanged();
+
 		}
 	}
 }

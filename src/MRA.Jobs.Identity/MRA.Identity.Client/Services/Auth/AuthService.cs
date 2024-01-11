@@ -98,7 +98,7 @@ public class AuthService(HttpClient httpClient,
                     Username = command.Username
                 });
                 layoutService.User = await userProfileService.Get();
-                navigationManager.NavigateTo("/profile");
+                navigationManager.NavigateTo("/");
 
                 return "";
             }

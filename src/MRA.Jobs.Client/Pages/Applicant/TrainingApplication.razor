@@ -7,82 +7,83 @@
 
 @if (_serverError)
 {
-    <ServerErrorComponent/>
+	<ServerErrorComponent />
 }
 else
 {
-    <CascadingAuthenticationState>
-        <AuthorizeView>
-            <Authorized>
-                <VacancyApplication VacancyType="trainings" Slug="@Slug" Application="@_application" QuestionResponses="@_questionResponses" TaskResponses="@_tasksResponses" Vacancy="@_training"/>
-            </Authorized>
-            <NotAuthorized>
-                <NotFound></NotFound>
-            </NotAuthorized>
-        </AuthorizeView>
-    </CascadingAuthenticationState>
+	<CascadingAuthenticationState>
+		<AuthorizeView>
+			<Authorized>
+				<VacancyApplication VacancyType="trainings" Slug="@Slug" Application="@_application" QuestionResponses="@_questionResponses" TaskResponses="@_tasksResponses" Vacancy="@_training" />
+			</Authorized>
+			<NotAuthorized>
+				<NotFound></NotFound>
+			</NotAuthorized>
+		</AuthorizeView>
+	</CascadingAuthenticationState>
 }
 
 @code {
-    private bool _serverError;
-    private VacancyApplicationResponse _training;
-    private CreateApplicationCommand _application;
-    private readonly Dictionary<string, string> _questionResponses = new();
-    private readonly Dictionary<Guid, string> _tasksResponses = new();
+	private bool _serverError;
+	private VacancyApplicationResponse _training;
+	private CreateApplicationCommand _application;
+	private readonly Dictionary<string, string> _questionResponses = new();
+	private readonly Dictionary<Guid, string> _tasksResponses = new();
 
-    [Parameter] public string Slug { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        try
-        {
-            var response = await TrainingService.GetBySlug(Slug);
+	[Parameter] public string Slug { get; set; }
 
-            if (response != null)
-            {
-                _training = new VacancyApplicationResponse
-                {
-                    Id = response.Id,
-                    Title = response.Title,
-                    VacancyTasks = response.VacancyTasks,
-                    VacancyQuestions = response.VacancyQuestions,
-                    Description = response.Description,
-                    Duration = response.Duration,
-                    Fees = response.Fees,
-                    PublishDate = response.PublishDate,
-                    EndDate = response.EndDate
-                };
-                _application = new CreateApplicationCommand
-                {
-                    VacancySlug = Slug,
-                    VacancyResponses = _training.VacancyQuestions.Select(q => new VacancyResponseDto
-                    {
-                        VacancyQuestion = new VacancyQuestionDto { Question = q.Question, IsOptional = q.IsOptional }
-                    }),
-                    TaskResponses = _training.VacancyTasks.Select(t => new TaskResponseDto
-                    {
-                        TaskId = t.Id,
-                        Code = t.Template
-                    })
-                };
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		try
+		{
+			var response = await TrainingService.GetBySlug(Slug);
 
-                foreach (var question in _training.VacancyQuestions)
-                {
-                    _questionResponses[question.Question] = "";
-                }
+			if (response != null)
+			{
+				_training = new VacancyApplicationResponse
+					{
+						Id = response.Id,
+						Title = response.Title,
+						VacancyTasks = response.VacancyTasks,
+						VacancyQuestions = response.VacancyQuestions,
+						Description = response.Description,
+						Duration = response.Duration,
+						Fees = response.Fees,
+						PublishDate = response.PublishDate,
+						EndDate = response.EndDate
+					};
+				_application = new CreateApplicationCommand
+					{
+						VacancySlug = Slug,
+						VacancyResponses = _training.VacancyQuestions.Select(q => new VacancyResponseDto
+						{
+							VacancyQuestion = new VacancyQuestionDto { Question = q.Question, IsOptional = q.IsOptional }
+						}),
+						TaskResponses = _training.VacancyTasks.Select(t => new TaskResponseDto
+						{
+							TaskId = t.Id,
+							Code = t.Template
+						})
+					};
 
-                foreach (var task in _training.VacancyTasks)
-                {
-                    _tasksResponses[task.Id] = task.Template;
-                }
-            }
-        }
-        catch (Exception)
-        {
-            _serverError = true;
-            StateHasChanged();
-        }
-    }
+				foreach (var question in _training.VacancyQuestions)
+				{
+					_questionResponses[question.Question] = "";
+				}
+
+				foreach (var task in _training.VacancyTasks)
+				{
+					_tasksResponses[task.Id] = task.Template;
+				}
+			}
+		}
+		catch (Exception)
+		{
+			_serverError = true;
+			StateHasChanged();
+		}
+	}
 
 }

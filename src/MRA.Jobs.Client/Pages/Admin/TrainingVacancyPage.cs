@@ -5,7 +5,6 @@ using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
-using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
 using MudBlazor;
 
@@ -22,7 +21,7 @@ public partial class TrainingVacancyPage
 
     private async Task<TableData<TrainingVacancyListDto>> ServerReload(TableState state)
     {
-        IEnumerable<TrainingVacancyListDto> data = (await TrainingService.GetAll()).Items;
+        IEnumerable<TrainingVacancyListDto> data = (await TrainingService.GetAll()).Result.Items;
         await Task.Delay(100);
         data = data.Where(element =>
         {
@@ -159,10 +158,16 @@ public partial class TrainingVacancyPage
         {
             try
             {
-                await TrainingService.Delete(slug);
-
-                Snackbar.Add($"Deleted", Severity.Success);
-                _trainings.Remove(vacancy);
+                var response = await TrainingService.Delete(slug);
+                if (response.Success)
+                {
+                    Snackbar.Add($"Deleted", Severity.Success);
+                    _trainings.Remove(vacancy);
+                }
+                else
+                {
+                    Snackbar.Add(response.Error ?? "An error occurred while deleting the training", Severity.Error);
+                }
 
                 Clear();
             }
@@ -227,15 +232,34 @@ public partial class TrainingVacancyPage
     {
         try
         {
-            _trainings = (await TrainingService.GetAll()).Items;
-            _categories = await CategoryService.GetAllCategory();
+            var trainingsResponse = await TrainingService.GetAll();
+            if (trainingsResponse.Success)
+            {
+                _trainings = trainingsResponse.Result.Items;
+            }
+            else
+            {
+                Snackbar.Add($"Error loading trainings: {trainingsResponse.Error}", Severity.Error);
+            }
+
+            var categoriesResponse = await CategoryService.GetAllCategory();
+            if (categoriesResponse.Success)
+            {
+                _categories = categoriesResponse.Result.Items;
+            }
+            else
+            {
+                Snackbar.Add($"Error loading categories: {categoriesResponse.Error}", Severity.Error);
+            }
         }
         catch (Exception)
         {
+            Snackbar.Add("Server is not responding, try later", Severity.Error);
             _serverError = true;
             StateHasChanged();
         }
     }
+
 
     private async Task HandleSubmit()
     {
@@ -251,13 +275,13 @@ public partial class TrainingVacancyPage
             TrainingService.createCommand.VacancyQuestions = _questions;
             TrainingService.createCommand.VacancyTasks = _tasks;
             var result = await TrainingService.Create();
-            if (result.IsSuccessStatusCode)
+            if (result.Success)
             {
                 Snackbar.Add($"{TrainingService.createCommand.Title} created", Severity.Success);
             }
             else
             {
-                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+                Snackbar.Add(result.Error ?? "An error occurred while creating the training", Severity.Error);
             }
 
             await LoadData();
@@ -280,9 +304,26 @@ public partial class TrainingVacancyPage
         TrainingService.createCommand.VacancyTasks = _tasks;
         var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
         TrainingService.createCommand.CategoryId = catId;
-        await TrainingService.Update(_updateSlug);
-        await LoadData();
-        Clear();
+        try
+        {
+            var result = await TrainingService.Update(_updateSlug);
+            if (result.Success)
+            {
+                Snackbar.Add("Updated", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add(result.Error ?? "An error occurred while updating the training ", Severity.Error);
+            }
+
+            await LoadData();
+            Clear();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            Snackbar.Add("Server is not responding, try later", Severity.Error);
+        }
     }
 
     private async void AddTask()
@@ -333,6 +374,6 @@ public partial class TrainingVacancyPage
     {
         var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
-        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional});
+        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
 }

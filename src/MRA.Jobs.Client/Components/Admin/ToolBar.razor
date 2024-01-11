@@ -13,171 +13,172 @@
 @inject IConfiguration Configuration
 
 <CascadingAuthenticationState>
-    <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
-        <Authorized>
-            <MudToolBar Class="toolbar-fixed-blur">
-                <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                    <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
-                </MudHidden>
-                <a href="">
-                    <MudHidden Breakpoint="Breakpoint.MdAndDown">
-                        <MudStack Row="true">
-                            <MudItem Style="padding-right:5px;">
-                                <MudImage src="/images/srp/srp_icon.png" Style="width: 50px"/>
-                            </MudItem>
-                            <MudItem Style="padding-left:0; margin-right: 40px;">
-                                <MudText Style="font-size: 21.5px;">
-                                    <b>SILK ROAD</b>
-                                </MudText>
-                                <MudText Style="margin-top: -10px;">
-                                    <small>
-                                        <b>PROFESSIONALS</b>
-                                    </small>
-                                </MudText>
-                            </MudItem>
-                        </MudStack>
-                    </MudHidden>
-                    <MudHidden Breakpoint="Breakpoint.LgAndUp">
-                        <MudStack Row="true">
-                            <MudItem Style="padding-right:5px;">
-                                <MudImage src="/images/srp/srp_icon.png" Style="width: 30px"/>
-                            </MudItem>
-                            <MudItem Style="padding-left:0; margin-right: 40px;">
-                                <MudText Style="font-size: 21.5px;">
-                                    <b>SRP</b>
-                                </MudText>
-                            </MudItem>
-                        </MudStack>
-                    </MudHidden>
-                </a>
-                <MudHidden Breakpoint="Breakpoint.SmAndDown">
+	<AuthorizeView Policy="@ApplicationPolicies.Reviewer">
+		<Authorized>
+			<MudToolBar Class="toolbar-fixed-blur">
+				<MudHidden Breakpoint="Breakpoint.MdAndUp">
+					<MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+				</MudHidden>
+				<a href="">
+					<MudHidden Breakpoint="Breakpoint.MdAndDown">
+						<MudStack Row="true">
+							<MudItem Style="padding-right:5px;">
+								<MudImage src="/images/srp/srp_icon.png" Style="width: 50px" />
+							</MudItem>
+							<MudItem Style="padding-left:0; margin-right: 40px;">
+								<MudText Style="font-size: 21.5px;">
+									<b>SILK ROAD</b>
+								</MudText>
+								<MudText Style="margin-top: -10px;">
+									<small>
+										<b>PROFESSIONALS</b>
+									</small>
+								</MudText>
+							</MudItem>
+						</MudStack>
+					</MudHidden>
+					<MudHidden Breakpoint="Breakpoint.LgAndUp">
+						<MudStack Row="true">
+							<MudItem Style="padding-right:5px;">
+								<MudImage src="/images/srp/srp_icon.png" Style="width: 30px" />
+							</MudItem>
+							<MudItem Style="padding-left:0; margin-right: 40px;">
+								<MudText Style="font-size: 21.5px;">
+									<b>SRP</b>
+								</MudText>
+							</MudItem>
+						</MudStack>
+					</MudHidden>
+				</a>
+				<MudHidden Breakpoint="Breakpoint.SmAndDown">
 
-                    <MudButton Href="/dashboard/categories" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Category)">
-                        <MudText>
-                            <b>Category</b>
-                        </MudText>
-                    </MudButton>
-                    <MudButton Href="/dashboard/applications" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Applications)">
-                        <MudText>
-                            <b>@ContentService["UserButton:Applications"]</b>
-                        </MudText>
-                    </MudButton>
-                    <MudButton Href="/dashboard/jobs" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Jobs)">
-                        <MudText>
-                            <b>@ContentService["Header:Jobs"]</b>
-                        </MudText>
-                    </MudButton>
-                    <MudButton Href="/dashboard/internship" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Internships)">
-                        <MudText>
-                            <b>@ContentService["Header:Internships"]</b>
-                        </MudText>
-                    </MudButton>
-                    <MudButton Href="/dashboard/trainings" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Trainings)">
-                        <MudText>
-                            <b>@ContentService["Header:Trainings"]</b>
-                        </MudText>
-                    </MudButton>
-                    <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-                        <MudButton Href="/userManager" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.UserManager)">
-                            <MudText>
-                                <b>Users manager</b>
-                            </MudText>
-                        </MudButton>
-                    </AuthorizeView>
+					<MudButton Href="/dashboard/categories" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Category)">
+						<MudText>
+							<b>Category</b>
+						</MudText>
+					</MudButton>
+					<MudButton Href="/dashboard/applications" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Applications)">
+						<MudText>
+							<b>@ContentService["UserButton:Applications"]</b>
+						</MudText>
+					</MudButton>
+					<MudButton Href="/dashboard/jobs" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Jobs)">
+						<MudText>
+							<b>@ContentService["Header:Jobs"]</b>
+						</MudText>
+					</MudButton>
+					<MudButton Href="/dashboard/internship" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Internships)">
+						<MudText>
+							<b>@ContentService["Header:Internships"]</b>
+						</MudText>
+					</MudButton>
+					<MudButton Href="/dashboard/trainings" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Trainings)">
+						<MudText>
+							<b>@ContentService["Header:Trainings"]</b>
+						</MudText>
+					</MudButton>
+					<AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
+						<MudButton Href="/userManager" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.UserManager)">
+							<MudText>
+								<b>Users manager</b>
+							</MudText>
+						</MudButton>
+					</AuthorizeView>
 
-                </MudHidden>
-                <MudSpacer/>
-                <MudHidden Breakpoint="Breakpoint.Xs">
-                    @if (_betaVersion)
-                    {
-                        <MudChip Color="Color.Primary">Beta</MudChip>
-                    }
-                    <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
-                    <ToolBarSettingsButtons/>
-                </MudHidden>
-                <UserButton/>
-            </MudToolBar>
+				</MudHidden>
+				<MudSpacer />
+				<MudHidden Breakpoint="Breakpoint.Xs">
+					@if (_betaVersion)
+					{
+						<MudChip Color="Color.Primary">Beta</MudChip>
+					}
 
-            <MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="2" Style="position:fixed;height: 100%">
-                <MudToolBar Dense="true" Class="docs-gray-bg">
-                    <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
-                    <MudSpacer/>
-                    <ToolBarSettingsButtons/>
-                </MudToolBar>
+					<MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4" />
+					<ToolBarSettingsButtons />
 
-                <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
-                    <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">@ContentService["UserButton:Applications"]</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">@ContentService["Header:Jobs"]</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">@ContentService["Header:Internships"]</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">@ContentService["Header:Trainings"]</MudNavLink>
+				</MudHidden>
+				<UserButton />
+			</MudToolBar>
 
-                    <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-                        <MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
-                    </AuthorizeView>
-                </MudNavMenu>
-                @if (_betaVersion)
-                {
-                    <MudChip Color="Color.Primary">Beta</MudChip>
-                }
-            </MudDrawer>
-        </Authorized>
-        <NotAuthorized>
+			<MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="2" Style="position:fixed;height: 100%">
+				<MudToolBar Dense="true" Class="docs-gray-bg">
+					<MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+					<MudSpacer />
+					<ToolBarSettingsButtons />
+				</MudToolBar>
 
-        </NotAuthorized>
-    </AuthorizeView>
+				<MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
+					<MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
+					<MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">@ContentService["UserButton:Applications"]</MudNavLink>
+						<MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">@ContentService["Header:Jobs"]</MudNavLink>
+						<MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">@ContentService["Header:Internships"]</MudNavLink>
+						<MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">@ContentService["Header:Trainings"]</MudNavLink>
+
+						<AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
+							<MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
+						</AuthorizeView>
+					</MudNavMenu>
+					@if (_betaVersion)
+				{
+					<MudChip Color="Color.Primary">Beta</MudChip>
+				}
+			</MudDrawer>
+		</Authorized>
+		<NotAuthorized>
+
+		</NotAuthorized>
+	</AuthorizeView>
 </CascadingAuthenticationState>
 
 @code {
 
-    bool _open = false;
+	bool _open = false;
 
-    private bool _betaVersion;
+	private bool _betaVersion;
 
-    void ToggleDrawer()
-    {
-        _open = !_open;
-    }
+	void ToggleDrawer()
+	{
+		_open = !_open;
+	}
 
-    private DocPages _currentPage;
-
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
-        {
-            LayoutService.User = await UserProfileService.Get();
-            StateHasChanged();
-        }
-    }
+	private DocPages _currentPage;
 
 
-    protected override async Task OnInitializedAsync()
-    {
-        _betaVersion = await FeatureManager.IsEnabledAsync(FeatureFlags.BetaVersion);
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		await base.OnAfterRenderAsync(firstRender);
 
-        StateHasChanged();
-        NavigationManager.LocationChanged += HandleLocationChanged;
-        await base.OnInitializedAsync();
-    }
+		if (firstRender)
+		{
+			LayoutService.User = await UserProfileService.Get();
+			StateHasChanged();
+		}
+	}
 
-    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
-    {
-        _currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
-        StateHasChanged();
-    }
 
-    private string GetActiveClass(DocPages page)
-    {
-        return page == _currentPage ? "mud-chip-text mud-chip-color-primary mx-1 px-3" : "mx-1 px-3";
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		_betaVersion = await FeatureManager.IsEnabledAsync(FeatureFlags.BetaVersion);
+		StateHasChanged();
+		NavigationManager.LocationChanged += HandleLocationChanged;
+		await base.OnInitializedAsync();
+	}
 
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= HandleLocationChanged;
-    }
+	private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+	{
+		_currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
+		StateHasChanged();
+	}
+
+	private string GetActiveClass(DocPages page)
+	{
+		return page == _currentPage ? "mud-chip-text mud-chip-color-primary mx-1 px-3" : "mx-1 px-3";
+	}
+
+	public void Dispose()
+	{
+		NavigationManager.LocationChanged -= HandleLocationChanged;
+	}
 
 
 }
