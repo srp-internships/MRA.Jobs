@@ -2,9 +2,12 @@
 @inject ISnackbar Snackbar
 @inject NavigationManager navigationManager
 @inject HttpClient httpClient
+@inject IUserProfileService UserProfileService 
 @using System.Net
+@using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote
 @using MRA.Jobs.Application.Contracts.TimeLineDTO
+@using MRA.Jobs.Client.Services.Profile
 
 
 <MudDialog>
@@ -124,11 +127,13 @@
     [Parameter] public string Slug { get; set; }
     [Parameter] public string StatusName { get; set; }
     [Parameter] public bool isApplicant { get; set; }
+    [Parameter] public string ApplicationUserName { get; set; }
     public string cvURL;
 
     private UpdateApplicationStatus applicationStatus;
     private List<TimeLineDetailsDto> _timelienes;
-
+    private UserProfileResponse _applicant;
+    
     private void HandleSelectValueChanged(string value)
     {
         selectedStatus = value;
@@ -136,6 +141,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _applicant = await UserProfileService.Get(ApplicationUserName);
         var app = await applicationService.GetApplicationDetails(Slug);
         cvURL = $"{httpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
         _timelienes = (await applicationService.GetApplicationTimeLineEvents(Slug)).OrderBy(t => t.Time).ToList();
@@ -156,8 +162,9 @@
         {
             applicationStatus = new UpdateApplicationStatus
             {
+                ApplicantUserName = _applicant.UserName,
                 Slug = Slug,
-                StatusId = (int)selectedEnumStatus // Get the integer value of the enum
+                StatusId = (int)selectedEnumStatus 
             };
             var response = await applicationService.UpdateStatus(applicationStatus);
             if (response)

@@ -97,7 +97,7 @@
                             <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
                             <MudTd DataLabel="StatusName">@context.StatusName</MudTd>
                             <MudTd DataLabel="Name">
-                                <MudButton Variant="Variant.Filled" OnClick="@((_) => OpenDialog(_maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton>
+                                <MudButton Variant="Variant.Filled" OnClick="@((_) => OpenDialog(_maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName, context.Username))">More</MudButton>
                             </MudTd>
                         </RowTemplate>
                         <NoRecordsContent>
@@ -202,7 +202,7 @@
         _searchStatusName = null;
     }
 
-    private async Task OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
+    private async Task OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName, string applicationUserName)
     {
         var dialog = await Dialog.ShowAsync<MyDialog>("Applicant response", new DialogParameters
         {
@@ -210,7 +210,8 @@
             { "VacancyResponses", vacancyResponses },
             { "Slug", slug },
             { "StatusName", statusName },
-            { "isApplicant", false }
+            { "isApplicant", false },
+            {"ApplicationUserName", applicationUserName }
         }, options);
         var result = await dialog.Result;
 

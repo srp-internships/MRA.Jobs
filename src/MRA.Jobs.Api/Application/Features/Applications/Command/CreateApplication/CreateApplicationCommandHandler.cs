@@ -27,24 +27,20 @@ public class CreateApplicationCommandHandler(
 {
     public async Task<Guid> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {
-        //get vacancy using request slug
         var vacancy =
             await context.Vacancies.FirstOrDefaultAsync(s => s.Slug == request.VacancySlug, cancellationToken) ??
             throw new NotFoundException($"vacancy with slug {request.VacancySlug} not found");
-        //get vacancy using request slug
-
-        //create application instance
+        
         var application = mapper.Map<Application>(request);
         application.Slug = GenerateSlug(currentUserService.GetUserName(), vacancy);
 
         await ThrowIfApplicationExist(application.Slug,
-            request.VacancySlug); //it will work if vacancySlug isn't equals "no_vacancy"
+            request.VacancySlug); 
 
         application.VacancyId = vacancy.Id;
         application.ApplicantId = currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = currentUserService.GetUserName() ?? string.Empty;
         
-        //create application instance
 
         await context.Applications.AddAsync(application, cancellationToken);
 

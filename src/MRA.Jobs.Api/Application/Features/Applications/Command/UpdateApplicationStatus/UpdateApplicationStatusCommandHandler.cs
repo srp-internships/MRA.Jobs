@@ -4,23 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Domain.Enums;
 
-public class UpdateApplicationStatusCommandHandler : IRequestHandler<UpdateApplicationStatus, bool>
+public class UpdateApplicationStatusCommandHandler(
+    IApplicationDbContext dbContext,
+    IDateTime dateTime,
+    ICurrentUserService currentUserService,
+    IHtmlService htmlService,
+    IidentityService identityService)
+    : IRequestHandler<UpdateApplicationStatus, bool>
 {
-    private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
-    private readonly IDateTime _dateTime;
-    private readonly ICurrentUserService _currentUserService;
 
-    public UpdateApplicationStatusCommandHandler(IApplicationDbContext dbContext, IMapper mapper, IDateTime dateTime, ICurrentUserService currentUserService)
-    {
-        _context = dbContext;
-        _mapper = mapper;
-        _dateTime = dateTime;
-        _currentUserService = currentUserService;
-    }
     public async Task<bool> Handle(UpdateApplicationStatus request, CancellationToken cancellationToken)
     {
-        var application = await _context.Applications.FirstOrDefaultAsync(t => t.Slug == request.Slug, cancellationToken);
+        var application = await dbContext.Applications.FirstOrDefaultAsync(t => t.Slug == request.Slug, cancellationToken);
         _ = application ?? throw new NotFoundException(nameof(Application), request.Slug); ;
 
         application.Status = (ApplicationStatus)request.StatusId;
@@ -30,12 +25,22 @@ public class UpdateApplicationStatusCommandHandler : IRequestHandler<UpdateAppli
             ApplicationId = application.Id,
             Application = application,
             EventType = TimelineEventType.Updated,
-            Time = _dateTime.Now,
-            Note = "Application updated",
-            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
+            Time = dateTime.Now,
+            Note = $"Application status changed: {application.Status}",
+            CreateBy = currentUserService.GetUserId() ?? Guid.Empty
         };
-        await _context.ApplicationTimelineEvents.AddAsync(timelineEvent);
-        await _context.SaveChangesAsync(cancellationToken);
+        await dbContext.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        switch (application.Status)
+        {
+            case ApplicationStatus.Approved:
+                await htmlService.EmailApproved( await identityService.ApplicantDetailsInfo(application.ApplicantUsername));
+                break;
+            case ApplicationStatus.Rejected:
+                await htmlService.EmailRejected(await identityService.ApplicantDetailsInfo(application.ApplicantUsername));
+                break;
+        }
 
         return true;
     }
