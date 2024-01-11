@@ -110,7 +110,7 @@
 
         if (user.Identity.IsAuthenticated)
         {
-            navigationManager.NavigateTo("profile");
+            navigationManager.NavigateTo("/");
             return;
         }
         var currentUri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
