@@ -1,9 +1,9 @@
-﻿using MRA.Jobs.Application.Contracts.Common;
+﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternships;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-using MRA.Jobs.Application.Contracts.VacancyCategories.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Client.Services.VacancyServices;
@@ -11,10 +11,9 @@ namespace MRA.Jobs.Client.Services.VacancyServices;
 public interface IVacancyService
 {
     event Action OnChange;
-    // public int PagesCount { get; set; }
-    // List<CategoryResponse> Categories { get; set; }
-    List<JobVacancyListDto> Vacanceies { get; set; }
-    //  CreateVacancyCategoryCommand creatingEntity { get; set; }
+   
+    List<JobVacancyListDto> Vacancies { get; set; }
+ 
     public int FilteredVacanciesCount { get; set; }
     CreateJobVacancyCommand creatingNewJob { get; set; } 
    
@@ -24,12 +23,12 @@ public interface IVacancyService
     Task<List<CategoryResponse>> GetAllCategory();
 
     Task<List<JobVacancyListDto>> GetVacancyByTitle(string title);
-    Task<HttpResponseMessage> OnSaveCreateClick();
-    Task OnDelete(string slug);
+    Task<ApiResponse<string>> OnSaveCreateClick();
+    Task<ApiResponse> OnDelete(string slug);
     Task<List<JobVacancyListDto>> GetJobs();
+    Task<ApiResponse<string>> UpdateJobVacancy(string slug);
+    Task<JobVacancyDetailsDto> GetBySlug(string slug);
     Task<List<InternshipVacancyListResponse>> GetInternship();
     Task<List<TrainingVacancyListDto>> GetTrainings();
-    Task UpdateJobVacancy(string slug);
-    Task<JobVacancyDetailsDto> GetBySlug(string slug);
 
 }

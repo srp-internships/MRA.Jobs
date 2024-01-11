@@ -43,7 +43,7 @@ public class CreateApplicationCommandHandler(
         application.VacancyId = vacancy.Id;
         application.ApplicantId = currentUserService.GetUserId() ?? Guid.Empty;
         application.ApplicantUsername = currentUserService.GetUserName() ?? string.Empty;
-        
+
         //create application instance
 
         await context.Applications.AddAsync(application, cancellationToken);

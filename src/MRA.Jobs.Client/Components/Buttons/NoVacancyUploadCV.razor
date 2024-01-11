@@ -1,5 +1,6 @@
 ﻿@using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication
 @using MRA.Jobs.Application.Contracts.Dtos.Responses
+@using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @using MRA.Jobs.Client.Services.NoVacancies
 @using Microsoft.FeatureManagement
@@ -91,7 +92,7 @@
 	</DialogActions>
 </MudDialog>
 
-@code {
+	@code {
 
 	private bool _loading;
 	private bool _isOpen;
@@ -121,7 +122,6 @@
 	JobVacancyDetailsDto _vacancy = new();
 
 	private CreateApplicationCommand _application;
-
 	private Dictionary<VacancyQuestionDto, string> _questionsResponses = new();
 
 	protected override async Task OnInitializedAsync()

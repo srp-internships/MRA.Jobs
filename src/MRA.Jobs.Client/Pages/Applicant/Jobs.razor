@@ -5,7 +5,7 @@
 @using MRA.Jobs.Client.Components.Vacancies
 
 <MudText Typo="Typo.h4" Style="margin:50px; text-align: center; font-weight: 900;">@ContentService["Jobs:Jobs"]</MudText>
-@if (serverError)
+	@if (serverError)
 {
 	<ServerErrorComponent />
 }
@@ -19,10 +19,10 @@ else
 	private List<string> jobCategories;
 	private List<VacancyClientResponse> jobs;
 	private List<VacancyClientResponse> filteredJobs;
-
+	
 	protected override async Task OnInitializedAsync()
 	{
-await base.OnInitializedAsync();
+		await base.OnInitializedAsync();
 		try
 		{
 			var result = await categoryService.GetJobCategoriesSinceCheckDate();
@@ -39,7 +39,7 @@ await base.OnInitializedAsync();
 						PublishDate = r.PublishDate,
 						EndDate = r.EndDate
 					}).ToList(); ;
-				filteredJobs = allJobs.Where(s=>s.EndDate>=DateTime.Now).Select(r => new VacancyClientResponse
+				filteredJobs = allJobs.Where(s => s.EndDate >= DateTime.Now).Select(r => new VacancyClientResponse
 					{
 						Category = r.Category,
 						Title = r.Title,

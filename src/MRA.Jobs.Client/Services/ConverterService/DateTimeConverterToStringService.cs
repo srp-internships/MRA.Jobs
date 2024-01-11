@@ -5,7 +5,7 @@ namespace MRA.Jobs.Client.Services.ConverterService;
 public class DateTimeConverterToStringService(IContentService contentService)
     : IDateTimeConvertToStringService
 {
-    public  string GetDisplayPostedDate(DateTime publishDate)
+    public string GetDisplayPostedDate(DateTime publishDate)
     {
         var currentDate = DateTime.Now;
         string displayDate;
@@ -45,7 +45,7 @@ public class DateTimeConverterToStringService(IContentService contentService)
         return displayDate;
     }
 
-    public  (string DisplayDate, string Color) GetDeadlineOrEndDateDisplayDate(DateTime value)
+    public (string DisplayDate, string Color) GetDeadlineOrEndDateDisplayDate(DateTime value)
     {
         var currentDate = DateTime.Now;
         string displayDate;

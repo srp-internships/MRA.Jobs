@@ -27,20 +27,20 @@ public class GetJobCategoriesQueryHandler : IRequestHandler<GetJobCategoriesQuer
         }
 
         var sortredJobs = (from j in jobsQuery
-            group j by j.CategoryId).ToList();
+                           group j by j.CategoryId).ToList();
 
         var jobs = jobsQuery.ToList();
 
         var jobsWithCategory = new List<JobCategoriesResponse>();
         var categories = await _context.Categories
-            .Where(c => c.Slug != CommonVacanciesSlugs.NoVacancySlug) 
+            .Where(c => c.Slug != CommonVacanciesSlugs.NoVacancySlug)
             .ToListAsync(cancellationToken: cancellationToken);
 
         foreach (var job in sortredJobs)
         {
             var category = categories.Where(c => c.Id == job.Key).FirstOrDefault();
 
-            if (category != null) 
+            if (category != null)
             {
                 jobsWithCategory.Add(new JobCategoriesResponse
                 {

@@ -5,7 +5,7 @@
 @using MRA.Jobs.Client.Components.Vacancies
 
 <MudText Typo="Typo.h4" Style="margin:50px; text-align: center; font-weight: 900">@ContentService["Trainings:Trainings"]</MudText>
-@if (serverError)
+	@if (serverError)
 {
 	<ServerErrorComponent />
 }
@@ -18,10 +18,9 @@ else
 	private List<string> TrainingCategories { get; set; }
 	private List<VacancyClientResponse> trainings { get; set; }
 	private List<VacancyClientResponse> filteredtrainings;
-
 	protected override async Task OnInitializedAsync()
 	{
-await base.OnInitializedAsync();
+		await base.OnInitializedAsync();
 		try
 		{
 			var result = await categoryService.GetTrainingCategoriesSinceCheckDate();
@@ -35,19 +34,19 @@ await base.OnInitializedAsync();
 						Title = r.Title,
 						ShortDescription = r.ShortDescription,
 						Slug = r.Slug,
-                        EndDate = r.EndDate,
-                        PublishDate = r.PublishDate,
-                        Duration = r.Duration
+						EndDate = r.EndDate,
+						PublishDate = r.PublishDate,
+						Duration = r.Duration
 					}).ToList();
-				filteredtrainings = allTrainings.Where(s=>s.EndDate>=DateTime.Now).Select(r => new VacancyClientResponse
+				filteredtrainings = allTrainings.Where(s => s.EndDate >= DateTime.Now).Select(r => new VacancyClientResponse
 					{
 						Category = r.Category,
 						Title = r.Title,
 						ShortDescription = r.ShortDescription,
 						Slug = r.Slug,
-                        EndDate = r.EndDate,
-                        PublishDate = r.PublishDate,
-                        Duration = r.Duration
+						EndDate = r.EndDate,
+						PublishDate = r.PublishDate,
+						Duration = r.Duration
 					}).ToList();
 
 			}

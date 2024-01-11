@@ -13,6 +13,7 @@ public class GetJobVacanciesPagedQueryHandler(
     IMapper mapper)
     : IRequestHandler<PagedListQuery<JobVacancyListDto>, PagedList<JobVacancyListDto>>
 {
+
     public async Task<PagedList<JobVacancyListDto>> Handle(PagedListQuery<JobVacancyListDto> request,
         CancellationToken cancellationToken)
     {
@@ -21,11 +22,11 @@ public class GetJobVacanciesPagedQueryHandler(
             .Include(j => j.Category)
             .Include(j => j.VacancyQuestions)
             .Include(i => i.VacancyTasks)
-            .Where(j=>j.Slug!=CommonVacanciesSlugs.NoVacancySlug)
+            .Where(j => j.Slug != CommonVacanciesSlugs.NoVacancySlug)
             .AsNoTracking(),
             mapper.Map<JobVacancyListDto>);
-
         var user = await dbContext.Categories.ToListAsync(cancellationToken: cancellationToken);
+        
         
         return await Task.FromResult(result);
     }
