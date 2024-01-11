@@ -6,7 +6,8 @@ using MRA.Jobs.Application.IntegrationTests.VacancyCategories.GetCreate;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.VacancyCategories.Queries;
-public class GetAllVacancyCategoriesQueryTest:Testing
+
+public class GetAllVacancyCategoriesQueryTest : Testing
 {
     private CategoryContext _categoryContext;
 
@@ -27,9 +28,9 @@ public class GetAllVacancyCategoriesQueryTest:Testing
         var response = await _httpClient.GetAsync("/api/categories");
 
         //Assert
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
         var vacancyCategories = await response.Content.ReadFromJsonAsync<PagedList<CategoryResponse>>();
-        Assert.IsNotNull(vacancyCategories);
-        Assert.IsNotEmpty(vacancyCategories.Items);
+        Assert.That(vacancyCategories, Is.Not.Null);
+        Assert.That(vacancyCategories.Items, Is.Not.Empty);
     }
 }
