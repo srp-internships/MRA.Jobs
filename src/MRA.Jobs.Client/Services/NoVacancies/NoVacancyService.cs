@@ -3,16 +3,18 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.JobVacancies;
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.ContentService;
+using MRA.Jobs.Client.Services.HttpClients;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Services.NoVacancies;
 
 public class NoVacancyService(
     ISnackbar snackbar,
-    HttpClient httpClient,
+    JobsApiHttpClientService httpClient,
     NavigationManager navigationManager,
     IConfiguration configuration,
     IContentService contentService) : INoVacancyService
@@ -22,11 +24,11 @@ public class NoVacancyService(
         var vacancy = new JobVacancyDetailsDto();
         try
         {
-            var response = await httpClient.GetAsync($"jobs/{CommonVacanciesSlugs.NoVacancySlug}");
-            if (response.IsSuccessStatusCode)
-                vacancy = await response.Content.ReadFromJsonAsync<JobVacancyDetailsDto>();
+            var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>($"jobs/{CommonVacanciesSlugs.NoVacancySlug}");
+            if (response.Success)
+                vacancy = response.Result;
             else
-                snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+                snackbar.Add(response.Error, Severity.Error);
         }
         catch (Exception e)
         {
@@ -49,16 +51,15 @@ public class NoVacancyService(
             application.Cv.FileName = file.Name;
             //set cv
 
-            var response = await httpClient.PostAsJsonAsync("Applications/CreateApplicationNoVacancy", application);
-            switch (response.StatusCode)
+            var response = await httpClient.PostAsJsonAsync<Guid>("Applications/CreateApplicationNoVacancy", application);
+            switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:
                     snackbar.Add(contentService["Application:Success"], Severity.Success);
                     navigationManager.NavigateTo(navigationManager.Uri.Replace("/apply/", "/"));
                     break;
                 case HttpStatusCode.Conflict:
-                    snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,
-                        Severity.Error);
+                    snackbar.Add(response.Error, Severity.Error);
                     break;
                 default:
                     snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
@@ -71,7 +72,7 @@ public class NoVacancyService(
             Console.WriteLine(e.Message);
         }
     }
-        
+
     private async Task<byte[]> GetFileBytesAsync(IBrowserFile file)
     {
         var allowedSize = int.Parse(configuration["CvSettings:MaxFileSize"]!);

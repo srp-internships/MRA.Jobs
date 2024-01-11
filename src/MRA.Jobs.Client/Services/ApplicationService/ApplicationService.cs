@@ -11,6 +11,7 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.ContentService;
+using MRA.Jobs.Client.Services.HttpClients;
 using MudBlazor;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
@@ -18,22 +19,20 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 namespace MRA.Jobs.Client.Services.ApplicationService;
 
 public class ApplicationService(
-    HttpClient httpClient,
-    AuthenticationStateProvider authenticationState,
-    ISnackbar snackbar,
-    NavigationManager navigationManager,
-    IConfiguration configuration,
-    IContentService contentService)
+        HttpClient httpClient,
+        AuthenticationStateProvider authenticationState,
+        ISnackbar snackbar,
+        NavigationManager navigationManager,
+        IConfiguration configuration,
+        IContentService contentService)
     : IApplicationService
 {
     private const string ApplicationsEndPoint = "applications";
 
     public async Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status)
     {
-        HttpResponseMessage response = await httpClient.GetAsync($"{ApplicationsEndPoint}/{status}");
-
-        List<ApplicationListStatus> result = await response.Content.ReadFromJsonAsync<List<ApplicationListStatus>>();
-        return result;
+        var response = await httpClient.GetAsJsonAsync<List<ApplicationListStatus>>($"{ApplicationsEndPoint}/{status}");
+        return response.Success ? response.Result : null;
     }
 
 
@@ -50,16 +49,15 @@ public class ApplicationService(
             }
             //set cv
 
-            var response = await httpClient.PostAsJsonAsync(ApplicationsEndPoint, application);
-            switch (response.StatusCode)
+            var response = await httpClient.PostAsJsonAsync<Guid>(ApplicationsEndPoint, application);
+            switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:
                     snackbar.Add(contentService["Application:Success"], Severity.Success);
                     navigationManager.NavigateTo(navigationManager.Uri.Replace("/apply/", "/"));
                     break;
                 case HttpStatusCode.Conflict:
-                    snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,
-                        Severity.Error);
+                    snackbar.Add(response.Error, Severity.Error);
                     break;
                 default:
                     snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
@@ -108,14 +106,9 @@ public class ApplicationService(
 
     public async Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug)
     {
-        await authenticationState.GetAuthenticationStateAsync();
-        HttpResponseMessage response = await httpClient.GetAsync($"{ApplicationsEndPoint}/{applicationSlug}");
-        if (response.StatusCode != HttpStatusCode.OK)
-            return null;
-
-        var application = await response.Content.ReadFromJsonAsync<ApplicationDetailsDto>();
-        return application;
-
+        var r=await authenticationState.GetAuthenticationStateAsync();
+        var response = await httpClient.GetAsJsonAsync<ApplicationDetailsDto>($"{ApplicationsEndPoint}/{applicationSlug}");
+        return response.Result;
     }
 
     public async Task<string> GetCvLinkAsync(string slug)

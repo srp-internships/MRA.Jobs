@@ -1,6 +1,5 @@
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
-using MRA.Jobs.Client.Identity;
 using BlazorMonaco;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
@@ -23,7 +22,7 @@ public partial class InternshipVacanciesPage
 
     private async Task<TableData<InternshipVacancyListResponse>> ServerReload(TableState state)
     {
-        IEnumerable<InternshipVacancyListResponse> data = await InternshipService.GetAll();
+        IEnumerable<InternshipVacancyListResponse> data = (await InternshipService.GetAll()).Result.Items;
         await Task.Delay(100);
         data = data.Where(element =>
         {
@@ -148,11 +147,11 @@ public partial class InternshipVacanciesPage
     {
         var vacancy = _internships.FirstOrDefault(c => c.Slug == slug);
         var parameters = new DialogParameters<DialogMudBlazor>
-        {
-            { x => x.ContentText, "Do you really want to delete this vacancy?" },
-            { x => x.ButtonText, "Delete" },
-            { x => x.Color, Color.Error }
-        };
+    {
+        { x => x.ContentText, "Do you really want to delete this vacancy?" },
+        { x => x.ButtonText, "Delete" },
+        { x => x.Color, Color.Error }
+    };
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
@@ -164,15 +163,14 @@ public partial class InternshipVacanciesPage
             try
             {
                 var response = await InternshipService.Delete(slug);
-                if (response.IsSuccessStatusCode)
+                if (response.Success)
                 {
                     Snackbar.Add($"Deleted", Severity.Success);
                     _internships.Remove(vacancy);
                 }
                 else
                 {
-                    Snackbar.Add((await response.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail,
-                        Severity.Error);
+                    Snackbar.Add(response.Error ?? "An error occurred while deleting the internship", Severity.Error);
                 }
 
                 Clear();
@@ -185,6 +183,7 @@ public partial class InternshipVacanciesPage
             StateHasChanged();
         }
     }
+
 
 
     private async Task OnEditClick(string slug)
@@ -234,15 +233,34 @@ public partial class InternshipVacanciesPage
     {
         try
         {
-            _internships = await InternshipService.GetAll();
-            _categories = await CategoryService.GetAllCategory();
+            var internshipsResponse = await InternshipService.GetAll();
+            if (internshipsResponse.Success)
+            {
+                _internships = internshipsResponse.Result.Items;
+            }
+            else
+            {
+                Snackbar.Add($"Error loading internships: {internshipsResponse.Error}", Severity.Error);
+            }
+
+            var categoriesResponse = await CategoryService.GetAllCategory();
+            if (categoriesResponse.Success)
+            {
+                _categories = categoriesResponse.Result.Items;
+            }
+            else
+            {
+                Snackbar.Add($"Error loading categories: {categoriesResponse.Error}", Severity.Error);
+            }
         }
         catch (Exception)
         {
+            Snackbar.Add($"Server is not responding, try later", Severity.Error);
             _serverError = true;
             StateHasChanged();
         }
     }
+
 
     private void RemoveTask(string title)
     {
@@ -264,17 +282,18 @@ public partial class InternshipVacanciesPage
 
         if (_publishDateTime.HasValue)
             InternshipService.createCommand.PublishDate += _publishDateTime.Value;
+
         try
         {
             InternshipService.createCommand.VacancyTasks = _tasks;
             var result = await InternshipService.Create();
-            if (result.IsSuccessStatusCode)
+            if (result.Success)
             {
                 Snackbar.Add($"{InternshipService.createCommand.Title} created", Severity.Success);
             }
             else
             {
-                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+                Snackbar.Add(result.Error ?? "An error occurred while creating the internship", Severity.Error);
             }
 
             await LoadData();
@@ -285,6 +304,7 @@ public partial class InternshipVacanciesPage
             Snackbar.Add("Server is not responding, please try later", Severity.Error);
         }
     }
+
 
     private async Task HandleUpdate()
     {
@@ -298,18 +318,20 @@ public partial class InternshipVacanciesPage
 
         if (_publishDateTime.HasValue)
             InternshipService.createCommand.PublishDate += _publishDateTime.Value;
+
         var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
         InternshipService.createCommand.CategoryId = catId;
+
         try
         {
             var result = await InternshipService.Update(_updateSlug);
-            if (result.StatusCode == System.Net.HttpStatusCode.Created)
+            if (result.Success)
             {
                 Snackbar.Add("Updated", Severity.Success);
             }
             else
             {
-                Snackbar.Add((await result.Content.ReadFromJsonAsync<CustomProblemDetails>()).Detail, Severity.Error);
+                Snackbar.Add(result.Error ?? "An error occurred while updating the internship", Severity.Error);
             }
 
             await LoadData();
@@ -322,11 +344,12 @@ public partial class InternshipVacanciesPage
         }   
     }
 
+
     private async Task NewQuestionAsync()
     {
         var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
-        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional});
+        _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
 
     private async void AddTask()
