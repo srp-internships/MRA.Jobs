@@ -6,7 +6,6 @@ using MRA.Jobs.Application.Contracts.Dtos.Enums;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
-using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
 using MudBlazor;
 
@@ -184,16 +183,10 @@ public partial class VacancyPage
     protected override async Task OnInitializedAsync()
     {
         await Global.SetTheme(JsRuntime, LayoutService.IsDarkMode ? "vs-dark" : "vs");
-        try
-        {
-            _category = await VService.GetAllCategory();
-            _vacancies = await VService.GetJobs();
-        }
-        catch (Exception)
-        {
-            _serverError = true;
-            StateHasChanged();
-        }
+        await LoadData();
+        Clear();
+        StateHasChanged();
+
     }
 
     private async Task HandleSubmit()
@@ -225,13 +218,24 @@ public partial class VacancyPage
         }
         catch (Exception)
         {
-            Snackbar.Add("Server is not responding, please try later", Severity.Error);
+            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
         }
     }
 
     private async Task LoadData()
     {
-        _vacancies = await VService.GetJobs();
+        try
+        {
+            _category = await VService.GetAllCategory() ?? throw new Exception("Category fetch failed");
+            _vacancies = await VService.GetJobs() ?? throw new Exception("Job fetch failed");
+        }
+        catch (Exception)
+        {
+            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
+            _serverError = true;
+            StateHasChanged();
+        }
+
     }
 
 
