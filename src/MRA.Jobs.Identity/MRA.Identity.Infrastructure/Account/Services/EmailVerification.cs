@@ -38,10 +38,10 @@ public class EmailVerification : IEmailVerification
         <table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px;'>
             <tr>
                 <td align='center' valign='top' style='padding: 36px 24px;'>
-                  <a href='https://www.blogdesire.com' target='_blank' style='display: inline-block;'>
+                
                     <img   src='https://jobs.srp.tj/images/srp/srp_icon.png'
                     style='width: 30%' alt='Logo' border='0' style='display: block; width: 48px; max-width: 48px; min-width: 48px;'>
-                  </a>
+               
                 </td>
               </tr>
           <tr>
