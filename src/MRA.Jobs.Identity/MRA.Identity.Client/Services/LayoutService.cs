@@ -1,5 +1,4 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Identity.Client.Enums;
 using MRA.Identity.Client.Resources;
 using MRA.Identity.Client.Services.ContentService;
@@ -10,12 +9,9 @@ namespace MRA.Identity.Client.Services;
 
 public class LayoutService(IUserPreferencesService userPreferencesService, IContentService contentService)
 {
-    public UserProfileResponse User;
-
     private UserPreferences.UserPreferences _userPreferences;
     private bool _systemPreferences;
 
-    public bool IsRtl { get; private set; } = false;
     public DarkLightMode DarkModeToggle = DarkLightMode.System;
 
     public bool IsDarkMode { get; private set; }
@@ -25,6 +21,13 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
     public void SetDarkMode(bool value)
     {
         IsDarkMode = value;
+    }
+
+    public void SetNoTheme()
+    {
+        IsDarkMode = false;
+        DarkModeToggle = DarkLightMode.Light;
+        OnMajorUpdateOccured();
     }
 
     public async Task ApplyUserPreferences(bool isDarkModeDefaultTheme)
@@ -49,7 +52,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         }
 
         var lang = await contentService.GetCurrentCulture();
-        _lang = lang.IsNullOrEmpty() ? "En" : lang;
+        Lang = lang.IsNullOrEmpty() ? "Ru" : lang;
     }
 
     public void OnSystemPreferenceChanged(bool newValue)
@@ -89,11 +92,11 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         OnMajorUpdateOccured();
     }
 
-    public string _lang = "En";
+    public string Lang = "Ru";
 
     public async Task ChangeLanguage(string lang)
     {
-        _lang = lang;
+        Lang = lang;
 
         if (lang == "Ru")
             await contentService.ChangeCulture(ApplicationCulturesNames.Ru);

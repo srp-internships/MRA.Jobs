@@ -85,7 +85,7 @@ public class AuthService(IdentityApiHttpClientService identityHttpClient,
                     Username = command.Username
                 });
                 layoutService.User = await userProfileService.Get();
-                navigationManager.NavigateTo("/profile");
+                navigationManager.NavigateTo("/");
 
                 return "";
             }
