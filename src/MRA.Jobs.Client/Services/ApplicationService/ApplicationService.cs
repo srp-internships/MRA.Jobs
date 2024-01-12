@@ -1,11 +1,14 @@
 ﻿using System.Net;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
+using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.ContentService;
 using MRA.Jobs.Client.Services.HttpClients;
@@ -31,6 +34,7 @@ public class ApplicationService(
         var response = await httpClient.GetAsJsonAsync<List<ApplicationListStatus>>($"{ApplicationsEndPoint}/{status}");
         return response.Success ? response.Result : null;
     }
+
 
     public async Task CreateApplication(CreateApplicationCommand application, IBrowserFile file)
     {
@@ -110,6 +114,49 @@ public class ApplicationService(
         return app == null ? "" : $"{baseAddress}applications/downloadCv/{WebUtility.UrlEncode(app.CV)}";
     }
 
+    public async Task<TimeLineDetailsDto> AddNote(AddNoteToApplicationCommand note)
+    {
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync<TimeLineDetailsDto>($"{ApplicationsEndPoint}/add-note", note);
+            switch (response.HttpStatusCode)
+            {
+                case HttpStatusCode.OK:
+                    return  response.Result;
+                case HttpStatusCode.Conflict:
+                    snackbar.Add( response.Error, Severity.Error);
+                    break;
+                default:
+                    snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
+            Console.WriteLine(e);
+        }
+
+        return null;
+    }
+
+    public async Task<List<TimeLineDetailsDto>> GetApplicationTimeLineEvents(string slug)
+    {
+        try
+        {
+            var response = await httpClient.GetAsJsonAsync<List<TimeLineDetailsDto>>($"{ApplicationsEndPoint}/GetTimelineEvents/{slug}");
+
+            return response.Result;
+        }
+        catch (Exception)
+        {
+            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
+        }
+
+        return null;
+    }
+
+
     private async Task<string> GetCurrentUserName()
     {
         var authState = await authenticationState.GetAuthenticationStateAsync();
@@ -124,6 +171,4 @@ public class ApplicationService(
 
         return null;
     }
-
-
 }

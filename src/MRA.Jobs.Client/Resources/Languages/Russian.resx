@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -126,8 +126,8 @@
   <data name="Header:Jobs" xml:space="preserve">
     <value>Вакансии</value>
   </data>
-  <data name="Header:Trainings" xml:space="preserve">
-    <value>Трейнинги</value>
+	<data name="Header:Trainings" xml:space="preserve">
+    <value>Тренинги</value>
   </data>
   <data name="Header:Team" xml:space="preserve">
     <value>Команда</value>
@@ -420,14 +420,14 @@
   <data name="VacanciesList:End date" xml:space="preserve">
     <value>Дата завершения</value>
   </data>
-  <data name="Jobs:Jobs" xml:space="preserve">
-    <value>Вакансии на работу</value>
+	<data name="Jobs:Jobs" xml:space="preserve">
+    <value>Вакансии</value>
   </data>
   <data name="Internships:Internships" xml:space="preserve">
     <value>Стажировки</value>
   </data>
-  <data name="Trainings:Trainings" xml:space="preserve">
-    <value>Трейнинги</value>
+	<data name="Trainings:Trainings" xml:space="preserve">
+    <value>Тренинги</value>
   </data>
   <data name="VacancyApplication:Posted" xml:space="preserve">
     <value>Опубликовано</value>
@@ -483,8 +483,8 @@
   <data name="VacancyApplication:Apply" xml:space="preserve">
     <value>Применить</value>
   </data>
-  <data name="Home:Hero_Title_1" xml:space="preserve">
-    <value>Мы здесь.</value>
+	<data name="Home:Hero_Title_1" xml:space="preserve">
+    <value>Мы здесь</value>
   </data>
   <data name="Home:Hero_Title_2" xml:space="preserve">
     <value> Чтобы помочь вам!</value>
@@ -552,8 +552,8 @@
   <data name="Home:MissionTitle" xml:space="preserve">
     <value>НАША МИССИЯ</value>
   </data>
-  <data name="Home:MissionContent" xml:space="preserve">
-    <value>Привлечь команду местных талантливых IT-специалистов и дать им возможность оказывать выдающиеся IT-услуги нашим партнерам</value>
+	<data name="Home:MissionContent" xml:space="preserve">
+    <value>Привлечь в команду местных талантливых IT-специалистов и дать им возможность оказывать выдающиеся IT-услуги нашим партнерам</value>
   </data>
   <data name="Home:VisionTitle" xml:space="preserve">
     <value>НАШЕ ВИДЕНИЕ</value>
@@ -567,38 +567,38 @@
   <data name="Home:Agile" xml:space="preserve">
     <value>Гибкость</value>
   </data>
-  <data name="Home:AgileDetails" xml:space="preserve">
-    <value>Наш приоритет - удовлетворить потребности клиента за счет ранней и непрерывной поставки ценного программного обеспечения.</value>
+	<data name="Home:AgileDetails" xml:space="preserve">
+    <value>Наш главный приоритет - удовлетворение потребностей клиента путем ранней и непрерывной поставки ценного програмного обеспечения.</value>
   </data>
   <data name="Home:CodeQuality" xml:space="preserve">
     <value>Качество кода</value>
   </data>
-  <data name="Home:CodeQualityDetails" xml:space="preserve">
-    <value>Мы делаем все возможное, чтобы написать описательный, поддерживаемый, экономичный, тестируемый код.</value>
+	<data name="Home:CodeQualityDetails" xml:space="preserve">
+    <value>Мы делаем все возможное, чтобы писать экономичный, поддерживаемый, описательный, тестируемый код.</value>
   </data>
   <data name="Home:ContinualLearning" xml:space="preserve">
     <value>Постоянное обучение</value>
   </data>
-  <data name="Home:ContinualLearningDetails" xml:space="preserve">
-    <value> Мы стремимся поддерживать наши навыки и знания на современном уровне, чтобы мы могли удовлетворить требования наших клиентов.</value>
+	<data name="Home:ContinualLearningDetails" xml:space="preserve">
+    <value>Мы стремимся поддерживать наши навыки и знания на современном уровне, чтобы мы могли удовлетворять требования наших клиентов.</value>
   </data>
   <data name="Home:IntrinsicControl" xml:space="preserve">
     <value>Внутренний контроль</value>
   </data>
-  <data name="Home:IntrinsicControlDetails" xml:space="preserve">
-    <value>Мы поощряем наших программистов быть самомотивированными в улучшении своих навыков и производстве качественной работы.</value>
+	<data name="Home:IntrinsicControlDetails" xml:space="preserve">
+    <value>Мы поощряем наших программистов быть самомотивированными в улучшении своих навыков и производстве высококачественной работы.</value>
   </data>
-  <data name="Home:GlorifyGod" xml:space="preserve">
-    <value>Прославить Бога</value>
+	<data name="Home:GlorifyGod" xml:space="preserve">
+    <value>Прославять Бога</value>
   </data>
-  <data name="Home:GlorifyGodDetails" xml:space="preserve">
-    <value>Мы хотим, чтобы все, что мы делаем, славило Бога.</value>
+	<data name="Home:GlorifyGodDetails" xml:space="preserve">
+    <value>Мы хотим, чтобы все наши дела приносили славу Богу.</value>
   </data>
   <data name="Home:Productivity" xml:space="preserve">
     <value>Продуктивность</value>
   </data>
-  <data name="Home:ProductivityDetails" xml:space="preserve">
-    <value> Мы стремимся предоставить инструменты и среду, которые наши программисты нуждаются для достижения максимальной продуктивности.</value>
+	<data name="Home:ProductivityDetails" xml:space="preserve">
+    <value>Мы стремимся предоставить инструменты и среду, необходимые нашим программистам для достижения максимальной продуктивности.</value>
   </data>
   <data name="Home:Meet" xml:space="preserve">
     <value>Встречайте</value>
@@ -609,14 +609,14 @@
   <data name="Home:ViewTeam" xml:space="preserve">
     <value>Посмотреть команду</value>
   </data>
-  <data name="Home:Contact" xml:space="preserve">
-    <value>Контакт</value>
+	<data name="Home:Contact" xml:space="preserve">
+    <value>Наши контакты</value>
   </data>
   <data name="Home:Address" xml:space="preserve">
     <value>Адрес</value>
   </data>
-  <data name="Home:Address_p1" xml:space="preserve">
-    <value>Сугд, район Джаббор Расулов,</value>
+	<data name="Home:Address_p1" xml:space="preserve">
+    <value>Согд, район Джаббор Расулов,</value>
   </data>
   <data name="Home:Address_p2" xml:space="preserve">
     <value>Дехмой, улица Сомони 80</value>
@@ -642,8 +642,8 @@
   <data name="Home:Client" xml:space="preserve">
     <value>Клиент</value>
   </data>
-  <data name="Home:Partner" xml:space="preserve">
-    <value>И отзывы партнеров</value>
+	<data name="Home:Partner" xml:space="preserve">
+    <value>отзывы партнеров</value>
   </data>
   <data name="Home:BuildAmazing" xml:space="preserve">
     <value>Создавайте удивительное</value>
@@ -711,81 +711,76 @@
   <data name="Dashboard:Appilcations:More:CVButton" xml:space="preserve">
     <value>Скачать резюме кандидата</value>
   </data>
-    <data name="SendCV:Title">
-        <value>Отправьте нам ваш CV</value>
-    </data>
-    <data name="SendCV:Your name">
-        <value>Ваше имя</value>
-    </data>
-    <data name="SendCV:Your phone number">
-        <value>Ваш номер телефона</value>
-    </data>
-    <data name="SendCV:CoverLetter">
-        <value>Ваше сообщение</value>
-    </data>
-    <data name="SendCV:Close">
-        <value>Закрыть</value>
-    </data>
-    <data name="SendCV:IfFileNull">
-        <value>Пожалуйста, загрузите свое резюме</value>
-    </data>
-      <data name="Application:Success">
-        <value>Заявка успешно отправлена!</value>
-    </data>
-      <data name="SomethingWentWrong">
-        <value>Что-то пошло не так</value>
-    </data>
-      <data name="ServerIsNotResponding">
-        <value>Сервер не отвечает, попробуйте позже</value>
-    </data>
-      <data name="ErrorDelete">
-        <value>Ошибка удаление</value>
-    </data>
-     <data name="DuplicateRole">
-        <value>Ошибка добавления, возможно, вы ввели дублирующую роль.</value>
-    </data>
-     <data name="GoogleAuthFailed">
-        <value>Авторизация Google не удалась. Пожалуйста, повторите попытку позже.</value>
-    </data>
-
-
-<data name="ConverterService:SecondsAgo">
-    <value>секунд(ы) назад</value>
-</data>
-<data name="ConverterService:MinAgo">
-    <value>минут(а)(у) назад</value>
-</data>
-<data name="ConverterService:HourAgo">
-    <value>час назад</value>
-</data>
-<data name="ConverterService:HoursAgo">
-    <value>час(а)(ов) назад</value>
-</data>
-<data name="ConverterService:TodayAt">
-    <value>Сегодня в</value>
-</data>
-<data name="ConverterService:Yesterday">
-    <value>Вчера</value>
-</data>
-<data name="ConverterService:SecondsLeft">
-    <value>секунд осталось</value>
-</data>
-<data name="ConverterService:MinLeft">
-    <value>минут осталось</value>
-</data>
-<data name="ConverterService:HourLeft">
-    <value>час остался</value>
-</data>
-<data name="ConverterService:HoursLeft">
-    <value>час(а)(ов) осталось</value>
-</data>
-<data name="ConverterService:Tomorrow">
-    <value>Завтра</value>
-</data>
-<data name="ConverterService:On">
-    <value>в</value>
-</data>
-
-
-
+	<data name="SendCV:Title">
+		<value>Отправьте нам ваше резюме</value>
+	</data>
+	<data name="SendCV:Your name">
+		<value>Ваше имя</value>
+	</data>
+	<data name="SendCV:Your phone number">
+		<value>Ваш номер телефона</value>
+	</data>
+	<data name="SendCV:CoverLetter">
+		<value>Ваше сообщение</value>
+	</data>
+	<data name="SendCV:Close">
+		<value>Закрыть</value>
+	</data>
+	<data name="SendCV:IfFileNull">
+		<value>Пожалуйста, загрузите свое резюме</value>
+	</data>
+	<data name="Application:Success">
+		<value>Заявка успешно отправлена!</value>
+	</data>
+	<data name="SomethingWentWrong">
+		<value>Что-то пошло не так</value>
+	</data>
+	<data name="ServerIsNotResponding">
+		<value>Сервер не отвечает, попробуйте позже</value>
+	</data>
+	<data name="ErrorDelete">
+		<value>Ошибка удаление</value>
+	</data>
+	<data name="DuplicateRole">
+		<value>Ошибка добавления, возможно, вы ввели дублирующую роль.</value>
+	</data>
+	<data name="GoogleAuthFailed">
+		<value>Авторизация Google не удалась. Пожалуйста, повторите попытку позже.</value>
+	</data>
+	<data name="ConverterService:SecondsAgo">
+		<value>секунд(ы) назад</value>
+	</data>
+	<data name="ConverterService:MinAgo">
+		<value>минут(у) назад</value>
+	</data>
+	<data name="ConverterService:HourAgo">
+		<value>час назад</value>
+	</data>
+	<data name="ConverterService:HoursAgo">
+		<value>час(а)(ов) назад</value>
+	</data>
+	<data name="ConverterService:TodayAt">
+		<value>Сегодня в</value>
+	</data>
+	<data name="ConverterService:Yesterday">
+		<value>Вчера</value>
+	</data>
+	<data name="ConverterService:SecondsLeft">
+		<value>секунд осталось</value>
+	</data>
+	<data name="ConverterService:MinLeft">
+		<value>минут осталось</value>
+	</data>
+	<data name="ConverterService:HourLeft">
+		<value>час остался</value>
+	</data>
+	<data name="ConverterService:HoursLeft">
+		<value>час(а)(ов) осталось</value>
+	</data>
+	<data name="ConverterService:Tomorrow">
+		<value>Завтра</value>
+	</data>
+	<data name="ConverterService:On">
+		<value>в</value>
+	</data>
 </root>

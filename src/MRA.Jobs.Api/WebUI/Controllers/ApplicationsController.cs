@@ -9,6 +9,7 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStat
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.TimeLineDTO;
 using MRA.Jobs.Infrastructure.Identity;
 
 namespace MRA.Jobs.Web.Controllers;
@@ -83,12 +84,11 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
         return await Mediator.Send(request, cancellationToken);
     }
 
-    [HttpPost("{slug}/add-note")]
+    [HttpPost("add-note")]
     [Authorize(policy:ApplicationPolicies.Reviewer)]
-    public async Task<ActionResult<bool>> AddNote(string slug, AddNoteToApplicationCommand request,
+    public async Task<ActionResult<TimeLineDetailsDto>> AddNote(AddNoteToApplicationCommand request,
         CancellationToken cancellationToken)
     {
-        request.Slug = slug;
         return await Mediator.Send(request, cancellationToken);
     }
 }
