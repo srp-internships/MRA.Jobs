@@ -1,6 +1,5 @@
 using System.Globalization;
 using Blazored.LocalStorage;
-using Blazorise.Extensions;
 using Microsoft.Extensions.Localization;
 using Microsoft.FeatureManagement;
 using MRA.Jobs.Client.Resources;
@@ -27,7 +26,7 @@ public class ContentService(
     {
         get
         {
-            if (_applicationCulture.Name == ApplicationCulturesNames.En&& _en)
+            if (_applicationCulture.Name == ApplicationCulturesNames.En && _en)
                 return english[name].Value;
             if (_applicationCulture.Name == ApplicationCulturesNames.Ru && _ru)
                 return russian[name].Value;
@@ -58,7 +57,7 @@ public class ContentService(
     public async Task InitializeCultureAsync()
     {
         var cultureName = await localStorageService.GetItemAsStringAsync(nameof(ApplicationCulturesNames));
-        if (!cultureName.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(cultureName))
         {
             _applicationCulture = new CultureInfo(cultureName);
         }

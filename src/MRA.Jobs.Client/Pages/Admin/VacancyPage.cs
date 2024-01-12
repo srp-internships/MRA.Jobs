@@ -1,3 +1,4 @@
+using Blazored.TextEditor;
 using BlazorMonaco;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
@@ -50,6 +51,18 @@ public partial class VacancyPage
     private readonly ApplicationStatusDto.WorkSchedule[] _value2Items = Enum
         .GetValues(typeof(ApplicationStatusDto.WorkSchedule)).Cast<ApplicationStatusDto.WorkSchedule>().ToArray();
 
+    BlazoredTextEditor QuillHtml;
+
+
+    private string ImageLinkToInsertToEditor;
+    public async void InsertImage()
+    {
+        if (!string.IsNullOrEmpty(ImageLinkToInsertToEditor))
+        {
+            await this.QuillHtml.InsertImage(ImageLinkToInsertToEditor);
+            StateHasChanged();
+        }
+    }
 
     private List<CategoryResponse> _category;
     private List<JobVacancyListDto> _vacancies;
@@ -191,6 +204,8 @@ public partial class VacancyPage
 
     private async Task HandleSubmit()
     {
+        VService.creatingNewJob.Description = await this.QuillHtml.GetHTML();
+
         if (_endDateTime.HasValue)
             VService.creatingNewJob.EndDate += _endDateTime.Value;
 
@@ -245,7 +260,7 @@ public partial class VacancyPage
         _createOrEditHeader = $"Edit {vacancy.Title}";
         VService.creatingNewJob.Title = vacancy.Title;
         VService.creatingNewJob.ShortDescription = vacancy.ShortDescription;
-        VService.creatingNewJob.Description = vacancy.Description;
+        await this.QuillHtml.LoadHTMLContent(vacancy.Description);
         VService.creatingNewJob.RequiredYearOfExperience = vacancy.RequiredYearOfExperience;
         VService.creatingNewJob.WorkSchedule = vacancy.WorkSchedule;
         if (vacancy.CategoryId.HasValue)
@@ -288,6 +303,8 @@ public partial class VacancyPage
 
     private async Task HandleUpdate()
     {
+        VService.creatingNewJob.Description = await this.QuillHtml.GetHTML();
+
         if (_endDateTime.HasValue)
             VService.creatingNewJob.EndDate += _endDateTime.Value;
 

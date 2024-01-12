@@ -1,9 +1,6 @@
 ﻿global using System.Net.Http.Json;
 global using MRA.Jobs.Client.Services.CategoryServices;
 global using MRA.Jobs.Client.Services.VacancyServices;
-using Blazorise;
-using Blazorise.Bootstrap;
-using Blazorise.Icons.FontAwesome;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MRA.Jobs.Client;
@@ -29,14 +26,6 @@ using MRA.Jobs.Client.Services.UserPreferences;
 using MRA.Jobs.Client.Services.HttpClients;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-builder.Services
-    .AddBlazorise(options => { options.Immediate = true; })
-    .AddBootstrapProviders()
-    .AddFontAwesomeIcons();
-
-
-
 builder.Services.AddMudServices();
 
 builder.Services.AddAltairCACookieService(options => { options.DefaultExpire = TimeSpan.Zero; });

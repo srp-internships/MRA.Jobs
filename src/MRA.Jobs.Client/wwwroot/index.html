@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
     <title>MRA Jobs</title>
-    <meta content="" name="description"/>
-    <meta content="" name="keywords"/>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
 
 
     <!--MudBlazor settings-->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
-    <link href="/_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="/_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
 
     <script src="/_content/MudBlazor/MudBlazor.min.js"></script>
 
     <!-- Favicons -->
     <link href="https://www.silkroadprofessionals.com/wp-content/uploads/2021/04/cropped-Logo-Final-Small-32x32.png"
-          rel="icon" sizes="32x32"/>
+          rel="icon" sizes="32x32" />
     <!-- <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" /> -->
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin/>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
-          rel="stylesheet"/>
+          rel="stylesheet" />
 
 
-    <link href="/css/app.css" rel="stylesheet"/>
+    <link href="/css/app.css" rel="stylesheet" />
 
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <!-- =======================================================
     * Template Name: Append
     * Updated: Jul 27 2023 with Bootstrap v5.3.1
@@ -38,17 +38,25 @@
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
+    <link href="/css/quill.snow.css" rel="stylesheet">
+    <link href="/css/quill.bubble.css" rel="stylesheet">
 
-    <base href="/"/>
 
-    <style>     
+    <script src="/js/quill.js"></script>
+    <script src="/js/quill-blot-formatter.min.js"></script>
+    <script src="/js/Blazored-BlazorQuill.js"></script>
+
+    <base href="/" />
+
+    <style>
         .center-screen {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             flex-direction: column;
-        }    
+        }
+
         .loader {
             margin-top: 15px;
             border: 14px solid #f3f3f3;
@@ -60,8 +68,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
