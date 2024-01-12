@@ -133,8 +133,8 @@
     <value>Тим</value>
   </data>
   <data name="Header:Academy" xml:space="preserve">
-  <value>Академия</value>
-</data>
+    <value>Академия</value>
+  </data>
   <data name="UserButton:Profile" xml:space="preserve">
     <value>Хуҷраи шахсӣ</value>
   </data>
@@ -176,11 +176,11 @@
   </data>
   <data name="SignUp:LabelHaveAccount" xml:space="preserve">
     <value>Ҳисоботи шумо вуҷуд дорад? </value>
-</data>
-    <data name="SignUp:LinkSignIn" xml:space="preserve">
+  </data>
+  <data name="SignUp:LinkSignIn" xml:space="preserve">
     <value> Ворид шудан</value>
-</data>
-    <data name="SignUp:FirstName" xml:space="preserve">
+  </data>
+  <data name="SignUp:FirstName" xml:space="preserve">
     <value>Ном</value>
   </data>
   <data name="SignUp:FirstName_HelperText" xml:space="preserve">
@@ -411,7 +411,7 @@
   <data name="Trainings:Trainings" xml:space="preserve">
     <value>Машваратхо</value>
   </data>
-   <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
+  <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
     <value>Тафсилот</value>
   </data>
   <data name="VacancyApplication:year(s)" xml:space="preserve">
@@ -681,78 +681,79 @@
   <data name="Dashboard:Appilcations:More:CVButton" xml:space="preserve">
     <value>CV-и довталабро зеркашӣ кунед</value>
   </data>
-    <data name="SendCV:Title">
-        <value>CV-и худро ба мо фиристед</value>
-    </data>
-    <data name="SendCV:Your name">
-        <value>Номи шумо</value>
-    </data>
-    <data name="SendCV:Your phone number">
-        <value>номери телефони шумо</value>
-    </data>
-    <data name="SendCV:CoverLetter">
-        <value>Паёми шумо</value>
-    </data>
-    <data name="SendCV:Close">
-        <value>Бекор кардан</value>
-    </data>
-    <data name="SendCV:IfFileNull">
-        <value>Лутфан CV-и худро бор кунед</value>
-    </data>
-      <data name="Application:Success">
-        <value>Ариза бомуваффақият фиристода шуд!</value>
-    </data>
-     <data name="SomethingWentWrong">
-        <value>Чизе хато рафт</value>
-    </data>
-      <data name="ServerIsNotResponding">
-        <value>Сервер ҷавоб намедиҳад, лутфан дертар такрор кунед</value>
-    </data>
-     <data name="ErrorDelete">
-        <value>Нобудкунии хато</value>
-    </data>
-     <data name="DuplicateRole">
-        <value>Хатои илова кардан мумкин аст, ки шумо нақши такрориро ворид кардаед</value>
-    </data>
-     <data name="GoogleAuthFailed">
-        <value>Иҷозати Google ноком шуд. Лутфан баъдтар бори дигар такрор кунед.</value>
-    </data>
-
-   
-<data name="ConverterService:SecondsAgo">
+  <data name="SendCV:Title" xml:space="preserve">
+    <value>CV-и худро ба мо фиристед</value>
+  </data>
+  <data name="SendCV:Your name" xml:space="preserve">
+    <value>Номи шумо</value>
+  </data>
+  <data name="SendCV:Your phone number" xml:space="preserve">
+    <value>номери телефони шумо</value>
+  </data>
+  <data name="SendCV:CoverLetter" xml:space="preserve">
+    <value>Паёми шумо</value>
+  </data>
+  <data name="SendCV:Close" xml:space="preserve">
+    <value>Бекор кардан</value>
+  </data>
+  <data name="SendCV:IfFileNull" xml:space="preserve">
+    <value>Лутфан CV-и худро бор кунед</value>
+  </data>
+  <data name="Application:Success" xml:space="preserve">
+    <value>Ариза бомуваффақият фиристода шуд!</value>
+  </data>
+  <data name="SomethingWentWrong" xml:space="preserve">
+    <value>Чизе хато рафт</value>
+  </data>
+  <data name="ServerIsNotResponding" xml:space="preserve">
+    <value>Сервер ҷавоб намедиҳад, лутфан дертар такрор кунед</value>
+  </data>
+  <data name="ErrorDelete" xml:space="preserve">
+    <value>Нобудкунии хато</value>
+  </data>
+  <data name="DuplicateRole" xml:space="preserve">
+    <value>Хатои илова кардан мумкин аст, ки шумо нақши такрориро ворид кардаед</value>
+  </data>
+  <data name="GoogleAuthFailed" xml:space="preserve">
+    <value>Иҷозати Google ноком шуд. Лутфан баъдтар бори дигар такрор кунед.</value>
+  </data>
+  <data name="ConverterService:SecondsAgo" xml:space="preserve">
     <value>сония пеш</value>
-</data>
-<data name="ConverterService:MinAgo">
+  </data>
+  <data name="ConverterService:MinAgo" xml:space="preserve">
     <value>дақиқа пеш</value>
-</data>
-<data name="ConverterService:HourAgo">
+  </data>
+  <data name="ConverterService:HourAgo" xml:space="preserve">
     <value>соат пеш</value>
-</data>
-<data name="ConverterService:HoursAgo">
+  </data>
+  <data name="ConverterService:HoursAgo" xml:space="preserve">
     <value>соат пеш</value>
-</data>
-<data name="ConverterService:TodayAt">
+  </data>
+  <data name="ConverterService:TodayAt" xml:space="preserve">
     <value>Имрӯз дар</value>
-</data>
-<data name="ConverterService:Yesterday">
+  </data>
+  <data name="ConverterService:Yesterday" xml:space="preserve">
     <value>Дирӯз</value>
-</data>
-<data name="ConverterService:SecondsLeft">
+  </data>
+  <data name="ConverterService:SecondsLeft" xml:space="preserve">
     <value>сония боқӣ монд</value>
-</data>
-<data name="ConverterService:MinLeft">
+  </data>
+  <data name="ConverterService:MinLeft" xml:space="preserve">
     <value>дақиқа боқӣ монд</value>
-</data>
-<data name="ConverterService:HourLeft">
+  </data>
+  <data name="ConverterService:HourLeft" xml:space="preserve">
     <value>соат боқӣ монд</value>
-</data>
-<data name="ConverterService:HoursLeft">
+  </data>
+  <data name="ConverterService:HoursLeft" xml:space="preserve">
     <value>соат боқӣ монд</value>
-</data>
-<data name="ConverterService:Tomorrow">
+  </data>
+  <data name="ConverterService:Tomorrow" xml:space="preserve">
     <value>Пагоҳ</value>
-</data>
-<data name="ConverterService:On">
-    <value></value>
-</data>
+  </data>
+  <data name="ConverterService:On" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Profile:Serverisnotresponding" xml:space="preserve">
+    <value>Сервер ҷавоб намедиҳад</value>
+  </data>
 </root>

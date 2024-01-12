@@ -708,81 +708,79 @@
   <data name="Dashboard:Appilcations:More:CVButton" xml:space="preserve">
     <value>Скачать резюме кандидата</value>
   </data>
-    <data name="SendCV:Title">
-        <value>Отправьте нам ваш CV</value>
-    </data>
-    <data name="SendCV:Your name">
-        <value>Ваше имя</value>
-    </data>
-    <data name="SendCV:Your phone number">
-        <value>Ваш номер телефона</value>
-    </data>
-    <data name="SendCV:CoverLetter">
-        <value>Ваше сообщение</value>
-    </data>
-    <data name="SendCV:Close">
-        <value>Закрыть</value>
-    </data>
-    <data name="SendCV:IfFileNull">
-        <value>Пожалуйста, загрузите свое резюме</value>
-    </data>
-      <data name="Application:Success">
-        <value>Заявка успешно отправлена!</value>
-    </data>
-      <data name="SomethingWentWrong">
-        <value>Что-то пошло не так</value>
-    </data>
-      <data name="ServerIsNotResponding">
-        <value>Сервер не отвечает, попробуйте позже</value>
-    </data>
-      <data name="ErrorDelete">
-        <value>Ошибка удаление</value>
-    </data>
-     <data name="DuplicateRole">
-        <value>Ошибка добавления, возможно, вы ввели дублирующую роль.</value>
-    </data>
-     <data name="GoogleAuthFailed">
-        <value>Авторизация Google не удалась. Пожалуйста, повторите попытку позже.</value>
-    </data>
-
-
-<data name="ConverterService:SecondsAgo">
+  <data name="SendCV:Title" xml:space="preserve">
+    <value>Отправьте нам ваш CV</value>
+  </data>
+  <data name="SendCV:Your name" xml:space="preserve">
+    <value>Ваше имя</value>
+  </data>
+  <data name="SendCV:Your phone number" xml:space="preserve">
+    <value>Ваш номер телефона</value>
+  </data>
+  <data name="SendCV:CoverLetter" xml:space="preserve">
+    <value>Ваше сообщение</value>
+  </data>
+  <data name="SendCV:Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="SendCV:IfFileNull" xml:space="preserve">
+    <value>Пожалуйста, загрузите свое резюме</value>
+  </data>
+  <data name="Application:Success" xml:space="preserve">
+    <value>Заявка успешно отправлена!</value>
+  </data>
+  <data name="SomethingWentWrong" xml:space="preserve">
+    <value>Что-то пошло не так</value>
+  </data>
+  <data name="ServerIsNotResponding" xml:space="preserve">
+    <value>Сервер не отвечает, попробуйте позже</value>
+  </data>
+  <data name="ErrorDelete" xml:space="preserve">
+    <value>Ошибка удаление</value>
+  </data>
+  <data name="DuplicateRole" xml:space="preserve">
+    <value>Ошибка добавления, возможно, вы ввели дублирующую роль.</value>
+  </data>
+  <data name="GoogleAuthFailed" xml:space="preserve">
+    <value>Авторизация Google не удалась. Пожалуйста, повторите попытку позже.</value>
+  </data>
+  <data name="ConverterService:SecondsAgo" xml:space="preserve">
     <value>секунд(ы) назад</value>
-</data>
-<data name="ConverterService:MinAgo">
+  </data>
+  <data name="ConverterService:MinAgo" xml:space="preserve">
     <value>минут(а)(у) назад</value>
-</data>
-<data name="ConverterService:HourAgo">
+  </data>
+  <data name="ConverterService:HourAgo" xml:space="preserve">
     <value>час назад</value>
-</data>
-<data name="ConverterService:HoursAgo">
+  </data>
+  <data name="ConverterService:HoursAgo" xml:space="preserve">
     <value>час(а)(ов) назад</value>
-</data>
-<data name="ConverterService:TodayAt">
+  </data>
+  <data name="ConverterService:TodayAt" xml:space="preserve">
     <value>Сегодня в</value>
-</data>
-<data name="ConverterService:Yesterday">
+  </data>
+  <data name="ConverterService:Yesterday" xml:space="preserve">
     <value>Вчера</value>
-</data>
-<data name="ConverterService:SecondsLeft">
+  </data>
+  <data name="ConverterService:SecondsLeft" xml:space="preserve">
     <value>секунд осталось</value>
-</data>
-<data name="ConverterService:MinLeft">
+  </data>
+  <data name="ConverterService:MinLeft" xml:space="preserve">
     <value>минут осталось</value>
-</data>
-<data name="ConverterService:HourLeft">
+  </data>
+  <data name="ConverterService:HourLeft" xml:space="preserve">
     <value>час остался</value>
-</data>
-<data name="ConverterService:HoursLeft">
+  </data>
+  <data name="ConverterService:HoursLeft" xml:space="preserve">
     <value>час(а)(ов) осталось</value>
-</data>
-<data name="ConverterService:Tomorrow">
+  </data>
+  <data name="ConverterService:Tomorrow" xml:space="preserve">
     <value>Завтра</value>
-</data>
-<data name="ConverterService:On">
+  </data>
+  <data name="ConverterService:On" xml:space="preserve">
     <value>в</value>
-</data>
-
-
-
+  </data>
+  <data name="Profile:Serverisnotresponding" xml:space="preserve">
+    <value>Сервер не отвечает</value>
+  </data>
 </root>

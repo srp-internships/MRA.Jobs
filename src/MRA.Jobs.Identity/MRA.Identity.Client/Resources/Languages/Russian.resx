@@ -255,6 +255,9 @@
   <data name="Profile:TryAgain" xml:space="preserve">
     <value>Попробуйте снова</value>
   </data>
+  <data name="Profile:Serverisnotresponding" xml:space="preserve">
+    <value>Сервер не отвечает</value>
+  </data>
   <data name="Profile:PersonalInformation" xml:space="preserve">
     <value>Личная информация</value>
   </data>
@@ -704,5 +707,8 @@
   </data>
   <data name="Dashboard:Appilcations:More:CVButton" xml:space="preserve">
     <value>Скачать резюме кандидата</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
 </root>
