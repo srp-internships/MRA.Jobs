@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MRA.Configurations.Common.Interfaces.Services;
 using MRA.Configurations.OsonSms.SmsService;
 using MRA.Jobs.Application.Contracts.JobVacancies;
@@ -16,7 +17,8 @@ public class UpdateApplicationStatusCommandHandler(
     IHtmlService htmlService,
     IidentityService identityService,
     ISmsService smsService,
-    ILogger<SmsService> logger)
+    ILogger<SmsService> logger,
+    IConfiguration configuration)
     : IRequestHandler<UpdateApplicationStatus, bool>
 {
     public async Task<bool> Handle(UpdateApplicationStatus request, CancellationToken cancellationToken)
@@ -50,8 +52,10 @@ public class UpdateApplicationStatusCommandHandler(
                 await htmlService.EmailApproved(applicant, application.Slug);
                 try
                 {
-                    await smsService.SendSmsAsync(applicant.PhoneNumber,
-                        $"{applicant.FirstName} {applicant.LastName}, Ваше резюме одобрено, мы скоро с вами свяжемся, чтобы пригласить вас на собеседование.");
+                    await smsService.SendSmsAsync(applicant.PhoneNumber, 
+                        configuration["SmsTemplates:Approved"]
+                            ?.Replace("{FirstName}", applicant.FirstName)
+                            .Replace("{LastName}",applicant.LastName));
                 }
                 catch (Exception e)
                 {
@@ -63,8 +67,10 @@ public class UpdateApplicationStatusCommandHandler(
                 await htmlService.EmailRejected(applicant,application.Slug);
                 try
                 {
-                    await smsService.SendSmsAsync(applicant.PhoneNumber,
-                        $"{applicant.FirstName} {applicant.LastName}, спасибо за интерес к нашей вакансии. К сожалению, ваше резюме отклонено.");
+                    await smsService.SendSmsAsync(applicant.PhoneNumber, 
+                        configuration["SmsTemplates:Rejected"]
+                            ?.Replace("{FirstName}", applicant.FirstName)
+                            .Replace("{LastName}",applicant.LastName));
                 }
                 catch (Exception e)
                 {

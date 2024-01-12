@@ -275,15 +275,7 @@ public partial class InternshipVacanciesPage
         InternshipService.createCommand.CategoryId = catId;
         InternshipService.createCommand.VacancyQuestions = _questions;
 
-        if (_applicationDeadlineTime.HasValue)
-            InternshipService.createCommand.ApplicationDeadline += _applicationDeadlineTime.Value;
-
-        if (_endDateTime.HasValue)
-            InternshipService.createCommand.EndDate += _endDateTime.Value;
-
-        if (_publishDateTime.HasValue)
-            InternshipService.createCommand.PublishDate += _publishDateTime.Value;
-
+      
         try
         {
             InternshipService.createCommand.VacancyTasks = _tasks;
@@ -311,14 +303,7 @@ public partial class InternshipVacanciesPage
     {
         InternshipService.createCommand.VacancyQuestions = _questions;
         InternshipService.createCommand.VacancyTasks = _tasks;
-        if (_applicationDeadlineTime.HasValue)
-            InternshipService.createCommand.ApplicationDeadline += _applicationDeadlineTime.Value;
-
-        if (_endDateTime.HasValue)
-            InternshipService.createCommand.EndDate += _endDateTime.Value;
-
-        if (_publishDateTime.HasValue)
-            InternshipService.createCommand.PublishDate += _publishDateTime.Value;
+       
 
         var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
         InternshipService.createCommand.CategoryId = catId;
