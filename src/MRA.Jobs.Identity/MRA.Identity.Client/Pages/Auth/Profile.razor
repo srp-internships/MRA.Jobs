@@ -16,24 +16,7 @@
 <br />
 @if (_tryButton)
 {
-    <div style="text-align: center;">
-
-        <MudText Typo="Typo.h4" Color="Color.Error">
-            <b>@ContentService["Profile:Serverisnotresponding"]</b>
-        </MudText><br />
-
-        <MudButton Variant="Variant.Filled" OnClick="Load">
-            @if (_processing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" Style="color:#fff" />
-            }
-            else
-            {
-                <MudIcon Icon="@Icons.Material.Filled.Refresh" />
-                <MudText>Try Again</MudText>
-            }
-        </MudButton>
-    </div>
+	<ServerErrorComponent />
 }
 else
 {

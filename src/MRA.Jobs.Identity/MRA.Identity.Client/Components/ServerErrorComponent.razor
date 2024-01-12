@@ -1,0 +1,33 @@
+﻿@inject NavigationManager NavigationManager
+@inject IConfiguration Configuration
+<div class="row" style="margin-top:20px;">
+	<div Class="d-flex align-center justify-center mud-width-full py-8">
+		<div class="col mb-3" style="padding-top:50px;">
+			<center>
+				<MudText Typo="Typo.h4" Color="Color.Error"><b>@ContentService["Profile:Serverisnotresponding"]</b></MudText><br />
+				<MudButton Variant="Variant.Filled" OnClick="ReloadPage">
+					@if (_processing)
+					{
+						<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" Style="color:#fff" />
+					}
+					else
+					{
+						<MudIcon Icon="@Icons.Material.Filled.Refresh" />
+						<MudText>@ContentService["Profile:TryAgain"]</MudText>
+					}
+				</MudButton>
+			</center>
+		</div>
+	</div>
+</div>
+
+@code {
+	bool _processing = false;
+
+	async Task ReloadPage()
+	{
+		_processing = true;
+		await Task.Delay(1000);
+		NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+	}
+}

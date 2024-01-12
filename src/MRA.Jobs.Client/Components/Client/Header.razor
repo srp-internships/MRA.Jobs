@@ -106,8 +106,10 @@
     <MudHidden Breakpoint="Breakpoint.Xs">
         @if (_betaVersion)
         {
-            <MudChip Color="Color.Primary">Beta</MudChip>
-            <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/> 
+			<a href="@Configuration["Beta:Address"]" target="_blank">
+				<MudChip Color="Color.Primary">Beta</MudChip>
+			</a>
+			<MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/> 
         }
 		<ToolBarSettingsButtons/> 
     </MudHidden>
@@ -133,7 +135,9 @@
     </MudNavMenu>
     @if (_betaVersion)
     {
-        <MudChip Color="Color.Primary">Beta</MudChip>
+		<a href="@Configuration["Beta:Address"]" target="_blank">
+			<MudChip Color="Color.Primary">Beta</MudChip>
+		</a> 
     }
 </MudDrawer>
 

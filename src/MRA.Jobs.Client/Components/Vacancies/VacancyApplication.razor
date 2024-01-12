@@ -5,6 +5,8 @@
 @using BlazorMonaco.Editor
 @using BlazorMonaco.Languages
 @using MRA.Jobs.Client.Services.ConverterService
+@using Blazorise.Extensions
+@using Microsoft.FeatureManagement
 @layout MainLayout
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
@@ -13,6 +15,7 @@
 @inject IDateTimeConvertToStringService DateTimeConvert
 @inject LayoutService LayoutService
 @inject IJSRuntime JsRuntime
+@inject IFeatureManager FeatureManager
 
 @if (Vacancy is null)
 {
@@ -259,24 +262,34 @@ else
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardActions>
-                    <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
-                        <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
-                            <MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio>
-                        </MudRadioGroup>
-                        @if (_isUploadCvMode)
+                    @if (temp)
                     {
-                        <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@(Configuration["CvSettings:ExceptedFormats"]!)">
-                            <ButtonTemplate Context="anotherContext">
-                                <MudButton HtmlTag="label"
-                                           Variant="Variant.Filled"
-                                           Color="Color.Primary"
-                                           StartIcon="@Icons.Material.Filled.CloudUpload"
-                                           for="@anotherContext">
-                                    @ContentService["VacancyApplication:Upload your CV"]
-                                </MudButton>
-                            </ButtonTemplate>
-                        </MudFileUpload>
+                        <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
+                            <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
+                                <MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio>
+                            </MudRadioGroup>
+                        @if (_isUploadCvMode)
+                        {
+                            <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@(Configuration["CvSettings:ExceptedFormats"]!)">
+                                <ButtonTemplate Context="anotherContext">
+                                    <MudButton HtmlTag="label"
+                                               Variant="Variant.Filled"
+                                               Color="Color.Primary"
+                                               StartIcon="@Icons.Material.Filled.CloudUpload"
+                                               for="@anotherContext">
+                                        @ContentService["VacancyApplication:Upload your CV"]
+                                    </MudButton>
+                                </ButtonTemplate>
+                            </MudFileUpload>
+                        }
                     }
+                    else
+                    {
+                        <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
+                            <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
+                            </MudRadioGroup>
+                    }
+
                     <MudSpacer />
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
                         @if (_processing)
@@ -301,6 +314,7 @@ else
 
 @code {
     private bool _isUploadCvMode = true;
+    private bool temp = true;
 
     [Parameter] public VacancyApplicationResponse Vacancy { get; set; }
 
@@ -330,6 +344,12 @@ else
                 AutomaticLayout = true,
                 Value = initialValue
             };
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        temp = await FeatureManager.IsEnabledAsync(FeatureFlags.SendingCV);
+        _isUploadCvMode = temp;
     }
 
     private async Task UpdateTaskResponse(Guid taskId)
@@ -391,7 +411,7 @@ else
                 VacancyQuestion = vr.VacancyQuestion,
                 Response = QuestionResponses[vr.VacancyQuestion.Question],
             }).ToList();
-        if (updatedResponses.Any(s => !s.VacancyQuestion.IsOptional && string.IsNullOrEmpty(s.Response)))
+        if (updatedResponses.Any(s => !s.VacancyQuestion.IsOptional && s.Response.IsNullOrEmpty()))
         {
             Snackbar.Add(ContentService["VacancyApplication:RequiredQuestionHaventAnswer"], Severity.Error);
             return;
