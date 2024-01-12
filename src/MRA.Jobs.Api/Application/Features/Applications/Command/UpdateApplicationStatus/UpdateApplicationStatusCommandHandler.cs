@@ -47,7 +47,7 @@ public class UpdateApplicationStatusCommandHandler(
         switch (application.Status)
         {
             case ApplicationStatus.Approved:
-                await htmlService.EmailApproved(applicant);
+                await htmlService.EmailApproved(applicant, application.Slug);
                 try
                 {
                     await smsService.SendSmsAsync(applicant.PhoneNumber,
@@ -60,7 +60,7 @@ public class UpdateApplicationStatusCommandHandler(
 
                 break;
             case ApplicationStatus.Rejected:
-                await htmlService.EmailRejected(applicant);
+                await htmlService.EmailRejected(applicant,application.Slug);
                 try
                 {
                     await smsService.SendSmsAsync(applicant.PhoneNumber,

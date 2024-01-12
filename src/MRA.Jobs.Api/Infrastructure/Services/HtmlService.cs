@@ -55,7 +55,7 @@ public class HtmlService(IEmailService emailService) : IHtmlService
                                 </tr>
                                 <tr style='text-align:center'>
                                     <td>
-                                    <a href='https://www.jobs.srp.tj/dashboard/applications' style='display:inline-block;background-color:#1c92c8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:5px;'>Перейти к заявке</a>                                    
+                                    <a href='https://www.jobs.srp.tj/ApplicationDetail/{applicationSlug}/{userInfo.UserName}' style='display:inline-block;background-color:#1c92c8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:5px;'>Перейти к заявке</a>                                    
                                     </td>
                                 </tr>
                             </tbody>
@@ -89,7 +89,7 @@ public class HtmlService(IEmailService emailService) : IHtmlService
         return content;
     }
 
-    public async Task<bool> EmailApproved(UserProfileResponse applicant)
+    public async Task<bool> EmailApproved(UserProfileResponse applicant, string slug)
     {
         string htmlContent = $@"
     <center>
@@ -117,7 +117,7 @@ public class HtmlService(IEmailService emailService) : IHtmlService
                                 </tr>
                                 <tr style='text-align:center'>
                                     <td>
-                                      <a href='https://www.jobs.srp.tj/applications' style='display:inline-block;background-color:#1c92c8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:5px;'>Перейти к заявке</a>
+                                      <a href='https://www.jobs.srp.tj/ApplicationDetail/{slug}' style='display:inline-block;background-color:#1c92c8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:5px;'>Перейти к заявке</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -132,7 +132,7 @@ public class HtmlService(IEmailService emailService) : IHtmlService
         return await emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
     }
 
-    public async Task<bool> EmailRejected(UserProfileResponse applicant)
+    public async Task<bool> EmailRejected(UserProfileResponse applicant,string slug)
     {
         string htmlContent = $@"
     <center>
@@ -160,7 +160,7 @@ public class HtmlService(IEmailService emailService) : IHtmlService
                                 </tr>
                                 <tr style='text-align:center'>
                                     <td>
-                                      <a href='https://www.jobs.srp.tj/applications' style='display:inline-block;background-color:#1c92c8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:5px;'>Перейти к заявке</a>
+                                      <a href='https://www.jobs.srp.tj/ApplicationDetail/{slug}' style='display:inline-block;background-color:#1c92c8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:5px;'>Перейти к заявке</a>
                                     </td>
                                 </tr>
                             </tbody>

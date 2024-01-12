@@ -1,6 +1,6 @@
 ﻿@page "/applications"
 @inject IApplicationService applicationService
-
+@inject NavigationManager NavigationManager
 
 <MudContainer>
     <MudText Typo="Typo.h4">
@@ -33,7 +33,7 @@
                     <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
                     <MudTd DataLabel="Status">@context.StatusName</MudTd>
                     <MudTd DataLabel="Action">
-                        <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName))">More</MudButton>
+                        <MudButton Variant="Variant.Filled" OnClick="@((e) => OnClick(context.Slug))">More</MudButton>
                     </MudTd>
                 </RowTemplate>
                 <PagerContent>
@@ -58,11 +58,9 @@
         }
     }
 
-    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
-
-    private void OpenDialog(DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName)
+    private void OnClick(string slug)
     {
-        Dialog.Show<MyDialog>("Applicant response", new DialogParameters { { "CoverLetter", coverLetter }, { "VacancyResponses", vacancyResponses }, { "Slug", slug }, { "StatusName", statusName }, { "isApplicant", true } }, options);
+        NavigationManager.NavigateTo($"/ApplicationDetail/{slug}");
     }
 
 }

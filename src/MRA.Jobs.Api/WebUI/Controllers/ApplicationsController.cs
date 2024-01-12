@@ -7,7 +7,6 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug;
-using MRA.Jobs.Application.Contracts.Applications.Queries.GetTimelineEvents;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
@@ -91,12 +90,5 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
         CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
-    }
-
-    [HttpGet("GetTimelineEvents/{slug}")]
-    [Authorize(policy: ApplicationPolicies.Reviewer)]
-    public async Task<ActionResult<List<TimeLineDetailsDto>>> GetTimelineEvents( [FromRoute] string slug)
-    {
-        return await Mediator.Send(new GetListApplicationTimelineEventsQuery() { ApplicationSlug = slug });
     }
 }

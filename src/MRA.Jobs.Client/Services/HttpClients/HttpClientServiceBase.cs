@@ -8,7 +8,7 @@ public abstract class HttpClientServiceBase(IHttpClientFactory httpClientFactory
     IConfiguration configuration) : IHttpClientServiceBase
 {
     protected abstract string ConfigKey { get; }
-    private string BaseAddress => configuration[ConfigKey];
+    public string BaseAddress => configuration[ConfigKey];
     public async Task<ApiResponse<T>> GetAsJsonAsync<T>(string url, object content = null)
     {
         try

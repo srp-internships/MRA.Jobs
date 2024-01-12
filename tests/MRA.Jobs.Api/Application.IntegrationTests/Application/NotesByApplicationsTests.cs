@@ -41,22 +41,4 @@ public class NotesByApplicationsTests : CreateApplicationTestsBase
         Assert.That(timelineDto is not null);
         Assert.That(timelineDto is { Note: "Add note" });
     }
-
-    [Test]
-    public async Task GetApplicationTimelineEvents()
-    {
-        const string applicationSlug = "applicant1-vacancy";
-
-        RunAsAdministratorAsync();
-
-        var response =
-            await _httpClient.GetAsync(
-                $"{ApplicationApiEndPoint}/GetTimelineEvents/{applicationSlug}");
-
-        response.EnsureSuccessStatusCode();
-
-        var list = await response.Content.ReadFromJsonAsync<List<TimeLineDetailsDto>>();
-        
-        Assert.That(list.Count != 0);
-    }
 }

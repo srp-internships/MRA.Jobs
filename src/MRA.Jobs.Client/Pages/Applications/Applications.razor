@@ -1,8 +1,9 @@
 ﻿@page "/dashboard/applications"
 @using MRA.Jobs.Client.Identity;
-@inject IApplicationService ApplicationService
 @using MRA.Jobs.Client.Components.Extra
 
+@inject IApplicationService ApplicationService
+@inject NavigationManager NavigationManager
 
 <CascadingAuthenticationState>
     <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
@@ -97,7 +98,7 @@
                             <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
                             <MudTd DataLabel="StatusName">@context.StatusName</MudTd>
                             <MudTd DataLabel="Name">
-                                <MudButton Variant="Variant.Filled" OnClick="@((_) => OpenDialog(context,_maxWidth, context.CoverLetter, context.VacancyResponses, context.Slug, context.StatusName, context.Username))">More</MudButton>
+                                <MudButton Variant="Variant.Filled" OnClick="@((_) => OnClick(context.Slug, context.Username))">More</MudButton>
                             </MudTd>
                         </RowTemplate>
                         <NoRecordsContent>
@@ -193,34 +194,14 @@
             StateHasChanged();
         }
     }
-
-    readonly DialogOptions _maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
-
     public Applications()
     {
         _searchStatusName = null;
     }
 
-    private async Task OpenDialog(ApplicationListDto context,DialogOptions options, string coverLetter, IEnumerable<VacancyResponseDto> vacancyResponses, string slug, string statusName, string applicationUserName)
+    private void OnClick(string slug, string applicationUserName)
     {
-        var dialog = await Dialog.ShowAsync<MyDialog>("Applicant response", new DialogParameters
-        {
-            { "CoverLetter", coverLetter },
-            { "VacancyResponses", vacancyResponses },
-            { "Slug", slug },
-            { "StatusName", statusName },
-            { "isApplicant", false },
-            {"ApplicationUserName", applicationUserName }
-        }, options);
-        var result = await dialog.Result;
-        
-        var isCancelled = result.Canceled;
-        if (isCancelled)
-        {
-            await LoadData();
-            await _table.ReloadServerData();
-            StateHasChanged();
-        }
+        NavigationManager.NavigateTo($"/ApplicationDetail/{slug}/{applicationUserName}");
     }
-
+    
 }

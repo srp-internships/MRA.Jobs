@@ -13,6 +13,6 @@ public interface IHtmlService
     string GenerateApplyVacancyContent_NoVacancy(string hostName, string applicationSlug,
         string cV, CreateApplicationCommand createApplicationCommand);
 
-    Task<bool> EmailApproved(UserProfileResponse applicant);
-    Task<bool> EmailRejected(UserProfileResponse applicant);
+    Task<bool> EmailApproved(UserProfileResponse applicant, string slug);
+    Task<bool> EmailRejected(UserProfileResponse applicant, string slug);
 }

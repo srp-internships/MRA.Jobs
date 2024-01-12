@@ -16,7 +16,6 @@ public partial class UserRoles
     [Inject] private IdentityHttpClient HttpClient { get; set; }
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public AuthenticationStateProvider AuthStateProvider { get; set; }
-    [Inject] private ISnackbar Snackbar { get; set; }
     [Inject] private IUserProfileService UserProfileService { get; set; }
     private string NewRoleName { get; set; }
 
