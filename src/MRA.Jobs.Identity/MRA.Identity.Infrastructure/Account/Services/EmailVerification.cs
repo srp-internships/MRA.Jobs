@@ -37,33 +37,45 @@ public class EmailVerification : IEmailVerification
       text-align: center;
       width: 86%;
       font-family: arial, sans-serif;
-      border-spacing: 4px 20px;
+      border-spacing: 4px 14px;
     ""
   >
     <tr>
       <img
         src=""https://jobs.srp.tj/images/srp/srp_icon.png""
-        style=""width: 25%""
+        style=""width: 20%""
       />
       <td>
         <center>
           <table bgcolor=""#FFFFFF"" width=""80%"" border=""0"">
             <tbody>
               <tr style=""font-size: 14px"">
+                <td>Здравствуйте!</td>
+              </tr>
+              <tr style=""font-size: 14px"">
                 <td>
-                    Здравствуйте!
+                  Благодарим вас за регистрацию на нашем сайте. Мы рады, что вы
+                  присоединились к нашему сообществу.
                 </td>
+              </tr>
+              <tr style=""font-size: 14px"">
                 <td>
-                    Благодарим вас за регистрацию на нашем сайте. Мы рады, что вы присоединились к нашему сообществу.
+                  Для завершения регистрации и активации вашей учетной записи
+                  вам необходимо подтвердить ваш адрес электронной почты.
                 </td>
+              </tr>
+              <tr style=""font-size: 14px"">
                 <td>
-                    Для завершения регистрации и активации вашей учетной записи вам необходимо подтвердить ваш адрес электронной почты. Для этого просто перейдите по ссылке ниже:
+                 <b> Для
+                  этого просто перейдите по ссылке: <a
+                  href='{{_configurations[""MraIdentityClient-HostName""]}}/verifyEmail?token={{WebUtility.UrlEncode(token)}}&userId={{user.Id}}'
+                  >Подтвердить электронную почту</a></b>
                 </td>
+              </tr>
+              <tr style=""font-size: 14px"">
                 <td>
-<a href='{_configurations["MraIdentityClient-HostName"]}/verifyEmail?token={WebUtility.UrlEncode(token)}&userId={user.Id}'>Подтвердить электронную почту</a>                   
-                </td>
-                <td>
-                    Если вы не регистрировались на нашем сайте, пожалуйста, проигнорируйте это письмо.
+                  Если вы не регистрировались на нашем сайте, пожалуйста,
+                  проигнорируйте это письмо.
                 </td>
               </tr>
             </tbody>
