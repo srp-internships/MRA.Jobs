@@ -7,41 +7,51 @@
 @inject IContentService ContentService
 @inject IFeatureManager FeatureManager
 
-@if (en || ru || tj)
+@if (_en || _ru || _tj)
 {
     <MudTooltip Duration="1000" Text="@ContentService["Profile:SelectLanguage"]">
-        <MudMenu EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="@LayoutService._lang"
+        <MudMenu EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="@LayoutService.Lang"
                  Dense="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter"
                  LockScroll="true">
-            @if (en)
+            @if (_en)
             {
                 <MudMenuItem OnClick="@(() => SelectLanguage("En"))">En</MudMenuItem>
             }
-            @if (ru)
+            @if (_ru)
             {
                 <MudMenuItem OnClick="@(() => SelectLanguage("Ru"))">Ru</MudMenuItem>
             }
-            @if (tj)
+            @if (_tj)
             {
                 <MudMenuItem OnClick="@(() => SelectLanguage("Tj"))">Tj</MudMenuItem>
             }
         </MudMenu>
     </MudTooltip>
 }
-<MudTooltip Duration="1000" Text="@(LayoutService.DarkModeToggle == DarkLightMode.System ? ContentService["Profile:SwitchtoLightTheme"] : LayoutService.DarkModeToggle == DarkLightMode.Dark ? ContentService["Profile:Switchtosystem"] : ContentService["Profile:SwitchtoDarkTheme"])">
-    <MudIconButton Icon="@(LayoutService.DarkModeToggle == DarkLightMode.System ? @Icons.Material.Filled.AutoMode : LayoutService.DarkModeToggle == DarkLightMode.Dark ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@ToggleDarkMode"/>
-</MudTooltip>
+@if (_themeSwitcher)
+{
+    <MudTooltip Duration="1000" Text="@(LayoutService.DarkModeToggle == DarkLightMode.System ? ContentService["Profile:SwitchtoLightTheme"] : LayoutService.DarkModeToggle == DarkLightMode.Dark ? ContentService["Profile:Switchtosystem"] : ContentService["Profile:SwitchtoDarkTheme"])">
+        <MudIconButton Icon="@(LayoutService.DarkModeToggle == DarkLightMode.System ? @Icons.Material.Filled.AutoMode : LayoutService.DarkModeToggle == DarkLightMode.Dark ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@ToggleDarkMode"/>
+    </MudTooltip>
+}
 
 @code {
-    private bool en;
-    private bool ru;
-    private bool tj;
+    private bool _en;
+    private bool _ru;
+    private bool _tj;
+    private bool _themeSwitcher;
 
     protected override async Task OnInitializedAsync()
     {
-        en = await FeatureManager.IsEnabledAsync(FeatureFlags.En);
-        ru = await FeatureManager.IsEnabledAsync(FeatureFlags.Ru);
-        tj = await FeatureManager.IsEnabledAsync(FeatureFlags.Tj);
+        _en = await FeatureManager.IsEnabledAsync(FeatureFlags.En);
+        _ru = await FeatureManager.IsEnabledAsync(FeatureFlags.Ru);
+        _tj = await FeatureManager.IsEnabledAsync(FeatureFlags.Tj);
+
+        _themeSwitcher = await FeatureManager.IsEnabledAsync(FeatureFlags.ThemeSwitcher);
+        if (!_themeSwitcher)
+        {
+            LayoutService.SetNoTheme();
+        }
     }
 
     private async void SelectLanguage(string lang)

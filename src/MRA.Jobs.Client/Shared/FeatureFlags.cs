@@ -8,4 +8,5 @@ public static class FeatureFlags
     public const string En = "En";
     public const string Ru = "Ru";
     public const string Tj = "Tj";
+    public const string ThemeSwitcher = "ThemeSwitcher";
 }
