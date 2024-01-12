@@ -44,7 +44,7 @@
                     }
                 </ActivatorContent>
                 <ChildContent>
-                    <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.AccountCircle" Href=@($"{configuration["IdentityClient"]}/profile")>@ContentService["UserButton:Profile"]</MudMenuItem>
+                    <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.AccountCircle" Href=@($"{configuration["IdentityClient"]}")>@ContentService["UserButton:Profile"]</MudMenuItem>
                     <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Checklist" Href="/applications">@ContentService["UserButton:Applications"]</MudMenuItem>
                     <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Logout" OnClick="@Logout">@ContentService["UserButton:Logout"]</MudMenuItem>
                 </ChildContent>
