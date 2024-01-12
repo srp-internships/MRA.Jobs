@@ -5,7 +5,6 @@
 @using BlazorMonaco.Editor
 @using BlazorMonaco.Languages
 @using MRA.Jobs.Client.Services.ConverterService
-@using Blazorise.Extensions
 @using Microsoft.FeatureManagement
 @layout MainLayout
 @inject ISnackbar Snackbar
@@ -411,7 +410,7 @@ else
                 VacancyQuestion = vr.VacancyQuestion,
                 Response = QuestionResponses[vr.VacancyQuestion.Question],
             }).ToList();
-        if (updatedResponses.Any(s => !s.VacancyQuestion.IsOptional && s.Response.IsNullOrEmpty()))
+        if (updatedResponses.Any(s => !s.VacancyQuestion.IsOptional && string.IsNullOrEmpty(s.Response)))
         {
             Snackbar.Add(ContentService["VacancyApplication:RequiredQuestionHaventAnswer"], Severity.Error);
             return;
