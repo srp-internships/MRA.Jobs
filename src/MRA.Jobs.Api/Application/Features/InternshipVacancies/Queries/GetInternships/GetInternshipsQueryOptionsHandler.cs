@@ -40,7 +40,7 @@ public class GetInternshipsQueryOptionsHandler(IApplicationDbContext context,
         if (request.CheckDate)
         {
             DateTime now = DateTime.Now;
-            internships = internships.Where(t => t.PublishDate <= now && t.EndDate >= now);
+            internships = internships.Where(t => t.PublishDate <= now && t.EndDate >= now).ToList();
         }
 
         PagedList<InternshipVacancyListResponse> result = sieveProcessor.ApplyAdnGetPagedList(request,
