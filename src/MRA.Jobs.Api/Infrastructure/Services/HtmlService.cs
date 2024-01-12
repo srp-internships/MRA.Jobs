@@ -187,7 +187,7 @@ public class HtmlService(IEmailService emailService) : IHtmlService
                 </td>
               </tr>
           <tr>
-            <td align='left' bgcolor='#ffffff' style='padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;'>
+            <td align='left' bgcolor='#ffffff' style='padding: 36px 24px 0; border-top: 3px solid #d4dadf;'>
               <h1 style='margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;'>Уведомление об отказе</h1>
             </td>
           </tr>
@@ -200,7 +200,7 @@ public class HtmlService(IEmailService emailService) : IHtmlService
         <table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px;'>
           <tr>
             <td align='left' bgcolor='#ffffff' style='padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;'>
-              <p style='margin: 0;'><b>{{applicant.FirstName}} {{applicant.LastName}}</b><span>, благодарим вас за проявленный интерес к вакансии в нашей компании. К сожалению, после тщательного рассмотрения вашего резюме мы приняли решение не продолжать процесс с вами.</p>
+              <p style='margin: 0;'><b>{applicant.FirstName} {applicant.LastName}</b><span>, благодарим вас за проявленный интерес к вакансии в нашей компании. К сожалению, после тщательного рассмотрения вашего резюме мы приняли решение не продолжать процесс с вами.</p>
             </td>
           </tr>
           <tr>
@@ -216,7 +216,7 @@ public class HtmlService(IEmailService emailService) : IHtmlService
                     <table border='0' cellpadding='0' cellspacing='0'>                
                       <tr>
                         <td bgcolor='#1a82e2' style='border-radius: 6px;'>
-                          <a href='https://www.jobs.srp.tj/ApplicationDetail/{{slug}}' style='display: inline-block; padding: 16px 36px; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;'>Перейти к заявке</a>
+                          <a href='https://www.jobs.srp.tj/ApplicationDetail/{slug}' style='display: inline-block; padding: 16px 36px; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;'>Перейти к заявке</a>
                         </td>
                       </tr>                     
                     </table>
