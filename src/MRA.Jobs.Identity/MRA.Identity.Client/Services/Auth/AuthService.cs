@@ -18,7 +18,7 @@ namespace MRA.Identity.Client.Services.Auth;
 
 public class AuthService(HttpClient httpClient,
         AuthenticationStateProvider authenticationStateProvider, NavigationManager navigationManager,
-        IAltairCABlazorCookieUtil cookieUtil, LayoutService layoutService, IUserProfileService userProfileService, IConfiguration configuration)
+        IAltairCABlazorCookieUtil cookieUtil, IUserProfileService userProfileService, IConfiguration configuration)
     : IAuthService
 {
     public async Task<HttpResponseMessage> ChangePassword(ChangePasswordUserCommand command)
@@ -56,7 +56,6 @@ public class AuthService(HttpClient httpClient,
                 
                 await cookieUtil.SetValueAsync("authToken", response);
                 await authenticationStateProvider.GetAuthenticationStateAsync();
-                layoutService.User = await userProfileService.Get();
                 if (!newRegister)
                     navigationManager.NavigateTo("/");
                 return null;
@@ -97,7 +96,7 @@ public class AuthService(HttpClient httpClient,
                     Password = command.Password,
                     Username = command.Username
                 });
-                layoutService.User = await userProfileService.Get();
+                await userProfileService.Get();
                 navigationManager.NavigateTo("/");
 
                 return "";

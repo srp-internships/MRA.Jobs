@@ -20,7 +20,6 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
     private UserPreferences.UserPreferences _userPreferences;
     private bool _systemPreferences;
 
-    public bool IsRtl { get; private set; } = false;
     public DarkLightMode DarkModeToggle = DarkLightMode.System;
 
     public bool IsDarkMode { get; private set; }
@@ -54,7 +53,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         }
 
         var lang = await contentService.GetCurrentCulture();
-        _lang = lang.IsNullOrEmpty() ? "En" : lang;
+        Lang = lang.IsNullOrEmpty() ? "Ru" : lang;
     }
 
     public Task OnSystemPreferenceChanged(bool newValue)
@@ -96,11 +95,11 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         OnMajorUpdateOccured();
     }
 
-    public string _lang = "En";
+    public string Lang = "Ru";
     
     public async Task ChangeLanguage(string lang)
     {
-        _lang = lang;
+        Lang = lang;
         
         if (lang == "Ru")
             await contentService.ChangeCulture(ApplicationCulturesNames.Ru);
@@ -131,5 +130,11 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         if (uri.Contains("/userManager")) return DocPages.UserManager;
         return DocPages.Home;
     }
-    
+
+    public void SetNoTheme()
+    {
+        IsDarkMode = false;
+        DarkModeToggle = DarkLightMode.Light;
+        OnMajorUpdateOccured();
+    }
 }
