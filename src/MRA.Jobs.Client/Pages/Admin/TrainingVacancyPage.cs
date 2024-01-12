@@ -43,7 +43,7 @@ public partial class TrainingVacancyPage
         _table.ReloadServerData();
     }
     
-      private bool _serverError;
+    private bool _serverError;
     private bool _panelOpenState;
     private bool _isInserting;
     private bool _isUpdating = true;
@@ -173,7 +173,7 @@ public partial class TrainingVacancyPage
             }
             catch (Exception)
             {
-                Snackbar.Add("Server is not responding, please try later", Severity.Error);
+                Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
             }
 
             StateHasChanged();
@@ -254,7 +254,7 @@ public partial class TrainingVacancyPage
         }
         catch (Exception)
         {
-            Snackbar.Add("Server is not responding, try later", Severity.Error);
+           Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
             _serverError = true;
             StateHasChanged();
         }
@@ -289,7 +289,7 @@ public partial class TrainingVacancyPage
         }
         catch (Exception)
         {
-            Snackbar.Add("Server is not responding, please try later", Severity.Error);
+            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
         }
     }
 
@@ -322,7 +322,7 @@ public partial class TrainingVacancyPage
         catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
-            Snackbar.Add("Server is not responding, try later", Severity.Error);
+           Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
         }
     }
 
