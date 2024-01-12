@@ -9,6 +9,7 @@ using MRA.Jobs.Client.Pages.Admin.Dialogs;
 using MudBlazor;
 
 
+
 namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class InternshipVacanciesPage
@@ -177,7 +178,7 @@ public partial class InternshipVacanciesPage
             }
             catch (Exception)
             {
-                Snackbar.Add("Server is not responding, please try later", Severity.Error);
+                Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
             }
 
             StateHasChanged();
@@ -255,7 +256,7 @@ public partial class InternshipVacanciesPage
         }
         catch (Exception)
         {
-            Snackbar.Add($"Server is not responding, try later", Severity.Error);
+            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
             _serverError = true;
             StateHasChanged();
         }
@@ -301,7 +302,7 @@ public partial class InternshipVacanciesPage
         }
         catch (Exception)
         {
-            Snackbar.Add("Server is not responding, please try later", Severity.Error);
+            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
         }
     }
 
@@ -340,7 +341,7 @@ public partial class InternshipVacanciesPage
         catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
-            Snackbar.Add("Server is not responding, please try later", Severity.Error);
+            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
         }   
     }
 

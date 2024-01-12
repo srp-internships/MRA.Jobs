@@ -13,15 +13,9 @@ public interface IVacancyService
     event Action OnChange;
    
     List<JobVacancyListDto> Vacancies { get; set; }
- 
     public int FilteredVacanciesCount { get; set; }
     CreateJobVacancyCommand creatingNewJob { get; set; } 
-   
-    /* Renamed version of the upper method name with a typo */
-    // Task<List<JobVacancyListDto>> GetAllVacancies();
-    // Task<List<JobVacancyListDto>> GetFilteredVacancies(string title = "", string categoryName = "All categories", int page = 1);
     Task<List<CategoryResponse>> GetAllCategory();
-
     Task<List<JobVacancyListDto>> GetVacancyByTitle(string title);
     Task<ApiResponse<string>> OnSaveCreateClick();
     Task<ApiResponse> OnDelete(string slug);

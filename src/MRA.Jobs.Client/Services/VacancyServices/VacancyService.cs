@@ -69,7 +69,7 @@ public class VacancyService(JobsApiHttpClientService httpClient) : IVacancyServi
     public async Task<List<JobVacancyListDto>> GetJobs()
     {
         var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>("jobs");
-        return result.Success ? result.Result.Items : null;
+        return result.Result.Items;
     }
 
     public async Task<ApiResponse> OnDelete(string slug)

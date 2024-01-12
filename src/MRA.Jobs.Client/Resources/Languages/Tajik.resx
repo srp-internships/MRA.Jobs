@@ -324,6 +324,9 @@
   <data name="Profile:Present" xml:space="preserve">
     <value>Ҳозир</value>
   </data>
+  <data name="Profile:Serverisnotresponding" xml:space="preserve">
+    <value>Сервер ҷавоб намедиҳад</value>
+  </data>
   <data name="Profile:AddNewEducation" xml:space="preserve">
     <value>Таълими нав илова кунед</value>
   </data>

@@ -1,9 +1,10 @@
 ﻿@inject NavigationManager NavigationManager
+@inject IContentService ContentService
 <div class="row" style="margin-top:20px;">
 	<div Class="d-flex align-center justify-center mud-width-full py-8">
 		<div class="col mb-3" style="padding-top:50px;">
 			<center>
-				<MudText Typo="Typo.h4" Color="Color.Error"><b>Server is not responding</b></MudText><br />
+				<MudText Typo="Typo.h4" Color="Color.Error"><b>@ContentService["Profile:Serverisnotresponding"]</b></MudText><br />
 				<MudButton Variant="Variant.Filled" OnClick="ReloadPage">
 					@if (_processing)
 					{
@@ -12,7 +13,7 @@
 					else
 					{
 						<MudIcon Icon="@Icons.Material.Filled.Refresh" />
-						<MudText>Try Again</MudText>
+						<MudText>@ContentService["Profile:TryAgain"]</MudText>
 					}
 				</MudButton>
 			</center>
