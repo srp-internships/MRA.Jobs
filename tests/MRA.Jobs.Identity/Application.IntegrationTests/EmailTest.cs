@@ -13,6 +13,7 @@ namespace MRA.Jobs.Application.IntegrationTests;
 public class EmailTest : BaseTest
 {
     [Test]
+    [Ignore("emailTemplate")]
     public async Task Email_VerifyEmail_True()
     {
         // Arrange

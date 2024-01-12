@@ -1,18 +1,17 @@
 ﻿@using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Services.ConverterService
-@using Blazorise.Extensions
 @inject ICategoryService CategoryService
 @inject IVacancyService VacancyService
 @inject IDateTimeConvertToStringService DateTimeConvertToStringService
 @inject NavigationManager NavigationManager
 
-<NoVacancyUploadCV/>
+<NoVacancyUploadCV />
 
 @if (Vacancies is null)
 {
     <div style="text-align: center;">
-        <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
+        <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
     </div>
 }
 else
@@ -35,7 +34,6 @@ else
                                                 </MudText>
                                             </div>
                                             <div class="customTabContainerRight">
-
                                             </div>
                                         </div>
 
@@ -47,7 +45,7 @@ else
                                                 <MudText>
                                                     <b>@cat</b>
                                                 </MudText>
-                                                <MudSpacer/>
+                                                <MudSpacer />
                                                 <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
                                             </div>
                                         </MudNavLink>
@@ -66,7 +64,6 @@ else
                                                     </MudText>
                                                 </div>
                                                 <div class="customTabContainerRight">
-
                                                 </div>
                                             </div>
 
@@ -78,7 +75,7 @@ else
                                                     <MudText>
                                                         <b>@cat</b>
                                                     </MudText>
-                                                    <MudSpacer/>
+                                                    <MudSpacer />
                                                     <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
                                                 </div>
                                             </MudNavLink>
@@ -105,7 +102,7 @@ else
 
                             <MudTextField @bind-Value="Search" TextChanged="SearchVacancy" Label="Search" Class="rounded-lg"
                                           Variant="Variant.Outlined" OnAdornmentClick="SearchVacancy" Adornment="Adornment.End"
-                                          AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Info"/>
+                                          AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Info" />
 
                         </MudCard>
                     </MudItem>
@@ -123,10 +120,10 @@ else
                                                 <b>@ContentService["VacancyDetails:Posted"] @DateTimeConvertToStringService.GetDisplayPostedDate(vacancy.PublishDate)</b>
                                             </small>
                                         </MudText>
-                                        <br/>
+                                        <br />
                                         <MudText>@vacancy.ShortDescription</MudText>
-                                        <MudGrid>
-                                            @if (vacancy.Duration != 0)
+                                            <MudGrid>
+                                                @if (vacancy.Duration != 0)
                                             {
                                                 <MudItem Style="color:rgb(128,128,128)">
                                                     <MudText Typo="Typo.caption">@ContentService["VacancyDetails:Duration"] <b>@vacancy.Duration @ContentService["VacancyDetails:month(s)"]</b></MudText>
@@ -158,7 +155,7 @@ else
                     @if (GetTotalPages() > 1)
                     {
                         <MudItem xs="12" Class="d-flex justify-content-center">
-                            <MudPagination Color="Color.Info" Variant="Variant.Outlined" Count="@GetTotalPages()" @bind-Selected="@_selected"/>
+                            <MudPagination Color="Color.Info" Variant="Variant.Outlined" Count="@GetTotalPages()" @bind-Selected="@_selected" />
                         </MudItem>
                     }
                 </MudGrid>
@@ -201,7 +198,7 @@ else
     private void SelectCategory(string cats = null)
     {
         _selectedCategory = cats;
-        FilteredVacancies = cats.IsNullOrEmpty() ? Vacancies : Vacancies.Where(j => j.Category == cats).ToList();
+        FilteredVacancies = string.IsNullOrEmpty(cats) ? Vacancies : Vacancies.Where(j => j.Category == cats).ToList();
     }
 
     private void HandleTabSelection(int index)
@@ -218,7 +215,7 @@ else
             FilteredVacancies = Vacancies.Where(j => j.Category == _selectedCategoryText).ToList();
         }
 
-    // Reset pagination on tab change
+        // Reset pagination on tab change
         _selected = 1;
     }
 
@@ -242,7 +239,7 @@ else
             FilteredVacancies = Vacancies;
         }
 
-    // Reset pagination on search
+        // Reset pagination on search
         _selected = 1;
     }
 

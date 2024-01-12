@@ -1,3 +1,4 @@
+using Blazored.TextEditor;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
 using BlazorMonaco;
@@ -195,7 +196,7 @@ public partial class InternshipVacanciesPage
             _createOrEditHeader = $"Edit {vacancy.Title}";
             InternshipService.createCommand.Title = vacancy.Title;
             InternshipService.createCommand.ShortDescription = vacancy.ShortDescription;
-            InternshipService.createCommand.Description = vacancy.Description;
+            await _quillHtml.LoadHTMLContent(vacancy.Description);
             InternshipService.createCommand.ApplicationDeadline = vacancy.ApplicationDeadline;
             InternshipService.createCommand.Stipend = vacancy.Stipend;
             InternshipService.createCommand.Duration = vacancy.Duration;
@@ -269,21 +270,26 @@ public partial class InternshipVacanciesPage
         _tasks.Remove(r);
     }
 
+    BlazoredTextEditor _quillHtml;
+
+
+    private string _imageLinkToInsertToEditor;
+    public async void InsertImage()
+    {
+        if (!string.IsNullOrEmpty(_imageLinkToInsertToEditor))
+        {
+            await _quillHtml.InsertImage(_imageLinkToInsertToEditor);
+            StateHasChanged();
+        }
+    }
+    
     private async Task HandleSubmit()
     {
         var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
         InternshipService.createCommand.CategoryId = catId;
         InternshipService.createCommand.VacancyQuestions = _questions;
-
-        if (_applicationDeadlineTime.HasValue)
-            InternshipService.createCommand.ApplicationDeadline += _applicationDeadlineTime.Value;
-
-        if (_endDateTime.HasValue)
-            InternshipService.createCommand.EndDate += _endDateTime.Value;
-
-        if (_publishDateTime.HasValue)
-            InternshipService.createCommand.PublishDate += _publishDateTime.Value;
-
+        InternshipService.createCommand.Description = await _quillHtml.GetHTML();
+      
         try
         {
             InternshipService.createCommand.VacancyTasks = _tasks;
@@ -311,14 +317,8 @@ public partial class InternshipVacanciesPage
     {
         InternshipService.createCommand.VacancyQuestions = _questions;
         InternshipService.createCommand.VacancyTasks = _tasks;
-        if (_applicationDeadlineTime.HasValue)
-            InternshipService.createCommand.ApplicationDeadline += _applicationDeadlineTime.Value;
-
-        if (_endDateTime.HasValue)
-            InternshipService.createCommand.EndDate += _endDateTime.Value;
-
-        if (_publishDateTime.HasValue)
-            InternshipService.createCommand.PublishDate += _publishDateTime.Value;
+       
+        InternshipService.createCommand.Description = await _quillHtml.GetHTML();
 
         var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
         InternshipService.createCommand.CategoryId = catId;

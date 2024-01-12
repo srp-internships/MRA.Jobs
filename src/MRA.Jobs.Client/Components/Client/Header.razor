@@ -1,7 +1,6 @@
 ﻿@using MRA.Jobs.Client.Services
 @using MRA.Jobs.Client.Enums
 @using AltairCA.Blazor.WebAssembly.Cookie
-@using Blazorise
 @using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using MRA.Jobs.Client.Components.Buttons
@@ -107,8 +106,10 @@
     <MudHidden Breakpoint="Breakpoint.Xs">
         @if (_betaVersion)
         {
-            <MudChip Color="Color.Primary">Beta</MudChip>
-            <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/> 
+			<a href="@Configuration["Beta:Address"]" target="_blank">
+				<MudChip Color="Color.Primary">Beta</MudChip>
+			</a>
+			<MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/> 
         }
 		<ToolBarSettingsButtons/> 
     </MudHidden>
@@ -134,7 +135,9 @@
     </MudNavMenu>
     @if (_betaVersion)
     {
-        <MudChip Color="Color.Primary">Beta</MudChip>
+		<a href="@Configuration["Beta:Address"]" target="_blank">
+			<MudChip Color="Color.Primary">Beta</MudChip>
+		</a> 
     }
 </MudDrawer>
 

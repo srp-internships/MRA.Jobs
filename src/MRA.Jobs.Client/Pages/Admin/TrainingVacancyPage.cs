@@ -1,3 +1,4 @@
+using Blazored.TextEditor;
 using BlazorMonaco;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
@@ -189,7 +190,7 @@ public partial class TrainingVacancyPage
             _createOrEditHeader = $"Edit {vacancy.Title}";
             TrainingService.createCommand.Title = vacancy.Title;
             TrainingService.createCommand.ShortDescription = vacancy.ShortDescription;
-            TrainingService.createCommand.Description = vacancy.Description;
+            await _quillHtml.LoadHTMLContent(vacancy.Description);
             TrainingService.createCommand.Duration = vacancy.Duration;
             TrainingService.createCommand.EndDate = vacancy.EndDate;
             TrainingService.createCommand.PublishDate = vacancy.PublishDate;
@@ -260,7 +261,19 @@ public partial class TrainingVacancyPage
         }
     }
 
+    BlazoredTextEditor _quillHtml;
 
+
+    private string _imageLinkToInsertToEditor;
+    public async void InsertImage()
+    {
+        if (!string.IsNullOrEmpty(_imageLinkToInsertToEditor))
+        {
+            await _quillHtml.InsertImage(_imageLinkToInsertToEditor);
+            StateHasChanged();
+        }
+    }
+    
     private async Task HandleSubmit()
     {
         if (_endDateTime.HasValue)
@@ -274,6 +287,7 @@ public partial class TrainingVacancyPage
             TrainingService.createCommand.CategoryId = catId;
             TrainingService.createCommand.VacancyQuestions = _questions;
             TrainingService.createCommand.VacancyTasks = _tasks;
+            TrainingService.createCommand.Description = await _quillHtml.GetHTML();
             var result = await TrainingService.Create();
             if (result.Success)
             {
@@ -302,6 +316,7 @@ public partial class TrainingVacancyPage
             TrainingService.createCommand.PublishDate += _publishDateTime.Value;
         TrainingService.createCommand.VacancyQuestions = _questions;
         TrainingService.createCommand.VacancyTasks = _tasks;
+        TrainingService.createCommand.Description = await _quillHtml.GetHTML();
         var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
         TrainingService.createCommand.CategoryId = catId;
         try
