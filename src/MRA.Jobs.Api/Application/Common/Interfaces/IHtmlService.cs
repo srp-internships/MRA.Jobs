@@ -5,9 +5,14 @@ namespace MRA.Jobs.Application.Common.Interfaces;
 
 public interface IHtmlService
 {
-    string GenerateApplyVacancyContent(string userName); 
-    string GenerateApplyVacancyContent_CreateApplication(string hostName, string applicationSlug, string vacancyTitle, string cV, UserProfileResponse userInfo );
+    string GenerateApplyVacancyContent(string userName);
+
+    string GenerateApplyVacancyContent_CreateApplication(string hostName, string applicationSlug, string vacancyTitle,
+        string cV, UserProfileResponse userInfo);
 
     string GenerateApplyVacancyContent_NoVacancy(string hostName, string applicationSlug,
         string cV, CreateApplicationCommand createApplicationCommand);
+
+    Task<bool> EmailApproved(UserProfileResponse applicant, string slug);
+    Task<bool> EmailRejected(UserProfileResponse applicant, string slug);
 }

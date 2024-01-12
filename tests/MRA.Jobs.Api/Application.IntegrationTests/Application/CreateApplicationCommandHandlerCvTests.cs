@@ -50,7 +50,7 @@ public class CreateApplicationCommandHandlerCvTests : CreateApplicationTestsBase
                 TaskResponses = null,
                 CV = null,
                 AppliedAt = DateTime.Now,
-                Status = ApplicationStatus.Expired,
+                Status = ApplicationStatus.Approved,
                 ApplicantUsername = null,
                 Vacancy = null,
                 VacancyId = noVacancy.Id,

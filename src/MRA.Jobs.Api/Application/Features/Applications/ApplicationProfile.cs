@@ -19,9 +19,11 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.ApplicantUsername));
 
         CreateMap<Domain.Entities.Application, ApplicationDetailsDto>()
+            .ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => (int)src.Status))
             .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses))
             .ForMember(dest => dest.TaskResponses, opt => opt.MapFrom(src => src.TaskResponses))
             .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History));
+      
         CreateMap<CreateApplicationCommand, Domain.Entities.Application>()
             .ForMember(dest => dest.VacancyResponses, opt => opt.MapFrom(src => src.VacancyResponses))
             .ForMember(dest => dest.CV, opt => opt.Ignore());

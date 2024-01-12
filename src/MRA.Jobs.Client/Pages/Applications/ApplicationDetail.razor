@@ -1,0 +1,190 @@
+﻿@page "/ApplicationDetail/{Slug}/{ApplicationUserName}"
+@page "/ApplicationDetail/{Slug}"
+@using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote
+@using MRA.Jobs.Application.Contracts.TimeLineDTO
+@using MRA.Identity.Application.Contract.Profile.Responses
+@using MRA.Jobs.Client.Services.Profile
+@using System.Net
+@using MRA.Jobs.Client.Identity
+@using MRA.Jobs.Client.Services.HttpClients
+
+@inject IApplicationService ApplicationService
+@inject JobsApiHttpClientService HttpClient
+@inject IUserProfileService UserProfileService
+
+<MudGrid>
+    <MudItem xs="12">
+        <MudCard>
+            <MudCardContent>
+                <MudText Typo="Typo.h6" Style="color: grey">
+                    <b>Cover letter</b>
+                </MudText>
+                @_application.CoverLetter
+
+                <MudList>
+                    @if (_application.VacancyResponses.Any())
+                    {
+                        <MudListSubheader>
+                            Questions
+                        </MudListSubheader>
+
+
+                        @foreach (var response in _application.VacancyResponses)
+                        {
+                            <MudListItem Icon="@Icons.Material.Filled.QuestionMark" IconColor="Color.Info" Text="@response.VacancyQuestion.Question">
+                            </MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.QuestionAnswer" IconColor="Color.Info">
+                                @response.Response
+                            </MudListItem>
+                        }
+                    }
+                </MudList>
+                <MudGrid>
+                    <MudItem xs="6">
+                        <MudText>Status: <b>@(((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString())</b></MudText>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudButton Variant="Variant.Filled" Color="Color.Surface" style="margin-bottom: 10px" Href="@_cvUrl">
+                            <MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>@ContentService["Dashboard:Appilcations:More:CVButton"]
+                        </MudButton>
+                    </MudItem>
+                </MudGrid>
+                <CascadingAuthenticationState>
+                    <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
+                        <Authorized>
+                            <MudSelect T="string" Label="Select status" AnchorOrigin="Origin.BottomCenter" @bind-Value="@SelectedStatus">
+                                @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                                {
+                                    <MudSelectItem Value="@status.ToString()"/>
+                                }
+                            </MudSelect>
+                            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ChangeStatus">Change status</MudButton>
+
+                        </Authorized>
+                    </AuthorizeView>
+                </CascadingAuthenticationState>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <CascadingAuthenticationState>
+        <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
+            <Authorized>
+                <MudItem xs="12" lg="6">
+
+                    <MudCard>
+                        <MudCardContent>
+                            <MudText Style="color: grey" Typo="Typo.h6">
+                                <b>Notes</b>
+                            </MudText>
+                            @if (_timelienes == null)
+                            {
+                                <div style="text-align: center;">
+                                    <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
+                                </div>
+                            }
+                            else
+                            {
+                                <div style="align-content: center; align-items: center;">
+                                    <MudTimeline>
+                                        @foreach (var item in _timelienes)
+                                        {
+                                            <MudTimelineItem Color="Color.Primary">
+                                                <ItemContent>
+                                                    <MudAlert>
+                                                        @* <MudText Color="Color.Info" Typo="Typo.h6" GutterBottom="true">Create At</MudText> *@
+                                                        <MudText Color="Color.Info" GutterBottom="true">@item.Time</MudText>
+                                                        <MudText>@item.Note</MudText>
+                                                    </MudAlert>
+                                                </ItemContent>
+                                            </MudTimelineItem>
+                                        }
+                                    </MudTimeline>
+                                </div>
+                            }
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+                <MudItem xs="12" lg="6">
+                    <MudCard>
+                        <EditForm Model="@_addNote" Context="__">
+                            <MudCardHeader>
+                                <MudText>Add Note</MudText>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <FluentValidationValidator/>
+                                <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="@_addNote.Note" Lines="5"
+                                              For="@(() => _addNote.Note)"/>
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnAddNoteAsync">
+                                    <MudText>Add</MudText>
+                                </MudButton>
+                            </MudCardActions>
+                        </EditForm>
+                    </MudCard>
+                </MudItem>
+            </Authorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
+</MudGrid>
+
+@code {
+
+    private AddNoteToApplicationCommand _addNote = new();
+    private string SelectedStatus { get; set; } = string.Empty;
+
+
+    [Parameter] public string Slug { get; set; }
+    [Parameter] public string ApplicationUserName { get; set; }
+    private string _cvUrl;
+
+    private UpdateApplicationStatus _applicationStatus;
+    private List<TimeLineDetailsDto> _timelienes;
+    private UserProfileResponse _applicant;
+    private ApplicationDetailsDto _application;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _applicant = await UserProfileService.Get(ApplicationUserName);
+        _application = await ApplicationService.GetApplicationDetails(Slug);
+        _cvUrl = $"{HttpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
+
+        var timeLineEvents = await ApplicationService.GetApplicationTimeLineEvents(Slug);
+        _timelienes = timeLineEvents == null ? new List<TimeLineDetailsDto>() : timeLineEvents.OrderBy(t => t.Time).ToList();
+
+        SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
+        StateHasChanged();
+    }
+
+    private async Task OnAddNoteAsync()
+    {
+        _addNote.Slug = Slug;
+        var response = await ApplicationService.AddNote(_addNote);
+        _timelienes.Add(response);
+        _addNote = new AddNoteToApplicationCommand();
+        StateHasChanged();
+    }
+
+    private async Task ChangeStatus()
+    {
+        if (Enum.TryParse(SelectedStatus, out ApplicationStatusDto.ApplicationStatus selectedEnumStatus))
+        {
+            _applicationStatus = new UpdateApplicationStatus
+            {
+                ApplicantUserName = _applicant.UserName,
+                Slug = Slug,
+                StatusId = (int)selectedEnumStatus
+            };
+            var response = await ApplicationService.UpdateStatus(_applicationStatus);
+            if (response)
+            {
+                Snackbar.Add("Status updated successfully.", Severity.Success);
+            }
+        }
+        else
+        {
+            Snackbar.Add("Invalid status selected.", Severity.Error);
+        }
+    }
+
+}

@@ -32,10 +32,11 @@ public class EmailTest : BaseTest
         request.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == request.PhoneNumber)).Code;
 
         var response = await _client.PostAsJsonAsync("api/Auth/register", request);
-        var splitted = SendEmailData.Body.Split("'")[1].Split("token=")[1];
+        var splitted = SendEmailData.Body.Split("token=")[1].Split("&userId=");
+        var token = splitted[0];
+        var userId = splitted.Length > 1 ? splitted[1].Split("'>Ссылка</a>")[0] : string.Empty;
 
-
-        var responseEmail = await _client.GetAsync($"api/Auth/verify?token={splitted}");
+        var responseEmail = await _client.GetAsync($"api/Auth/verify?token={token}&userId={userId}");
 
         var stringres = responseEmail.Content.ReadAsStringAsync();
 
