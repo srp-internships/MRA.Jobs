@@ -17,13 +17,14 @@ public class EmailVerification : IEmailVerification
     private readonly IConfiguration _configurations;
 
 
-    public EmailVerification(UserManager<ApplicationUser> userManager, IEmailService emailService, IConfiguration configurations)
+    public EmailVerification(UserManager<ApplicationUser> userManager, IEmailService emailService,
+        IConfiguration configurations)
     {
         _userManager = userManager;
         _emailService = emailService;
         _configurations = configurations;
     }
-    
+
     public async Task<bool> SendVerificationEmailAsync(ApplicationUser user)
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -49,6 +50,49 @@ public class EmailVerification : IEmailVerification
             </tr>
         </table>
     </center>
+<center>
+  <table
+    class=""body-wrap""
+    style=""
+      text-align: center;
+      width: 86%;
+      font-family: arial, sans-serif;
+      border-spacing: 4px 20px;
+    ""
+  >
+    <tr>
+      <img
+        src=""https://jobs.srp.tj/images/srp/srp_icon.png""
+        style=""width: 25%""
+      />
+      <td>
+        <center>
+          <table bgcolor=""#FFFFFF"" width=""80%"" border=""0"">
+            <tbody>
+              <tr style=""font-size: 14px"">
+                <td>
+                    Здравствуйте!
+                </td>
+                <td>
+                    Благодарим вас за регистрацию на нашем сайте. Мы рады, что вы присоединились к нашему сообществу.
+                </td>
+                <td>
+                    Для завершения регистрации и активации вашей учетной записи вам необходимо подтвердить ваш адрес электронной почты. Для этого просто перейдите по ссылке ниже:
+                </td>
+                <td>
+<a href='{_configurations["MraIdentityClient-HostName"]}/verifyEmail?token={WebUtility.UrlEncode(token)}&userId={user.Id}'>Подтвердить электронную почту</a>                   
+                </td>
+                <td>
+                    Если вы не регистрировались на нашем сайте, пожалуйста, проигнорируйте это письмо.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </center>
+      </td>
+    </tr>
+  </table>
+</center>
 ";
         var emailSubject = "Email Verification";
         return await _emailService.SendEmailAsync(new[] { user.Email }, emailBody, emailSubject);
