@@ -16,9 +16,7 @@ public class CreateInternshipCommandHandlerTests : BaseTestFixture
             Mapper,
             _dateTimeMock.Object,
             _currentUserServiceMock.Object,
-            _slugGenerator.Object,
-            _emailServiceMock.Object,
-            _htmlServiceMock.Object);
+            _slugGenerator.Object);
     }
 
     [Test]

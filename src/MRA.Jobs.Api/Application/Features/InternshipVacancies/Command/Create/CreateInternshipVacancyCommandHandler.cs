@@ -11,20 +11,15 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
     private readonly ISlugGeneratorService _slugService;
-    private readonly IEmailService _emailService;
-    private readonly IHtmlService _htmlService;
 
     public CreateInternshipVacancyCommandHandler(IApplicationDbContext context, IMapper mapper, IDateTime dateTime,
-        ICurrentUserService currentUserService, ISlugGeneratorService slugService, IEmailService emailService,
-        IHtmlService htmlService)
+        ICurrentUserService currentUserService, ISlugGeneratorService slugService)
     {
         _context = context;
         _mapper = mapper;
         _dateTime = dateTime;
         _currentUserService = currentUserService;
         _slugService = slugService;
-        _emailService = emailService;
-        _htmlService = htmlService;
     }
 
     public async Task<string> Handle(CreateInternshipVacancyCommand request, CancellationToken cancellationToken)
@@ -52,9 +47,6 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-
-        await _emailService.SendEmailAsync(new[] { internship.CreatedByEmail },
-            _htmlService.GenerateApplyVacancyContent(_currentUserService.GetUserName()), "New internship apply");
 
         return internship.Slug;
     }
