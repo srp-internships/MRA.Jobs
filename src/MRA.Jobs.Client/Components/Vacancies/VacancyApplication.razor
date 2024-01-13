@@ -261,7 +261,7 @@ else
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardActions>
-                    @if (temp)
+                    @if (_isUploadCvEnabled)
                     {
                         <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
                             <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
@@ -313,7 +313,7 @@ else
 
 @code {
     private bool _isUploadCvMode = true;
-    private bool temp = true;
+    private bool _isUploadCvEnabled = true;
 
     [Parameter] public VacancyApplicationResponse Vacancy { get; set; }
 
@@ -347,8 +347,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        temp = await FeatureManager.IsEnabledAsync(FeatureFlags.SendingCV);
-        _isUploadCvMode = temp;
+        _isUploadCvEnabled = await FeatureManager.IsEnabledAsync(FeatureFlags.SendingCV);
+        _isUploadCvMode = _isUploadCvEnabled;
     }
 
     private async Task UpdateTaskResponse(Guid taskId)

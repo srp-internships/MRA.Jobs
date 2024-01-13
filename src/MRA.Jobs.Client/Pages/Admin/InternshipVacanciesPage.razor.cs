@@ -304,6 +304,7 @@ public partial class InternshipVacanciesPage
             }
 
             await LoadData();
+            await   _table.ReloadServerData();
             Clear();
         }
         catch (Exception)
@@ -336,6 +337,7 @@ public partial class InternshipVacanciesPage
             }
 
             await LoadData();
+            await   _table.ReloadServerData();
             Clear();
         }
         catch (Exception ex)
@@ -364,15 +366,6 @@ public partial class InternshipVacanciesPage
         });
         _newTitle = "";
         _newDescription = "";
-    }
-
-    private async Task OnKeyDown(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter")
-        {
-            await Task.Delay(1);
-            AddTask();
-        }
     }
 
     private void HandleCancel()
