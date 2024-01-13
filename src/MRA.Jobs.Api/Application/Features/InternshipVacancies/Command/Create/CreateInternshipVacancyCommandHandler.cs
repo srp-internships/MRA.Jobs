@@ -39,7 +39,6 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         internship.LastModifiedAt = internship.CreatedAt = _dateTime.Now;
         internship.LastModifiedBy = internship.CreatedBy = _currentUserService.GetUserId() ?? Guid.Empty;
 
-
         await _context.Internships.AddAsync(internship, cancellationToken);
 
         VacancyTimelineEvent timelineEvent = new()

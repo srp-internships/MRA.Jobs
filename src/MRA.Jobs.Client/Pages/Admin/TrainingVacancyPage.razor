@@ -202,9 +202,9 @@ else
                         @if (_panelOpenState)
                         {
                             <br/>
-                            <MudTextField @bind-Value="_newTitle" OnKeyDown="@OnKeyDown" Label="Title"
+                            <MudTextField @bind-Value="_newTitle" Label="Title"
                                           Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                            <MudTextField Lines="5" @bind-Value="_newDescription" OnKeyDown="@OnKeyDown" Label="Description"
+                            <MudTextField Lines="5" @bind-Value="_newDescription" Label="Description"
                                           Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
                             <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Template</MudText>
                             <StandaloneCodeEditor @ref="_editorTemplate" Id="sample-code-editor-123" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu"/>
@@ -250,14 +250,14 @@ else
             <MudItem xs="12" lg="12">
                 <MudCardActions>
                     <div hidden="@_isInserting">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit">
+                        <MudButton  ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit">
                             <MudText>
                                 Create
                             </MudText>
                         </MudButton>
                     </div>
                     <div hidden="@_isUpdating">
-                        <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate">
+                        <MudButton  ButtonType="ButtonType.Submit"Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate">
                             <MudText>
                                 Save changes
                             </MudText>
