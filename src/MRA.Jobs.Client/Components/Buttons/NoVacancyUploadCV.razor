@@ -10,7 +10,7 @@
 @inject INoVacancyService NoVacancyService
 @inject ISnackbar Snackbar
 @inject IFeatureManager FeatureManager
-@if (_isSendingCVEnabled)
+@if (_isNoVacancyApplyButtonEnabled)
 {
 	<div style="position: fixed; bottom: 76px; right: 16px; z-index: 999;">
 		@if (_loading)
@@ -113,8 +113,8 @@
 		Clear();
 	}
 
-	private bool _isUploadCvMode = true;
-	private bool _isSendingCVEnabled;
+	// private bool _isUploadCvMode = true;
+	private bool _isNoVacancyApplyButtonEnabled;
 
 	private IBrowserFile _cv;
 	private bool _processing = false;
@@ -127,7 +127,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		await Load();
-		_isSendingCVEnabled = await FeatureManager.IsEnabledAsync(FeatureFlags.SendingCV);
+		_isNoVacancyApplyButtonEnabled = await FeatureManager.IsEnabledAsync(FeatureFlags.NoVacancyApplyButton);
 	}
 
 	private async Task Load()
@@ -158,12 +158,12 @@
 
 	private async Task CreateApplication()
 	{
-		if (_isUploadCvMode && _cv == null)
+		if (_cv == null)
 		{
 			Snackbar.Add(@ContentService["SendCV:IfFileNull"], Severity.Error);
 			return;
 		}
-		if (string.IsNullOrWhiteSpace(_application.CoverLetter) || (_cv == null && _isUploadCvMode))
+		if (string.IsNullOrWhiteSpace(_application.CoverLetter) || (_cv == null))
 		{
 			return; // Do not proceed with submission if any required fields are empty.
 		}
