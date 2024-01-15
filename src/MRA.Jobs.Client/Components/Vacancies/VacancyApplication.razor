@@ -207,7 +207,7 @@ else
                                 @question.Question
                             </MudText>
 
-                            @if (!question.IsOptional)
+                            @if (question.IsOptional)
                             {
                                 <MudTextField Variant="Variant.Outlined" T="string" Lines="5" @bind-Value="@QuestionResponses[question.Question]" />
                             }
