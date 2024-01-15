@@ -8,7 +8,15 @@
 @inject AuthenticationStateProvider Provider
 @inject IApplicationService ApplicationService
 @inject IDateTimeConvertToStringService DateTimeConvert
-@inject IConfiguration configuration
+@inject IConfiguration Configuration
+
+<style>
+        p.mud-typography.mud-typography-body1 p img {
+            width: 100%;
+            height: auto;
+        }
+</style>
+
 @if (vacancyDetails is null || vacancy == null)
 {
     if (_showLoader)
@@ -220,7 +228,7 @@ else
                                         </MudText>
                                     </MudCardHeader>
                                     <MudCardActions>
-                                        <MudButton Variant="Variant.Filled" Href=@($"{configuration["IdentityClient"]}/registration") Color="Color.Primary" FullWidth="true">
+                                        <MudButton Variant="Variant.Filled" Href=@($"{Configuration["IdentityClient"]}/registration") Color="Color.Primary" FullWidth="true">
                                             <MudText>
                                                 <b>@ContentService["VacancyDetails:Sign Up"]</b>
                                             </MudText>
@@ -228,7 +236,7 @@ else
                                     </MudCardActions>
                                     <MudText Typo="Typo.body2" Style="padding:0 10px 10px 10px">
                                         @ContentService["VacancyDetails:Already have an account?"]
-                                        <MudLink Typo="Typo.body2" Href=@($"{configuration["IdentityClient"]}/login") Color="Color.Primary">
+                                        <MudLink Typo="Typo.body2" Href=@($"{Configuration["IdentityClient"]}/login") Color="Color.Primary">
                                             <b>@ContentService["VacancyDetails:Sign In"]</b>
                                         </MudLink>
                                     </MudText>
