@@ -1,0 +1,23 @@
+﻿<MudGrid Style="margin-top: 10%">
+    <MudItem xs="12">
+        <MudText Style="text-align: center" Typo="Typo.h3">
+            <b>
+                <span style="color: #129fd7;">@ContentService["Home:Client"]</span> @ContentService["Home:Partner"]
+            </b>
+        </MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudCarousel Class="mud-width-full" Style="height:450px;" ShowArrows="@true" ShowBullets="@true"
+                         AutoCycle="@true" TData="object">
+                <ClientsCarouselItem/>
+            </MudCarousel>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <MudCarousel Class="mud-width-full" Style="height:550px;" ShowArrows="@true" ShowBullets="@true"
+                          AutoCycle="@true" TData="object">
+                <ClientsCarouselItem/>
+            </MudCarousel>
+        </MudHidden>
+    </MudItem>
+</MudGrid>

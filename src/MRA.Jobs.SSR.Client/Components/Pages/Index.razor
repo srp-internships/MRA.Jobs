@@ -1,0 +1,120 @@
+﻿@page "/"
+@using Blazored.LocalStorage
+@using MRA.Identity.Application.Contract.User.Responses
+@using MRA.Jobs.Client.Identity
+@using Microsoft.AspNetCore.WebUtilities
+@using MRA.Jobs.SSR.Client.Components.ComponentsPages.Home
+@using MRA.Jobs.SSR.Client.Components.ComponentsPages.Buttons
+@inject ILocalStorageService cookieUtil
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@rendermode InteractiveServer
+
+<MudGrid Style="margin-top: 5%; margin-bottom: 10%">
+    <MudItem xs="12" md="6" Style="padding: 10% 10% 0% 10%;">
+        <MudText Typo="Typo.h2">
+            <b>
+                @ContentService["Home:Hero_Title_1"]
+            </b>
+        </MudText>
+        <MudText Typo="Typo.h2" Color="Color.Primary">
+            <b>
+                @ContentService["Home:Hero_Title_2"]
+            </b>
+        </MudText>
+        <MudText Typo="Typo.h6">
+            @ContentService["Home:Hero_Content"]
+        </MudText>
+    </MudItem>
+    <MudItem xs="12" md="6" Style="padding: 2%">
+        <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="/images/team/team1.jpeg" Alt="" Elevation="25"
+                  Class="rounded-tr-md rounded-tl-xl rounded-br-xl rounded-bl-md mud-elevation-4"/>
+    </MudItem>
+</MudGrid>
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+    <MudGrid>
+        <MudItem xs="12" md="6" Style="padding: 2%">
+            <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="//www.silkroadprofessionals.com/wp-content/uploads/2022/03/slider2-min.jpeg"
+                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4"/>
+        </MudItem>
+        <MudItem xs="12" md="6" Style="padding:10%">
+            <MudText Typo="Typo.h2">
+                <b>
+					@ContentService["Home:BuildAmazing"] <span style="color: var(--mud-palette-primary)">@ContentService["Home:Apps"]</span>
+                </b>
+            </MudText>
+            <MudText Typo="Typo.h6">
+				@ContentService["Home:BuildAmazing_Content."]
+            </MudText>
+        </MudItem>
+    </MudGrid>
+</MudHidden>
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+    <MudGrid>
+        <MudItem xs="12" md="6" Style="padding: 10% 10% 0% 10%;">
+            <MudText Typo="Typo.h2">
+                <b>
+					@ContentService["Home:BuildAmazing"] <span style="color: var(--mud-palette-primary)">@ContentService["Home:Apps"]</span>
+                </b>
+            </MudText>
+            <MudText Typo="Typo.h6">
+				@ContentService["Home:BuildAmazing_Content."]
+            </MudText>
+        </MudItem>
+        <MudItem xs="12" md="6" Style="padding: 2%">
+            <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="//www.silkroadprofessionals.com/wp-content/uploads/2022/03/slider2-min.jpeg"
+                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4"/>
+        </MudItem>
+    </MudGrid>
+</MudHidden>
+
+<HowWeWork/>
+<WhatWeDo/>
+<About/>
+<Principles/>
+<MeetTeam/>
+<Clients/>
+<Contact/>
+<NoVacancyUploadCV @rendermode="InteractiveServer"/>
+
+@code {
+
+    [Inject]
+    private AuthenticationStateProvider authStateProvider { get; set; }
+
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool fr)
+    {
+        JwtTokenResponse token = new();
+        var currentUri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("atoken", out var atoken))
+        {
+            token.AccessToken = atoken;
+        }
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("rtoken", out var rtoken))
+        {
+            token.RefreshToken = rtoken;
+        }
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("vdate", out var vdate))
+        {
+            DateTime oDate = Convert.ToDateTime(vdate);
+            token.AccessTokenValidateTo = oDate;
+            await cookieUtil.SetItemAsync("authToken", token);
+            await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            navigationManager.NavigateTo("/");
+            StateHasChanged();
+        }
+
+        var state = await authStateProvider.GetAuthenticationStateAsync();
+        if (state.User.IsInRole(ApplicationClaimValues.Administrator) || state.User.IsInRole(ApplicationClaimValues.SuperAdmin))
+        {
+            navigationManager.NavigateTo("/userManager");
+        }
+        else if (state.User.IsInRole(ApplicationClaimValues.Reviewer))
+        {
+            navigationManager.NavigateTo("/dashboard/applications");
+        }
+    }
+
+}

@@ -26,12 +26,12 @@ using MRA.Jobs.Client.Services.UserPreferences;
 using MRA.Jobs.Client.Services.HttpClients;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.Services.AddMudServices();
 
 builder.Services.AddAltairCACookieService(options => { options.DefaultExpire = TimeSpan.Zero; });
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+builder.Services.AddMudServices();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddValidatorsFromAssembly(typeof(RemoveUserSkillCommand).Assembly);
 

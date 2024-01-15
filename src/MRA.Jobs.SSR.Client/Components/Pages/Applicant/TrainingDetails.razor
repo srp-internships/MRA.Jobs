@@ -1,0 +1,48 @@
+﻿@page "/trainings/{Slug}"
+@using MRA.Jobs.Application.Contracts.VacancyClient;
+@inject ITrainingService _trainingService
+
+@if (serverError)
+{
+	<ServerErrorComponent />
+}
+else
+{
+	<VacancyDetails Slug="@Slug" vacancyDetails="@details" vacancy="trainings" />
+}
+
+@code {
+	private bool serverError;
+
+	[Parameter]
+	public string Slug { get; set; }
+	private VacancyDetailsResponse details;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		await base.OnInitializedAsync();
+		try
+		{
+
+			var response = await _trainingService.GetBySlug(Slug);
+			if (response is not null)
+			{
+				details = new VacancyDetailsResponse
+					{
+						Title = response.Title,
+						Description = response.Description,
+						Duration = response.Duration,
+						EndDate = response.EndDate,
+						PublishDate = response.PublishDate,
+						Fees = response.Fees
+					};
+			}
+		}
+		catch (Exception)
+		{
+			serverError = true;
+			StateHasChanged();
+		}
+	}
+}

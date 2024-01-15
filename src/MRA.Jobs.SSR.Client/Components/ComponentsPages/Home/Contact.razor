@@ -1,0 +1,184 @@
+﻿<MudGrid>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h4">
+            <b>
+                @ContentService["Home:Contact"]
+            </b>
+        </MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <MudGrid>
+            <MudItem xs="12" sm="6" md="3">
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudCard Class="rounded-lg mud-elevation-4">
+                            <MudCardContent>
+                                <div class="d-flex flex-grow-1">
+                                    <div class="flex-none d-flex ">
+                                        <MudIcon Icon="@Icons.Material.Filled.Place" Size="Size.Large"/>
+                                    </div>
+                                    <div class="flex-initial d-flex ">
+                                        <MudText Typo="Typo.h5" Style="padding-top: 3px;">
+                                            <b>@ContentService["Home:Address"]</b>
+                                        </MudText>
+                                    </div>
+                                </div>
+                                <br/>
+                                <MudText>@ContentService["Home:Address_p1"]</MudText>
+                                <MudText>@ContentService["Home:Address_p2"]</MudText>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudCard Class="rounded-lg mud-elevation-4">
+                            <MudCardContent>
+                                <div class="d-flex flex-grow-1">
+                                    <div class="flex-none d-flex ">
+                                        <MudIcon Icon="@Icons.Material.Filled.AccessTime" Size="Size.Large"/>
+                                    </div>
+                                    <div class="flex-initial d-flex ">
+                                        <MudText Typo="Typo.h5" Style="padding-top: 3px;">
+                                            <b>@ContentService["Home:WorkingHours"]</b>
+                                        </MudText>
+                                    </div>
+                                </div>
+<br/>
+                                <MudText>@ContentService["Home:WorkingHours1"]</MudText>
+                                <MudText>@ContentService["Home:WorkingHours2"]</MudText>
+                                <MudText>@ContentService["Home:WorkingHours3"]</MudText>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <a Href="mailto:@ContentService["Home:EmailLink"]" Target="_blank">
+                            <MudCard Class="rounded-lg mud-elevation-4">
+                                <MudCardContent>
+                                    <div class="d-flex flex-grow-1">
+                                        <div class="flex-none d-flex ">
+                                            <MudIcon Icon="@Icons.Material.Filled.Mail" Size="Size.Large"/>
+                                        </div>
+                                        <div class="flex-initial d-flex ">
+                                            <MudText Typo="Typo.h5" Style="padding-top: 3px;">
+                                                <b> @ContentService["Home:Email"]</b>
+                                            </MudText>
+                                        </div>
+                                    </div>
+                                    <MudText> @ContentService["Home:EmailLink"]</MudText>
+                                </MudCardContent>
+                            </MudCard>
+                        </a>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="3">
+                <MudGrid>
+                    <MudItem xs="12">
+                        <a href="https://www.facebook.com/SilkRoadProfessionals/" target="_blank">
+                            <MudCard Class="rounded-lg mud-elevation-4">
+                                <MudCardContent>
+                                    <div class="d-flex flex-grow-1">
+                                        <div class="flex-none d-flex ">
+                                            <MudIcon Icon="@Icons.Custom.Brands.Facebook" Size="Size.Large"/>
+                                        </div>
+                                        <div class="flex-initial d-flex ">
+                                            <MudText Typo="Typo.h6" Style="padding-top: 3px;">
+                                                <b>Facebook</b>
+                                            </MudText>
+                                        </div>
+                                    </div>
+                                </MudCardContent>
+                            </MudCard>
+                        </a>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <a href="https://t.me/niyozovdilshod" target="_blank">
+                            <MudCard Class="rounded-lg mud-elevation-4">
+                                <MudCardContent>
+                                    <div class="d-flex flex-grow-1">
+                                        <div class="flex-none d-flex ">
+                                            <MudIcon Icon="@Icons.Custom.Brands.Telegram" Size="Size.Large"/>
+                                        </div>
+                                        <div class="flex-initial d-flex ">
+                                            <MudText Typo="Typo.h6" Style="padding-top: 3px;">
+                                                <b>Telegram</b>
+                                            </MudText>
+                                        </div>
+                                    </div>
+                                </MudCardContent>
+                            </MudCard>
+                        </a>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <a href="https://www.instagram.com/silk_road_professionals/" target="_blank">
+                            <MudCard Class="rounded-lg mud-elevation-4">
+                                <MudCardContent>
+                                    <div class="d-flex flex-grow-1">
+                                        <div class="flex-none d-flex ">
+                                            <MudIcon Icon="@Icons.Custom.Brands.Instagram" Size="Size.Large"/>
+                                        </div>
+                                        <div class="flex-initial d-flex ">
+                                            <MudText Typo="Typo.h6" Style="padding-top: 3px;">
+                                                <b>Instagram</b>
+                                            </MudText>
+                                        </div>
+                                    </div>
+                                </MudCardContent>
+                            </MudCard>
+                        </a>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <a href="https://www.linkedin.com/company/silk-road-professionals-tajikistan/" target="_blank">
+                            <MudCard Class="rounded-lg mud-elevation-4">
+                                <MudCardContent>
+                                    <div class="d-flex flex-grow-1">
+                                        <div class="flex-none d-flex ">
+                                            <MudIcon Icon="@Icons.Custom.Brands.LinkedIn" Size="Size.Large"/>
+                                        </div>
+                                        <div class="flex-initial d-flex ">
+                                            <MudText Typo="Typo.h6" Style="padding-top: 3px;">
+                                                <b>LinkedIn</b>
+                                            </MudText>
+                                        </div>
+                                    </div>
+                                </MudCardContent>
+                            </MudCard>
+                        </a>
+                    </MudItem>
+                    <MudItem xs="12">
+                        @{
+                            var youtubeAccount = "@silkroadprofessionals";
+                            <a href="https://www.youtube.com/@youtubeAccount" target="_blank">
+                                <MudCard Class="rounded-lg mud-elevation-4">
+                                    <MudCardContent>
+                                        <div class="d-flex flex-grow-1">
+                                            <div class="flex-none d-flex ">
+                                                <MudIcon Icon="@Icons.Custom.Brands.YouTube" Size="Size.Large"/>
+                                            </div>
+                                            <div class="flex-initial d-flex ">
+                                                <MudText Typo="Typo.h6" Style="padding-top: 3px;">
+                                                    <b>YouTube</b>
+                                                </MudText>
+                                            </div>
+                                        </div>
+                                    </MudCardContent>
+                                </MudCard>
+                            </a>
+                        }
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+            <MudItem xs="12" sm="12" md="6">
+                <MudCard Class="rounded-lg mud-elevation-4 p-0" Style="height: 435px;">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d446.4063398236372!2d69.51875677094101!3d40.21502901489877!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38b1afd1e0b7121b%3A0xb4e73f646b8e290!2sSilk%20Road%20Professionals%20LLC!5e0!3m2!1sru!2s!4v1692352594874!5m2!1sru!2s"
+                            width="600" height="450" style="border:0; border-radius: 2%;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+</MudGrid>
+
+
+@code {
+    
+}

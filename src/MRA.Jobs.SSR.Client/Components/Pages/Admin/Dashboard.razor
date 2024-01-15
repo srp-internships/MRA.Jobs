@@ -1,0 +1,89 @@
+﻿@using MRA.Jobs.Client.Identity
+@using MRA.Jobs.SSR.Client.Services
+@using Blazored.LocalStorage
+@inherits LayoutComponentBase
+@inject LayoutService LayoutService
+
+<MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+<ToolBar/>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <br/>
+    <br/>
+    <CascadingAuthenticationState>
+        <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
+            <Authorized>
+                <MudGrid>
+                    <MudItem xs="12" Style="padding-top: 50px;">
+                        @Body
+                    </MudItem>
+                </MudGrid>
+            </Authorized>
+            <NotAuthorized>
+                <NotFound/>
+            </NotAuthorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
+</MudContainer>
+
+@code {
+
+    [Inject]
+    private NavigationManager _navigationManager { get; set; }
+
+    [Inject]
+    private ILocalStorageService CookieUtil { get; set; }
+
+    [Inject]
+    private AuthenticationStateProvider _authStateProvider { get; set; }
+
+    public string Hello;
+
+    private async Task LogOut()
+    {
+        await CookieUtil.RemoveItemAsync("authToken");
+        await _authStateProvider.GetAuthenticationStateAsync();
+        _navigationManager.NavigateTo("/");
+    }
+
+
+    private MudThemeProvider _mudThemeProvider;
+
+    protected override void OnInitialized()
+    {
+        LayoutService.MajorUpdateOccured += UpdateState;
+    }
+
+    private void UpdateState(object sender, EventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        LayoutService.MajorUpdateOccured -= UpdateState;
+    }
+
+    private async Task ApplyUserPreferences()
+    {
+        var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
+        await LayoutService.ApplyUserPreferences(defaultDarkMode);
+    }
+
+    private async Task OnSystemPreferenceChanged(bool newValue)
+    {
+        await LayoutService.OnSystemPreferenceChanged(newValue);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ApplyUserPreferences();
+            await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
+            StateHasChanged();
+        }
+    }
+
+}

@@ -1,0 +1,117 @@
+﻿@page "/dashboard/categories"
+@layout Dashboard
+@using System.Net.Mime
+@using Microsoft.AspNetCore.Components.Web
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+@using MRA.Jobs.SSR.Client.Services.CategoryServices
+@using MRA.Jobs.SSR.Client.Components.ComponentsPages.Dialogs
+@using MudBlazor
+@inject ICategoryService CService
+@inject IDialogService DialogService
+
+<MudText Typo="Typo.h4"><b>Category</b></MudText>
+@if (serverError)
+{
+	<ServerErrorComponent />
+}
+else
+{
+	@if (_category == null)
+	{
+		<div style="text-align: center;">
+			<MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+		</div>
+	}
+	else
+	{
+		<MudCard Class="rounded-lg mud-elevation-4">
+			<MudCardHeader>
+				<CardHeaderContent>
+					<MudTextField OnKeyDown="@OnKeyDown" @bind-Value="newCategory" OnAdornmentClick="AddCategory"
+								  Label="New Category" Variant="Variant.Outlined" Adornment="Adornment.End"
+								  AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
+				</CardHeaderContent>
+			</MudCardHeader>
+			<MudCardContent>
+				<MudChipSet AllClosable="true" OnClose="Closed">
+					@foreach (var value in _category)
+					{
+						<MudChip Text="@value.Name"></MudChip>
+					}
+				</MudChipSet>
+			</MudCardContent>
+		</MudCard>
+	}
+}
+
+@code {
+	private bool serverError = false;
+	private List<CategoryResponse> _category;
+	private string newCategory { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		try
+		{
+			var response = await CService.GetAllCategory();
+			if (response.Success)
+			{
+				_category = response.Result.Items;
+			}
+			
+		}
+		catch (Exception)
+		{
+			serverError = true;
+			StateHasChanged();
+		}
+	}
+
+	public async Task Closed(MudChip chip)
+	{
+		var cat = _category.FirstOrDefault(c => c.Name == chip.Text);
+		var parameters = new DialogParameters<DialogMudBlazor>();
+		parameters.Add(x => x.ContentText, "Do you really want to delete these record? Make sure there is no vacancy with this category!");
+		parameters.Add(x => x.ButtonText, "Delete");
+		parameters.Add(x => x.Color, Color.Error);
+
+		var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+		var dialog = DialogService.Show<DialogMudBlazor>("Delete", parameters, options);
+		var result = await dialog.Result;
+
+		if (!result.Canceled)
+		{
+			_category.Remove(cat);
+			await CService.OnDeleteClick(cat.Slug);
+		}
+	}
+
+    public void AddCategory()
+    {
+        newCategory = newCategory.Trim();
+        if (newCategory==string.Empty) return;
+
+        CService.creatingEntity = new Application.Contracts.VacancyCategories.Commands.CreateVacancyCategory.CreateVacancyCategoryCommand
+        {
+            Name = newCategory
+        };
+        _category.Add(new CategoryResponse
+        {
+            Name = newCategory
+        });
+        CService.OnSaveCreateClick();
+        newCategory = "";
+    }
+
+	private async Task OnKeyDown(KeyboardEventArgs e)
+	{
+		if (e.Code == "Enter")
+		{
+			await Task.Delay(1);
+			AddCategory();
+		}
+	}
+
+}

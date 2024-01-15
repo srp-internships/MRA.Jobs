@@ -1,0 +1,7 @@
+﻿body {
+}
+
+.mdc-table td:first-child {
+    border-left: none;
+    width: 100%;
+}

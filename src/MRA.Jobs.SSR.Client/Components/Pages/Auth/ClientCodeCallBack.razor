@@ -1,0 +1,39 @@
+﻿@page "/ClientCodeCallBack"
+@using System.Web
+@using MRA.Identity.Application.Contract.User.Commands.GoogleAuth
+@using System.Net
+@using Blazored.LocalStorage
+@using Microsoft.IdentityModel.Tokens
+@using MRA.Identity.Application.Contract.User.Responses
+@inject NavigationManager NavigationManager
+@inject IdentityHttpClient Client
+@inject ILocalStorageService CookieUtil
+@inject ISnackbar Snackbar
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        var http = HttpUtility.ParseQueryString(WebUtility.UrlDecode(NavigationManager.Uri.Split('?')[1]));
+
+        var code = http["code"];
+        if (code.IsNullOrEmpty())
+        {
+            Snackbar.Add(ContentService["GoogleAuthFailed"], Severity.Error);
+            StateHasChanged();
+            return;
+        }
+        var response = await Client.PostAsJsonAsync("auth/googleCode", new GoogleAuthCommand { Code = code, Application = "MraJobs", Role = "Applicant", });
+
+        if (response.IsSuccessStatusCode)
+        {
+            await CookieUtil.SetItemAsync("authToken", await response.Content.ReadFromJsonAsync<JwtTokenResponse>());
+            NavigationManager.NavigateTo("");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("error page");
+        }
+    }
+
+}

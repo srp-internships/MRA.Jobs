@@ -1,0 +1,172 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+
+    </PropertyGroup>
+
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="wwwroot\bootstrap\bootstrap.min.css"/>
+        <_ContentIncludedByDefault Remove="wwwroot\bootstrap\bootstrap.min.css.map"/>
+        <_ContentIncludedByDefault Remove="Pages\Admin\CategoryPage.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Admin\Dashboard.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Admin\Dialogs\AddQuestionForVacancyDialog.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Admin\InternshipVacanciesPage.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Admin\TrainingVacancyPage.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Admin\UserManager.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Admin\UserPage.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Admin\UserRoles.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Admin\VacancyPage.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applicant\InternshipApplication.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applicant\InternshipDetails.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applicant\Internships.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applicant\JobApplication.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applicant\JobDetails.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applicant\Jobs.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applicant\TrainingApplication.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applicant\TrainingDetails.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applicant\Trainings.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applications\ApplicantApplications.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applications\ApplicationDetail.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Applications\Applications.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Auth\ClientCodeCallBack.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\ContactPage.razor"/>
+        <_ContentIncludedByDefault Remove="Pages\Index.razor"/>
+        <_ContentIncludedByDefault Remove="Shared\EmptyLayout.razor"/>
+        <_ContentIncludedByDefault Remove="Shared\MyDialog.razor"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="Components\ComponentsPages\Admin\ToolBar.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Auth\ExternalLoginButton.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Auth\ExternalLoginCard.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Buttons\NoVacancyUploadCV.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Buttons\ToolBarSettingsButtons.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Buttons\UserButton.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Client\Category.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Client\Header.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Dialogs\DialogMudBlazor.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Extra\NotFound.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Home\About.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Home\Clients.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Home\ClientsCarouselItem.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Home\Contact.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Home\HowWeWork.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Home\MeetTeam.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Home\Principles.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Home\WhatWeDo.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\ServerErrorComponent.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Vacancies\VacanciesList.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Vacancies\VacancyApplication.razor"/>
+        <AdditionalFiles Include="Components\ComponentsPages\Vacancies\VacancyDetails.razor"/>
+        <AdditionalFiles Include="Components\Shared\EmptyLayout.razor"/>
+        <AdditionalFiles Include="Components\Shared\MyDialog.razor"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="Components\Components\Client\Header.razor">
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Blazored.FluentValidation" Version="2.1.0"/>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.4.0"/>
+        <PackageReference Include="Blazored.TextEditor" Version="1.1.0"/>
+        <PackageReference Include="BlazorMonaco" Version="3.1.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1"/>
+        <PackageReference Include="Microsoft.FeatureManagement" Version="3.1.1"/>
+        <PackageReference Include="MudBlazor" Version="6.12.0"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Resources\Languages\English.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>English.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Languages\Russian.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Russian.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Languages\Tajik.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Tajik.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Languages\English.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>English.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Languages\Russian.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Russian.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Languages\Tajik.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Tajik.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Components\Pages\Admin\TrainingVacancyPage.cs">
+            <DependentUpon>TrainingVacancyPage.razor</DependentUpon>
+        </Compile>
+        <Compile Update="Components\Pages\Admin\VacancyPage.cs">
+            <DependentUpon>VacancyPage.razor</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Languages\English.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>English.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Languages\Russian.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Russian.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Languages\Tajik.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Tajik.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Languages\English.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>English.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Languages\Russian.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Russian.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Languages\Tajik.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Tajik.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Languages\English.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>English.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Languages\Russian.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>Russian.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Languages\Tajik.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>Tajik.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MRA.Jobs.Api\Application.Contracts\MRA.Jobs.Application.Contracts.csproj"/>
+        <ProjectReference Include="..\MRA.Jobs.Identity\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj"/>
+    </ItemGroup>
+
+</Project>

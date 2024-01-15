@@ -1,0 +1,39 @@
+﻿@using MRA.Jobs.Application.Contracts.VacancyCategories.Queries.GetVacancyCategorySlugId
+@using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+
+@inject ICategoryService CategoryService
+
+
+<!--- Category -->
+<section id="category">
+	<div class="w-100">
+		<h4 class="mb-2 text-dark">Category</h4>
+		@if (_categoryResponses is null)
+		{
+			<div></div>
+		}
+		else
+		{
+			<ul class="d-flex flex-column">
+				@foreach (var category in CategoryService.Category)
+				{
+					<li class="p-2 m-2 d-flex">@category.Name</li>
+				}
+			</ul>
+		}
+	</div>
+</section>
+
+@code {
+	private List<CategoryResponse> _categoryResponses;
+
+	protected override async Task OnInitializedAsync()
+	{
+		var response = await CategoryService.GetAllCategory();
+		if (response.Success)
+		{
+			_categoryResponses = response.Result.Items;
+		}
+
+	}
+}

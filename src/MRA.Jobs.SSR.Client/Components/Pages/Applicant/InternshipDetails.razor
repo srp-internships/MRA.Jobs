@@ -1,0 +1,48 @@
+﻿@page "/internships/{Slug}"
+@using MRA.Jobs.Application.Contracts.VacancyClient;
+@layout MainLayout
+@inject IInternshipService InternshipService
+@using MRA.Jobs.SSR.Client.Components.Layout
+
+@if (_serverError)
+{
+	<ServerErrorComponent />
+}
+else
+{
+	<VacancyDetails Slug="@Slug" vacancyDetails="@_details" vacancy="internships" />
+}
+
+@code {
+	private bool _serverError;
+
+	[Parameter]
+	public string Slug { get; set; }
+	private VacancyDetailsResponse _details;
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		try
+		{
+
+			var response = await InternshipService.GetBySlug(Slug);
+			if (response is not null)
+			{
+				_details = new VacancyDetailsResponse
+					{
+						Title = response.Title,
+						Description = response.Description,
+						Duration = response.Duration,
+						EndDate = response.EndDate,
+						Deadline = response.ApplicationDeadline,
+						PublishDate = response.PublishDate
+					};
+			}
+		}
+		catch (Exception)
+		{
+			_serverError = true;
+			StateHasChanged();
+		}
+	}
+}

@@ -1,0 +1,343 @@
+﻿@page "/dashboard/jobs"
+@layout Dashboard
+@using BlazorMonaco.Editor
+@using MRA.Jobs.Application.Contracts.JobVacancies.Responses
+@using MRA.Jobs.SSR.Client.Services
+@inject IVacancyService VService
+@inject IJSRuntime JsRuntime
+@inject IDialogService DialogService
+@inject LayoutService LayoutService
+@inject ISnackbar Snackbar;
+@if (_serverError)
+{
+    <ServerErrorComponent />
+}
+else
+{
+    @if (_category == null)
+    {
+        <div style="text-align: center;">
+            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+        </div>
+    }
+    else
+    {
+        <MudGrid>
+            <MudItem lg="12">
+                <MudCardActions>
+                    <MudText Typo="Typo.h4">
+                        <b>Jobs</b>
+                    </MudText>
+                    <MudSpacer />
+                    <MudButton Disabled="@_panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => _panelOpenState = !_panelOpenState)">
+                        <MudText>Create New Job Vacancy</MudText>
+                    </MudButton>
+                </MudCardActions>
+            </MudItem>
+            <MudItem lg="12" hidden="@(!_panelOpenState)">
+                <EditForm Model="@VService.creatingNewJob">
+                    <FluentValidationValidator />
+                    <MudGrid>
+                        <MudItem xs="12" lg="6">
+                            <MudCard Class="rounded-4 mud-elevation-4">
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Style="color:#808080">
+                                            <b>@_createOrEditHeader</b>
+                                        </MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    <MudTextField @bind-Value="@VService.creatingNewJob.Title" Label="Title"
+                                                  Variant="Variant.Outlined" For="@(() => VService.creatingNewJob.Title)" />
+                                    <MudTextField Lines="4" @bind-Value="@VService.creatingNewJob.ShortDescription" Label="ShortDescription"
+                                                  Variant="Variant.Outlined" For="@(() => VService.creatingNewJob.ShortDescription)" />
+                                    <br />
+                                    <MudText>Description</MudText>
+                                    <BlazoredTextEditor @ref="@_quillHtml">
+                                        <ToolbarContent>
+                                            <span class="ql-formats">
+                                                <select class="ql-font">
+                                                    <option selected=""></option>
+                                                    <option value="serif"></option>
+                                                    <option value="monospace"></option>
+                                                </select>
+                                                <select class="ql-size">
+                                                    <option value="small"></option>
+                                                    <option selected=""></option>
+                                                    <option value="large"></option>
+                                                    <option value="huge"></option>
+                                                </select>
+                                            </span>
+                                            <span class="ql-formats">
+                                                <button class="ql-bold"></button>
+                                                <button class="ql-italic"></button>
+                                                <button class="ql-underline"></button>
+                                                <button class="ql-strike"></button>
+                                            </span>
+                                            <span class="ql-formats">
+                                                <select class="ql-color"></select>
+                                                <select class="ql-background"></select>
+                                            </span>
+                                            <span class="ql-formats">
+                                                <button class="ql-list" value="ordered"></button>
+                                                <button class="ql-list" value="bullet"></button>
+                                                <button class="ql-indent" value="-1"></button>
+                                                <button class="ql-indent" value="+1"></button>
+                                                <select class="ql-align">
+                                                    <option selected=""></option>
+                                                    <option value="center"></option>
+                                                    <option value="right"></option>
+                                                    <option value="justify"></option>
+                                                </select>
+                                            </span>
+                                            <span class="ql-formats">
+                                                <button class="ql-link"></button>
+                                            </span>
+                                        </ToolbarContent>
+                                        <EditorContent>
+                                          
+                                        </EditorContent>
+                                    </BlazoredTextEditor>
+                                    <MudInput @bind-Value="@_imageLinkToInsertToEditor"/>
+                                    <MudButton @Variant="Variant.Filled" @Color="Color.Primary"
+                                            @onclick="InsertImage">
+                                        Insert Image
+                                    </MudButton>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12" lg="6">
+                            <MudCard Class="rounded-4 mud-elevation-4">
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Style="color: rgb(128,128,128)">
+                                            <b>Vacancy details</b>
+                                        </MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    <MudGrid>
+                                        <MudItem xs="12" lg="12">
+                                            <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Category</MudText>
+                                            <MudSelect T="string" Label="Select category" @bind-Value="@_selectedCategory" Variant="Variant.Outlined">
+                                                @foreach (var cat in _category)
+                                                {
+                                                    <MudSelectItem Value="@cat.Name" />
+                                                }
+                                            </MudSelect>
+                                        </MudItem>
+                                        <MudItem xs="12" lg="7">
+                                            <MudText Style="color:rgb(128,128,128)">Required year(s) of experience</MudText>
+                                            <MudTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="" Variant="Variant.Outlined"></MudTextField>
+                                        </MudItem>
+                                        <MudItem xs="12" lg="5">
+                                            <MudText Style="color:rgb(128,128,128)">Work Schedule</MudText>
+                                            <MudSelect @bind-Value="VService.creatingNewJob.WorkSchedule" Variant="Variant.Outlined">
+                                                @foreach (var item in _value2Items)
+                                                {
+                                                    <MudSelectItem Value="@item">@item.ToString()</MudSelectItem>
+                                                }
+
+                                            </MudSelect>
+                                        </MudItem>
+                                        <MudItem xs=12 lg="12">
+                                            <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Publish Date</MudText>
+                                            <MudGrid>
+                                                <MudItem xs=12 lg="6">
+                                                    <MudDatePicker @bind-Date="@VService.creatingNewJob.PublishDate" Variant="Variant.Outlined"
+                                                                   Label="Date" For="@(() => VService.creatingNewJob.PublishDate)" />
+                                                </MudItem>
+                                                <MudItem xs=12 lg="6">
+                                                    <MudTimePicker AmPm="true" @bind-Time="_publishDateTime" Variant="Variant.Outlined" Label="Time" />
+                                                </MudItem>
+                                            </MudGrid>
+                                        </MudItem>
+                                        <MudItem xs=12 lg="12">
+                                            <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">End Date</MudText>
+                                            <MudGrid>
+                                                <MudItem xs=12 lg="6">
+                                                    <MudDatePicker @bind-Date="@VService.creatingNewJob.EndDate" Variant="Variant.Outlined"
+                                                                   Label="Date" For="@(() => VService.creatingNewJob.EndDate)" />
+
+                                                </MudItem>
+                                                <MudItem xs=12 lg="6">
+                                                    <MudTimePicker AmPm="true" @bind-Time="_endDateTime" Variant="Variant.Outlined" Label="Time" />
+                                                </MudItem>
+                                            </MudGrid>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
+                    <MudGrid>
+                        <MudItem xs="12" lg="6">
+                            <MudCard Class="rounded-4 mud-elevation-4">
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Style="color:rgb(128,128,128)">
+                                            <b>Tasks</b>
+                                        </MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    <MudExpansionPanels MultiExpansion="true">
+                                        @foreach (var task in _tasks)
+                                        {
+                                            <MudExpansionPanel Text="@task.Title">
+                                                <MudText> Description: @task.Description</MudText>
+                                                    <MudText>Template:</MudText>
+                                                    <MudElement HtmlTag="pre">
+                                                        <MudElement HtmlTag="code">
+                                                            @task.Template
+                                                    </MudElement>
+                                                </MudElement>
+                                                <MudText>Test:</MudText>
+                                                <MudElement HtmlTag="pre">
+                                                    <MudElement HtmlTag="code">
+                                                        @task.Test
+                                                    </MudElement>
+                                                </MudElement>
+                                                <MudButton StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error"
+                                                           Variant="Variant.Filled" OnClick="() => RemoveTask(task.Title)" aria-label="delete">
+                                                    <MudText>Remove</MudText>
+                                                </MudButton>
+                                            </MudExpansionPanel>
+                                        }
+                                    </MudExpansionPanels>
+                                    @if (_panelOpenState != false)
+                                    {
+                                        <br />
+                                        <MudTextField @bind-Value="_newTitle" OnKeyDown="@OnKeyDown" Label="Title"
+                                                      Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
+                                        <MudTextField Lines="5" @bind-Value="_newDescription" OnKeyDown="@OnKeyDown" Label="Description"
+                                                      Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary" />
+                                        <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Template</MudText>
+                                        <StandaloneCodeEditor @ref="_editorTemplate" Id="sample-code-editor-123" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
+                                        <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Test</MudText>
+                                        <StandaloneCodeEditor @ref="_editorTest" Id="sample-code-editor-456" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
+                                        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                                   @onclick="@AddTask" Id="AddTask">
+                                            <MudText>Add Task</MudText>
+                                        </MudButton>
+                                    }
+
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12" lg="6">
+                            <MudCard Class="rounded-4 mud-elevation-4">
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Style="color:rgb(128,128,128)">
+                                            <b>Vacancy questions</b>
+                                        </MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    @foreach (var ques in _questions)
+                                    {
+                                        <MudText Typo="Typo.subtitle1">
+                                            <MudChip>
+                                                <MudIcon Icon="@Icons.Material.Filled.QuestionMark" />
+                                            </MudChip>
+
+                                            @ques.Question
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveQuestion(ques.Question)" aria-label="delete"></MudIconButton>
+                                        </MudText>
+                                        <MudDivider />
+                                    }
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="NewQuestionAsync">
+                                        <MudText>Add Question</MudText>
+                                    </MudButton>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12" lg="12">
+                            <MudCardActions>
+                                <div hidden="@_isInserting">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit">
+                                        <MudText>
+                                            Create
+                                        </MudText>
+                                    </MudButton>
+                                </div>
+                                <div hidden="@_isUpdating">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate">
+                                        <MudText>
+                                            Save changes
+                                        </MudText>
+                                    </MudButton>
+                                </div>
+                                <MudButton Variant="Variant.Filled" Color="Color.Dark" @onclick="@HandleCancel" Style="margin-left: 10px;">
+                                    <MudText>
+                                        Cancel
+                                    </MudText>
+                                </MudButton>
+                            </MudCardActions>
+                        </MudItem>
+
+                    </MudGrid>
+                </EditForm>
+            </MudItem>
+        </MudGrid>
+
+        <MudTable ServerData="@(new Func<TableState, Task<TableData<JobVacancyListDto>>>(ServerReload))" hidden="@_panelOpenState"
+                  Breakpoint="Breakpoint.Sm" Dense="true" Hover="true" @ref="_table">
+            <ToolBarContent>
+                <MudSpacer />
+                <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search jobs" Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Immediate="true">
+                </MudTextField>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>
+                    <strong>Title</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Short Description</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Category</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Publish Date</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>End Date</strong>
+                </MudTh>
+                <MudTh>
+                    <strong>Work Schedule</strong>
+                </MudTh>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Title">@context.Title</MudTd>
+                    <MudTd DataLabel="Short description">
+                        @(context.ShortDescription.Length > 50 ? context.ShortDescription.Substring(0, 50) : context.ShortDescription)
+                    </MudTd>
+                    <MudTd DataLabel="Category">@context.Category</MudTd>
+                    <MudTd DataLabel="Publish date">@context.PublishDate.ToString("D")</MudTd>
+                    <MudTd DataLabel="End date">@context.EndDate.ToString("D")</MudTd>
+                    <MudTd DataLabel="Work schedule">@context.WorkSchedule</MudTd>
+                    <MudTd>
+                        <MudIconButton @onclick="() => OnEditClick(context.Slug)" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium" />
+                    </MudTd>
+                    <MudTd>
+                        <MudIconButton @onclick="() => OnDeleteClick(context.Slug)" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Medium" />
+                    </MudTd>
+                </RowTemplate>
+                <NoRecordsContent>
+                    <MudText>No matching records found</MudText>
+                </NoRecordsContent>
+                <LoadingContent>
+                    <MudText>Loading...</MudText>
+                </LoadingContent>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
+    }
+}
