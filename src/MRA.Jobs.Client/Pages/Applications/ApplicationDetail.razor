@@ -1,10 +1,10 @@
 ﻿@page "/ApplicationDetail/{Slug}/{ApplicationUserName}"
 @page "/ApplicationDetail/{Slug}"
 @using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote
-@using MRA.Jobs.Application.Contracts.TimeLineDTO
 @using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using System.Net
+@using MRA.Jobs.Application.Contracts.TimeLineDTO
 @using MRA.Jobs.Client.Identity
 @using MRA.Jobs.Client.Services.HttpClients
 
@@ -85,18 +85,57 @@
                             else
                             {
                                 <div style="align-content: center; align-items: center;">
-                                    <MudTimeline>
+                                    <MudTimeline TimelinePosition="TimelinePosition.Start">
                                         @foreach (var item in _application.History)
                                         {
-                                            <MudTimelineItem Color="Color.Primary">
-                                                <ItemContent>
-                                                    <MudAlert>
-                                                        @* <MudText Color="Color.Info" Typo="Typo.h6" GutterBottom="true">Create At</MudText> *@
-                                                        <MudText Color="Color.Info" GutterBottom="true">@item.Time</MudText>
+                                            <MudTimelineItem Size="Size.Medium" Color="Color.Info" Elevation="25">
+                                                <MudCard Elevation="25">
+                                                    <MudCardContent>
+                                                        <MudText Typo="Typo.h6">
+                                                            <MudStack Row="true">
+                                                                <MudAvatar Size="Size.Small">
+                                                                    @item.UserFullName[0].ToString().ToUpper()
+                                                                </MudAvatar>
+                                                                <MudText Color="Color.Primary">
+                                                                    <b>@item.UserFullName</b>
+                                                                </MudText>
+                                                                <MudSpacer/>
+                                                                <MudText Typo="Typo.body2">@item.Time</MudText>
+                                                            </MudStack>
+                                                        </MudText>
+
                                                         <MudText>@item.Note</MudText>
-                                                    </MudAlert>
-                                                </ItemContent>
+                                                    </MudCardContent>
+                                                </MudCard>
                                             </MudTimelineItem>
+                                            @* <MudTimelineItem Color="Color.Default"> *@
+                                            @*     <ItemOpposite> *@
+                                            @*         <MudText Color="Color.Info" GutterBottom="true">@item.Time</MudText> *@
+                                            @*     </ItemOpposite> *@
+                                            @*     <ItemContent> *@
+                                            @* *@
+                                            @*         @if (item.UserFullName == null) *@
+                                            @*         { *@
+                                            @*             <MudProgressCircular Color="Color.Primary" Indeterminate="true"/> *@
+                                            @*         } *@
+                                            @*         else *@
+                                            @*         { *@
+                                            @*             @if (!string.IsNullOrEmpty(item.UserFullName)) *@
+                                            @*             { *@
+                                            @*                 <MudStack Row="true"> *@
+                                            @*                     <MudAvatar Size="Size.Small"> *@
+                                            @*                         @item.UserFullName[0].ToString().ToUpper() *@
+                                            @*                     </MudAvatar> *@
+                                            @*                     <MudText Color="Color.Primary"> *@
+                                            @*                         <b>@item.UserFullName</b> *@
+                                            @*                     </MudText> *@
+                                            @*                 </MudStack> *@
+                                            @*             } *@
+                                            @*         } *@
+                                            @*         <MudText>@item.Note</MudText> *@
+                                            @* *@
+                                            @*     </ItemContent> *@
+                                            @* </MudTimelineItem> *@
                                         }
                                     </MudTimeline>
                                 </div>
@@ -152,7 +191,7 @@
 
         _cvUrl = $"{HttpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
 
-
+        await LoadUser();
         SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
         StateHasChanged();
     }
@@ -161,6 +200,7 @@
     {
         _addNote.Slug = Slug;
         var response = await ApplicationService.AddNote(_addNote);
+        await LoadUser(response);
         _application.History.Add(response);
         _application.History = _application.History.OrderByDescending(h => h.Time).ToList();
         _addNote = new AddNoteToApplicationCommand();
@@ -186,6 +226,25 @@
         else
         {
             Snackbar.Add("Invalid status selected.", Severity.Error);
+        }
+    }
+
+    private async Task LoadUser(TimeLineDetailsDto timeLine = null)
+    {
+        if (timeLine == null)
+        {
+            foreach (var item in _application.History)
+            {
+                var user = await UserProfileService.GetUserById(item.CreateBy);
+                item.UserFullName = user.FullName ?? user.UserName;
+                StateHasChanged();
+            }
+        }
+        else
+        {
+            var user = await UserProfileService.GetUserById(timeLine.CreateBy);
+            timeLine.UserFullName = user.FullName ?? user.UserName;
+            StateHasChanged();
         }
     }
 
