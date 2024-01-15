@@ -195,8 +195,7 @@
         _applicant = await UserProfileService.Get(ApplicationUserName);
         await LoadApplication();
         _cvUrl = $"{HttpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
-
-     
+        
         SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
         StateHasChanged();
     }
@@ -243,7 +242,7 @@
             foreach (var item in _application.History)
             {
                 var user = await UserProfileService.GetUserById(item.CreateBy);
-                item.UserFullName = user.FullName ?? user.UserName;
+                item.UserFullName = user == null ? " " : user.FullName ?? user.UserName;
                 StateHasChanged();
             }
         }
