@@ -299,6 +299,7 @@ public partial class TrainingVacancyPage
             }
 
             await LoadData();
+            await   _table.ReloadServerData();
             Clear();
         }
         catch (Exception)
@@ -332,6 +333,7 @@ public partial class TrainingVacancyPage
             }
 
             await LoadData();
+            await   _table.ReloadServerData();
             Clear();
         }
         catch (Exception ex)
