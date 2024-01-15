@@ -187,7 +187,7 @@
     <value>Enter your first name</value>
   </data>
   <data name="SignUp:LastName" xml:space="preserve">
-    <value>Last name name</value>
+    <value>Last name</value>
   </data>
   <data name="SignUp:LastName_HelperText" xml:space="preserve">
     <value>Enter your last name</value>
