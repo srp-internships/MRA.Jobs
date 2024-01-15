@@ -33,6 +33,15 @@
         <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Resources\cv_approved_email.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\cv_rejected_email.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
     <ProjectExtensions>
         <VisualStudio>
             <UserProperties dbsettings_1json__JsonSchema="https://docs.renovatebot.com/renovate-schema.json" />
