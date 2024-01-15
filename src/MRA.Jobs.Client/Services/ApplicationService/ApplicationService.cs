@@ -122,6 +122,7 @@ public class ApplicationService(
             switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:
+                    snackbar.Add("Successfully", Severity.Success);
                     return  response.Result;
                 case HttpStatusCode.Conflict:
                     snackbar.Add( response.Error, Severity.Error);

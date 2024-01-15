@@ -76,7 +76,7 @@
                             <MudText Style="color: grey" Typo="Typo.h6">
                                 <b>Notes</b>
                             </MudText>
-                            @if (_timelienes == null)
+                            @if (!_application.History.Any())
                             {
                                 <div style="text-align: center;">
                                     <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
@@ -86,7 +86,7 @@
                             {
                                 <div style="align-content: center; align-items: center;">
                                     <MudTimeline>
-                                        @foreach (var item in _timelienes)
+                                        @foreach (var item in _application.History)
                                         {
                                             <MudTimelineItem Color="Color.Primary">
                                                 <ItemContent>
@@ -139,7 +139,6 @@
     private string _cvUrl;
 
     private UpdateApplicationStatus _applicationStatus;
-    private List<TimeLineDetailsDto> _timelienes;
     private UserProfileResponse _applicant;
     private ApplicationDetailsDto _application;
 
@@ -147,10 +146,12 @@
     {
         _applicant = await UserProfileService.Get(ApplicationUserName);
         _application = await ApplicationService.GetApplicationDetails(Slug);
+
+        if (_application.History.Any())
+            _application.History = _application.History.OrderByDescending(h => h.Time).ToList();
+
         _cvUrl = $"{HttpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
 
-        var timeLineEvents = await ApplicationService.GetApplicationTimeLineEvents(Slug);
-        _timelienes = timeLineEvents == null ? new List<TimeLineDetailsDto>() : timeLineEvents.OrderBy(t => t.Time).ToList();
 
         SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
         StateHasChanged();
@@ -160,7 +161,8 @@
     {
         _addNote.Slug = Slug;
         var response = await ApplicationService.AddNote(_addNote);
-        _timelienes.Add(response);
+        _application.History.Add(response);
+        _application.History = _application.History.OrderByDescending(h => h.Time).ToList();
         _addNote = new AddNoteToApplicationCommand();
         StateHasChanged();
     }
