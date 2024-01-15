@@ -399,6 +399,9 @@
   <data name="VacanciesList:All" xml:space="preserve">
     <value>Все</value>
   </data>
+  <data name="VacanciesList:Categories" xml:space="preserve">
+    <value>Категории</value>
+  </data>
   <data name="VacanciesList:NoJobs" xml:space="preserve">
     <value>На данный момент нет доступных вакансий. Пожалуйста, проверьте позже :)</value>
   </data>
