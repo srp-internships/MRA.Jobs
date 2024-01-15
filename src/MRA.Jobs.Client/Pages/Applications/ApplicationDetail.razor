@@ -181,17 +181,22 @@
     private UserProfileResponse _applicant;
     private ApplicationDetailsDto _application;
 
-    protected override async Task OnInitializedAsync()
+    private async Task LoadApplication()
     {
-        _applicant = await UserProfileService.Get(ApplicationUserName);
         _application = await ApplicationService.GetApplicationDetails(Slug);
 
         if (_application.History.Any())
             _application.History = _application.History.OrderByDescending(h => h.Time).ToList();
-
+        await LoadUser();
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _applicant = await UserProfileService.Get(ApplicationUserName);
+        await LoadApplication();
         _cvUrl = $"{HttpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
 
-        await LoadUser();
+     
         SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
         StateHasChanged();
     }
@@ -220,6 +225,8 @@
             var response = await ApplicationService.UpdateStatus(_applicationStatus);
             if (response)
             {
+                await LoadApplication();
+                StateHasChanged();
                 Snackbar.Add("Status updated successfully.", Severity.Success);
             }
         }
