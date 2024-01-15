@@ -1,20 +1,26 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
 using AltairCA.Blazor.WebAssembly.Cookie;
 using MRA.Identity.Application.Contract.User.Responses;
+using MRA.Jobs.Client.Identity;
 
 namespace MRA.Jobs.Client.Services.HttpClients;
 
-public abstract class HttpClientServiceBase(IHttpClientFactory httpClientFactory, IAltairCABlazorCookieUtil cookieUtil,
+public abstract class HttpClientServiceBase(
+    IHttpClientFactory httpClientFactory,
+    IAltairCABlazorCookieUtil cookieUtil,
     IConfiguration configuration) : IHttpClientServiceBase
 {
     protected abstract string ConfigKey { get; }
     public string BaseAddress => configuration[ConfigKey];
+
     public async Task<ApiResponse<T>> GetAsJsonAsync<T>(string url, object content = null)
     {
         try
         {
             using var httpClient = await CreateHttpClient();
-            return content == null ? ApiResponse<T>.BuildSuccess(await httpClient.GetFromJsonAsync<T>(url))
+            return content == null
+                ? ApiResponse<T>.BuildSuccess(await httpClient.GetFromJsonAsync<T>(url))
                 : ApiResponse<T>.BuildSuccess(await httpClient.GetFromJsonAsync<T>(url, content));
         }
         catch (HttpRequestException ex)
@@ -60,7 +66,8 @@ public abstract class HttpClientServiceBase(IHttpClientFactory httpClientFactory
             if (typeof(T) == typeof(string))
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
-                return ApiResponse<T>.BuildSuccess((T)Convert.ChangeType(responseContent, typeof(T)), response.StatusCode);
+                return ApiResponse<T>.BuildSuccess((T)Convert.ChangeType(responseContent, typeof(T)),
+                    response.StatusCode);
             }
             else
             {
@@ -68,11 +75,19 @@ public abstract class HttpClientServiceBase(IHttpClientFactory httpClientFactory
                 return ApiResponse<T>.BuildSuccess(responseContent, response.StatusCode);
             }
         }
-        else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+
+        if (response.StatusCode == HttpStatusCode.BadRequest)
         {
             ErrorResponse responseContent = await response.Content.ReadFromJsonAsync<ErrorResponse>();
             return ApiResponse<T>.BuildFailed(responseContent, response.StatusCode);
         }
+
+        if (response.StatusCode == HttpStatusCode.Conflict)
+        {
+            var responseContent = await response.Content.ReadFromJsonAsync<CustomProblemDetails>();
+            return ApiResponse<T>.BuildFailed(responseContent.Detail, response.StatusCode);
+        }
+
         return ApiResponse<T>.BuildFailed("Error on sending response. Please try again later", response.StatusCode);
     }
 
@@ -94,10 +109,11 @@ public abstract class HttpClientServiceBase(IHttpClientFactory httpClientFactory
     private async Task<HttpClient> CreateHttpClient()
     {
         var httpClient = httpClientFactory.CreateClient();
-        httpClient.BaseAddress= new Uri(BaseAddress);
+        httpClient.BaseAddress = new Uri(BaseAddress);
         JwtTokenResponse authToken = await cookieUtil.GetValueAsync<JwtTokenResponse>("authToken");
-        if (authToken!=null)
-            httpClient.DefaultRequestHeaders.Authorization =  new AuthenticationHeaderValue("Bearer", authToken.AccessToken.Replace("\"", ""));
+        if (authToken != null)
+            httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", authToken.AccessToken.Replace("\"", ""));
         return httpClient;
     }
 }

@@ -113,7 +113,6 @@
 		Clear();
 	}
 
-	// private bool _isUploadCvMode = true;
 	private bool _isNoVacancyApplyButtonEnabled;
 
 	private IBrowserFile _cv;
@@ -160,10 +159,10 @@
 	{
 		if (_cv == null)
 		{
-			Snackbar.Add(@ContentService["SendCV:IfFileNull"], Severity.Error);
+			Snackbar.Add(ContentService["SendCV:IfFileNull"], Severity.Error);
 			return;
 		}
-		if (string.IsNullOrWhiteSpace(_application.CoverLetter) || (_cv == null))
+		if (string.IsNullOrWhiteSpace(_application.CoverLetter) || _cv == null)
 		{
 			return; // Do not proceed with submission if any required fields are empty.
 		}
