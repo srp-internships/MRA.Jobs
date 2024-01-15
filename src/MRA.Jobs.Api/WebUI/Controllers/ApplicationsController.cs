@@ -7,7 +7,6 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug;
-using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationNotes;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
@@ -91,15 +90,5 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
         CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
-    }
-
-    [HttpGet("get-notes/{slug}")]
-    [Authorize(policy: ApplicationPolicies.Reviewer)]
-    public async Task<ActionResult<List<TimeLineDetailsDto>>> GetNotes(string slug, CancellationToken cancellationToken)
-    {
-        return await Mediator.Send(new GetApplicationNotesQuery
-        {
-            Slug = slug
-        }, cancellationToken);
     }
 }
