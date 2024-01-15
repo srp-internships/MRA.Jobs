@@ -399,6 +399,9 @@
   <data name="VacanciesList:All" xml:space="preserve">
     <value>Ҳама</value>
   </data>
+  <data name="VacanciesList:Categories" xml:space="preserve">
+    <value>Категорияҳо</value>
+  </data>
   <data name="VacanciesList:NoJobs" xml:space="preserve">
     <value>Ҳоло вазифаҳо барои кор дастрас намешаванд. Илтимос баъдтар санҷед :)</value>
   </data>

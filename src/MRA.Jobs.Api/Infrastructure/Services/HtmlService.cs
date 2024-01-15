@@ -1,11 +1,15 @@
-﻿using MRA.Configurations.Common.Interfaces.Services;
+﻿using Microsoft.Extensions.Configuration;
+using MRA.Configurations.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 
 namespace MRA.Jobs.Infrastructure.Services;
 
-public class HtmlService(IEmailService emailService) : IHtmlService
+public class HtmlService(IEmailService emailService, IConfiguration configuration) : IHtmlService
 {
+    private readonly IConfiguration _configuration = configuration;
+    private readonly IEmailService _emailService = emailService;
+
     public string GenerateApplyVacancyContent(string userName)
     {
         var content = $@"
@@ -91,17 +95,19 @@ public class HtmlService(IEmailService emailService) : IHtmlService
 
     public async Task<bool> EmailApproved(UserProfileResponse applicant, string slug)
     {
+        string url = $"{_configuration["MRAJobs-Client"]}/ApplicationDetail/{slug}";
         string htmlTemplate = await File.ReadAllTextAsync(Path.Combine("Resources", "cv_approved_email.html"));
-        var htmlContent = htmlTemplate.Replace("@FullName", $"{applicant.FirstName} {applicant.LastName}").Replace("@LinkToGo", $"https://www.jobs.srp.tj/ApplicationDetail/{slug}");
+        var htmlContent = htmlTemplate.Replace("@FullName", $"{applicant.FirstName} {applicant.LastName}").Replace("@LinkToGo", url);
         var subject = "Заявка одобрено!";
-        return await emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
+        return await _emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
     }
 
     public async Task<bool> EmailRejected(UserProfileResponse applicant, string slug)
     {
+        string url = $"{_configuration["MRAJobs-Client"]}/ApplicationDetail/{slug}";
         string htmlTemplate = await File.ReadAllTextAsync(Path.Combine("Resources", "cv_rejected_email.html"));
-        var htmlContent = htmlTemplate.Replace("@FullName", $"{applicant.FirstName} {applicant.LastName}").Replace("@LinkToGo", $"https://www.jobs.srp.tj/ApplicationDetail/{slug}");
+        var htmlContent = htmlTemplate.Replace("@FullName", $"{applicant.FirstName} {applicant.LastName}").Replace("@LinkToGo", url);
         var subject = "Уведомление об отказе";
-        return await emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
+        return await _emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
     }
 }

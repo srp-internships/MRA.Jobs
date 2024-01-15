@@ -15,15 +15,15 @@
                  LockScroll="true">
             @if (_en)
             {
-                <MudMenuItem OnClick="@(() => SelectLanguage("En"))">En</MudMenuItem>
+                <MudMenuItem OnClick="@(() => SelectLanguage("En"))" OnTouch="@(() => SelectLanguage("En"))">En</MudMenuItem>
             }
             @if (_ru)
             {
-                <MudMenuItem OnClick="@(() => SelectLanguage("Ru"))">Ru</MudMenuItem>
+                <MudMenuItem OnClick="@(() => SelectLanguage("Ru"))" OnTouch="@(() => SelectLanguage("Ru"))">Ru</MudMenuItem>
             }
             @if (_tj)
             {
-                <MudMenuItem OnClick="@(() => SelectLanguage("Tj"))">Tj</MudMenuItem>
+                <MudMenuItem OnClick="@(() => SelectLanguage("Tj"))" OnTouch="@(() => SelectLanguage("Tj"))">Tj</MudMenuItem>
             }
         </MudMenu>
     </MudTooltip>
