@@ -7,6 +7,7 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug;
+using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationNotes;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
@@ -51,7 +52,7 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
     {
         return await Mediator.Send(request, cancellationToken);
     }
-    
+
     [HttpPost("CreateApplicationNoVacancy")]
     [AllowAnonymous]
     public async Task<ActionResult<Guid>> CreateApplicationNoVacancy(CreateApplicationCommand request,
@@ -76,7 +77,7 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
     }
 
     [HttpPut("{slug}/update-status")]
-    [Authorize(policy:ApplicationPolicies.Reviewer)]
+    [Authorize(policy: ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<bool>> UpdateStatus(string slug, UpdateApplicationStatus request,
         CancellationToken cancellationToken)
     {
@@ -85,10 +86,20 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
     }
 
     [HttpPost("add-note")]
-    [Authorize(policy:ApplicationPolicies.Reviewer)]
+    [Authorize(policy: ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<TimeLineDetailsDto>> AddNote(AddNoteToApplicationCommand request,
         CancellationToken cancellationToken)
     {
         return await Mediator.Send(request, cancellationToken);
+    }
+
+    [HttpGet("get-notes/{slug}")]
+    [Authorize(policy: ApplicationPolicies.Reviewer)]
+    public async Task<ActionResult<List<TimeLineDetailsDto>>> GetNotes(string slug, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new GetApplicationNotesQuery
+        {
+            Slug = slug
+        }, cancellationToken);
     }
 }

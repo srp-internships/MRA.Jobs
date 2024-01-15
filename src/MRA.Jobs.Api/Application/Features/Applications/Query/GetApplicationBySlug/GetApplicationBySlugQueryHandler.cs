@@ -15,6 +15,7 @@ public class GetApplicationBySlugQueryHandler(IApplicationDbContext dbContext, I
         var application = await dbContext.Applications
             .Include(a => a.History)
             .Include(s => s.VacancyResponses).ThenInclude(s=>s.VacancyQuestion)
+            .Include(s=>s.TaskResponses)
             .FirstOrDefaultAsync(a => a.Slug == request.Slug, cancellationToken);
         _ = application ?? throw new NotFoundException(nameof(Application), request.Slug);
 
