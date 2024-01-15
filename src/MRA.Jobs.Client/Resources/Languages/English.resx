@@ -447,9 +447,6 @@
   <data name="VacanciesList:Categories" xml:space="preserve">
     <value>Categories</value>
   </data>
-  <data name="VacanciesList:Categories" xml:space="preserve">
-    <value>Categories</value>
-  </data>
     <data name="VacanciesList:NoJobs" xml:space="preserve">
     <value>There are currently no job vacancies available. Please check back later :)</value>
   </data>
