@@ -56,10 +56,8 @@ public partial class Profile
         if (response) _codeSent = true;
     }
 
-    private bool _loader;
     private async Task SendEmailConfirms()
     {
-        _loader = true;
         StateHasChanged();
         
         var response = await AuthService.ResendVerificationEmail();
@@ -67,8 +65,6 @@ public partial class Profile
             Snackbar.Add("Please check your email, we sent verification link", Severity.Info);
         else
             Snackbar.Add("Server not responding, try again latter", Severity.Error);
-
-        _loader = false;
         StateHasChanged();
     }
 
