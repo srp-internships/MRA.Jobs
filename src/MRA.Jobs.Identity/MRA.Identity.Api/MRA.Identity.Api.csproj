@@ -37,4 +37,10 @@
         <ProjectReference Include="..\MRA.Identity.Infrastructure\MRA.Identity.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Resources\verificationmessage.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
