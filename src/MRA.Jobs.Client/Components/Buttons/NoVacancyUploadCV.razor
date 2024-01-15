@@ -127,7 +127,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		await Load();
-		_isSendingCVEnabled = await FeatureManager.IsEnabledAsync(FeatureFlags.SendingCV);
+		_isSendingCVEnabled = await FeatureManager.IsEnabledAsync(FeatureFlags.ApplyUsingProfile);
 	}
 
 	private async Task Load()
