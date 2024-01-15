@@ -360,7 +360,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         _isApplyUsingProfileEnabled = await FeatureManager.IsEnabledAsync(FeatureFlags.ApplyUsingProfile);
-        _isUploadCvMode = _isApplyUsingProfileEnabled;
     }
 
     private async Task UpdateTaskResponse(Guid taskId)
