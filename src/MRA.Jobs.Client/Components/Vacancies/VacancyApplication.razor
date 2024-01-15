@@ -16,13 +16,6 @@
 @inject IJSRuntime JsRuntime
 @inject IFeatureManager FeatureManager
 
-<style>
-        p.mud-typography.mud-typography-body1 p img {
-            width: 100%;
-            height: auto;
-        }
-</style>
-
 @if (Vacancy is null)
 {
     <div style="text-align: center;">
@@ -214,7 +207,7 @@ else
                             @question.Question
                         </MudText>
 
-                        @if (!question.IsOptional)
+                        @if (question.IsOptional)
                         {
                             <MudTextField Variant="Variant.Outlined" T="string" Lines="5" @bind-Value="@QuestionResponses[question.Question]"/>
                         }
@@ -268,13 +261,14 @@ else
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardActions>
-                @if (temp)
+                @if (_isApplyUsingProfileEnabled)
                 {
                     <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
                         <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
                         <MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio>
                     </MudRadioGroup>
-                    @if (_isUploadCvMode)
+
+                    if (_isUploadCvMode)
                     {
                         <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@(Configuration["CvSettings:ExceptedFormats"]!)">
                             <ButtonTemplate Context="anotherContext">
@@ -292,8 +286,19 @@ else
                 else
                 {
                     <MudRadioGroup @bind-SelectedOption="_isUploadCvMode">
-                        <MudRadio Option="@(false)" Color="Color.Primary">@ContentService["VacancyApplication:Apply using profile"]</MudRadio>
+                        <MudRadio Option="@(true)" Color="Color.Primary">@ContentService["VacancyApplication:Apply with uploading file"]</MudRadio>
                     </MudRadioGroup>
+                    <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@(Configuration["CvSettings:ExceptedFormats"]!)">
+                        <ButtonTemplate Context="anotherContext">
+                            <MudButton HtmlTag="label"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.CloudUpload"
+                                       for="@anotherContext">
+                                @ContentService["VacancyApplication:Upload your CV"]
+                            </MudButton>
+                        </ButtonTemplate>
+                    </MudFileUpload>
                 }
 
                 <MudSpacer/>
@@ -320,7 +325,7 @@ else
 
 @code {
     private bool _isUploadCvMode = true;
-    private bool temp = true;
+    private bool _isApplyUsingProfileEnabled = true;
 
     [Parameter] public VacancyApplicationResponse Vacancy { get; set; }
 
@@ -354,8 +359,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        temp = await FeatureManager.IsEnabledAsync(FeatureFlags.SendingCV);
-        _isUploadCvMode = temp;
+        _isApplyUsingProfileEnabled = await FeatureManager.IsEnabledAsync(FeatureFlags.ApplyUsingProfile);
+        _isUploadCvMode = _isApplyUsingProfileEnabled;
     }
 
     private async Task UpdateTaskResponse(Guid taskId)

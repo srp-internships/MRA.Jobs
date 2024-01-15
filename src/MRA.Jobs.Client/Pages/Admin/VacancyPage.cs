@@ -229,6 +229,7 @@ public partial class VacancyPage
             }
 
             await LoadData();
+            await   _table.ReloadServerData();
             Clear();
         }
         catch (Exception)
@@ -316,6 +317,7 @@ public partial class VacancyPage
         VService.creatingNewJob.CategoryId = catId;
         await VService.UpdateJobVacancy(_updateSlug);
         await LoadData();
+        await   _table.ReloadServerData();
         Clear();
     }
 
