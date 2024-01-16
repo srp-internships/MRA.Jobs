@@ -46,14 +46,7 @@ public class UserProfileService(
             return "An error occurred";
         }
     }
-
-    public async Task<UserResponse> GetUserById(Guid id)
-    {
-        await authenticationStateProvider.GetAuthenticationStateAsync();
-        var result = await identityHttpClient.GetAsJsonAsync<UserResponse>($"User/GetById?userId={id}");
-        return result.Result;
-    }
-
+    
     public async Task<UserProfileResponse> Get(string userName = null)
     {
         await authenticationStateProvider.GetAuthenticationStateAsync();

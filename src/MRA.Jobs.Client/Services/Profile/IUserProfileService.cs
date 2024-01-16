@@ -15,9 +15,6 @@ namespace MRA.Jobs.Client.Services.Profile;
 
 public interface IUserProfileService
 {
-    Task<UserResponse> GetUserById(Guid id);
-    
-    
     Task<UserProfileResponse> Get(string userName = null);
     Task<string> Update(UpdateProfileCommand command);
 
