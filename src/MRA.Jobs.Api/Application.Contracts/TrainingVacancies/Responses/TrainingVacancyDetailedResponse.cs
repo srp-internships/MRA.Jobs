@@ -9,6 +9,7 @@ namespace MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
 public record TrainingVacancyDetailedResponse
 {
+    public bool IsApplied { get; set; }
     public Guid Id { get; set; }
     public Guid CategoryId { get; set; }
     public string Category { get; set; }

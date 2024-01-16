@@ -19,5 +19,4 @@ public interface IApplicationService
     Task<string> GetCvLinkAsync(string slug);
 
     Task<TimeLineDetailsDto> AddNote(AddNoteToApplicationCommand note);
-    Task<List<TimeLineDetailsDto>> GetApplicationTimeLineEvents(string slug);
 }

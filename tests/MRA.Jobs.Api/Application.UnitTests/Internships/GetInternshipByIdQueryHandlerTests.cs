@@ -12,7 +12,8 @@ public class GetInternshipByIdQueryHandlerTests : BaseTestFixture
     public override void Setup()
     {
         base.Setup();
-        _handler = new GetInternshipVacancyBySlugQueryHandler(_dbContextMock.Object, Mapper);
+        
+        _handler = new GetInternshipVacancyBySlugQueryHandler(_dbContextMock.Object, Mapper, _currentUserServiceMock.Object);
     }
 
     [Test]
