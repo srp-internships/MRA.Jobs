@@ -28,7 +28,7 @@ public class GetJobVacancyBySlugQueryHandler : IRequestHandler<GetJobVacancyBySl
             .FirstOrDefaultAsync(i => i.Slug == request.Slug);
         _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Slug);
         var mapped = _mapper.Map<JobVacancyDetailsDto>(jobVacancy);
-        mapped.IsApplied = await _dbContext.Applications.AnyAsync(s => s.ApplicantId == _currentUser.GetUserId());
+        mapped.IsApplied = await _dbContext.Applications.AnyAsync(s => s.ApplicantId == _currentUser.GetUserId() && s.VacancyId == jobVacancy.Id);
         return mapped;
     }
 }

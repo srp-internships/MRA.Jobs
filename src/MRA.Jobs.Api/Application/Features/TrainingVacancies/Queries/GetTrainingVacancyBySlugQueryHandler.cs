@@ -27,7 +27,7 @@ public class GetTrainingVacancyBySlugQueryHandler : IRequestHandler<GetTrainingV
 
         _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Slug);
         var mapped = _mapper.Map<TrainingVacancyDetailedResponse>(trainingVacancy);
-        mapped.IsApplied = await _context.Applications.AnyAsync(s => s.ApplicantId == _currentUser.GetUserId());
+        mapped.IsApplied = await _context.Applications.AnyAsync(s => s.ApplicantId == _currentUser.GetUserId() && s.VacancyId == trainingVacancy.Id);
 
         return mapped;
     }

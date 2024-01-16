@@ -28,7 +28,7 @@ public class GetInternshipVacancyBySlugQueryHandler : IRequestHandler<GetInterns
         _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Slug);
 
         var mapped =  _mapper.Map<InternshipVacancyResponse>(internship);
-        mapped.IsApplied = await _context.Applications.AnyAsync(s => s.ApplicantId == _currentUser.GetUserId());
+        mapped.IsApplied = await _context.Applications.AnyAsync(s => s.ApplicantId == _currentUser.GetUserId() && s.VacancyId == internship.Id);
 
         return mapped;
     }
