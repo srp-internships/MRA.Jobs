@@ -1,10 +1,10 @@
 ﻿@page "/ApplicationDetail/{Slug}/{ApplicationUserName}"
 @page "/ApplicationDetail/{Slug}"
 @using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote
-@using MRA.Jobs.Application.Contracts.TimeLineDTO
 @using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using System.Net
+@using MRA.Jobs.Application.Contracts.TimeLineDTO
 @using MRA.Jobs.Client.Identity
 @using MRA.Jobs.Client.Services.HttpClients
 
@@ -15,55 +15,64 @@
 <MudGrid>
     <MudItem xs="12">
         <MudCard>
-            <MudCardContent>
-                <MudText Typo="Typo.h6" Style="color: grey">
-                    <b>Cover letter</b>
-                </MudText>
-                @_application.CoverLetter
+            @if (_application == null)
+            {
+                <div style="text-align: center;">
+                    <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
+                </div>
+            }
+            else
+            {
+                <MudCardContent>
+                    <MudText Typo="Typo.h6" Style="color: grey">
+                        <b>Cover letter</b>
+                    </MudText>
+                    @_application.CoverLetter
 
-                <MudList>
-                    @if (_application.VacancyResponses.Any())
-                    {
-                        <MudListSubheader>
-                            Questions
-                        </MudListSubheader>
-
-
-                        @foreach (var response in _application.VacancyResponses)
+                    <MudList>
+                        @if (_application.VacancyResponses.Any())
                         {
-                            <MudListItem Icon="@Icons.Material.Filled.QuestionMark" IconColor="Color.Info" Text="@response.VacancyQuestion.Question">
-                            </MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.QuestionAnswer" IconColor="Color.Info">
-                                @response.Response
-                            </MudListItem>
-                        }
-                    }
-                </MudList>
-                <MudGrid>
-                    <MudItem xs="6">
-                        <MudText>Status: <b>@(((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString())</b></MudText>
-                    </MudItem>
-                    <MudItem xs="6">
-                        <MudButton Variant="Variant.Filled" Color="Color.Surface" style="margin-bottom: 10px" Href="@_cvUrl">
-                            <MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>@ContentService["Dashboard:Appilcations:More:CVButton"]
-                        </MudButton>
-                    </MudItem>
-                </MudGrid>
-                <CascadingAuthenticationState>
-                    <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
-                        <Authorized>
-                            <MudSelect T="string" Label="Select status" AnchorOrigin="Origin.BottomCenter" @bind-Value="@SelectedStatus">
-                                @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
-                                {
-                                    <MudSelectItem Value="@status.ToString()"/>
-                                }
-                            </MudSelect>
-                            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ChangeStatus">Change status</MudButton>
+                            <MudListSubheader>
+                                Questions
+                            </MudListSubheader>
 
-                        </Authorized>
-                    </AuthorizeView>
-                </CascadingAuthenticationState>
-            </MudCardContent>
+
+                            @foreach (var response in _application.VacancyResponses)
+                            {
+                                <MudListItem Icon="@Icons.Material.Filled.QuestionMark" IconColor="Color.Info" Text="@response.VacancyQuestion.Question">
+                                </MudListItem>
+                                <MudListItem Icon="@Icons.Material.Filled.QuestionAnswer" IconColor="Color.Info">
+                                    @response.Response
+                                </MudListItem>
+                            }
+                        }
+                    </MudList>
+                    <MudGrid>
+                        <MudItem xs="6">
+                            <MudText>Status: <b>@(((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString())</b></MudText>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudButton Variant="Variant.Filled" Color="Color.Surface" style="margin-bottom: 10px" Href="@_cvUrl">
+                                <MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>@ContentService["Dashboard:Appilcations:More:CVButton"]
+                            </MudButton>
+                        </MudItem>
+                    </MudGrid>
+                    <CascadingAuthenticationState>
+                        <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
+                            <Authorized>
+                                <MudSelect T="string" Label="Select status" AnchorOrigin="Origin.BottomCenter" @bind-Value="@SelectedStatus">
+                                    @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                                    {
+                                        <MudSelectItem Value="@status.ToString()"/>
+                                    }
+                                </MudSelect>
+                                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ChangeStatus">Change status</MudButton>
+
+                            </Authorized>
+                        </AuthorizeView>
+                    </CascadingAuthenticationState>
+                </MudCardContent>
+            }
         </MudCard>
     </MudItem>
     <CascadingAuthenticationState>
@@ -76,7 +85,7 @@
                             <MudText Style="color: grey" Typo="Typo.h6">
                                 <b>Notes</b>
                             </MudText>
-                            @if (_timelienes == null)
+                            @if (!_application.History.Any())
                             {
                                 <div style="text-align: center;">
                                     <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
@@ -85,17 +94,37 @@
                             else
                             {
                                 <div style="align-content: center; align-items: center;">
-                                    <MudTimeline>
-                                        @foreach (var item in _timelienes)
+                                    <MudTimeline TimelinePosition="TimelinePosition.Start">
+                                        @foreach (var item in _application.History)
                                         {
-                                            <MudTimelineItem Color="Color.Primary">
-                                                <ItemContent>
-                                                    <MudAlert>
-                                                        @* <MudText Color="Color.Info" Typo="Typo.h6" GutterBottom="true">Create At</MudText> *@
-                                                        <MudText Color="Color.Info" GutterBottom="true">@item.Time</MudText>
+                                            <MudTimelineItem Size="Size.Medium" Color="Color.Info" Elevation="25">
+                                                <MudCard Elevation="25">
+                                                    <MudCardContent>
+                                                        <MudText Typo="Typo.h6">
+                                                            <MudStack Row="true">
+                                                                @if (item.UserFullName == null)
+                                                                {
+                                                                    <MudProgressCircular Color="Color.Primary" Size="Size.Small"
+                                                                                         Indeterminate="true">
+                                                                    </MudProgressCircular>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <MudAvatar Size="Size.Small">
+                                                                        @item.UserFullName[0].ToString().ToUpper()
+                                                                    </MudAvatar>
+                                                                    <MudText Color="Color.Primary">
+                                                                        <b>@item.UserFullName</b>
+                                                                    </MudText>
+                                                                }
+                                                                <MudSpacer/>
+                                                                <MudText Typo="Typo.body2">@item.Time</MudText>
+                                                            </MudStack>
+                                                        </MudText>
+
                                                         <MudText>@item.Note</MudText>
-                                                    </MudAlert>
-                                                </ItemContent>
+                                                    </MudCardContent>
+                                                </MudCard>
                                             </MudTimelineItem>
                                         }
                                     </MudTimeline>
@@ -139,18 +168,23 @@
     private string _cvUrl;
 
     private UpdateApplicationStatus _applicationStatus;
-    private List<TimeLineDetailsDto> _timelienes;
     private UserProfileResponse _applicant;
     private ApplicationDetailsDto _application;
+
+    private async Task LoadApplication()
+    {
+        _application = await ApplicationService.GetApplicationDetails(Slug);
+        StateHasChanged();
+        if (_application.History.Any())
+            _application.History = _application.History.OrderByDescending(h => h.Time).ToList();
+        await LoadUser();
+    }
 
     protected override async Task OnInitializedAsync()
     {
         _applicant = await UserProfileService.Get(ApplicationUserName);
-        _application = await ApplicationService.GetApplicationDetails(Slug);
+        await LoadApplication();
         _cvUrl = $"{HttpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
-
-        var timeLineEvents = await ApplicationService.GetApplicationTimeLineEvents(Slug);
-        _timelienes = timeLineEvents == null ? new List<TimeLineDetailsDto>() : timeLineEvents.OrderBy(t => t.Time).ToList();
 
         SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
         StateHasChanged();
@@ -160,7 +194,9 @@
     {
         _addNote.Slug = Slug;
         var response = await ApplicationService.AddNote(_addNote);
-        _timelienes.Add(response);
+        await LoadUser(response);
+        _application.History.Add(response);
+        _application.History = _application.History.OrderByDescending(h => h.Time).ToList();
         _addNote = new AddNoteToApplicationCommand();
         StateHasChanged();
     }
@@ -178,12 +214,36 @@
             var response = await ApplicationService.UpdateStatus(_applicationStatus);
             if (response)
             {
+                await LoadApplication();
+                StateHasChanged();
                 Snackbar.Add("Status updated successfully.", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Failed to update status", Severity.Error);
             }
         }
         else
         {
             Snackbar.Add("Invalid status selected.", Severity.Error);
+        }
+    }
+
+    private async Task LoadUser(TimeLineDetailsDto timeLine = null)
+    {
+        if (timeLine == null)
+        {
+            foreach (var item in _application.History)
+            {
+                var user = await UserProfileService.GetUserById(item.CreateBy);
+                item.UserFullName = user == null ? " " : user.FullName ?? user.UserName;
+                StateHasChanged();
+            }
+        }
+        else
+        {
+            var user = await UserProfileService.GetUserById(timeLine.CreateBy);
+            timeLine.UserFullName = user.FullName ?? user.UserName;
         }
     }
 

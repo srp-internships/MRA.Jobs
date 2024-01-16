@@ -30,6 +30,13 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
+    [HttpGet("GetById")]
+    public async Task<ActionResult> Get([FromQuery] Guid userId)
+    {
+        var user = await _mediator.Send(new GetUserByIdQuery() {Id = userId});
+        return Ok(user);
+    }
+
 
     [HttpGet("CheckUserDetails/{userName}/{phoneNumber}/{email}")]
     [AllowAnonymous]

@@ -51,7 +51,7 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
     {
         return await Mediator.Send(request, cancellationToken);
     }
-    
+
     [HttpPost("CreateApplicationNoVacancy")]
     [AllowAnonymous]
     public async Task<ActionResult<Guid>> CreateApplicationNoVacancy(CreateApplicationCommand request,
@@ -76,7 +76,7 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
     }
 
     [HttpPut("{slug}/update-status")]
-    [Authorize(policy:ApplicationPolicies.Reviewer)]
+    [Authorize(policy: ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<bool>> UpdateStatus(string slug, UpdateApplicationStatus request,
         CancellationToken cancellationToken)
     {
@@ -85,7 +85,7 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
     }
 
     [HttpPost("add-note")]
-    [Authorize(policy:ApplicationPolicies.Reviewer)]
+    [Authorize(policy: ApplicationPolicies.Reviewer)]
     public async Task<ActionResult<TimeLineDetailsDto>> AddNote(AddNoteToApplicationCommand request,
         CancellationToken cancellationToken)
     {

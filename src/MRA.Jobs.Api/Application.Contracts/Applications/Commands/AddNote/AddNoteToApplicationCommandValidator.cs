@@ -8,6 +8,6 @@ public class AddNoteToApplicationCommandValidator : AbstractValidator<AddNoteToA
             .NotEmpty();
         RuleFor(v => v.Note)
             .NotEmpty()
-            .MaximumLength(200);
+            .MaximumLength(1000);
     }
 }
