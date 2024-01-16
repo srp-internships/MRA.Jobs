@@ -143,24 +143,7 @@ public class ApplicationService(
 
         return null;
     }
-
-    public async Task<List<TimeLineDetailsDto>> GetApplicationTimeLineEvents(string slug)
-    {
-        try
-        {
-            var response = await httpClient.GetAsJsonAsync<List<TimeLineDetailsDto>>($"{ApplicationsEndPoint}/GetApplicationNotes/{slug}");
-
-            return response.Result;
-        }
-        catch (Exception)
-        {
-            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
-        }
-
-        return null;
-    }
-
-
+    
     private async Task<string> GetCurrentUserName()
     {
         var authState = await authenticationState.GetAuthenticationStateAsync();
