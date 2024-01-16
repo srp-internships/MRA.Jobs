@@ -20,7 +20,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
     private UserPreferences.UserPreferences _userPreferences;
     private bool _systemPreferences;
 
-    public DarkLightMode DarkModeToggle = DarkLightMode.Light;
+    public DarkLightMode DarkModeToggle = DarkLightMode.System;
 
     public bool IsDarkMode { get; private set; }
 
