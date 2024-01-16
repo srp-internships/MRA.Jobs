@@ -7,11 +7,13 @@ public class GetTrainingVacancyBySlugQueryHandler : IRequestHandler<GetTrainingV
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly ICurrentUserService _currentUser;
 
-    public GetTrainingVacancyBySlugQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public GetTrainingVacancyBySlugQueryHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUser)
     {
         _context = context;
         _mapper = mapper;
+        _currentUser = currentUser;
     }
     public async Task<TrainingVacancyDetailedResponse> Handle(GetTrainingVacancyBySlugQuery request, CancellationToken cancellationToken)
     {
@@ -24,6 +26,9 @@ public class GetTrainingVacancyBySlugQueryHandler : IRequestHandler<GetTrainingV
             .FirstOrDefaultAsync(i => i.Slug == request.Slug);
 
         _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Slug);
-        return _mapper.Map<TrainingVacancyDetailedResponse>(trainingVacancy);
+        var mapped = _mapper.Map<TrainingVacancyDetailedResponse>(trainingVacancy);
+        mapped.IsApplied = await _context.Applications.AnyAsync(s => s.ApplicantId == _currentUser.GetUserId());
+
+        return mapped;
     }
 }
