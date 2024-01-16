@@ -42,7 +42,7 @@ public class UpdateApplicationStatusCommandHandler(
             EventType = TimelineEventType.Updated,
             Time = dateTime.Now,
             Note = $"Application status changed: {application.Status}",
-            CreateBy = currentUserService.GetUserId() ?? Guid.Empty
+            CreateBy = currentUserService.GetUserName() ?? string.Empty
         };
         await dbContext.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);

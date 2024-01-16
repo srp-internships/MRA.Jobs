@@ -41,7 +41,7 @@ public class UpdateApplicationCommandHadler : IRequestHandler<UpdateApplicationC
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Application vacancy updated",
-            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserName() ?? string.Empty
         };
         await _context.ApplicationTimelineEvents.AddAsync(timelineEvent);
         await _context.SaveChangesAsync(cancellationToken);
