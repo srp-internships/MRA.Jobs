@@ -95,8 +95,11 @@ public class ApplicationService(
     public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.PutAsJsonAsync<bool>($"{ApplicationsEndPoint}/{updateApplicationStatus.Slug}/update-status", updateApplicationStatus);
-        return response.Success ? response.Result : false;
+        var response = await httpClient.PutAsync($"{ApplicationsEndPoint}/{updateApplicationStatus.Slug}/update-status", updateApplicationStatus);
+
+        if (response.HttpStatusCode != null)
+            return (int)response.HttpStatusCode > 199 && (int)response.HttpStatusCode < 300;
+        return false;
     }
 
     public async Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug)
@@ -145,7 +148,7 @@ public class ApplicationService(
     {
         try
         {
-            var response = await httpClient.GetAsJsonAsync<List<TimeLineDetailsDto>>($"{ApplicationsEndPoint}/GetTimelineEvents/{slug}");
+            var response = await httpClient.GetAsJsonAsync<List<TimeLineDetailsDto>>($"{ApplicationsEndPoint}/GetApplicationNotes/{slug}");
 
             return response.Result;
         }
