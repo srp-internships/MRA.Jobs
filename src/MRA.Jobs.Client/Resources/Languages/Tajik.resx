@@ -523,7 +523,7 @@
     <value>Мутахассисони Роҳи Абрешим</value>
   </data>
   <data name="Home:AboutContent" xml:space="preserve">
-    <value> Мутахассисони Роҳи Абрешим (SRP) - ин ширкати тавсияи нармафзори давраи пурра аст, ки дар соли 2014 тасис ёфтааст. Мо дар Вирджиния, ИМА ва Дехмой, Тоҷикистон қонунӣ сабт шудаанд.</value>
+    <value> Мутахассисони Роҳи Абрешим (SRP) - ин ширкати тавсияи нармафзори давраи пурра аст, ки дар соли 2014 тасис ёфтааст.</value>
   </data>
   <data name="Home:MissionTitle" xml:space="preserve">
     <value>МАҚСАДИ МО</value>
@@ -563,12 +563,6 @@
   </data>
   <data name="Home:IntrinsicControlDetails" xml:space="preserve">
     <value>Мо барномасозони худро ташвиқ мекунем, ки барои такмил додани малакаи худ ва истеҳсоли кори босифат худдорӣ кунанд.</value>
-  </data>
-  <data name="Home:GlorifyGod" xml:space="preserve">
-    <value>Боварӣ ба Худо</value>
-  </data>
-  <data name="Home:GlorifyGodDetails" xml:space="preserve">
-    <value>Мо мехоҳем, ки ҳар коре, ки мо мекунем, Худоро ҷалол диҳад.</value>
   </data>
   <data name="Home:Productivity" xml:space="preserve">
     <value>Маҳсулнокӣ</value>

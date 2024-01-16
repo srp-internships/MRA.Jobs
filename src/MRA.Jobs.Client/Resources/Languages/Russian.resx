@@ -550,7 +550,7 @@
     <value>Профессионалы Шелкового пути</value>
   </data>
   <data name="Home:AboutContent" xml:space="preserve">
-    <value> Профессионалы Шелкового пути (SRP) - это компания, занимающаяся разработкой программного обеспечения полного цикла, основанная в 2014 году. Мы юридически зарегистрированы в штате Вирджиния, США и в Дехмое, Таджикистан.</value>
+    <value> Профессионалы Шелкового пути (SRP) - это компания, занимающаяся разработкой программного обеспечения полного цикла, основанная в 2014 году.</value>
   </data>
   <data name="Home:MissionTitle" xml:space="preserve">
     <value>НАША МИССИЯ</value>
@@ -590,12 +590,6 @@
   </data>
 	<data name="Home:IntrinsicControlDetails" xml:space="preserve">
     <value>Мы поощряем наших программистов быть самомотивированными в улучшении своих навыков и производстве высококачественной работы.</value>
-  </data>
-	<data name="Home:GlorifyGod" xml:space="preserve">
-    <value>Прославять Бога</value>
-  </data>
-	<data name="Home:GlorifyGodDetails" xml:space="preserve">
-    <value>Мы хотим, чтобы все наши дела приносили славу Богу.</value>
   </data>
   <data name="Home:Productivity" xml:space="preserve">
     <value>Продуктивность</value>
