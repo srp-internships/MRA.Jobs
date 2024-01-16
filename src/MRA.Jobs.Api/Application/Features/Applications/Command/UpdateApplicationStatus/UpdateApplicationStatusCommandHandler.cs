@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using MRA.Configurations.Common.Interfaces.Services;
 using MRA.Configurations.OsonSms.SmsService;
 using MRA.Jobs.Application.Contracts.JobVacancies;
+using ValidationException = MRA.Jobs.Application.Common.Exceptions.ValidationException;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplicationStatus;
 
@@ -26,7 +27,11 @@ public class UpdateApplicationStatusCommandHandler(
         var application =
             await dbContext.Applications.FirstOrDefaultAsync(t => t.Slug == request.Slug, cancellationToken);
         _ = application ?? throw new NotFoundException(nameof(Application), request.Slug);
-        ;
+
+        if (application.Status == (ApplicationStatus)request.StatusId)
+        {
+            return true;
+        }
 
         application.Status = (ApplicationStatus)request.StatusId;
 
@@ -52,10 +57,10 @@ public class UpdateApplicationStatusCommandHandler(
                 await htmlService.EmailApproved(applicant, application.Slug);
                 try
                 {
-                    await smsService.SendSmsAsync(applicant.PhoneNumber, 
+                    await smsService.SendSmsAsync(applicant.PhoneNumber,
                         configuration["SmsTemplates:Approved"]
                             ?.Replace("{FirstName}", applicant.FirstName)
-                            .Replace("{LastName}",applicant.LastName));
+                            .Replace("{LastName}", applicant.LastName));
                 }
                 catch (Exception e)
                 {
@@ -64,13 +69,13 @@ public class UpdateApplicationStatusCommandHandler(
 
                 break;
             case ApplicationStatus.Rejected:
-                await htmlService.EmailRejected(applicant,application.Slug);
+                await htmlService.EmailRejected(applicant, application.Slug);
                 try
                 {
-                    await smsService.SendSmsAsync(applicant.PhoneNumber, 
+                    await smsService.SendSmsAsync(applicant.PhoneNumber,
                         configuration["SmsTemplates:Rejected"]
                             ?.Replace("{FirstName}", applicant.FirstName)
-                            .Replace("{LastName}",applicant.LastName));
+                            .Replace("{LastName}", applicant.LastName));
                 }
                 catch (Exception e)
                 {
