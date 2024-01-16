@@ -10,7 +10,7 @@
 
 <MudGrid Justify="Justify.Center" Class="align-items-center">
     <MudItem xs="12" sm="8" md="6" lg="3">
-        <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
+        <EditForm Model="@_loginCommand" OnValidSubmit="OnValidSubmit">
             <DataAnnotationsValidator/>
             <MudCard>
                 <MudCardHeader>
@@ -37,10 +37,10 @@
                 </MudCardHeader>
                 <MudCardContent>
                     <MudTextField Label="@ContentService["SignIn:UserName"]"
-                                  @bind-Value="_model.Username" For="@(() => _model.Username)"/>
+                                  @bind-Value="_loginCommand.Username" For="@(() => _loginCommand.Username)"/>
 
                     <MudTextField Label="@ContentService["SignIn:Password"]"
-                                  @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
+                                  @bind-Value="_loginCommand.Password" For="@(() => _loginCommand.Password)" InputType="InputType.Password"/>
                     <br/>
                     <MudText >
                         @ContentService["SignIn:LabelForgot"] <MudLink href="/resetPassword">@ContentService["SignIn:LinkReset"]</MudLink>
@@ -74,29 +74,16 @@
 
 
 @code {
-    private readonly LoginForm _model = new();
+    private LoginUserCommand _loginCommand = new();
     private bool _processing;
     string callback = string.Empty;
-
-    public class LoginForm
-    {
-        [Required]
-        public string Username { get; set; }
-
-        [Required]
-        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
-        public string Password { get; set; }
-    }
+    
 
     private async Task OnValidSubmit(EditContext context)
     {
         _processing = true;
         StateHasChanged();
-        var loginMessage = await AuthService.LoginUserAsync(new LoginUserCommand
-        {
-            Username = _model.Username,
-            Password = _model.Password
-        });
+        var loginMessage = await AuthService.LoginUserAsync(_loginCommand);
         if (loginMessage != "" || loginMessage != null)
             Snackbar.Add(loginMessage, MudBlazor.Severity.Error);
         _processing = false;
