@@ -201,7 +201,7 @@ else
                                         </MudCardContent>
                                         <MudCardActions Style="flex-direction: column">
 
-                                            @if (Applied)
+                                            @if (vacancyDetails.IsApplied)
                                         {
                                             <MudButton Variant="Variant.Filled" Color="Color.Surface" style="margin-bottom: 10px" href="@_cvUrl">
                                                 <MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>@ContentService["VacancyDetails:Download CV"]
@@ -263,14 +263,6 @@ else
 
     [Parameter]
     public string vacancy { get; set; }
-
-    public bool Applied { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        _cvUrl = await ApplicationService.GetCvLinkAsync(Slug);
-        Applied = !string.IsNullOrEmpty(_cvUrl);
-    }
 
     protected override async void OnAfterRender(bool firstRender)
     {

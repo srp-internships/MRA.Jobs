@@ -11,12 +11,15 @@ using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Responses;
 using MRA.Identity.Application.Contract.User.Queries;
+using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Client.Services.HttpClients;
 using Newtonsoft.Json;
 
 namespace MRA.Jobs.Client.Services.Profile;
 
-public class UserProfileService(IdentityApiHttpClientService identityHttpClient, AuthenticationStateProvider authenticationStateProvider) : IUserProfileService
+public class UserProfileService(
+    IdentityApiHttpClientService identityHttpClient,
+    AuthenticationStateProvider authenticationStateProvider) : IUserProfileService
 {
     public async Task<string> Update(UpdateProfileCommand command)
     {
@@ -42,6 +45,13 @@ public class UserProfileService(IdentityApiHttpClientService identityHttpClient,
             Console.WriteLine(ex);
             return "An error occurred";
         }
+    }
+
+    public async Task<UserResponse> GetUserById(Guid id)
+    {
+        await authenticationStateProvider.GetAuthenticationStateAsync();
+        var result = await identityHttpClient.GetAsJsonAsync<UserResponse>($"User/GetById?userId={id}");
+        return result.Result;
     }
 
     public async Task<UserProfileResponse> Get(string userName = null)
@@ -108,7 +118,6 @@ public class UserProfileService(IdentityApiHttpClientService identityHttpClient,
             .GetAsJsonAsync<UserSkillsResponse>(
                 $"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
         return response.Result;
-
     }
 
     public async Task<ApiResponse> RemoveSkillAsync(string skill)

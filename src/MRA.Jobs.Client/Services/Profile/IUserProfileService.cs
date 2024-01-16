@@ -9,11 +9,15 @@ using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Responses;
 using MRA.Identity.Application.Contract.User.Queries;
+using MRA.Identity.Application.Contract.User.Responses;
 
 namespace MRA.Jobs.Client.Services.Profile;
 
 public interface IUserProfileService
 {
+    Task<UserResponse> GetUserById(Guid id);
+    
+    
     Task<UserProfileResponse> Get(string userName = null);
     Task<string> Update(UpdateProfileCommand command);
 

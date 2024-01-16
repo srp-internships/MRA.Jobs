@@ -9,4 +9,5 @@ public class VacancyDetailsResponse
     public string Description { get; set; }
     public int RequiredYearOfExperience { get; set; } = 0;
     public int Fees { get; set; } = 0;
+    public bool IsApplied { get; set; }
 }

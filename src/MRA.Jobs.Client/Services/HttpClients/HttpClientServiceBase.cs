@@ -106,6 +106,24 @@ public abstract class HttpClientServiceBase(
         }
     }
 
+    public async Task<ApiResponse> PutAsync(string url, object content)
+    {
+        try
+        {
+            using var httpClient = await CreateHttpClient();
+            var response = await httpClient.PutAsJsonAsync(url, content);
+            return new ApiResponse
+            {
+                Success = response.IsSuccessStatusCode,
+                HttpStatusCode = response.StatusCode
+            };
+        }
+        catch (HttpRequestException ex)
+        {
+            return ApiResponse.BuildFailed($"Server is not responding. {ex.Message}", ex.StatusCode);
+        }
+    }
+
     private async Task<HttpClient> CreateHttpClient()
     {
         var httpClient = httpClientFactory.CreateClient();
