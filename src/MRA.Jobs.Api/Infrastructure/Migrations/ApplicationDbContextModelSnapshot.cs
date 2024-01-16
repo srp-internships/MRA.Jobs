@@ -17,7 +17,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -32,6 +32,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfileUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Type")
@@ -193,7 +194,8 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
 
@@ -256,7 +258,8 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<Guid>("VacancyId")
                         .HasColumnType("uniqueidentifier");
@@ -320,8 +323,8 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreateBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CreateBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -366,7 +369,8 @@ namespace MRA.Jobs.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TagId");
+                    b.HasIndex("TagId", "UserId")
+                        .IsUnique();
 
                     b.ToTable("UserTags");
                 });
@@ -390,6 +394,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Discriminator")
@@ -419,13 +424,16 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("Slug");
+                    b.HasIndex("Slug")
+                        .IsUnique()
+                        .HasFilter("[Slug] IS NOT NULL");
 
                     b.ToTable("Vacancies");
 
@@ -444,7 +452,8 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(450)");
@@ -669,7 +678,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", "Vacancy")
                         .WithMany("Applications")
                         .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Vacancy");
@@ -687,7 +696,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", "Vacancy")
                         .WithMany("Tests")
                         .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Vacancy");
@@ -698,13 +707,13 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.HasOne("MRA.Jobs.Domain.Entities.Application", "Application")
                         .WithOne("TestResult")
                         .HasForeignKey("MRA.Jobs.Domain.Entities.TestResult", "ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("MRA.Jobs.Domain.Entities.Test", "Test")
                         .WithMany("Results")
                         .HasForeignKey("TestId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Application");
@@ -717,7 +726,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.HasOne("MRA.Jobs.Domain.Entities.Tag", "Tag")
                         .WithMany("UserTags")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Tag");
@@ -728,7 +737,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.HasOne("MRA.Jobs.Domain.Entities.VacancyCategory", "Category")
                         .WithMany("Vacancies")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -759,13 +768,13 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.HasOne("MRA.Jobs.Domain.Entities.Tag", "Tag")
                         .WithMany("VacancyTags")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", "Vacancy")
                         .WithMany("Tags")
                         .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Tag");
@@ -785,7 +794,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.HasOne("MRA.Jobs.Domain.Entities.Application", "Application")
                         .WithMany("History")
                         .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Application");
@@ -796,7 +805,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", "Vacancy")
                         .WithMany("History")
                         .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Vacancy");
