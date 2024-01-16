@@ -30,7 +30,7 @@ public class LoginTest : BaseTest
     public async Task Login_RequestWithEmptyLoginData_ReturnsUnauthorized()
     {
         // Arrange
-        var request = new LoginUserCommand {Username = "null", Password = "null"};
+        var request = new LoginUserCommand {Username = "null", Password = "12345"};
 
         // Act
         var response = await _client.PostAsJsonAsync("/api/Auth/login", request);
