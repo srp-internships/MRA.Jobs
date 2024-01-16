@@ -12,7 +12,7 @@ public class GetVacancyCommandByIdQueryHandlerTests : BaseTestFixture
     public override void Setup()
     {
         base.Setup();
-        _handler = new GetJobVacancyBySlugQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetJobVacancyBySlugQueryHandler(_dbContextMock.Object, Mapper, _currentUserServiceMock.Object);
     }
 
     [Test]
