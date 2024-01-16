@@ -568,7 +568,7 @@
     <value>Silk Road Professionals</value>
   </data>
     <data name="Home:AboutContent" xml:space="preserve">
-    <value> Silk Road Professionals (SRP) is a full-cycle software development company founded in 2014. We are legally registered in Virginia, USA and in Dehmoy, Tajikistan.</value>
+    <value> Silk Road Professionals (SRP) is a full-cycle software development company founded in 2014.</value>
   </data>
     <data name="Home:MissionTitle" xml:space="preserve">
     <value>OUR MISSION</value>
@@ -608,12 +608,6 @@
   </data>
     <data name="Home:IntrinsicControlDetails" xml:space="preserve">
     <value>We encourage our programmers to be self-motivated towards improving their own skills and producing quality work.</value>
-  </data>
-    <data name="Home:GlorifyGod" xml:space="preserve">
-    <value>Glorify God</value>
-  </data>
-    <data name="Home:GlorifyGodDetails" xml:space="preserve">
-    <value>We want everything we do to bring glory to God.</value>
   </data>
     <data name="Home:Productivity" xml:space="preserve">
     <value>Productivity</value>
