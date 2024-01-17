@@ -29,18 +29,20 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
         _ = user ?? throw new NotFoundException("user is not found");
 
         var exitingUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName != user.UserName &&
-        (u.PhoneNumber == request.PhoneNumber || u.Email == request.Email));
+        (u.PhoneNumber == request.PhoneNumber || u.Email == request.Email), cancellationToken: cancellationToken);
         if (exitingUser != null)
         {
             if (exitingUser.Email == request.Email && exitingUser.PhoneNumber == request.PhoneNumber)
             {
                 throw new DuplicateWaitObjectException($"Email {request.Email} and Phone Number {request.PhoneNumber} are not available!");
             }
-            else if (exitingUser.PhoneNumber == request.PhoneNumber)
+
+            if (exitingUser.PhoneNumber == request.PhoneNumber)
             {
                 throw new DuplicateWaitObjectException($"Phone Number {request.PhoneNumber} is not available!");
             }
-            else if (exitingUser.Email == request.Email)
+
+            if (exitingUser.Email == request.Email)
             {
                 throw new DuplicateWaitObjectException($"Email {request.Email} is not available!");
             }
