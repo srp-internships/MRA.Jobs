@@ -225,7 +225,7 @@ public partial class VacancyPage
             }
             else
             {
-                Snackbar.Add(result.Error ?? "An error occurred while creating the job", Severity.Error);
+                Snackbar.Add(result.Error  ?? "An error occurred while creating the job", Severity.Error);
             }
 
             await LoadData();
