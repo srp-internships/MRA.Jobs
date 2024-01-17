@@ -42,6 +42,10 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Migrations\20240117063759_TimelineEvent_change_type_CreateBy.Designer.cs" />
+    </ItemGroup>
+
     <ProjectExtensions>
         <VisualStudio>
             <UserProperties dbsettings_1json__JsonSchema="https://docs.renovatebot.com/renovate-schema.json" />
