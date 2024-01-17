@@ -1,31 +1,42 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
 using MRA.Identity.Application.Contract.User.Queries;
+using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Users.Query;
 
 public class
-    SmsVerificationCodeCheckQueryHandler : IRequestHandler<SmsVerificationCodeCheckQuery, SmsVerificationCodeStatus>
+    SmsVerificationCodeCheckQueryHandler(IApplicationDbContext context, ISmsCodeChecker codeChecker)
+    : IRequestHandler<SmsVerificationCodeCheckQuery, SmsVerificationCodeStatus>
 {
-    private readonly IApplicationDbContext _context;
-    private readonly ISmsCodeChecker _codeChecker;
-
-    public SmsVerificationCodeCheckQueryHandler(IApplicationDbContext context, ISmsCodeChecker codeChecker)
-    {
-        _context = context;
-        _codeChecker = codeChecker;
-    }
-
-    public Task<SmsVerificationCodeStatus> Handle(SmsVerificationCodeCheckQuery request,
+    public async Task<SmsVerificationCodeStatus> Handle(SmsVerificationCodeCheckQuery request,
         CancellationToken cancellationToken)
     {
-
-        bool result = _codeChecker.VerifyPhone(request.Code, request.PhoneNumber);
+        bool result = codeChecker.VerifyPhone(request.Code, request.PhoneNumber);
 
         if (!result)
-            return Task.FromResult(SmsVerificationCodeStatus.CodeVerifyFailure);
+            return SmsVerificationCodeStatus.CodeVerifyFailure;
 
-        return Task.FromResult(SmsVerificationCodeStatus.CodeVerifySuccess);
+
+        var phoneNumber = request.PhoneNumber.Trim();
+        phoneNumber = phoneNumber.Length switch
+        {
+            9 => "+992" + phoneNumber.Trim(),
+            12 when phoneNumber[0] != '+' => "+" + phoneNumber,
+            _ => phoneNumber
+        };
+
+        var user = await context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber,
+            cancellationToken: cancellationToken);
+        if (user != null)
+        {
+            user.PhoneNumberConfirmed = true;
+            await context.SaveChangesAsync(cancellationToken);
+        }
+
+        return SmsVerificationCodeStatus.CodeVerifySuccess;
     }
 }
