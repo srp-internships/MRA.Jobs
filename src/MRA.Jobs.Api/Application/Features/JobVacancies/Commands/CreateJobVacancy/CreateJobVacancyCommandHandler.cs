@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.CreateJobVacancy;
@@ -30,6 +31,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
 
         jobVacancy.Category = category;
         jobVacancy.Slug = GenerateSlug(jobVacancy);
+        await ThrowIfApplicationExist(jobVacancy.Slug);
         jobVacancy.LastModifiedBy = jobVacancy.CreatedBy = _currentUserService.GetUserId() ?? Guid.Empty;
         jobVacancy.CreatedByEmail = _currentUserService.GetEmail();
         jobVacancy.LastModifiedAt =jobVacancy.CreatedAt = _dateTime.Now;
@@ -49,7 +51,13 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         await _dbContext.SaveChangesAsync(cancellationToken);
         return jobVacancy.Slug;
     }
-
+    private async Task ThrowIfApplicationExist(string applicationSlug)
+    {
+            if (await _dbContext.Vacancies.FirstOrDefaultAsync(a => a.Slug.Equals(applicationSlug)) != null)
+            {
+                throw new ConflictException("Duplicate vacancy. Vacancy with this title already exists!");
+            }
+    }
     private string GenerateSlug(JobVacancy job) =>
         _slugService.GenerateSlug($"{job.Title}-{job.CreatedAt.Year}-{job.CreatedAt.Month}");
 }
