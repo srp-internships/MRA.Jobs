@@ -281,6 +281,7 @@ else
                             <MudItem xs="12" sm="6" md="4" lg="3">
                                 <MudFileUpload T="IBrowserFile" OnFilesChanged="args => _cv = args.File" Accept="@(Configuration["CvSettings:ExceptedFormats"]!)">
                                     <ButtonTemplate Context="anotherContext">
+                                        
                                         <MudButton HtmlTag="label"
                                                    Variant="Variant.Filled"
                                                    Color="Color.Primary"
@@ -290,6 +291,7 @@ else
                                         </MudButton>
                                     </ButtonTemplate>
                                 </MudFileUpload>
+                                    <MudText Typo="Typo.caption">@_cv.Name</MudText>
                             </MudItem>
                         }
                     }
