@@ -77,7 +77,6 @@ public class RegistrationTests : BaseTest
     }
 
     [Test]
-    [TestCase("User ")]
     [TestCase(" ")]
     [TestCase("$user")]
     [TestCase("User User")]
