@@ -28,15 +28,12 @@
                         <b>Cover letter</b>
                     </MudText>
                     @_application.CoverLetter
-
                     <MudList>
                         @if (_application.VacancyResponses.Any())
                         {
                             <MudListSubheader>
                                 Questions
                             </MudListSubheader>
-
-
                             @foreach (var response in _application.VacancyResponses)
                             {
                                 <MudListItem Icon="@Icons.Material.Filled.QuestionMark" IconColor="Color.Info" Text="@response.VacancyQuestion.Question">
@@ -85,7 +82,7 @@
                             <MudText Style="color: grey" Typo="Typo.h6">
                                 <b>Notes</b>
                             </MudText>
-                            @if (!_application.History.Any())
+                            @if (_application == null)
                             {
                                 <div style="text-align: center;">
                                     <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
