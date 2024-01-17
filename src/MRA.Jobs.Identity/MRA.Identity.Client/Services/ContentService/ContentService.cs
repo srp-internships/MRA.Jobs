@@ -20,7 +20,7 @@ public class ContentService(
     private bool _ru;
     private bool _tj;
 
-    private static CultureInfo _applicationCulture = CultureInfo.CurrentCulture;
+    private static CultureInfo _applicationCulture = new (ApplicationCulturesNames.Ru);
 
     public string this[string name]
     {
