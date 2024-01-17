@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\General\**" />
+    <Content Remove="Pages\General\**" />
+    <EmbeddedResource Remove="Pages\General\**" />
+    <None Remove="Pages\General\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AltairCA.Blazor.WebAssembly.Cookie" Version="1.0.1" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
@@ -54,10 +61,6 @@
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Tajik.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-    </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Pages\General\" />
     </ItemGroup>
 
 </Project>
