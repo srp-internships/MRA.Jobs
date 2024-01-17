@@ -80,6 +80,7 @@ public partial class Profile
         {
             _profile = await UserProfileService.Get();
             _codeSent = false;
+            StateHasChanged();
         }
     }
 

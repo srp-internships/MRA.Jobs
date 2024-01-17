@@ -12,7 +12,7 @@ public class GetTrainingModelByIdQueryHandlerTests : BaseTestFixture
     {
         base.Setup();
 
-        _handler = new GetTrainingVacancyBySlugQueryHandler(_dbContextMock.Object, Mapper);
+        _handler = new GetTrainingVacancyBySlugQueryHandler(_dbContextMock.Object, Mapper, _currentUserServiceMock.Object);
     }
 
     [Test]

@@ -14,7 +14,7 @@
 }
 else
 {
-	<VacancyDetails Slug="@Slug" vacancyDetails="@details" vacancy="trainings" />
+	<VacancyDetails Slug="@Slug" vacancyDetails="@details" Vacancy="trainings" />
 }
 
 @code {
@@ -41,7 +41,8 @@ else
 						Duration = response.Duration,
 						EndDate = response.EndDate,
 						PublishDate = response.PublishDate,
-						Fees = response.Fees
+						Fees = response.Fees,
+                        IsApplied = response.IsApplied
 					};
 			}
 		}

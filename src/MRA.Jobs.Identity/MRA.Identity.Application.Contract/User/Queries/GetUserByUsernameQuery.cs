@@ -6,3 +6,4 @@ public class GetUserByUsernameQuery : IRequest<UserResponse>
 {
     public string UserName { get; set; }
 }
+

@@ -95,8 +95,11 @@ public class ApplicationService(
     public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.PutAsJsonAsync<bool>($"{ApplicationsEndPoint}/{updateApplicationStatus.Slug}/update-status", updateApplicationStatus);
-        return response.Success ? response.Result : false;
+        var response = await httpClient.PutAsync($"{ApplicationsEndPoint}/{updateApplicationStatus.Slug}/update-status", updateApplicationStatus);
+
+        if (response.HttpStatusCode != null)
+            return (int)response.HttpStatusCode > 199 && (int)response.HttpStatusCode < 300;
+        return false;
     }
 
     public async Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug)
@@ -122,6 +125,7 @@ public class ApplicationService(
             switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:
+                    snackbar.Add("Successfully", Severity.Success);
                     return  response.Result;
                 case HttpStatusCode.Conflict:
                     snackbar.Add( response.Error, Severity.Error);
@@ -139,24 +143,7 @@ public class ApplicationService(
 
         return null;
     }
-
-    public async Task<List<TimeLineDetailsDto>> GetApplicationTimeLineEvents(string slug)
-    {
-        try
-        {
-            var response = await httpClient.GetAsJsonAsync<List<TimeLineDetailsDto>>($"{ApplicationsEndPoint}/GetTimelineEvents/{slug}");
-
-            return response.Result;
-        }
-        catch (Exception)
-        {
-            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
-        }
-
-        return null;
-    }
-
-
+    
     private async Task<string> GetCurrentUserName()
     {
         var authState = await authenticationState.GetAuthenticationStateAsync();

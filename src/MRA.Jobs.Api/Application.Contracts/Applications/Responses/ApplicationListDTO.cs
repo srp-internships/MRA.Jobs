@@ -42,7 +42,7 @@ public class ApplicationDetailsDto
 
     public Guid? LastModifiedBy { get; set; }
 
-    public IEnumerable<TimeLineDetailsDto> History { get; set; }
+    public List<TimeLineDetailsDto> History { get; set; }
     public string Slug { get; set; }
     public string CV { get; set; }
     public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }

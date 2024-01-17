@@ -43,17 +43,18 @@ public class AuthService(HttpClient httpClient,
             if (result.IsSuccessStatusCode)
             {
                 string callbackUrl = string.Empty;
+                string page = string.Empty;
                 var currentUri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
                 if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("callback", out var param))
-                {
                     callbackUrl = param;
-                }
+                if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("page", out param))
+                    page = param;
                 if (callbackUrl.IsNullOrEmpty()) callbackUrl = configuration["HttpClient:JobsClient"];
 
                 var response = await result.Content.ReadFromJsonAsync<JwtTokenResponse>();
-                
-                navigationManager.NavigateTo($"{callbackUrl}?atoken={response.AccessToken}&rtoken={response.RefreshToken}&vdate={response.AccessTokenValidateTo}");
-                
+
+                navigationManager.NavigateTo($"{callbackUrl}?atoken={response.AccessToken}&rtoken={response.RefreshToken}&vdate={response.AccessTokenValidateTo}&page={page}");
+
                 await cookieUtil.SetValueAsync("authToken", response);
                 await authenticationStateProvider.GetAuthenticationStateAsync();
                 if (!newRegister)
@@ -143,7 +144,7 @@ public class AuthService(HttpClient httpClient,
         return result;
     }
 
-    public async Task SendVerificationEmailToken(string token,string userId)
+    public async Task SendVerificationEmailToken(string token, string userId)
     {
         await httpClient.GetAsync($"Auth/verify?token={WebUtility.UrlEncode(token)}&userid={userId}");
     }

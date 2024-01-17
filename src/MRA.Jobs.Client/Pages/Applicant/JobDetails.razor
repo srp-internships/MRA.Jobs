@@ -9,7 +9,7 @@
 }
 else
 {
-	<VacancyDetails Slug="@Slug" vacancyDetails="@_details" vacancy="jobs" />
+	<VacancyDetails Slug="@Slug" vacancyDetails="@_details" Vacancy="jobs" />
 }
 
 @code {
@@ -33,7 +33,8 @@ else
 						Description = response.Description,
 						EndDate = response.EndDate,
 						PublishDate = response.PublishDate,
-						RequiredYearOfExperience = response.RequiredYearOfExperience
+						RequiredYearOfExperience = response.RequiredYearOfExperience,
+                        IsApplied = response.IsApplied
 					};
 			}
 		}
