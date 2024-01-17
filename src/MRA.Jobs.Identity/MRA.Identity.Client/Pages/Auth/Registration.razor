@@ -270,6 +270,7 @@
             else
             {
                 _registerUser.VerificationCode = _code;
+                _registerUser.Username = _registerUser.Username.Trim();
                 var error = await AuthService.RegisterUserAsync(_registerUser);
                 _processing = false;
                 Snackbar.Add(error, Severity.Error);
