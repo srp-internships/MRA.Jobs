@@ -1,6 +1,9 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Dtos;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
@@ -38,7 +41,7 @@ public class CreateTrainingVacancyCommandTest : Testing
     {
         var trainingVacancy = new CreateTrainingVacancyCommand
         {
-            Title = "Good Job!",
+            Title = "Good Job10!",
             Description = "Hey dude!",
             ShortDescription = "Hello",
             PublishDate = DateTime.Now,
@@ -59,6 +62,16 @@ public class CreateTrainingVacancyCommandTest : Testing
 
         response.EnsureSuccessStatusCode();
         response.Should().NotBeNull();
+    }
+    [Test]
+    public async Task CreateTrainingVacancyCommand_CreateTrainingDuplicate_ConflictException()
+    {
+        RunAsReviewerAsync();
+        var Training = await AddTraining("Good Job11");
+        var Training1 = await AddTraining("Good Job11");
+        await _httpClient.PostAsJsonAsync("/api/trainings", Training);
+        var response = await _httpClient.PostAsJsonAsync("/api/trainings", Training1);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
     }
     [Test]
     public async Task CreateTrainingVacancy_ValidRequest_ShouldFillDatabase()
@@ -89,7 +102,20 @@ public class CreateTrainingVacancyCommandTest : Testing
         databaseVacancy.CreatedByEmail.Should().NotBeNull();
         databaseVacancy.CreatedBy.Should().NotBeEmpty();
     }
-
+    public async Task<CreateTrainingVacancyCommand> AddTraining(string title)
+    {
+        return new CreateTrainingVacancyCommand
+        {
+            Title = title,
+            Description = "Hey dude!",
+            ShortDescription = "Hello",
+            PublishDate = DateTime.Now,
+            EndDate = DateTime.Now.AddDays(2),
+            CategoryId = await AddVacancyCategory("jobvacancy"),
+            Duration = 2,
+            Fees = 5
+        };
+    }
     async Task<Guid> AddVacancyCategory(string name)
     {
         var vacancyCategory = new VacancyCategory
