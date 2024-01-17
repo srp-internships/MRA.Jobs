@@ -77,6 +77,37 @@ public class RegistrationTests : BaseTest
     }
 
     [Test]
+    [TestCase("User ")]
+    [TestCase(" ")]
+    [TestCase("$user")]
+    [TestCase("User User")]
+    [TestCase("user 123")]
+    public async Task Register_WrongUsernameRegisterData_ReturnsBadRequest(string userName)
+    {
+        // Arrange
+        var request = new RegisterUserCommand
+        {
+            Email = "test01@easdxa123123mple.com",
+            Password = "passdsword@#12P",
+            FirstName = "Ale123x",
+            Username = userName,
+            LastName = "Makesddonsky",
+            PhoneNumber = "+992623456701",
+            Role = "Role1",
+            Application = "mra.Test",
+            ConfirmPassword = "passdsword@#12P"
+        };
+
+        // Assert
+        var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={request.PhoneNumber}");
+        res.EnsureSuccessStatusCode();
+
+        request.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == request.PhoneNumber)).Code;
+        var response = await _client.PostAsJsonAsync("api/Auth/register", request);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest),
+            await response.Content.ReadAsStringAsync());
+    }
+    [Test]
     public async Task Register_WhenRoleDoesNotExist_CreateRole()
     {
         var request = new RegisterUserCommand
