@@ -63,7 +63,7 @@ public class CreateJobVacancyCommandTest : Testing
         response.Should().NotBeNull();
     }
     [Test]
-    public async Task CreateJobVacancyCommand_CreatingJobVacancy_ConflictException()
+    public async Task CreateJobVacancyCommand_CreatingJobVacancyDuplicate_ConflictException()
     {
         RunAsReviewerAsync();
         var jobVacancy = new CreateJobVacancyCommand
