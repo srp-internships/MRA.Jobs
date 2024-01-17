@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Azure;
 using FluentAssertions;
-using MRA.Jobs.Application.Common.Exceptions;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Domain.Entities;
@@ -65,7 +63,7 @@ public class CreateJobVacancyCommandTest : Testing
         response.Should().NotBeNull();
     }
     [Test]
-    public async Task CreateJobVacancyCommand_CreatingJobVacancyWithTask_ConflictException()
+    public async Task CreateJobVacancyCommand_CreatingJobVacancy_ConflictException()
     {
         RunAsReviewerAsync();
         var jobVacancy = new CreateJobVacancyCommand
@@ -77,12 +75,6 @@ public class CreateJobVacancyCommandTest : Testing
             PublishDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(2),
             CategoryId = await AddVacancyCategory("jobvacancy"),
-            VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
-            VacancyTasks = new List<VacancyTaskDto>() { new VacancyTaskDto {
-              Title= "Create a function",
-              Description= "Create a function Sum(a, b)",
-              Template= "static class Function { //TODO: Create a function here }",
-              Test= "using NUnit.Framework; class FunctionTests { [Test] public void FunctionTest(){int a = 100;int b = 100;int summ = Function.Sum(a, b);Assert.AreEqual(200, summ, 0);}}" } },
             WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime
         };
         var jobVacancy1 = new CreateJobVacancyCommand
@@ -94,15 +86,8 @@ public class CreateJobVacancyCommandTest : Testing
             PublishDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(2),
             CategoryId = await AddVacancyCategory("jobvacancy"),
-            VacancyQuestions = new List<VacancyQuestionDto> { new VacancyQuestionDto { Question = "What is your English proficiency level?" } },
-            VacancyTasks = new List<VacancyTaskDto>() { new VacancyTaskDto {
-              Title= "Create a function",
-              Description= "Create a function Sum(a, b)",
-              Template= "static class Function { //TODO: Create a function here }",
-              Test= "using NUnit.Framework; class FunctionTests { [Test] public void FunctionTest(){int a = 100;int b = 100;int summ = Function.Sum(a, b);Assert.AreEqual(200, summ, 0);}}" } },
             WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime
         };
-
         await _httpClient.PostAsJsonAsync("/api/jobs", jobVacancy);
         var response = await _httpClient.PostAsJsonAsync("/api/jobs", jobVacancy1);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));

@@ -34,7 +34,7 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         await ThrowIfApplicationExist(jobVacancy.Slug);
         jobVacancy.LastModifiedBy = jobVacancy.CreatedBy = _currentUserService.GetUserId() ?? Guid.Empty;
         jobVacancy.CreatedByEmail = _currentUserService.GetEmail();
-        jobVacancy.LastModifiedAt =jobVacancy.CreatedAt = _dateTime.Now;
+        jobVacancy.LastModifiedAt = jobVacancy.CreatedAt = _dateTime.Now;
 
         await _dbContext.JobVacancies.AddAsync(jobVacancy, cancellationToken);
 
@@ -53,10 +53,10 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
     }
     private async Task ThrowIfApplicationExist(string applicationSlug)
     {
-            if (await _dbContext.Vacancies.FirstOrDefaultAsync(a => a.Slug.Equals(applicationSlug)) != null)
-            {
-                throw new ConflictException("Duplicate vacancy. Vacancy with this title already exists!");
-            }
+        if (await _dbContext.Vacancies.AnyAsync(v => v.Slug == applicationSlug))
+        {
+            throw new ConflictException("Duplicate vacancy. Vacancy with this title already exists!");
+        }
     }
     private string GenerateSlug(JobVacancy job) =>
         _slugService.GenerateSlug($"{job.Title}-{job.CreatedAt.Year}-{job.CreatedAt.Month}");
