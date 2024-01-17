@@ -11,17 +11,21 @@ namespace MRA.Jobs.Application.IntegrationTests;
 public class RegistrationTests : BaseTest
 {
     [Test]
-    public async Task Register_ValidRequestWithCorrectRegisterData_ReturnsOkAndSavesUserIntoDb()
+    [TestCase("Alex99","alex99@example.com", "+992123451789")]
+    [TestCase(" Jason ","jason@example.com", "+992223451789")]
+    [TestCase("Piter ","piter@example.com", "+992323451789")]
+
+    public async Task Register_ValidRequestWithCorrectRegisterData_ReturnsOkAndSavesUserIntoDb(string userName, string email, string phoneNumber)
     {
         // Arrange
         var request = new RegisterUserCommand
         {
-            Email = "test3@example.com",
+            Email = email,
             Password = "password@#12P",
             FirstName = "Alex",
-            Username = "@Alex223",
+            Username = userName,
             LastName = "Makedonsky",
-            PhoneNumber = "+992123451789",
+            PhoneNumber = phoneNumber,
             Role = "asdfffssdesasfasefa",
             Application = "43wtruigjklf",
             ConfirmPassword = "password@#12P"
@@ -68,6 +72,7 @@ public class RegistrationTests : BaseTest
         {
             // Empty Register Data
             Password = "password@1",
+            Username = "test_"
         };
 
         // Assert
@@ -76,6 +81,36 @@ public class RegistrationTests : BaseTest
             await response.Content.ReadAsStringAsync());
     }
 
+    [Test]
+    [TestCase(" ")]
+    [TestCase("$user")]
+    [TestCase("User User")]
+    [TestCase("user 123")]
+    public async Task Register_WrongUsernameRegisterData_ReturnsBadRequest(string userName)
+    {
+        // Arrange
+        var request = new RegisterUserCommand
+        {
+            Email = "test01@easdxa123123mple.com",
+            Password = "passdsword@#12P",
+            FirstName = "Ale123x",
+            Username = userName,
+            LastName = "Makesddonsky",
+            PhoneNumber = "+992623456701",
+            Role = "Role1",
+            Application = "mra.Test",
+            ConfirmPassword = "passdsword@#12P"
+        };
+
+        // Assert
+        var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={request.PhoneNumber}");
+        res.EnsureSuccessStatusCode();
+
+        request.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == request.PhoneNumber)).Code;
+        var response = await _client.PostAsJsonAsync("api/Auth/register", request);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest),
+            await response.Content.ReadAsStringAsync());
+    }
     [Test]
     public async Task Register_WhenRoleDoesNotExist_CreateRole()
     {

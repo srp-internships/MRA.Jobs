@@ -25,7 +25,6 @@ public static class DependencyInitializer
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configurations)
     {
-
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             string dbConnectionString = configurations.GetConnectionString("DefaultConnection");
@@ -59,17 +58,17 @@ public static class DependencyInitializer
             services.AddFileSmsService();
         }
         else
-        {   
+        {
             services.AddOsonSmsService();
         }
 
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
                 options.ClaimsIdentity.EmailClaimType = ClaimTypes.Email;
                 options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role;
                 options.ClaimsIdentity.UserIdClaimType = ClaimTypes.Id;
@@ -78,7 +77,6 @@ public static class DependencyInitializer
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-
 
 
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -118,11 +116,9 @@ public static class DependencyInitializer
             options.AddPolicy("CORS_POLICY", policyConfig =>
             {
                 policyConfig.WithOrigins(corsAllowedHosts)
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
             });
         });
     }
-
-
 }
