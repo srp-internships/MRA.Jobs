@@ -848,4 +848,20 @@
   <data name="Training:NewTrainingV">
     <value>Ҷойҳои нави Тренинг</value>
   </data>
+  <data name="job:CreateNewJob">
+    <value>Эҷоди ҷойҳои нави корӣ</value>
+</data>
+  <data name="job:NewVacancy">
+    <value>Кори нав Вакансия</value>
+  </data>
+  <data name="job:Selectcategory">
+    <value>Категорияро интихоб кунед</value>
+  </data>
+  <data name="job:Requiredyear">
+    <value>Сол(ҳо)-и таҷрибаи зарурӣ</value>
+  </data>
+  <data name="job:WorkSchedule">
+    <value>Ҷадвали кор</value>
+  </data>
+
 </root>

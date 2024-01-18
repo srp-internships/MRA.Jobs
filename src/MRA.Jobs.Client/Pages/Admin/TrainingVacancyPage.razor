@@ -150,7 +150,7 @@ else
 												<MudGrid>
 													<MudItem xs=12 lg="6">
 														<MudDatePicker @bind-Date="@TrainingService.createCommand.EndDate" Variant="Variant.Outlined"
-																	   Label="Date" For="@(() => TrainingService.createCommand.EndDate)" />
+																	   Label=@ContentService["Internships:Date"] For="@(() => TrainingService.createCommand.EndDate)" />
 
 													</MudItem>
 													<MudItem xs=12 lg="6">

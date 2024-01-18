@@ -894,4 +894,20 @@
   <data name="Training:NewTrainingV">
     <value>New Training Vacancy</value>
   </data>
+  <data name="job:CreateNewJob">
+    <value>Create New Job Vacancy</value>
+  </data>
+    <data name="job:NewVacancy">
+    <value>New job Vacancy</value>
+  </data>
+   <data name="job:Selectcategory">
+    <value>Select category</value>
+  </data> 
+  <data name="job:Requiredyear">
+    <value>Required year(s) of experience</value>
+  </data>
+  <data name="job:WorkSchedule">
+    <value>Work Schedule</value>
+  </data>
+  
 </root>

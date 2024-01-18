@@ -873,5 +873,20 @@
   <data name="Training:NewTrainingV">
     <value>Новая вакансия для Тренинг</value>
   </data>
+  <data name="job:CreateNewJob">
+    <value>Создать новую вакансию для работы</value>
+  </data>
+  <data name="job:NewVacancy">
+    <value>Новая вакансия для работы</value>
+  </data>
+  <data name="job:Selectcategory">
+    <value>Выбрать категорию</value>
+  </data>
+  <data name="job:Requiredyear">
+    <value>Необходимый опыт работы (в годах)</value>
+  </data>
+  <data name="job:WorkSchedule">
+    <value>График работы</value>
+  </data>
 
 </root>
