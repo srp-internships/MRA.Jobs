@@ -60,6 +60,15 @@
                 <b>@ContentService["Header:Academy"] </b>
             </MudText>
         </MudButton>
+        <CascadingAuthenticationState>
+            <AuthorizeView Roles="ApplicationAdmin">
+                <MudButton Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+                    <MudText>
+                        <b>@ContentService["Header:SendMessage"] </b>
+                    </MudText>
+                </MudButton>
+            </AuthorizeView>
+        </CascadingAuthenticationState>
         @if (_betaVersion)
         {
             <MudHidden Breakpoint="Breakpoint.MdAndDown">

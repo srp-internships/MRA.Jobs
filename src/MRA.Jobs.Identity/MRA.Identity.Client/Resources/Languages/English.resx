@@ -750,4 +750,7 @@
   <data name="Profile:EndDate" xml:space="preserve">
     <value>End date</value>
   </data>
+  <data name="Header:SendMessage" xml:space="preserve">
+    <value>Send message</value>
+  </data>
 </root>
