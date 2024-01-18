@@ -372,7 +372,7 @@ public partial class TrainingVacancyPage
 
     private void Clear()
     {
-        _createOrEditHeader = "New Internship Vacancy";
+        _createOrEditHeader = @ContentService["Training:NewTrainingV"];
         TrainingService.createCommand.Title = string.Empty;
         TrainingService.createCommand.ShortDescription = string.Empty;
         TrainingService.createCommand.Description = string.Empty;
@@ -389,7 +389,7 @@ public partial class TrainingVacancyPage
     }
     private async Task NewQuestionAsync()
     {
-        var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
+        var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>(@ContentService["Internships:AddQuestion"])).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
         _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
