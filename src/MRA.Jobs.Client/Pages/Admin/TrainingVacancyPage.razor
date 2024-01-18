@@ -119,7 +119,7 @@ else
 									<MudGrid>
 										<MudItem xs=12 lg="12">
 											<MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["Header:Category"]</MudText>
-												<MudSelect T="string" @bind-Value="@_selectedCategory"
+												<MudSelect T="string" Label=@ContentService["job:Selectcategory"] @bind-Value="@_selectedCategory"
 														   Variant="Variant.Outlined">
 													@foreach (var cat in _categories)
 												{

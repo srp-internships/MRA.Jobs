@@ -49,7 +49,7 @@ public partial class TrainingVacancyPage
     private bool _isInserting;
     private bool _isUpdating = true;
     private string _updateSlug;
-    private string _selectedCategory = "Select category";
+    private string _selectedCategory = string.Empty;
     private string _newDescription = string.Empty;
     private string _newTitle = string.Empty;
     private string _createOrEditHeader = "New Training Vacancy";
