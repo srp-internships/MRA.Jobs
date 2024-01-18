@@ -1,11 +1,13 @@
-﻿@using MRA.Jobs.Client.Services
-@using MRA.Jobs.Client.Enums
-@using MRA.Jobs.Client.Components.Client
-@using MudBlazor
-@using Microsoft.FeatureManagement
+﻿@using Microsoft.FeatureManagement
+@using MRA.Identity.Application.Contract.User.Responses
+@using Microsoft.AspNetCore.WebUtilities
+@using AltairCA.Blazor.WebAssembly.Cookie
 @inherits LayoutComponentBase
 @inject LayoutService LayoutService
 @inject IFeatureManager FeatureManager 
+@inject NavigationManager NavigationManager
+@inject IAltairCABlazorCookieUtil CookieUtil
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
 <MudLayout>

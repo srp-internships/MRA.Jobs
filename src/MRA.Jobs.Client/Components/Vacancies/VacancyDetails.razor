@@ -18,7 +18,7 @@
     }
 </style>
 
-@if (vacancyDetails is null || vacancy == null)
+@if (vacancyDetails is null || Vacancy == null)
 {
     if (_showLoader)
     {
@@ -38,7 +38,7 @@ else
                         <CardHeaderContent>
                             <div class="d-flex flex-grow-1">
                                 <div class="flex-none d-flex py-lg-3">
-                                    <MudLink Href="@("/" + vacancy)">
+                                    <MudLink Href="@("/" + Vacancy)">
                                         <MudIcon Icon="@Icons.Material.Filled.ArrowBackIosNew" Size="Size.Large"></MudIcon>
                                     </MudLink>
                                 </div>
@@ -211,7 +211,7 @@ else
                                         }
                                         else
                                         {
-                                            <MudButton Variant="Variant.Filled" href=@($"/{vacancy}/apply/{Slug}") Color="Color.Primary" FullWidth="true">
+                                            <MudButton Variant="Variant.Filled" href=@($"/{Vacancy}/apply/{Slug}") Color="Color.Primary" FullWidth="true">
                                                 <MudText>
                                                     <b>@ContentService["VacancyDetails:Apply Now"]</b>
                                                 </MudText>
@@ -229,7 +229,7 @@ else
                                         </MudText>
                                     </MudCardHeader>
                                     <MudCardActions>
-                                        <MudButton Variant="Variant.Filled" Href=@($"{Configuration["IdentityClient"]}/registration?callback={NavigationManager.BaseUri}jobs/apply/{Slug}") Color="Color.Primary" FullWidth="true">
+                                        <MudButton Variant="Variant.Filled" Href=@($"{Configuration["IdentityClient"]}/registration?callback={NavigationManager.BaseUri}&page={Vacancy}/apply/{Slug}") Color="Color.Primary" FullWidth="true">
                                             <MudText>
                                                 <b>@ContentService["VacancyDetails:Sign Up"]</b>
                                             </MudText>
@@ -237,7 +237,7 @@ else
                                     </MudCardActions>
                                     <MudText Typo="Typo.body2" Style="padding:0 10px 10px 10px">
                                         @ContentService["VacancyDetails:Already have an account?"]
-                                        <MudLink Typo="Typo.body2" Href=@($"{Configuration["IdentityClient"]}/login?callback={NavigationManager.BaseUri}jobs/apply/{Slug}") Color="Color.Primary">
+                                        <MudLink Typo="Typo.body2" Href=@($"{Configuration["IdentityClient"]}/login?callback={NavigationManager.BaseUri}&page={Vacancy}/apply/{Slug}") Color="Color.Primary">
                                             <b>@ContentService["VacancyDetails:Sign In"]</b>
                                         </MudLink>
                                     </MudText>
@@ -257,13 +257,13 @@ else
     [Parameter]
     public string Slug { get; set; } = string.Empty;
 
-    private string _cvUrl;
+    private string _cvUrl="";
 
     [Parameter]
     public VacancyDetailsResponse vacancyDetails { get; set; }
 
     [Parameter]
-    public string vacancy { get; set; }
+    public string Vacancy { get; set; }
 
     protected override async void OnAfterRender(bool firstRender)
     {
