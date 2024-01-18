@@ -1,7 +1,10 @@
 ﻿@using MRA.Identity.Application.Contract.Messages.Commands
+@using MRA.Identity.Client.Services.Message
+@inject ISnackbar Snackbar
+@inject IMessageService messageService
 <MudDialog>
     <DialogContent>
-        <EditForm Model="@message" OnInvalidSubmit="Submit">
+        <EditForm Model="@message">
             <FluentValidationValidator @ref="_fluentValidationValidator" />
 
             <MudTextField @bind-Value="message.Phone" Label="@ContentService["SignUp:Phone"]" For="@(()=>message.Phone)" />
@@ -10,7 +13,7 @@
 
             <br />
             <MudButton OnClick="Cancel">Cancel</MudButton>
-            <MudButton Color="Color.Info" Variant="Variant.Filled" ButtonType="ButtonType.Submit">@ContentService["Message:Send"]</MudButton>
+            <MudButton Color="Color.Info" Variant="Variant.Filled" OnClick="Submit">@ContentService["Message:Send"]</MudButton>
         </EditForm>
     </DialogContent>
 
@@ -24,6 +27,15 @@
     {
         if (await _fluentValidationValidator!.ValidateAsync())
         {
+            var response = await messageService.SendMessageAsync(message);
+            var resText = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode && resText == "true")
+            {
+                Snackbar.Add("Message sent successfully", Severity.Info);
+            } else
+            {
+                Snackbar.Add("Unable to send message, something went wront", Severity.Info);
+            }
             MudDialog.Close();
         }
         
