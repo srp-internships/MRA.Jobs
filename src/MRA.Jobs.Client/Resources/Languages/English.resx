@@ -828,4 +828,64 @@
   <data name="Category:NewCategory">
         <value>New Category</value>
     </data>
+  <data name="Internships:InternshipsVacancy">
+        <value>Internships Vacancy</value>
+    </data>
+  <data name="Internships:CreateInternship">
+    <value>Create New Internship Vacancy</value>
+  </data>
+  <data name="Internships:Title">
+    <value>Title</value>
+  </data> 
+  <data name="Internships:ShortDescription">
+    <value>Short Description</value>
+  </data>
+  <data name="Internships:InsertImage">
+    <value>Insert Image</value>
+  </data>
+  <data name="Internships:Stipend">
+    <value>Stipend</value>
+  </data> 
+  <data name="">
+    <value>Publish Date</value>
+  </data>
+  <data name="Internships:Date">
+    <value>Date</value>
+  </data>
+  <data name="Internships:Time">
+    <value>Time</value>
+  </data>
+  <data name="Internships:ApplicationDeadline">
+    <value>Application Deadline</value>
+  </data>
+  <data name="Internships:Tasks">
+    <value>Tasks</value>
+  </data> 
+  <data name="Internships:Template">
+    <value>Template</value>
+  </data>
+  <data name="Internships:Test">
+    <value>Test</value>
+  </data>
+  <data name="Internships:Remove">
+    <value>Remove</value>
+  </data> 
+  <data name="Internships:AddTask">
+    <value>Add Task</value>
+  </data>
+  <data name="Internships:Vacancyquestions">
+    <value>Vacancy questions</value>
+  </data>
+  <data name="Internships:AddQuestion">
+    <value>Add Question</value>
+  </data>
+  <data name="Internships:Create">
+    <value>Create</value>
+  </data> 
+  <data name="Internships:Searchjobs">
+    <value>Search jobs</value>
+  </data>
+  <data name="Internships:NewInternship">
+    <value>New Internship Vacancy</value>
+  </data>
 </root>

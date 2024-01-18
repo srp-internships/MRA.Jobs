@@ -807,4 +807,65 @@
   <data name="Category:NewCategory">
     <value>Новая категория</value>
   </data>
+  <data name="Internships:InternshipsVacancy">
+    <value>Вакансии стажировок</value>
+  </data>
+  <data name="Internships:CreateInternship">
+    <value>Создать новую вакансию для стажировки</value>
+  </data>
+  <data name="Internships:Title">
+    <value>Заголовок</value>
+  </data>
+  <data name="Internships:ShortDescription">
+    <value>Краткое описание</value>
+  </data>
+  <data name="Internships:InsertImage">
+    <value>Вставить изображение</value>
+  </data>
+  <data name="Internships:Stipend">
+    <value>Стипендия</value>
+  </data>
+  <data name="Internships:PublishDate">
+    <value>Дата публикации</value>
+  </data>
+  <data name="Internships:Date">
+    <value>Дата</value>
+  </data>
+  <data name="Internships:Time">
+    <value>Время</value>
+  </data>
+  <data name="Internships:ApplicationDeadline">
+    <value>Крайний срок подачи заявок</value>
+  </data>
+  <data name="Internships:Tasks">
+    <value>Задачи</value>
+  </data>
+  <data name="Internships:Template">
+    <value>Шаблон</value>
+  </data>
+  <data name="Internships:Test">
+    <value>Тест</value>
+  </data>
+  <data name="Internships:Remove">
+    <value>Удалить</value>
+  </data>
+  <data name="Internships:AddTask">
+    <value>Добавить задачу</value>
+  </data>
+  <data name="Internships:Vacancyquestions">
+    <value>Вопросы к вакансии</value>
+  </data>
+  <data name="Internships:AddQuestion">
+    <value>Добавить вопрос</value>
+  </data>
+  <data name="Internships:Create">
+    <value>Создать</value>
+  </data>
+  <data name="Internships:Searchjobs">
+    <value>Поиск вакансий</value>
+  </data>
+  <data name="Internships:NewInternship">
+    <value>Новая вакансия для стажировки</value>
+  </data>
+
 </root>

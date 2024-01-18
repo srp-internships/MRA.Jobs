@@ -27,11 +27,11 @@ else
         <MudItem lg="12">
             <MudCardActions>
                 <MudText Typo="Typo.h4">
-                    <b>Internships Vacancy</b>
+						<b>@ContentService["Internships:InternshipsVacancy"]</b>
                 </MudText>
                 <MudSpacer/>
                 <MudButton Disabled="@_panelOpenState" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => _panelOpenState = !_panelOpenState)">
-                    <MudText>Create New Internship Vacancy</MudText>
+						<MudText>@ContentService["Internships:CreateInternship"]</MudText>
                 </MudButton>
             </MudCardActions>
         </MudItem>
@@ -49,11 +49,11 @@ else
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
-                        <MudTextField @bind-Value="@InternshipService.createCommand.Title" Label="Title"
+									<MudTextField @bind-Value="@InternshipService.createCommand.Title" Label="@ContentService["Internships:Title"]"
                                       Variant="Variant.Outlined" For="@(() => InternshipService.createCommand.Title)"/>
-                        <MudTextField Lines="5" @bind-Value="@InternshipService.createCommand.ShortDescription" Label="ShortDescription"
+									<MudTextField Lines="5" @bind-Value="@InternshipService.createCommand.ShortDescription" Label="@ContentService["Internships:ShortDescription"]"
                                       Variant="Variant.Outlined" For="@(() => InternshipService.createCommand.ShortDescription)"/>
-                        <MudText>Description</MudText>
+									<MudText>@ContentService["Profile:Description"]</MudText>
                         <BlazoredTextEditor @ref="@_quillHtml">
                             <ToolbarContent>
                                 <span class="ql-formats">
@@ -102,7 +102,7 @@ else
                         <MudInput @bind-Value="@_imageLinkToInsertToEditor"/>
                         <MudButton Variant="Variant.Filled" Color="Color.Primary"
                                    @onclick="InsertImage">
-                            Insert Image
+											@ContentService["Internships:InsertImage"]
                         </MudButton>
                     </MudCardContent>
                 </MudCard>
@@ -112,14 +112,14 @@ else
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Style="color:rgb(128,128,128)">
-                                <b>Vacancy details</b>
+											<b>@ContentService["VacancyApplication:Vacancy Details"]</b>
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
                         <MudGrid>
                             <MudItem xs=12 lg="12">
-                                <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Category</MudText>
+											<MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["Header:Category"]</MudText>
                                 <MudSelect T="string" @bind-Value="@_selectedCategory"
                                            Variant="Variant.Outlined">
                                     @foreach (var cat in _categories)
@@ -129,47 +129,47 @@ else
                                 </MudSelect>
                             </MudItem>
                             <MudItem xs="12" lg="6">
-                                <MudTextField @bind-Value="@InternshipService.createCommand.Duration" Label="Duration"
+											<MudTextField @bind-Value="@InternshipService.createCommand.Duration" Label=@ContentService["VacancyDetails:Duration"]
                                               Variant="Variant.Outlined" For="@(() => InternshipService.createCommand.Duration)"/>
                             </MudItem>
                             <MudItem xs="12" lg="6">
-                                <MudTextField @bind-Value="@InternshipService.createCommand.Stipend" Label="Stipend"
+											<MudTextField @bind-Value="@InternshipService.createCommand.Stipend" Label=@ContentService["Internships:Stipend"]
                                               Variant="Variant.Outlined" For="@(() => InternshipService.createCommand.Stipend)"/>
                             </MudItem>
                             <MudItem xs=12 lg="12">
-                                <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Publish Date</MudText>
+											<MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["Internships:PublishDate"]</MudText>
                                 <MudGrid>
                                     <MudItem xs=12 lg="6">
                                         <MudDatePicker @bind-Date="@InternshipService.createCommand.PublishDate" Variant="Variant.Outlined"
-                                                       Label="Date" For="@(() => InternshipService.createCommand.PublishDate)"/>
+                                                       Label=@ContentService["Internships:Date"] For="@(() => InternshipService.createCommand.PublishDate)"/>
                                     </MudItem>
                                     <MudItem xs=12 lg="6">
-                                        <MudTimePicker AmPm="true" @bind-Time="_publishDateTime" Variant="Variant.Outlined" Label="Time"/>
+														<MudTimePicker AmPm="true" @bind-Time="_publishDateTime" Variant="Variant.Outlined" Label=@ContentService["Internships:Time"] />
                                     </MudItem>
                                 </MudGrid>
                             </MudItem>
                             <MudItem xs=12 lg="12">
-                                <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Application Deadline</MudText>
+												<MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["Internships:ApplicationDeadline"]</MudText>
                                 <MudGrid>
                                     <MudItem xs=12 lg="6">
                                         <MudDatePicker @bind-Date="@InternshipService.createCommand.ApplicationDeadline" Variant="Variant.Outlined"
-                                                       Label="Date" For="@(() => InternshipService.createCommand.ApplicationDeadline)"/>
+																	   Label=@ContentService["Internships:Date"] For="@(() => InternshipService.createCommand.ApplicationDeadline)" />
                                     </MudItem>
                                     <MudItem xs=12 lg="6">
-                                        <MudTimePicker AmPm="true" @bind-Time="_applicationDeadlineTime" Variant="Variant.Outlined" Label="Time"/>
+														<MudTimePicker AmPm="true" @bind-Time="_applicationDeadlineTime" Variant="Variant.Outlined" Label=@ContentService["Internships:Time"]/>
                                     </MudItem>
                                 </MudGrid>
                             </MudItem>
                             <MudItem xs=12 lg="12">
-                                <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">End Date</MudText>
+												<MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["VacancyApplication:End Date"]</MudText>
                                 <MudGrid>
                                     <MudItem xs=12 lg="6">
                                         <MudDatePicker @bind-Date="@InternshipService.createCommand.EndDate" Variant="Variant.Outlined"
-                                                       Label="Date" For="@(() => InternshipService.createCommand.EndDate)"/>
+																	   Label=@ContentService["Internships:Date"] For="@(() => InternshipService.createCommand.EndDate)" />
 
                                     </MudItem>
                                     <MudItem xs=12 lg="6">
-                                        <MudTimePicker AmPm="true" @bind-Time="_endDateTime" Variant="Variant.Outlined" Label="Time"/>
+														<MudTimePicker AmPm="true" @bind-Time="_endDateTime" Variant="Variant.Outlined" Label=@ContentService["Internships:Time"] />
                                     </MudItem>
                                 </MudGrid>
                             </MudItem>
@@ -185,7 +185,7 @@ else
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Style="color:rgb(128,128,128)">
-                                <b>Tasks</b>
+												<b>@ContentService["Internships:Tasks"]</b>
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
@@ -194,14 +194,14 @@ else
                             @foreach (var task in _tasks)
                             {
                                 <MudExpansionPanel Text="@task.Title">
-                                    <MudText> Description: @task.Description</MudText>
-                                    <MudText>Template:</MudText>
+												<MudText> @ContentService["Profile:Description"]: @task.Description</MudText>
+													<MudText>@ContentService["Internships:Template"]:</MudText>
                                     <MudElement HtmlTag="pre">
                                         <MudElement HtmlTag="code">
                                             @task.Template
                                         </MudElement>
                                     </MudElement>
-                                    <MudText>Test:</MudText>
+												<MudText>@ContentService["Internships:Test"]:</MudText>
                                     <MudElement HtmlTag="pre">
                                         <MudElement HtmlTag="code">
                                             @task.Test
@@ -209,7 +209,7 @@ else
                                     </MudElement>
                                     <MudButton StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error"
                                                Variant="Variant.Filled" OnClick="() => RemoveTask(task.Title)" aria-label="delete">
-                                        <MudText>Remove</MudText>
+													<MudText>@ContentService["Internships:Remove"]</MudText>
                                     </MudButton>
                                 </MudExpansionPanel>
                             }
@@ -217,17 +217,17 @@ else
                         @if (_panelOpenState)
                         {
                             <br/>
-                            <MudTextField @bind-Value="_newTitle" Label="Title"
+										<MudTextField @bind-Value="_newTitle" Label=@ContentService["Internships:Title"]
                                           Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                            <MudTextField Lines="5" @bind-Value="_newDescription" Label="Description"
+										<MudTextField Lines="5" @bind-Value="_newDescription" Label=@ContentService["Profile:Description"]
                                           Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentColor="Color.Secondary"/>
-                            <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Template</MudText>
+										<MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["Internships:Template"]</MudText>
                             <StandaloneCodeEditor @ref="_editorTemplate" Id="sample-code-editor-123" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu"/>
-                            <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">Test</MudText>
+										<MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["Internships:Test"]</MudText>
                             <StandaloneCodeEditor @ref="_editorTest" Id="sample-code-editor-456" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu"/>
                             <MudButton Variant="Variant.Filled" Color="Color.Primary"
                                        @onclick="@AddTask" Id="AddTask">
-                                <MudText>Add Task</MudText>
+											<MudText>@ContentService["Internships:AddTask"]</MudText>
                             </MudButton>
                         }
                     </MudCardContent>
@@ -238,7 +238,7 @@ else
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Style="color:rgb(128,128,128)">
-                                <b>Vacancy questions</b>
+											<b>@ContentService["Internships:Vacancyquestions"]</b>
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
@@ -256,7 +256,7 @@ else
                             <MudDivider/>
                         }
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="NewQuestionAsync">
-                            <MudText>Add Question</MudText>
+										<MudText>@ContentService["Internships:AddQuestion"]</MudText>
                         </MudButton>
                     </MudCardContent>
                 </MudCard>
@@ -267,20 +267,20 @@ else
                     <div hidden="@_isInserting">
                         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" @onclick="@HandleSubmit">
                             <MudText>
-                                Create
+											@ContentService["Internships:Create"]
                             </MudText>
                         </MudButton>
                     </div >
                     <div hidden="@_isUpdating">
                         <MudButton  ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" @onclick="@HandleUpdate">
                             <MudText>
-                                Save changes
+											@ContentService["Profile:Savechanges"]
                             </MudText>
                         </MudButton>
                     </div>
                     <MudButton Variant="Variant.Filled" Color="Color.Dark" @onclick="@HandleCancel" Style="margin-left: 10px;">
                         <MudText>
-                            Cancel
+										@ContentService["Profile:Cancel"]
                         </MudText>
                     </MudButton>
                 </MudCardActions>
@@ -294,49 +294,49 @@ else
                   Breakpoint="Breakpoint.Sm" Dense="true" Hover="true" @ref="_table">
             <ToolBarContent>
                 <MudSpacer/>
-                <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search jobs" Adornment="Adornment.Start"
+				<MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder=@ContentService["Internships:Searchjobs"] Adornment="Adornment.Start"
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Immediate="true">
                 </MudTextField>
             </ToolBarContent>
             <HeaderContent>
                 <MudTh>
-                    <strong>Title</strong>
+					<strong>@ContentService["Internships:Title"]</strong>
                 </MudTh>
                 <MudTh>
-                    <strong>Short description</strong>
+					<strong>@ContentService["Internships:ShortDescription"]</strong>
                 </MudTh>
                 <MudTh>
-                    <strong>Duration</strong>
+					<strong>@ContentService["VacancyDetails:Duration"]</strong>
                 </MudTh>
                 <MudTh>
-                    <strong>Stipend</strong>
+					<strong>@ContentService["Internships:Stipend"]</strong>
                 </MudTh>
                 <MudTh>
-                    <strong>Category</strong>
+					<strong>@ContentService["Header:Category"]</strong>
                 </MudTh>
                 <MudTh>
-                    <strong>Publish date</strong>
+					<strong>@ContentService["Internships:PublishDate"]</strong>
                 </MudTh>
                 <MudTh>
-                    <strong>Application deadline</strong>
+					<strong>@ContentService["Internships:ApplicationDeadline"]</strong>
                 </MudTh>
                 <MudTh>
-                    <strong>End date</strong>
+					<strong>@ContentService["VacancyApplication:End Date"]</strong>
                 </MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel="Title">@context.Title</MudTd>
-                <MudTd DataLabel="Short description">
+				<MudTd DataLabel=@ContentService["Internships:Title"]>@context.Title</MudTd>
+					<MudTd DataLabel=@ContentService["Internships:ShortDescription"]>
                     @(context.ShortDescription.Length > 50 ? context.ShortDescription.Substring(0, 50) : context.ShortDescription)
                 </MudTd>
-                <MudTd DataLabel="Duration">@context.Duration</MudTd>
-                <MudTd DataLabel="Stipend">@context.Stipend</MudTd>
-                <MudTd DataLabel="Category">@context.Category</MudTd>
-                <MudTd DataLabel="PublishDate">@context.PublishDate.ToString("D")</MudTd>
-                <MudTd DataLabel="Application deadline">@context.ApplicationDeadline</MudTd>
-                <MudTd DataLabel="EndDate">@context.EndDate.ToString("D")</MudTd>
+					<MudTd DataLabel=@ContentService["VacancyDetails:Duration"]>@context.Duration</MudTd>
+					<MudTd DataLabel=@ContentService["Internships:Stipend"]>@context.Stipend</MudTd>
+					<MudTd DataLabel=@ContentService["Header:Category"]>@context.Category</MudTd>
+					<MudTd DataLabel=@ContentService["Internships:PublishDate"]>@context.PublishDate.ToString("D")</MudTd>
+                <MudTd DataLabel=@ContentService["Internships:ApplicationDeadline"]>@context.ApplicationDeadline</MudTd>
+					<MudTd DataLabel=@ContentService["VacancyApplication:End Date"]>@context.EndDate.ToString("D")</MudTd>
                 <MudTd>
                     <MudIconButton @onclick="() => OnEditClick(context.Slug)" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium"/>
                 </MudTd>
@@ -345,10 +345,10 @@ else
                 </MudTd>
             </RowTemplate>
             <NoRecordsContent>
-                <MudText>No matching records found</MudText>
+					<MudText>@ContentService["UserManager:Nomatchingrecords"]</MudText>
             </NoRecordsContent>
             <LoadingContent>
-                <MudText>Loading...</MudText>
+					<MudText>@ContentService["UserManager:Loading"]</MudText>
             </LoadingContent>
             <PagerContent>
                 <MudTablePager/>

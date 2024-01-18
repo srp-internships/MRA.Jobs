@@ -782,4 +782,65 @@
   <data name="Category:NewCategory">
     <value>Категорияи нав</value>
   </data>
+  <data name="Internships:InternshipsVacancy">
+    <value>Вакансияҳои стажировка</value>
+  </data>
+  <data name="Internships:CreateInternship">
+    <value>Эҷоди ҷойҳои нави таҷрибаомӯзӣ</value>
+  </data>
+  <data name="Internships:Title">
+    <value>Сарлавҳа</value>
+  </data>
+  <data name="Internships:ShortDescription">
+    <value>Тасвиркунӣ коротӣ</value>
+  </data>
+  <data name="Internships:InsertImage">
+    <value>Ворид кардани намоиш</value>
+  </data>
+  <data name="Internships:Stipend">
+    <value>Ҳамаён</value>
+  </data>
+  <data name="Internships:PublishDate">
+    <value>Санаи нашр</value>
+  </data>
+  <data name="Internships:Date">
+    <value>Сана</value>
+  </data>
+  <data name="Internships:Time">
+    <value>Вақт</value>
+  </data>
+  <data name="Internships:ApplicationDeadline">
+    <value>Мӯъӯжат иҷрои сана</value>
+  </data>
+  <data name="Internships:Tasks">
+    <value>Вазифаҳо</value>
+  </data>
+  <data name="Internships:Template">
+    <value>Намуна</value>
+  </data>
+  <data name="Internships:Test">
+    <value>Имтексон</value>
+  </data>
+  <data name="Internships:Remove">
+    <value>Бартараф кардан</value>
+  </data>
+  <data name="Internships:AddTask">
+    <value>Вазифа илова кардан</value>
+  </data>
+  <data name="Internships:Vacancyquestions">
+    <value>Саволҳои вакансия</value>
+  </data>
+  <data name="Internships:AddQuestion">
+    <value>Савол илова кардан</value>
+  </data>
+  <data name="Internships:Create">
+    <value>Созиштан</value>
+  </data>
+  <data name="Internships:Searchjobs">
+    <value>Ҷустуҷӯи корҳо</value>
+  </data>
+  <data name="Internships:NewInternship">
+    <value>Вакансияи стажирӣи нав</value>
+  </data>
+
 </root>
