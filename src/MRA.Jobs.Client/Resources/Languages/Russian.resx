@@ -939,5 +939,23 @@
   <data name="Dashboard:Appilcations:Action" xml:space="preserve">
     <value>Действие</value>
 </data>
+  <data name="Applicateons:Status">
+    <value>Статус</value>
+  </data>
+  <data name="Applicateons:Selectstatus">
+    <value>Выбрать статус</value>
+  </data>
+  <data name="Applicateons:Changestatus">
+    <value>Изменить статус</value>
+  </data>
+  <data name="Applicateons:Notes">
+    <value>Заметки</value>
+  </data>
+  <data name="Applicateons:AddNote">
+    <value>Добавить заметку</value>
+  </data>
+  <data name="Applicateons:Add">
+    <value>Добавить</value>
+  </data>
 
 </root>

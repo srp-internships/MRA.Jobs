@@ -944,9 +944,27 @@
   <data name="UserRoles:TimerPickerAutoComplete">
     <value>TimerPicker, AutoComplete and Charts join the library as well as T versions of our inputs and selects.</value>
   </data> 
-  
   <data name="Applicateons:Filters">
     <value>Filters</value>
+  </data>
+  
+  <data name="Applicateons:Status">
+    <value>Status</value>
+  </data> 
+  <data name="Applicateons:Selectstatus">
+    <value>Select status</value>
+  </data> 
+  <data name="Applicateons:Changestatus">
+    <value>Change status</value>
+  </data> 
+  <data name="Applicateons:Notes">
+    <value>Notes</value>
+  </data> 
+  <data name="Applicateons:AddNote">
+    <value>Add Note</value>
+  </data>
+  <data name="Applicateons:Add">
+    <value>Add</value>
   </data>
   
 </root>

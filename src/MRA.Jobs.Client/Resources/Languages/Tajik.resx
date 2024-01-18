@@ -914,5 +914,23 @@
   <data name="Dashboard:Appilcations:Action" xml:space="preserve">
     <value>Амал</value>
 </data>
+  <data name="Applicateons:Status">
+    <value>Ҳолат</value>
+  </data>
+  <data name="Applicateons:Selectstatus">
+    <value>Интихоби ҳолат</value>
+  </data>
+  <data name="Applicateons:Changestatus">
+    <value>Тағйир додани ҳолат</value>
+  </data>
+  <data name="Applicateons:Notes">
+    <value>Тавзифот</value>
+  </data>
+  <data name="Applicateons:AddNote">
+    <value>Заметка илова кардан</value>
+  </data>
+  <data name="Applicateons:Add">
+    <value>Илова кардан</value>
+  </data>
 
 </root>
