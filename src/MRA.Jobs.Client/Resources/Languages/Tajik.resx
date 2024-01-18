@@ -863,5 +863,38 @@
   <data name="job:WorkSchedule">
     <value>Ҷадвали кор</value>
   </data>
+  <data name="UserRoles:PersonalData">
+    <value>Маълумоти шахсӣ</value>
+  </data>
+  <data name="UserRoles:UnConfirmed">
+    <value>Тасдиқ нашудааст</value>
+  </data>
+  <data name="UserRoles:Gender">
+    <value>Ҷинс</value>
+  </data>
+  <data name="UserRoles:History">
+    <value>Таърих</value>
+  </data>
+  <data name="UserRoles:ApplytoJobVacancy">
+    <value>Сабт кардан ба воситаи кор</value>
+  </data>
+  <data name="UserRoles:Arepository">
+    <value>Дар GitHub репозиторияи нав бо номи MudBlazor пайдо шудааст.</value>
+  </data>
+  <data name="UserRoles:Thedevelopment">
+    <value>Ташкилот ҳақиқатан оғоз шуда ва амниятчи компонентҳо аллакай хонда шудаанд.</value>
+  </data>
+  <data name="UserRoles:PassedtheTest">
+    <value>Тест гузошта шудааст</value>
+  </data>
+  <data name="UserRoles:Intern">
+    <value>Стажёр</value>
+  </data>
+  <data name="UserRoles:MudBlazorgets">
+    <value>MudBlazor аз 1.1.0-и хурди свои навминорӣ баргирафтааст.</value>
+  </data>
+  <data name="UserRoles:TimerPickerAutoComplete">
+    <value>TimerPicker, AutoComplete ва Charts ҳамчунин нусхаҳои T барои ввод ва интихобҳои мо мошаккал гардидаанд.</value>
+  </data>
 
 </root>

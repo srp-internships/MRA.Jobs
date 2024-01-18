@@ -908,6 +908,41 @@
   </data>
   <data name="job:WorkSchedule">
     <value>Work Schedule</value>
+  </data> 
+  
+  
+  <data name="UserRoles:PersonalData">
+    <value>Personal Data</value>
+  </data>
+  <data name="UserRoles:UnConfirmed">
+    <value>UnConfirmed</value>
+  </data>  
+  <data name="UserRoles:Gender">
+    <value>Gender</value>
+  </data> 
+   <data name="UserRoles:History">
+    <value>History</value>
+  </data> 
+  <data name="UserRoles:ApplytoJobVacancy">
+    <value>Apply to JobVacancy</value>
+  </data>
+  <data name="UserRoles:Arepository">
+    <value>A repository pops up on Github named MudBlazor.</value>
+  </data> 
+  <data name="UserRoles:Thedevelopment">
+    <value>The development has already started and the most common components can be found already.</value>
+  </data>  
+  <data name="UserRoles:PassedtheTest">
+    <value>Passed the Test</value>
+  </data>  
+  <data name="UserRoles:Intern">
+    <value>Intern</value>
+  </data>  
+  <data name="UserRoles:MudBlazorgets">
+    <value>MudBlazor gets its first minor with version 1.1.0.</value>
+  </data>
+  <data name="UserRoles:TimerPickerAutoComplete">
+    <value>TimerPicker, AutoComplete and Charts join the library as well as T versions of our inputs and selects.</value>
   </data>
   
 </root>
