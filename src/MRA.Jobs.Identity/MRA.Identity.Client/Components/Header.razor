@@ -1,4 +1,5 @@
-﻿@using MudBlazor
+﻿@using MRA.Identity.Client.Components.Dialogs
+@using MudBlazor
 @using Anchor = MudBlazor.Anchor
 @using Breakpoint = MudBlazor.Breakpoint
 @using Color = MudBlazor.Color
@@ -11,6 +12,7 @@
 @inject NavigationManager NavigationManager
 @inject IConfiguration Configuration
 @inject IFeatureManager FeatureManager
+@inject IDialogService DialogService
 
 
 
@@ -55,20 +57,21 @@
                 <b>@ContentService["Profile:MyProfile"]</b>
             </MudText>
         </MudButton>
-        <MudButton Href="@Configuration["Platforms:Academy"]" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
-            <MudText>
-                <b>@ContentService["Header:Academy"] </b>
-            </MudText>
-        </MudButton>
         <CascadingAuthenticationState>
             <AuthorizeView Roles="ApplicationAdmin">
-                <MudButton Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+                <MudButton Target="_blank" Color="Color.Inherit" Variant="Variant.Text" OnClick="OpenDialog" Class="@GetActiveClass(DocPages.Academy)">
                     <MudText>
                         <b>@ContentService["Header:SendMessage"] </b>
                     </MudText>
                 </MudButton>
             </AuthorizeView>
         </CascadingAuthenticationState>
+        <MudButton Href="@Configuration["Platforms:Academy"]" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+            <MudText>
+                <b>@ContentService["Header:Academy"] </b>
+            </MudText>
+        </MudButton>
+
         @if (_betaVersion)
         {
             <MudHidden Breakpoint="Breakpoint.MdAndDown">
@@ -108,6 +111,15 @@
 
     <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
         <MudNavLink Match="NavLinkMatch.All" Href="/" Target="_blank">@ContentService["Profile:MyProfile"]</MudNavLink>
+            <CascadingAuthenticationState>
+                <AuthorizeView Roles="ApplicationAdmin">
+                    <MudLink Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+                        <MudText>
+                            <b>@ContentService["Header:SendMessage"] </b>
+                    </MudText>
+                </MudLink>
+            </AuthorizeView>
+        </CascadingAuthenticationState>
         <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Platforms:Academy"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
         <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Platforms:Jobs"]" Target="_blank">@ContentService["Header:Jobs"]</MudNavLink>
 
@@ -156,5 +168,9 @@
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 
-
+    public void OpenDialog()
+    {
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge };
+        DialogService.Show<DialogMessageSender>("Send message", options);
+    }
 }

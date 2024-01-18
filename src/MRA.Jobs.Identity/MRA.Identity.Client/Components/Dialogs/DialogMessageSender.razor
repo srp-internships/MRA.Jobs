@@ -1,0 +1,32 @@
+﻿@using MRA.Identity.Application.Contract.Messages.Commands
+<MudDialog>
+    <DialogContent>
+        <EditForm Model="@message" OnInvalidSubmit="Submit">
+            <FluentValidationValidator @ref="_fluentValidationValidator" />
+
+            <MudTextField @bind-Value="message.Phone" Label="@ContentService["SignUp:Phone"]" For="@(()=>message.Phone)" />
+            <MudTextField T="string" Lines="5" Variant="Variant.Outlined" @bind-Value="message.Text" Label="@ContentService["Message:Message"]" For="@(()=>message.Text)"/>
+            <MudTextField T="string" Lines="5" Variant="Variant.Outlined" @bind-Value="message.Comment" Label="@ContentService["Message:Comment"]" />
+
+            <br />
+            <MudButton OnClick="Cancel">Cancel</MudButton>
+            <MudButton Color="Color.Info" Variant="Variant.Filled" ButtonType="ButtonType.Submit">@ContentService["Message:Send"]</MudButton>
+        </EditForm>
+    </DialogContent>
+
+</MudDialog>
+    @code {
+    private FluentValidationValidator _fluentValidationValidator;
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private SendMessageCommand message = new();
+
+    private async Task Submit()
+    {
+        if (await _fluentValidationValidator!.ValidateAsync())
+        {
+            MudDialog.Close();
+        }
+        
+    }
+    void Cancel() => MudDialog.Cancel();
+}
