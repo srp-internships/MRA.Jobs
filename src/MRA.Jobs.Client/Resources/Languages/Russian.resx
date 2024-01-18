@@ -921,5 +921,23 @@
   <data name="UserRoles:TimerPickerAutoComplete">
     <value>Добавлены TimerPicker, AutoComplete и Charts, а также версии T для наших вводов и выбора.</value>
   </data>
+  <data name="Applicateons:Filters">
+    <value>Фильтры</value>
+  </data>
+  <data name="Dashboard:Appilcations:Vacancy title" xml:space="preserve">
+    <value>Заголовок вакансии</value>
+</data>
+  <data name="Dashboard:Appilcations:Status name" xml:space="preserve">
+    <value>Наименование статуса</value>
+</data>
+  <data name="Dashboard:Appilcations:Applicant username" xml:space="preserve">
+    <value>Имя заявителя</value>
+</data>
+  <data name="Dashboard:Appilcations:Applied at" xml:space="preserve">
+    <value>Подано в</value>
+</data>
+  <data name="Dashboard:Appilcations:Action" xml:space="preserve">
+    <value>Действие</value>
+</data>
 
 </root>

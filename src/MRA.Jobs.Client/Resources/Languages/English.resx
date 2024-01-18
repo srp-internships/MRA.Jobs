@@ -943,6 +943,10 @@
   </data>
   <data name="UserRoles:TimerPickerAutoComplete">
     <value>TimerPicker, AutoComplete and Charts join the library as well as T versions of our inputs and selects.</value>
+  </data> 
+  
+  <data name="Applicateons:Filters">
+    <value>Filters</value>
   </data>
   
 </root>

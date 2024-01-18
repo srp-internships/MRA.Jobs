@@ -896,5 +896,23 @@
   <data name="UserRoles:TimerPickerAutoComplete">
     <value>TimerPicker, AutoComplete ва Charts ҳамчунин нусхаҳои T барои ввод ва интихобҳои мо мошаккал гардидаанд.</value>
   </data>
+  <data name="Applicateons:Filters">
+    <value>Фильтхо</value>
+  </data>
+  <data name="Dashboard:Appilcations:Vacancy title" xml:space="preserve">
+    <value>Сарлавҳаи вакансия</value>
+</data>
+  <data name="Dashboard:Appilcations:Status name" xml:space="preserve">
+    <value>Номи ҳолат</value>
+</data>
+  <data name="Dashboard:Appilcations:Applicant username" xml:space="preserve">
+    <value>Номи мураддор</value>
+</data>
+  <data name="Dashboard:Appilcations:Applied at" xml:space="preserve">
+    <value>Сабт карда шудааст дар</value>
+</data>
+  <data name="Dashboard:Appilcations:Action" xml:space="preserve">
+    <value>Амал</value>
+</data>
 
 </root>
