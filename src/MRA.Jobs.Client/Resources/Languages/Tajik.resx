@@ -842,5 +842,10 @@
   <data name="Internships:NewInternship">
     <value>Вакансияи стажирӣи нав</value>
   </data>
-
+  <data name="Training:NewTraining">
+    <value>Ҷойҳои нави Тренинг эҷод кунед</value>
+  </data>
+  <data name="Training:NewTrainingV">
+    <value>Ҷойҳои нави Тренинг</value>
+  </data>
 </root>

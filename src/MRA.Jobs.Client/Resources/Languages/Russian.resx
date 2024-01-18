@@ -867,5 +867,11 @@
   <data name="Internships:NewInternship">
     <value>Новая вакансия для стажировки</value>
   </data>
+  <data name="Training:NewTraining">
+    <value>Создать новую вакансию для Тренинг</value>
+  </data>
+  <data name="Training:NewTrainingV">
+    <value>Новая вакансия для Тренинг</value>
+  </data>
 
 </root>

@@ -888,4 +888,10 @@
   <data name="Internships:NewInternship">
     <value>New Internship Vacancy</value>
   </data>
+  <data name="Training:NewTraining">
+    <value>Create New Training Vacancy</value>
+  </data> 
+  <data name="Training:NewTrainingV">
+    <value>New Training Vacancy</value>
+  </data>
 </root>
