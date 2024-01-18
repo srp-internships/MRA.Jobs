@@ -7,7 +7,6 @@
 @inject IAltairCABlazorCookieUtil cookieUtil
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-
 <MudGrid Style="margin-top: 5%; margin-bottom: 10%">
     <MudItem xs="12" md="6" Style="padding: 10% 10% 0% 10%;">
         <MudText Typo="Typo.h2">
@@ -26,23 +25,23 @@
     </MudItem>
     <MudItem xs="12" md="6" Style="padding: 2%">
         <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="/images/team/team1.jpeg" Alt="" Elevation="25"
-                  Class="rounded-tr-md rounded-tl-xl rounded-br-xl rounded-bl-md mud-elevation-4"/>
+                  Class="rounded-tr-md rounded-tl-xl rounded-br-xl rounded-bl-md mud-elevation-4" />
     </MudItem>
 </MudGrid>
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudGrid>
         <MudItem xs="12" md="6" Style="padding: 2%">
             <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="//www.silkroadprofessionals.com/wp-content/uploads/2022/03/slider2-min.jpeg"
-                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4"/>
+                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4" />
         </MudItem>
         <MudItem xs="12" md="6" Style="padding:10%">
             <MudText Typo="Typo.h2">
                 <b>
-					@ContentService["Home:BuildAmazing"] <span style="color: var(--mud-palette-primary)">@ContentService["Home:Apps"]</span>
+                    @ContentService["Home:BuildAmazing"] <span style="color: var(--mud-palette-primary)">@ContentService["Home:Apps"]</span>
                 </b>
             </MudText>
             <MudText Typo="Typo.h6">
-				@ContentService["Home:BuildAmazing_Content."]
+                @ContentService["Home:BuildAmazing_Content."]
             </MudText>
         </MudItem>
     </MudGrid>
@@ -52,28 +51,28 @@
         <MudItem xs="12" md="6" Style="padding: 10% 10% 0% 10%;">
             <MudText Typo="Typo.h2">
                 <b>
-					@ContentService["Home:BuildAmazing"] <span style="color: var(--mud-palette-primary)">@ContentService["Home:Apps"]</span>
+                    @ContentService["Home:BuildAmazing"] <span style="color: var(--mud-palette-primary)">@ContentService["Home:Apps"]</span>
                 </b>
             </MudText>
             <MudText Typo="Typo.h6">
-				@ContentService["Home:BuildAmazing_Content."]
+                @ContentService["Home:BuildAmazing_Content."]
             </MudText>
         </MudItem>
         <MudItem xs="12" md="6" Style="padding: 2%">
             <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="//www.silkroadprofessionals.com/wp-content/uploads/2022/03/slider2-min.jpeg"
-                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4"/>
+                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4" />
         </MudItem>
     </MudGrid>
 </MudHidden>
 
-<HowWeWork/>
-<WhatWeDo/>
-<About/>
-<Principles/>
-<MeetTeam/>
-<Clients/>
-<Contact/>
-<NoVacancyUploadCV/>
+<HowWeWork />
+<WhatWeDo />
+<About />
+<Principles />
+<MeetTeam />
+<Clients />
+<Contact />
+<NoVacancyUploadCV />
 
 @code {
 
@@ -101,8 +100,12 @@
             token.AccessTokenValidateTo = oDate;
             await cookieUtil.SetValueAsync("authToken", token);
             await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            navigationManager.NavigateTo("/");
-            StateHasChanged();
+
+
+            if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("page", out var page))
+                navigationManager.NavigateTo($"/{page}");
+            else
+                navigationManager.NavigateTo("/");
         }
 
         var state = await authStateProvider.GetAuthenticationStateAsync();

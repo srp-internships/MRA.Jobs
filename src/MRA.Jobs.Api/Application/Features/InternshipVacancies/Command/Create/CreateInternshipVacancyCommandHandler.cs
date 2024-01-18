@@ -1,5 +1,7 @@
-﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
+using MRA.Jobs.Domain.Entities;
 using IEmailService = MRA.Configurations.Common.Interfaces.Services.IEmailService;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Command.Create;
@@ -30,6 +32,7 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         var internship = _mapper.Map<InternshipVacancy>(request);
 
         internship.Slug = GenerateSlug(internship);
+        await ThrowIfApplicationExist(internship.Slug);
         internship.CreatedByEmail = _currentUserService.GetEmail();
         internship.LastModifiedAt = internship.CreatedAt = _dateTime.Now;
         internship.LastModifiedBy = internship.CreatedBy = _currentUserService.GetUserId() ?? Guid.Empty;
@@ -50,7 +53,13 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
 
         return internship.Slug;
     }
-
+    private async Task ThrowIfApplicationExist(string applicationSlug)
+    {
+        if (await _context.Internships.AnyAsync(v => v.Slug == applicationSlug))
+        {
+            throw new ConflictException("Duplicate Internships. Internships with this title already exists!");
+        }
+    }
     private string GenerateSlug(InternshipVacancy internship) =>
         _slugService.GenerateSlug($"{internship.Title}-{internship.PublishDate.Year}-{internship.PublishDate.Month}");
 }

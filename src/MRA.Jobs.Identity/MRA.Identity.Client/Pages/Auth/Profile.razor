@@ -181,7 +181,7 @@ else
                                                     <MudTextField Label="@ContentService["Profile:Confirmationcode"]" MaxLength="4" Required Style="width:200px" @bind-Value="@_confirmationCode" Variant="Variant.Outlined" Margin="Margin.Dense" Clearable="true" />
                                                  </MudItem>
                                                  <MudItem class="m-1">
-                                                     <MudButton OnClick="Verify" Variant="Variant.Filled" Color="Color.Info" Style="width: 100px">@ContentService["Profile:Confirm"]</MudButton>
+                                                     <MudButton OnClick="@Verify" Variant="Variant.Filled" Color="Color.Info" Style="width: 100px">@ContentService["Profile:Confirm"]</MudButton>
                                                     </MudItem>
                                                 </MudGrid>
                                         }

@@ -1,7 +1,9 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
+using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
@@ -90,7 +92,34 @@ public class CreateInternshipVacancyCommandTest : Testing
         databaseVacancy.CreatedByEmail.Should().NotBeNull();
         databaseVacancy.CreatedBy.Should().NotBeEmpty();
     }
-
+    [Test]
+    public async Task CreateInternshipCommand_CreatingInternshipDuplicate_ConflictException()
+    {
+        RunAsReviewerAsync();
+        var internship = await AddInternship("Cool Jobs11");
+        var internship1 =await AddInternship("Cool Jobs11");
+        await _httpClient.PostAsJsonAsync("/api/internships", internship);
+        var response = await _httpClient.PostAsJsonAsync("/api/internships", internship1);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
+    }
+    public async Task<CreateInternshipVacancyCommand> AddInternship(string title)
+    {
+       return new CreateInternshipVacancyCommand
+        {
+            Title = title,
+            Description = "Hello1",
+            ShortDescription = "Hi1",
+            PublishDate = DateTime.Now,
+            EndDate = DateTime.Now.AddDays(2),
+            CategoryId = await AddVacancyCategory("internshipVacancy1"),
+            ApplicationDeadline = DateTime.Now.AddDays(20),
+            Duration = 10,
+            Stipend = 100,
+            VacancyQuestions = new List<VacancyQuestionDto>
+                { new() { Question = "What is your English proficiency level?1" } }
+        };
+     
+    }
     async Task<Guid> AddVacancyCategory(string name)
     {
         var vacancyCategory = new VacancyCategory

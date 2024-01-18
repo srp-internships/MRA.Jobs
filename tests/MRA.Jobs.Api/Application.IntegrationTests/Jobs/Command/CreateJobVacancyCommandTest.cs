@@ -1,7 +1,9 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
@@ -40,7 +42,7 @@ public class CreateJobVacancyCommandTest : Testing
         RunAsReviewerAsync();
         var jobVacancy = new CreateJobVacancyCommand
         {
-            Title = "Cool Job",
+            Title = "Cool Job5",
             RequiredYearOfExperience = 5,
             Description = RandomString(10),
             ShortDescription = RandomString(10),
@@ -60,6 +62,16 @@ public class CreateJobVacancyCommandTest : Testing
         response.EnsureSuccessStatusCode();
 
         response.Should().NotBeNull();
+    }
+    [Test]
+    public async Task CreateJobVacancyCommand_CreatingJobVacancyDuplicate_ConflictException()
+    {
+        RunAsReviewerAsync();
+        var jobVacancy = await AddJob("Cool Jobs");
+        var jobVacancy1 =await AddJob("Cool Jobs");
+        await _httpClient.PostAsJsonAsync("/api/jobs", jobVacancy);
+        var response = await _httpClient.PostAsJsonAsync("/api/jobs", jobVacancy1);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
     }
 
     [Test]
@@ -92,7 +104,20 @@ public class CreateJobVacancyCommandTest : Testing
         databaseVacancy.CreatedBy.Should().NotBeEmpty();
     }
 
-
+    public async Task<CreateJobVacancyCommand> AddJob(string title)
+    {
+        return new CreateJobVacancyCommand
+        {
+            Title = title,
+            RequiredYearOfExperience = 5,
+            Description = RandomString(10),
+            ShortDescription = RandomString(10),
+            PublishDate = DateTime.Now,
+            EndDate = DateTime.Now.AddDays(2),
+            CategoryId = await AddVacancyCategory("jobvacancy"),
+            WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime
+        };
+    }
     private async Task<Guid> AddVacancyCategory(string name)
     {
         var vacancyCategory = new VacancyCategory

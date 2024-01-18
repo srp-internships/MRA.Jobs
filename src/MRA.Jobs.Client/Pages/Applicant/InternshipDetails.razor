@@ -12,7 +12,7 @@
 }
 else
 {
-	<VacancyDetails Slug="@Slug" vacancyDetails="@details" vacancy="internships" />
+	<VacancyDetails Slug="@Slug" vacancyDetails="@details" Vacancy="internships" />
 }
 
 @code {
@@ -37,7 +37,9 @@ else
 						Duration = response.Duration,
 						EndDate = response.EndDate,
 						Deadline = response.ApplicationDeadline,
-						PublishDate = response.PublishDate
+						PublishDate = response.PublishDate,
+                        IsApplied = response.IsApplied
+                        
 					};
 			}
 		}

@@ -1,5 +1,7 @@
-﻿using MRA.Jobs.Application.Common.SlugGeneratorService;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Jobs.Application.Common.SlugGeneratorService;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
+using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Commands.Create;
 
@@ -30,6 +32,7 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
 
         trainingModel.Category = category;
         trainingModel.Slug = GenerateSlug(trainingModel);
+        await ThrowIfApplicationExist(trainingModel.Slug);
         trainingModel.CreatedByEmail = _currentUserService.GetEmail();
         trainingModel.LastModifiedBy = trainingModel.CreatedBy = _currentUserService.GetUserId() ?? Guid.NewGuid();
         trainingModel.LastModifiedAt = trainingModel.CreatedAt = _dateTime.Now;
@@ -48,7 +51,13 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         await _context.SaveChangesAsync(cancellationToken);
         return trainingModel.Slug;
     }
-
+    private async Task ThrowIfApplicationExist(string applicationSlug)
+    {
+        if (await _context.TrainingVacancies.AnyAsync(v => v.Slug == applicationSlug))
+        {
+            throw new ConflictException("Duplicate Training. Training with this title already exists!");
+        }
+    }
     private string GenerateSlug(TrainingVacancy vacancy) =>
         _slugService.GenerateSlug($"{vacancy.Title}-{vacancy.PublishDate.Year}-{vacancy.PublishDate.Month}");
 }

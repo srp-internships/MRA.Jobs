@@ -51,12 +51,14 @@ public class Testing
 
     public void RunAsDefaultUserAsync(string username)
     {
+        Guid userId = Guid.NewGuid();
+        _currentUserId = userId;
         var claims = new List<Claim>
         {
             new(ClaimTypes.Email, "fakeEmail@asd.com"),
             new(ClaimTypes.Role, ApplicationClaimValues.Applicant),
             new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
-            new(ClaimTypes.Id, Guid.NewGuid().ToString()),
+            new(ClaimTypes.Id, userId.ToString()),
             new(ClaimTypes.Username, username)
         };
         jwtToken = _tokenService.CreateTokenByClaims(claims);
@@ -65,12 +67,14 @@ public class Testing
     
     public void RunAsReviewerAsync()
     {
+        Guid userId = Guid.NewGuid();
+        _currentUserId = userId;
         var claims = new List<Claim>
         {
             new(ClaimTypes.Email, "fakeEmail@asd.com"),
             new(ClaimTypes.Role, ApplicationClaimValues.Reviewer),
             new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
-            new(ClaimTypes.Id, Guid.NewGuid().ToString())     ,
+            new(ClaimTypes.Id, userId.ToString())     ,
             new(ClaimTypes.Username, "username")
 
         };
@@ -80,12 +84,14 @@ public class Testing
 
     public void RunAsAdministratorAsync()
     {
+        Guid userId = Guid.NewGuid();
+        _currentUserId = userId;
         var claims = new List<Claim>
         {
             new(ClaimTypes.Email, "fakeEmail@asd.com"),
             new(ClaimTypes.Role, ApplicationClaimValues.Administrator),
             new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
-            new(ClaimTypes.Id, Guid.NewGuid().ToString()),
+            new(ClaimTypes.Id, userId.ToString()),
             new(ClaimTypes.Username, "username")
         };
         jwtToken = _tokenService.CreateTokenByClaims(claims);
@@ -162,4 +168,5 @@ public class Testing
     public void RunAfterAnyTests()
     {
     }
+
 }

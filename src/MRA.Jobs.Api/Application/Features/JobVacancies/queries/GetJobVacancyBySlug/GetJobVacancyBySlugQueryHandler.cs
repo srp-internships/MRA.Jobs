@@ -8,11 +8,13 @@ public class GetJobVacancyBySlugQueryHandler : IRequestHandler<GetJobVacancyBySl
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly ICurrentUserService _currentUser;
 
-    public GetJobVacancyBySlugQueryHandler(IApplicationDbContext dbContext, IMapper mapper)
+    public GetJobVacancyBySlugQueryHandler(IApplicationDbContext dbContext, IMapper mapper, ICurrentUserService currentUser)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _currentUser = currentUser;
     }
 
     public async Task<JobVacancyDetailsDto> Handle(GetJobVacancyBySlugQuery request, CancellationToken cancellationToken)
@@ -25,6 +27,8 @@ public class GetJobVacancyBySlugQueryHandler : IRequestHandler<GetJobVacancyBySl
             .ThenInclude(t => t.Tag)
             .FirstOrDefaultAsync(i => i.Slug == request.Slug);
         _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Slug);
-        return _mapper.Map<JobVacancyDetailsDto>(jobVacancy);
+        var mapped = _mapper.Map<JobVacancyDetailsDto>(jobVacancy);
+        mapped.IsApplied = await _dbContext.Applications.AnyAsync(s => s.ApplicantId == _currentUser.GetUserId() && s.VacancyId == jobVacancy.Id);
+        return mapped;
     }
 }
