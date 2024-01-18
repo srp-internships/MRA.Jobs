@@ -135,6 +135,12 @@
   <data name="Header:Academy" xml:space="preserve">
   <value>Академия</value>
 </data>
+  <data name="Header:Usersmanager" xml:space="preserve">
+   <value>Менеҷери истифодабарандагон</value>
+ </data>
+   <data name="Header:Category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
   <data name="UserButton:Profile" xml:space="preserve">
     <value>Хуҷраи шахсӣ</value>
   </data>
@@ -755,4 +761,25 @@
 <data name="ConverterService:On">
     <value></value>
 </data>
+  <data name="UserManager:Users">
+    <value>Истифодабарандагон</value>
+  </data>
+  <data name="UserManager:Searchname">
+    <value>Ҷустуҷӯ аз рӯи номи корбар ё номи пурра</value>
+  </data>
+  <data name="UserManager:FullName">
+    <value>Номи пурра</value>
+  </data>
+  <data name="UserManager:Roles">
+    <value>Нақшҳо</value>
+  </data>
+  <data name="UserManager:Nomatchingrecords">
+    <value>Ягон сабти мувофиқ ёфт нашуд</value>
+  </data>
+  <data name="UserManager:Loading">
+    <value>Бор карда мешавад...</value>
+  </data>
+  <data name="Category:NewCategory">
+    <value>Категорияи нав</value>
+  </data>
 </root>

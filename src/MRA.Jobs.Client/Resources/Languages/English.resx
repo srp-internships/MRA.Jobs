@@ -139,6 +139,12 @@
   </data>
     <data name="Header:Academy" xml:space="preserve">
     <value>Academy</value>
+  </data> 
+  <data name="Header:Usersmanager" xml:space="preserve">
+    <value>Users manager</value>
+  </data>
+  <data name="Header:Category" xml:space="preserve">
+    <value>Category</value>
   </data>
     <data name="UserButton:Profile" xml:space="preserve">
     <value>Profile</value>
@@ -800,5 +806,26 @@
     </data>
      <data name="ConverterService:On">
         <value>on</value>
+    </data>
+    <data name="UserManager:Users">
+        <value>Users</value>
+    </data>
+    <data name="UserManager:Searchname">
+        <value>Search by username or full name</value>
+    </data> 
+   <data name="UserManager:FullName">
+        <value>Full Name</value>
+    </data>
+  <data name="UserManager:Roles">
+        <value>Roles</value>
+    </data>
+  <data name="UserManager:Nomatchingrecords">
+        <value>No matching records found</value>
+    </data> 
+  <data name="UserManager:Loading">
+        <value>Loading...</value>
+    </data>  
+  <data name="Category:NewCategory">
+        <value>New Category</value>
     </data>
 </root>

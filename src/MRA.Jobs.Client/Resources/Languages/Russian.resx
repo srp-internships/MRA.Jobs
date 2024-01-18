@@ -135,6 +135,12 @@
   <data name="Header:Academy" xml:space="preserve">
     <value>Академия</value>
   </data>
+  <data name="Header:Usersmanager" xml:space="preserve">
+    <value>Менеджер пользователей</value>
+  </data>
+  <data name="Header:Category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
   <data name="UserButton:Profile" xml:space="preserve">
     <value>Профиль</value>
   </data>
@@ -780,4 +786,25 @@
 	<data name="ConverterService:On">
 		<value>в</value>
 	</data>
+  <data name="UserManager:Users">
+    <value>Пользователи</value>
+  </data>
+  <data name="UserManager:Searchname">
+    <value>Поиск по имени пользователя или полному имени</value>
+  </data>
+  <data name="UserManager:FullName">
+    <value>Полное имя</value>
+  </data>
+  <data name="UserManager:Roles">
+    <value>Роли</value>
+  </data>
+  <data name="UserManager:Nomatchingrecords">
+    <value>Совпадающих записей не найдено</value>
+  </data>
+  <data name="UserManager:Loading">
+    <value>Загрузка...</value>
+  </data>
+  <data name="Category:NewCategory">
+    <value>Новая категория</value>
+  </data>
 </root>
