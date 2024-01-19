@@ -54,7 +54,7 @@
 
 					<MudButton Href="/dashboard/categories" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Category)">
 						<MudText>
-							<b>Category</b>
+							<b>@ContentService["Header:Category"]</b>
 						</MudText>
 					</MudButton>
 					<MudButton Href="/dashboard/applications" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Applications)">
@@ -80,7 +80,7 @@
 					<AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
 						<MudButton Href="/userManager" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.UserManager)">
 							<MudText>
-								<b>Users manager</b>
+								<b>@ContentService["Header:Usersmanager"]</b>
 							</MudText>
 						</MudButton>
 					</AuthorizeView>
@@ -110,14 +110,14 @@
 				</MudToolBar>
 
 				<MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
-					<MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">Category</MudNavLink>
+					<MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">@ContentService["Header:Category"]</MudNavLink>
 					<MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">@ContentService["UserButton:Applications"]</MudNavLink>
 						<MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">@ContentService["Header:Jobs"]</MudNavLink>
 						<MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">@ContentService["Header:Internships"]</MudNavLink>
 						<MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">@ContentService["Header:Trainings"]</MudNavLink>
 
 						<AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-							<MudNavLink Match="NavLinkMatch.All" Href="/userManager">Users manager</MudNavLink>
+							<MudNavLink Match="NavLinkMatch.All" Href="/userManager">@ContentService["Header:Usersmanager"]</MudNavLink>
 						</AuthorizeView>
 					</MudNavMenu>
 					@if (_betaVersion)
