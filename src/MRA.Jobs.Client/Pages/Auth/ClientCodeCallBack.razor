@@ -12,23 +12,23 @@
 
 @code {
 
-    protected override async Task OnInitializedAsync()
-    {
-        var http = HttpUtility.ParseQueryString(WebUtility.UrlDecode(NavigationManager.Uri.Split('?')[1]));
+	protected override async Task OnInitializedAsync()
+	{
+		var http = HttpUtility.ParseQueryString(WebUtility.UrlDecode(NavigationManager.Uri.Split('?')[1]));
 
-        var code = http["code"];
-        if (code.IsNullOrEmpty())
-        {
-            Snackbar.Add(ContentService["GoogleAuthFailed"], Severity.Error);
-            StateHasChanged();
-            return;
-        }
-        var response = await Client.PostAsJsonAsync("auth/googleCode", new GoogleAuthCommand { Code = code, Application = "MraJobs", Role = "Applicant", });
+		var code = http["code"];
+		if (code.IsNullOrEmpty())
+		{
+			Snackbar.Add(ContentService["GoogleAuthFailed"], Severity.Error);
+			StateHasChanged();
+			return;
+		}
+		var response = await Client.PostAsJsonAsync("auth/googleCode", new GoogleAuthCommand { Code = code, Application = "MraJobs", Role = "Applicant", });
 
-        if (response.IsSuccessStatusCode)
-        {
-            await CookieUtil.SetValueAsync("authToken", await response.Content.ReadFromJsonAsync<JwtTokenResponse>());
-            NavigationManager.NavigateTo("");
+		if (response.IsSuccessStatusCode)
+		{
+			await CookieUtil.SetValueAsync("authToken", await response.Content.ReadFromJsonAsync<JwtTokenResponse>(), secure:true);
+			NavigationManager.NavigateTo("");
         }
         else
         {
