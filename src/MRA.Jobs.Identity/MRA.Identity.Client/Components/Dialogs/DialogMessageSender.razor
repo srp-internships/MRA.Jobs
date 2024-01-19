@@ -46,7 +46,7 @@
                             <MudTd DataLabel="Molar mass">@context.Status</MudTd>
                         </RowTemplate>
                        <PagerContent>
-                            <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, int.MaxValue }" InfoFormat="@($"Left {infoFormat}")" HorizontalAlignment="HorizontalAlignment.Left" HidePageNumber="@hidePageNumber" HidePagination="@hidePagination" HideRowsPerPage="@hideRowsPerPage" />
+                            <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, int.MaxValue }" InfoFormat="@($"Left {infoFormat}")" HorizontalAlignment="HorizontalAlignment.Left" />
                        </PagerContent>
                     </MudTable>
             }
@@ -62,9 +62,6 @@
     bool showHistory = false;
     List<GetMessageResponse> messages = null;
 
-    private bool hidePageNumber;
-    private bool hidePagination;
-    private bool hideRowsPerPage;
     private string infoFormat = "{first_item}-{last_item} of {all_items}";
 
     protected override async Task OnInitializedAsync()
