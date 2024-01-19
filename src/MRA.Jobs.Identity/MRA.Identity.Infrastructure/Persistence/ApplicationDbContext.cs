@@ -20,7 +20,9 @@ public sealed class ApplicationDbContext : IdentityDbContext<ApplicationUser, Ap
     public DbSet<Skill> Skills { get; set; }
     public DbSet<EducationDetail> Educations { get; set; }
     public DbSet<ExperienceDetail> Experiences { get; set; }
-    
+
+    public DbSet<Message> Messages { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
