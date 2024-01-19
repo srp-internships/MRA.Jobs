@@ -25,7 +25,7 @@
             {
                 <MudCardContent>
                     <MudText Typo="Typo.h6" Style="color: grey">
-                        <b>Cover letter</b>
+						<b>@ContentService["VacancyApplication:Cover Letter"]</b>
                     </MudText>
                     @_application.CoverLetter
 
@@ -33,7 +33,7 @@
                         @if (_application.VacancyResponses.Any())
                         {
                             <MudListSubheader>
-                                Questions
+								@ContentService["VacancyApplication:Questions"]
                             </MudListSubheader>
 
 
@@ -49,7 +49,7 @@
                     </MudList>
                     <MudGrid>
                         <MudItem xs="6">
-                            <MudText>Status: <b>@(((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString())</b></MudText>
+							<MudText> @ContentService["Applicateons:Status"]: <b>@(((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString())</b></MudText>
                         </MudItem>
                         <MudItem xs="6">
                             <MudButton Variant="Variant.Filled" Color="Color.Surface" style="margin-bottom: 10px" Href="@_cvUrl">
@@ -60,13 +60,13 @@
                     <CascadingAuthenticationState>
                         <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
                             <Authorized>
-                                <MudSelect T="string" Label="Select status" AnchorOrigin="Origin.BottomCenter" @bind-Value="@SelectedStatus">
+								<MudSelect T="string" Label=@ContentService["Applicateons:Selectstatus"] AnchorOrigin="Origin.BottomCenter" @bind-Value="@SelectedStatus">
                                     @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
                                     {
                                         <MudSelectItem Value="@status.ToString()"/>
                                     }
                                 </MudSelect>
-                                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ChangeStatus">Change status</MudButton>
+								<MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ChangeStatus">@ContentService["Applicateons:Changestatus"]</MudButton>
 
                             </Authorized>
                         </AuthorizeView>
@@ -83,7 +83,7 @@
                     <MudCard>
                         <MudCardContent>
                             <MudText Style="color: grey" Typo="Typo.h6">
-                                <b>Notes</b>
+								<b>@ContentService["Applicateons:Notes"]</b>
                             </MudText>
                             @if (!_application.History.Any())
                             {
@@ -137,7 +137,7 @@
                     <MudCard>
                         <EditForm Model="@_addNote" Context="__">
                             <MudCardHeader>
-                                <MudText>Add Note</MudText>
+								<MudText>@ContentService["Applicateons:AddNote"]</MudText>
                             </MudCardHeader>
                             <MudCardContent>
                                 <FluentValidationValidator/>
@@ -146,7 +146,7 @@
                             </MudCardContent>
                             <MudCardActions>
                                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@OnAddNoteAsync">
-                                    <MudText>Add</MudText>
+										<MudText>@ContentService["Applicateons:Add"]</MudText>
                                 </MudButton>
                             </MudCardActions>
                         </EditForm>
