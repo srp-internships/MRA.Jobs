@@ -16,4 +16,5 @@ public interface IApplicationDbContext
     public DbSet<Skill> Skills { get; set; }
     public DbSet<EducationDetail> Educations { get; set; }
     public DbSet<ExperienceDetail> Experiences { get; set; }
+    public DbSet<Message> Messages { get; set; }
 }
