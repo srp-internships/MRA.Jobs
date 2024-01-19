@@ -5,21 +5,30 @@ using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract.UserRoles.Commands;
 
 namespace MRA.Identity.Application.Features.UserRoles.Commands;
-public class DeleteUserRoleCommandHandler : IRequestHandler<DeleteUserRoleCommand, bool>
-{
-    private readonly IApplicationDbContext _context;
 
-    public DeleteUserRoleCommandHandler(IApplicationDbContext context)
-    {
-        _context = context;
-    }
+public class DeleteUserRoleCommandHandler(IApplicationDbContext context) : IRequestHandler<DeleteUserRoleCommand, bool>
+{
     public async Task<bool> Handle(DeleteUserRoleCommand request, CancellationToken cancellationToken)
     {
-        var userRole = await _context.UserRoles.FirstOrDefaultAsync(ur => ur.Slug == request.Slug);
+        var userRole =
+            await context.UserRoles.FirstOrDefaultAsync(ur => ur.Slug == request.Slug,
+                cancellationToken);
+        
         _ = userRole ?? throw new NotFoundException("not found");
-        _context.UserRoles.Remove(userRole);
-        await _context.SaveChangesAsync();
+        context.UserRoles.Remove(userRole);
+
+        var parts = userRole.Slug.Split('-');
+        var username = parts[0];
+        var role = parts[1];
+
+        var userClaim =
+            await context.UserClaims
+                .FirstOrDefaultAsync(uc => uc.Slug == $"{username}-role" &&
+                                           uc.ClaimValue.ToLower()==role.ToLower(), cancellationToken);
+        if (userClaim != null)
+            context.UserClaims.Remove(userClaim);
+
+        await context.SaveChangesAsync(cancellationToken);
         return true;
     }
 }
-

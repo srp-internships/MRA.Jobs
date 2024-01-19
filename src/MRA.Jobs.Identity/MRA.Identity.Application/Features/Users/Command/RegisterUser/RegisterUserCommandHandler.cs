@@ -86,7 +86,7 @@ public class RegisterUserCommandHandler(
         }
 
 
-        var userRole = new ApplicationUserRole { UserId = user.Id, RoleId = role.Id, Slug = $"{user.UserName}-role" };
+        var userRole = new ApplicationUserRole { UserId = user.Id, RoleId = role.Id, Slug = $"{user.UserName}-{request.Role}" };
         await context.UserRoles.AddAsync(userRole, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
         await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
