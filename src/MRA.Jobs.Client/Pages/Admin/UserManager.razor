@@ -8,9 +8,9 @@
         <MudTable ServerData="@(new Func<TableState, Task<TableData<UserResponse>>>(ServerReload))" Hover="true"
                   @ref="_table" Breakpoint="Breakpoint.None">
             <ToolBarContent>
-                <MudText Typo="Typo.h5"><b>Users</b></MudText>
+				<MudText Typo="Typo.h5"><b>@ContentService["UserManager:Users"]</b></MudText>
                 <MudSpacer/>
-                <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search by username or full name"
+				<MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder=@ContentService["UserManager:Searchname"]
                               Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                               Class="mt-0" Immediate="true">
                 </MudTextField>
@@ -18,24 +18,24 @@
 
             <HeaderContent>
                 <MudTh>
-                    <MudTableSortLabel SortLabel="UserName_field" T="UserResponse">Username</MudTableSortLabel>
+					<MudTableSortLabel SortLabel="UserName_field" T="UserResponse">@ContentService["SignUp:UserName"]</MudTableSortLabel>
                 </MudTh>
                 <MudTh>
-                    <MudTableSortLabel SortLabel="FullName_field" T="UserResponse">Full Name</MudTableSortLabel>
+						<MudTableSortLabel SortLabel="FullName_field" T="UserResponse">@ContentService["UserManager:FullName"]</MudTableSortLabel>
                 </MudTh>
                 <MudTh>
                     <MudTableSortLabel SortLabel="EmailConfirmed_field" T="UserResponse"></MudTableSortLabel>
                 </MudTh>
                 <MudTh>
-                    <MudTableSortLabel SortLabel="Email_field" T="UserResponse">Email</MudTableSortLabel>
+						<MudTableSortLabel SortLabel="Email_field" T="UserResponse">@ContentService["SignUp:Email"]</MudTableSortLabel>
                 </MudTh>
                 <MudTh>
                     <MudTableSortLabel SortLabel="PhoneNumberConfirmed_field" T="UserResponse"></MudTableSortLabel>
                 </MudTh>
                 <MudTh>
-                    <MudTableSortLabel SortLabel="PhoneNumber_field" T="UserResponse">Phone Number</MudTableSortLabel>
+						<MudTableSortLabel SortLabel="PhoneNumber_field" T="UserResponse">@ContentService["ResetPassword:PhoneNumber"]</MudTableSortLabel>
                 </MudTh>
-                <MudTh>Roles</MudTh>
+					<MudTh>@ContentService["UserManager:Roles"]</MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd>@context.UserName</MudTd>
@@ -74,10 +74,10 @@
                 </MudTd>
             </RowTemplate>
             <NoRecordsContent>
-                <MudText>No matching records found</MudText>
+				<MudText>@ContentService["UserManager:Nomatchingrecords"]</MudText>
             </NoRecordsContent>
             <LoadingContent>
-                <MudText>Loading...</MudText>
+					<MudText>@ContentService["UserManager:Loading"]</MudText>
             </LoadingContent>
             <PagerContent>
                 <MudTablePager/>

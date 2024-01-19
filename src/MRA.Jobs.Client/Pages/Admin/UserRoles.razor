@@ -26,7 +26,7 @@
                                     <MudCardHeader>
                                         <CardHeaderContent>
                                             <MudText Typo="Typo.h5">
-                                                <b>Personal Data</b>
+												<b>@ContentService["UserRoles:PersonalData"]</b>
                                             </MudText>
                                         </CardHeaderContent>
                                     </MudCardHeader>
@@ -48,57 +48,57 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td>First Name:</td>
+													<td>@ContentService["Profile:FirstName"]:</td>
                                                 <td></td>
                                                 <td>@_personalData.FirstName</td>
                                             </tr>
                                             <tr>
-                                                <td>Last Name:</td>
+													<td>@ContentService["Profile:LastName"]:</td>
                                                 <td></td>
                                                 <td>@_personalData.LastName</td>
                                             </tr>
                                             <tr>
-                                                <td>Email:</td>
+													<td>@ContentService["SignUp:Email"]:</td>
                                                 <td></td>
                                                 <td>
                                                     @_personalData.Email<br/>
                                                     @if (_personalData.EmailConfirmed)
                                                     {
-                                                        <MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
+															<MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Success" Icon="@Icons.Material.Filled.Check">@ContentService["Profile:Confirmed"]</MudChip>
                                                     }
                                                     else
                                                     {
-                                                        <MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">UnConfirmed</MudChip>
+															<MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">@ContentService["UserRoles:UnConfirmed"]</MudChip>
                                                     }
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>Phone Number:</td>
+													<td>@ContentService["ResetPassword:PhoneNumber"]:</td>
                                                 <td></td>
                                                 <td>
                                                     @_personalData.PhoneNumber<br/>
                                                     @if (_personalData.PhoneNumberConfirmed)
                                                     {
-                                                        <MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Success" Icon="@Icons.Material.Filled.Check">Confirmed</MudChip>
+															<MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Success" Icon="@Icons.Material.Filled.Check">@ContentService["Profile:Confirmed"]</MudChip>
                                                     }
                                                     else
                                                     {
-                                                        <MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">UnConfirmed</MudChip>
+															<MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Warning" Icon="@Icons.Material.Filled.Warning">@ContentService["UserRoles:UnConfirmed"]</MudChip>
                                                     }
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>DateOfBirth:</td>
+													<td>@ContentService["Profile:DateOfBirth"]:</td>
                                                 <td></td>
                                                 <td>@_personalData.DateOfBirth.ToShortDateString()</td>
                                             </tr>
                                             <tr>
-                                                <td>Gender:</td>
+													<td>@ContentService["UserRoles:Gender"]:</td>
                                                 <td></td>
                                                 <td>@_personalData.Gender</td>
                                             </tr>
                                             <tr>
-                                                <td>About:</td>
+													<td>@ContentService["Home:About"]:</td>
                                                 <td></td>
                                                 <td>@_personalData.AboutMyself</td>
                                             </tr>
@@ -112,13 +112,13 @@
                                     <MudCardHeader>
                                         <CardHeaderContent>
                                             <MudText Typo="Typo.h5">
-                                                <b>Roles</b>
+												<b>@ContentService["UserManager:Roles"]</b>
                                             </MudText>
                                         </CardHeaderContent>
                                     </MudCardHeader>
                                     <MudCardContent>
                                         <MudStack Row="true">
-                                            <MudTextField Label="Role" Variant="Variant.Outlined" @bind-Value="NewRoleName"/>
+											<MudTextField Label=@ContentService["UserManager:Roles"] Variant="Variant.Outlined" @bind-Value="NewRoleName" />
                                             <MudFab Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add" OnClick="@OnAddClick"/>
                                         </MudStack>
                                         <br/>
@@ -143,7 +143,7 @@
                                     <MudCardHeader>
                                         <CardHeaderContent>
                                             <MudText Typo="Typo.h5">
-                                                <b>Skills</b>
+													<b>@ContentService["Profile:Skills"]</b>
                                             </MudText>
                                         </CardHeaderContent>
                                     </MudCardHeader>
@@ -163,7 +163,7 @@
                                     <MudCardHeader>
                                         <CardHeaderContent>
                                             <MudText Typo="Typo.h5">
-                                                <b>History</b>
+												<b>@ContentService["UserRoles:History"]</b>
                                             </MudText>
                                         </CardHeaderContent>
                                     </MudCardHeader>
@@ -178,12 +178,12 @@
                                                 </ItemDot>
                                                 <ItemContent>
                                                     <MudPaper Elevation="0" Class="mt-n1">
-                                                        <MudText Color="Color.Dark" Typo="Typo.h6">Apply to JobVacancy</MudText>
+														<MudText Color="Color.Dark" Typo="Typo.h6">@ContentService["UserRoles:ApplytoJobVacancy"]</MudText>
                                                         <MudText Typo="Typo.body2" GutterBottom="true">
                                                             <b>10/03/2023 08:45AM</b>
                                                         </MudText>
-                                                        <MudText Typo="Typo.body2">A repository pops up on Github named MudBlazor.</MudText>
-                                                        <MudText Typo="Typo.body2">The development has already started and the most common components can be found already.</MudText>
+															<MudText Typo="Typo.body2">@ContentService["UserRoles:Arepository"].</MudText>
+															<MudText Typo="Typo.body2"> @ContentService["UserRoles:Thedevelopment"]</MudText>
                                                     </MudPaper>
                                                 </ItemContent>
                                             </MudTimelineItem>
@@ -196,7 +196,7 @@
                                                 </ItemDot>
                                                 <ItemContent>
                                                     <MudPaper Elevation="0" Class="mt-n1">
-                                                        <MudText Color="Color.Primary" Typo="Typo.h6">Passed the Test</MudText>
+															<MudText Color="Color.Primary" Typo="Typo.h6">@ContentService["UserRoles:PassedtheTest"]</MudText>
                                                         <MudText Typo="Typo.body2" GutterBottom="true">
                                                             <b>10/10/2023 10:00AM</b>
                                                         </MudText>
@@ -212,13 +212,13 @@
                                                 </ItemDot>
                                                 <ItemContent>
                                                     <MudPaper Elevation="0" Class="mt-n1">
-                                                        <MudText Color="Color.Success" Typo="Typo.h6">Intern</MudText>
+															<MudText Color="Color.Success" Typo="Typo.h6">@ContentService["UserRoles:Intern"]</MudText>
                                                         <MudText Typo="Typo.body2" GutterBottom="true">
                                                             <b>10/30/2023 03:30PM</b>
                                                         </MudText>
 
-                                                        <MudText Typo="Typo.body2">MudBlazor gets its first minor with version 1.1.0.</MudText>
-                                                        <MudText Typo="Typo.body2">TimerPicker, AutoComplete and Charts join the library as well as T versions of our inputs and selects.</MudText>
+															<MudText Typo="Typo.body2">@ContentService["UserRoles:MudBlazorgets"]</MudText>
+															<MudText Typo="Typo.body2">@ContentService["UserRoles:TimerPickerAutoComplete"]</MudText>
                                                     </MudPaper>
                                                 </ItemContent>
                                             </MudTimelineItem>
