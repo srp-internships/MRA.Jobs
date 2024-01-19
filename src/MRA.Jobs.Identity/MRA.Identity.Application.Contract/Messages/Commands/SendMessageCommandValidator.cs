@@ -11,7 +11,6 @@ public class SendMessageCommandValidator : AbstractValidator<SendMessageCommand>
     public SendMessageCommandValidator()
     {
         RuleFor(sm => sm.Text).NotEmpty();
-        RuleFor(sm => sm.Text).NotEmpty();
         RuleFor(sm => sm.Phone).NotEmpty().Matches(@"^(?:\d{9}|\+992\d{9}|992\d{9})$").WithMessage("Invalid phone number. Example : +992921234567, 992921234567, 921234567");
     }
 }

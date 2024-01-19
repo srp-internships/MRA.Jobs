@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Contract.Messages.Queries;
 using MRA.Identity.Application.Contract.Messages.Responses;
@@ -22,7 +18,7 @@ public class GetAllMessagesQueryHandler : IRequestHandler<GetAllMessagesQuery, L
     }
     public async Task<List<GetMessageResponse>> Handle(GetAllMessagesQuery request, CancellationToken cancellationToken)
     {
-        var messages = _context.Messages.OrderByDescending(m => m.Date).Select(m => _mapper.Map<GetMessageResponse>(m)).ToList(); 
+        var messages = await _context.Messages.OrderByDescending(m => m.Date).Select(m => _mapper.Map<GetMessageResponse>(m)).ToListAsync(); 
         return messages;
     }
 }
