@@ -289,6 +289,9 @@ namespace MRA.Identity.Infrastructure.Migrations
                     b.Property<string>("SenderUserName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 

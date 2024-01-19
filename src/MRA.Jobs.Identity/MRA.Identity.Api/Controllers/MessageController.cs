@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Identity.Application.Contract.Messages.Commands;
+using MRA.Identity.Application.Contract.Messages.Queries;
 
 namespace MRA.Identity.Api.Controllers;
 [Route("api/[controller]")]
@@ -19,6 +20,13 @@ public class MessageController : ControllerBase
     public async Task<IActionResult> SendMessage(SendMessageCommand command)
     {
         var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+    [HttpGet]
+    public async Task<IActionResult> GetMessages()
+    {
+        GetAllMessagesQuery query = new();
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
 }

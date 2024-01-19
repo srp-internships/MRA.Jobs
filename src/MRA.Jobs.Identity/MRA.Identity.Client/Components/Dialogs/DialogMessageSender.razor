@@ -1,27 +1,81 @@
 ﻿@using MRA.Identity.Application.Contract.Messages.Commands
+@using MRA.Identity.Application.Contract.Messages.Queries
+@using MRA.Identity.Application.Contract.Messages.Responses
 @using MRA.Identity.Client.Services.Message
 @inject ISnackbar Snackbar
 @inject IMessageService messageService
 <MudDialog>
     <DialogContent>
-        <EditForm Model="@message">
-            <FluentValidationValidator @ref="_fluentValidationValidator" />
+        <MudButton Variant="Variant.Outlined" OnClick="() => showHistory = !showHistory">@(showHistory ? "Hide history" : "Show history")</MudButton>
+        @if (!showHistory)
+        {
+            <EditForm Model="@message">
+                <FluentValidationValidator @ref="_fluentValidationValidator" />
 
-            <MudTextField @bind-Value="message.Phone" Label="@ContentService["SignUp:Phone"]" For="@(()=>message.Phone)" />
-            <MudTextField T="string" Lines="5" Variant="Variant.Outlined" @bind-Value="message.Text" Label="@ContentService["Message:Message"]" For="@(()=>message.Text)"/>
-            <MudTextField T="string" Lines="5" Variant="Variant.Outlined" @bind-Value="message.Comment" Label="@ContentService["Message:Comment"]" />
+                <MudTextField @bind-Value="message.Phone" Label="@ContentService["SignUp:Phone"]" For="@(()=>message.Phone)" />
+                <MudTextField T="string" Lines="5" Variant="Variant.Outlined" @bind-Value="message.Text" Label="@ContentService["Message:Message"]" For="@(()=>message.Text)" />
+                <MudTextField T="string" Lines="5" Variant="Variant.Outlined" @bind-Value="message.Comment" Label="@ContentService["Message:Comment"]" />
 
-            <br />
-            <MudButton OnClick="Cancel">Cancel</MudButton>
-            <MudButton Color="Color.Info" Variant="Variant.Filled" OnClick="Submit">@ContentService["Message:Send"]</MudButton>
-        </EditForm>
+                <br />
+                <MudButton OnClick="Cancel">Cancel</MudButton>
+                <MudButton Color="Color.Info" Variant="Variant.Filled" OnClick="Submit">@ContentService["Message:Send"]</MudButton>
+                </EditForm>
+        } else
+        {
+            if (fetching)
+            {
+                <MudText>Loading...</MudText>
+            }
+            else
+            {
+                <MudTable Items="@messages">
+                    <HeaderContent>
+                        <MudTh>Sender username</MudTh>
+                        <MudTh>Phone number</MudTh>
+                        <MudTh>Message text</MudTh>
+                        <MudTh>Date</MudTh>
+                        <MudTh>Comment</MudTh>
+                        <MudTh>Message status</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nr">@context.SenderUserName</MudTd>
+                            <MudTd DataLabel="Sign">@context.Phone</MudTd>
+                            <MudTd DataLabel="Name">@context.Text</MudTd>
+                            <MudTd DataLabel="Name">@context.Date</MudTd>
+                            <MudTd DataLabel="Position">@context.Comment</MudTd>
+                            <MudTd DataLabel="Molar mass">@context.Status</MudTd>
+                        </RowTemplate>
+                       <PagerContent>
+                            <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, int.MaxValue }" InfoFormat="@($"Left {infoFormat}")" HorizontalAlignment="HorizontalAlignment.Left" HidePageNumber="@hidePageNumber" HidePagination="@hidePagination" HideRowsPerPage="@hideRowsPerPage" />
+                       </PagerContent>
+                    </MudTable>
+            }
+        }
     </DialogContent>
 
 </MudDialog>
-    @code {
+@code {
     private FluentValidationValidator _fluentValidationValidator;
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     private SendMessageCommand message = new();
+    bool fetching = true;
+    bool showHistory = false;
+    List<GetMessageResponse> messages = null;
+
+    private bool hidePageNumber;
+    private bool hidePagination;
+    private bool hideRowsPerPage;
+    private string infoFormat = "{first_item}-{last_item} of {all_items}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        messages = await messageService.GetAllMessagesAsync();
+        if (messages is not null)
+        {
+            fetching = false;
+            StateHasChanged();
+        }
+    }
 
     private async Task Submit()
     {
@@ -38,7 +92,7 @@
             }
             MudDialog.Close();
         }
-        
+
     }
     void Cancel() => MudDialog.Cancel();
 }

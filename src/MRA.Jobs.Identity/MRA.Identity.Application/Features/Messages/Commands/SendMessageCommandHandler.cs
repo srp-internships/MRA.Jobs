@@ -10,6 +10,7 @@ using MRA.Configurations.Common.Interfaces.Services;
 using MRA.Configurations.OsonSms.SmsService;
 using MRA.Identity.Application.Common.Interfaces.DbContexts;
 using MRA.Identity.Application.Common.Interfaces.Services;
+using MRA.Identity.Application.Contract.Enums;
 using MRA.Identity.Application.Contract.Messages.Commands;
 using MRA.Identity.Domain.Entities;
 
@@ -43,10 +44,11 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, boo
 
         var response = await _smsService.SendSmsAsync(request.Phone[1..], request.Text);
 
-        if (!response) return false;
-
         try
         {
+            if (response) request.Status = MessageStatusDto.Sent;
+            else request.Status = MessageStatusDto.Failed;
+
             var message = _mapper.Map<Message>(request);
 
             message.SenderUserName = _contextAccessor.GetUserName();
@@ -55,7 +57,7 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, boo
 
             await _context.Messages.AddAsync(message);
             await _context.SaveChangesAsync();
-            return true;
+            return response;
         }
         catch (Exception ex)
         {

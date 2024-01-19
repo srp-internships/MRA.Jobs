@@ -1,4 +1,5 @@
 ﻿@using MRA.Identity.Client.Components.Dialogs
+@using MRA.Identity.Client.Services.Message
 @using MudBlazor
 @using Anchor = MudBlazor.Anchor
 @using Breakpoint = MudBlazor.Breakpoint
@@ -13,6 +14,7 @@
 @inject IConfiguration Configuration
 @inject IFeatureManager FeatureManager
 @inject IDialogService DialogService
+
 
 
 
@@ -113,11 +115,11 @@
         <MudNavLink Match="NavLinkMatch.All" Href="/" Target="_blank">@ContentService["Profile:MyProfile"]</MudNavLink>
             <CascadingAuthenticationState>
                 <AuthorizeView Roles="ApplicationAdmin">
-                    <MudLink Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+                    <MudNavLink OnClick="OpenDialog">
                         <MudText>
                             <b>@ContentService["Header:SendMessage"] </b>
                     </MudText>
-                </MudLink>
+                </MudNavLink>
             </AuthorizeView>
         </CascadingAuthenticationState>
         <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Platforms:Academy"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
@@ -170,7 +172,7 @@
 
     public void OpenDialog()
     {
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge };
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth=true };
         DialogService.Show<DialogMessageSender>("Send message", options);
     }
 }

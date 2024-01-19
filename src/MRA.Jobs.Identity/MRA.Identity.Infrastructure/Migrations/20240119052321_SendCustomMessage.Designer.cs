@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MRA.Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240117104243_SendCustomMessages")]
-    partial class SendCustomMessages
+    [Migration("20240119052321_SendCustomMessage")]
+    partial class SendCustomMessage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -291,6 +291,9 @@ namespace MRA.Identity.Infrastructure.Migrations
 
                     b.Property<string>("SenderUserName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
