@@ -15,7 +15,6 @@ public class RegisterUserCommandHandler(
     UserManager<ApplicationUser> userManager,
     IApplicationDbContext context,
     IEmailVerification emailVerification,
-    RoleManager<ApplicationRole> roleManager,
     ISmsCodeChecker codeChecker)
     : IRequestHandler<RegisterUserCommand, Guid>
 {
@@ -87,10 +86,6 @@ public class RegisterUserCommandHandler(
     {
         var userClaims = new[]
         {
-            new ApplicationUserClaim
-            {
-                UserId = id, ClaimType = ClaimTypes.Role, ClaimValue = role, Slug = $"{username}-role"
-            },
             new ApplicationUserClaim
             {
                 UserId = id, ClaimType = ClaimTypes.Id, ClaimValue = id.ToString(), Slug = $"{username}-id"
