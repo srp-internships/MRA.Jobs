@@ -135,6 +135,12 @@
   <data name="Header:Academy" xml:space="preserve">
     <value>Академия</value>
   </data>
+  <data name="Header:Usersmanager" xml:space="preserve">
+    <value>Менеджер пользователей</value>
+  </data>
+  <data name="Header:Category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
   <data name="UserButton:Profile" xml:space="preserve">
     <value>Профиль</value>
   </data>
@@ -780,4 +786,176 @@
 	<data name="ConverterService:On">
 		<value>в</value>
 	</data>
+  <data name="UserManager:Users">
+    <value>Пользователи</value>
+  </data>
+  <data name="UserManager:Searchname">
+    <value>Поиск по имени пользователя или полному имени</value>
+  </data>
+  <data name="UserManager:FullName">
+    <value>Полное имя</value>
+  </data>
+  <data name="UserManager:Roles">
+    <value>Роли</value>
+  </data>
+  <data name="UserManager:Nomatchingrecords">
+    <value>Совпадающих записей не найдено</value>
+  </data>
+  <data name="UserManager:Loading">
+    <value>Загрузка...</value>
+  </data>
+  <data name="Category:NewCategory">
+    <value>Новая категория</value>
+  </data>
+  <data name="Internships:InternshipsVacancy">
+    <value>Вакансии стажировок</value>
+  </data>
+  <data name="Internships:CreateInternship">
+    <value>Создать новую вакансию для стажировки</value>
+  </data>
+  <data name="Internships:Title">
+    <value>Заголовок</value>
+  </data>
+  <data name="Internships:ShortDescription">
+    <value>Краткое описание</value>
+  </data>
+  <data name="Internships:InsertImage">
+    <value>Вставить изображение</value>
+  </data>
+  <data name="Internships:Stipend">
+    <value>Стипендия</value>
+  </data>
+  <data name="Internships:PublishDate">
+    <value>Дата публикации</value>
+  </data>
+  <data name="Internships:Date">
+    <value>Дата</value>
+  </data>
+  <data name="Internships:Time">
+    <value>Время</value>
+  </data>
+  <data name="Internships:ApplicationDeadline">
+    <value>Крайний срок подачи заявок</value>
+  </data>
+  <data name="Internships:Tasks">
+    <value>Задачи</value>
+  </data>
+  <data name="Internships:Template">
+    <value>Шаблон</value>
+  </data>
+  <data name="Internships:Test">
+    <value>Тест</value>
+  </data>
+  <data name="Internships:Remove">
+    <value>Удалить</value>
+  </data>
+  <data name="Internships:AddTask">
+    <value>Добавить задачу</value>
+  </data>
+  <data name="Internships:Vacancyquestions">
+    <value>Вопросы к вакансии</value>
+  </data>
+  <data name="Internships:AddQuestion">
+    <value>Добавить вопрос</value>
+  </data>
+  <data name="Internships:Create">
+    <value>Создать</value>
+  </data>
+  <data name="Internships:Searchjobs">
+    <value>Поиск вакансий</value>
+  </data>
+  <data name="Internships:NewInternship">
+    <value>Новая вакансия для стажировки</value>
+  </data>
+  <data name="Training:NewTraining">
+    <value>Создать новую вакансию для Тренинг</value>
+  </data>
+  <data name="Training:NewTrainingV">
+    <value>Новая вакансия для Тренинг</value>
+  </data>
+  <data name="job:CreateNewJob">
+    <value>Создать новую вакансию для работы</value>
+  </data>
+  <data name="job:NewVacancy">
+    <value>Новая вакансия для работы</value>
+  </data>
+  <data name="job:Selectcategory">
+    <value>Выбрать категорию</value>
+  </data>
+  <data name="job:Requiredyear">
+    <value>Необходимый опыт работы (в годах)</value>
+  </data>
+  <data name="job:WorkSchedule">
+    <value>График работы</value>
+  </data>
+  <data name="UserRoles:PersonalData">
+    <value>Личные данные</value>
+  </data>
+  <data name="UserRoles:UnConfirmed">
+    <value>Не подтверждено</value>
+  </data>
+  <data name="UserRoles:Gender">
+    <value>Пол</value>
+  </data>
+  <data name="UserRoles:History">
+    <value>История</value>
+  </data>
+  <data name="UserRoles:ApplytoJobVacancy">
+    <value>Подать заявку на вакансию</value>
+  </data>
+  <data name="UserRoles:Arepository">
+    <value>На GitHub появляется репозиторий под названием MudBlazor.</value>
+  </data>
+  <data name="UserRoles:Thedevelopment">
+    <value>Разработка уже началась, и большинство общих компонентов уже доступны.</value>
+  </data>
+  <data name="UserRoles:PassedtheTest">
+    <value>Прошел тест</value>
+  </data>
+  <data name="UserRoles:Intern">
+    <value>Стажер</value>
+  </data>
+  <data name="UserRoles:MudBlazorgets">
+    <value>MudBlazor выпускает свою первую минорную версию 1.1.0.</value>
+  </data>
+  <data name="UserRoles:TimerPickerAutoComplete">
+    <value>Добавлены TimerPicker, AutoComplete и Charts, а также версии T для наших вводов и выбора.</value>
+  </data>
+  <data name="Applicateons:Filters">
+    <value>Фильтры</value>
+  </data>
+  <data name="Dashboard:Appilcations:Vacancy title" xml:space="preserve">
+    <value>Заголовок вакансии</value>
+</data>
+  <data name="Dashboard:Appilcations:Status name" xml:space="preserve">
+    <value>Наименование статуса</value>
+</data>
+  <data name="Dashboard:Appilcations:Applicant username" xml:space="preserve">
+    <value>Имя заявителя</value>
+</data>
+  <data name="Dashboard:Appilcations:Applied at" xml:space="preserve">
+    <value>Подано в</value>
+</data>
+  <data name="Dashboard:Appilcations:Action" xml:space="preserve">
+    <value>Действие</value>
+</data>
+  <data name="Applicateons:Status">
+    <value>Статус</value>
+  </data>
+  <data name="Applicateons:Selectstatus">
+    <value>Выбрать статус</value>
+  </data>
+  <data name="Applicateons:Changestatus">
+    <value>Изменить статус</value>
+  </data>
+  <data name="Applicateons:Notes">
+    <value>Заметки</value>
+  </data>
+  <data name="Applicateons:AddNote">
+    <value>Добавить заметку</value>
+  </data>
+  <data name="Applicateons:Add">
+    <value>Добавить</value>
+  </data>
+
 </root>
