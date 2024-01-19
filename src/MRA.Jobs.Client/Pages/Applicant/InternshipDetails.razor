@@ -8,7 +8,11 @@
 
 @if (serverError)
 {
-	<ServerErrorComponent />
+    <ServerErrorComponent />
+}
+else if (notFound)
+{
+    <MRA.Jobs.Client.Components.Extra.NotFound/>
 }
 else
 {
@@ -16,33 +20,35 @@ else
 }
 
 @code {
-	private bool serverError = false;
+    private bool serverError = false;
+    private bool notFound;
 
-	[Parameter]
-	public string Slug { get; set; }
-	private VacancyDetailsResponse details;
-	protected override async Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-		try
-		{
+    [Parameter]
+    public string Slug { get; set; }
+    private VacancyDetailsResponse details;
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        try
+        {
 
-			var response = await InternshipService.GetBySlug(Slug);
-			if (response is not null)
-			{
-				details = new VacancyDetailsResponse
-					{
-						Title = response.Title,
-						Description = response.Description,
-						Duration = response.Duration,
-						EndDate = response.EndDate,
-						Deadline = response.ApplicationDeadline,
-						PublishDate = response.PublishDate,
+            var response = await InternshipService.GetBySlug(Slug);
+            if (response is not null)
+            {
+                details = new VacancyDetailsResponse
+                    {
+                        Title = response.Title,
+                        Description = response.Description,
+                        Duration = response.Duration,
+                        EndDate = response.EndDate,
+                        Deadline = response.ApplicationDeadline,
+                        PublishDate = response.PublishDate,
                         IsApplied = response.IsApplied
-                        
-					};
-			}
-		}
+
+                    };
+            }
+            else notFound = true;
+        }
 		catch (Exception)
 		{
 			serverError = true;

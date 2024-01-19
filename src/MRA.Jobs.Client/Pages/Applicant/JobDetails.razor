@@ -5,7 +5,11 @@
 @using MRA.Jobs.Client.Components.Vacancies
 @if (_serverError)
 {
-	<ServerErrorComponent />
+    <ServerErrorComponent />
+}
+else if (notFound)
+{
+    <MRA.Jobs.Client.Components.Extra.NotFound/>
 }
 else
 {
@@ -13,31 +17,32 @@ else
 }
 
 @code {
-	private bool _serverError;
+    private bool _serverError;
+    bool notFound;
+    [Parameter]
+    public string Slug { get; set; }
 
-	[Parameter]
-	public string Slug { get; set; }
-
-	private VacancyDetailsResponse _details;
-	protected override async Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-		try
-		{
-			var response = await VacancyService.GetBySlug(Slug);
-			if (response is not null)
-			{
-				_details = new VacancyDetailsResponse
-					{
-						Title = response.Title,
-						Description = response.Description,
-						EndDate = response.EndDate,
-						PublishDate = response.PublishDate,
-						RequiredYearOfExperience = response.RequiredYearOfExperience,
+    private VacancyDetailsResponse _details;
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        try
+        {
+            var response = await VacancyService.GetBySlug(Slug);
+            if (response is not null)
+            {
+                _details = new VacancyDetailsResponse
+                    {
+                        Title = response.Title,
+                        Description = response.Description,
+                        EndDate = response.EndDate,
+                        PublishDate = response.PublishDate,
+                        RequiredYearOfExperience = response.RequiredYearOfExperience,
                         IsApplied = response.IsApplied
-					};
-			}
-		}
+                    };
+            }
+            else notFound = true;
+        }
 		catch (Exception)
 		{
 			_serverError = true;
