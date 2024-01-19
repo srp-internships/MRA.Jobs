@@ -19,8 +19,9 @@ public class
             .Include(a => a.Vacancy)
             .Include(a => a.VacancyResponses)
             .ThenInclude(vr => vr.VacancyQuestion);
-
-        var applications = currentUser.GetRoles().Any(a => a == "Applicant")
+        
+        var roles = currentUser.GetRoles();
+        var applications = roles.Count() == 1 && roles.Any(a => a == "Applicant")
             ? allApplications.Where(a => a.ApplicantUsername == currentUser.GetUserName() && a.Vacancy.Discriminator !="NoVacancy")
             : allApplications;
 
