@@ -12,40 +12,45 @@
 {
 	<ServerErrorComponent />
 }
+else if (notFound)
+{
+    <MRA.Jobs.Client.Components.Extra.NotFound />
+}
 else
 {
 	<VacancyDetails Slug="@Slug" vacancyDetails="@details" Vacancy="trainings" />
 }
 
 @code {
-	private bool serverError = false;
+    private bool serverError = false;
+    bool notFound;
+    [Parameter]
+    public string Slug { get; set; }
+    private VacancyDetailsResponse details;
 
-	[Parameter]
-	public string Slug { get; set; }
-	private VacancyDetailsResponse details;
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await base.OnInitializedAsync();
+        try
+        {
 
-	protected override async Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-		await base.OnInitializedAsync();
-		try
-		{
-
-			var response = await _trainingService.GetBySlug(Slug);
-			if (response is not null)
-			{
-				details = new VacancyDetailsResponse
-					{
-						Title = response.Title,
-						Description = response.Description,
-						Duration = response.Duration,
-						EndDate = response.EndDate,
-						PublishDate = response.PublishDate,
-						Fees = response.Fees,
+            var response = await _trainingService.GetBySlug(Slug);
+            if (response is not null)
+            {
+                details = new VacancyDetailsResponse
+                    {
+                        Title = response.Title,
+                        Description = response.Description,
+                        Duration = response.Duration,
+                        EndDate = response.EndDate,
+                        PublishDate = response.PublishDate,
+                        Fees = response.Fees,
                         IsApplied = response.IsApplied
-					};
-			}
-		}
+                    };
+            }
+            else notFound = true;
+        }
 		catch (Exception)
 		{
 			serverError = true;
