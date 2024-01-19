@@ -139,6 +139,12 @@
   </data>
     <data name="Header:Academy" xml:space="preserve">
     <value>Academy</value>
+  </data> 
+  <data name="Header:Usersmanager" xml:space="preserve">
+    <value>Users manager</value>
+  </data>
+  <data name="Header:Category" xml:space="preserve">
+    <value>Category</value>
   </data>
     <data name="UserButton:Profile" xml:space="preserve">
     <value>Profile</value>
@@ -801,4 +807,164 @@
      <data name="ConverterService:On">
         <value>on</value>
     </data>
+    <data name="UserManager:Users">
+        <value>Users</value>
+    </data>
+    <data name="UserManager:Searchname">
+        <value>Search by username or full name</value>
+    </data> 
+   <data name="UserManager:FullName">
+        <value>Full Name</value>
+    </data>
+  <data name="UserManager:Roles">
+        <value>Roles</value>
+    </data>
+  <data name="UserManager:Nomatchingrecords">
+        <value>No matching records found</value>
+    </data> 
+  <data name="UserManager:Loading">
+        <value>Loading...</value>
+    </data>  
+  <data name="Category:NewCategory">
+        <value>New Category</value>
+    </data>
+  <data name="Internships:InternshipsVacancy">
+        <value>Internships Vacancy</value>
+    </data>
+  <data name="Internships:CreateInternship">
+    <value>Create New Internship Vacancy</value>
+  </data>
+  <data name="Internships:Title">
+    <value>Title</value>
+  </data> 
+  <data name="Internships:ShortDescription">
+    <value>Short Description</value>
+  </data>
+  <data name="Internships:InsertImage">
+    <value>Insert Image</value>
+  </data>
+  <data name="Internships:Stipend">
+    <value>Stipend</value>
+  </data> 
+  <data name="">
+    <value>Publish Date</value>
+  </data>
+  <data name="Internships:Date">
+    <value>Date</value>
+  </data>
+  <data name="Internships:Time">
+    <value>Time</value>
+  </data>
+  <data name="Internships:ApplicationDeadline">
+    <value>Application Deadline</value>
+  </data>
+  <data name="Internships:Tasks">
+    <value>Tasks</value>
+  </data> 
+  <data name="Internships:Template">
+    <value>Template</value>
+  </data>
+  <data name="Internships:Test">
+    <value>Test</value>
+  </data>
+  <data name="Internships:Remove">
+    <value>Remove</value>
+  </data> 
+  <data name="Internships:AddTask">
+    <value>Add Task</value>
+  </data>
+  <data name="Internships:Vacancyquestions">
+    <value>Vacancy questions</value>
+  </data>
+  <data name="Internships:AddQuestion">
+    <value>Add Question</value>
+  </data>
+  <data name="Internships:Create">
+    <value>Create</value>
+  </data> 
+  <data name="Internships:Searchjobs">
+    <value>Search jobs</value>
+  </data>
+  <data name="Internships:NewInternship">
+    <value>New Internship Vacancy</value>
+  </data>
+  <data name="Training:NewTraining">
+    <value>Create New Training Vacancy</value>
+  </data> 
+  <data name="Training:NewTrainingV">
+    <value>New Training Vacancy</value>
+  </data>
+  <data name="job:CreateNewJob">
+    <value>Create New Job Vacancy</value>
+  </data>
+    <data name="job:NewVacancy">
+    <value>New job Vacancy</value>
+  </data>
+   <data name="job:Selectcategory">
+    <value>Select category</value>
+  </data> 
+  <data name="job:Requiredyear">
+    <value>Required year(s) of experience</value>
+  </data>
+  <data name="job:WorkSchedule">
+    <value>Work Schedule</value>
+  </data> 
+  
+  
+  <data name="UserRoles:PersonalData">
+    <value>Personal Data</value>
+  </data>
+  <data name="UserRoles:UnConfirmed">
+    <value>UnConfirmed</value>
+  </data>  
+  <data name="UserRoles:Gender">
+    <value>Gender</value>
+  </data> 
+   <data name="UserRoles:History">
+    <value>History</value>
+  </data> 
+  <data name="UserRoles:ApplytoJobVacancy">
+    <value>Apply to JobVacancy</value>
+  </data>
+  <data name="UserRoles:Arepository">
+    <value>A repository pops up on Github named MudBlazor.</value>
+  </data> 
+  <data name="UserRoles:Thedevelopment">
+    <value>The development has already started and the most common components can be found already.</value>
+  </data>  
+  <data name="UserRoles:PassedtheTest">
+    <value>Passed the Test</value>
+  </data>  
+  <data name="UserRoles:Intern">
+    <value>Intern</value>
+  </data>  
+  <data name="UserRoles:MudBlazorgets">
+    <value>MudBlazor gets its first minor with version 1.1.0.</value>
+  </data>
+  <data name="UserRoles:TimerPickerAutoComplete">
+    <value>TimerPicker, AutoComplete and Charts join the library as well as T versions of our inputs and selects.</value>
+  </data> 
+  <data name="Applicateons:Filters">
+    <value>Filters</value>
+  </data>
+  
+  <data name="Applicateons:Status">
+    <value>Status</value>
+  </data> 
+  <data name="Applicateons:Selectstatus">
+    <value>Select status</value>
+  </data> 
+  <data name="Applicateons:Changestatus">
+    <value>Change status</value>
+  </data> 
+  <data name="Applicateons:Notes">
+    <value>Notes</value>
+  </data> 
+  <data name="Applicateons:AddNote">
+    <value>Add Note</value>
+  </data>
+  <data name="Applicateons:Add">
+    <value>Add</value>
+  </data>
+  
 </root>

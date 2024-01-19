@@ -6,7 +6,7 @@
 @inject ICategoryService CService
 @inject IDialogService DialogService
 
-<MudText Typo="Typo.h4"><b>Category</b></MudText>
+<MudText Typo="Typo.h4"><b>@ContentService["Header:Category"]</b></MudText>
 @if (serverError)
 {
 	<ServerErrorComponent />
@@ -25,7 +25,7 @@ else
 			<MudCardHeader>
 				<CardHeaderContent>
 					<MudTextField OnKeyDown="@OnKeyDown" @bind-Value="newCategory" OnAdornmentClick="AddCategory"
-								  Label="New Category" Variant="Variant.Outlined" Adornment="Adornment.End"
+								  Label=@ContentService["Category:NewCategory"] Variant="Variant.Outlined" Adornment="Adornment.End"
 								  AdornmentIcon=@Icons.Material.Filled.Add AdornmentColor="Color.Secondary" />
 				</CardHeaderContent>
 			</MudCardHeader>
