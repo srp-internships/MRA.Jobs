@@ -164,7 +164,7 @@
     [Parameter] public string ApplicationUserName { get; set; }
     private string _cvUrl;
 
-    private UpdateApplicationStatus _applicationStatus;
+    private UpdateApplicationStatusCommand _applicationStatusCommand;
     private UserProfileResponse _applicant;
     private ApplicationDetailsDto _application;
 
@@ -200,13 +200,13 @@
     {
         if (Enum.TryParse(SelectedStatus, out ApplicationStatusDto.ApplicationStatus selectedEnumStatus))
         {
-            _applicationStatus = new UpdateApplicationStatus
+            _applicationStatusCommand = new UpdateApplicationStatusCommand
             {
                 ApplicantUserName = _applicant.UserName,
                 Slug = Slug,
                 StatusId = (int)selectedEnumStatus
             };
-            var response = await ApplicationService.UpdateStatus(_applicationStatus);
+            var response = await ApplicationService.UpdateStatus(_applicationStatusCommand);
             if (response)
             {
                 await LoadApplication();

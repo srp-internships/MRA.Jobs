@@ -6,13 +6,13 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplication;
 using MRA.Jobs.Domain.Entities;
 public class UpdateApplicationCommandHandlerTests : BaseTestFixture
 {
-    private UpdateApplicationCommandHadler _handler;
+    private UpdateApplicationCommandHandler _handler;
 
     [SetUp]
     public override void Setup()
     {
         base.Setup();
-        _handler = new UpdateApplicationCommandHadler(
+        _handler = new UpdateApplicationCommandHandler(
             _dbContextMock.Object, Mapper, _dateTimeMock.Object, _currentUserServiceMock.Object,_slugGenerator.Object);
     }
 
