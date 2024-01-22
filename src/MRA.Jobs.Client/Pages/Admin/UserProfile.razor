@@ -1,0 +1,226 @@
+@page "/User/{Username}"
+@using MRA.Jobs.Client.Identity
+<CascadingAuthenticationState>
+    <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
+        <Authorized>
+            <MudGrid>
+                <MudItem xs="12" sm="12" md="6" lg="4">
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudCard>
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Typo="Typo.h6">@Username</MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    @if (_profile == null)
+                                    {
+                                        <MudSkeleton Animation="Animation.Wave" Width="40%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="30%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="50%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="80%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                    }
+                                    else
+                                    {
+                                        <MudText Typo="Typo.body2" Style="color: grey">Full Name</MudText>
+                                        <MudText>@_profile.FirstName @_profile.LastName</MudText>
+
+                                        <br/>
+                                        <MudText Typo="Typo.body2" Style="color: grey">
+                                            Email
+                                        </MudText>
+                                        <MudText>
+                                            @_profile.Email
+                                            @if (_profile.EmailConfirmed)
+                                            {
+                                                <MudChip Icon="@Icons.Material.Filled.Check" Color="Color.Success" Size="Size.Small">
+                                                    Is Confirmed
+                                                </MudChip>
+                                            }
+                                            else
+                                            {
+                                                <MudChip Icon="@Icons.Material.Filled.Warning" Color="Color.Warning" Size="Size.Small">
+                                                    Is not Confirmed
+                                                </MudChip>
+                                            }
+                                        </MudText>
+                                        <br/>
+                                        <MudText Typo="Typo.body2" Style="color: grey">
+                                            Phone number
+                                        </MudText>
+                                        <MudText>
+                                            @_profile.PhoneNumber
+                                            @if (_profile.PhoneNumberConfirmed)
+                                            {
+                                                <MudChip Icon="@Icons.Material.Filled.Check" Color="Color.Success" Size="Size.Small">
+                                                    Is Confirmed
+                                                </MudChip>
+                                            }
+                                            else
+                                            {
+                                                <MudChip Icon="@Icons.Material.Filled.Warning" Color="Color.Warning">
+                                                    Is not Confirmed
+                                                </MudChip>
+                                            }
+                                        </MudText>
+                                        <br/>
+                                        <MudGrid>
+                                            <MudItem sm="6">
+                                                <MudText Typo="Typo.body2" Style="color: grey">Birthday</MudText>
+                                                <MudText>@_profile.DateOfBirth.ToShortDateString()</MudText>
+                                            </MudItem>
+                                            <MudItem sm="6">
+                                                <MudText Typo="Typo.body2" Style="color: grey">Gender</MudText>
+                                                <MudText>@_profile.Gender</MudText>
+                                            </MudItem>
+                                        </MudGrid>
+                                        <br/>
+                                        <MudText Typo="Typo.body2" Style="color: grey">About</MudText>
+                                        <MudText>@_profile.AboutMyself</MudText>
+                                    }
+
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudCard>
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Typo="Typo.h6">Skills</MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    @if (_skills == null)
+                                    {
+                                        <MudSkeleton Animation="Animation.Wave" Width="40%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="30%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="50%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="80%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var skill in _skills.Skills)
+                                        {
+                                            <MudChip>@skill</MudChip>
+                                        }
+                                    }
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+                <MudItem xs="12" sm="12" md="6" lg="8">
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudCard>
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Typo="Typo.h6">
+                                            Experiences
+                                        </MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    @if (_experiences == null)
+                                    {
+                                        <MudSkeleton Animation="Animation.Wave" Width="40%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="30%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="50%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="80%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                    }
+                                    else
+                                    {
+                                        <MudGrid>
+                                            @foreach (var experience in _experiences)
+                                            {
+                                                <MudItem xs="12" sm="12" md="6" lg="4">
+                                                    <MudText>
+                                                        <b>@experience.JobTitle</b>
+                                                    </MudText>
+                                                    <MudText>@experience.CompanyName</MudText>
+                                                    <MudText>
+                                                        @if (experience.IsCurrentJob)
+                                                        {
+                                                            @: @experience.StartDate?.ToString("MM/dd/yyyy") - Is Current Job;
+                                                        }
+                                                        else
+                                                        {
+                                                            @: @experience.StartDate?.ToString("MM/dd/yyyy") - @experience.EndDate?.ToString("MM/dd/yyyy");
+                                                        }
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2">
+                                                        @experience.Address
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2">
+                                                        @experience.Description
+                                                    </MudText>
+                                                </MudItem>
+                                            }
+                                        </MudGrid>
+                                    }
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudCard>
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Typo="Typo.h6">
+                                            Educations
+                                        </MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent>
+                                    @if (_educations == null)
+                                    {
+                                        <MudSkeleton Animation="Animation.Wave" Width="40%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="30%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="50%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="80%"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                    }
+                                    else
+                                    {
+                                        <MudGrid>
+                                            @foreach (var education in _educations)
+                                            {
+                                                <MudItem xs="12" sm="12" md="6" lg="4">
+                                                    <MudText>
+                                                        <b>@education.Speciality</b>
+                                                    </MudText>
+                                                    <MudText>@education.University</MudText>
+                                                    <MudText>
+                                                        @if (education.UntilNow)
+                                                        {
+                                                            @:@education.StartDate?.ToString("MM/dd/yyyy") - Until Now
+                                                        }
+                                                        else
+                                                        {
+                                                            @:@education.StartDate?.ToString("MM/dd/yyyy") - @education.EndDate?.ToString("MM/dd/yyyy")
+                                                        }
+                                                    </MudText>
+                                                </MudItem>
+                                            }
+                                        </MudGrid>
+                                    }
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+
+            </MudGrid>
+        </Authorized>
+        <NotAuthorized>
+            <NotFound/>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
