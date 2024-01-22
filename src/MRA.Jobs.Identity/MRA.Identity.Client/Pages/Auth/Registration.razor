@@ -24,11 +24,10 @@
                                     <MudImage Src="/images/srp_icon.png" Height="45" /><br />
                                 </a>
                             </div>
-                            <div class="flex-initial d-flex py-1">
-                                <MudText Typo="Typo.h4">
-                                    <b>@ContentService["SignUp:LabelSignUp"]</b>
-                                </MudText>
-                            </div>
+							<b class="responsive-text">
+								@ContentService["SignUp:LabelSignUp"]
+							</b>
+
                         </div>
                         <MudText>
                             @ContentService["SignUp:LabelHaveAccount"]<MudLink Href="@($"login?callback={callback}&page={page}")"> @ContentService["SignUp:LinkSignIn"]</MudLink>
