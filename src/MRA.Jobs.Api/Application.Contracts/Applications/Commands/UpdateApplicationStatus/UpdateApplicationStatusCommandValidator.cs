@@ -6,6 +6,6 @@ public class UpdateApplicationStatusCommandValidator : AbstractValidator<UpdateA
     {
         RuleFor(v => v.ApplicantUserName).NotEmpty();
         RuleFor(v => v.Slug).NotEmpty();
-        RuleFor(v => v.StatusId).NotEmpty();
+        RuleFor(v => v.StatusId).NotNull();
     }
 }
