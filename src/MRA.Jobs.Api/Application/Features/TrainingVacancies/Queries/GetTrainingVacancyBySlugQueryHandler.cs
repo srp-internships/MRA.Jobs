@@ -18,7 +18,6 @@ public class GetTrainingVacancyBySlugQueryHandler : IRequestHandler<GetTrainingV
     public async Task<TrainingVacancyDetailedResponse> Handle(GetTrainingVacancyBySlugQuery request, CancellationToken cancellationToken)
     {
         var trainingVacancy = await _context.TrainingVacancies
-            .Include(i => i.History)
             .Include(i => i.VacancyTasks)
             .Include(i => i.VacancyQuestions)
             .Include(i => i.Tags)
