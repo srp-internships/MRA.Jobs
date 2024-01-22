@@ -84,50 +84,11 @@ public class RegisterUserCommandHandler(
                 throw new ValidationException(roleResult.Errors.First().Description);
             }
         }
-
-
+        
         var userRole = new ApplicationUserRole { UserId = user.Id, RoleId = role.Id, Slug = $"{user.UserName}-role" };
         await context.UserRoles.AddAsync(userRole, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
-        await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
-        cancellationToken);
+
         return user.Id;
-    }
-
-
-    private async Task CreateClaimAsync(string role, string username, Guid id, string email, string phone,
-        string application, CancellationToken cancellationToken = default)
-    {
-        var userClaims = new[]
-        {
-            new ApplicationUserClaim
-            {
-                UserId = id, ClaimType = ClaimTypes.Role, ClaimValue = role, Slug = $"{username}-role"
-            },
-            new ApplicationUserClaim
-            {
-                UserId = id, ClaimType = ClaimTypes.Id, ClaimValue = id.ToString(), Slug = $"{username}-id"
-            },
-            new ApplicationUserClaim
-            {
-                UserId = id,
-                ClaimType = ClaimTypes.Username,
-                ClaimValue = username,
-                Slug = $"{username}-username"
-            },
-            new ApplicationUserClaim
-            {
-                UserId = id, ClaimType = ClaimTypes.Email, ClaimValue = email, Slug = $"{username}-email"
-            },
-            new ApplicationUserClaim
-            {
-                UserId = id,
-                ClaimType = ClaimTypes.Application,
-                ClaimValue = application,
-                Slug = $"{username}-application"
-            }
-        };
-        await context.UserClaims.AddRangeAsync(userClaims, cancellationToken);
-        await context.SaveChangesAsync(cancellationToken);
     }
 }
