@@ -69,20 +69,20 @@ public class RegisterUserCommandHandler(
 
         await emailVerification.SendVerificationEmailAsync(user);
 
-        var role = await context.Roles.FirstOrDefaultAsync(s => s.Name=="Applicant", cancellationToken: cancellationToken);
-        
+        var role = await context.Roles.FirstOrDefaultAsync(s => s.Name == "Applicant",
+            cancellationToken: cancellationToken);
+
         var userRole =
             new ApplicationUserRole { UserId = user.Id, RoleId = role.Id, Slug = $"{user.UserName}-Applicant" };
         await context.UserRoles.AddAsync(userRole, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
-        await CreateClaimAsync("Applicant", user.UserName, user.Id, user.Email, user.PhoneNumber, "MraJobs",
-            cancellationToken);
+        await CreateClaimAsync(user.UserName, user.Id, user.Email, cancellationToken);
         return user.Id;
     }
 
 
-    private async Task CreateClaimAsync(string role, string username, Guid id, string email, string phone,
-        string application, CancellationToken cancellationToken = default)
+    private async Task CreateClaimAsync(string username, Guid id, string email,
+        CancellationToken cancellationToken = default)
     {
         var userClaims = new[]
         {
@@ -100,14 +100,7 @@ public class RegisterUserCommandHandler(
             new ApplicationUserClaim
             {
                 UserId = id, ClaimType = ClaimTypes.Email, ClaimValue = email, Slug = $"{username}-email"
-            },
-            new ApplicationUserClaim
-            {
-                UserId = id,
-                ClaimType = ClaimTypes.Application,
-                ClaimValue = application,
-                Slug = $"{username}-application"
-            },
+            }
         };
         await context.UserClaims.AddRangeAsync(userClaims, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);

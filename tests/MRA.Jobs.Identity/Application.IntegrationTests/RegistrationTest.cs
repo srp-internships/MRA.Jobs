@@ -140,7 +140,7 @@ public class RegistrationTests : BaseTest
 
         var userClaims = await GetWhere<ApplicationUserClaim>(s => s.UserId == user.Id);
         
-        Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Application && s.ClaimValue=="MraJobs"));
+
         Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Id && s.ClaimValue==user.Id.ToString()));
         Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Email && s.ClaimValue==request.Email));
         Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Username && s.ClaimValue==request.Username));

@@ -45,7 +45,6 @@ public static class ConfigureServices
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ApplicationDbContextInitializer>();
         services.AddScoped<DbMigration>();
-        services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddScoped<IHtmlService, HtmlService>();
         services.AddScoped<IUserHttpContextAccessor, UserHttpContextAccessor>();
@@ -118,8 +117,4 @@ public static class ConfigureServices
                     ApplicationClaimValues.AllApplications));
         return services;
     }
-}
-
-public class InfrastructureSieveConfigurationsAssemblyMarker : ISieveConfigurationsAssemblyMarker
-{
 }

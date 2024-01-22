@@ -6,5 +6,4 @@ namespace MRA.Identity.Application.Contract.Claim.Commands;
 public class DeleteClaimCommand:IRequest<Unit>
 {
     public string Slug { get; set; }
-    public string ClimValue { get; set; }
 }
