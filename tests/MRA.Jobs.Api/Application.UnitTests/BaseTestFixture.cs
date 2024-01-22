@@ -29,6 +29,7 @@ public abstract class BaseTestFixture
     [SetUp]
     public virtual void Setup()
     {
+        _dbContextMock = new Mock<IApplicationDbContext>();
         _identityService = new Mock<IidentityService>();
         _cvService = new Mock<ICvService>();
         _dateTimeMock = new Mock<IDateTime>();

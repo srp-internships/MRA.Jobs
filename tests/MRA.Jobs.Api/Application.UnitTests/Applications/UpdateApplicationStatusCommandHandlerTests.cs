@@ -24,9 +24,17 @@ public class UpdateApplicationStatusCommandHandlerTests : BaseTestFixture
     {
         // Arrange
         var application = new Application { Slug = "testSlug", Status = ApplicationStatus.Approved };
-        _dbContextMock
-            .Setup(x => x.Applications.FindAsync(new object[] { application.Id }, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(application);
+
+        var applications = new List<Application> { application }.AsQueryable();
+
+        var mockSet = new Mock<DbSet<Application>>();
+        mockSet.As<IQueryable<Application>>().Setup(m => m.Provider).Returns(applications.Provider);
+        mockSet.As<IQueryable<Application>>().Setup(m => m.Expression).Returns(applications.Expression);
+        mockSet.As<IQueryable<Application>>().Setup(m => m.ElementType).Returns(applications.ElementType);
+        mockSet.As<IQueryable<Application>>().Setup(m => m.GetEnumerator()).Returns(applications.GetEnumerator());
+
+        _dbContextMock.Setup(x => x.Applications).Returns(mockSet.Object);
+
         var command = new UpdateApplicationStatusCommand
         {
             Slug = "testSlug", StatusId = (int)ApplicationStatus.Approved, ApplicantUserName = "applicant"
