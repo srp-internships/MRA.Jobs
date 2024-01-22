@@ -55,7 +55,7 @@ public class AuthService(HttpClient httpClient,
 
                 navigationManager.NavigateTo($"{callbackUrl}?atoken={response.AccessToken}&rtoken={response.RefreshToken}&vdate={response.AccessTokenValidateTo}&page={page}");
 
-                await cookieUtil.SetValueAsync("authToken", response);
+                await cookieUtil.SetValueAsync("authToken", response, secure:true);
                 await authenticationStateProvider.GetAuthenticationStateAsync();
                 if (!newRegister)
                     navigationManager.NavigateTo("/");
