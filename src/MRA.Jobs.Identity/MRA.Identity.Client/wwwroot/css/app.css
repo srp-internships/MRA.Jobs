@@ -111,3 +111,15 @@ a, .btn-link {
 code {
     color: #c02d76;
 }
+@media screen and (max-width: 768px) {
+    .responsive-text {
+        font-size: 20px; 
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .responsive-text {
+        font-size: 24px; 
+    }
+}
+

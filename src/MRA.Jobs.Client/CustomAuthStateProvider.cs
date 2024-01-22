@@ -64,7 +64,7 @@ public class CustomAuthStateProvider(IAltairCABlazorCookieUtil cookieUtil, HttpC
             }
 
             token = await refreshResponse.Content.ReadFromJsonAsync<JwtTokenResponse>();
-            await cookieUtil.SetValueAsync("authToken", token);
+            await cookieUtil.SetValueAsync("authToken", token, secure:true) ;
         }
 
         return token;
