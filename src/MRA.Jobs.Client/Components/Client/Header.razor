@@ -18,181 +18,181 @@
 
 
 <MudToolBar Class="toolbar-fixed-blur">
-	<MudHidden Breakpoint="Breakpoint.MdAndUp">
-		<MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
-	</MudHidden>
-	<a href="">
-		<MudHidden Breakpoint="Breakpoint.MdAndDown">
-			<MudStack Row="true">
-				<MudItem Style="padding-right:5px;">
-					<MudImage src="/images/srp/srp_icon.png" Style="width: 50px" />
-				</MudItem>
-				<MudItem Style="padding-left:0; margin-right: 40px;">
-					<MudText Style="font-size: 21.5px;">
-						<b>SILK ROAD</b>
-					</MudText>
-					<MudText Style="margin-top: -10px;">
-						<small>
-							<b>PROFESSIONALS</b>
-						</small>
-					</MudText>
-				</MudItem>
-			</MudStack>
-		</MudHidden>
-		<MudHidden Breakpoint="Breakpoint.LgAndUp">
-			<MudStack Row="true">
-				<MudItem Style="padding-right:5px;">
-					<MudImage src="/images/srp/srp_icon.png" Style="width: 30px" />
-				</MudItem>
-				<MudItem Style="padding-left:0; margin-right: 40px;">
-					<MudText Style="font-size: 21.5px;">
-						<b>SRP</b>
-					</MudText>
-				</MudItem>
-			</MudStack>
-		</MudHidden>
-	</a>
-	<MudHidden Breakpoint="Breakpoint.SmAndDown">
-		<MudButton Href="/" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Home)">
-			<MudText>
-				<b>@ContentService["Header:Home"]</b>
-			</MudText>
-		</MudButton>
-		<MudButton Href="/jobs" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Jobs)">
-			<MudText>
-				<b>@ContentService["Header:Jobs"]</b>
-			</MudText>
-		</MudButton>
-		<MudButton Href="/internships" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Internships)">
-			<MudText>
-				<b>@ContentService["Header:Internships"]</b>
-			</MudText>
-		</MudButton>
-		<MudButton Href="/trainings" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Trainings)">
-			<MudText>
-				<b>@ContentService["Header:Trainings"]</b>
-			</MudText>
-		</MudButton>
-		<MudButton Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Team)">
-			<MudText>
-				<b>@ContentService["Header:Team"]</b>
-			</MudText>
-		</MudButton>
-		<MudButton Href="@Configuration["Academy:Address"]" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
-			<MudText>
-				<b>@ContentService["Header:Academy"] </b>
-			</MudText>
-		</MudButton>
-		@if (_betaVersion)
-		{
-			<MudHidden Breakpoint="Breakpoint.MdAndDown">
-				<MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
-					<MudText>
-						<b>@ContentService["Home:Contact"] </b>
-					</MudText>
-				</MudButton>
-			</MudHidden>
-		}
-		else
-		{
-			<MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
-				<MudText>
-					<b>@ContentService["Home:Contact"] </b>
-				</MudText>
-			</MudButton>
-		}
-	</MudHidden>
-	<MudSpacer />
-	<MudHidden Breakpoint="Breakpoint.Xs">
-		@if (_betaVersion)
-		{
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+    </MudHidden>
+    <a href="">
+        <MudHidden Breakpoint="Breakpoint.MdAndDown">
+            <MudStack Row="true">
+                <MudItem Style="padding-right:5px;">
+                    <MudImage src="/images/srp/srp_icon.png" Style="width: 50px"/>
+                </MudItem>
+                <MudItem Style="padding-left:0; margin-right: 40px;">
+                    <MudText Style="font-size: 21.5px;">
+                        <b>SILK ROAD</b>
+                    </MudText>
+                    <MudText Style="margin-top: -10px;">
+                        <small>
+                            <b>PROFESSIONALS</b>
+                        </small>
+                    </MudText>
+                </MudItem>
+            </MudStack>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.LgAndUp">
+            <MudStack Row="true">
+                <MudItem Style="padding-right:5px;">
+                    <MudImage src="/images/srp/srp_icon.png" Style="width: 30px"/>
+                </MudItem>
+                <MudItem Style="padding-left:0; margin-right: 40px;">
+                    <MudText Style="font-size: 21.5px;">
+                        <b>SRP</b>
+                    </MudText>
+                </MudItem>
+            </MudStack>
+        </MudHidden>
+    </a>
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudButton Href="/" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Home)">
+            <MudText>
+                <b>@ContentService["Header:Home"]</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="/jobs" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Jobs)">
+            <MudText>
+                <b>@ContentService["Header:Jobs"]</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="/internships" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Internships)">
+            <MudText>
+                <b>@ContentService["Header:Internships"]</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="/trainings" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Trainings)">
+            <MudText>
+                <b>@ContentService["Header:Trainings"]</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Team)">
+            <MudText>
+                <b>@ContentService["Header:Team"]</b>
+            </MudText>
+        </MudButton>
+        <MudButton Href="@Configuration["Academy:Address"]" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+            <MudText>
+                <b>@ContentService["Header:Academy"] </b>
+            </MudText>
+        </MudButton>
+        @if (_betaVersion)
+        {
+            <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+                    <MudText>
+                        <b>@ContentService["Home:Contact"] </b>
+                    </MudText>
+                </MudButton>
+            </MudHidden>
+        }
+        else
+        {
+            <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+                <MudText>
+                    <b>@ContentService["Home:Contact"] </b>
+                </MudText>
+            </MudButton>
+        }
+    </MudHidden>
+    <MudSpacer/>
+    <MudHidden Breakpoint="Breakpoint.Xs">
+        @if (_betaVersion)
+        {
 			<a href="@Configuration["Beta:Address"]" target="_blank">
 				<MudChip Color="Color.Primary">Beta</MudChip>
 			</a>
-			<MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4" />
-		}
-		<ToolBarSettingsButtons />
-	</MudHidden>
-	<UserButton />
+			<MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/> 
+        }
+		<ToolBarSettingsButtons/> 
+    </MudHidden>
+    <UserButton/>
 </MudToolBar>
 
 <MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="2" Style="position:fixed;height: 100%">
-	<MudToolBar Dense="true" Class="docs-gray-bg">
-		<MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
-		<MudSpacer />
-		<ToolBarSettingsButtons />
-	</MudToolBar>
+    <MudToolBar Dense="true" Class="docs-gray-bg">
+        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+        <MudSpacer/>
+			<ToolBarSettingsButtons />
+    </MudToolBar>
 
-	<MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
-		<MudNavLink Match="NavLinkMatch.All" Href="/">@ContentService["Header:Home"]</MudNavLink>
-			<MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
-			<MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
-			<MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
-			<MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
-			<MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Academy:Address"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
-			<MudNavLink Match="NavLinkMatch.All" Href="/contact">@ContentService["Home:Contact"]</MudNavLink>
+    <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
+        <MudNavLink Match="NavLinkMatch.All" Href="/">@ContentService["Header:Home"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Academy:Address"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/contact">@ContentService["Home:Contact"]</MudNavLink>
 
-		</MudNavMenu>
-		@if (_betaVersion)
-	{
+    </MudNavMenu>
+    @if (_betaVersion)
+    {
 		<a href="@Configuration["Beta:Address"]" target="_blank">
 			<MudChip Color="Color.Primary">Beta</MudChip>
-		</a>
-	}
+		</a> 
+    }
 </MudDrawer>
 
 
 @code {
 
-	bool _open = false;
-	private bool _betaVersion;
+    bool _open = false;
+    private bool _betaVersion;
 
-	void ToggleDrawer()
-	{
-		_open = !_open;
-	}
+    void ToggleDrawer()
+    {
+        _open = !_open;
+    }
 
-	private DocPages _currentPage;
+    private DocPages _currentPage;
 
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		await base.OnAfterRenderAsync(firstRender);
+{
+    await base.OnAfterRenderAsync(firstRender);
 
-		if (firstRender)
-		{
+    if (firstRender)
+    {
 			LayoutService.User = await UserProfileService.Get();
 			var uriSegments = NavigationManager.Uri.Split('/');
 			var pageSegment = uriSegments.Skip(3).FirstOrDefault();
 			_currentPage = Enum.Parse<DocPages>(pageSegment, true);
 			StateHasChanged();
-		}
-	}
+    }
+}
 
 
-	protected override async Task OnInitializedAsync()
-	{
-		_betaVersion = await FeatureManager.IsEnabledAsync(FeatureFlags.BetaVersion);
-		StateHasChanged();
-		NavigationManager.LocationChanged += HandleLocationChanged;
-		await base.OnInitializedAsync();
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        _betaVersion = await FeatureManager.IsEnabledAsync(FeatureFlags.BetaVersion);
+        StateHasChanged();
+        NavigationManager.LocationChanged += HandleLocationChanged;
+        await base.OnInitializedAsync();
+    }
 
-	private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
-	{
-		_currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
-		StateHasChanged();
-	}
+    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        _currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
+        StateHasChanged();
+    }
 
-	private string GetActiveClass(DocPages page)
-	{
-		return page == _currentPage ? "mud-chip-text mud-chip-color-primary mx-1 px-3" : "mx-1 px-3";
-	}
+    private string GetActiveClass(DocPages page)
+    {
+        return page == _currentPage ? "mud-chip-text mud-chip-color-primary mx-1 px-3" : "mx-1 px-3";
+    }
 
-	public void Dispose()
-	{
-		NavigationManager.LocationChanged -= HandleLocationChanged;
-	}
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
 
 
 }
