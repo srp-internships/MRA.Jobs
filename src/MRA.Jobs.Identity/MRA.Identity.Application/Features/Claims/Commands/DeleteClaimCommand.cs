@@ -17,7 +17,9 @@ public class DeleteClaimCommandHandler : IRequestHandler<DeleteClaimCommand, Uni
 
     public async Task<Unit> Handle(DeleteClaimCommand request, CancellationToken cancellationToken)
     {
-        var claim = await _context.UserClaims.SingleOrDefaultAsync(s => String.Equals(s.Slug.Trim(), request.Slug.Trim(), StringComparison.CurrentCultureIgnoreCase), cancellationToken: cancellationToken);
+        var claim = await _context.UserClaims.FirstOrDefaultAsync(
+            s => s.Slug.Trim() == request.Slug.Trim(),
+            cancellationToken: cancellationToken);
         _ = claim ?? throw new NotFoundException($"claim with slug {request.Slug} not found");
 
         _context.UserClaims.Remove(claim);
