@@ -8,6 +8,7 @@
 @inject IDialogService DialogService
 @inject LayoutService LayoutService
 @inject IJSRuntime JsRuntime
+@inject NavigationManager navigationManager
 @if (_serverError)
 {
 	<ServerErrorComponent />
@@ -308,17 +309,21 @@ else
 				</MudTh>
 				<MudTh></MudTh>
 				<MudTh></MudTh>
+				<MudTh></MudTh>
 			</HeaderContent>
 			<RowTemplate>
 				<MudTd DataLabel=@ContentService["Internships:Title"]>@context.Title</MudTd>
 					<MudTd DataLabel=@ContentService["Internships:ShortDescription"]>
-						@(context.ShortDescription.Count() > 50 ? context.ShortDescription.Substring(0, 50) : context.ShortDescription)
+						@(context.ShortDescription.Count() > 30 ? context.ShortDescription.Substring(0, 30) : context.ShortDescription)
 					</MudTd>
 					<MudTd DataLabel=@ContentService["Header:Category"]>@context.Category</MudTd>
 					<MudTd DataLabel=@ContentService["Internships:PublishDate"]>@context.PublishDate.ToString("D")</MudTd>
 					<MudTd DataLabel=@ContentService["VacancyApplication:End Date"]>@context.EndDate.ToString("D")</MudTd>
 					<MudTd DataLabel=@ContentService["VacancyDetails:Duration"]>@context.Duration</MudTd>
 					<MudTd DataLabel=@ContentService["VacancyApplication:Fees"]>@context.Fees</MudTd>
+                    <MudTd>
+                        <MudIconButton Href=@($"{navigationManager.BaseUri}trainings/apply/{context.Slug}") Target="_blank" Icon="@Icons.Material.Filled.OpenInNew" Variant="Variant.Text" Size="Size.Medium" />
+                    </MudTd>
 					<MudTd>
 						<MudIconButton @onclick="() => OnEditClick(context.Slug)" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium" />
 					</MudTd>
