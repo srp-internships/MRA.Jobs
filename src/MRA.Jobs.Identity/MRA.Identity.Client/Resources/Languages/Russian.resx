@@ -708,4 +708,22 @@
   <data name="Dashboard:Appilcations:More:CVButton" xml:space="preserve">
     <value>Скачать резюме кандидата</value>
   </data>
+   <data name="UserManager:Users">
+    <value>Пользователи</value>
+  </data>
+  <data name="UserManager:Searchname">
+    <value>Поиск по имени пользователя или полному имени</value>
+  </data>
+  <data name="UserManager:FullName">
+    <value>Полное имя</value>
+  </data>
+  <data name="UserManager:Roles">
+    <value>Роли</value>
+  </data>
+  <data name="UserManager:Nomatchingrecords">
+    <value>Совпадающих записей не найдено</value>
+  </data>
+  <data name="UserManager:Loading">
+    <value>Загрузка...</value>
+  </data>
 </root>

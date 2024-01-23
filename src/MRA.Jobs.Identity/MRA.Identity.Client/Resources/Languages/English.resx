@@ -762,4 +762,23 @@
   <data name="Message:Send" xml:space="preserve">
     <value>Send</value>
   </data>
+  <data name="UserManager:Users">
+        <value>Users</value>
+    </data>
+    <data name="UserManager:Searchname">
+        <value>Search by username or full name</value>
+    </data> 
+   <data name="UserManager:FullName">
+        <value>Full Name</value>
+    </data>
+  <data name="UserManager:Roles">
+        <value>Roles</value>
+    </data>
+  <data name="UserManager:Nomatchingrecords">
+        <value>No matching records found</value>
+    </data> 
+  <data name="UserManager:Loading">
+        <value>Loading...</value>
+    </data>  
+
 </root>

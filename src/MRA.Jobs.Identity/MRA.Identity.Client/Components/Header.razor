@@ -64,6 +64,11 @@
                         <b>@ContentService["Header:SendMessage"] </b>
                     </MudText>
                 </MudButton>
+                <MudButton Color="Color.Inherit" Variant="Variant.Text" Href="/UserManager" Class="@GetActiveClass(DocPages.Academy)">
+                    <MudText>
+                        <b>User manager</b>
+                    </MudText>
+                </MudButton>
             </AuthorizeView>
         </CascadingAuthenticationState>
         <MudButton Href="@Configuration["Platforms:Academy"]" Target="_blank" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
@@ -71,7 +76,7 @@
                 <b>@ContentService["Header:Academy"] </b>
             </MudText>
         </MudButton>
-        
+
         <MudButton Href="@Configuration["Platforms:Jobs"]" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
             <MudText>
                 <b>@ContentService["Header:Jobs"] </b>
@@ -104,6 +109,11 @@
                 <MudNavLink OnClick="OpenDialog">
                     <MudText>
                         <b>@ContentService["Header:SendMessage"] </b>
+                    </MudText>
+                </MudNavLink>
+                <MudNavLink Href="/UserManager">
+                    <MudText>
+                        <b>User manager</b>
                     </MudText>
                 </MudNavLink>
             </AuthorizeView>
