@@ -1,5 +1,7 @@
 @page "/User/{Username}"
 @using MRA.Jobs.Client.Identity
+@using MRA.Jobs.Client.Components.Extra
+
 <CascadingAuthenticationState>
     <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
         <Authorized>
