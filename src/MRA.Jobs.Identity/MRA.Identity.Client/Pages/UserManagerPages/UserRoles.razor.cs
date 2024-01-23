@@ -1,19 +1,21 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Identity.Application.Contract.Skills.Responses;
 using MRA.Identity.Application.Contract.UserRoles.Commands;
 using MRA.Identity.Application.Contract.UserRoles.Response;
-using MRA.Jobs.Client.Services.Profile;
+using MRA.Identity.Client.Services.Profile;
 using MudBlazor;
 
-namespace MRA.Jobs.Client.Pages.Admin;
+namespace MRA.Identity.Client.Pages.UserManagerPages;
 
 public partial class UserRoles
 {
     [Parameter] public string Username { get; set; }
     private List<UserRolesResponse> Roles { get; set; }
-    [Inject] private IdentityHttpClient HttpClient { get; set; }
+    [Inject] private HttpClient HttpClient { get; set; }
+    [Inject] private ISnackbar Snackbar { get; set; }
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public AuthenticationStateProvider AuthStateProvider { get; set; }
     [Inject] private IUserProfileService UserProfileService { get; set; }

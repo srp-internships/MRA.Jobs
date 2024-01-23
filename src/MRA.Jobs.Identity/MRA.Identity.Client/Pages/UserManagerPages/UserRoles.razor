@@ -1,8 +1,7 @@
 ﻿@page "/UserRoles/{Username}"
-@using MRA.Jobs.Client.Identity
-@using MRA.Jobs.Client.Components.Extra
+
 <CascadingAuthenticationState>
-    <AuthorizeView Policy="@ApplicationPolicies.Administrator" Context="_">
+    <AuthorizeView Roles="ApplicationAdmin" Context="_">
         <Authorized>
 
 
