@@ -37,6 +37,12 @@ public class CreateInternshipVacancyCommandHandler : IRequestHandler<CreateInter
         internship.LastModifiedAt = internship.CreatedAt = _dateTime.Now;
         internship.LastModifiedBy = internship.CreatedBy = _currentUserService.GetUserId() ?? Guid.Empty;
 
+        TimeZoneInfo zone = TimeZoneInfo.Local;
+        internship.PublishDate = TimeZoneInfo.ConvertTimeFromUtc(internship.PublishDate, zone);
+        internship.EndDate = TimeZoneInfo.ConvertTimeFromUtc(internship.EndDate, zone);
+        internship.CreatedAt = TimeZoneInfo.ConvertTimeFromUtc(internship.CreatedAt, zone);
+        internship.ApplicationDeadline = TimeZoneInfo.ConvertTimeFromUtc(internship.ApplicationDeadline, zone);
+
         await _context.Internships.AddAsync(internship, cancellationToken);
 
         VacancyTimelineEvent timelineEvent = new()

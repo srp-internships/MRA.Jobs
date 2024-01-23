@@ -37,6 +37,11 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
             .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken);
         _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Slug);
 
+        TimeZoneInfo zone = TimeZoneInfo.Local;
+        internship.PublishDate = TimeZoneInfo.ConvertTimeFromUtc(internship.PublishDate, zone);
+        internship.EndDate = TimeZoneInfo.ConvertTimeFromUtc(internship.EndDate, zone);
+        internship.ApplicationDeadline = TimeZoneInfo.ConvertTimeFromUtc(internship.ApplicationDeadline, zone);
+
         _mapper.Map(request, internship);
 
         VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent

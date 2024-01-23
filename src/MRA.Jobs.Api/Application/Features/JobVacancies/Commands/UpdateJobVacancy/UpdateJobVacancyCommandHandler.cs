@@ -30,6 +30,9 @@ public class UpdateJobVacancyCommandHandler : IRequestHandler<UpdateJobVacancyCo
             .Include(i => i.VacancyTasks)
             .FirstOrDefaultAsync(j => j.Slug == request.Slug, cancellationToken);
         _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Slug);
+        
+        TimeZoneInfo zone = TimeZoneInfo.Local;
+        jobVacancy.EndDate = TimeZoneInfo.ConvertTimeFromUtc(jobVacancy.EndDate, zone);
 
         //VacancyCategory category =
         //    await _dbContext.Categories.FirstOrDefaultAsync(j => j.Id == request.CategoryId, cancellationToken);

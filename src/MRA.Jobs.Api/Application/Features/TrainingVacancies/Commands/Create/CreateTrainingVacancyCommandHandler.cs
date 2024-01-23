@@ -36,7 +36,11 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
         trainingModel.CreatedByEmail = _currentUserService.GetEmail();
         trainingModel.LastModifiedBy = trainingModel.CreatedBy = _currentUserService.GetUserId() ?? Guid.NewGuid();
         trainingModel.LastModifiedAt = trainingModel.CreatedAt = _dateTime.Now;
-        
+
+        TimeZoneInfo zone = TimeZoneInfo.Local;
+        trainingModel.EndDate = TimeZoneInfo.ConvertTimeFromUtc(trainingModel.EndDate, zone);
+        trainingModel.PublishDate = TimeZoneInfo.ConvertTimeFromUtc(trainingModel.PublishDate, zone);
+
         await _context.TrainingVacancies.AddAsync(trainingModel, cancellationToken);
 
         VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent

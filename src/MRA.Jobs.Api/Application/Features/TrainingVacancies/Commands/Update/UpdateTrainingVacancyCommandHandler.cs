@@ -39,6 +39,10 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
         _mapper.Map(request, trainingVacancy);
         trainingVacancy.Slug = _slugService.GenerateSlug($"{trainingVacancy.Title}-{trainingVacancy.PublishDate.Year}-{trainingVacancy.PublishDate.Month}");
 
+        TimeZoneInfo zone = TimeZoneInfo.Local;
+        trainingVacancy.EndDate = TimeZoneInfo.ConvertTimeFromUtc(trainingVacancy.EndDate, zone);
+        trainingVacancy.PublishDate = TimeZoneInfo.ConvertTimeFromUtc(trainingVacancy.PublishDate, zone);
+
         VacancyTimelineEvent timeLineEvent = new VacancyTimelineEvent
         {
             VacancyId = trainingVacancy.Id,

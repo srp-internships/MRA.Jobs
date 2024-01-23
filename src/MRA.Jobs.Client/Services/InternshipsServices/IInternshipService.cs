@@ -2,9 +2,7 @@
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Delete;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
-using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
 namespace MRA.Jobs.Client.Services.InternshipsServices;
 
