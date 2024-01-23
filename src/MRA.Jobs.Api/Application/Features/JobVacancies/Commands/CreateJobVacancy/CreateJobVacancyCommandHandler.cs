@@ -36,6 +36,11 @@ public class CreateJobVacancyCommandHandler : IRequestHandler<CreateJobVacancyCo
         jobVacancy.CreatedByEmail = _currentUserService.GetEmail();
         jobVacancy.LastModifiedAt = jobVacancy.CreatedAt = _dateTime.Now;
 
+        TimeZoneInfo zone = TimeZoneInfo.Local;
+        jobVacancy.EndDate = TimeZoneInfo.ConvertTimeFromUtc(jobVacancy.EndDate, zone);
+        jobVacancy.PublishDate = TimeZoneInfo.ConvertTimeFromUtc(jobVacancy.PublishDate, zone);
+        jobVacancy.CreatedAt = DateTime.Now;
+
         await _dbContext.JobVacancies.AddAsync(jobVacancy, cancellationToken);
 
         VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
