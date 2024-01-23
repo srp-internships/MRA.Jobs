@@ -155,6 +155,8 @@
 		if (firstRender)
 		{
 			LayoutService.User = await UserProfileService.Get();
+			var uriSegments = NavigationManager.Uri.Split('/');
+			_currentPage = Enum.Parse<DocPages>(uriSegments.Last(), true);
 			StateHasChanged();
 		}
 	}
