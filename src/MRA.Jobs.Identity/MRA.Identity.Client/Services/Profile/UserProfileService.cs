@@ -9,21 +9,17 @@ using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.Skills.Responses;
 using MRA.Identity.Application.Contract.User.Queries;
+using MRA.Identity.Client.Services.ContentService;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
 
 namespace MRA.Identity.Client.Services.Profile;
 
-public class UserProfileService : IUserProfileService
+public class UserProfileService(HttpClient httpClient, IContentService ContentService) : IUserProfileService
 {
 
-    private readonly HttpClient _httpClient;
-
-    public UserProfileService(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-    }
+    private readonly HttpClient _httpClient = httpClient;
 
     public async Task<string> Update(UpdateProfileCommand command)
     {
@@ -37,18 +33,18 @@ public class UserProfileService : IUserProfileService
             if (result.StatusCode == HttpStatusCode.BadRequest)
                 return result.RequestMessage.ToString();
 
-            return "Server is not responding, please try later";
+            return ContentService["Profile:Servernotrespondingtry"];
 
         }
         catch (HttpRequestException ex)
         {
             Console.WriteLine(ex.Message);
-            return "Server is not responding, please try later";
+            return ContentService["Profile:Servernotrespondingtry"];
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
-            return "An error occurred";
+            return ContentService["Profile:Anerroroccurred"];
         }
     }
 

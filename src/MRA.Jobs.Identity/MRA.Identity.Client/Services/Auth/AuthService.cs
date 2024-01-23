@@ -10,6 +10,7 @@ using MRA.Identity.Application.Contract.User.Commands.ResetPassword;
 using MRA.Identity.Application.Contract.User.Queries.CheckUserDetails;
 using MRA.Identity.Application.Contract.User.Queries.GetUserNameByPhoneNymber;
 using MRA.Identity.Application.Contract.User.Responses;
+using MRA.Identity.Client.Services.ContentService;
 using MRA.Identity.Client.Services.Profile;
 using System.Net;
 using System.Net.Http.Json;
@@ -18,7 +19,7 @@ namespace MRA.Identity.Client.Services.Auth;
 
 public class AuthService(HttpClient httpClient,
         AuthenticationStateProvider authenticationStateProvider, NavigationManager navigationManager,
-        IAltairCABlazorCookieUtil cookieUtil, IUserProfileService userProfileService, IConfiguration configuration)
+        IAltairCABlazorCookieUtil cookieUtil, IUserProfileService userProfileService, IConfiguration configuration, IContentService ContentService)
     : IAuthService
 {
     public async Task<HttpResponseMessage> ChangePassword(ChangePasswordUserCommand command)
@@ -70,12 +71,12 @@ public class AuthService(HttpClient httpClient,
         catch (HttpRequestException ex)
         {
             Console.WriteLine(ex);
-            errorMessage = "Server is not responding, please try later";
+            errorMessage = ContentService["Profile:Servernotrespondingtry"];
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            errorMessage = "An error occurred";
+            errorMessage = ContentService["Profile:Anerroroccurred"];
         }
 
         return errorMessage;
@@ -103,7 +104,7 @@ public class AuthService(HttpClient httpClient,
                 return "";
             }
             if (result.StatusCode is not (HttpStatusCode.Unauthorized or HttpStatusCode.BadRequest))
-                return "server error, please try again later";
+                return ContentService["Profile:Servernotrespondingtry"];
 
             var response = await result.Content.ReadFromJsonAsync<CustomProblemDetails>();
             return response.Detail;
@@ -111,12 +112,12 @@ public class AuthService(HttpClient httpClient,
         catch (HttpRequestException ex)
         {
             Console.WriteLine(ex);
-            return "Server is not responding, please try later";
+            return ContentService["Profile:Servernotrespondingtry"];
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return "An error occurred";
+            return ContentService["Profile:Anerroroccurred"];
         }
     }
 

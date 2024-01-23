@@ -252,6 +252,9 @@
   <data name="ResetPassword:Changepassword" xml:space="preserve">
     <value>Ивази калидвожа</value>
   </data>
+  <data name="ResetPassword:Changepasswordsuccessfully" xml:space="preserve">
+    <value>Парол бомувафақият инсон карда шуд</value>
+  </data>
   <data name="Profile:Serverisnotresponding" xml:space="preserve">
     <value>Server is not responding</value>
   </data>
@@ -278,6 +281,9 @@
   </data>
   <data name="Profile:EmailisnotConfirmed" xml:space="preserve">
     <value>Имейл тасдиқ нашудааст!</value>
+  </data>
+  <data name="Profile:Sendverificationemail" xml:space="preserve">
+    <value>Имейли тасдиқро илова кунед</value>
   </data>
   <data name="Profile:LastName" xml:space="preserve">
     <value>Насаб</value>
@@ -395,6 +401,54 @@
   </data>
   <data name="Profile:SelectLanguage" xml:space="preserve">
     <value>Забонро интихоб кунед</value>
+  </data>
+  <data name="Profile:Servernotrespondingtry" xml:space="preserve">
+    <value>Сервер ҷавоб гирифта намешавад, баъдан дубора санҷед</value>
+  </data>
+  <data name="Profile:Pleasecheckyouremail" xml:space="preserve">
+    <value>Лутфан, почтаи худро тасдиқ намоед, мо линкро фиристодаем</value>
+  </data>
+  <data name="Profile:Codeisincorrector" xml:space="preserve">
+    <value>Код нодуруст ё устурашидааст</value>
+  </data>
+  <data name="Profile:Doyoureally" xml:space="preserve">
+    <value>Оё шумо дар хакикат мехоҳед ин рамзҳоро нест кунед? Ин амал ба ҳолати гузашта наметавонад.</value>
+  </data>
+  <data name="Profile:Delete" xml:space="preserve">
+    <value>Неcхтан</value>
+  </data>
+  <data name="Profile:Anerroroccurred" xml:space="preserve">
+    <value>Рӯй хато рӯй бурд</value>
+  </data>
+  <data name="Profile:Profileupdatedsuccessfully" xml:space="preserve">
+    <value>Профил бомувафақият инсон карда шуд.</value>
+  </data>
+  <data name="Profile:Educationdetailsadded" xml:space="preserve">
+    <value>Маълумоти таълимӣ бомувафақият инсон карда шуд</value>
+  </data>
+  <data name="Profile:UpdateEducationsuccessfully" xml:space="preserve">
+    <value>Таълими бомувафақият инсон карда шуд</value>
+  </data>
+  <data name="Profile:AddSkillssuccessfully" xml:space="preserve">
+    <value>Маҳоратҳо бомувафақият инсон карда шуданд</value>
+  </data>
+  <data name="Profile:Experiencedetailsadded" xml:space="preserve">
+    <value>Маълумоти тажрибаи корӣ бомувафақият инсон карда шуданд</value>
+  </data>
+  <data name="Profile:Emailisnotavailable" xml:space="preserve">
+    <value>Email дастгирӣ нашудааст</value>
+  </data>
+  <data name="Profile:UserNameisnotavailable" xml:space="preserve">
+    <value>Номи корбар дастгирӣ нашудааст</value>
+  </data>
+  <data name="Profile:PhoneNumberisnotavailable" xml:space="preserve">
+    <value>Номери телефон дастгирӣ нашудааст</value>
+  </data>
+  <data name="Profile:Thisphonenumberisnotcorrect" xml:space="preserve">
+    <value>Ин рамзи телефон дуруст нест!</value>
+  </data>
+  <data name="Profile:Resetpasswordsuccessfully" xml:space="preserve">
+    <value>Парол бомувафақият инсон карда шуд</value>
   </data>
   <data name="VacanciesList:All" xml:space="preserve">
     <value>Ҳама</value>

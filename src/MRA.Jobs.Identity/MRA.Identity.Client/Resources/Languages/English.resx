@@ -252,6 +252,9 @@
   <data name="ResetPassword:Changepassword" xml:space="preserve">
     <value>Change password</value>
   </data>
+  <data name="ResetPassword:Changepasswordsuccessfully" xml:space="preserve">
+    <value>Change password successfully</value>
+  </data>
   <data name="Profile:Serverisnotresponding" xml:space="preserve">
     <value>Server is not responding</value>
   </data>
@@ -278,6 +281,9 @@
   </data>
   <data name="Profile:EmailisnotConfirmed" xml:space="preserve">
     <value>Email is not Confirmed!</value>
+  </data>
+  <data name="Profile:Sendverificationemail" xml:space="preserve">
+    <value>Send verification email</value>
   </data>
   <data name="Profile:LastName" xml:space="preserve">
     <value>Last Name</value>
@@ -395,6 +401,54 @@
   </data>
   <data name="Profile:SelectLanguage" xml:space="preserve">
     <value>Select Language</value>
+  </data>
+  <data name="Profile:Servernotrespondingtry" xml:space="preserve">
+    <value>Server not responding, try again latter</value>
+  </data>
+  <data name="Profile:Pleasecheckyouremail" xml:space="preserve">
+    <value>Please check your email, we sent verification link</value>
+  </data>
+  <data name="Profile:Codeisincorrector" xml:space="preserve">
+    <value>Code is incorrect or expired</value>
+  </data>
+  <data name="Profile:Doyoureally" xml:space="preserve">
+    <value>Do you really want to delete these records? This process cannot be undone.</value>
+  </data>
+  <data name="Profile:Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Profile:Profileupdatedsuccessfully" xml:space="preserve">
+    <value>Profile updated successfully.</value>
+  </data>
+  <data name="Profile:Educationdetailsadded" xml:space="preserve">
+    <value>Education details added successfully</value>
+  </data>
+  <data name="Profile:UpdateEducationsuccessfully" xml:space="preserve">
+    <value>Update Education successfully.</value>
+  </data>
+  <data name="Profile:AddSkillssuccessfully" xml:space="preserve">
+    <value>Add Skills successfully.</value>
+  </data>
+  <data name="Profile:Experiencedetailsadded" xml:space="preserve">
+    <value>Experience details added successfully..</value>
+  </data>
+  <data name="Profile:Emailisnotavailable" xml:space="preserve">
+    <value>Email is not available</value>
+  </data>
+  <data name="Profile:UserNameisnotavailable" xml:space="preserve">
+    <value>User Name is not available</value>
+  </data>
+  <data name="Profile:PhoneNumberisnotavailable" xml:space="preserve">
+    <value>Phone Number is not available</value>
+  </data>
+  <data name="Profile:Thisphonenumberisnotcorrect" xml:space="preserve">
+    <value>This phone number is not correct !</value>
+  </data>
+  <data name="Profile:Resetpasswordsuccessfully" xml:space="preserve">
+    <value>Reset password successfully</value>
+  </data>
+  <data name="Profile:Anerroroccurred" xml:space="preserve">
+    <value>An error occurred</value>
   </data>
   <data name="Dashboard:Appilcations:Applications" xml:space="preserve">
     <value>Applications</value>

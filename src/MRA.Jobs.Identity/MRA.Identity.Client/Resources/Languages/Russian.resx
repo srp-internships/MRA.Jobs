@@ -252,6 +252,9 @@
   <data name="ResetPassword:Changepassword" xml:space="preserve">
     <value>Изменить пароль</value>
   </data>
+  <data name="ResetPassword:Changepasswordsuccessfully" xml:space="preserve">
+    <value>Пароль успешно изменен</value>
+  </data>
   <data name="Profile:Serverisnotresponding" xml:space="preserve">
     <value>Сервер не отвечает</value>
   </data>
@@ -278,6 +281,9 @@
   </data>
   <data name="Profile:EmailisnotConfirmed" xml:space="preserve">
     <value>Email не подтвержден!</value>
+  </data>
+  <data name="Profile:Sendverificationemail" xml:space="preserve">
+    <value>Отправить Email для подтверждения</value>
   </data>
   <data name="Profile:LastName" xml:space="preserve">
     <value>Фамилия</value>
@@ -395,6 +401,54 @@
   </data>
   <data name="Profile:SelectLanguage" xml:space="preserve">
     <value>Выберите язык</value>
+  </data>
+  <data name="Profile:Servernotrespondingtry" xml:space="preserve">
+    <value>Сервер не отвечает, попробуйте позже</value>
+  </data>
+  <data name="Profile:Pleasecheckyouremail" xml:space="preserve">
+    <value>Пожалуйста, проверьте свою почту, мы отправили ссылку для подтверждения</value>
+  </data>
+  <data name="Profile:Codeisincorrector" xml:space="preserve">
+    <value>Код неверен или устарел</value>
+  </data>
+  <data name="Profile:Doyoureally" xml:space="preserve">
+    <value>Вы действительно хотите удалить эти записи? Этот процесс не может быть отменен.</value>
+  </data>
+  <data name="Profile:Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Profile:Profileupdatedsuccessfully" xml:space="preserve">
+    <value>Профиль успешно обновлен.</value>
+  </data>
+  <data name="Profile:Educationdetailsadded" xml:space="preserve">
+    <value>Данные об образовании успешно добавлены</value>
+  </data>
+  <data name="Profile:UpdateEducationsuccessfully" xml:space="preserve">
+    <value>Образование успешно обновлено.</value>
+  </data>
+  <data name="Profile:AddSkillssuccessfully" xml:space="preserve">
+    <value>Навыки успешно добавлены.</value>
+  </data>
+  <data name="Profile:Experiencedetailsadded" xml:space="preserve">
+    <value>Данные об опыте успешно добавлены.</value>
+  </data>
+  <data name="Profile:Emailisnotavailable" xml:space="preserve">
+    <value>Email недоступен</value>
+  </data>
+  <data name="Profile:UserNameisnotavailable" xml:space="preserve">
+    <value>Имя пользователя недоступно</value>
+  </data>
+  <data name="Profile:PhoneNumberisnotavailable" xml:space="preserve">
+    <value>Номер телефона недоступен</value>
+  </data>
+  <data name="Profile:Thisphonenumberisnotcorrect" xml:space="preserve">
+    <value>Этот номер телефона некорректен!</value>
+  </data>
+  <data name="Profile:Resetpasswordsuccessfully" xml:space="preserve">
+    <value>Пароль успешно сброшен</value>
+  </data>
+  <data name="Profile:Anerroroccurred" xml:space="preserve">
+    <value>Произошла ошибка</value>
   </data>
   <data name="VacanciesList:All" xml:space="preserve">
     <value>Все</value>

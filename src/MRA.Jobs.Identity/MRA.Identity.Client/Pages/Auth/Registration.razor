@@ -70,7 +70,7 @@
                             @if (_processing)
                         {
                             <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                            <MudText Class="ms-2">Processing</MudText>
+							<MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
                         }
                         else
                         {
@@ -103,7 +103,7 @@
                              @if (_processing)
                             {
                                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                                <MudText Class="ms-2">Processing</MudText>
+								<MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
                             }
                             else
                             {
@@ -179,17 +179,17 @@
         var check = true;
         if (_userDetailsResponse.IsEmailTaken)
         {
-            Snackbar.Add("Email is not available", Severity.Error);
+			Snackbar.Add(ContentService["Profile:Emailisnotavailable"], Severity.Error);
             check = false;
         }
         if (_userDetailsResponse.IsUserNameTaken)
         {
-            Snackbar.Add("User Name is not available", Severity.Error);
+			Snackbar.Add(ContentService["Profile:UserNameisnotavailable"], Severity.Error);
             check = false;
         }
         if (_userDetailsResponse.IsPhoneNumberTaken)
         {
-            Snackbar.Add("Phone Number is not available", Severity.Error);
+			Snackbar.Add(ContentService["Profile:PhoneNumberisnotavailable"], Severity.Error);
             check = false;
         }
 
@@ -243,7 +243,7 @@
 
     private void ServerNotResponding()
     {
-        Snackbar.Add("Server is not responding, please try later", Severity.Error);
+		Snackbar.Add(ContentService["Profile:Servernotrespondingtry"], Severity.Error);
     }
 
     private async Task StartCountdown()
@@ -265,7 +265,7 @@
             SmsVerificationCodeStatus response = await UserProfileService.CheckConfirmationCode(_registerUser.PhoneNumber, _code);
             if (response == SmsVerificationCodeStatus.CodeVerifyFailure)
             {
-                Snackbar.Add("Code is incorrect or expired", Severity.Error);
+				Snackbar.Add(ContentService["Profile:Codeisincorrector"], Severity.Error);
             }
             else
             {
