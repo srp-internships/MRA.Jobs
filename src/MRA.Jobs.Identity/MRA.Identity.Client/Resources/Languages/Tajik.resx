@@ -726,4 +726,16 @@
   <data name="UserManager:Loading">
     <value>Бор карда мешавад...</value>
   </data>
+    <data name="UserRoles:PersonalData">
+    <value>Маълумоти шахсӣ</value>
+  </data>
+  <data name="UserRoles:UnConfirmed">
+    <value>Тасдиқ нашудааст</value>
+  </data>
+  <data name="UserRoles:Gender">
+    <value>Ҷинс</value>
+  </data>
+  <data name="UserRoles:History">
+    <value>Таърих</value>
+  </data>
 </root>

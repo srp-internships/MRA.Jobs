@@ -781,4 +781,17 @@
         <value>Loading...</value>
     </data>  
 
+ <data name="UserRoles:PersonalData">
+    <value>Personal Data</value>
+  </data>
+  <data name="UserRoles:UnConfirmed">
+    <value>UnConfirmed</value>
+  </data>  
+  <data name="UserRoles:Gender">
+    <value>Gender</value>
+  </data> 
+   <data name="UserRoles:History">
+    <value>History</value>
+  </data> 
+
 </root>

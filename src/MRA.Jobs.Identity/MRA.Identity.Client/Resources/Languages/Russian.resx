@@ -726,4 +726,17 @@
   <data name="UserManager:Loading">
     <value>Загрузка...</value>
   </data>
+
+    <data name="UserRoles:PersonalData">
+    <value>Личные данные</value>
+  </data>
+  <data name="UserRoles:UnConfirmed">
+    <value>Не подтверждено</value>
+  </data>
+  <data name="UserRoles:Gender">
+    <value>Пол</value>
+  </data>
+  <data name="UserRoles:History">
+    <value>История</value>
+  </data>
 </root>

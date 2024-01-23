@@ -1,5 +1,7 @@
 ﻿@page "/UserManager"
 
+<Header />
+
 <MudGrid>
     <MudItem xs="12">
         <MudTable ServerData="@(new Func<TableState, Task<TableData<UserResponse>>>(ServerReload))" Hover="true"

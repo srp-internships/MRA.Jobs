@@ -1,5 +1,7 @@
 ﻿@page "/UserRoles/{Username}"
 
+<Header />
+
 <CascadingAuthenticationState>
     <AuthorizeView Roles="ApplicationAdmin" Context="_">
         <Authorized>
