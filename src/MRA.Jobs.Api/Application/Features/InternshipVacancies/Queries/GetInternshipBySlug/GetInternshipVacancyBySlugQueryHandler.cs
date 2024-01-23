@@ -3,31 +3,31 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBy
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 
 namespace MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
-public class GetInternshipVacancyBySlugQueryHandler : IRequestHandler<GetInternshipVacancyBySlugQuery, InternshipVacancyResponse>
-{
-    private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
-    private readonly ICurrentUserService _currentUser;
 
-    public GetInternshipVacancyBySlugQueryHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUser)
-    {
-        _context = context;
-        _mapper = mapper;
-        _currentUser = currentUser;
-    }
-    public async Task<InternshipVacancyResponse> Handle(GetInternshipVacancyBySlugQuery request, CancellationToken cancellationToken)
+public class GetInternshipVacancyBySlugQueryHandler(
+    IApplicationDbContext context,
+    IMapper mapper,
+    ICurrentUserService currentUser)
+    : IRequestHandler<GetInternshipVacancyBySlugQuery, InternshipVacancyResponse>
+{
+    public async Task<InternshipVacancyResponse> Handle(GetInternshipVacancyBySlugQuery request,
+        CancellationToken cancellationToken)
     {
         // var internship = await _context.Internships.FindAsync(new object[] { request.Id }, cancellationToken);
-        var internship = await _context.Internships
-            .Include(i => i.VacancyQuestions)  
+        var internship = await context.Internships
+            .Include(i => i.VacancyQuestions)
             .Include(i => i.VacancyTasks)
             .Include(i => i.Tags)
             .ThenInclude(t => t.Tag)
-            .FirstOrDefaultAsync(i => i.Slug == request.Slug);
+            .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken: cancellationToken);
         _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Slug);
 
-        var mapped =  _mapper.Map<InternshipVacancyResponse>(internship);
-        mapped.IsApplied = await _context.Applications.AnyAsync(s => s.ApplicantId == _currentUser.GetUserId() && s.VacancyId == internship.Id);
+        internship.History = await context.VacancyTimelineEvents.Where(t => t.VacancyId == internship.Id)
+            .ToListAsync(cancellationToken: cancellationToken);
+
+        var mapped = mapper.Map<InternshipVacancyResponse>(internship);
+        mapped.IsApplied = await context.Applications.AnyAsync(s =>
+            s.ApplicantId == currentUser.GetUserId() && s.VacancyId == internship.Id);
 
         return mapped;
     }

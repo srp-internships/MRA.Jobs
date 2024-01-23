@@ -110,14 +110,6 @@
                                                     <MudCardContent>
 
                                                         <MudStack Row="true">
-                                                            @if (item.CreateBy == null)
-                                                            {
-                                                                <MudProgressCircular Color="Color.Primary" Size="Size.Small"
-                                                                                     Indeterminate="true">
-                                                                </MudProgressCircular>
-                                                            }
-                                                            else
-                                                            {
                                                                 <MudLink Href="@($"user/{item.CreateBy}")">
                                                                     <MudStack Row="true">
                                                                         <MudAvatar Size="Size.Small">
@@ -128,7 +120,6 @@
                                                                         </MudText>
                                                                     </MudStack>
                                                                 </MudLink>
-                                                            }
                                                             <MudSpacer/>
                                                             <MudText Typo="Typo.body2">@item.Time</MudText>
                                                         </MudStack>
