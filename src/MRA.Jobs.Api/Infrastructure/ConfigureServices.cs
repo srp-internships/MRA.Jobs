@@ -99,12 +99,7 @@ public static class ConfigureServices
         services.AddAuthorizationBuilder()
             .SetDefaultPolicy(new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
-                .RequireRole(ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
-                    ApplicationClaimValues.SuperAdmin,
-                    ApplicationClaimValues.Administrator)
                 .RequireClaim(ClaimTypes.Id)
-                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
-                    ApplicationClaimValues.AllApplications)
                 .Build())
             .AddPolicy(ApplicationPolicies.Administrator, op => op
                 .RequireRole(ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin)

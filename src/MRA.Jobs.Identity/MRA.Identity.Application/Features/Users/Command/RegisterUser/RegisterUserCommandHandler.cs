@@ -68,13 +68,7 @@ public class RegisterUserCommandHandler(
         }
 
         await emailVerification.SendVerificationEmailAsync(user);
-
-        var role = await context.Roles.FirstOrDefaultAsync(s => s.Name == "Applicant",
-            cancellationToken: cancellationToken);
-
-        var userRole =
-            new ApplicationUserRole { UserId = user.Id, RoleId = role.Id, Slug = $"{user.UserName}-Applicant" };
-        await context.UserRoles.AddAsync(userRole, cancellationToken);
+        
         await context.SaveChangesAsync(cancellationToken);
         await CreateClaimAsync(user.UserName, user.Id, user.Email, cancellationToken);
         return user.Id;

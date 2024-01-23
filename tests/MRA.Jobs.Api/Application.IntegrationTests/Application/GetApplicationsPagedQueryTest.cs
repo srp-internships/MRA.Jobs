@@ -59,7 +59,6 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
         Assert.That(result.Items.All(a => a.Username == "applicant1"));
     }
     
-    
     [Test]
     [TestCase(Role.Reviewer)]
     [TestCase(Role.Admin)]
@@ -91,7 +90,6 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
 
     public enum  Role
     {
-        Applicant,
         Reviewer,
         Admin
     }
