@@ -3,10 +3,12 @@
 namespace MRA.Jobs.Application.Common.SlugGeneratorService;
 public class SlugGeneratorService : ISlugGeneratorService
 {
-    static readonly SlugHelper slugHelper = new SlugHelper();
+    private static readonly SlugHelper SlugHelper = new();
 
     public string GenerateSlug(string inputText)
     {
-        return slugHelper.GenerateSlug(inputText);
+        var translatedText = NickBuhro.Translit.Transliteration.CyrillicToLatin(inputText);
+
+        return SlugHelper.GenerateSlug(translatedText);
     }
 }
