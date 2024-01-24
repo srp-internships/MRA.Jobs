@@ -52,6 +52,9 @@
         {
             LayoutService.SetNoTheme();
         }
+        
+        LayoutService.Lang = await ContentService.GetCurrentCulture();
+        StateHasChanged();
     }
 
     private async void SelectLanguage(string lang)
