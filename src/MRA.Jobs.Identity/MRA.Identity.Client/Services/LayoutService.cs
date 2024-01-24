@@ -7,7 +7,10 @@ using MudBlazor;
 
 namespace MRA.Identity.Client.Services;
 
-public class LayoutService(IUserPreferencesService userPreferencesService, IContentService contentService)
+public class LayoutService(
+    IUserPreferencesService userPreferencesService,
+    IContentService contentService,
+    IConfiguration configuration)
 {
     private UserPreferences.UserPreferences _userPreferences;
     private bool _systemPreferences;
@@ -52,7 +55,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         }
 
         var lang = await contentService.GetCurrentCulture();
-        Lang = lang.IsNullOrEmpty() ? "Ru" : lang;
+        Lang = lang.IsNullOrEmpty() ? configuration["FeatureManagement:DefaultLanguage"] : lang;
     }
 
     public void OnSystemPreferenceChanged(bool newValue)
@@ -92,7 +95,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         OnMajorUpdateOccured();
     }
 
-    public string Lang = "Ru";
+    public string Lang =configuration["FeatureManagement:DefaultLanguage"];
 
     public async Task ChangeLanguage(string lang)
     {
@@ -125,5 +128,4 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         if (uri.Contains("/upload-cv")) return DocPages.NoVacancyUploadCv;
         return DocPages.Home;
     }
-
 }
