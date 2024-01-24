@@ -96,8 +96,10 @@ public class HtmlService(IEmailService emailService, IConfiguration configuratio
     public async Task<bool> EmailApproved(UserProfileResponse applicant, string slug)
     {
         string url = $"{_configuration["MRAJobs-Client"]}/ApplicationDetail/{slug}";
-        string htmlTemplate = await File.ReadAllTextAsync(Path.Combine("Resources", "cv_approved_email.html"));
-        var htmlContent = htmlTemplate.Replace("@FullName", $"{applicant.FirstName} {applicant.LastName}").Replace("@LinkToGo", url);
+        string path = Path.Combine(AppContext.BaseDirectory, "Resources", "cv_approved_email.html");
+        string htmlTemplate = await File.ReadAllTextAsync(path);
+        var htmlContent = htmlTemplate.Replace("@FullName", $"{applicant.FirstName} {applicant.LastName}")
+            .Replace("@LinkToGo", url);
         var subject = "Заявка одобрено!";
         return await _emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
     }
@@ -105,8 +107,10 @@ public class HtmlService(IEmailService emailService, IConfiguration configuratio
     public async Task<bool> EmailRejected(UserProfileResponse applicant, string slug)
     {
         string url = $"{_configuration["MRAJobs-Client"]}/ApplicationDetail/{slug}";
-        string htmlTemplate = await File.ReadAllTextAsync(Path.Combine("Resources", "cv_rejected_email.html"));
-        var htmlContent = htmlTemplate.Replace("@FullName", $"{applicant.FirstName} {applicant.LastName}").Replace("@LinkToGo", url);
+        string path = Path.Combine(AppContext.BaseDirectory, "Resources", "cv_rejected_email.html");
+        string htmlTemplate = await File.ReadAllTextAsync(path);
+        var htmlContent = htmlTemplate.Replace("@FullName", $"{applicant.FirstName} {applicant.LastName}")
+            .Replace("@LinkToGo", url);
         var subject = "Уведомление об отказе";
         return await _emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
     }

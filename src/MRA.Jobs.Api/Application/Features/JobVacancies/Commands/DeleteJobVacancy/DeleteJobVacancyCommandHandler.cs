@@ -31,7 +31,7 @@ public class DeleteJobVacancyCommandHandler : IRequestHandler<DeleteJobVacancyCo
             EventType = TimelineEventType.Deleted,
             Time = _dateTime.Now,
             Note = "Job vacancy deleted",
-            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserName() ?? string.Empty
         };
 
         _dbContext.JobVacancies.Remove(jobVacancy);

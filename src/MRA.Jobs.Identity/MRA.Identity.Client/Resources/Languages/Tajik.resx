@@ -708,4 +708,34 @@
   <data name="Dashboard:Appilcations:More:CVButton" xml:space="preserve">
     <value>CV-и довталабро зеркашӣ кунед</value>
   </data>
+   <data name="UserManager:Users">
+    <value>Истифодабарандагон</value>
+  </data>
+  <data name="UserManager:Searchname">
+    <value>Ҷустуҷӯ аз рӯи номи корбар ё номи пурра</value>
+  </data>
+  <data name="UserManager:FullName">
+    <value>Номи пурра</value>
+  </data>
+  <data name="UserManager:Roles">
+    <value>Нақшҳо</value>
+  </data>
+  <data name="UserManager:Nomatchingrecords">
+    <value>Ягон сабти мувофиқ ёфт нашуд</value>
+  </data>
+  <data name="UserManager:Loading">
+    <value>Бор карда мешавад...</value>
+  </data>
+    <data name="UserRoles:PersonalData">
+    <value>Маълумоти шахсӣ</value>
+  </data>
+  <data name="UserRoles:UnConfirmed">
+    <value>Тасдиқ нашудааст</value>
+  </data>
+  <data name="UserRoles:Gender">
+    <value>Ҷинс</value>
+  </data>
+  <data name="UserRoles:History">
+    <value>Таърих</value>
+  </data>
 </root>

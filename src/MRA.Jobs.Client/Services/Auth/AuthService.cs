@@ -21,7 +21,6 @@ public class AuthService(IdentityApiHttpClientService identityHttpClient,
 {
     public async Task<ApiResponse<bool>> ChangePassword(ChangePasswordUserCommand command)
     {
-
         var result = await identityHttpClient.PutAsJsonAsync<bool>("Auth/ChangePassword", command);
         return result;
     }

@@ -923,27 +923,7 @@
    <data name="UserRoles:History">
     <value>History</value>
   </data> 
-  <data name="UserRoles:ApplytoJobVacancy">
-    <value>Apply to JobVacancy</value>
-  </data>
-  <data name="UserRoles:Arepository">
-    <value>A repository pops up on Github named MudBlazor.</value>
-  </data> 
-  <data name="UserRoles:Thedevelopment">
-    <value>The development has already started and the most common components can be found already.</value>
-  </data>  
-  <data name="UserRoles:PassedtheTest">
-    <value>Passed the Test</value>
-  </data>  
-  <data name="UserRoles:Intern">
-    <value>Intern</value>
-  </data>  
-  <data name="UserRoles:MudBlazorgets">
-    <value>MudBlazor gets its first minor with version 1.1.0.</value>
-  </data>
-  <data name="UserRoles:TimerPickerAutoComplete">
-    <value>TimerPicker, AutoComplete and Charts join the library as well as T versions of our inputs and selects.</value>
-  </data> 
+ 
   <data name="Applicateons:Filters">
     <value>Filters</value>
   </data>

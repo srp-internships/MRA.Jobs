@@ -92,10 +92,10 @@ public class ApplicationService(
         return response.Success ? response.Result : null;
     }
 
-    public async Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus)
+    public async Task<bool> UpdateStatus(UpdateApplicationStatusCommand updateApplicationStatusCommand)
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.PutAsync($"{ApplicationsEndPoint}/{updateApplicationStatus.Slug}/update-status", updateApplicationStatus);
+        var response = await httpClient.PutAsync($"{ApplicationsEndPoint}/{updateApplicationStatusCommand.Slug}/update-status", updateApplicationStatusCommand);
 
         if (response.HttpStatusCode != null)
             return (int)response.HttpStatusCode > 199 && (int)response.HttpStatusCode < 300;
