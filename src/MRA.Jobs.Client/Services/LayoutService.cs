@@ -13,10 +13,13 @@ using MudBlazor;
 
 namespace MRA.Jobs.Client.Services;
 
-public class LayoutService(IUserPreferencesService userPreferencesService, IContentService contentService)
+public class LayoutService(
+    IUserPreferencesService userPreferencesService,
+    IContentService contentService,
+    IConfiguration configuration)
 {
     public UserProfileResponse User;
-  
+
     private UserPreferences.UserPreferences _userPreferences;
     private bool _systemPreferences;
 
@@ -53,7 +56,7 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         }
 
         var lang = await contentService.GetCurrentCulture();
-        Lang = lang.IsNullOrEmpty() ? "Ru" : lang;
+        Lang = lang.IsNullOrEmpty() ? configuration["FeatureManagement:DefaultLanguage"] : lang;
     }
 
     public Task OnSystemPreferenceChanged(bool newValue)
@@ -95,12 +98,12 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
         OnMajorUpdateOccured();
     }
 
-    public string Lang = "Ru";
-    
+    public string Lang = configuration["FeatureManagement:DefaultLanguage"];
+
     public async Task ChangeLanguage(string lang)
     {
         Lang = lang;
-        
+
         if (lang == "Ru")
             await contentService.ChangeCulture(ApplicationCulturesNames.Ru);
         if (lang == "En")
@@ -120,7 +123,8 @@ public class LayoutService(IUserPreferencesService userPreferencesService, ICont
     public DocPages GetDocsBasePage(string uri)
     {
         if (uri.Contains("/jobs") || uri.Contains("dashboard/jobs")) return DocPages.Jobs;
-        if (uri.Contains("/internship")|| uri.Contains("/internships") || uri.Contains("/dashboard/internship")) return DocPages.Internships;
+        if (uri.Contains("/internship") || uri.Contains("/internships") || uri.Contains("/dashboard/internship"))
+            return DocPages.Internships;
         if (uri.Contains("/trainings")) return DocPages.Trainings;
         if (uri.Contains("/contact")) return DocPages.Contact;
         if (uri.Contains("/applications")) return DocPages.Applications;
