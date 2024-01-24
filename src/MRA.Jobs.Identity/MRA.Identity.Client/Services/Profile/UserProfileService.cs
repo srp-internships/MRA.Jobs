@@ -28,11 +28,9 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
             if (result.IsSuccessStatusCode)
                 return "";
 
-            if (result.StatusCode == HttpStatusCode.BadRequest)
-                return result.RequestMessage.ToString();
-
-            return ContentService["Profile:Servernotrespondingtry"];
-
+            return result.StatusCode == HttpStatusCode.BadRequest
+                ? result.RequestMessage.ToString()
+                : ContentService["Profile:Servernotrespondingtry"];
         }
         catch (HttpRequestException ex)
         {
@@ -45,6 +43,7 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
             return ContentService["Profile:Anerroroccurred"];
         }
     }
+
 
     public async Task<UserProfileResponse> Get(string userName = null)
     {
@@ -64,7 +63,7 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
         return result;
     }
 
-    public async Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command)
+    public async Task<HttpResponseMessage> CreateEducationAsync(CreateEducationDetailCommand command)
     {
         var response = await httpClient.PostAsJsonAsync("Profile/CreateEducationDetail", command);
         return response;
@@ -78,7 +77,7 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
 
     public async Task<HttpResponseMessage> DeleteEducationAsync(Guid id)
     {
-        var respose = await _httpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
+        var respose = await httpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
         return respose;
     }
 
@@ -87,7 +86,7 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
         var respose = await httpClient.DeleteAsync($"Profile/DeleteExperienceDetail/{id}");
         return respose;
     }
-
+    
     public async Task<List<UserExperienceResponse>> GetExperiencesByUser(string username = null)
     {
         var uri = "Profile/GetExperiencesByUser";
@@ -133,6 +132,7 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
             var result = JsonConvert.DeserializeObject<UserSkillsResponse>(content);
             return result;
         }
+
         return null;
     }
 

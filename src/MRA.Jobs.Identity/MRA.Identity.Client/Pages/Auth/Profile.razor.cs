@@ -313,7 +313,7 @@ public partial class Profile
             if (createEducation.EndDate == null)
                 createEducation.UntilNow = true;
 
-            var response = await UserProfileService.CreateEducationAsуnc(createEducation);
+            var response = await UserProfileService.CreateEducationAsync(createEducation);
             if (response.IsSuccessStatusCode)
             {
                 Snackbar.Add(ContentService["Profile:Educationdetailsadded"], MudBlazor.Severity.Success);
