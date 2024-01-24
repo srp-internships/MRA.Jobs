@@ -13,8 +13,7 @@ public class ContentService(
     IStringLocalizer<Russian> russian,
     IStringLocalizer<Tajik> tajik,
     ILocalStorageService localStorageService,
-    IFeatureManager featureManager,
-    LayoutService layoutService)
+    IFeatureManager featureManager)
     : IContentService
 {
     private bool _en;
@@ -51,7 +50,7 @@ public class ContentService(
             ApplicationCulturesNames.En => "En",
             ApplicationCulturesNames.Ru => "Ru",
             ApplicationCulturesNames.Tj => "Tj",
-            _ => layoutService.Lang
+            _ => "Ru"
         };
     }
 
