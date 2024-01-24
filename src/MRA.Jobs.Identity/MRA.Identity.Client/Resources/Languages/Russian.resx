@@ -172,7 +172,7 @@
     <value> Зарегистрироваться</value>
   </data>
   <data name="SignUp:LabelSignUp" xml:space="preserve">
-    <value>Зарегистрироваться</value>
+    <value>Регистрация</value>
   </data>
   <data name="SignUp:LabelHaveAccount" xml:space="preserve">
     <value>У вас есть аккаунт?</value>
