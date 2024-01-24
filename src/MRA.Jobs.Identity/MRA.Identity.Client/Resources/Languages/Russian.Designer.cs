@@ -1285,7 +1285,7 @@ namespace MRA.Identity.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Регистрация.
+        ///   Looks up a localized string similar to Зарегистрироваться.
         /// </summary>
         internal static string SignUp_LabelSignUp {
             get {
@@ -1443,6 +1443,60 @@ namespace MRA.Identity.Client.Resources.Languages {
         internal static string UserButton_Sign_Up {
             get {
                 return ResourceManager.GetString("UserButton:Sign Up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Полное имя.
+        /// </summary>
+        internal static string UserManager_FullName {
+            get {
+                return ResourceManager.GetString("UserManager:FullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Загрузка....
+        /// </summary>
+        internal static string UserManager_Loading {
+            get {
+                return ResourceManager.GetString("UserManager:Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Совпадающих записей не найдено.
+        /// </summary>
+        internal static string UserManager_Nomatchingrecords {
+            get {
+                return ResourceManager.GetString("UserManager:Nomatchingrecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Роли.
+        /// </summary>
+        internal static string UserManager_Roles {
+            get {
+                return ResourceManager.GetString("UserManager:Roles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поиск по имени пользователя или полному имени.
+        /// </summary>
+        internal static string UserManager_Searchname {
+            get {
+                return ResourceManager.GetString("UserManager:Searchname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователи.
+        /// </summary>
+        internal static string UserManager_Users {
+            get {
+                return ResourceManager.GetString("UserManager:Users", resourceCulture);
             }
         }
         

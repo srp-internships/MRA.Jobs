@@ -23,7 +23,7 @@ public class AddNoteToApplicationCommandHandler(
             EventType = TimelineEventType.Note,
             Time = dateTime.Now,
             Note = request.Note,
-            CreateBy = currentUserService.GetUserId() ?? Guid.Empty
+            CreateBy = currentUserService.GetUserName() ?? string.Empty
         };
         await dbContext.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);

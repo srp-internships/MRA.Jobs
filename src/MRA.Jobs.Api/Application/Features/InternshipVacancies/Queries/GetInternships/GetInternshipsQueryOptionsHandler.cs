@@ -24,18 +24,14 @@ public class GetInternshipsQueryOptionsHandler(IApplicationDbContext context,
             .AsEnumerable();
 
         if (request.CategorySlug is not null)
-        {
             internships = internships.Where(t => t.Category.Slug == request.CategorySlug);
-        }
-        else if (request.SearchText is not null)
-        {
+        
+        if (request.SearchText is not null)
             internships = internships.Where(t => t.Title.ToLower().Trim().Contains(request.SearchText.ToLower().Trim()));
-        }
-
+        
         var userRoles = userHttpContextAccessor.GetUserRoles();
-        if (userRoles.Any(role => role == "Applicant")|| !userHttpContextAccessor.IsAuthenticated())
+        if (!userRoles.Any()|| !userHttpContextAccessor.IsAuthenticated())
             request.CheckDate = true;
-
 
         if (request.CheckDate)
         {

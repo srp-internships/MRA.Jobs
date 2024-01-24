@@ -26,8 +26,6 @@ public class RegistrationTests : BaseTest
             Username = userName,
             LastName = "Makedonsky",
             PhoneNumber = phoneNumber,
-            Role = "asdfffssdesasfasefa",
-            Application = "43wtruigjklf",
             ConfirmPassword = "password@#12P"
         };
         var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={request.PhoneNumber}");
@@ -97,8 +95,6 @@ public class RegistrationTests : BaseTest
             Username = userName,
             LastName = "Makesddonsky",
             PhoneNumber = "+992623456701",
-            Role = "Role1",
-            Application = "mra.Test",
             ConfirmPassword = "passdsword@#12P"
         };
 
@@ -111,35 +107,7 @@ public class RegistrationTests : BaseTest
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest),
             await response.Content.ReadAsStringAsync());
     }
-    [Test]
-    public async Task Register_WhenRoleDoesNotExist_CreateRole()
-    {
-        var request = new RegisterUserCommand
-        {
-            Email = "test3@easdxa123123mple.com",
-            Password = "passdsword@#12P",
-            FirstName = "Ale123x",
-            Username = "@Alsdex223123",
-            LastName = "Makesddonsky",
-            PhoneNumber = "+992623456789",
-            Role = "Role1",
-            Application = "mra.Test",
-            ConfirmPassword = "passdsword@#12P"
-        };
-        var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={request.PhoneNumber}");
-        res.EnsureSuccessStatusCode();
-
-        request.VerificationCode = (await GetEntity<ConfirmationCode>(x => x.PhoneNumber == request.PhoneNumber)).Code;
-        var response = await _client.PostAsJsonAsync("api/Auth/register", request);
-        response.IsSuccessStatusCode.Should().BeTrue();
-
-        var role = await GetEntity<ApplicationRole>(s => s.Name == request.Role);
-
-        var userRole = await GetEntity<ApplicationUserRole>(a => a.RoleId == role.Id);
-
-        Assert.That(role, Is.Not.Null);
-        Assert.That(userRole, Is.Not.Null);
-    }
+   
 
     [Test]
     public async Task Register_WhenCall_CreateRequiredClaims()
@@ -159,8 +127,6 @@ public class RegistrationTests : BaseTest
             Username = "@Alerrrx223",
             LastName = "Makerradonsky",
             PhoneNumber = "+992723456789",
-            Role = role.Name,
-            Application = "mra.Test",
             ConfirmPassword = "passworrrrd@#12P"
         };
         var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={request.PhoneNumber}");
@@ -174,9 +140,8 @@ public class RegistrationTests : BaseTest
 
         var userClaims = await GetWhere<ApplicationUserClaim>(s => s.UserId == user.Id);
         
-        Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Application && s.ClaimValue==request.Application));
+
         Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Id && s.ClaimValue==user.Id.ToString()));
-        Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Role && s.ClaimValue==request.Role));
         Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Email && s.ClaimValue==request.Email));
         Assert.That(userClaims.Exists(s=>s.ClaimType==ClaimTypes.Username && s.ClaimValue==request.Username));
     }

@@ -8,7 +8,7 @@
 @inject IDialogService DialogService
 @inject LayoutService LayoutService
 @inject IJSRuntime JsRuntime
-@inject NavigationManager navigationManager
+@inject NavigationManager NavigationManager
 
 @if (_serverError)
 {
@@ -340,7 +340,7 @@ else
                     <MudTd DataLabel=@ContentService["Internships:ApplicationDeadline"]>@context.ApplicationDeadline</MudTd>
                     <MudTd DataLabel=@ContentService["VacancyApplication:End Date"]>@context.EndDate.ToString("D")</MudTd>
                     <MudTd>
-                        <MudIconButton Href=@($"{navigationManager.BaseUri}internships/apply/{context.Slug}") Target="_blank" Icon="@Icons.Material.Filled.OpenInNew" Variant="Variant.Text" Size="Size.Medium" />
+                        <MudIconButton Href=@($"{NavigationManager.BaseUri}internships/apply/{@context.Slug}") Target="_blank" Icon="@Icons.Material.Filled.OpenInNew" Variant="Variant.Text" Size="Size.Medium" />
                     </MudTd>
                     <MudTd>
                         <MudIconButton @onclick="() => OnEditClick(context.Slug)" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium" />

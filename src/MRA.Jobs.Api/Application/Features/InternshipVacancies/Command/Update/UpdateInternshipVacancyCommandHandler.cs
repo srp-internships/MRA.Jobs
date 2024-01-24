@@ -45,7 +45,7 @@ public class UpdateInternshipVacancyCommandHandler : IRequestHandler<UpdateInter
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Internship updated",
-            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserName() ?? string.Empty
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

@@ -7,12 +7,16 @@ using MRA.Jobs.Application.Contracts.Common;
 namespace MRA.Jobs.Application.Features.Applications.Query.GetApplicationWithPagination;
 
 public class
-    GetApplicationsPagedQueryHandler(IApplicationDbContext dbContext, IApplicationSieveProcessor sieveProcessor,
-        IMapper mapper, ICurrentUserService currentUser)
+    GetApplicationsPagedQueryHandler(
+        IApplicationDbContext dbContext,
+        IApplicationSieveProcessor sieveProcessor,
+        IMapper mapper,
+        ICurrentUserService currentUser)
     : IRequestHandler<PagedListQuery<ApplicationListDto>,
         PagedList<ApplicationListDto>>
 {
-    public Task<PagedList<ApplicationListDto>> Handle(PagedListQuery<ApplicationListDto> request, CancellationToken cancellationToken)
+    public Task<PagedList<ApplicationListDto>> Handle(PagedListQuery<ApplicationListDto> request,
+        CancellationToken cancellationToken)
     {
         var allApplications = dbContext.Applications
             .AsNoTracking()
@@ -20,9 +24,11 @@ public class
             .Include(a => a.VacancyResponses)
             .ThenInclude(vr => vr.VacancyQuestion);
 
-        var applications = currentUser.GetRoles().Any(a => a == "Applicant")
-            ? allApplications.Where(a => a.ApplicantUsername == currentUser.GetUserName() && a.Vacancy.Discriminator !="NoVacancy")
-            : allApplications;
+        var roles = currentUser.GetRoles();
+        var applications = roles.Any()
+            ? allApplications
+            : allApplications.Where(a =>
+                a.ApplicantUsername == currentUser.GetUserName() && a.Vacancy.Discriminator != "NoVacancy");
 
         var result = sieveProcessor.ApplyAdnGetPagedList(request, applications, mapper.Map<ApplicationListDto>);
         return Task.FromResult(result);

@@ -20,6 +20,14 @@ a, .btn-link {
     --mud-palette-background-grey: rgba(0, 0, 0, 0.1) !important;
 }
 
+.toolbar-fixed-blur{
+    backdrop-filter: blur(15px);
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+}
+
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;

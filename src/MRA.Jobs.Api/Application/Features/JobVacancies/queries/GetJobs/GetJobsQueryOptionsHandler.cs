@@ -8,10 +8,10 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobs;
 
 public class GetJobsQueryOptionsHandler(
-        IApplicationDbContext applicationDbContext,
-        IMapper mapper,
-        IApplicationSieveProcessor sieveProcessor,
-        IUserHttpContextAccessor userHttpContextAccessor)
+    IApplicationDbContext applicationDbContext,
+    IMapper mapper,
+    IApplicationSieveProcessor sieveProcessor,
+    IUserHttpContextAccessor userHttpContextAccessor)
     : IRequestHandler<GetJobsQueryOptions, PagedList<JobVacancyListDto>>
 {
     public async Task<PagedList<JobVacancyListDto>> Handle(GetJobsQueryOptions request,
@@ -26,16 +26,14 @@ public class GetJobsQueryOptionsHandler(
             .AsEnumerable();
 
         if (request.CategorySlug is not null)
-        {
             jobs = jobs.Where(t => t.Category.Slug == request.CategorySlug);
-        }
-        else if (request.SearchText is not null)
-        {
+
+        if (request.SearchText is not null)
             jobs = jobs.Where(t => t.Title.ToLower().Trim().Contains(request.SearchText.ToLower().Trim()));
-        }
+
 
         var userRoles = userHttpContextAccessor.GetUserRoles();
-        if (userRoles.Any(role => role == "Applicant") || !userHttpContextAccessor.IsAuthenticated())
+        if (!userRoles.Any() || !userHttpContextAccessor.IsAuthenticated())
             request.CheckDate = true;
 
 
