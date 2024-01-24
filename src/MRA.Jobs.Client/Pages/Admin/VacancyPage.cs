@@ -207,10 +207,18 @@ public partial class VacancyPage
         VService.creatingNewJob.Description = await this.QuillHtml.GetHTML();
 
         if (_endDateTime.HasValue)
-            VService.creatingNewJob.EndDate += _endDateTime.Value;
+        {
+            DateTime endDate = VService.creatingNewJob.EndDate.Value.Date;
+            DateTime newEndDate = endDate.Add(_endDateTime.Value);
+            VService.creatingNewJob.EndDate = newEndDate;
+        }
 
         if (_publishDateTime.HasValue)
-            VService.creatingNewJob.PublishDate += _publishDateTime.Value;
+        {
+            DateTime publishDate = VService.creatingNewJob.PublishDate.Value.Date;
+            DateTime newPublishDate = publishDate.Add(_publishDateTime.Value);
+            VService.creatingNewJob.PublishDate = newPublishDate;
+        }
 
         try
         {

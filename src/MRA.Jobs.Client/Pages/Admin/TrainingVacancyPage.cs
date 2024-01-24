@@ -277,10 +277,18 @@ public partial class TrainingVacancyPage
     private async Task HandleSubmit()
     {
         if (_endDateTime.HasValue)
-            TrainingService.createCommand.EndDate += _endDateTime.Value;
+        {
+            DateTime endDate = TrainingService.createCommand.EndDate.Value.Date;
+            DateTime newEndDate = endDate.Add(_endDateTime.Value);
+            TrainingService.createCommand.EndDate = newEndDate;
+        }
 
         if (_publishDateTime.HasValue)
-            TrainingService.createCommand.PublishDate += _publishDateTime.Value;
+        {
+            DateTime publishDate = TrainingService.createCommand.PublishDate.Value.Date;
+            DateTime newPublishDate = publishDate.Add(_publishDateTime.Value);
+            TrainingService.createCommand.PublishDate = newPublishDate;
+        }
         try
         {
             var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
