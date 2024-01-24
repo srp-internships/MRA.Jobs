@@ -18,14 +18,11 @@ namespace MRA.Identity.Client.Services.Profile;
 
 public class UserProfileService(HttpClient httpClient, IContentService ContentService) : IUserProfileService
 {
-
-    private readonly HttpClient _httpClient = httpClient;
-
     public async Task<string> Update(UpdateProfileCommand command)
     {
         try
         {
-            var result = await _httpClient.PutAsJsonAsync("Profile", command);
+            var result = await httpClient.PutAsJsonAsync("Profile", command);
 
             if (result.IsSuccessStatusCode)
                 return "";
@@ -50,75 +47,75 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
 
     public async Task<UserProfileResponse> Get(string userName = null)
     {
-        var result = await _httpClient
+        var result = await httpClient
           .GetFromJsonAsync<UserProfileResponse>($"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
         return result;
     }
 
     public async Task<List<UserEducationResponse>> GetEducationsByUser()
     {
-        var result = await _httpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
+        var result = await httpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
         return result;
     }
 
     public async Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command)
     {
-        var response = await _httpClient.PostAsJsonAsync("Profile/CreateEducationDetail", command);
+        var response = await httpClient.PostAsJsonAsync("Profile/CreateEducationDetail", command);
         return response;
     }
 
     public async Task<HttpResponseMessage> UpdateEducationAsync(UpdateEducationDetailCommand command)
     {
-        var response = await _httpClient.PutAsJsonAsync("Profile/UpdateEducationDetail", command);
+        var response = await httpClient.PutAsJsonAsync("Profile/UpdateEducationDetail", command);
         return response;
     }
 
     public async Task<HttpResponseMessage> DeleteEducationAsync(Guid id)
     {
-        var respose = await _httpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
+        var respose = await httpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
         return respose;
     }
 
     public async Task<HttpResponseMessage> DeleteExperienceAsync(Guid id)
     {
-        var respose = await _httpClient.DeleteAsync($"Profile/DeleteExperienceDetail/{id}");
+        var respose = await httpClient.DeleteAsync($"Profile/DeleteExperienceDetail/{id}");
         return respose;
     }
 
     public async Task<List<UserExperienceResponse>> GetExperiencesByUser()
     {
-        var result = await _httpClient.GetFromJsonAsync<List<UserExperienceResponse>>("Profile/GetExperiencesByUser");
+        var result = await httpClient.GetFromJsonAsync<List<UserExperienceResponse>>("Profile/GetExperiencesByUser");
         return result;
     }
 
     public async Task<HttpResponseMessage> CreateExperienceAsync(CreateExperienceDetailCommand command)
     {
-        var response = await _httpClient.PostAsJsonAsync("Profile/CreateExperienceDetail", command);
+        var response = await httpClient.PostAsJsonAsync("Profile/CreateExperienceDetail", command);
         return response;
     }
 
     public async Task<HttpResponseMessage> UpdateExperienceAsync(UpdateExperienceDetailCommand command)
     {
-        var response = await _httpClient.PutAsJsonAsync("Profile/UpdateExperienceDetail", command);
+        var response = await httpClient.PutAsJsonAsync("Profile/UpdateExperienceDetail", command);
         return response;
     }
 
     public async Task<UserSkillsResponse> GetUserSkills(string userName = null)
     {
-        var response = await _httpClient
+        var response = await httpClient
             .GetFromJsonAsync<UserSkillsResponse>($"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
         return response;
     }
 
     public async Task<HttpResponseMessage> RemoveSkillAsync(string skill)
     {
-        var response = await _httpClient.DeleteAsync($"Profile/RemoveUserSkill/{Uri.EscapeDataString(skill)}");
+        var response = await httpClient.DeleteAsync($"Profile/RemoveUserSkill/{Uri.EscapeDataString(skill)}");
         return response;
     }
 
     public async Task<UserSkillsResponse> AddSkills(AddSkillsCommand command)
     {
-        var response = await _httpClient.PostAsJsonAsync("Profile/AddSkills", command);
+        var response = await httpClient.PostAsJsonAsync("Profile/AddSkills", command);
         if (response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
@@ -130,32 +127,32 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
 
     public async Task<bool> SendConfirmationCode(string phoneNumber)
     {
-        var response = await _httpClient.GetFromJsonAsync<bool>($"sms/send_code?PhoneNumber={phoneNumber}");
+        var response = await httpClient.GetFromJsonAsync<bool>($"sms/send_code?PhoneNumber={phoneNumber}");
 
         return response;
     }
 
     public async Task<SmsVerificationCodeStatus> CheckConfirmationCode(string phoneNumber, int? code)
     {
-        var response = await _httpClient.GetFromJsonAsync<SmsVerificationCodeStatus>($"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
+        var response = await httpClient.GetFromJsonAsync<SmsVerificationCodeStatus>($"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
         return response;
     }
 
     public async Task<List<UserEducationResponse>> GetAllEducations()
     {
-        var result = await _httpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetAllEducations");
+        var result = await httpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetAllEducations");
         return result;
     }
 
     public async Task<List<UserExperienceResponse>> GetAllExperiences()
     {
-        var result = await _httpClient.GetFromJsonAsync<List<UserExperienceResponse>>("Profile/GetAllExperiences");
+        var result = await httpClient.GetFromJsonAsync<List<UserExperienceResponse>>("Profile/GetAllExperiences");
         return result;
     }
 
     public async Task<UserSkillsResponse> GetAllSkills()
     {
-        var response = await _httpClient.GetFromJsonAsync<UserSkillsResponse>("Profile/GetAllSkills");
+        var response = await httpClient.GetFromJsonAsync<UserSkillsResponse>("Profile/GetAllSkills");
         return response;
     }
 }
