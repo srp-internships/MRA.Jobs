@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MRA.Identity.Application.Common.Interfaces.Services;
@@ -8,35 +9,34 @@ using MRA.Identity.Domain.Entities;
 
 namespace MRA.Identity.Application.Features.Users.Command.LoginUser;
 
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, JwtTokenResponse>
+public class LoginUserCommandHandler(IJwtTokenService jwtTokenService, UserManager<ApplicationUser> userManager)
+    : IRequestHandler<LoginUserCommand, JwtTokenResponse>
 {
-    private readonly IJwtTokenService _jwtTokenService;
-    private readonly UserManager<ApplicationUser> _userManager;
-
-    public LoginUserCommandHandler(IJwtTokenService jwtTokenService, UserManager<ApplicationUser> userManager)
-    {
-        _jwtTokenService = jwtTokenService;
-        _userManager = userManager;
-    }
-
     public async Task<JwtTokenResponse> Handle(LoginUserCommand request,
         CancellationToken cancellationToken)
     {
         ApplicationUser user =
-            await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.Username, cancellationToken);
+            await userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.Username, cancellationToken);
         _ = user ?? throw new UnauthorizedAccessException("Username is not found.");
 
-        bool success = await _userManager.CheckPasswordAsync(user, request.Password);
+        bool success = await userManager.CheckPasswordAsync(user, request.Password);
 
-        if (success)
+        if (!success)
         {
-            return new JwtTokenResponse
-            {
-                RefreshToken = _jwtTokenService.CreateRefreshToken(await _userManager.GetClaimsAsync(user)),
-                AccessToken = _jwtTokenService.CreateTokenByClaims(await _userManager.GetClaimsAsync(user), out var expireDate),
-                AccessTokenValidateTo = expireDate
-            };
+            throw new UnauthorizedAccessException("Incorrect password.");
         }
-        throw new UnauthorizedAccessException("Incorrect password.");
+
+        var claims = await userManager.GetClaimsAsync(user);
+        var roles = await userManager.GetRolesAsync(user);
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+        return new JwtTokenResponse
+        {
+            RefreshToken = jwtTokenService.CreateRefreshToken(claims),
+            AccessToken = jwtTokenService.CreateTokenByClaims(claims, out var expireDate),
+            AccessTokenValidateTo = expireDate
+        };
     }
 }

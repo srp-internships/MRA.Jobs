@@ -17,8 +17,6 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .WithMessage("Username should only consist of letters, numbers, underscores, or the @ symbol.");
         
         RuleFor(s => s.Password).NotEmpty().MinimumLength(5);
-        RuleFor(s => !string.IsNullOrEmpty(s.Role));
-        RuleFor(s => !string.IsNullOrEmpty(s.Application));
         RuleFor(s => s.ConfirmPassword).Equal(s => s.Password).WithMessage("Passwords do not match.");
     }
 }

@@ -15,20 +15,21 @@ public class RegisterUserCommandHandler(
     UserManager<ApplicationUser> userManager,
     IApplicationDbContext context,
     IEmailVerification emailVerification,
-    RoleManager<ApplicationRole> roleManager,
     ISmsCodeChecker codeChecker)
     : IRequestHandler<RegisterUserCommand, Guid>
 {
     public async Task<Guid> Handle(RegisterUserCommand request,
         CancellationToken cancellationToken)
     {
-
-        var exitingUser = await context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber || u.Email == request.Email, cancellationToken: cancellationToken);
+        var exitingUser = await context.Users.FirstOrDefaultAsync(
+            u => u.PhoneNumber == request.PhoneNumber || u.Email == request.Email,
+            cancellationToken: cancellationToken);
         if (exitingUser != null)
         {
             if (exitingUser.Email == request.Email && exitingUser.PhoneNumber == request.PhoneNumber)
             {
-                throw new DuplicateWaitObjectException($"Email {request.Email} and Phone Number {request.PhoneNumber} are not available!");
+                throw new DuplicateWaitObjectException(
+                    $"Email {request.Email} and Phone Number {request.PhoneNumber} are not available!");
             }
 
             if (exitingUser.PhoneNumber == request.PhoneNumber)
@@ -67,43 +68,18 @@ public class RegisterUserCommandHandler(
         }
 
         await emailVerification.SendVerificationEmailAsync(user);
-
-        var role = await context.Roles.FirstOrDefaultAsync(s => s.NormalizedName != null && s.NormalizedName.Contains(request.Role.ToUpper()), cancellationToken: cancellationToken);
-        if (role == null)
-        {
-            role = new ApplicationRole
-            {
-                Id = Guid.NewGuid(),
-                Name = request.Role,
-                NormalizedName = roleManager.NormalizeKey(request.Role),
-                Slug = $"{request.Username}-{request.Role}",
-            };
-            var roleResult = await roleManager.CreateAsync(role);
-            if (!roleResult.Succeeded)
-            {
-                throw new ValidationException(roleResult.Errors.First().Description);
-            }
-        }
-
-
-        var userRole = new ApplicationUserRole { UserId = user.Id, RoleId = role.Id, Slug = $"{user.UserName}-role" };
-        await context.UserRoles.AddAsync(userRole, cancellationToken);
+        
         await context.SaveChangesAsync(cancellationToken);
-        await CreateClaimAsync(request.Role, user.UserName, user.Id, user.Email, user.PhoneNumber, request.Application,
-        cancellationToken);
+        await CreateClaimAsync(user.UserName, user.Id, user.Email, cancellationToken);
         return user.Id;
     }
 
 
-    private async Task CreateClaimAsync(string role, string username, Guid id, string email, string phone,
-        string application, CancellationToken cancellationToken = default)
+    private async Task CreateClaimAsync(string username, Guid id, string email,
+        CancellationToken cancellationToken = default)
     {
         var userClaims = new[]
         {
-            new ApplicationUserClaim
-            {
-                UserId = id, ClaimType = ClaimTypes.Role, ClaimValue = role, Slug = $"{username}-role"
-            },
             new ApplicationUserClaim
             {
                 UserId = id, ClaimType = ClaimTypes.Id, ClaimValue = id.ToString(), Slug = $"{username}-id"
@@ -118,13 +94,6 @@ public class RegisterUserCommandHandler(
             new ApplicationUserClaim
             {
                 UserId = id, ClaimType = ClaimTypes.Email, ClaimValue = email, Slug = $"{username}-email"
-            },
-            new ApplicationUserClaim
-            {
-                UserId = id,
-                ClaimType = ClaimTypes.Application,
-                ClaimValue = application,
-                Slug = $"{username}-application"
             }
         };
         await context.UserClaims.AddRangeAsync(userClaims, cancellationToken);

@@ -26,8 +26,6 @@ public class GetAccessTokenIntegrationTests : BaseTest
                 Username = "@Alex111122",
                 LastName = "Makedonsky",
                 PhoneNumber = "+992123156789",
-                Application = "32wrgoi;l;",
-                Role = "wqu;k65",
                 ConfirmPassword = "password@#12P"
             };
             var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={registerCommand1.PhoneNumber}");
@@ -104,8 +102,6 @@ public class GetAccessTokenIntegrationTests : BaseTest
             Username = "@Alex222",
             LastName = "Makedonsky",
             PhoneNumber = "+992423456711",
-            Application = "32wrgoi;l;",
-            Role = "wqu;k65",
             ConfirmPassword = "password@#12P2"
         };
         var res = await _client.GetAsync($"api/sms/send_code?PhoneNumber={registerCommand2.PhoneNumber}");
