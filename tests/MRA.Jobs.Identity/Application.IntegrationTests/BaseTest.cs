@@ -126,11 +126,9 @@ public abstract class BaseTest
 
         var claims = new List<Claim>
         {
-            new Claim($"{prefics}role", "Applicant"),
             new Claim($"{prefics}Id", user.Id.ToString()),
             new Claim($"{prefics}username", user.UserName),
             new Claim($"{prefics}email", user.Email),
-            new Claim($"{prefics}application", "MraJobs")
         };
         var token = tokenService.CreateTokenByClaims(claims, out _);
 

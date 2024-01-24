@@ -900,27 +900,6 @@
   <data name="UserRoles:History">
     <value>История</value>
   </data>
-  <data name="UserRoles:ApplytoJobVacancy">
-    <value>Подать заявку на вакансию</value>
-  </data>
-  <data name="UserRoles:Arepository">
-    <value>На GitHub появляется репозиторий под названием MudBlazor.</value>
-  </data>
-  <data name="UserRoles:Thedevelopment">
-    <value>Разработка уже началась, и большинство общих компонентов уже доступны.</value>
-  </data>
-  <data name="UserRoles:PassedtheTest">
-    <value>Прошел тест</value>
-  </data>
-  <data name="UserRoles:Intern">
-    <value>Стажер</value>
-  </data>
-  <data name="UserRoles:MudBlazorgets">
-    <value>MudBlazor выпускает свою первую минорную версию 1.1.0.</value>
-  </data>
-  <data name="UserRoles:TimerPickerAutoComplete">
-    <value>Добавлены TimerPicker, AutoComplete и Charts, а также версии T для наших вводов и выбора.</value>
-  </data>
   <data name="Applicateons:Filters">
     <value>Фильтры</value>
   </data>
