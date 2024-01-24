@@ -53,7 +53,6 @@ public class ClaimsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] GetAllQuery query)
     {
-
         List<UserClaimsResponse> response = await _mediator.Send(query);
         return Ok(response);
     }
@@ -61,7 +60,6 @@ public class ClaimsController : ControllerBase
     [HttpGet("{slug}")]
     public async Task<IActionResult> Get(string slug)
     {
-
         var response = await _mediator.Send(new GetBySlugQuery { Slug = slug });
         return Ok(response);
     }

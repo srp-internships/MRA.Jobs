@@ -17,7 +17,7 @@ public interface IUserProfileService
     Task<UserProfileResponse> Get(string userName = null);
     Task<string> Update(UpdateProfileCommand command);
 
-    Task<List<UserEducationResponse>> GetEducationsByUser();
+    Task<List<UserEducationResponse>> GetEducationsByUser(string username=null);
     Task<List<UserEducationResponse>> GetAllEducations();
 
     Task<HttpResponseMessage> CreateEducationAsуnc(CreateEducationDetailCommand command);
@@ -26,7 +26,7 @@ public interface IUserProfileService
     Task<HttpResponseMessage> DeleteEducationAsync(Guid id);
     Task<HttpResponseMessage> DeleteExperienceAsync(Guid id);
 
-    Task<List<UserExperienceResponse>> GetExperiencesByUser();
+    Task<List<UserExperienceResponse>> GetExperiencesByUser(string username=null);
     Task<List<UserExperienceResponse>> GetAllExperiences();
 
     Task<HttpResponseMessage> CreateExperienceAsync(CreateExperienceDetailCommand command);

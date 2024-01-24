@@ -45,7 +45,6 @@ public static class ConfigureServices
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<ApplicationDbContextInitializer>();
         services.AddScoped<DbMigration>();
-        services.AddScoped<ISieveConfigurationsAssemblyMarker, InfrastructureSieveConfigurationsAssemblyMarker>();
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddScoped<IHtmlService, HtmlService>();
         services.AddScoped<IUserHttpContextAccessor, UserHttpContextAccessor>();
@@ -100,12 +99,7 @@ public static class ConfigureServices
         services.AddAuthorizationBuilder()
             .SetDefaultPolicy(new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
-                .RequireRole(ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
-                    ApplicationClaimValues.SuperAdmin,
-                    ApplicationClaimValues.Administrator)
                 .RequireClaim(ClaimTypes.Id)
-                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
-                    ApplicationClaimValues.AllApplications)
                 .Build())
             .AddPolicy(ApplicationPolicies.Administrator, op => op
                 .RequireRole(ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin)
@@ -118,8 +112,4 @@ public static class ConfigureServices
                     ApplicationClaimValues.AllApplications));
         return services;
     }
-}
-
-public class InfrastructureSieveConfigurationsAssemblyMarker : ISieveConfigurationsAssemblyMarker
-{
 }

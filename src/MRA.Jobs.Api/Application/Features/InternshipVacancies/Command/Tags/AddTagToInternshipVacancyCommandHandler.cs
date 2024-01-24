@@ -49,7 +49,7 @@ public class AddTagToInternshipVacancyCommandHandler : IRequestHandler<AddTagToI
                     EventType = TimelineEventType.Created,
                     Time = _dateTime.Now,
                     Note = $"Added '{tag.Name}' tag",
-                    CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
+                    CreateBy = _currentUserService.GetUserName() ?? string.Empty
                 };
                 await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
             }

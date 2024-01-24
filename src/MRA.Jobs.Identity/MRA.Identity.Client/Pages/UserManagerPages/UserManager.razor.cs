@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MRA.Identity.Application.Contract.User.Responses;
 using MudBlazor;
 
-namespace MRA.Jobs.Client.Pages.Admin;
+namespace MRA.Identity.Client.Pages.UserManagerPages;
 public sealed partial class UserManager
 {
-    [Inject] private IdentityHttpClient Client { get; set; }
+    [Inject] private HttpClient Client { get; set; }
     [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; }
     
     private string _searchString = "";

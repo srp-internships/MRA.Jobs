@@ -19,6 +19,7 @@ public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand, bool>
     {
         var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Slug == request.Slug);
         _ = role ?? throw new NotFoundException("role not found");
+        
         await _roleManager.DeleteAsync(role);
         return true;
     }

@@ -13,6 +13,7 @@ using MRA.Identity.Client.Services.ContentService;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MRA.Identity.Client.Services.Profile;
 
@@ -48,13 +49,18 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
     public async Task<UserProfileResponse> Get(string userName = null)
     {
         var result = await httpClient
-          .GetFromJsonAsync<UserProfileResponse>($"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
+            .GetFromJsonAsync<UserProfileResponse>(
+                $"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
         return result;
     }
 
-    public async Task<List<UserEducationResponse>> GetEducationsByUser()
+    public async Task<List<UserEducationResponse>> GetEducationsByUser(string username = null)
     {
-        var result = await httpClient.GetFromJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
+        var uri = "Profile/GetEducationsByUser";
+        if (username.IsNullOrEmpty())
+            uri = $"Profile/GetEducationsByUser?username={username}";
+
+        var result = await httpClient.GetFromJsonAsync<List<UserEducationResponse>>(uri);
         return result;
     }
 
@@ -72,7 +78,7 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
 
     public async Task<HttpResponseMessage> DeleteEducationAsync(Guid id)
     {
-        var respose = await httpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
+        var respose = await _httpClient.DeleteAsync($"Profile/DeleteEducationDetail/{id}");
         return respose;
     }
 
@@ -82,9 +88,13 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
         return respose;
     }
 
-    public async Task<List<UserExperienceResponse>> GetExperiencesByUser()
+    public async Task<List<UserExperienceResponse>> GetExperiencesByUser(string username = null)
     {
-        var result = await httpClient.GetFromJsonAsync<List<UserExperienceResponse>>("Profile/GetExperiencesByUser");
+        var uri = "Profile/GetExperiencesByUser";
+        if (username.IsNullOrEmpty())
+            uri = $"Profile/GetExperiencesByUser?username={username}";
+
+        var result = await httpClient.GetFromJsonAsync<List<UserExperienceResponse>>(uri);
         return result;
     }
 
@@ -103,7 +113,8 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
     public async Task<UserSkillsResponse> GetUserSkills(string userName = null)
     {
         var response = await httpClient
-            .GetFromJsonAsync<UserSkillsResponse>($"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
+            .GetFromJsonAsync<UserSkillsResponse>(
+                $"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
         return response;
     }
 
@@ -134,7 +145,9 @@ public class UserProfileService(HttpClient httpClient, IContentService ContentSe
 
     public async Task<SmsVerificationCodeStatus> CheckConfirmationCode(string phoneNumber, int? code)
     {
-        var response = await httpClient.GetFromJsonAsync<SmsVerificationCodeStatus>($"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
+        var response =
+            await httpClient.GetFromJsonAsync<SmsVerificationCodeStatus>(
+                $"sms/verify_code?PhoneNumber={phoneNumber}&Code={code}");
         return response;
     }
 
