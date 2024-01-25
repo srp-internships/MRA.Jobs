@@ -288,7 +288,21 @@ public partial class InternshipVacanciesPage
         InternshipService.createCommand.CategoryId = catId;
         InternshipService.createCommand.VacancyQuestions = _questions;
         InternshipService.createCommand.Description = await _quillHtml.GetHTML();
-      
+
+        if (_endDateTime.HasValue)
+        {
+            DateTime endDate = InternshipService.createCommand.EndDate.Value.Date;
+            DateTime newEndDate = endDate.Add(_endDateTime.Value);
+            InternshipService.createCommand.EndDate = newEndDate;
+        }
+
+        if (_publishDateTime.HasValue)
+        {
+            DateTime publishDate = InternshipService.createCommand.PublishDate.Value.Date;
+            DateTime newPublishDate = publishDate.Add(_publishDateTime.Value);
+            InternshipService.createCommand.PublishDate = newPublishDate;
+        }
+
         try
         {
             InternshipService.createCommand.VacancyTasks = _tasks;
