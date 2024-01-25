@@ -1,4 +1,5 @@
-﻿@using Microsoft.FeatureManagement
+﻿@using MRA.Jobs.Client.Components.Under_Construction
+@using Microsoft.FeatureManagement
 @using MRA.Identity.Application.Contract.User.Responses
 @using Microsoft.AspNetCore.WebUtilities
 @using AltairCA.Blazor.WebAssembly.Cookie
@@ -8,8 +9,9 @@
 @inject NavigationManager NavigationManager
 @inject IAltairCABlazorCookieUtil CookieUtil
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
 <MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
+@if (!_IsUnderConstruction)
+{
 <MudLayout>
     <Header></Header>
     <MudDialogProvider/>
@@ -30,10 +32,16 @@
         <MudFab StartIcon="@Icons.Material.Filled.KeyboardArrowUp" Color="Color.Primary"/>
     </MudScrollToTop>
 
-</MudLayout>
+	</MudLayout>
+}
+else
+{
+	<UnderConstruction/>
+}
 @code
 {
-    private bool _themeSwitcher;
+	private bool _IsUnderConstruction;
+	private bool _themeSwitcher;
     private MudThemeProvider _mudThemeProvider;
 
     protected override void OnInitialized()
@@ -53,6 +61,7 @@
 
     private async Task ApplyUserPreferences()
     {
+		_IsUnderConstruction = await FeatureManager.IsEnabledAsync(FeatureFlags.IsUnderConstruction);
         _themeSwitcher = await FeatureManager.IsEnabledAsync(FeatureFlags.ThemeSwitcher);
         if (!_themeSwitcher)
         {
