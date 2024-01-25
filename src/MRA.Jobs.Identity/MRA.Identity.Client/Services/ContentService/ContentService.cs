@@ -14,7 +14,7 @@ public class ContentService(
     IStringLocalizer<Tajik> tajik,
     ILocalStorageService localStorageService,
     IFeatureManager featureManager,
-    LayoutService layoutService)
+    IConfiguration configuration)
     : IContentService
 {
     private bool _en;
@@ -51,7 +51,7 @@ public class ContentService(
             ApplicationCulturesNames.En => "En",
             ApplicationCulturesNames.Ru => "Ru",
             ApplicationCulturesNames.Tj => "Tj",
-            _ => layoutService.Lang
+            _ => configuration["FeatureManagement:DefaultLanguage"]
         };
     }
 
