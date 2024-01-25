@@ -1,6 +1,6 @@
 ﻿namespace MRA.Identity.Client.Services.HttpClients;
 
-public interface IHttpClientServiceBase
+public interface IHttpClientService
 {
     Task<ApiResponse<T>> PostAsJsonAsync<T>(string url, object content);
 

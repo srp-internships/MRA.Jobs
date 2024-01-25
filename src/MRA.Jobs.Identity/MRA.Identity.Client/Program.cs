@@ -8,6 +8,7 @@ using MRA.Identity.Client;
 using MRA.Identity.Client.Services;
 using MRA.Identity.Client.Services.Auth;
 using MRA.Identity.Client.Services.ContentService;
+using MRA.Identity.Client.Services.HttpClients;
 using MRA.Identity.Client.Services.Message;
 using MRA.Identity.Client.Services.Profile;
 using MRA.Identity.Client.Services.UserPreferences;
@@ -16,7 +17,7 @@ using MudBlazor.Services;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddMudServices();
 builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.Configuration["HttpClient:BaseAddress"]) });
-
+builder.Services.AddScoped<IHttpClientService, HttpClientService>();
 builder.Services.AddAltairCACookieService(options => { options.DefaultExpire = TimeSpan.Zero; });
 builder.Services.AddFeatureManagement();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
