@@ -42,6 +42,12 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="MRA.Identity.Application.Contract">
+        <HintPath>..\..\..\..\MRA.Identity\src\MRA.Identity.Application.Contract\bin\Debug\net8.0\MRA.Identity.Application.Contract.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
     <ProjectExtensions>
         <VisualStudio>
             <UserProperties dbsettings_1json__JsonSchema="https://docs.renovatebot.com/renovate-schema.json" />
