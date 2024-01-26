@@ -21,17 +21,17 @@ public class ContentService(
     private bool _ru;
     private bool _tj;
 
-    private static CultureInfo _applicationCulture = new(ApplicationCulturesNames.Ru);
+    public static CultureInfo ApplicationCulture = new(ApplicationCulturesNames.Ru);
 
     public string this[string name]
     {
         get
         {
-            if (_applicationCulture.Name == ApplicationCulturesNames.En && _en)
+            if (ApplicationCulture.Name == ApplicationCulturesNames.En && _en)
                 return english[name].Value;
-            if (_applicationCulture.Name == ApplicationCulturesNames.Ru && _ru)
+            if (ApplicationCulture.Name == ApplicationCulturesNames.Ru && _ru)
                 return russian[name].Value;
-            if (_applicationCulture.Name == ApplicationCulturesNames.Tj && _tj)
+            if (ApplicationCulture.Name == ApplicationCulturesNames.Tj && _tj)
                 return tajik[name].Value;
             return russian[name];
         }
@@ -39,7 +39,7 @@ public class ContentService(
 
     public async Task ChangeCulture(string name)
     {
-        _applicationCulture = new CultureInfo(name);
+        ApplicationCulture = new CultureInfo(name);
         await localStorageService.SetItemAsStringAsync(nameof(ApplicationCulturesNames), name);
     }
 
@@ -60,7 +60,7 @@ public class ContentService(
         var cultureName = await localStorageService.GetItemAsStringAsync(nameof(ApplicationCulturesNames));
         if (!string.IsNullOrEmpty(cultureName))
         {
-            _applicationCulture = new CultureInfo(cultureName);
+            ApplicationCulture = new CultureInfo(cultureName);
         }
 
         _en = await featureManager.IsEnabledAsync(FeatureFlags.En);
