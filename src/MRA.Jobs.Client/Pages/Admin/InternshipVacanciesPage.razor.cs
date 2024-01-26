@@ -3,7 +3,6 @@ using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
 using BlazorMonaco;
 using BlazorMonaco.Editor;
-using Microsoft.AspNetCore.Components.Web;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
@@ -289,7 +288,21 @@ public partial class InternshipVacanciesPage
         InternshipService.createCommand.CategoryId = catId;
         InternshipService.createCommand.VacancyQuestions = _questions;
         InternshipService.createCommand.Description = await _quillHtml.GetHTML();
-      
+
+        if (_endDateTime.HasValue)
+        {
+            DateTime endDate = InternshipService.createCommand.EndDate.Value.Date;
+            DateTime newEndDate = endDate.Add(_endDateTime.Value);
+            InternshipService.createCommand.EndDate = newEndDate;
+        }
+
+        if (_publishDateTime.HasValue)
+        {
+            DateTime publishDate = InternshipService.createCommand.PublishDate.Value.Date;
+            DateTime newPublishDate = publishDate.Add(_publishDateTime.Value);
+            InternshipService.createCommand.PublishDate = newPublishDate;
+        }
+
         try
         {
             InternshipService.createCommand.VacancyTasks = _tasks;
@@ -350,7 +363,7 @@ public partial class InternshipVacanciesPage
 
     private async Task NewQuestionAsync()
     {
-        var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
+        var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>(@ContentService["Internships:AddQuestion"])).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
         _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
@@ -375,7 +388,7 @@ public partial class InternshipVacanciesPage
 
     private void Clear()
     {
-        _createOrEditHeader = "New Internship Vacancy";
+        _createOrEditHeader = @ContentService["Internships:NewInternship"];
         InternshipService.createCommand.Title = string.Empty;
         InternshipService.createCommand.ShortDescription = string.Empty;
         InternshipService.createCommand.Description = string.Empty;

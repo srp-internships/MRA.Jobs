@@ -1,3 +1,0 @@
-dotnet ef migrations add [NAME] -—startup-project ..\MRA.Identity.Api\MRA.Identity.Api.csproj
-
-dotnet ef database update —-startup-project ..\MRA.Identity.Api\MRA.Identity.Api.csproj

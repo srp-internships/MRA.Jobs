@@ -27,7 +27,7 @@ public class DeleteApplicationCommandHandler : IRequestHandler<DeleteApplication
             EventType = TimelineEventType.Deleted,
             Time = _dateTime.Now,
             Note = "Application vacancy deleted",
-            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserName() ?? string.Empty
         };
 
         _context.Applications.Remove(entity);

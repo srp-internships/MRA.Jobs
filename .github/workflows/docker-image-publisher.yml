@@ -16,8 +16,7 @@ jobs:
         env:
           WITH_V: true
           DRY_RUN: true
-      
-      
+    
       - name: build docker image for Web API
         run: |
           docker build -t silkroadprofessionals.azurecr.io/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }} .

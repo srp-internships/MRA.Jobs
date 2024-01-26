@@ -52,7 +52,7 @@ public class CreateApplicationCommandHandler(
             ApplicationId = application.Id,
             EventType = TimelineEventType.Created,
             Time = dateTime.Now,
-            CreateBy = currentUserService.GetUserId() ?? Guid.Empty
+            CreateBy = currentUserService.GetUserName() ?? string.Empty
         };
 
         string emailHtmlBody;

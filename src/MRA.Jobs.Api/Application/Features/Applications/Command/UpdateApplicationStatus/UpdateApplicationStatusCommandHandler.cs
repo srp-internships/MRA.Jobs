@@ -20,9 +20,9 @@ public class UpdateApplicationStatusCommandHandler(
     ISmsService smsService,
     ILogger<SmsService> logger,
     IConfiguration configuration)
-    : IRequestHandler<UpdateApplicationStatus, bool>
+    : IRequestHandler<UpdateApplicationStatusCommand, bool>
 {
-    public async Task<bool> Handle(UpdateApplicationStatus request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(UpdateApplicationStatusCommand request, CancellationToken cancellationToken)
     {
         var application =
             await dbContext.Applications.FirstOrDefaultAsync(t => t.Slug == request.Slug, cancellationToken);
@@ -42,7 +42,7 @@ public class UpdateApplicationStatusCommandHandler(
             EventType = TimelineEventType.Updated,
             Time = dateTime.Now,
             Note = $"Application status changed: {application.Status}",
-            CreateBy = currentUserService.GetUserId() ?? Guid.Empty
+            CreateBy = currentUserService.GetUserName() ?? string.Empty
         };
         await dbContext.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);

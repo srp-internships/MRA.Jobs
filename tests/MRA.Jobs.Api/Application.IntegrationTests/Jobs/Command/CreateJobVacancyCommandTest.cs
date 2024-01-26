@@ -14,6 +14,33 @@ public class CreateJobVacancyCommandTest : Testing
     private static readonly Random Random = new();
 
     [Test]
+    public async Task CreateJobVacancyCommand_CreatingJobVacancy_Slug_Translate_KrillToLatin_Success()
+    {
+        RunAsReviewerAsync();
+        var jobVacancy = new CreateJobVacancyCommand
+        {
+            Title = "Бэкенд разработчик",
+            RequiredYearOfExperience = 5,
+            Description = RandomString(10),
+            ShortDescription = RandomString(10),
+            PublishDate = DateTime.Now,
+            EndDate = DateTime.Now.AddDays(2),
+            CategoryId = await AddVacancyCategory("jobvacancy"),
+            WorkSchedule = Contracts.Dtos.Enums.ApplicationStatusDto.WorkSchedule.FullTime
+        };
+        var response = await _httpClient.PostAsJsonAsync("/api/jobs", jobVacancy);
+        response.EnsureSuccessStatusCode();
+        response.Should().NotBeNull();
+        
+        const string slug = "bekend-razrabotchik-1-1";
+
+        var job = await FindFirstOrDefaultAsync<JobVacancy>(j=>j.Slug==slug);
+        job.Should().NotBeNull();
+       
+        Assert.That(jobVacancy.Title==job.Title);
+    }
+    
+    [Test]
     public async Task CreateJobVacancyCommand_CreatingJobVacancyWithQuestions_Success()
     {
         RunAsReviewerAsync();
@@ -36,6 +63,7 @@ public class CreateJobVacancyCommandTest : Testing
 
         response.Should().NotBeNull();
     }
+    
     [Test]
     public async Task CreateJobVacancyCommand_CreatingJobVacancyWithTask_Success()
     {

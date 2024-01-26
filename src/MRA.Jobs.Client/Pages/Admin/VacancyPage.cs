@@ -207,10 +207,18 @@ public partial class VacancyPage
         VService.creatingNewJob.Description = await this.QuillHtml.GetHTML();
 
         if (_endDateTime.HasValue)
-            VService.creatingNewJob.EndDate += _endDateTime.Value;
+        {
+            DateTime endDate = VService.creatingNewJob.EndDate.Value.Date;
+            DateTime newEndDate = endDate.Add(_endDateTime.Value);
+            VService.creatingNewJob.EndDate = newEndDate;
+        }
 
         if (_publishDateTime.HasValue)
-            VService.creatingNewJob.PublishDate += _publishDateTime.Value;
+        {
+            DateTime publishDate = VService.creatingNewJob.PublishDate.Value.Date;
+            DateTime newPublishDate = publishDate.Add(_publishDateTime.Value);
+            VService.creatingNewJob.PublishDate = newPublishDate;
+        }
 
         try
         {
@@ -350,7 +358,7 @@ public partial class VacancyPage
 
     private void Clear()
     {
-        _createOrEditHeader = "New Job Vacancy";
+        _createOrEditHeader = @ContentService["job:NewVacancy"];
         VService.creatingNewJob.Title = string.Empty;
         VService.creatingNewJob.ShortDescription = string.Empty;
         VService.creatingNewJob.Description = string.Empty;
@@ -369,7 +377,7 @@ public partial class VacancyPage
     private async Task NewQuestionAsync()
     {
         var res =
-            (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
+            (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>(@ContentService["Internships:AddQuestion"])).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
         _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }

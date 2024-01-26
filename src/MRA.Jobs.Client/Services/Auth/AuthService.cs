@@ -21,7 +21,6 @@ public class AuthService(IdentityApiHttpClientService identityHttpClient,
 {
     public async Task<ApiResponse<bool>> ChangePassword(ChangePasswordUserCommand command)
     {
-
         var result = await identityHttpClient.PutAsJsonAsync<bool>("Auth/ChangePassword", command);
         return result;
     }
@@ -41,7 +40,7 @@ public class AuthService(IdentityApiHttpClientService identityHttpClient,
             if (result.Success)
             {
                 var response = result.Result;
-                await cookieUtil.SetValueAsync("authToken", response);
+                await cookieUtil.SetValueAsync("authToken", response, secure:true);
                 await authenticationStateProvider.GetAuthenticationStateAsync();
                 layoutService.User = await userProfileService.Get();
                 if (!newRegister)
