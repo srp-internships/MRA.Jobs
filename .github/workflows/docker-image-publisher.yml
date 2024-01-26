@@ -24,6 +24,7 @@ jobs:
 
       - name: Publish Web API to ACR
         run: |
+          docker login silkroadprofessionals.azurecr.io -u silkroadprofessionals -p ${{ secrets.ACR_PASS }}
           docker push silkroadprofessionals.azurecr.io/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }}
 
       - name: Update infrastructure image version
