@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MRA.Jobs.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class TimelineEvent_change_type_CreateBy : Migration
+    public partial class TImeLine_Event_change : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,7 +14,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "CreateBy",
                 table: "TimelineEvents",
-                type: "nvarchar(100)",
+                type: "nvarchar(80)",
                 nullable: true,
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier");
@@ -30,7 +30,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"),
                 oldClrType: typeof(string),
-                oldType: "nvarchar(100)",
+                oldType: "nvarchar(80)",
                 oldNullable: true);
         }
     }
