@@ -17,15 +17,16 @@ jobs:
           WITH_V: true
           DRY_RUN: true
       
-      - name: build docker image for Web API
-        run: |
-          docker build -t silkroadprofessionals.azurecr.io/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }} .
-        working-directory: ./src
+      
+      # - name: build docker image for Web API
+      #   run: |
+      #     docker build -t silkroadprofessionals.azurecr.io/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }} .
+      #   working-directory: ./src
 
-      - name: Publish Web API to ACR
-        run: |
-          docker login silkroadprofessionals.azurecr.io -u silkroadprofessionals -p ${{ secrets.ACR_PASS }}
-          docker push silkroadprofessionals.azurecr.io/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }}
+      # - name: Publish Web API to ACR
+      #   run: |
+      #     docker login silkroadprofessionals.azurecr.io -u silkroadprofessionals -p ${{ secrets.ACR_PASS }}
+      #     docker push silkroadprofessionals.azurecr.io/mra-web-api:${{ steps.taggerDryRun.outputs.new_tag }}
 
       - name: Update infrastructure image version
         uses: peter-evans/repository-dispatch@v2
