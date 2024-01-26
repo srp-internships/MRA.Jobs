@@ -16,16 +16,6 @@ jobs:
         env:
           WITH_V: true
           DRY_RUN: true
-    
-      - name: build docker image for Identity Service
-        run: |
-          docker build -t silkroadprofessionals.azurecr.io/mra-identity-api:${{ steps.taggerDryRun.outputs.new_tag }} .
-        working-directory: ./src/MRA.Jobs.Identity
-
-      - name: Publish Identity Service to ACR
-        run: |
-          docker login silkroadprofessionals.azurecr.io -u silkroadprofessionals -p ${{ secrets.ACR_PASS }}
-          docker push silkroadprofessionals.azurecr.io/mra-identity-api:${{ steps.taggerDryRun.outputs.new_tag }}
       
       - name: build docker image for Web API
         run: |
@@ -42,7 +32,7 @@ jobs:
           event-type: update
           token: ${{ secrets.GH_TOKEN }}
           repository: srp-internships/MRAInfrastructure
-          client-payload: '{"version":"${{ steps.taggerDryRun.outputs.new_tag }}"}'
+          client-payload: '{"version":"${{ steps.taggerDryRun.outputs.new_tag }}", "environment":"Staging", "image":"mra-web-api"}'
 
       - name: Minor version for each merge
         id: taggerFinal
