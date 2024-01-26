@@ -324,7 +324,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreateBy")
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(80)");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
