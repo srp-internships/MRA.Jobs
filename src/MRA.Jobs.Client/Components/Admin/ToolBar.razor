@@ -78,7 +78,7 @@
 						</MudText>
 					</MudButton>
 					<AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-						<MudButton Href="@($"{Configuration["IdentityClient"]}/userManager")" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.UserManager)">
+						<MudButton Href="/userManager" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.UserManager)">
 							<MudText>
 								<b>@ContentService["Header:Usersmanager"]</b>
 							</MudText>
@@ -117,7 +117,7 @@
 						<MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">@ContentService["Header:Trainings"]</MudNavLink>
 
 						<AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-							<MudNavLink Match="NavLinkMatch.All" Href="@($"{Configuration["IdentityClient"]}/userManager")">@ContentService["Header:Usersmanager"]</MudNavLink>
+							<MudNavLink Match="NavLinkMatch.All" Href="/userManager">@ContentService["Header:Usersmanager"]</MudNavLink>
 						</AuthorizeView>
 					</MudNavMenu>
 					@if (_betaVersion)
