@@ -10,7 +10,6 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["MRA.Jobs.Api/WebUI/MRA.Jobs.Web.csproj", "MRA.Jobs.Api/WebUI/"]
 COPY ["MRA.Jobs.Api/Application/MRA.Jobs.Application.csproj", "MRA.Jobs.Api/Application/"]
-COPY ["MRA.Jobs.Identity/MRA.Identity.Application.Contract/MRA.Identity.Application.Contract.csproj", "MRA.Jobs.Identity/MRA.Identity.Application.Contract/"]
 COPY ["MRA.Jobs.Api/Application.Contracts/MRA.Jobs.Application.Contracts.csproj", "MRA.Jobs.Api/Application.Contracts/"]
 COPY ["MRA.Jobs.Api/Domain/MRA.Jobs.Domain.csproj", "MRA.Jobs.Api/Domain/"]
 COPY ["MRA.Jobs.Api/Infrastructure/MRA.Jobs.Infrastructure.csproj", "MRA.Jobs.Api/Infrastructure/"]
