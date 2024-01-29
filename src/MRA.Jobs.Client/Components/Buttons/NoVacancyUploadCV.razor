@@ -68,17 +68,9 @@
 	<DialogActions>
 		@if (_questionsResponses.Any())
 		{
-			<MudButton Color="Color.Primary" Class="ml-auto" OnClick="@CreateApplication">
-				@if (_processing)
-				{
-					<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-					<MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
-				}
-				else
-				{
+			<ProgressTaskButton Color="Color.Primary" Class="ml-auto" Function="CreateApplication">
 					<MudText>@ContentService["VacancyApplication:Apply"]</MudText>
-				}
-			</MudButton>
+			</ProgressTaskButton>
 			<MudButton OnClick="@CloseDialog">
 				<MudText>@ContentService["SendCV:Close"]</MudText>
 				</MudButton>
@@ -116,7 +108,6 @@
 	private bool _isNoVacancyApplyButtonEnabled;
 
 	private IBrowserFile _cv;
-	private bool _processing = false;
 
 	JobVacancyDetailsDto _vacancy = new();
 
@@ -174,9 +165,7 @@
 			}).ToList();
 
 		_application.VacancyResponses = vacancyResponses;
-		_processing = true;
 		await NoVacancyService.CreateApplicationNoVacancyAsync(_application, _cv);
-		_processing = false;
 		CloseDialog();
 	}
 
