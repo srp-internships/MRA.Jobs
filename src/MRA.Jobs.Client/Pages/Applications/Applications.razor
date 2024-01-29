@@ -27,24 +27,24 @@
                         <MudCard Class="rounded-lg mud-elevation-4">
                             <MudCardContent>
                                 <MudText>
-									<b>@ContentService["Applicateons:Filters"]</b>
+                                    <b>@ContentService["Applicateons:Filters"]</b>
                                 </MudText>
                                 <MudGrid>
                                     <MudItem xs="12" sm="6" md="4">
                                         <MudTextField T="string" ValueChanged="@(OnSearchUsername)"
-													  Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
+                                                      Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
                                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                       Class="mt-0" Immediate="true"/>
                                     </MudItem>
                                     <MudItem xs="12" sm="6" md="4">
                                         <MudTextField T="string" ValueChanged="@(OnSearchVacancyTitle)"
-													  Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
+                                                      Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
                                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                       Class="mt-0" Immediate="true"/>
                                     </MudItem>
                                     <MudItem xs="12" sm="6" md="4">
                                         <MudTextField T="string" ValueChanged="@(OnSearchStatusName)"
-													  Placeholder=@ContentService["Dashboard:Appilcations:Status name"] Adornment="Adornment.Start"
+                                                      Placeholder=@ContentService["Dashboard:Appilcations:Status name"] Adornment="Adornment.Start"
                                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                       Class="mt-0" Immediate="true"/>
                                     </MudItem>
@@ -58,7 +58,7 @@
                               Hover="true" @ref="_table">
                         <ToolBarContent>
                             <MudText Typo="Typo.h5">
-								<b>@ContentService["UserButton:Applications"]</b>
+                                <b>@ContentService["UserButton:Applications"]</b>
                             </MudText>
                             <MudHidden Breakpoint="Breakpoint.MdAndDown">
                                 <MudSpacer/>
@@ -66,19 +66,19 @@
                                     <MudGrid>
                                         <MudItem>
                                             <MudTextField T="string" ValueChanged="@(OnSearchUsername)"
-														  Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
+                                                          Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
                                                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                           Class="mt-0" Immediate="true"/>
                                         </MudItem>
                                         <MudItem>
                                             <MudTextField T="string" ValueChanged="@(OnSearchVacancyTitle)"
-														  Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
+                                                          Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
                                                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                           Class="mt-0" Immediate="true"/>
                                         </MudItem>
                                         <MudItem>
                                             <MudTextField T="string" ValueChanged="@(OnSearchStatusName)"
-														  Placeholder=@ContentService["Dashboard:Appilcations:Status name"] Adornment="Adornment.Start"
+                                                          Placeholder=@ContentService["Dashboard:Appilcations:Status name"] Adornment="Adornment.Start"
                                                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                           Class="mt-0" Immediate="true"/>
                                         </MudItem>
@@ -87,26 +87,26 @@
                             </MudHidden>
                         </ToolBarContent>
                         <HeaderContent>
-							<MudTh>@ContentService["Dashboard:Appilcations:Applicant username"]</MudTh>
-							<MudTh>@ContentService["Dashboard:Appilcations:Vacancy title"]</MudTh>
-								<MudTh>@ContentService["Dashboard:Appilcations:Applied at"]</MudTh>
-								<MudTh>@ContentService["Dashboard:Appilcations:Status name"]</MudTh>
-								<MudTh>@ContentService["Dashboard:Appilcations:Action"]</MudTh>
+                            <MudTh>@ContentService["Dashboard:Appilcations:Applicant username"]</MudTh>
+                            <MudTh>@ContentService["Dashboard:Appilcations:Vacancy title"]</MudTh>
+                            <MudTh>@ContentService["Dashboard:Appilcations:Applied at"]</MudTh>
+                            <MudTh>@ContentService["Dashboard:Appilcations:Status name"]</MudTh>
+                            <MudTh>@ContentService["Dashboard:Appilcations:Action"]</MudTh>
                         </HeaderContent>
                         <RowTemplate>
-								<MudTd DataLabel=@ContentService["SignUp:UserName"]>@context.Username</MudTd>
-								<MudTd DataLabel=@ContentService["Internships:Title"]>@context.VacancyTitle</MudTd>
-								<MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.CreatedAt.ToString("D")</MudTd>
-								<MudTd DataLabel=@ContentService["Dashboard:Appilcations:Status name"]>@context.StatusName</MudTd>
-								<MudTd DataLabel=@ContentService["Dashboard:Appilcations:Name"]>
-                                <MudButton Variant="Variant.Filled" OnClick="@((_) => OnClick(context.Slug, context.Username))">More</MudButton>
+                            <MudTd DataLabel=@ContentService["SignUp:UserName"]>@context.Username</MudTd>
+                            <MudTd DataLabel=@ContentService["Internships:Title"]>@context.VacancyTitle</MudTd>
+                            <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.CreatedAt.ToString("D")</MudTd>
+                            <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Status name"]>@context.StatusName</MudTd>
+                            <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Name"]>
+                                <ProgressTaskButton Variant="Variant.Filled" Function="@((_) => OnClick(context.Slug, context.Username))">More</ProgressTaskButton>
                             </MudTd>
                         </RowTemplate>
                         <NoRecordsContent>
-								<MudText>@ContentService["UserManager:Nomatchingrecords"]</MudText>
+                            <MudText>@ContentService["UserManager:Nomatchingrecords"]</MudText>
                         </NoRecordsContent>
                         <LoadingContent>
-								<MudText>@ContentService["UserManager:Loading"]</MudText>
+                            <MudText>@ContentService["UserManager:Loading"]</MudText>
                         </LoadingContent>
                         <PagerContent>
                             <MudTablePager/>
@@ -183,7 +183,7 @@
     {
         try
         {
-			var response = await ApplicationService.GetAllApplications();
+            var response = await ApplicationService.GetAllApplications();
             if (response is not null)
             {
                 _applications = response;
@@ -195,6 +195,7 @@
             StateHasChanged();
         }
     }
+
     public Applications()
     {
         _searchStatusName = null;
@@ -204,5 +205,5 @@
     {
         NavigationManager.NavigateTo($"/ApplicationDetail/{slug}/{applicationUserName}");
     }
-    
+
 }
