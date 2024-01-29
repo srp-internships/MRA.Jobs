@@ -13,13 +13,13 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
         <PackageReference Include="MRA.Configurations" Version="2.0.5" />
+        <PackageReference Include="MRA.Identity.Application.Contract" Version="1.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="NickBuhro.Translit" Version="1.4.5" />
         <PackageReference Include="Slugify.Core" Version="4.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\MRA.Jobs.Identity\MRA.Identity.Application.Contract\MRA.Identity.Application.Contract.csproj" />
       <ProjectReference Include="..\Application.Contracts\MRA.Jobs.Application.Contracts.csproj" />
       <ProjectReference Include="..\Domain\MRA.Jobs.Domain.csproj" />
     </ItemGroup>
