@@ -77,7 +77,7 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
 
     [HttpPut("{slug}/update-status")]
     [Authorize(policy: ApplicationPolicies.Reviewer)]
-    public async Task<ActionResult<bool>> UpdateStatus(string slug, UpdateApplicationStatus request,
+    public async Task<ActionResult<bool>> UpdateStatus(string slug, UpdateApplicationStatusCommand request,
         CancellationToken cancellationToken)
     {
         request.Slug = slug;

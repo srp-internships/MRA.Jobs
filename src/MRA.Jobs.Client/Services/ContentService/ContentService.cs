@@ -13,7 +13,8 @@ public class ContentService(
     IStringLocalizer<Russian> russian,
     IStringLocalizer<Tajik> tajik,
     ILocalStorageService localStorageService,
-    IFeatureManager featureManager)
+    IFeatureManager featureManager,
+    IConfiguration configuration)
     : IContentService
 {
     private bool _en;
@@ -50,7 +51,7 @@ public class ContentService(
             ApplicationCulturesNames.En => "En",
             ApplicationCulturesNames.Ru => "Ru",
             ApplicationCulturesNames.Tj => "Tj",
-            _ => "ru"
+            _ => configuration["FeatureManagement:DefaultLanguage"]
         };
     }
 
@@ -61,6 +62,7 @@ public class ContentService(
         {
             _applicationCulture = new CultureInfo(cultureName);
         }
+
         _en = await featureManager.IsEnabledAsync(FeatureFlags.En);
         _ru = await featureManager.IsEnabledAsync(FeatureFlags.Ru);
         _tj = await featureManager.IsEnabledAsync(FeatureFlags.Tj);

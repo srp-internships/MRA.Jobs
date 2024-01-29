@@ -56,8 +56,6 @@ public class Testing
         var claims = new List<Claim>
         {
             new(ClaimTypes.Email, "fakeEmail@asd.com"),
-            new(ClaimTypes.Role, ApplicationClaimValues.Applicant),
-            new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
             new(ClaimTypes.Id, userId.ToString()),
             new(ClaimTypes.Username, username)
         };

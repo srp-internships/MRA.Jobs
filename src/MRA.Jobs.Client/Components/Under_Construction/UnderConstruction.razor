@@ -1,0 +1,116 @@
+﻿@page "/UnderConstruction"
+<style>
+	.center-screen {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		flex-direction: column;
+</style>
+<div class="center-screen">
+	<img src="images/srp/srp_icon.png" style="width: 400px;" />
+	<h1>We're coming soon</h1>
+	<h2>Stay connected</h2>
+	<br/>
+	<MudItem xs="12" sm="6" md="3">
+		<MudGrid>
+			<MudItem xs="12">
+				<a href="https://www.facebook.com/SilkRoadProfessionals/" target="_blank">
+					<MudCard Class="rounded-lg mud-elevation-4">
+						<MudCardContent>
+							<div class="d-flex flex-grow-1">
+								<div class="flex-none d-flex ">
+									<MudIcon Icon="@Icons.Custom.Brands.Facebook" Size="Size.Large" />
+								</div>
+								<div class="flex-initial d-flex ">
+									<MudText Typo="Typo.h6" Style="padding-top: 3px;">
+										<b>Facebook</b>
+									</MudText>
+								</div>
+							</div>
+						</MudCardContent>
+					</MudCard>
+				</a>
+			</MudItem>
+			<MudItem xs="12">
+				<a href="https://t.me/silkroadprofessionals" target="_blank">
+					<MudCard Class="rounded-lg mud-elevation-4">
+						<MudCardContent>
+							<div class="d-flex flex-grow-1">
+								<div class="flex-none d-flex ">
+									<MudIcon Icon="@Icons.Custom.Brands.Telegram" Size="Size.Large" />
+								</div>
+								<div class="flex-initial d-flex ">
+									<MudText Typo="Typo.h6" Style="padding-top: 3px;">
+										<b>Telegram</b>
+									</MudText>
+								</div>
+							</div>
+						</MudCardContent>
+					</MudCard>
+				</a>
+			</MudItem>
+			<MudItem xs="12">
+				<a href="https://www.instagram.com/silk_road_professionals/" target="_blank">
+					<MudCard Class="rounded-lg mud-elevation-4">
+						<MudCardContent>
+							<div class="d-flex flex-grow-1">
+								<div class="flex-none d-flex ">
+									<MudIcon Icon="@Icons.Custom.Brands.Instagram" Size="Size.Large" />
+								</div>
+								<div class="flex-initial d-flex ">
+									<MudText Typo="Typo.h6" Style="padding-top: 3px;">
+										<b>Instagram</b>
+									</MudText>
+								</div>
+							</div>
+						</MudCardContent>
+					</MudCard>
+				</a>
+			</MudItem>
+			<MudItem xs="12">
+				<a href="https://www.linkedin.com/company/silk-road-professionals-tajikistan/" target="_blank">
+					<MudCard Class="rounded-lg mud-elevation-4">
+						<MudCardContent>
+							<div class="d-flex flex-grow-1">
+								<div class="flex-none d-flex ">
+									<MudIcon Icon="@Icons.Custom.Brands.LinkedIn" Size="Size.Large" />
+								</div>
+								<div class="flex-initial d-flex ">
+									<MudText Typo="Typo.h6" Style="padding-top: 3px;">
+										<b>LinkedIn</b>
+									</MudText>
+								</div>
+							</div>
+						</MudCardContent>
+					</MudCard>
+				</a>
+			</MudItem>
+			<MudItem xs="12">
+				@{
+					var youtubeAccount = "@silkroadprofessionals";
+					<a href="https://www.youtube.com/@youtubeAccount" target="_blank">
+						<MudCard Class="rounded-lg mud-elevation-4">
+							<MudCardContent>
+								<div class="d-flex flex-grow-1">
+									<div class="flex-none d-flex ">
+										<MudIcon Icon="@Icons.Custom.Brands.YouTube" Size="Size.Large" />
+									</div>
+									<div class="flex-initial d-flex ">
+										<MudText Typo="Typo.h6" Style="padding-top: 3px;">
+											<b>YouTube</b>
+										</MudText>
+									</div>
+								</div>
+							</MudCardContent>
+						</MudCard>
+					</a>
+				}
+			</MudItem>
+		</MudGrid>
+	</MudItem>
+</div>
+
+@code {
+
+}

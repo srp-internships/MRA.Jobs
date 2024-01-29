@@ -45,7 +45,7 @@ public class CreateTrainingVacancyCommandHandler : IRequestHandler<CreateTrainin
             EventType = TimelineEventType.Created,
             Time = _dateTime.Now,
             Note = "Training Model Created",
-            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserName() ?? string.Empty
         };
         await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

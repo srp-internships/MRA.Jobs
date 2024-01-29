@@ -49,7 +49,7 @@ public partial class TrainingVacancyPage
     private bool _isInserting;
     private bool _isUpdating = true;
     private string _updateSlug;
-    private string _selectedCategory = "Select category";
+    private string _selectedCategory = string.Empty;
     private string _newDescription = string.Empty;
     private string _newTitle = string.Empty;
     private string _createOrEditHeader = "New Training Vacancy";
@@ -277,10 +277,18 @@ public partial class TrainingVacancyPage
     private async Task HandleSubmit()
     {
         if (_endDateTime.HasValue)
-            TrainingService.createCommand.EndDate += _endDateTime.Value;
+        {
+            DateTime endDate = TrainingService.createCommand.EndDate.Value.Date;
+            DateTime newEndDate = endDate.Add(_endDateTime.Value);
+            TrainingService.createCommand.EndDate = newEndDate;
+        }
 
         if (_publishDateTime.HasValue)
-            TrainingService.createCommand.PublishDate += _publishDateTime.Value;
+        {
+            DateTime publishDate = TrainingService.createCommand.PublishDate.Value.Date;
+            DateTime newPublishDate = publishDate.Add(_publishDateTime.Value);
+            TrainingService.createCommand.PublishDate = newPublishDate;
+        }
         try
         {
             var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
@@ -372,7 +380,7 @@ public partial class TrainingVacancyPage
 
     private void Clear()
     {
-        _createOrEditHeader = "New Internship Vacancy";
+        _createOrEditHeader = @ContentService["Training:NewTrainingV"];
         TrainingService.createCommand.Title = string.Empty;
         TrainingService.createCommand.ShortDescription = string.Empty;
         TrainingService.createCommand.Description = string.Empty;
@@ -389,7 +397,7 @@ public partial class TrainingVacancyPage
     }
     private async Task NewQuestionAsync()
     {
-        var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>("Add question")).Result).Data as dynamic;
+        var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>(@ContentService["Internships:AddQuestion"])).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
         _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }

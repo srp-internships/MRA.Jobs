@@ -98,25 +98,13 @@
         {
             DateTime oDate = Convert.ToDateTime(vdate);
             token.AccessTokenValidateTo = oDate;
-            await cookieUtil.SetValueAsync("authToken", token);
+            await cookieUtil.SetValueAsync("authToken", token, secure: true);
             await AuthenticationStateProvider.GetAuthenticationStateAsync();
-
 
             if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("page", out var page))
                 navigationManager.NavigateTo($"/{page}");
             else
                 navigationManager.NavigateTo("/");
         }
-
-        var state = await authStateProvider.GetAuthenticationStateAsync();
-        if (state.User.IsInRole(ApplicationClaimValues.Administrator) || state.User.IsInRole(ApplicationClaimValues.SuperAdmin))
-        {
-            navigationManager.NavigateTo("/userManager");
-        }
-        else if (state.User.IsInRole(ApplicationClaimValues.Reviewer))
-        {
-            navigationManager.NavigateTo("/dashboard/applications");
-        }
     }
-
 }

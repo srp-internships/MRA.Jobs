@@ -24,11 +24,6 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
 
     public async Task<string> Handle(UpdateTrainingVacancyCommand request, CancellationToken cancellationToken)
     {
-        //var trainingVacancy = await _context.TrainingVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
-        //_ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Id);
-
-        //var category = await _context.Categories.FindAsync(new object[] { request.CategoryId }, cancellationToken: cancellationToken);
-        //_ = category ?? throw new NotFoundException(nameof(VacancyCategory), request.CategoryId);
         var trainingVacancy = await _context.TrainingVacancies
            .Include(i => i.Category)
            .Include(i => i.VacancyQuestions)
@@ -45,7 +40,7 @@ public class UpdateTrainingVacancyCommandHandler : IRequestHandler<UpdateTrainin
             EventType = TimelineEventType.Updated,
             Time = _dateTime.Now,
             Note = "Training Model updated",
-            CreateBy = _currentUserService.GetUserId() ?? Guid.Empty
+            CreateBy = _currentUserService.GetUserName() ?? string.Empty
         };
         await _context.VacancyTimelineEvents.AddAsync(timeLineEvent, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

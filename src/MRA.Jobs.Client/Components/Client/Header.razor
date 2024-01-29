@@ -19,13 +19,13 @@
 
 <MudToolBar Class="toolbar-fixed-blur">
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
-        <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+        <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
     </MudHidden>
     <a href="">
         <MudHidden Breakpoint="Breakpoint.MdAndDown">
             <MudStack Row="true">
                 <MudItem Style="padding-right:5px;">
-                    <MudImage src="/images/srp/srp_icon.png" Style="width: 50px"/>
+                    <MudImage src="/images/srp/srp_icon.png" Style="width: 50px" />
                 </MudItem>
                 <MudItem Style="padding-left:0; margin-right: 40px;">
                     <MudText Style="font-size: 21.5px;">
@@ -42,7 +42,7 @@
         <MudHidden Breakpoint="Breakpoint.LgAndUp">
             <MudStack Row="true">
                 <MudItem Style="padding-right:5px;">
-                    <MudImage src="/images/srp/srp_icon.png" Style="width: 30px"/>
+                    <MudImage src="/images/srp/srp_icon.png" Style="width: 30px" />
                 </MudItem>
                 <MudItem Style="padding-left:0; margin-right: 40px;">
                     <MudText Style="font-size: 21.5px;">
@@ -86,7 +86,7 @@
         @if (_betaVersion)
         {
             <MudHidden Breakpoint="Breakpoint.MdAndDown">
-                <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+                <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Contact)">
                     <MudText>
                         <b>@ContentService["Home:Contact"] </b>
                     </MudText>
@@ -95,49 +95,49 @@
         }
         else
         {
-            <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Academy)">
+            <MudButton Href="/contact" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocPages.Contact)">
                 <MudText>
                     <b>@ContentService["Home:Contact"] </b>
                 </MudText>
             </MudButton>
         }
     </MudHidden>
-    <MudSpacer/>
+    <MudSpacer />
     <MudHidden Breakpoint="Breakpoint.Xs">
         @if (_betaVersion)
         {
-			<a href="@Configuration["Beta:Address"]" target="_blank">
-				<MudChip Color="Color.Primary">Beta</MudChip>
-			</a>
-			<MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/> 
+            <a href="@Configuration["Beta:Address"]" target="_blank">
+                <MudChip Color="Color.Primary">Beta</MudChip>
+            </a>
+            <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4" />
         }
-		<ToolBarSettingsButtons/> 
+        <ToolBarSettingsButtons />
     </MudHidden>
-    <UserButton/>
+    <UserButton />
 </MudToolBar>
 
 <MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="2" Style="position:fixed;height: 100%">
     <MudToolBar Dense="true" Class="docs-gray-bg">
-        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
-        <MudSpacer/>
-			<ToolBarSettingsButtons />
+        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        <MudSpacer />
+        <ToolBarSettingsButtons />
     </MudToolBar>
 
     <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
         <MudNavLink Match="NavLinkMatch.All" Href="/">@ContentService["Header:Home"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Academy:Address"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/contact">@ContentService["Home:Contact"]</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Academy:Address"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="/contact">@ContentService["Home:Contact"]</MudNavLink>
 
-    </MudNavMenu>
-    @if (_betaVersion)
+        </MudNavMenu>
+        @if (_betaVersion)
     {
-		<a href="@Configuration["Beta:Address"]" target="_blank">
-			<MudChip Color="Color.Primary">Beta</MudChip>
-		</a> 
+        <a href="@Configuration["Beta:Address"]" target="_blank">
+            <MudChip Color="Color.Primary">Beta</MudChip>
+        </a>
     }
 </MudDrawer>
 
@@ -152,24 +152,12 @@
         _open = !_open;
     }
 
-    private DocPages _currentPage;
-
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
-        {
-            LayoutService.User = await UserProfileService.Get();
-            StateHasChanged();
-        }
-    }
-
+    private string _currentPage;
 
     protected override async Task OnInitializedAsync()
     {
         _betaVersion = await FeatureManager.IsEnabledAsync(FeatureFlags.BetaVersion);
+        _currentPage = DocPages.GetPageFromUrl(NavigationManager.Uri, true);
         StateHasChanged();
         NavigationManager.LocationChanged += HandleLocationChanged;
         await base.OnInitializedAsync();
@@ -177,11 +165,11 @@
 
     private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
-        _currentPage = LayoutService.GetDocsBasePage(NavigationManager.Uri);
+        _currentPage = DocPages.GetPageFromUrl(NavigationManager.Uri);
         StateHasChanged();
     }
 
-    private string GetActiveClass(DocPages page)
+    private string GetActiveClass(string page)
     {
         return page == _currentPage ? "mud-chip-text mud-chip-color-primary mx-1 px-3" : "mx-1 px-3";
     }

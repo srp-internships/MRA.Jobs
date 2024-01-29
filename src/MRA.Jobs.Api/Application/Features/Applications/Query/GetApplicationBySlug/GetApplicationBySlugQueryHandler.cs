@@ -13,11 +13,13 @@ public class GetApplicationBySlugQueryHandler(IApplicationDbContext dbContext, I
         CancellationToken cancellationToken)
     {
         var application = await dbContext.Applications
-            .Include(a => a.History)
-            .Include(s => s.VacancyResponses).ThenInclude(s=>s.VacancyQuestion)
-            .Include(s=>s.TaskResponses)
+            .Include(s=>s.History)
+            .Include(s => s.VacancyResponses).ThenInclude(s => s.VacancyQuestion)
+            .Include(s => s.TaskResponses)
             .FirstOrDefaultAsync(a => a.Slug == request.Slug, cancellationToken);
-        _ = application ?? throw new NotFoundException(nameof(Application), request.Slug);
+
+        if (application == null)
+            throw new NotFoundException(nameof(Application), request.Slug);
 
         return mapper.Map<ApplicationDetailsDto>(application);
     }

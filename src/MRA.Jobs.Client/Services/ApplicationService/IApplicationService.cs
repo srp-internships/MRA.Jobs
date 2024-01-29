@@ -14,7 +14,7 @@ public interface IApplicationService
     Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status);
     Task CreateApplication(CreateApplicationCommand application, IBrowserFile cv);
     Task<PagedList<ApplicationListDto>> GetAllApplications();
-    Task<bool> UpdateStatus(UpdateApplicationStatus updateApplicationStatus);
+    Task<bool> UpdateStatus(UpdateApplicationStatusCommand updateApplicationStatusCommand);
     Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug);
     Task<string> GetCvLinkAsync(string slug);
 
