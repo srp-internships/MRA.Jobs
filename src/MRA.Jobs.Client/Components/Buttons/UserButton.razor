@@ -81,7 +81,7 @@
     {
         await CookieUtil.RemoveAsync("authToken");
         await AuthProvider.GetAuthenticationStateAsync();
-        NavigationManager.NavigateTo($"{configuration["IdentityCLient"]}/logout");
+        NavigationManager.NavigateTo($"{configuration["IdentityCLient"]}/logout?callback={NavigationManager.BaseUri}");
     }
 
 }
