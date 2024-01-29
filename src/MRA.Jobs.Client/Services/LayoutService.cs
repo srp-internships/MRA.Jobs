@@ -120,21 +120,6 @@ public class LayoutService(
         OnMajorUpdateOccured();
     }
 
-    public DocPages GetDocsBasePage(string uri)
-    {
-        if (uri.Contains("/jobs") || uri.Contains("dashboard/jobs")) return DocPages.Jobs;
-        if (uri.Contains("/internship") || uri.Contains("/internships") || uri.Contains("/dashboard/internship"))
-            return DocPages.Internships;
-        if (uri.Contains("/trainings")) return DocPages.Trainings;
-        if (uri.Contains("/contact")) return DocPages.Contact;
-        if (uri.Contains("/applications")) return DocPages.Applications;
-        if (uri.Contains("/upload-cv")) return DocPages.NoVacancyUploadCv;
-        if (uri.Contains("/categories")) return DocPages.Category;
-        if (uri.Contains("/userManager")) return DocPages.UserManager;
-        if (uri.Contains("/")) return DocPages.Profile;
-        return DocPages.Home;
-    }
-
     public void SetNoTheme()
     {
         IsDarkMode = false;
