@@ -15,7 +15,7 @@
                 <ActivatorContent>
                     @if (LayoutService.User == null)
                     {
-                        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small" />
                     }
                     else
                     {
@@ -35,7 +35,7 @@
                             <MudChip>
                                 <AvatarContent>
                                     <MudAvatar>
-                                        @LayoutService.User.UserName[0].ToString().ToUpper()  
+                                        @LayoutService.User.UserName[0].ToString().ToUpper()
                                     </MudAvatar>
                                 </AvatarContent>
                                 <ChildContent>@LayoutService.User.UserName[..5]</ChildContent>
@@ -45,27 +45,27 @@
                 </ActivatorContent>
                 <ChildContent>
                     <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.AccountCircle" Href=@($"{configuration["IdentityClient"]}")>@ContentService["UserButton:Profile"]</MudMenuItem>
-                    <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Checklist" Href="/applications">@ContentService["UserButton:Applications"]</MudMenuItem>
-                    <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Logout" OnClick="@Logout" OnTouch="@Logout">@ContentService["UserButton:Logout"]</MudMenuItem>
-                </ChildContent>
-            </MudMenu>
-        </Authorized>
-        <NotAuthorized Context="notAuthorizedContext">
-            <MudMenu >
-                <ActivatorContent>
-						<MudChip Icon="@Icons.Material.Filled.Person">@ContentService["UserButton:Sign In"]</MudChip>
-                </ActivatorContent>
-                <ChildContent >
-                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/login?callback={NavigationManager.BaseUri}")" >@ContentService["UserButton:Sign In"]</MudMenuItem>
-                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/registration?callback={NavigationManager.BaseUri}")" >@ContentService["UserButton:Sign Up"]</MudMenuItem>
-                </ChildContent>
-            </MudMenu>
-        </NotAuthorized>
-    </AuthorizeView>
-</CascadingAuthenticationState>
+                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Checklist" Href="/applications">@ContentService["UserButton:Applications"]</MudMenuItem>
+                        <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Logout" OnClick="@Logout" OnTouch="@Logout">@ContentService["UserButton:Logout"]</MudMenuItem>
+                    </ChildContent>
+                </MudMenu>
+            </Authorized>
+            <NotAuthorized Context="notAuthorizedContext">
+                <MudMenu>
+                    <ActivatorContent>
+                        <MudChip Icon="@Icons.Material.Filled.Person">@ContentService["UserButton:Sign In"]</MudChip>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/login?callback={NavigationManager.BaseUri}")">@ContentService["UserButton:Sign In"]</MudMenuItem>
+                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/registration?callback={NavigationManager.BaseUri}")">@ContentService["UserButton:Sign Up"]</MudMenuItem>
+                    </ChildContent>
+                </MudMenu>
+            </NotAuthorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
 
 
-@code{
+    @code {
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -81,7 +81,7 @@
     {
         await CookieUtil.RemoveAsync("authToken");
         await AuthProvider.GetAuthenticationStateAsync();
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo($"{configuration["IdentityCLient"]}/logout");
     }
 
 }
