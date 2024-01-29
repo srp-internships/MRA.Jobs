@@ -7,16 +7,8 @@ using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Internships.Queries;
 
-public class GetInternshipVacancyBySlugQueryTest : Testing
+public class GetInternshipVacancyBySlugQueryTest : InternshipsContext
 {
-    private InternshipsContext _context;
-
-    [SetUp]
-    public void SetUp()
-    {
-        _context = new InternshipsContext();
-    }
-
     [Test]
     public async Task GetInternshipVacancyBySlugQuery_IfNotFound_ReturnNotFoundInternshipVacancySlug()
     {
@@ -35,7 +27,7 @@ public class GetInternshipVacancyBySlugQueryTest : Testing
     {
         //Arrange 
         var query = new GetInternshipVacancyBySlugQuery
-        { Slug = (await _context.GetInternship("Autumn Internships")).Slug };
+        { Slug = (await GetInternship("Autumn Internships")).Slug };
 
         //Act
         var response = await _httpClient.GetAsync($"/api/internships/{query.Slug}");

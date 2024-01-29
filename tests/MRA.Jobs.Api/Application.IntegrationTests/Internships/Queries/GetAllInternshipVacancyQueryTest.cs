@@ -6,22 +6,14 @@ using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Internships.Queries;
 
-public class GetAllInternshipVacancyQueryTest : Testing
+public class GetAllInternshipVacancyQueryTest : InternshipsContext
 {
-    private InternshipsContext _context;
-
-    [SetUp]
-    public void SetUp()
-    {
-        _context = new InternshipsContext();
-    }
-
 
     [Test]
     public async Task GetAllInternshipVacancyQuery_ReturnsInternshipVacancies()
     {
-        await _context.GetInternship("Internship1");
-        await _context.GetInternship("Internship2");
+        await GetInternship("Internship1");
+        await GetInternship("Internship2");
 
         //Act
         var response = await _httpClient.GetAsync("/api/internships");
@@ -38,9 +30,9 @@ public class GetAllInternshipVacancyQueryTest : Testing
     public async Task GetAllJobVacancyQuery_ReturnsJobVacanciesCount2_ForApplicant()
     {
         ResetState();
-        await _context.GetInternship("Internship1", DateTime.Now.AddDays(2));
-        await _context.GetInternship("Internship2", DateTime.Now.AddDays(3));
-        await _context.GetInternship("Internship3", DateTime.Now.AddDays(-2));
+        await GetInternship("Internship1", DateTime.Now.AddDays(2));
+        await GetInternship("Internship2", DateTime.Now.AddDays(3));
+        await GetInternship("Internship3", DateTime.Now.AddDays(-2));
 
         RunAsDefaultUserAsync("applicant");
         //Act
@@ -58,9 +50,9 @@ public class GetAllInternshipVacancyQueryTest : Testing
     public async Task GetAllJobVacancyQuery_ReturnsJobVacanciesCount3_ForReviewer()
     {
         ResetState();
-        await _context.GetInternship("Internship1", DateTime.Now.AddDays(2));
-        await _context.GetInternship("Internship2", DateTime.Now.AddDays(3));
-        await _context.GetInternship("Internship3", DateTime.Now.AddDays(-1));
+        await GetInternship("Internship1", DateTime.Now.AddDays(2));
+        await GetInternship("Internship2", DateTime.Now.AddDays(3));
+        await GetInternship("Internship3", DateTime.Now.AddDays(-1));
 
         RunAsReviewerAsync();
         //Act
