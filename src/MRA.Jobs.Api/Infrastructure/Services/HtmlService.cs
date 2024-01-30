@@ -104,13 +104,14 @@ public class HtmlService(IEmailService emailService, IConfiguration configuratio
         return await _emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
     }
 
-    public async Task<bool> EmailRejected(UserProfileResponse applicant, string slug)
+    public async Task<bool> EmailRejected(UserProfileResponse applicant, string slug, string vacancyTitle)
     {
         string url = $"{_configuration["MRAJobs-Client"]}/ApplicationDetail/{slug}";
         string path = Path.Combine(AppContext.BaseDirectory, "Resources", "cv_rejected_email.html");
         string htmlTemplate = await File.ReadAllTextAsync(path);
         var htmlContent = htmlTemplate.Replace("@FullName", $"{applicant.FirstName} {applicant.LastName}")
-            .Replace("@LinkToGo", url);
+            .Replace("@LinkToGo", url)
+            .Replace("@VacanciesName", vacancyTitle);
         var subject = "Уведомление об отказе";
         return await _emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
     }

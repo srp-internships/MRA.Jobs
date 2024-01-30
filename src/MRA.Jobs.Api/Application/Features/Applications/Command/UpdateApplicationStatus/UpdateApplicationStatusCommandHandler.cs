@@ -25,9 +25,8 @@ public class UpdateApplicationStatusCommandHandler(
     public async Task<bool> Handle(UpdateApplicationStatusCommand request, CancellationToken cancellationToken)
     {
         var application =
-            await dbContext.Applications.FirstOrDefaultAsync(t => t.Slug == request.Slug, cancellationToken);
+            await dbContext.Applications.Include(a=>a.Vacancy).FirstOrDefaultAsync(t => t.Slug == request.Slug, cancellationToken);
         _ = application ?? throw new NotFoundException(nameof(Application), request.Slug);
-
         if (application.Status == (ApplicationStatus)request.StatusId)
         {
             return true;
@@ -47,10 +46,11 @@ public class UpdateApplicationStatusCommandHandler(
         await dbContext.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
         var applicant = await identityService.ApplicantDetailsInfo(application.ApplicantUsername);
-
+        
         if (application.Slug.Contains(CommonVacanciesSlugs.NoVacancySlug))
             return true;
-
+        
+        
         switch (application.Status)
         {
             case ApplicationStatus.Approved:
@@ -69,7 +69,7 @@ public class UpdateApplicationStatusCommandHandler(
 
                 break;
             case ApplicationStatus.Rejected:
-                await htmlService.EmailRejected(applicant, application.Slug);
+                await htmlService.EmailRejected(applicant, application.Slug, application.Vacancy.Title);
                 try
                 {
                     await smsService.SendSmsAsync(applicant.PhoneNumber,
