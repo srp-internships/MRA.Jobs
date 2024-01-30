@@ -1,10 +1,13 @@
 ﻿@page "/dashboard/applications"
+@using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Identity;
 @using MRA.Jobs.Client.Components.Extra
+@using MRA.Jobs.Client.Services.Profile
 
 @inject IApplicationService ApplicationService
 @inject NavigationManager NavigationManager
 @inject IContentService ContentService
+@inject IUserProfileService UserProfileService
 
 <CascadingAuthenticationState>
     <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
@@ -88,6 +91,7 @@
                         </ToolBarContent>
                         <HeaderContent>
                             <MudTh>@ContentService["Dashboard:Appilcations:Applicant username"]</MudTh>
+						    <MudTh>@ContentService["UserManager:FullName"]</MudTh>
                             <MudTh>@ContentService["Dashboard:Appilcations:Vacancy title"]</MudTh>
                             <MudTh>@ContentService["Dashboard:Appilcations:Applied at"]</MudTh>
                             <MudTh>@ContentService["Dashboard:Appilcations:Status name"]</MudTh>
@@ -95,6 +99,14 @@
                         </HeaderContent>
                         <RowTemplate>
                             <MudTd DataLabel=@ContentService["SignUp:UserName"]>@context.Username</MudTd>
+							@if (context.FullName == null)
+							{
+								<MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small" />
+							}
+							else
+							{
+								<MudTd DataLabel=@ContentService["SignUp:UserName"]>@context.FullName</MudTd>
+							}
                             <MudTd DataLabel=@ContentService["Internships:Title"]>@context.VacancyTitle</MudTd>
                             <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.CreatedAt.ToString("D")</MudTd>
                             <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Status name"]>@context.StatusName</MudTd>
@@ -123,70 +135,83 @@
 
 @code {
 
-    private IEnumerable<ApplicationListDto> _pagedData;
-    private MudTable<ApplicationListDto> _table;
-    private int _totalItems;
+	private IEnumerable<ApplicationListDto> _pagedData;
+	private MudTable<ApplicationListDto> _table;
+	private int _totalItems;
 
-    private string _searchUsername;
-    private string _searchVacancyTitle;
-    private string _searchStatusName;
+	private string _searchUsername;
+	private string _searchVacancyTitle;
+	private string _searchStatusName;
 
-    private void OnSearchUsername(string text)
-    {
-        _searchUsername = text;
-        _table.ReloadServerData();
-    }
+	private void OnSearchUsername(string text)
+	{
+		_searchUsername = text;
+		_table.ReloadServerData();
+	}
 
-    private void OnSearchVacancyTitle(string text)
-    {
-        _searchVacancyTitle = text;
-        _table.ReloadServerData();
-    }
+	private void OnSearchVacancyTitle(string text)
+	{
+		_searchVacancyTitle = text;
+		_table.ReloadServerData();
+	}
 
-    private void OnSearchStatusName(string text)
-    {
-        _searchStatusName = text;
-        _table.ReloadServerData();
-    }
+	private void OnSearchStatusName(string text)
+	{
+		_searchStatusName = text;
+		_table.ReloadServerData();
+	}
 
-    private async Task<TableData<ApplicationListDto>> ServerReload(TableState state)
-    {
-        IEnumerable<ApplicationListDto> data = _applications.Items;
-        await Task.Delay(300);
-        data = data.Where(element =>
-        {
-            if (!string.IsNullOrWhiteSpace(_searchUsername) && !element.Username.Contains(_searchUsername, StringComparison.OrdinalIgnoreCase))
-                return false;
-            if (!string.IsNullOrWhiteSpace(_searchVacancyTitle) && !element.VacancyTitle.Contains(_searchVacancyTitle, StringComparison.OrdinalIgnoreCase))
-                return false;
-            if (!string.IsNullOrWhiteSpace(_searchStatusName) && !element.StatusName.Contains(_searchStatusName, StringComparison.OrdinalIgnoreCase))
-                return false;
-            return true;
-        }).ToArray();
-        _totalItems = data.Count();
+	private async Task<TableData<ApplicationListDto>> ServerReload(TableState state)
+	{
+		IEnumerable<ApplicationListDto> data = _applications.Items;
+		await Task.Delay(300);
+		data = data.Where(element =>
+		{
+			if (!string.IsNullOrWhiteSpace(_searchUsername) && !element.Username.Contains(_searchUsername, StringComparison.OrdinalIgnoreCase))
+				return false;
+			if (!string.IsNullOrWhiteSpace(_searchVacancyTitle) && !element.VacancyTitle.Contains(_searchVacancyTitle, StringComparison.OrdinalIgnoreCase))
+				return false;
+			if (!string.IsNullOrWhiteSpace(_searchStatusName) && !element.StatusName.Contains(_searchStatusName, StringComparison.OrdinalIgnoreCase))
+				return false;
+			return true;
+		}).ToArray();
+		_totalItems = data.Count();
 
-        _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
-        return new TableData<ApplicationListDto>() { TotalItems = _totalItems, Items = _pagedData };
-    }
+		_pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+		return new TableData<ApplicationListDto>() { TotalItems = _totalItems, Items = _pagedData };
+	}
 
-    private bool _serverError;
+	private bool _serverError;
 
-    private PagedList<ApplicationListDto> _applications;
+	private PagedList<ApplicationListDto> _applications;
 
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadData();
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		await LoadData();
+	}
 
-    private async Task LoadData()
-    {
-        try
-        {
-            var response = await ApplicationService.GetAllApplications();
-            if (response is not null)
-            {
-                _applications = response;
+	private async Task LoadData()
+	{
+		try
+		{
+			var response = await ApplicationService.GetAllApplications();
+			if (response is not null)
+			{
+				_applications = response;				
+				foreach (var application in _applications.Items)
+				{
+					var userProfile = await UserProfileService.Get(application.Username);
+					if(userProfile!=null)
+					{
+						application.FullName = $"{userProfile.FirstName} {userProfile.LastName}";
+					}
+					else
+					{
+						application.FullName = null;
+					}
+				}
+				
             }
         }
         catch (Exception)
