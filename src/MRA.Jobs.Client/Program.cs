@@ -15,6 +15,7 @@ using AltairCA.Blazor.WebAssembly.Cookie.Framework;
 using Blazored.LocalStorage;
 using Microsoft.FeatureManagement;
 using MRA.BlazorComponents;
+using MRA.BlazorComponents.DynamicPages;
 using MRA.BlazorComponents.HttpClient;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Jobs.Client.Identity;
@@ -63,6 +64,7 @@ builder.Services.AddAuthorizationCore(s =>
 
 //Mra.BlazorComponents
 builder.Services.AddHttpClientService();
+builder.Services.AddMraPages();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 //Mra.BlazorComponents
 
