@@ -8,7 +8,7 @@ using MudBlazor;
 
 namespace MRA.Jobs.Client.Services.FileService;
 
-public class FileService(HttpClientService httpClientService, ISnackbar snackbar, IConfiguration configuration)
+public class FileService(IHttpClientService httpClientService, ISnackbar snackbar, IConfiguration configuration)
     : IFileService
 {
     public async Task<string> UploadAsync(IBrowserFile file)

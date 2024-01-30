@@ -12,7 +12,7 @@ using MudBlazor;
 namespace MRA.Jobs.Client.Services.Profile;
 
 public class UserProfileService(
-    HttpClientService identityHttpClient,
+    IHttpClientService identityHttpClient,
     AuthenticationStateProvider authenticationStateProvider,
     ISnackbar snackbar,
     IConfiguration configuration)

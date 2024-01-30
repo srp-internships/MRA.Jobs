@@ -9,7 +9,7 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 
 namespace MRA.Jobs.Client.Services.InternshipsServices;
 
-public class InternshipService(HttpClientService httpClientService, IConfiguration configuration)
+public class InternshipService(IHttpClientService httpClientService, IConfiguration configuration)
     : IInternshipService
 {
     public CreateInternshipVacancyCommand createCommand { get; set; } = new()
