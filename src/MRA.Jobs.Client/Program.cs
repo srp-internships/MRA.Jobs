@@ -24,7 +24,6 @@ using MRA.Jobs.Client.Services.FileService;
 using MRA.Jobs.Client.Services.NoVacancies;
 using MRA.Jobs.Client.Services.UserPreferences;
 using MRA.Jobs.Client.Services.HttpClients;
-using MRA.Jobs.Client.Services.MraPagesServices;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddMudServices();
@@ -68,8 +67,6 @@ builder.Services.AddAuthorizationCore(s =>
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<JobsApiHttpClientService>();
-builder.Services.AddScoped<PagesApiHttpClientService>();
-builder.Services.AddScoped<PagesService>();
 builder.Services.AddScoped<IdentityApiHttpClientService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IInternshipService, InternshipService>();
