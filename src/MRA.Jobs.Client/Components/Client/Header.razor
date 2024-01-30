@@ -1,6 +1,7 @@
 ﻿@using MRA.Jobs.Client.Services
 @using MRA.Jobs.Client.Enums
 @using AltairCA.Blazor.WebAssembly.Cookie
+@using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using MRA.Jobs.Client.Components.Buttons
 @using Anchor = MudBlazor.Anchor
@@ -8,8 +9,6 @@
 @using Color = MudBlazor.Color
 @using DividerType = MudBlazor.DividerType
 @using Microsoft.FeatureManagement
-@using MRA.Jobs.Client.Services.MraPagesServices
-@using Newtonsoft.Json
 @using Size = MudBlazor.Size
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
@@ -84,17 +83,6 @@
                 <b>@ContentService["Header:Academy"] </b>
             </MudText>
         </MudButton>
-        @if (_dynamicPages != null)
-        {
-            @foreach (var dynamicPage in _dynamicPages)
-            {
-                <MudButton Href="@("/pages/" + dynamicPage.Name)" Color="Color.Inherit" Variant="Variant.Text">
-                    <MudText>
-                        <b>@dynamicPage.Title </b>
-                    </MudText>
-                </MudButton>
-            }
-        }
         @if (_betaVersion)
         {
             <MudHidden Breakpoint="Breakpoint.MdAndDown">
@@ -158,8 +146,6 @@
 
     bool _open = false;
     private bool _betaVersion;
-    [Inject] public PagesService PagesService { get; set; }
-    private List<PageResponse> _dynamicPages;
 
     void ToggleDrawer()
     {
@@ -168,17 +154,8 @@
 
     private string _currentPage;
 
-    private async Task InitDynamicPagesAsync()
-    {
-        var pages = await PagesService.GetPagesAsync();
-        Console.WriteLine(JsonConvert.SerializeObject(pages));
-        _dynamicPages = (pages).Where(s => s.ShowInMenu).ToList();
-    }
-
     protected override async Task OnInitializedAsync()
     {
-        await InitDynamicPagesAsync();
-
         _betaVersion = await FeatureManager.IsEnabledAsync(FeatureFlags.BetaVersion);
         _currentPage = DocPages.GetPageFromUrl(NavigationManager.Uri, true);
         StateHasChanged();
