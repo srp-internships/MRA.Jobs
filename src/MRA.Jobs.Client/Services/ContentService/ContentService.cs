@@ -2,7 +2,7 @@ using System.Globalization;
 using Blazored.LocalStorage;
 using Microsoft.Extensions.Localization;
 using Microsoft.FeatureManagement;
-using MRA.Jobs.Client.Resources;
+using MRA.BlazorComponents;
 using MRA.Jobs.Client.Resources.Languages;
 using MRA.Jobs.Client.Shared;
 

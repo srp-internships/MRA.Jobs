@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.Common;
+﻿using MRA.BlazorComponents.HttpClient.Responses;
+using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;

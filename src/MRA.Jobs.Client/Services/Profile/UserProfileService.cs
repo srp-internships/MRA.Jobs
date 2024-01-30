@@ -1,25 +1,29 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Components.Authorization;
+using MRA.BlazorComponents.Configuration;
+using MRA.BlazorComponents.HttpClient.Responses;
+using MRA.BlazorComponents.HttpClient.Services;
 using MRA.Identity.Application.Contract.Educations.Responses;
 using MRA.Identity.Application.Contract.Experiences.Responses;
 using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Identity.Application.Contract.Skills.Responses;
-using MRA.Jobs.Client.Services.HttpClients;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Services.Profile;
 
 public class UserProfileService(
-    IdentityApiHttpClientService identityHttpClient,
+    HttpClientService identityHttpClient,
     AuthenticationStateProvider authenticationStateProvider,
-    ISnackbar snackbar) : IUserProfileService
+    ISnackbar snackbar,
+    IConfiguration configuration)
+    : IUserProfileService
 {
-    public async Task<UserProfileResponse> Get(string userName= null)
+    public async Task<UserProfileResponse> Get(string userName = null)
     {
         await authenticationStateProvider.GetAuthenticationStateAsync();
         var result =
             await identityHttpClient.GetAsJsonAsync<UserProfileResponse>(
-                $"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
+                configuration.GetIdentityUrl($"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}"));
         if (result.Success)
         {
             return result.Result;
@@ -37,23 +41,22 @@ public class UserProfileService(
     public async Task<ApiResponse<List<UserEducationResponse>>> GetEducationsByUser(string userName)
     {
         var result =
-            await identityHttpClient.GetAsJsonAsync<List<UserEducationResponse>>("Profile/GetEducationsByUser");
+            await identityHttpClient.GetAsJsonAsync<List<UserEducationResponse>>(configuration.GetIdentityUrl("Profile/GetEducationsByUser"));
         return result;
     }
-    
+
     public async Task<ApiResponse<List<UserExperienceResponse>>> GetExperiencesByUser(string userName)
     {
         var result =
-            await identityHttpClient.GetAsJsonAsync<List<UserExperienceResponse>>("Profile/GetExperiencesByUser");
+            await identityHttpClient.GetAsJsonAsync<List<UserExperienceResponse>>(configuration.GetIdentityUrl("Profile/GetExperiencesByUser"));
         return result;
     }
-    
+
     public async Task<UserSkillsResponse> GetUserSkills(string userName)
     {
         var response = await identityHttpClient
             .GetAsJsonAsync<UserSkillsResponse>(
-                $"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}");
+                configuration.GetIdentityUrl($"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}"));
         return response.Result;
     }
-    
 }
