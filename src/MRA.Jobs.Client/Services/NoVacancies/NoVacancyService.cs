@@ -13,7 +13,7 @@ namespace MRA.Jobs.Client.Services.NoVacancies;
 
 public class NoVacancyService(
     ISnackbar snackbar,
-    HttpClientService httpClient,
+    IHttpClientService httpClient,
     NavigationManager navigationManager,
     IConfiguration configuration,
     IContentService contentService) : INoVacancyService

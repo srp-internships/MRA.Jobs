@@ -12,7 +12,7 @@ using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Client.Services.CategoryServices;
 
-public class CategoryService(HttpClientService httpClient, IConfiguration configuration)
+public class CategoryService(IHttpClientService httpClient, IConfiguration configuration)
     : ICategoryService
 {
     public List<CategoryResponse> Category { get; set; }

@@ -14,6 +14,7 @@ using System.Reflection;
 using AltairCA.Blazor.WebAssembly.Cookie.Framework;
 using Blazored.LocalStorage;
 using Microsoft.FeatureManagement;
+using MRA.BlazorComponents;
 using MRA.BlazorComponents.HttpClient;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Jobs.Client.Identity;
@@ -34,10 +35,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddValidatorsFromAssembly(typeof(RemoveUserSkillCommand).Assembly);
 
-builder.Services.AddScoped(_ =>
-    new IdentityHttpClient { BaseAddress = new Uri(builder.Configuration["IdentityHttpClient:BaseAddress"]!) });
-builder.Services.AddScoped(_ =>
-    new HttpClient { BaseAddress = new Uri(builder.Configuration["HttpClient:BaseAddress"]!) });
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddOptions();
@@ -66,9 +63,9 @@ builder.Services.AddAuthorizationCore(s =>
 
 //Mra.BlazorComponents
 builder.Services.AddHttpClientService();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 //Mra.BlazorComponents
 
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
