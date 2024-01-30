@@ -1,16 +1,18 @@
-﻿using MRA.Jobs.Application.Contracts.Common;
+﻿using MRA.BlazorComponents.Configuration;
+using MRA.BlazorComponents.HttpClient.Responses;
+using MRA.BlazorComponents.HttpClient.Services;
+using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
-using MRA.Jobs.Client.Services.HttpClients;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
-public class VacancyService(JobsApiHttpClientService httpClient) : IVacancyService
+public class VacancyService(HttpClientService httpClient, IConfiguration configuration) : IVacancyService
 {
     private List<CategoryResponse> Categories { get; set; }
 
@@ -30,13 +32,10 @@ public class VacancyService(JobsApiHttpClientService httpClient) : IVacancyServi
     };
 
     public event Action OnChange;
-    public string guidId { get; set; } = string.Empty;
-    public int PagesCount { get; set; }
-    const float PageSize = 10f;
 
     public async Task<List<CategoryResponse>> GetAllCategory()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>("categories");
+        var result = await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>(configuration.GetJobsUrl("categories"));
         if (result.Success)
         {
             Categories = result.Result.Items;
@@ -47,39 +46,42 @@ public class VacancyService(JobsApiHttpClientService httpClient) : IVacancyServi
             return null;
         }
     }
-    
+
     public async Task<List<JobVacancyListDto>> GetVacancyByTitle(string title)
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>($"jobs?Filters=Title@={title}");
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>(configuration.GetJobsUrl($"jobs?Filters=Title@={title}"));
         if (result.Success)
         {
             Vacancies = result.Result.Items;
             OnChange?.Invoke();
             return Vacancies;
         }
-        else { return null; }
+        else
+        {
+            return null;
+        }
     }
 
- 
+
     public async Task<ApiResponse<string>> OnSaveCreateClick()
     {
-        return await httpClient.PostAsJsonAsync<string>("jobs", creatingNewJob);
+        return await httpClient.PostAsJsonAsync<string>(configuration.GetJobsUrl("jobs"), creatingNewJob);
     }
 
     public async Task<List<JobVacancyListDto>> GetJobs()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>("jobs");
+        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>(configuration.GetJobsUrl("jobs"));
         return result.Result.Items;
     }
 
     public async Task<ApiResponse> OnDelete(string slug)
     {
-        return await httpClient.DeleteAsync($"jobs/{slug}");
+        return await httpClient.DeleteAsync(configuration.GetJobsUrl($"jobs/{slug}"));
     }
 
     public async Task<JobVacancyDetailsDto> GetBySlug(string slug)
     {
-        var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>($"jobs/{slug}");
+        var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>(configuration.GetJobsUrl($"jobs/{slug}"));
         return response.Success ? response.Result : null;
     }
 
@@ -99,18 +101,18 @@ public class VacancyService(JobsApiHttpClientService httpClient) : IVacancyServi
             VacancyQuestions = creatingNewJob.VacancyQuestions,
             VacancyTasks = creatingNewJob.VacancyTasks
         };
-        return await httpClient.PutAsJsonAsync<string>($"jobs/{slug}", update);
+        return await httpClient.PutAsJsonAsync<string>(configuration.GetJobsUrl($"jobs/{slug}"), update);
     }
 
     public async Task<List<InternshipVacancyListResponse>> GetInternship()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>("internships");
+        var result = await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>(configuration.GetJobsUrl("internships"));
         return result.Result.Items;
     }
 
     public async Task<List<TrainingVacancyListDto>> GetTrainings()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
+        var result = await httpClient.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>(configuration.GetJobsUrl("trainings"));
         return result.Result.Items;
     }
 }
