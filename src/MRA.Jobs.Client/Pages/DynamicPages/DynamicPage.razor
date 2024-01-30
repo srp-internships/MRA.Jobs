@@ -1,0 +1,22 @@
+@page "/Pages/{PageName}"
+@using MRA.Jobs.Client.Services.MraPagesServices
+<div id="container"></div>
+<script>
+    function setHtml(htmlContent){
+            document.getElementById('container').innerHTML=htmlContent;
+        }
+</script>
+
+@code {
+    [Parameter] public string PageName { get; set; }
+
+    [Inject] private PagesService PagesService { get; set; }
+    [Inject] public IJSRuntime JsRuntime { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var content = await PagesService.GetHtmlContentAsync(pageName: PageName);
+        await JsRuntime.InvokeVoidAsync("setHtml", content);
+    }
+
+}

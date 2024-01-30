@@ -2,19 +2,14 @@
 using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.IntegrationTests.Jobs;
-public class JobsContext : Testing
+
+public class JobsContext : CategoryContext
 {
-   /// <summary>
-   /// Возвращает job, если его нет то сначало создаёт в InMemory и возвращает 
-   /// </summary>
-   /// <param name="title"></param>
-   /// <returns></returns>
-    public async Task<JobVacancy> GetJob(string title,DateTime endDate)
+    public async Task<JobVacancy> GetJob(string title, DateTime endDate)
     {
-        var category = new CategoryContext();
-        var Job = await FindFirstOrDefaultAsync<JobVacancy>(j => j.Title == title);
-        if (Job != null)
-            return Job;
+        var job = await FindFirstOrDefaultAsync<JobVacancy>(j => j.Title == title);
+        if (job != null)
+            return job;
 
         var newJob = new JobVacancy
         {
@@ -23,19 +18,22 @@ public class JobsContext : Testing
             Description = "Description",
             ShortDescription = "ShortDescription",
             PublishDate = DateTime.Now,
-            EndDate =endDate,
-            CategoryId = await category.GetCategoryId("jobvacancy"),
-            VacancyQuestions = new List<VacancyQuestion> {
-                new VacancyQuestion{
-                    Id = Guid.NewGuid(),
-                    Question = "What is your English proficiency level?"} 
-            },
+            EndDate = endDate,
+            CategoryId = await GetCategoryId("jobvacancy"),
+            VacancyQuestions =
+                new List<VacancyQuestion>
+                {
+                    new VacancyQuestion
+                    {
+                        Id = Guid.NewGuid(), Question = "What is your English proficiency level?"
+                    }
+                },
             WorkSchedule = Domain.Enums.WorkSchedule.FullTime
         };
         newJob.Slug = newJob.Title.ToLower().Replace(" ", "-");
 
         await AddAsync(newJob);
-        
+
         return newJob;
     }
 }

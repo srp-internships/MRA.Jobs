@@ -11,6 +11,7 @@ public class ChangeApplicationStatusTests : Testing
     [Test]
     public async Task ChangeApplicationStatus()
     {
+        var category = new VacancyCategory() { Name = "Category 123" };
         var vacancy = new JobVacancy()
         {
             Title = "test",
@@ -18,7 +19,7 @@ public class ChangeApplicationStatusTests : Testing
             Description = "ShortDescription",
             PublishDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(30),
-            CategoryId = Guid.NewGuid(),
+           Category = category,
             WorkSchedule = WorkSchedule.FullTime,
             Slug = "test-01-01",
             RequiredYearOfExperience = 10

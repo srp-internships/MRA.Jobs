@@ -4,14 +4,13 @@ using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Jobs.Command;
-public class UpdateJobVacancyCommandTest : Testing
+public class UpdateJobVacancyCommandTest : JobsContext
 {
 
     [Test]
     public async Task UpdateJobVacancyCommand_UpdatingJobVacancyCommand_Success()
     {
-        JobsContext jobs = new JobsContext();
-        var job = await jobs.GetJob("job1", DateTime.Now.AddDays(2));
+        var job = await GetJob("job2", DateTime.Now.AddDays(2));
 
         var updateCommand = new UpdateJobVacancyCommand
         {
