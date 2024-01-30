@@ -9,15 +9,8 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 
 namespace MRA.Jobs.Application.IntegrationTests.Trainings.Queries;
 
-public class GetTrainingVacancyBySlugQueryTest : Testing
+public class GetTrainingVacancyBySlugQueryTest : TrainingsContext
 {
-    private TrainingsContext _context;
-
-    [SetUp]
-    public void SetUp()
-    {
-        _context = new TrainingsContext();
-    }
 
     [Test]
     public async Task GetTrainingsVacancyBySlugQuery_IfNotFound_ReturnNotFoundTrainingsVacancySlug()
@@ -40,7 +33,7 @@ public class GetTrainingVacancyBySlugQueryTest : Testing
         var query = new GetInternshipVacancyBySlugQuery
         {
             Slug = (
-                await _context.GetTraining("Autumn Trainings", DateTime.Now.AddDays(2))).Slug
+                await GetTraining("Autumn Trainings", DateTime.Now.AddDays(2))).Slug
         };
 
         //Act

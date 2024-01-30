@@ -9,16 +9,8 @@ using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Jobs.Queries;
 
-public class GetJobVacancyBySlugQueryTest : Testing
+public class GetJobVacancyBySlugQueryTest : JobsContext
 {
-    private JobsContext _context;
-
-    [SetUp]
-    public void SetUp()
-    {
-        _context = new JobsContext();
-    }
-
     [Test]
     public async Task GetJobVacancyBySlugQuery_IfNotFound_ReturnNotFoundJobVacancySlug()
     {
@@ -39,7 +31,7 @@ public class GetJobVacancyBySlugQueryTest : Testing
         var query = new GetJobVacancyBySlugQuery
         {
             Slug = (
-                await _context.GetJob("Backend Developer", DateTime.Now.AddDays(2))).Slug
+                await GetJob("Backend Developer", DateTime.Now.AddDays(2))).Slug
         };
 
         //Act
