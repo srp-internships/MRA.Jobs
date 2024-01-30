@@ -313,23 +313,16 @@ else
                                     </MudButton>
                                 </ButtonTemplate>
                             </MudFileUpload>
-                                <MudText Typo="Typo.caption">@_cv.Name</MudText>
+                            <MudText Typo="Typo.caption">@_cv.Name</MudText>
                         </MudItem>
                     }
                 </MudGrid>
             </MudCardContent>
             <MudCardActions>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
-                    @if (_processing)
-                    {
-                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                        <MudText Class="ms-2">@ContentService["VacancyApplication:Processing"]</MudText>
-                    }
-                    else
-                    {
-                        <MudText>@ContentService["VacancyApplication:Apply"]</MudText>
-                    }
-                </MudButton>
+                <ProgressTaskButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                                    Function="CreateApplication" Class="ml-auto">
+                    <MudText>@ContentService["VacancyApplication:Apply"]</MudText>
+                </ProgressTaskButton>
 
             </MudCardActions>
         </MudCard>
@@ -360,7 +353,6 @@ else
     [Inject] public IConfiguration Configuration { get; set; }
 
     private IBrowserFile _cv;
-    private bool _processing;
 
     private Dictionary<Guid, StandaloneCodeEditor> _editors = new();
 
@@ -453,9 +445,7 @@ else
         Application.TaskResponses = updateTaskResponses;
         Application.VacancyResponses = updatedResponses;
         Application.Cv.IsUploadCvMode = _isUploadCvMode;
-        _processing = true;
         await ApplicationService.CreateApplication(Application, _cv);
-        _processing = false;
     }
 
 }
