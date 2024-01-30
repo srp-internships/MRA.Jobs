@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
+using MRA.BlazorComponents.Configuration;
+using MRA.BlazorComponents.HttpClient.Responses;
+using MRA.BlazorComponents.HttpClient.Services;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Delete;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
-using MRA.Jobs.Client.Services.HttpClients;
 
 namespace MRA.Jobs.Client.Services.TrainingServices;
 
 public class TrainingService(
-    JobsApiHttpClientService httpClientService,
-    AuthenticationStateProvider authenticationStateProvider)
+    HttpClientService httpClientService,
+    AuthenticationStateProvider authenticationStateProvider,
+    IConfiguration configuration)
     : ITrainingService
 {
     public CreateTrainingVacancyCommand createCommand { get; set; } = new()
@@ -31,13 +34,13 @@ public class TrainingService(
     public async Task<ApiResponse<string>> Create()
     {
         await authenticationStateProvider.GetAuthenticationStateAsync();
-        return await httpClientService.PostAsJsonAsync<string>("trainings", createCommand);
+        return await httpClientService.PostAsJsonAsync<string>(configuration.GetJobsUrl("trainings"), createCommand);
     }
 
     public async Task<ApiResponse> Delete(string slug)
     {
         await authenticationStateProvider.GetAuthenticationStateAsync();
-        return await httpClientService.DeleteAsync($"trainings/{slug}");
+        return await httpClientService.DeleteAsync(configuration.GetJobsUrl($"trainings/{slug}"));
     }
 
     public async Task<ApiResponse> Update(string slug)
@@ -56,20 +59,20 @@ public class TrainingService(
             VacancyQuestions = createCommand.VacancyQuestions,
             VacancyTasks = createCommand.VacancyTasks
         };
-        return await httpClientService.PutAsJsonAsync<string>($"trainings/{slug}", UpdateCommand);
+        return await httpClientService.PutAsJsonAsync<string>(configuration.GetJobsUrl($"trainings/{slug}"), UpdateCommand);
     }
 
     public async Task<ApiResponse<PagedList<TrainingVacancyListDto>>> GetAll()
     {
         await authenticationStateProvider.GetAuthenticationStateAsync();
-        var result = await httpClientService.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>("trainings");
+        var result = await httpClientService.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>(configuration.GetJobsUrl("trainings"));
         return result;
     }
 
     public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug)
     {
         await authenticationStateProvider.GetAuthenticationStateAsync();
-        var response = await httpClientService.GetAsJsonAsync<TrainingVacancyDetailedResponse>($"trainings/{slug}");
+        var response = await httpClientService.GetAsJsonAsync<TrainingVacancyDetailedResponse>(configuration.GetJobsUrl($"trainings/{slug}"));
         return response.Success ? response.Result : null;
     }
 }

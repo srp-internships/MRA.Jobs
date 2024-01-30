@@ -5,12 +5,12 @@
 @using MRA.Jobs.Client.Services.Profile
 @using System.Net
 @using Microsoft.IdentityModel.Tokens
+@using MRA.BlazorComponents.Configuration
 @using MRA.Jobs.Client.Identity
-@using MRA.Jobs.Client.Services.HttpClients
 
 @inject IApplicationService ApplicationService
-@inject JobsApiHttpClientService HttpClient
 @inject IUserProfileService UserProfileService
+@inject IConfiguration configuration
 
 <MudGrid>
     <MudItem xs="12">
@@ -182,7 +182,7 @@
     {
         _applicant = await UserProfileService.Get(ApplicationUserName);
         await LoadApplication();
-        _cvUrl = $"{HttpClient.BaseAddress}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
+        _cvUrl = $"{configuration.GetJobsUrl()}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
 
         SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
         StateHasChanged();
