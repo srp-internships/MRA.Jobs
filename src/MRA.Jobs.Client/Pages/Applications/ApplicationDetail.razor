@@ -69,11 +69,7 @@
                                         </MudSelect>
                                     </MudItem>
                                     <MudItem lg="6" xs="12">
-                                        @* <MudCheckBox bind-Value="_sendEmail" T="bool" Label="Send Email"/> *@
-                                        @* @if (_sendEmail) *@
-                                        @* { *@
-                                        @*     <MudText>Email Title:</MudText> *@
-                                        @* } *@
+                                      
                                     </MudItem>
                                 </MudGrid>
 
@@ -167,7 +163,7 @@
 
     private AddNoteToApplicationCommand _addNoteCommand = new();
     private string SelectedStatus { get; set; }
-    private bool _sendEmail;
+  
 
     [Parameter] public string Slug { get; set; }
     [Parameter] public string ApplicationUserName { get; set; }
