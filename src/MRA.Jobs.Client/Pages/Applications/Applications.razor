@@ -134,7 +134,7 @@
                             <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.CreatedAt.ToString("D")</MudTd>
                             <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Status name"]>@context.StatusName</MudTd>
                             <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Name"]>
-                                <ProgressTaskButton Variant="Variant.Filled" Function="@((_) => OnClick(context.Slug, context.Username))">More</ProgressTaskButton>
+                                <MudLink Color="Color.Primary" Href="@($"/ApplicationDetail/{context.Slug}/{context.Username}")">more</MudLink>
                             </MudTd>
                         </RowTemplate>
                         <NoRecordsContent>
