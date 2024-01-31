@@ -8,6 +8,7 @@ public class ApplicationStatusDto
     {
         Submitted,
         Approved,
+        Interviewed,
         Hired,
         Rejected
     }
