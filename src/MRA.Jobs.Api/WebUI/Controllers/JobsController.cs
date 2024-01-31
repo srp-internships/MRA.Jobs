@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.DeleteJobVacancy;
-using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Infrastructure.Identity;
-using AddTagsToJobVacancyCommand = MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags.AddTagsToJobVacancyCommand;
 
 namespace MRA.Jobs.Web.Controllers;
 
@@ -57,23 +55,5 @@ public class JobsController : ApiControllerBase
     {
         var request = new DeleteJobVacancyCommand { Slug = slug };
         return await Mediator.Send(request, cancellationToken);
-    }
-
-    [HttpPost("{slug}/tags")]
-    public async Task<IActionResult> AddTag([FromRoute] string slug, [FromBody] AddTagsToJobVacancyCommand request,
-        CancellationToken cancellationToken)
-    {
-        request.JobVacancySlug = slug;
-        var response = await Mediator.Send(request, cancellationToken);
-        return Ok(response);
-    }
-
-    [HttpDelete("{slug}/tags")]
-    public async Task<IActionResult> RemoveTags([FromRoute] string slug,
-        [FromBody] RemoveTagsFromJobVacancyCommand request, CancellationToken cancellationToken)
-    {
-        request.JobVacancySlug = slug;
-        await Mediator.Send(request, cancellationToken);
-        return Ok();
     }
 }
