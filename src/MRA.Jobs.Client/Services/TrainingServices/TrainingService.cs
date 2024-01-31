@@ -11,7 +11,7 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 namespace MRA.Jobs.Client.Services.TrainingServices;
 
 public class TrainingService(
-    HttpClientService httpClientService,
+    IHttpClientService httpClientService,
     AuthenticationStateProvider authenticationStateProvider,
     IConfiguration configuration)
     : ITrainingService
