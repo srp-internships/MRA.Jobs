@@ -69,7 +69,6 @@
                                     </MudText>
                                     }
                                 </ProgressTaskButton>
-
                             </Authorized>
                         </AuthorizeView>
                     </CascadingAuthenticationState>
@@ -81,7 +80,6 @@
         <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
             <Authorized>
                 <MudItem xs="12" lg="6">
-
                     <MudCard>
                         <MudCardContent>
                             <MudText Style="color: grey" Typo="Typo.h6">
@@ -102,7 +100,6 @@
                                             <MudTimelineItem Size="Size.Medium" Color="Color.Info" Elevation="25">
                                                 <MudCard Elevation="25">
                                                     <MudCardContent>
-
                                                         <MudStack Row="true">
                                                             <MudLink Href="@($"user/{item.CreateBy}")">
                                                                 <MudStack Row="true">
@@ -117,8 +114,6 @@
                                                             <MudSpacer/>
                                                             <MudText Typo="Typo.body2">@item.Time</MudText>
                                                         </MudStack>
-
-
                                                         <MudText>@item.Note</MudText>
                                                     </MudCardContent>
                                                 </MudCard>
@@ -191,7 +186,6 @@
     private async Task OnAddNoteAsync()
     {
         if (_addNote.Note.IsNullOrEmpty()) return;
-
         try
         {
             _addNote.Slug = Slug;

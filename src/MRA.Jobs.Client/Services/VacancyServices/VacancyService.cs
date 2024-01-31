@@ -35,7 +35,8 @@ public class VacancyService(HttpClientService httpClient, IConfiguration configu
 
     public async Task<List<CategoryResponse>> GetAllCategory()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>(configuration.GetJobsUrl("categories"));
+        var result =
+            await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>(configuration.GetJobsUrl("categories"));
         if (result.Success)
         {
             Categories = result.Result.Items;
@@ -49,7 +50,9 @@ public class VacancyService(HttpClientService httpClient, IConfiguration configu
 
     public async Task<List<JobVacancyListDto>> GetVacancyByTitle(string title)
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>(configuration.GetJobsUrl($"jobs?Filters=Title@={title}"));
+        var result =
+            await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>(
+                configuration.GetJobsUrl($"jobs?Filters=Title@={title}"));
         if (result.Success)
         {
             Vacancies = result.Result.Items;
@@ -106,13 +109,16 @@ public class VacancyService(HttpClientService httpClient, IConfiguration configu
 
     public async Task<List<InternshipVacancyListResponse>> GetInternship()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>(configuration.GetJobsUrl("internships"));
+        var result =
+            await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>(
+                configuration.GetJobsUrl("internships"));
         return result.Result.Items;
     }
 
     public async Task<List<TrainingVacancyListDto>> GetTrainings()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>(configuration.GetJobsUrl("trainings"));
+        var result =
+            await httpClient.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>(configuration.GetJobsUrl("trainings"));
         return result.Result.Items;
     }
 }

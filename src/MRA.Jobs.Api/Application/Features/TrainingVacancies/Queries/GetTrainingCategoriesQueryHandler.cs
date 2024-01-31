@@ -4,18 +4,12 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
 namespace MRA.Jobs.Application.Features.TrainingVacancies.Queries;
-public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCategoriesQuery, List<TrainingCategoriesResponce>>
+public class GetTrainingCategoriesQueryHandler(IApplicationDbContext context, IMapper mapper)
+    : IRequestHandler<GetTrainingCategoriesQuery, List<TrainingCategoriesResponce>>
 {
-    IApplicationDbContext _context;
-    IMapper _mapper;
-    public GetTrainingCategoriesQueryHandler(IApplicationDbContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapper = mapper;
-    }
     public async Task<List<TrainingCategoriesResponce>> Handle(GetTrainingCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var trainings = (await _context.TrainingVacancies.ToListAsync()).AsEnumerable();
+        var trainings = (await context.TrainingVacancies.ToListAsync()).AsEnumerable();
 
         if (request.CheckDate)
         {
@@ -27,7 +21,7 @@ public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCate
                               group t by t.CategoryId;
 
         var trainingsWithCategory = new List<TrainingCategoriesResponce>();
-        var categories = await _context.Categories.ToListAsync();
+        var categories = await context.Categories.ToListAsync();
 
         foreach (var training in sortedTrainings)
         {
@@ -36,7 +30,7 @@ public class GetTrainingCategoriesQueryHandler : IRequestHandler<GetTrainingCate
             trainingsWithCategory.Add(new TrainingCategoriesResponce
             {
                 CategoryId = training.Key,
-                Category = _mapper.Map<CategoryResponse>(category),
+                Category = mapper.Map<CategoryResponse>(category),
                 TrainingsCount = training.Count()
             });
         }

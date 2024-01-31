@@ -381,4 +381,12 @@ public partial class VacancyPage
         Console.WriteLine(res.NewQuestion);
         _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
+
+    private void OpenTags(JobVacancyListDto vacancy)
+    {
+        var parameters = new DialogParameters<DialogVacancyTags>();
+        parameters.Add(x=>x.Slug, vacancy.Slug);
+        parameters.Add(x=>x.Tags, vacancy.Tags);
+        DialogService.Show<DialogVacancyTags>($"{vacancy.Title} Tags",parameters);
+    }
 }

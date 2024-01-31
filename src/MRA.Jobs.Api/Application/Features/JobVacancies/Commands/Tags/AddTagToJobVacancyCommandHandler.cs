@@ -3,62 +3,48 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags;
 
 namespace MRA.Jobs.Application.Features.JobVacancies.Commands.Tags;
 
-public class AddTagToJobVacancyCommandHandler : IRequestHandler<AddTagsToJobVacancyCommand, bool>
+public class AddTagToJobVacancyCommandHandler(
+    IApplicationDbContext context,
+    IMapper mapper,
+    ICurrentUserService currentUserService,
+    IDateTime dateTime)
+    : IRequestHandler<AddTagsToJobVacancyCommand, bool>
 {
-    private readonly IApplicationDbContext _context;
-    private readonly ICurrentUserService _currentUserService;
-    private readonly IDateTime _dateTime;
-    private readonly IMapper _mapper;
-
-    public AddTagToJobVacancyCommandHandler(IApplicationDbContext context, IMapper mapper,
-        ICurrentUserService currentUserService, IDateTime dateTime)
-    {
-        _context = context;
-        _mapper = mapper;
-        _currentUserService = currentUserService;
-        _dateTime = dateTime;
-    }
+    private readonly IMapper _mapper = mapper;
 
     public async Task<bool> Handle(AddTagsToJobVacancyCommand request, CancellationToken cancellationToken)
     {
-        var jobVacancy = await _context.Internships
-          .Include(x => x.Tags)
-          .ThenInclude(t => t.Tag)
-          .FirstOrDefaultAsync(x => x.Slug == request.JobVacancySlug, cancellationToken);
+        var jobVacancy = await context.JobVacancies
+            .Include(x => x.Tags)
+            .ThenInclude(t => t.Tag)
+            .FirstOrDefaultAsync(x => x.Slug == request.JobVacancySlug, cancellationToken);
 
         if (jobVacancy == null)
             throw new NotFoundException(nameof(JobVacancy), request.JobVacancySlug);
 
-        foreach (var tagName in request.Tags)
+        var existingTags = await context.Tags.ToListAsync(cancellationToken);
+        var newTags = request.Tags.Where(tagName => !existingTags.Any(t => t.Name == tagName))
+            .ToList();
+
+        var tagsToAdd = newTags.Select(tagName => new Tag { Name = tagName }).ToList();
+        context.Tags.AddRange(tagsToAdd);
+
+        var vacancyTagsToAdd = tagsToAdd.Select(tag =>
+                new VacancyTag { VacancyId = jobVacancy.Id, TagId = tag.Id })
+            .ToList();
+        context.VacancyTags.AddRange(vacancyTagsToAdd);
+
+        var timelineEvent = new VacancyTimelineEvent
         {
-            var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name.Equals(tagName), cancellationToken);
+            VacancyId = jobVacancy.Id,
+            EventType = TimelineEventType.Created,
+            Time = dateTime.Now,
+            Note = $"Added tags: {string.Join(", ", tagsToAdd.Select(tag => tag.Name))}",
+            CreateBy = currentUserService.GetUserName() ?? string.Empty
+        };
+        await context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
 
-            if (tag == null)
-            {
-                tag = new Tag { Name = tagName };
-                _context.Tags.Add(tag);
-            }
-
-            VacancyTag vacancyTag = jobVacancy.Tags.FirstOrDefault(t => t.Tag.Name == tagName);
-
-            if (vacancyTag == null)
-            {
-                vacancyTag = new VacancyTag { VacancyId = jobVacancy.Id, TagId = tag.Id };
-                _context.VacancyTags.Add(vacancyTag);
-
-                VacancyTimelineEvent timelineEvent = new VacancyTimelineEvent
-                {
-                    VacancyId = jobVacancy.Id,
-                    EventType = TimelineEventType.Created,
-                    Time = _dateTime.Now,
-                    Note = $"Added '{tag.Name}' tag",
-                    CreateBy = _currentUserService.GetUserName() ?? string.Empty
-                };
-                await _context.VacancyTimelineEvents.AddAsync(timelineEvent, cancellationToken);
-            }
-        }
-
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         return true;
     }

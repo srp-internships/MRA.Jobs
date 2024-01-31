@@ -21,6 +21,7 @@ public class GetTrainingVacanciesQueryHandler(
             .Include(t => t.Category)
             .Include(t => t.VacancyQuestions)
             .Include(i => i.VacancyTasks)
+            .Include(i=>i.Tags).ThenInclude(t=>t.Tag)
             .ToListAsync(cancellationToken: cancellationToken))
             .AsEnumerable();
 

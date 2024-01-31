@@ -1,0 +1,75 @@
+﻿@using MRA.BlazorComponents.HttpClient.Services
+@using MRA.BlazorComponents.Configuration
+@using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags
+<MudDialog>
+    <DialogContent>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudStack Row="true">
+                    <MudTextField Variant="Variant.Filled" @bind-Value="_newTags" T="string"/>
+                    <ProgressTaskButton Function="@AddTags" Variant="Variant.Filled" Color="Color.Primary">
+                        <MudText>Add</MudText>
+                    </ProgressTaskButton>
+                </MudStack>
+            </MudItem>
+            <MudItem xs="12">
+                @foreach (var tag in Tags)
+                {
+                    <MudChip>@tag</MudChip>
+                }
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Close">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string Slug { get; set; }
+    [Parameter] public List<string> Tags { get; set; } = new();
+    [Inject] public HttpClientService HttpClient { get; set; }
+    [Inject] public IConfiguration Configuration { get; set; }
+
+    private string _newTags = "";
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+
+
+    private async Task AddTags()
+    {
+        Tags ??= new List<string>();
+        var newTags = _newTags.Split(',')
+            .Where(tagName => !string.IsNullOrWhiteSpace(tagName))
+            .Select(tagName => tagName.Trim())
+            .Where(newTagName => !Tags.Any(tag => tag == newTagName))
+            .ToArray();
+
+        try
+        {
+            var result = await HttpClient.PostAsJsonAsync<bool>(Configuration.GetJobsUrl($"jobs/{Slug}/tags"),
+                new AddTagsToJobVacancyCommand()
+                {
+                    JobVacancySlug = Slug,
+                    Tags = newTags
+                });
+            if (result.Success)
+            {
+                Tags.AddRange(newTags);
+                _newTags = "";
+                StateHasChanged();
+            }
+            else
+            {
+                Snackbar.Add(result.Error, Severity.Error);
+            }
+        }
+        catch (HttpRequestException e)
+        {
+            Snackbar.Add(e.Message, Severity.Error);
+        }
+    }
+
+}
