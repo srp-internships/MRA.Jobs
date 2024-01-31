@@ -57,19 +57,29 @@
                     <CascadingAuthenticationState>
                         <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
                             <Authorized>
-                                <MudSelect T="string" Label=@ContentService["Applicateons:Selectstatus"] AnchorOrigin="Origin.BottomCenter" @bind-Value="@SelectedStatus">
-                                    @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
-                                    {
-                                        <MudSelectItem Value="@status.ToString()"/>
-                                    }
-                                </MudSelect>
+                                <MudGrid>
+                                    <MudItem lg="6" xs="12">
+                                        <MudSelect T="string" Label=@ContentService["Applicateons:Selectstatus"] AnchorOrigin="Origin.BottomCenter" @bind-Value="@SelectedStatus">
+                                            @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                                            {
+                                                <MudSelectItem Value="@status.ToString()"/>
+                                            }
+                                        </MudSelect>
+                                    </MudItem>
+                                    <MudItem lg="6" xs="12">
+                                        <MudCheckBox bind-Value="_sendEmail" T="bool" Label="Send Email"/>
+                                        @if (_sendEmail)
+                                        {
+                                            <MudText>Email Title:</MudText>
+                                        }
+                                    </MudItem>
+                                </MudGrid>
+
                                 <ProgressTaskButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" Function="@ChangeStatus">
                                     <MudText>
                                         @ContentService["Applicateons:Changestatus"]
                                     </MudText>
-                                    }
                                 </ProgressTaskButton>
-
                             </Authorized>
                         </AuthorizeView>
                     </CascadingAuthenticationState>
@@ -140,6 +150,7 @@
                                 <FluentValidationValidator/>
                                 <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="@_addNote.Note" Lines="5"
                                               For="@(() => _addNote.Note)"/>
+                       
                             </MudCardContent>
                             <MudCardActions>
                                 <ProgressTaskButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Function="OnAddNoteAsync">
@@ -160,7 +171,7 @@
 
     private AddNoteToApplicationCommand _addNote = new();
     private string SelectedStatus { get; set; }
-
+    private bool _sendEmail;
 
     [Parameter] public string Slug { get; set; }
     [Parameter] public string ApplicationUserName { get; set; }
@@ -169,6 +180,7 @@
     private UpdateApplicationStatusCommand _applicationStatusCommand;
     private UserProfileResponse _applicant;
     private ApplicationDetailsDto _application;
+   
 
     private async Task LoadApplication()
     {
