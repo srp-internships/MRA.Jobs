@@ -1,14 +1,14 @@
 ﻿@page "/dashboard/applications"
-@using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Identity;
 @using MRA.Jobs.Client.Components.Extra
 @using MRA.Jobs.Client.Services.Profile
+@using Blazored.LocalStorage
 
 @inject IApplicationService ApplicationService
 @inject NavigationManager NavigationManager
 @inject IContentService ContentService
 @inject IUserProfileService UserProfileService
-
+@inject ILocalStorageService LocalStorageService
 <CascadingAuthenticationState>
     <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
         <Authorized>
@@ -34,19 +34,19 @@
                                 </MudText>
                                 <MudGrid>
                                     <MudItem xs="12" sm="6" md="4">
-                                        <MudTextField T="string" ValueChanged="@(OnSearchUsername)"
+                                        <MudTextField T="string" Value="_searchUsername" ValueChanged="@(OnSearchUsername)"
                                                       Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
                                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                       Class="mt-0" Immediate="true"/>
                                     </MudItem>
                                     <MudItem xs="12" sm="6" md="4">
-                                        <MudTextField T="string" ValueChanged="@(OnSearchVacancyTitle)"
+                                        <MudTextField T="string" Value="_searchVacancyTitle" ValueChanged="@(OnSearchVacancyTitle)"
                                                       Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
                                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                       Class="mt-0" Immediate="true"/>
                                     </MudItem>
                                     <MudItem xs="12" sm="6" md="4">
-                                        <MudSelect T="string" Label=@ContentService["Dashboard:Appilcations:Status name"] AnchorOrigin="Origin.BottomCenter" ValueChanged="@(value => OnSearchStatusName(value))">
+                                        <MudSelect T="string" Value="_searchStatusName" Label=@ContentService["Dashboard:Appilcations:Status name"] AnchorOrigin="Origin.BottomCenter" ValueChanged="@(value => OnSearchStatusName(value))">
                                             @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
                                             {
                                                 <MudSelectItem Value="@status.ToString()"/>
@@ -71,19 +71,19 @@
                                 <MudItem>
                                     <MudGrid>
                                         <MudItem>
-                                            <MudTextField T="string" ValueChanged="@(OnSearchUsername)"
+                                            <MudTextField T="string" Value="_searchUsername" ValueChanged="@(OnSearchUsername)"
                                                           Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
                                                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                           Class="mt-0" Immediate="true"/>
                                         </MudItem>
                                         <MudItem>
-                                            <MudTextField T="string" ValueChanged="@(OnSearchVacancyTitle)"
+                                            <MudTextField T="string" Value="_searchVacancyTitle" ValueChanged="@(OnSearchVacancyTitle)"
                                                           Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
                                                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                           Class="mt-0" Immediate="true"/>
                                         </MudItem>
 
-                                        <MudSelect T="string" Label=@ContentService["Dashboard:Appilcations:Status name"] AnchorOrigin="Origin.BottomCenter" ValueChanged="@(value => OnSearchStatusName(value))">
+                                        <MudSelect T="string" Value="_searchStatusName" Label=@ContentService["Dashboard:Appilcations:Status name"] AnchorOrigin="Origin.BottomCenter" ValueChanged="@(value => OnSearchStatusName(value))">
                                             <MudSelectItem Value="string.Empty"/>
                                             @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
                                             {
@@ -166,22 +166,25 @@
     private string _searchVacancyTitle;
     private string _searchStatusName;
 
-    private void OnSearchUsername(string text)
+    private async Task OnSearchUsername(string text)
     {
         _searchUsername = text;
-        _table.ReloadServerData();
+        await _table.ReloadServerData();
+        await LocalStorageService.SetItemAsStringAsync("_searchUsername", _searchUsername);
     }
 
-    private void OnSearchVacancyTitle(string text)
+    private async Task OnSearchVacancyTitle(string text)
     {
         _searchVacancyTitle = text;
-        _table.ReloadServerData();
+        await _table.ReloadServerData();
+        await LocalStorageService.SetItemAsStringAsync("_searchVacancyTitle", _searchVacancyTitle);
     }
 
-    private void OnSearchStatusName(string text)
+    private async Task OnSearchStatusName(string text)
     {
         _searchStatusName = text;
-        _table.ReloadServerData();
+        await _table.ReloadServerData();
+        await LocalStorageService.SetItemAsStringAsync("_searchStatusName", _searchStatusName);
     }
 
     private async Task<TableData<ApplicationListDto>> ServerReload(TableState state)
@@ -212,6 +215,9 @@
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
+        _searchStatusName = await LocalStorageService.GetItemAsStringAsync("_searchStatusName");
+        _searchVacancyTitle = await LocalStorageService.GetItemAsStringAsync("_searchVacancyTitle");
+        _searchUsername = await LocalStorageService.GetItemAsStringAsync("_searchUsername");
     }
 
     private async Task LoadData()
