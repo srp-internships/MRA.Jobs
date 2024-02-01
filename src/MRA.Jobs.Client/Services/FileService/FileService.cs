@@ -2,12 +2,13 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Components.Forms;
-using MRA.Jobs.Client.Services.HttpClients;
+using MRA.BlazorComponents.Configuration;
+using MRA.BlazorComponents.HttpClient.Services;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Services.FileService;
 
-public class FileService(JobsApiHttpClientService httpClientService, ISnackbar snackbar)
+public class FileService(IHttpClientService httpClientService, ISnackbar snackbar, IConfiguration configuration)
     : IFileService
 {
     public async Task<string> UploadAsync(IBrowserFile file)
@@ -17,7 +18,9 @@ public class FileService(JobsApiHttpClientService httpClientService, ISnackbar s
         var content = new MultipartFormDataContent();
         content.Add(fileContent, "\"file\"", file.Name);
 
-        var fileUploadResponse = await httpClientService.PostAsJsonAsync<FileUploadResponse>("api/File/upload", content);
+        var fileUploadResponse =
+            await httpClientService.PostAsJsonAsync<FileUploadResponse>(configuration.GetJobsUrl("api/File/upload"),
+                content);
         switch (fileUploadResponse.HttpStatusCode)
         {
             case HttpStatusCode.OK:

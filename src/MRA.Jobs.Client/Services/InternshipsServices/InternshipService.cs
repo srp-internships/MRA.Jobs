@@ -1,12 +1,15 @@
-﻿using MRA.Jobs.Application.Contracts.Common;
+﻿using MRA.BlazorComponents.Configuration;
+using MRA.BlazorComponents.HttpClient.Responses;
+using MRA.BlazorComponents.HttpClient.Services;
+using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Delete;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
-using MRA.Jobs.Client.Services.HttpClients;
 
 namespace MRA.Jobs.Client.Services.InternshipsServices;
-public class InternshipService(JobsApiHttpClientService httpClientService)
+
+public class InternshipService(IHttpClientService httpClientService, IConfiguration configuration)
     : IInternshipService
 {
     public CreateInternshipVacancyCommand createCommand { get; set; } = new()
@@ -27,23 +30,23 @@ public class InternshipService(JobsApiHttpClientService httpClientService)
 
     public async Task<ApiResponse> Create()
     {
-        return await httpClientService.PostAsJsonAsync<string>("internships", createCommand);
+        return await httpClientService.PostAsJsonAsync<string>(configuration.GetJobsUrl("internships"), createCommand);
     }
 
     public async Task<ApiResponse> Delete(string slug)
     {
-        return await httpClientService.DeleteAsync($"internships/{slug}");
+        return await httpClientService.DeleteAsync(configuration.GetJobsUrl($"internships/{slug}"));
     }
 
     public async Task<ApiResponse<PagedList<InternshipVacancyListResponse>>> GetAll()
     {
-        var response= await httpClientService.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>("internships");
+        var response = await httpClientService.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>(configuration.GetJobsUrl("internships"));
         return response;
     }
 
     public async Task<InternshipVacancyResponse> GetBySlug(string slug)
     {
-        var response = await httpClientService.GetAsJsonAsync<InternshipVacancyResponse>($"internships/{slug}");
+        var response = await httpClientService.GetAsJsonAsync<InternshipVacancyResponse>(configuration.GetJobsUrl($"internships/{slug}"));
         return response.Success ? response.Result : null;
     }
 
@@ -65,6 +68,6 @@ public class InternshipService(JobsApiHttpClientService httpClientService)
             VacancyTasks = createCommand.VacancyTasks
         };
 
-        return await httpClientService.PutAsJsonAsync<string>($"internships/{slug}", updateCommand);
+        return await httpClientService.PutAsJsonAsync<string>(configuration.GetJobsUrl($"internships/{slug}"), updateCommand);
     }
 }

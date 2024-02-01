@@ -14,5 +14,6 @@ public interface IHtmlService
         string cV, CreateApplicationCommand createApplicationCommand);
 
     Task<bool> EmailApproved(UserProfileResponse applicant, string slug);
-    Task<bool> EmailRejected(UserProfileResponse applicant, string slug);
+    Task<bool> EmailRejected(UserProfileResponse applicant, string slug, string vacancyTitle);
+    Task<bool> EmailCustom(string emailSubject, string emailText, string emailAddress);
 }

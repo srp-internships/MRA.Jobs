@@ -5,14 +5,13 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Update;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Trainings.Command;
-public class UpdateTrainingVacancyCommandTest : Testing
+public class UpdateTrainingVacancyCommandTest : TrainingsContext
 {
 
     [Test]
     public async Task UpdateTrainingVacancyCommand_UpdatingTrainingVacancyCommand_Success()
     {
-        TrainingsContext trainings = new TrainingsContext();
-        var training = await trainings.GetTraining("TrainingVacancy", DateTime.Now.AddDays(1));
+        var training = await GetTraining("TrainingVacancy2", DateTime.Now.AddDays(1));
 
         var updateCommand = new UpdateTrainingVacancyCommand
         {

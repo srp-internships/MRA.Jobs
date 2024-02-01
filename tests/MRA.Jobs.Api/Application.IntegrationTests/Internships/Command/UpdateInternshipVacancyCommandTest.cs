@@ -4,14 +4,13 @@ using MRA.Jobs.Domain.Entities;
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Internships.Command;
-public class UpdateInternshipVacancyCommandTest : Testing
+public class UpdateInternshipVacancyCommandTest : InternshipsContext
 {
 
     [Test]
     public async Task UpdateInternshipVacancyCommand_UpdatingInternshipVacancyCommand_Success()
     { 
-       InternshipsContext internships = new InternshipsContext();
-        var internship = await internships.GetInternship("test");
+        var internship = await GetInternship("test");
 
         var updateCommand = new UpdateInternshipVacancyCommand
         {

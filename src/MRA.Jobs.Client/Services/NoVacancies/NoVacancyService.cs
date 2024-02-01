@@ -1,20 +1,19 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using MRA.BlazorComponents.Configuration;
+using MRA.BlazorComponents.HttpClient.Services;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.JobVacancies;
-using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.ContentService;
-using MRA.Jobs.Client.Services.HttpClients;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Services.NoVacancies;
 
 public class NoVacancyService(
     ISnackbar snackbar,
-    JobsApiHttpClientService httpClient,
+    IHttpClientService httpClient,
     NavigationManager navigationManager,
     IConfiguration configuration,
     IContentService contentService) : INoVacancyService
@@ -24,7 +23,7 @@ public class NoVacancyService(
         var vacancy = new JobVacancyDetailsDto();
         try
         {
-            var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>($"jobs/{CommonVacanciesSlugs.NoVacancySlug}");
+            var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>(configuration.GetJobsUrl($"jobs/{CommonVacanciesSlugs.NoVacancySlug}"));
             if (response.Success)
                 vacancy = response.Result;
             else
@@ -51,7 +50,7 @@ public class NoVacancyService(
             application.Cv.FileName = file.Name;
             //set cv
 
-            var response = await httpClient.PostAsJsonAsync<Guid>("Applications/CreateApplicationNoVacancy", application);
+            var response = await httpClient.PostAsJsonAsync<Guid>(configuration.GetJobsUrl("Applications/CreateApplicationNoVacancy"), application);
             switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:

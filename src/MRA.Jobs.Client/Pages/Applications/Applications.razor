@@ -1,11 +1,14 @@
 ﻿@page "/dashboard/applications"
 @using MRA.Jobs.Client.Identity;
 @using MRA.Jobs.Client.Components.Extra
+@using MRA.Jobs.Client.Services.Profile
+@using Blazored.LocalStorage
 
 @inject IApplicationService ApplicationService
 @inject NavigationManager NavigationManager
 @inject IContentService ContentService
-
+@inject IUserProfileService UserProfileService
+@inject ILocalStorageService LocalStorageService
 <CascadingAuthenticationState>
     <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
         <Authorized>
@@ -27,27 +30,30 @@
                         <MudCard Class="rounded-lg mud-elevation-4">
                             <MudCardContent>
                                 <MudText>
-									<b>@ContentService["Applicateons:Filters"]</b>
+                                    <b>@ContentService["Applicateons:Filters"]</b>
                                 </MudText>
                                 <MudGrid>
                                     <MudItem xs="12" sm="6" md="4">
-                                        <MudTextField T="string" ValueChanged="@(OnSearchUsername)"
-													  Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
+                                        <MudTextField T="string" Value="_searchUsername" ValueChanged="@(OnSearchUsername)"
+                                                      Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
                                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                       Class="mt-0" Immediate="true"/>
                                     </MudItem>
                                     <MudItem xs="12" sm="6" md="4">
-                                        <MudTextField T="string" ValueChanged="@(OnSearchVacancyTitle)"
-													  Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
+                                        <MudTextField T="string" Value="_searchVacancyTitle" ValueChanged="@(OnSearchVacancyTitle)"
+                                                      Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
                                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                       Class="mt-0" Immediate="true"/>
                                     </MudItem>
                                     <MudItem xs="12" sm="6" md="4">
-                                        <MudTextField T="string" ValueChanged="@(OnSearchStatusName)"
-													  Placeholder=@ContentService["Dashboard:Appilcations:Status name"] Adornment="Adornment.Start"
-                                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
-                                                      Class="mt-0" Immediate="true"/>
+                                        <MudSelect T="string" Value="_searchStatusName" Label=@ContentService["Dashboard:Appilcations:Status name"] AnchorOrigin="Origin.BottomCenter" ValueChanged="@(value => OnSearchStatusName(value))">
+                                            @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                                            {
+                                                <MudSelectItem Value="@status.ToString()"/>
+                                            }
+                                        </MudSelect>
                                     </MudItem>
+
                                 </MudGrid>
                             </MudCardContent>
                         </MudCard>
@@ -58,55 +64,84 @@
                               Hover="true" @ref="_table">
                         <ToolBarContent>
                             <MudText Typo="Typo.h5">
-								<b>@ContentService["UserButton:Applications"]</b>
+                                <b>@ContentService["UserButton:Applications"]</b>
                             </MudText>
                             <MudHidden Breakpoint="Breakpoint.MdAndDown">
                                 <MudSpacer/>
                                 <MudItem>
                                     <MudGrid>
                                         <MudItem>
-                                            <MudTextField T="string" ValueChanged="@(OnSearchUsername)"
-														  Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
+                                            <MudTextField T="string" Value="_searchUsername" ValueChanged="@(OnSearchUsername)"
+                                                          Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
                                                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                           Class="mt-0" Immediate="true"/>
                                         </MudItem>
                                         <MudItem>
-                                            <MudTextField T="string" ValueChanged="@(OnSearchVacancyTitle)"
-														  Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
+                                            <MudTextField T="string" Value="_searchVacancyTitle" ValueChanged="@(OnSearchVacancyTitle)"
+                                                          Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
                                                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                           Class="mt-0" Immediate="true"/>
                                         </MudItem>
-                                        <MudItem>
-                                            <MudTextField T="string" ValueChanged="@(OnSearchStatusName)"
-														  Placeholder=@ContentService["Dashboard:Appilcations:Status name"] Adornment="Adornment.Start"
-                                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
-                                                          Class="mt-0" Immediate="true"/>
-                                        </MudItem>
+
+                                        <MudSelect T="string" Value="_searchStatusName" Label=@ContentService["Dashboard:Appilcations:Status name"] AnchorOrigin="Origin.BottomCenter" ValueChanged="@(value => OnSearchStatusName(value))">
+                                            <MudSelectItem Value="string.Empty"/>
+                                            @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                                            {
+                                                <MudSelectItem Value="@status.ToString()"/>
+                                            }
+
+                                        </MudSelect>
                                     </MudGrid>
                                 </MudItem>
                             </MudHidden>
                         </ToolBarContent>
                         <HeaderContent>
-							<MudTh>@ContentService["Dashboard:Appilcations:Applicant username"]</MudTh>
-							<MudTh>@ContentService["Dashboard:Appilcations:Vacancy title"]</MudTh>
-								<MudTh>@ContentService["Dashboard:Appilcations:Applied at"]</MudTh>
-								<MudTh>@ContentService["Dashboard:Appilcations:Status name"]</MudTh>
-								<MudTh>@ContentService["Dashboard:Appilcations:Action"]</MudTh>
+                            <MudTh>@ContentService["Dashboard:Appilcations:Applicant username"]</MudTh>
+                            <MudTh>@ContentService["UserManager:FullName"]</MudTh>
+                            <MudTh>@ContentService["Profile:DateOfBirth"]</MudTh>
+                            <MudTh>@ContentService["SignUp:Phone"]</MudTh>
+                            <MudTh>@ContentService["SignUp:Email"]</MudTh>
+                            <MudTh>@ContentService["Dashboard:Appilcations:Vacancy title"]</MudTh>
+                            <MudTh>@ContentService["Dashboard:Appilcations:Applied at"]</MudTh>
+                            <MudTh>@ContentService["Dashboard:Appilcations:Status name"]</MudTh>
+                            <MudTh>@ContentService["Dashboard:Appilcations:Action"]</MudTh>
                         </HeaderContent>
                         <RowTemplate>
-								<MudTd DataLabel=@ContentService["SignUp:UserName"]>@context.Username</MudTd>
-								<MudTd DataLabel=@ContentService["Internships:Title"]>@context.VacancyTitle</MudTd>
-								<MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.CreatedAt.ToString("D")</MudTd>
-								<MudTd DataLabel=@ContentService["Dashboard:Appilcations:Status name"]>@context.StatusName</MudTd>
-								<MudTd DataLabel=@ContentService["Dashboard:Appilcations:Name"]>
-                                <MudButton Variant="Variant.Filled" OnClick="@((_) => OnClick(context.Slug, context.Username))">More</MudButton>
+                            <MudTd DataLabel=@ContentService["SignUp:UserName"]>@context.Username</MudTd>
+                            @if (context.User == null)
+                            {
+                                <MudTd>
+                                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                                </MudTd>
+                                <MudTd>
+                                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                                </MudTd>
+                                <MudTd>
+                                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                                </MudTd>
+                                <MudTd>
+                                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                                </MudTd>
+                            }
+                            else
+                            {
+                                <MudTd DataLabel=@ContentService["UserManager:FullName"]>@context.User.FirstName @context.User.LastName</MudTd>
+                                <MudTd DataLabel=@ContentService["Profile:DateOfBirth"]>@context.User.DateOfBirth</MudTd>
+                                <MudTd DataLabel=@ContentService["SignUp:Phone"]>@context.User.PhoneNumber</MudTd>
+                                <MudTd DataLabel=@ContentService["SignUp:Email"]>@context.User.Email</MudTd>
+                            }
+                            <MudTd DataLabel=@ContentService["Internships:Title"]>@context.VacancyTitle</MudTd>
+                            <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.CreatedAt.ToString("D")</MudTd>
+                            <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Status name"]>@context.StatusName</MudTd>
+                            <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Name"]>
+                                <MudLink Color="Color.Primary" Href="@($"/ApplicationDetail/{context.Slug}/{context.Username}")">more</MudLink>
                             </MudTd>
                         </RowTemplate>
                         <NoRecordsContent>
-								<MudText>@ContentService["UserManager:Nomatchingrecords"]</MudText>
+                            <MudText>@ContentService["UserManager:Nomatchingrecords"]</MudText>
                         </NoRecordsContent>
                         <LoadingContent>
-								<MudText>@ContentService["UserManager:Loading"]</MudText>
+                            <MudText>@ContentService["UserManager:Loading"]</MudText>
                         </LoadingContent>
                         <PagerContent>
                             <MudTablePager/>
@@ -131,22 +166,25 @@
     private string _searchVacancyTitle;
     private string _searchStatusName;
 
-    private void OnSearchUsername(string text)
+    private async Task OnSearchUsername(string text)
     {
         _searchUsername = text;
-        _table.ReloadServerData();
+        await _table.ReloadServerData();
+        await LocalStorageService.SetItemAsStringAsync("_searchUsername", _searchUsername);
     }
 
-    private void OnSearchVacancyTitle(string text)
+    private async Task OnSearchVacancyTitle(string text)
     {
         _searchVacancyTitle = text;
-        _table.ReloadServerData();
+        await _table.ReloadServerData();
+        await LocalStorageService.SetItemAsStringAsync("_searchVacancyTitle", _searchVacancyTitle);
     }
 
-    private void OnSearchStatusName(string text)
+    private async Task OnSearchStatusName(string text)
     {
         _searchStatusName = text;
-        _table.ReloadServerData();
+        await _table.ReloadServerData();
+        await LocalStorageService.SetItemAsStringAsync("_searchStatusName", _searchStatusName);
     }
 
     private async Task<TableData<ApplicationListDto>> ServerReload(TableState state)
@@ -177,16 +215,31 @@
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
+        _searchStatusName = await LocalStorageService.GetItemAsStringAsync("_searchStatusName");
+        _searchVacancyTitle = await LocalStorageService.GetItemAsStringAsync("_searchVacancyTitle");
+        _searchUsername = await LocalStorageService.GetItemAsStringAsync("_searchUsername");
     }
 
     private async Task LoadData()
     {
         try
         {
-			var response = await ApplicationService.GetAllApplications();
+            var response = await ApplicationService.GetAllApplications();
             if (response is not null)
             {
                 _applications = response;
+                foreach (var application in _applications.Items)
+                {
+                    var userProfile = await UserProfileService.Get(application.Username);
+                    if (userProfile != null)
+                    {
+                        application.User = userProfile;
+                    }
+                    else
+                    {
+                        application.User = null;
+                    }
+                }
             }
         }
         catch (Exception)
@@ -195,6 +248,7 @@
             StateHasChanged();
         }
     }
+
     public Applications()
     {
         _searchStatusName = null;
@@ -204,5 +258,5 @@
     {
         NavigationManager.NavigateTo($"/ApplicationDetail/{slug}/{applicationUserName}");
     }
-    
+
 }

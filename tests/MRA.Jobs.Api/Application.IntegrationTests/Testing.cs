@@ -23,14 +23,19 @@ public class Testing
     private static IJwtTokenService _tokenService;
     protected HttpClient _httpClient;
     protected string jwtToken;
+    private static bool _initialized;
 
     [OneTimeSetUp]
     public void RunBeforeAnyTests()
     {
+        if (_initialized)
+            return;
+
         _factory = new CustomWebApplicationFactory();
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
         _configuration = _factory.Services.GetRequiredService<IConfiguration>();
         _tokenService = new JwtTokenService(_configuration);
+        _initialized = true;
     }
 
     [SetUp]
@@ -62,7 +67,7 @@ public class Testing
         jwtToken = _tokenService.CreateTokenByClaims(claims);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
     }
-    
+
     public void RunAsReviewerAsync()
     {
         Guid userId = Guid.NewGuid();
@@ -72,9 +77,8 @@ public class Testing
             new(ClaimTypes.Email, "fakeEmail@asd.com"),
             new(ClaimTypes.Role, ApplicationClaimValues.Reviewer),
             new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
-            new(ClaimTypes.Id, userId.ToString())     ,
+            new(ClaimTypes.Id, userId.ToString()),
             new(ClaimTypes.Username, "username")
-
         };
         jwtToken = _tokenService.CreateTokenByClaims(claims);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
@@ -166,5 +170,4 @@ public class Testing
     public void RunAfterAnyTests()
     {
     }
-
 }

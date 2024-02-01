@@ -8,13 +8,15 @@ using MRA.Jobs.Client.Services.ApplicationService;
 using MRA.Jobs.Client.Services.InternshipsServices;
 using MRA.Jobs.Client.Services.TrainingServices;
 using Microsoft.AspNetCore.Components.Authorization;
-using MRA.Jobs.Client.Services.Auth;
 using MudBlazor.Services;
 using MRA.Jobs.Client.Services.Profile;
 using System.Reflection;
 using AltairCA.Blazor.WebAssembly.Cookie.Framework;
 using Blazored.LocalStorage;
 using Microsoft.FeatureManagement;
+using MRA.BlazorComponents;
+using MRA.BlazorComponents.DynamicPages;
+using MRA.BlazorComponents.HttpClient;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.ContentService;
@@ -23,7 +25,6 @@ using MRA.Jobs.Client.Services;
 using MRA.Jobs.Client.Services.FileService;
 using MRA.Jobs.Client.Services.NoVacancies;
 using MRA.Jobs.Client.Services.UserPreferences;
-using MRA.Jobs.Client.Services.HttpClients;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddMudServices();
@@ -35,10 +36,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddValidatorsFromAssembly(typeof(RemoveUserSkillCommand).Assembly);
 
-builder.Services.AddScoped(_ =>
-    new IdentityHttpClient { BaseAddress = new Uri(builder.Configuration["IdentityHttpClient:BaseAddress"]!) });
-builder.Services.AddScoped(_ =>
-    new HttpClient { BaseAddress = new Uri(builder.Configuration["HttpClient:BaseAddress"]!) });
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddOptions();
@@ -65,14 +62,15 @@ builder.Services.AddAuthorizationCore(s =>
         .RequireClaim(ClaimTypes.Id).RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Username));
 });
 
-builder.Services.AddHttpClient();
-builder.Services.AddScoped<JobsApiHttpClientService>();
-builder.Services.AddScoped<IdentityApiHttpClientService>();
+//Mra.BlazorComponents
+builder.Services.AddHttpClientService();
+builder.Services.AddMraPages();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+//Mra.BlazorComponents
+
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<LayoutService>();
