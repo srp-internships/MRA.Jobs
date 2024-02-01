@@ -6,11 +6,13 @@
 @using System.Net
 @using Microsoft.IdentityModel.Tokens
 @using MRA.BlazorComponents.Configuration
+@using MRA.Jobs.Client.Components.Dialogs
 @using MRA.Jobs.Client.Identity
 
 @inject IApplicationService ApplicationService
 @inject IUserProfileService UserProfileService
 @inject IConfiguration configuration
+@inject IDialogService DialogService
 
 <MudGrid>
     <MudItem xs="12">
@@ -57,18 +59,25 @@
                     <CascadingAuthenticationState>
                         <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
                             <Authorized>
-                                <MudSelect T="string" Label=@ContentService["Applicateons:Selectstatus"] AnchorOrigin="Origin.BottomCenter" @bind-Value="@SelectedStatus">
-                                    @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
-                                    {
-                                        <MudSelectItem Value="@status.ToString()"/>
-                                    }
-                                </MudSelect>
+                                <MudGrid>
+                                    <MudItem lg="6" xs="12">
+                                        <MudSelect T="string" Label=@ContentService["Applicateons:Selectstatus"] AnchorOrigin="Origin.BottomCenter" @bind-Value="@SelectedStatus">
+                                            @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                                            {
+                                                <MudSelectItem Value="@status.ToString()"/>
+                                            }
+                                        </MudSelect>
+                                    </MudItem>
+                                    <MudItem lg="6" xs="12">
+                                      
+                                    </MudItem>
+                                </MudGrid>
+
                                 <ProgressTaskButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" Function="@ChangeStatus">
                                     <MudText>
                                         @ContentService["Applicateons:Changestatus"]
                                     </MudText>
                                 </ProgressTaskButton>
-
                             </Authorized>
                         </AuthorizeView>
                     </CascadingAuthenticationState>
@@ -116,9 +125,18 @@
                                                             <MudSpacer/>
                                                             <MudText Typo="Typo.body2">@item.Time</MudText>
                                                         </MudStack>
-
-
-                                                        <MudText>@item.Note</MudText>
+                                                        @if (item.EventType == ApplicationStatusDto.TimelineEventType.Note)
+                                                        {
+                                                            <MudExpansionPanels MultiExpansion="true">
+                                                                <MudExpansionPanel Text="Note">
+                                                                    <MudText>@((MarkupString)item.Note)</MudText>
+                                                                </MudExpansionPanel>
+                                                            </MudExpansionPanels>
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudText>@((MarkupString)item.Note)</MudText>
+                                                        }
                                                     </MudCardContent>
                                                 </MudCard>
                                             </MudTimelineItem>
@@ -130,25 +148,11 @@
                     </MudCard>
                 </MudItem>
                 <MudItem xs="12" lg="6">
-                    <MudCard>
-                        <EditForm Model="@_addNote" Context="_" OnInvalidSubmit="@OnAddNoteAsync">
-                            <MudCardHeader>
-                                <MudText>@ContentService["Applicateons:AddNote"]</MudText>
-                            </MudCardHeader>
-                            <MudCardContent>
-                                <FluentValidationValidator/>
-                                <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="@_addNote.Note" Lines="5"
-                                              For="@(() => _addNote.Note)"/>
-                            </MudCardContent>
-                            <MudCardActions>
-                                <ProgressTaskButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Function="OnAddNoteAsync">
-                                    <MudText>
-                                        <MudText>@ContentService["Applicateons:Add"]</MudText>
-                                    </MudText>
-                                </ProgressTaskButton>
-                            </MudCardActions>
-                        </EditForm>
-                    </MudCard>
+                    <ProgressTaskButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Function="OnAddNoteAsync">
+                        <MudText>
+                            <MudText>@ContentService["Applicateons:AddNote"]</MudText>
+                        </MudText>
+                    </ProgressTaskButton>
                 </MudItem>
             </Authorized>
         </AuthorizeView>
@@ -157,9 +161,9 @@
 
 @code {
 
-    private AddNoteToApplicationCommand _addNote = new();
+    private AddNoteToApplicationCommand _addNoteCommand = new();
     private string SelectedStatus { get; set; }
-
+  
 
     [Parameter] public string Slug { get; set; }
     [Parameter] public string ApplicationUserName { get; set; }
@@ -168,6 +172,7 @@
     private UpdateApplicationStatusCommand _applicationStatusCommand;
     private UserProfileResponse _applicant;
     private ApplicationDetailsDto _application;
+
 
     private async Task LoadApplication()
     {
@@ -189,15 +194,22 @@
 
     private async Task OnAddNoteAsync()
     {
-        if (_addNote.Note.IsNullOrEmpty()) return;
+        var options = new DialogOptions { MaxWidth = MaxWidth.Medium };
+        var parameters = new DialogParameters<DialogAddNote>();
+        parameters.Add(d => d.Note, _addNoteCommand);
+
+        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled || _addNoteCommand.Note.IsNullOrEmpty()) return;
 
         try
         {
-            _addNote.Slug = Slug;
-            var response = await ApplicationService.AddNote(_addNote);
+            _addNoteCommand.Slug = Slug;
+            var response = await ApplicationService.AddNote(_addNoteCommand);
             _application.History.Add(response);
             _application.History = _application.History.OrderByDescending(h => h.Time).ToList();
-            _addNote = new AddNoteToApplicationCommand();
+            _addNoteCommand = new AddNoteToApplicationCommand();
         }
         catch (Exception)
         {
