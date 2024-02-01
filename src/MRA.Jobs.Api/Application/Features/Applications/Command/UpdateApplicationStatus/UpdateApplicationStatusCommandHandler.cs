@@ -4,7 +4,6 @@ using MRA.Configurations.Common.Interfaces.Services;
 using MRA.Configurations.OsonSms.SmsService;
 using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies;
-using ValidationException = MRA.Jobs.Application.Common.Exceptions.ValidationException;
 
 namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplicationStatus;
 
