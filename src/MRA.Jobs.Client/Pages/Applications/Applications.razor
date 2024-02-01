@@ -1,10 +1,13 @@
 ﻿@page "/dashboard/applications"
+@using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Identity;
 @using MRA.Jobs.Client.Components.Extra
+@using MRA.Jobs.Client.Services.Profile
 
 @inject IApplicationService ApplicationService
 @inject NavigationManager NavigationManager
 @inject IContentService ContentService
+@inject IUserProfileService UserProfileService
 
 <CascadingAuthenticationState>
     <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
@@ -43,11 +46,14 @@
                                                       Class="mt-0" Immediate="true"/>
                                     </MudItem>
                                     <MudItem xs="12" sm="6" md="4">
-                                        <MudTextField T="string" ValueChanged="@(OnSearchStatusName)"
-                                                      Placeholder=@ContentService["Dashboard:Appilcations:Status name"] Adornment="Adornment.Start"
-                                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
-                                                      Class="mt-0" Immediate="true"/>
+                                        <MudSelect T="string" Label=@ContentService["Dashboard:Appilcations:Status name"] AnchorOrigin="Origin.BottomCenter" ValueChanged="@(value => OnSearchStatusName(value))">
+                                            @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                                            {
+                                                <MudSelectItem Value="@status.ToString()"/>
+                                            }
+                                        </MudSelect>
                                     </MudItem>
+
                                 </MudGrid>
                             </MudCardContent>
                         </MudCard>
@@ -76,18 +82,25 @@
                                                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                                                           Class="mt-0" Immediate="true"/>
                                         </MudItem>
-                                        <MudItem>
-                                            <MudTextField T="string" ValueChanged="@(OnSearchStatusName)"
-                                                          Placeholder=@ContentService["Dashboard:Appilcations:Status name"] Adornment="Adornment.Start"
-                                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
-                                                          Class="mt-0" Immediate="true"/>
-                                        </MudItem>
+
+                                        <MudSelect T="string" Label=@ContentService["Dashboard:Appilcations:Status name"] AnchorOrigin="Origin.BottomCenter" ValueChanged="@(value => OnSearchStatusName(value))">
+                                            <MudSelectItem Value="string.Empty"/>
+                                            @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                                            {
+                                                <MudSelectItem Value="@status.ToString()"/>
+                                            }
+
+                                        </MudSelect>
                                     </MudGrid>
                                 </MudItem>
                             </MudHidden>
                         </ToolBarContent>
                         <HeaderContent>
                             <MudTh>@ContentService["Dashboard:Appilcations:Applicant username"]</MudTh>
+                            <MudTh>@ContentService["UserManager:FullName"]</MudTh>
+                            <MudTh>@ContentService["Profile:DateOfBirth"]</MudTh>
+                            <MudTh>@ContentService["SignUp:Phone"]</MudTh>
+                            <MudTh>@ContentService["SignUp:Email"]</MudTh>
                             <MudTh>@ContentService["Dashboard:Appilcations:Vacancy title"]</MudTh>
                             <MudTh>@ContentService["Dashboard:Appilcations:Applied at"]</MudTh>
                             <MudTh>@ContentService["Dashboard:Appilcations:Status name"]</MudTh>
@@ -95,11 +108,33 @@
                         </HeaderContent>
                         <RowTemplate>
                             <MudTd DataLabel=@ContentService["SignUp:UserName"]>@context.Username</MudTd>
+                            @if (context.User == null)
+                            {
+                                <MudTd>
+                                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                                </MudTd>
+                                <MudTd>
+                                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                                </MudTd>
+                                <MudTd>
+                                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                                </MudTd>
+                                <MudTd>
+                                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                                </MudTd>
+                            }
+                            else
+                            {
+                                <MudTd DataLabel=@ContentService["UserManager:FullName"]>@context.User.FirstName @context.User.LastName</MudTd>
+                                <MudTd DataLabel=@ContentService["Profile:DateOfBirth"]>@context.User.DateOfBirth</MudTd>
+                                <MudTd DataLabel=@ContentService["SignUp:Phone"]>@context.User.PhoneNumber</MudTd>
+                                <MudTd DataLabel=@ContentService["SignUp:Email"]>@context.User.Email</MudTd>
+                            }
                             <MudTd DataLabel=@ContentService["Internships:Title"]>@context.VacancyTitle</MudTd>
                             <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.CreatedAt.ToString("D")</MudTd>
                             <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Status name"]>@context.StatusName</MudTd>
                             <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Name"]>
-                                <ProgressTaskButton Variant="Variant.Filled" Function="@((_) => OnClick(context.Slug, context.Username))">More</ProgressTaskButton>
+                                <MudLink Color="Color.Primary" Href="@($"/ApplicationDetail/{context.Slug}/{context.Username}")">more</MudLink>
                             </MudTd>
                         </RowTemplate>
                         <NoRecordsContent>
@@ -187,6 +222,18 @@
             if (response is not null)
             {
                 _applications = response;
+                foreach (var application in _applications.Items)
+                {
+                    var userProfile = await UserProfileService.Get(application.Username);
+                    if (userProfile != null)
+                    {
+                        application.User = userProfile;
+                    }
+                    else
+                    {
+                        application.User = null;
+                    }
+                }
             }
         }
         catch (Exception)
