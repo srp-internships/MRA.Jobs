@@ -7,9 +7,6 @@ namespace MRA.Jobs.Infrastructure.Services;
 
 public class HtmlService(IEmailService emailService, IConfiguration configuration) : IHtmlService
 {
-    private readonly IConfiguration _configuration = configuration;
-    private readonly IEmailService _emailService = emailService;
-
     public string GenerateApplyVacancyContent(string userName)
     {
         var content = $@"
@@ -95,24 +92,34 @@ public class HtmlService(IEmailService emailService, IConfiguration configuratio
 
     public async Task<bool> EmailApproved(UserProfileResponse applicant, string slug)
     {
-        string url = $"{_configuration["MRAJobs-Client"]}/ApplicationDetail/{slug}";
+        string url = $"{configuration["MRAJobs-Client"]}/ApplicationDetail/{slug}";
         string path = Path.Combine(AppContext.BaseDirectory, "Resources", "cv_approved_email.html");
         string htmlTemplate = await File.ReadAllTextAsync(path);
         var htmlContent = htmlTemplate.Replace("@FullName", $"{applicant.FirstName} {applicant.LastName}")
             .Replace("@LinkToGo", url);
         var subject = "Заявка одобрено!";
-        return await _emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
+        return await emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
     }
 
     public async Task<bool> EmailRejected(UserProfileResponse applicant, string slug, string vacancyTitle)
     {
-        string url = $"{_configuration["MRAJobs-Client"]}/ApplicationDetail/{slug}";
+        string url = $"{configuration["MRAJobs-Client"]}/ApplicationDetail/{slug}";
         string path = Path.Combine(AppContext.BaseDirectory, "Resources", "cv_rejected_email.html");
         string htmlTemplate = await File.ReadAllTextAsync(path);
         var htmlContent = htmlTemplate.Replace("@FullName", $"{applicant.FirstName} {applicant.LastName}")
             .Replace("@LinkToGo", url)
             .Replace("@VacanciesName", vacancyTitle);
         var subject = "Уведомление об отказе";
-        return await _emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
+        return await emailService.SendEmailAsync(new[] { applicant.Email }, htmlContent, subject);
+    }
+
+    public async Task<bool> EmailCustom(string emailSubject, string emailText, string emailAddress)
+    {
+        string path = Path.Combine(AppContext.BaseDirectory, "Resources", "cv_custom_email.html");
+        string htmlTemplate = await File.ReadAllTextAsync(path);
+        var htmlContent = htmlTemplate
+            .Replace("@emailSubject", emailSubject)
+            .Replace("@emailText", emailText);
+        return await emailService.SendEmailAsync(new[] { emailAddress }, htmlContent, emailSubject);
     }
 }
