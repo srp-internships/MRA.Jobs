@@ -1,8 +1,9 @@
 ﻿using System.Net;
-using System.Security.Cryptography;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
+using MRA.BlazorComponents.Configuration;
+using MRA.BlazorComponents.HttpClient.Services;
 using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
@@ -11,7 +12,6 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.ContentService;
-using MRA.Jobs.Client.Services.HttpClients;
 using MudBlazor;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
@@ -19,7 +19,7 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 namespace MRA.Jobs.Client.Services.ApplicationService;
 
 public class ApplicationService(
-        JobsApiHttpClientService httpClient,
+        IHttpClientService httpClient,
         AuthenticationStateProvider authenticationState,
         ISnackbar snackbar,
         NavigationManager navigationManager,
@@ -27,11 +27,11 @@ public class ApplicationService(
         IContentService contentService)
     : IApplicationService
 {
-    private const string ApplicationsEndPoint = "applications";
+    private readonly string _applicationsEndPoint = configuration.GetJobsUrl("applications");
 
     public async Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status)
     {
-        var response = await httpClient.GetAsJsonAsync<List<ApplicationListStatus>>($"{ApplicationsEndPoint}/{status}");
+        var response = await httpClient.GetAsJsonAsync<List<ApplicationListStatus>>($"{_applicationsEndPoint}/{status}");
         return response.Success ? response.Result : null;
     }
 
@@ -49,7 +49,7 @@ public class ApplicationService(
             }
             //set cv
 
-            var response = await httpClient.PostAsJsonAsync<Guid>(ApplicationsEndPoint, application);
+            var response = await httpClient.PostAsJsonAsync<Guid>(_applicationsEndPoint, application);
             switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:
@@ -88,14 +88,14 @@ public class ApplicationService(
     public async Task<PagedList<ApplicationListDto>> GetAllApplications()
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.GetAsJsonAsync<PagedList<ApplicationListDto>>(ApplicationsEndPoint);
+        var response = await httpClient.GetAsJsonAsync<PagedList<ApplicationListDto>>(_applicationsEndPoint);
         return response.Success ? response.Result : null;
     }
 
     public async Task<bool> UpdateStatus(UpdateApplicationStatusCommand updateApplicationStatusCommand)
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.PutAsync($"{ApplicationsEndPoint}/{updateApplicationStatusCommand.Slug}/update-status", updateApplicationStatusCommand);
+        var response = await httpClient.PutAsync($"{_applicationsEndPoint}/{updateApplicationStatusCommand.Slug}/update-status", updateApplicationStatusCommand);
 
         if (response.HttpStatusCode != null)
             return (int)response.HttpStatusCode > 199 && (int)response.HttpStatusCode < 300;
@@ -105,7 +105,7 @@ public class ApplicationService(
     public async Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug)
     {
         var r=await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.GetAsJsonAsync<ApplicationDetailsDto>($"{ApplicationsEndPoint}/{applicationSlug}");
+        var response = await httpClient.GetAsJsonAsync<ApplicationDetailsDto>($"{_applicationsEndPoint}/{applicationSlug}");
         return response.Result;
     }
 
@@ -121,7 +121,7 @@ public class ApplicationService(
     {
         try
         {
-            var response = await httpClient.PostAsJsonAsync<TimeLineDetailsDto>($"{ApplicationsEndPoint}/add-note", note);
+            var response = await httpClient.PostAsJsonAsync<TimeLineDetailsDto>($"{_applicationsEndPoint}/add-note", note);
             switch (response.HttpStatusCode)
             {
                 case HttpStatusCode.OK:

@@ -9,43 +9,46 @@
 
     <ItemGroup>
 
-        <PackageReference Include="AutoMapper" Version="12.0.1" />
+        <PackageReference Include="AutoMapper" Version="12.0.1"/>
 
-        <PackageReference Include="Azure.Communication.Email" Version="1.0.1" />
-        <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
-        <PackageReference Include="CsvHelper" Version="30.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
+        <PackageReference Include="Azure.Communication.Email" Version="1.0.1"/>
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1"/>
+        <PackageReference Include="CsvHelper" Version="30.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Graph" Version="5.38.0" />
-        <PackageReference Include="MRA.Identity.Application.Contract" Version="1.0.0" />
+        <PackageReference Include="Microsoft.Graph" Version="5.38.0"/>
+        <PackageReference Include="MRA.Identity.Application.Contract" Version="1.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj" />
+        <ProjectReference Include="..\Application\MRA.Jobs.Application.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Resources\cv_approved_email.html">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Resources\cv_rejected_email.html">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+        <None Update="Resources\cv_approved_email.html">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\cv_rejected_email.html">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\cv_custom_email.html">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <ProjectExtensions>
         <VisualStudio>
-            <UserProperties dbsettings_1json__JsonSchema="https://docs.renovatebot.com/renovate-schema.json" />
+            <UserProperties dbsettings_1json__JsonSchema="https://docs.renovatebot.com/renovate-schema.json"/>
         </VisualStudio>
     </ProjectExtensions>
 

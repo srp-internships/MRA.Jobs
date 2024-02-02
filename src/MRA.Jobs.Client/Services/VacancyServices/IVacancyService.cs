@@ -1,4 +1,5 @@
-﻿using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternships;
+﻿using MRA.BlazorComponents.HttpClient.Responses;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternships;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;

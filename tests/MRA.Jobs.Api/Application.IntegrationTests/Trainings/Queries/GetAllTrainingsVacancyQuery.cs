@@ -8,23 +8,16 @@ using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Trainings.Queries;
 
-public class GetAllTrainingsVacancyQuery : Testing
+public class GetAllTrainingsVacancyQuery : TrainingsContext
 {
-    private TrainingsContext _context;
-
-    [SetUp]
-    public void SetUp()
-    {
-        _context = new TrainingsContext();
-    }
-
+  
     [Test]
     public async Task GetAllTrainingsVacancyQuery_ReturnsTrainingsVacancies()
     {
-        await _context.GetTraining("C#", DateTime.Now.AddDays(1));
-        await _context.GetTraining("Pyton", DateTime.Now.AddDays(1));
-        await _context.GetTraining("F#", DateTime.Now.AddDays(1));
-        await _context.GetTraining("C++", DateTime.Now.AddDays(1));
+        await GetTraining("C#", DateTime.Now.AddDays(1));
+        await GetTraining("Pyton", DateTime.Now.AddDays(1));
+        await GetTraining("F#", DateTime.Now.AddDays(1));
+        await GetTraining("C++", DateTime.Now.AddDays(1));
         //Act
         RunAsReviewerAsync();
         var response = await _httpClient.GetAsync("/api/Trainings");
@@ -76,9 +69,9 @@ public class GetAllTrainingsVacancyQuery : Testing
     public async Task GetAllTrainingVacanciesQuery_ReturnsTrainingVacanciesCount2_ForApplicant()
     {
         ResetState();
-        await _context.GetTraining("training1", DateTime.Now.AddDays(2));
-        await _context.GetTraining("training2", DateTime.Now.AddDays(3));
-        await _context.GetTraining("training3", DateTime.Now.AddDays(-1));
+        await GetTraining("training1", DateTime.Now.AddDays(2));
+        await GetTraining("training2", DateTime.Now.AddDays(3));
+        await GetTraining("training3", DateTime.Now.AddDays(-1));
 
         RunAsDefaultUserAsync("applicant");
         //Act
@@ -96,9 +89,9 @@ public class GetAllTrainingsVacancyQuery : Testing
     public async Task GetAllTrainingVacanciesQuery_ReturnsTrainingVacanciesCount3_ForReviewer()
     {
         ResetState();
-        await _context.GetTraining("training1", DateTime.Now.AddDays(2));
-        await _context.GetTraining("training2", DateTime.Now.AddDays(3));
-        await _context.GetTraining("training3", DateTime.Now.AddDays(-1));
+        await GetTraining("training1", DateTime.Now.AddDays(2));
+        await GetTraining("training2", DateTime.Now.AddDays(3));
+        await GetTraining("training3", DateTime.Now.AddDays(-1));
 
         RunAsReviewerAsync();
         //Act

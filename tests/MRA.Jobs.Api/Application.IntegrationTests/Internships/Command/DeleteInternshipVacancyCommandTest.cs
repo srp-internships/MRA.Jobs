@@ -2,14 +2,13 @@
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Internships.Command;
-public class DeleteInternshipVacancyCommandTest : Testing
+public class DeleteInternshipVacancyCommandTest : InternshipsContext
 {
     [Test]
     public async Task DeleteInternshipVacancyCommand_ShouldDeleteInternshipVacancyCommand_Success()
     {
-        var internships = new InternshipsContext();
         RunAsReviewerAsync();
-        var response = await _httpClient.DeleteAsync($"/api/internships/{(await internships.GetInternship("IniternshipVacancy")).Slug}");
+        var response = await _httpClient.DeleteAsync($"/api/internships/{(await GetInternship("IniternshipVacancy")).Slug}");
             
         response.EnsureSuccessStatusCode();
     }

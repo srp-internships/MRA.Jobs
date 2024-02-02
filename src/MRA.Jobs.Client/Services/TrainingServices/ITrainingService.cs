@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using MRA.BlazorComponents.HttpClient.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Delete;

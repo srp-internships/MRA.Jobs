@@ -2,13 +2,12 @@
 using NUnit.Framework;
 
 namespace MRA.Jobs.Application.IntegrationTests.Trainings.Command;
-public class DeleteTrainingVacancyCommandTest : Testing
+public class DeleteTrainingVacancyCommandTest : TrainingsContext
 {
     [Test]
     public async Task DeleteTrainingVacancyCommand_ShouldDeleteTrainingVacancyCommand_Success()
     {
-        var trainings = new TrainingsContext();
-        var training = await trainings.GetTraining("TrainingVacancy", DateTime.Now.AddDays(1));
+        var training = await GetTraining("TrainingVacancy", DateTime.Now.AddDays(1));
         var deleteTraining = new DeleteTrainingVacancyCommand
         {
             Slug = training.Slug,

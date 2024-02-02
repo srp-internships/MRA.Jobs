@@ -17,18 +17,18 @@ public class CreateApplicationTestsBase : Testing
 
     protected async Task<Guid> AddVacancyCategoryAsync(string name)
     {
-        var vacancyCategory = new VacancyCategory
-        {
-            Name = name,
-            Id = Guid.NewGuid(),
-        };
+        var vacancyCategory = new VacancyCategory { Name = name, Id = Guid.NewGuid(), };
         await AddAsync(vacancyCategory);
         return vacancyCategory.Id;
     }
 
     protected async Task<string> AddJobVacancyAsync(string title)
     {
-        var internshipVacancy = new InternshipVacancy
+        var vacancy = await FindFirstOrDefaultAsync<InternshipVacancy>(v => v.Title == title);
+        if (vacancy != null)
+            return vacancy.Slug;
+
+        vacancy = new InternshipVacancy
         {
             Id = Guid.NewGuid(),
             Title = title,
@@ -41,8 +41,9 @@ public class CreateApplicationTestsBase : Testing
             CategoryId = await AddVacancyCategoryAsync("internship"),
             Slug = title.ToLower().Replace(" ", "-")
         };
-        await AddAsync(internshipVacancy);
-        return internshipVacancy.Slug;
+        
+        await AddAsync(vacancy);
+        return vacancy.Slug;
     }
 
     protected async Task<JobVacancy> GetNoVacancy()

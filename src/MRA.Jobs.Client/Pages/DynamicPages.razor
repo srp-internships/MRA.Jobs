@@ -1,0 +1,11 @@
+@page "/Pages/{PageName}"
+@using MRA.BlazorComponents.DynamicPages.Components
+@if (!string.IsNullOrEmpty(PageName))
+{
+    <PageView PageName="@PageName"/>
+}
+
+@code
+{
+    [Parameter] public string PageName { get; set; }
+}
