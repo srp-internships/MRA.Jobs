@@ -1,6 +1,12 @@
 ﻿@using Microsoft.IdentityModel.Tokens
-<MudDialog Options="new DialogOptions() { MaxWidth = MaxWidth.ExtraLarge }">
+<MudDialog Options="new DialogOptions { MaxWidth = MaxWidth.ExtraLarge }">
     <DialogContent>
+       <style>
+                .ql-editor {
+                    height: 500px; 
+                    width: 100%;
+                }
+            </style>
         @if (ShowNote)
         {
             <MudText>@((MarkupString)Note)</MudText>

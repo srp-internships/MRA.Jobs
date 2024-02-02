@@ -401,4 +401,9 @@ public partial class TrainingVacancyPage
         Console.WriteLine(res.NewQuestion);
         _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
+
+    private async Task OnNoteChangeClick(TrainingVacancyListDto context)
+    {
+        await TrainingService.ChangeNoteAsync(context);
+    }
 }

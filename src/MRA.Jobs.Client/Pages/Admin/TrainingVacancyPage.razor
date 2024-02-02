@@ -310,6 +310,7 @@ else
                 <MudTh></MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
+                <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel=@ContentService["Internships:Title"]>@context.Title</MudTd>
@@ -330,6 +331,9 @@ else
                 <MudTd>
                     <MudIconButton @onclick="() => OnDeleteClick(context.Slug)" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Medium"/>
                 </MudTd>
+            <MudTd>
+            <MudIconButton @onclick="() => OnNoteChangeClick(context)" Icon="@Icons.Material.Filled.Note" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium"/>
+            </MudTd>
             </RowTemplate>
             <NoRecordsContent>
                 <MudText>@ContentService["UserManager:Nomatchingrecords"]</MudText>
