@@ -383,24 +383,27 @@ public partial class VacancyPage
         _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
 
-    private async Task OnNoteChangeClick(Guid id)
+    private async Task OnNoteChangeClick(JobVacancyListDto vacancy)
     {
         var parameters = new DialogParameters<DialogAddNote>();
-        var note = "";
-        parameters.Add(d => d.Note, note);
+        parameters.Add(d => d.Note, vacancy.Note);
+        parameters.Add(d=>d.ShowNote, true);
 
         var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", parameters);
         var result = await dialog.Result;
-
+        var note  = result.Data.ToString();
         if (result.Canceled || note.IsNullOrEmpty()) return;
 
         try
         {
-            ChangeVacancyNoteCommand command = new() { VacancyId = id, Note = note };
+            ChangeVacancyNoteCommand command = new() { VacancyId = vacancy.Id, Note = note };
             var response =
                 await HttpClient.PutAsJsonAsync<bool>(Configuration.GetJobsUrl("Vacancies/ChangeNote"), command);
             if (response.Success)
+            {
                 Snackbar.Add("Success", Severity.Success);
+                vacancy.Note=note;
+            }
             else
                 Snackbar.Add(response.Error, Severity.Error);
            
