@@ -61,6 +61,22 @@ public class Testing
         return _currentUserId;
     }
 
+    protected void RunAsRoleAsync(UserRoles role)
+    {
+        switch (role)
+        {
+            case UserRoles.Reviewer:
+                RunAsReviewerAsync();
+                break;
+            case UserRoles.Admin:
+                RunAsAdministratorAsync();
+                break;
+            case UserRoles.DefaultUser:
+                RunAsDefaultUserAsync("applicant");
+                break;
+        }
+    }
+    
     public void RunAsDefaultUserAsync(string username)
     {
         Guid userId = Guid.NewGuid();
