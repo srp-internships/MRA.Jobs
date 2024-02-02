@@ -269,8 +269,7 @@
                 _applications = response;
                 foreach (var application in _applications.Items)
                 {
-                    var userProfile = await UserProfileService.Get(application.Username);
-                    application.User = userProfile;
+                    application.User =await UserProfileService.Get(application.Username);
                 }
             }
         }
