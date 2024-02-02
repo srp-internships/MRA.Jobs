@@ -8,7 +8,7 @@ public class CreateApplicationTestsBase : Testing
     private static readonly Random Random = new();
     protected const string ApplicationApiEndPoint = "/api/applications";
 
-    protected static string RandomString(int length)
+    protected static new string RandomString(int length)
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         return new string(Enumerable.Repeat(chars, length)
