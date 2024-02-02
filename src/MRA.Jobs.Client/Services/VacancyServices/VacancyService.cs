@@ -135,9 +135,11 @@ public class VacancyService(
     {
         var parameters = new DialogParameters<DialogAddNote>();
         parameters.Add(d => d.Note, vacancy.Note);
-        parameters.Add(d => d.ShowNote, true);
+         if (!vacancy.Note.IsNullOrEmpty())
+            parameters.Add(d => d.ShowNote, true);
 
-        var dialog = await dialogService.ShowAsync<DialogAddNote>($"Note {vacancy.Title}", parameters);
+        var dialog = await dialogService.ShowAsync<DialogAddNote>($"Note {vacancy.Title}", parameters,
+            new(){MaxWidth = MaxWidth.Large});
         var result = await dialog.Result;
         if (result.Canceled) return;
         var note = result.Data.ToString();

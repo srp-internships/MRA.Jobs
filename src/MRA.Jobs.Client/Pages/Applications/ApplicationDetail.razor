@@ -11,7 +11,7 @@
 
 @inject IApplicationService ApplicationService
 @inject IUserProfileService UserProfileService
-@inject IConfiguration configuration
+@inject IConfiguration Configuration
 @inject IDialogService DialogService
 
 <MudGrid>
@@ -248,19 +248,19 @@
     {
         _applicant = await UserProfileService.Get(ApplicationUserName);
         await LoadApplication();
-        _cvUrl = $"{configuration.GetJobsUrl()}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
+        _cvUrl = $"{Configuration.GetJobsUrl()}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
         SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
         StateHasChanged();
     }
 
     private async Task OnAddNoteAsync()
     {
-        var options = new DialogOptions { MaxWidth = MaxWidth.Medium };
-        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", options);
+        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", new DialogParameters(), 
+            new(){MaxWidth = MaxWidth.Large});
         var result = await dialog.Result;
+        if (result.Canceled) return;
         var note = result.Data.ToString();
-        if (result.Canceled || note.IsNullOrEmpty()) return;
-
+        if (note.IsNullOrEmpty()) return;
         try
         {
             _addNoteCommand.Slug = Slug;

@@ -23,7 +23,7 @@
     if (_showLoader)
     {
         <div style="text-align: center;">
-            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
         </div>
     }
 }
@@ -55,18 +55,18 @@ else
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
-                        <MudDivider />
-                        <br />
+                        <MudDivider/>
+                        <br/>
                         <MudText>@((MarkupString)vacancyDetails.Description)</MudText>
-                        <br />
-                        <MudDivider Style="padding:10px;" />
+                        <br/>
+                        <MudDivider Style="padding:10px;"/>
                         <MudGrid Style="padding:10px 10px;color:rgb(128,128,128);">
                             @if (vacancyDetails.Duration != 0)
                             {
                                 <MudItem lg="4" md="6" xs="6">
                                     <MudGrid>
                                         <MudItem Style="padding:0;">
-                                            <MudIcon Icon="@Icons.Material.Outlined.Timelapse" />
+                                            <MudIcon Icon="@Icons.Material.Outlined.Timelapse"/>
                                         </MudItem>
                                         <MudItem Style="padding:0;">
                                             <MudText>
@@ -88,7 +88,7 @@ else
 
                                         <MudGrid Style="@deadlineStyle">
                                             <MudItem Style="padding:0;">
-                                                <MudIcon Icon="@Icons.Material.Outlined.Alarm" />
+                                                <MudIcon Icon="@Icons.Material.Outlined.Alarm"/>
                                             </MudItem>
                                             <MudItem Style="padding:0;">
                                                 <MudText>
@@ -108,7 +108,7 @@ else
                                 <MudItem lg="4" md="6" xs="6">
                                     <MudGrid>
                                         <MudItem Style="padding:0;">
-                                            <MudIcon Icon="@Icons.Material.Outlined.Work" />
+                                            <MudIcon Icon="@Icons.Material.Outlined.Work"/>
                                         </MudItem>
                                         <MudItem Style="padding:0;">
                                             <MudText>
@@ -126,7 +126,7 @@ else
                                 <MudItem lg="4" md="6" xs="6">
                                     <MudGrid>
                                         <MudItem Style="padding:0;">
-                                            <MudIcon Icon="@Icons.Material.Outlined.AttachMoney" />
+                                            <MudIcon Icon="@Icons.Material.Outlined.AttachMoney"/>
                                         </MudItem>
                                         <MudItem Style="padding:0;">
                                             <MudText>
@@ -147,7 +147,7 @@ else
 
                                     <MudGrid Style="@endDatelineStyle">
                                         <MudItem Style="padding:0;">
-                                            <MudIcon Icon="@Icons.Material.Outlined.DateRange" />
+                                            <MudIcon Icon="@Icons.Material.Outlined.DateRange"/>
                                         </MudItem>
                                         <MudItem Style="padding:0;">
                                             <MudText>
@@ -173,16 +173,16 @@ else
 
             <MudItem xs="12" lg="3" sm="12" md="4">
                 @if (vacancyDetails.Deadline != default && (
-               DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
-               || DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"
-               ))
+                         DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
+                         || DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"
+                     ))
                 {
                     <MudCard Class="rounded-lg mud-elevation-4">
                         <MudCardContent>
                             <MudText>@ContentService["VacancyDetails:Unfortunately, the deadline has already expired"]</MudText>
-                                <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" Disabled="true">@ContentService["VacancyDetails:Apply Now"]</MudButton>
-                            </MudCardContent>
-                        </MudCard>
+                            <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" Disabled="true">@ContentService["VacancyDetails:Apply Now"]</MudButton>
+                        </MudCardContent>
+                    </MudCard>
                 }
                 else
                 {
@@ -199,10 +199,10 @@ else
                                     <MudCardContent>
                                         <MudText Typo="Typo.body2">@ContentService["VacancyDetails:Write a cover letter, answer few questions and send your application!"]</MudText>
 
-                                        </MudCardContent>
-                                        <MudCardActions Style="flex-direction: column">
+                                    </MudCardContent>
+                                    <MudCardActions Style="flex-direction: column">
 
-                                            @if (vacancyDetails.IsApplied)
+                                        @if (vacancyDetails.IsApplied)
                                         {
                                             <MudButton Variant="Variant.Filled" Color="Color.Surface" style="margin-bottom: 10px" href="@_cvUrl">
                                                 <MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>@ContentService["VacancyDetails:Download CV"]
@@ -254,16 +254,13 @@ else
 @code {
     private bool _showLoader = false;
 
-    [Parameter]
-    public string Slug { get; set; } = string.Empty;
+    [Parameter] public string Slug { get; set; } = string.Empty;
 
-    private string _cvUrl="";
+    private string _cvUrl = "";
 
-    [Parameter]
-    public VacancyDetailsResponse vacancyDetails { get; set; }
+    [Parameter] public VacancyDetailsResponse vacancyDetails { get; set; }
 
-    [Parameter]
-    public string Vacancy { get; set; }
+    [Parameter] public string Vacancy { get; set; }
 
     protected override async void OnAfterRender(bool firstRender)
     {
