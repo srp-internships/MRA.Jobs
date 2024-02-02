@@ -1,7 +1,12 @@
 ﻿@using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote
 @using Microsoft.IdentityModel.Tokens
-<MudDialog>
+<MudDialog Options="new DialogOptions(){MaxWidth=MaxWidth.ExtraExtraLarge}">
     <DialogContent>
+        <style>
+            .ql-editor {
+                height: 500px; /* Установите высоту, которую вы хотите */
+            }
+        </style>
         <BlazoredTextEditor @ref="@_quillHtml">
             <ToolbarContent>
                 <span class="ql-formats">
