@@ -56,14 +56,14 @@
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public AddNoteToApplicationCommand Note { get; set; }
+    [Parameter] public string Note { get; set; }
 
     BlazoredTextEditor _quillHtml;
 
     private async Task Submit()
     {
-        Note.Note = (await _quillHtml.GetHTML()).Trim();
-        if (!Note.Note.IsNullOrEmpty())
+        Note = (await _quillHtml.GetHTML()).Trim();
+        if (Note.IsNullOrEmpty())
         {
             MudDialog.Close(DialogResult.Ok(true));
         }
