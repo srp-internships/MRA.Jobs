@@ -107,7 +107,7 @@
                                         </MudItem>
                                         <MudItem>
                                             <MudTooltip Text="Load Data">
-                                                <ProgressTaskButton Color="Color.Primary" Function="ReloadAllData" 
+                                                <ProgressTaskButton Color="Color.Primary" Function="ReloadAllData"
                                                                     Variant="Variant.Filled" Style="margin-top:10px;">
                                                     <MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>
                                                 </ProgressTaskButton>
@@ -238,11 +238,11 @@
     {
         return _applications.Items.Where(a =>
         {
-            if (!string.IsNullOrWhiteSpace(_searchUsername) && !a.Username.Contains(_searchUsername, StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrWhiteSpace(_searchUsername.Trim()) && !a.Username.Contains(_searchUsername.Trim(), StringComparison.OrdinalIgnoreCase))
                 return false;
-            if (!string.IsNullOrWhiteSpace(_searchVacancyTitle) && !a.VacancyTitle.Contains(_searchVacancyTitle, StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrWhiteSpace(_searchVacancyTitle.Trim()) && !a.VacancyTitle.Contains(_searchVacancyTitle.Trim(), StringComparison.OrdinalIgnoreCase))
                 return false;
-            if (!string.IsNullOrWhiteSpace(_searchStatusName) && !a.StatusName.Contains(_searchStatusName, StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrWhiteSpace(_searchStatusName.Trim()) && !a.StatusName.Contains(_searchStatusName.Trim(), StringComparison.OrdinalIgnoreCase))
                 return false;
             return true;
         });
