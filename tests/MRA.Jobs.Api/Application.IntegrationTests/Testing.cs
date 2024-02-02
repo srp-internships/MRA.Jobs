@@ -14,6 +14,12 @@ using ClaimTypes = MRA.Configurations.Common.Constants.ClaimTypes;
 
 namespace MRA.Jobs.Application.IntegrationTests;
 
+public enum UserRoles
+{
+    DefaultUser, 
+    Reviewer,
+    Admin,
+}
 public class Testing
 {
     private static WebApplicationFactory<Program> _factory = null!;
@@ -24,6 +30,7 @@ public class Testing
     protected HttpClient _httpClient;
     protected string jwtToken;
     private static bool _initialized;
+    private static readonly Random Random = new();
 
     [OneTimeSetUp]
     public void RunBeforeAnyTests()
@@ -170,4 +177,13 @@ public class Testing
     public void RunAfterAnyTests()
     {
     }
+    
+    public static string RandomString(int length)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[Random.Next(s.Length)]).ToArray());
+    }
 }
+
+
