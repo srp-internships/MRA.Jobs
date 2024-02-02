@@ -1,7 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.Dtos;
-using MRA.Jobs.Application.Contracts.Dtos.Responses;
 
-namespace MRA.Jobs.Application.Features.VacancyQuestions;
+namespace MRA.Jobs.Application.Features.Vacancies.Questions;
 public class VacancyQuestionProfile : Profile
 {
     public VacancyQuestionProfile()
