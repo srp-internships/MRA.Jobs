@@ -7,14 +7,7 @@ public class CreateApplicationTestsBase : Testing
 {
     private static readonly Random Random = new();
     protected const string ApplicationApiEndPoint = "/api/applications";
-
-    protected static new string RandomString(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[Random.Next(s.Length)]).ToArray());
-    }
-
+    
     protected async Task<Guid> AddVacancyCategoryAsync(string name)
     {
         var vacancyCategory = new VacancyCategory { Name = name, Id = Guid.NewGuid(), };
