@@ -10,6 +10,7 @@
 @using DividerType = MudBlazor.DividerType
 @using Microsoft.FeatureManagement
 @using Size = MudBlazor.Size
+@using MRA.BlazorComponents.DynamicPages.Components
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
 @inject IUserProfileService UserProfileService
@@ -19,13 +20,13 @@
 
 <MudToolBar Class="toolbar-fixed-blur">
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
-        <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
     </MudHidden>
     <a href="">
         <MudHidden Breakpoint="Breakpoint.MdAndDown">
             <MudStack Row="true">
                 <MudItem Style="padding-right:5px;">
-                    <MudImage src="/images/srp/srp_icon.png" Style="width: 50px" />
+                    <MudImage src="/images/srp/srp_icon.png" Style="width: 50px"/>
                 </MudItem>
                 <MudItem Style="padding-left:0; margin-right: 40px;">
                     <MudText Style="font-size: 21.5px;">
@@ -42,7 +43,7 @@
         <MudHidden Breakpoint="Breakpoint.LgAndUp">
             <MudStack Row="true">
                 <MudItem Style="padding-right:5px;">
-                    <MudImage src="/images/srp/srp_icon.png" Style="width: 30px" />
+                    <MudImage src="/images/srp/srp_icon.png" Style="width: 30px"/>
                 </MudItem>
                 <MudItem Style="padding-left:0; margin-right: 40px;">
                     <MudText Style="font-size: 21.5px;">
@@ -83,6 +84,7 @@
                 <b>@ContentService["Header:Academy"] </b>
             </MudText>
         </MudButton>
+        <DynamicHeaderButtons/>
         @if (_betaVersion)
         {
             <MudHidden Breakpoint="Breakpoint.MdAndDown">
@@ -102,38 +104,38 @@
             </MudButton>
         }
     </MudHidden>
-    <MudSpacer />
+    <MudSpacer/>
     <MudHidden Breakpoint="Breakpoint.Xs">
         @if (_betaVersion)
         {
             <a href="@Configuration["Beta:Address"]" target="_blank">
                 <MudChip Color="Color.Primary">Beta</MudChip>
             </a>
-            <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4" />
+            <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
         }
-        <ToolBarSettingsButtons />
+        <ToolBarSettingsButtons/>
     </MudHidden>
-    <UserButton />
+    <UserButton/>
 </MudToolBar>
 
 <MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="2" Style="position:fixed;height: 100%">
     <MudToolBar Dense="true" Class="docs-gray-bg">
-        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
-        <MudSpacer />
-        <ToolBarSettingsButtons />
+        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+        <MudSpacer/>
+        <ToolBarSettingsButtons/>
     </MudToolBar>
 
     <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
         <MudNavLink Match="NavLinkMatch.All" Href="/">@ContentService["Header:Home"]</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Academy:Address"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Href="/contact">@ContentService["Home:Contact"]</MudNavLink>
-
-        </MudNavMenu>
-        @if (_betaVersion)
+        <MudNavLink Match="NavLinkMatch.All" Href="/jobs">@ContentService["Header:Jobs"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/internships">@ContentService["Header:Internships"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/trainings">@ContentService["Header:Trainings"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Academy:Address"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/contact">@ContentService["Home:Contact"]</MudNavLink>
+        <DynamicHeaderNavLinks/>
+    </MudNavMenu>
+    @if (_betaVersion)
     {
         <a href="@Configuration["Beta:Address"]" target="_blank">
             <MudChip Color="Color.Primary">Beta</MudChip>

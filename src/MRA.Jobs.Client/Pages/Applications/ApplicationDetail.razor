@@ -6,11 +6,13 @@
 @using System.Net
 @using Microsoft.IdentityModel.Tokens
 @using MRA.BlazorComponents.Configuration
+@using MRA.Jobs.Client.Components.Dialogs
 @using MRA.Jobs.Client.Identity
 
 @inject IApplicationService ApplicationService
 @inject IUserProfileService UserProfileService
-@inject IConfiguration configuration
+@inject IConfiguration Configuration
+@inject IDialogService DialogService
 
 <MudGrid>
     <MudItem xs="12">
@@ -54,20 +56,87 @@
                             </MudButton>
                         </MudItem>
                     </MudGrid>
+                    <MudText Typo="Typo.h6">Email:</MudText>
+
                     <CascadingAuthenticationState>
                         <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
                             <Authorized>
-                                <MudSelect T="string" Label=@ContentService["Applicateons:Selectstatus"] AnchorOrigin="Origin.BottomCenter" @bind-Value="@SelectedStatus">
-                                    @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
-                                    {
-                                        <MudSelectItem Value="@status.ToString()"/>
-                                    }
-                                </MudSelect>
-                                <ProgressTaskButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" Function="@ChangeStatus">
+                                <MudGrid>
+                                    <MudItem lg="6" xs="12">
+                                        <MudSelect T="string" Label=@ContentService["Applicateons:Selectstatus"]
+                                                   AnchorOrigin="Origin.BottomCenter" @bind-Value="@SelectedStatus">
+                                            @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                                            {
+                                                <MudSelectItem Value="@status.ToString()"/>
+                                            }
+                                        </MudSelect>
+                                    </MudItem>
+                                    <MudItem lg="6" xs="12">
+                                        <MudRadioGroup T="SendEmailVariant" @bind-SelectedOption="@_emailVariant" @onselectionchange="@(() => StateHasChanged())">
+                                            <MudRadio Option="@SendEmailVariant.NotSend" Color="Color.Primary">@SendEmailVariant.NotSend</MudRadio>
+                                            <MudRadio Option="@SendEmailVariant.CustomEmail" Color="Color.Primary">@SendEmailVariant.CustomEmail</MudRadio>
+                                            <MudRadio Option="@SendEmailVariant.AutoEmail" Color="Color.Primary">@SendEmailVariant.AutoEmail</MudRadio>
+                                        </MudRadioGroup>
+                                        @if (_emailVariant == SendEmailVariant.CustomEmail)
+                                        {
+                                            <MudText Typo="Typo.body2">Subject:</MudText>
+                                            <MudTextField T="string" @bind-Value="_emailSubject" Variant="Variant.Outlined"/>
+                                            <MudText Typo="Typo.body2">Text:</MudText>
+                                            <div>
+                                                <BlazoredTextEditor @ref="@_quillHtml">
+                                                    <ToolbarContent>
+                                                        <span class="ql-formats">
+                                                            <select class="ql-font">
+                                                                <option selected=""></option>
+                                                                <option value="serif"></option>
+                                                                <option value="monospace"></option>
+                                                            </select>
+                                                            <select class="ql-size">
+                                                                <option value="small"></option>
+                                                                <option selected=""></option>
+                                                                <option value="large"></option>
+                                                                <option value="huge"></option>
+                                                            </select>
+                                                        </span>
+                                                        <span class="ql-formats">
+                                                            <button class="ql-bold"></button>
+                                                            <button class="ql-italic"></button>
+                                                            <button class="ql-underline"></button>
+                                                            <button class="ql-strike"></button>
+                                                        </span>
+                                                        <span class="ql-formats">
+                                                            <select class="ql-color"></select>
+                                                            <select class="ql-background"></select>
+                                                        </span>
+                                                        <span class="ql-formats">
+                                                            <button class="ql-list" value="ordered"></button>
+                                                            <button class="ql-list" value="bullet"></button>
+                                                            <button class="ql-indent" value="-1"></button>
+                                                            <button class="ql-indent" value="+1"></button>
+                                                            <select class="ql-align">
+                                                                <option selected=""></option>
+                                                                <option value="center"></option>
+                                                                <option value="right"></option>
+                                                                <option value="justify"></option>
+                                                            </select>
+                                                        </span>
+                                                        <span class="ql-formats">
+                                                            <button class="ql-link"></button>
+                                                        </span>
+                                                    </ToolbarContent>
+                                                    <EditorContent>
+
+                                                    </EditorContent>
+                                                </BlazoredTextEditor>
+                                            </div>
+                                        }
+                                    </MudItem>
+                                </MudGrid>
+
+                                <ProgressTaskButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" Function="ChangeStatus">
                                     <MudText>
                                         @ContentService["Applicateons:Changestatus"]
                                     </MudText>
-                                    }
                                 </ProgressTaskButton>
                             </Authorized>
                         </AuthorizeView>
@@ -80,6 +149,7 @@
         <AuthorizeView Policy="@ApplicationPolicies.Reviewer">
             <Authorized>
                 <MudItem xs="12" lg="6">
+
                     <MudCard>
                         <MudCardContent>
                             <MudText Style="color: grey" Typo="Typo.h6">
@@ -100,6 +170,7 @@
                                             <MudTimelineItem Size="Size.Medium" Color="Color.Info" Elevation="25">
                                                 <MudCard Elevation="25">
                                                     <MudCardContent>
+
                                                         <MudStack Row="true">
                                                             <MudLink Href="@($"user/{item.CreateBy}")">
                                                                 <MudStack Row="true">
@@ -114,7 +185,18 @@
                                                             <MudSpacer/>
                                                             <MudText Typo="Typo.body2">@item.Time</MudText>
                                                         </MudStack>
-                                                        <MudText>@item.Note</MudText>
+                                                        @if (item.EventType == ApplicationStatusDto.TimelineEventType.Note)
+                                                        {
+                                                            <MudExpansionPanels MultiExpansion="true">
+                                                                <MudExpansionPanel Text="Note">
+                                                                    <MudText>@((MarkupString)item.Note)</MudText>
+                                                                </MudExpansionPanel>
+                                                            </MudExpansionPanels>
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudText>@((MarkupString)item.Note)</MudText>
+                                                        }
                                                     </MudCardContent>
                                                 </MudCard>
                                             </MudTimelineItem>
@@ -126,25 +208,11 @@
                     </MudCard>
                 </MudItem>
                 <MudItem xs="12" lg="6">
-                    <MudCard>
-                        <EditForm Model="@_addNote" Context="_" OnInvalidSubmit="@OnAddNoteAsync">
-                            <MudCardHeader>
-                                <MudText>@ContentService["Applicateons:AddNote"]</MudText>
-                            </MudCardHeader>
-                            <MudCardContent>
-                                <FluentValidationValidator/>
-                                <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="@_addNote.Note" Lines="5"
-                                              For="@(() => _addNote.Note)"/>
-                            </MudCardContent>
-                            <MudCardActions>
-                                <ProgressTaskButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Function="OnAddNoteAsync">
-                                    <MudText>
-                                        <MudText>@ContentService["Applicateons:Add"]</MudText>
-                                    </MudText>
-                                </ProgressTaskButton>
-                            </MudCardActions>
-                        </EditForm>
-                    </MudCard>
+                    <ProgressTaskButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Function="OnAddNoteAsync">
+                        <MudText>
+                            <MudText>@ContentService["Applicateons:AddNote"]</MudText>
+                        </MudText>
+                    </ProgressTaskButton>
                 </MudItem>
             </Authorized>
         </AuthorizeView>
@@ -153,7 +221,7 @@
 
 @code {
 
-    private AddNoteToApplicationCommand _addNote = new();
+    private AddNoteToApplicationCommand _addNoteCommand = new();
     private string SelectedStatus { get; set; }
 
 
@@ -164,6 +232,9 @@
     private UpdateApplicationStatusCommand _applicationStatusCommand;
     private UserProfileResponse _applicant;
     private ApplicationDetailsDto _application;
+    BlazoredTextEditor _quillHtml;
+    private SendEmailVariant _emailVariant = SendEmailVariant.NotSend;
+    private string _emailSubject = "";
 
     private async Task LoadApplication()
     {
@@ -177,22 +248,27 @@
     {
         _applicant = await UserProfileService.Get(ApplicationUserName);
         await LoadApplication();
-        _cvUrl = $"{configuration.GetJobsUrl()}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
-
+        _cvUrl = $"{Configuration.GetJobsUrl()}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
         SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
         StateHasChanged();
     }
 
     private async Task OnAddNoteAsync()
     {
-        if (_addNote.Note.IsNullOrEmpty()) return;
+        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", new DialogParameters(), 
+            new(){MaxWidth = MaxWidth.Large});
+        var result = await dialog.Result;
+        if (result.Canceled) return;
+        var note = result.Data.ToString();
+        if (note.IsNullOrEmpty()) return;
         try
         {
-            _addNote.Slug = Slug;
-            var response = await ApplicationService.AddNote(_addNote);
+            _addNoteCommand.Slug = Slug;
+            _addNoteCommand.Note = note;
+            var response = await ApplicationService.AddNote(_addNoteCommand);
             _application.History.Add(response);
             _application.History = _application.History.OrderByDescending(h => h.Time).ToList();
-            _addNote = new AddNoteToApplicationCommand();
+            _addNoteCommand = new AddNoteToApplicationCommand();
         }
         catch (Exception)
         {
@@ -204,16 +280,31 @@
     {
         if (Enum.TryParse(SelectedStatus, out ApplicationStatusDto.ApplicationStatus selectedEnumStatus))
         {
+            if (_emailVariant == SendEmailVariant.CustomEmail && _emailSubject.IsNullOrEmpty())
+            {
+                Snackbar.Add("Email Subject must not be empty.", Severity.Error);
+                return;
+            }
+
             _applicationStatusCommand = new UpdateApplicationStatusCommand
             {
-                ApplicantUserName = _applicant.UserName,
+                ApplicantUserName = ApplicationUserName,
                 Slug = Slug,
-                StatusId = (int)selectedEnumStatus
+                StatusId = (int)selectedEnumStatus,
+                EmailVariant = _emailVariant
             };
+
+            if (_emailVariant == SendEmailVariant.CustomEmail)
+            {
+                _applicationStatusCommand.EmailText = await _quillHtml.GetHTML();
+                _applicationStatusCommand.EmailSubject = _emailSubject;
+            }
+
             var response = await ApplicationService.UpdateStatus(_applicationStatusCommand);
             if (response)
             {
                 await LoadApplication();
+                _emailSubject = "";
                 StateHasChanged();
                 Snackbar.Add("Status updated successfully.", Severity.Success);
             }

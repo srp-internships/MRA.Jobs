@@ -1,4 +1,4 @@
-﻿namespace MRA.Jobs.Application.Contracts.VacancyTag.Commands;
+﻿namespace MRA.Jobs.Application.Contracts.Vacancies.Tags.Commands;
 
 public class UpdateVacancyTagCommand : IRequest<Guid>
 {

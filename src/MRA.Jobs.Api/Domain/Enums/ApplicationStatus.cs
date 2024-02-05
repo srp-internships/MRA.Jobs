@@ -8,7 +8,9 @@ public enum ApplicationStatus
     Submitted,
     Approved,
     Hired,
-    Rejected
+    Rejected,
+    Interviewed,
+    WishList
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]

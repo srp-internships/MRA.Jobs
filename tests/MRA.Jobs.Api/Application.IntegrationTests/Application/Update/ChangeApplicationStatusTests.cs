@@ -9,8 +9,14 @@ namespace MRA.Jobs.Application.IntegrationTests.Application.Update;
 public class ChangeApplicationStatusTests : Testing
 {
     [Test]
-    public async Task ChangeApplicationStatus()
+    [TestCase(ApplicationStatus.Approved)]
+    [TestCase(ApplicationStatus.Hired)]
+    [TestCase(ApplicationStatus.Rejected)]
+    [TestCase(ApplicationStatus.Interviewed)]
+    [TestCase(ApplicationStatus.WishList)]
+    public async Task ChangeApplicationStatus(ApplicationStatus status)
     {
+        ResetState();
         var category = new VacancyCategory() { Name = "Category 123" };
         var vacancy = new JobVacancy()
         {
@@ -19,7 +25,7 @@ public class ChangeApplicationStatusTests : Testing
             Description = "ShortDescription",
             PublishDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(30),
-           Category = category,
+            Category = category,
             WorkSchedule = WorkSchedule.FullTime,
             Slug = "test-01-01",
             RequiredYearOfExperience = 10
@@ -37,7 +43,7 @@ public class ChangeApplicationStatusTests : Testing
             VacancyId = vacancy.Id,
             CV = "cv.pdf",
             CreatedBy = applicantId,
-            Status = ApplicationStatus.Approved,
+            Status = ApplicationStatus.Submitted,
             CoverLetter =
                 "I am writing to apply for the [Job Title] position at [Company's Name], as advertised. " +
                 "I am drawn to this opportunity for several reasons.",
@@ -50,12 +56,14 @@ public class ChangeApplicationStatusTests : Testing
 
         var command = new UpdateApplicationStatusCommand
         {
-            Slug = applicationSlug, StatusId = (int)ApplicationStatus.Rejected, ApplicantUserName = userName
+            Slug = applicationSlug, StatusId = (int)status, ApplicantUserName = userName
         };
 
         var response = await _httpClient.PutAsJsonAsync($"/api/applications/{applicationSlug}/update-status",
             command);
 
         response.EnsureSuccessStatusCode();
+        var result = await FindFirstOrDefaultAsync<MRA.Jobs.Domain.Entities.Application>(a => a.Id == application.Id);
+        Assert.That(result.Status == status);
     }
 }

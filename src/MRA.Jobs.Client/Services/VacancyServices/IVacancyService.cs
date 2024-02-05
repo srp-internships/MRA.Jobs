@@ -26,4 +26,6 @@ public interface IVacancyService
     Task<List<InternshipVacancyListResponse>> GetInternship();
     Task<List<TrainingVacancyListDto>> GetTrainings();
 
+    Task ChangeNoteAsync(JobVacancyListDto vacancy);
+
 }

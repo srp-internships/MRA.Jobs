@@ -9,12 +9,10 @@ using MRA.Jobs.Client.Pages.Admin.Dialogs;
 using MudBlazor;
 
 
-
 namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class InternshipVacanciesPage
 {
-    
     private IEnumerable<InternshipVacancyListResponse> _pagedData;
     private MudTable<InternshipVacancyListResponse> _table;
 
@@ -44,7 +42,7 @@ public partial class InternshipVacanciesPage
         _searchString = text;
         _table.ReloadServerData();
     }
-    
+
     private bool _serverError;
     private bool _panelOpenState;
     private bool _isInserting;
@@ -148,11 +146,11 @@ public partial class InternshipVacanciesPage
     {
         var vacancy = _internships.FirstOrDefault(c => c.Slug == slug);
         var parameters = new DialogParameters<DialogMudBlazor>
-    {
-        { x => x.ContentText, "Do you really want to delete this vacancy?" },
-        { x => x.ButtonText, "Delete" },
-        { x => x.Color, Color.Error }
-    };
+        {
+            { x => x.ContentText, "Do you really want to delete this vacancy?" },
+            { x => x.ButtonText, "Delete" },
+            { x => x.Color, Color.Error }
+        };
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
@@ -186,7 +184,6 @@ public partial class InternshipVacanciesPage
     }
 
 
-
     private async Task OnEditClick(string slug)
     {
         var vacancy = await InternshipService.GetBySlug(slug);
@@ -208,18 +205,12 @@ public partial class InternshipVacanciesPage
             _panelOpenState = true;
             _updateSlug = slug;
             _questions = vacancy.VacancyQuestions.Select(v =>
-                new VacancyQuestionDto
-                {
-                    Question = v.Question
-                }
+                new VacancyQuestionDto { Question = v.Question }
             ).ToList();
             _tasks = vacancy.VacancyTasks.Select(v =>
                 new VacancyTaskDto
                 {
-                    Title = v.Title,
-                    Description = v.Description,
-                    Template = v.Template,
-                    Test = v.Test
+                    Title = v.Title, Description = v.Description, Template = v.Template, Test = v.Test
                 }).ToList();
         }
     }
@@ -273,6 +264,7 @@ public partial class InternshipVacanciesPage
 
 
     private string _imageLinkToInsertToEditor;
+
     public async void InsertImage()
     {
         if (!string.IsNullOrEmpty(_imageLinkToInsertToEditor))
@@ -281,7 +273,7 @@ public partial class InternshipVacanciesPage
             StateHasChanged();
         }
     }
-    
+
     private async Task HandleSubmit()
     {
         var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
@@ -317,7 +309,7 @@ public partial class InternshipVacanciesPage
             }
 
             await LoadData();
-            await   _table.ReloadServerData();
+            await _table.ReloadServerData();
             Clear();
         }
         catch (Exception)
@@ -331,7 +323,7 @@ public partial class InternshipVacanciesPage
     {
         InternshipService.createCommand.VacancyQuestions = _questions;
         InternshipService.createCommand.VacancyTasks = _tasks;
-       
+
         InternshipService.createCommand.Description = await _quillHtml.GetHTML();
 
         var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
@@ -350,20 +342,22 @@ public partial class InternshipVacanciesPage
             }
 
             await LoadData();
-            await   _table.ReloadServerData();
+            await _table.ReloadServerData();
             Clear();
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
             Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
-        }   
+        }
     }
 
 
     private async Task NewQuestionAsync()
     {
-        var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>(@ContentService["Internships:AddQuestion"])).Result).Data as dynamic;
+        var res =
+            (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>(
+                @ContentService["Internships:AddQuestion"])).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
         _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
@@ -406,5 +400,10 @@ public partial class InternshipVacanciesPage
         _publishDateTime = DateTime.Now.TimeOfDay;
         _endDateTime = DateTime.Now.TimeOfDay;
         _tasks.Clear();
+    }
+
+    private async Task OnNoteChangeClick(InternshipVacancyListResponse context)
+    {
+        await InternshipService.ChangeNoteAsync(context);
     }
 }

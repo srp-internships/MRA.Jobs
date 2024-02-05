@@ -27,4 +27,5 @@ public class InternshipVacancyListResponse
     public string Slug { get; set; }
     public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
     public IEnumerable<VacancyTaskResponseDto> VacancyTasks { get; set; }
+    public string Note { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using MRA.BlazorComponents.Configuration;
+﻿using Microsoft.IdentityModel.Tokens;
+using MRA.BlazorComponents.Configuration;
 using MRA.BlazorComponents.HttpClient.Responses;
 using MRA.BlazorComponents.HttpClient.Services;
 using MRA.Jobs.Application.Contracts.Common;
@@ -7,12 +8,20 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
+using MRA.Jobs.Application.Contracts.Vacancies.Note.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
+using MRA.Jobs.Client.Components.Dialogs;
+using MudBlazor;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
 namespace MRA.Jobs.Client.Services.VacancyServices;
 
-public class VacancyService(HttpClientService httpClient, IConfiguration configuration) : IVacancyService
+public class VacancyService(
+    IHttpClientService httpClient,
+    IConfiguration configuration,
+    IDialogService dialogService,
+    ISnackbar snackbar)
+    : IVacancyService
 {
     private List<CategoryResponse> Categories { get; set; }
 
@@ -120,5 +129,38 @@ public class VacancyService(HttpClientService httpClient, IConfiguration configu
         var result =
             await httpClient.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>(configuration.GetJobsUrl("trainings"));
         return result.Result.Items;
+    }
+
+    public async Task ChangeNoteAsync(JobVacancyListDto vacancy)
+    {
+        var parameters = new DialogParameters<DialogAddNote>();
+        parameters.Add(d => d.Note, vacancy.Note);
+         if (!vacancy.Note.IsNullOrEmpty())
+            parameters.Add(d => d.ShowNote, true);
+
+        var dialog = await dialogService.ShowAsync<DialogAddNote>($"Note {vacancy.Title}", parameters,
+            new(){MaxWidth = MaxWidth.Large});
+        var result = await dialog.Result;
+        if (result.Canceled) return;
+        var note = result.Data.ToString();
+        if (note.IsNullOrEmpty()) return;
+
+        try
+        {
+            ChangeVacancyNoteCommand command = new() { VacancyId = vacancy.Id, Note = note };
+            var response =
+                await httpClient.PutAsJsonAsync<bool>(configuration.GetJobsUrl("Vacancies/ChangeNote"), command);
+            if (response.Success)
+            {
+                snackbar.Add("Success", Severity.Success);
+                vacancy.Note = note;
+            }
+            else
+                snackbar.Add(response.Error, Severity.Error);
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
     }
 }
