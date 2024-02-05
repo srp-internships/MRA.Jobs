@@ -11,7 +11,7 @@
 
 @inject IApplicationService ApplicationService
 @inject IUserProfileService UserProfileService
-@inject IConfiguration configuration
+@inject IConfiguration Configuration
 @inject IDialogService DialogService
 
 <MudGrid>
@@ -234,7 +234,7 @@
     private ApplicationDetailsDto _application;
     BlazoredTextEditor _quillHtml;
     private SendEmailVariant _emailVariant = SendEmailVariant.NotSend;
-    private string _emailSubject="";
+    private string _emailSubject = "";
 
     private async Task LoadApplication()
     {
@@ -248,24 +248,23 @@
     {
         _applicant = await UserProfileService.Get(ApplicationUserName);
         await LoadApplication();
-        _cvUrl = $"{configuration.GetJobsUrl()}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
+        _cvUrl = $"{Configuration.GetJobsUrl()}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
         SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
         StateHasChanged();
     }
 
     private async Task OnAddNoteAsync()
     {
-        var parameters = new DialogParameters<DialogAddNote>();
-        parameters.Add(d => d.Note, _addNoteCommand);
-
-        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", parameters);
+        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", new DialogParameters(), 
+            new(){MaxWidth = MaxWidth.Large});
         var result = await dialog.Result;
-
-        if (result.Canceled || _addNoteCommand.Note.IsNullOrEmpty()) return;
-
+        if (result.Canceled) return;
+        var note = result.Data.ToString();
+        if (note.IsNullOrEmpty()) return;
         try
         {
             _addNoteCommand.Slug = Slug;
+            _addNoteCommand.Note = note;
             var response = await ApplicationService.AddNote(_addNoteCommand);
             _application.History.Add(response);
             _application.History = _application.History.OrderByDescending(h => h.Time).ToList();

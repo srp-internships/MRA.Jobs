@@ -2,9 +2,12 @@ using Blazored.TextEditor;
 using BlazorMonaco;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.IdentityModel.Tokens;
+using MRA.BlazorComponents.Configuration;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
+using MRA.Jobs.Application.Contracts.Vacancies.Note.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
@@ -55,6 +58,7 @@ public partial class VacancyPage
 
 
     private string ImageLinkToInsertToEditor;
+
     public async void InsertImage()
     {
         if (!string.IsNullOrEmpty(ImageLinkToInsertToEditor))
@@ -182,6 +186,7 @@ public partial class VacancyPage
                 {
                     Snackbar.Add(response.Error ?? "An error occurred while deleting the job", Severity.Error);
                 }
+
                 Clear();
             }
             catch (Exception)
@@ -199,7 +204,6 @@ public partial class VacancyPage
         await LoadData();
         Clear();
         StateHasChanged();
-
     }
 
     private async Task HandleSubmit()
@@ -233,11 +237,11 @@ public partial class VacancyPage
             }
             else
             {
-                Snackbar.Add(result.Error  ?? "An error occurred while creating the job", Severity.Error);
+                Snackbar.Add(result.Error ?? "An error occurred while creating the job", Severity.Error);
             }
 
             await LoadData();
-            await   _table.ReloadServerData();
+            await _table.ReloadServerData();
             Clear();
         }
         catch (Exception)
@@ -259,7 +263,6 @@ public partial class VacancyPage
             _serverError = true;
             StateHasChanged();
         }
-
     }
 
 
@@ -290,10 +293,7 @@ public partial class VacancyPage
         _tasks = vacancy.VacancyTasks.Select(v =>
                 new VacancyTaskDto
                 {
-                    Title = v.Title,
-                    Description = v.Description,
-                    Template = v.Template,
-                    Test = v.Test
+                    Title = v.Title, Description = v.Description, Template = v.Template, Test = v.Test
                 })
             .ToList();
     }
@@ -325,7 +325,7 @@ public partial class VacancyPage
         VService.creatingNewJob.CategoryId = catId;
         await VService.UpdateJobVacancy(_updateSlug);
         await LoadData();
-        await   _table.ReloadServerData();
+        await _table.ReloadServerData();
         Clear();
     }
 
@@ -377,8 +377,14 @@ public partial class VacancyPage
     private async Task NewQuestionAsync()
     {
         var res =
-            (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>(@ContentService["Internships:AddQuestion"])).Result).Data as dynamic;
+            (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>(
+                @ContentService["Internships:AddQuestion"])).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
         _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
+    }
+
+    private async Task OnNoteChangeClick(JobVacancyListDto vacancy)
+    {
+       await VService.ChangeNoteAsync(vacancy);
     }
 }

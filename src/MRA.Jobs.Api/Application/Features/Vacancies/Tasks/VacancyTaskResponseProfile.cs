@@ -1,6 +1,6 @@
 ﻿using MRA.Jobs.Application.Contracts.Dtos;
 
-namespace MRA.Jobs.Application.Features.VacancyTasks;
+namespace MRA.Jobs.Application.Features.Vacancies.Tasks;
 public class VacancyTaskResponseProfile :Profile
 {
     public VacancyTaskResponseProfile()
