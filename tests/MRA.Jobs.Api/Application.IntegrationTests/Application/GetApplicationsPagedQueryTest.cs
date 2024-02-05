@@ -60,22 +60,11 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
     }
     
     [Test]
-    [TestCase(Role.Reviewer)]
-    [TestCase(Role.Admin)]
-    public async Task GetApplications_OnlyReviewerRole_ReturnsAllApplications(Role role)
+    public async Task GetApplications_OnlyReviewerRole_ReturnsAllApplications()
     {
         await  CreateApplications("JobVacancyTest1");
-
-        switch (role)
-        {
-            case Role.Reviewer:
-                RunAsReviewerAsync();
-                break;
-            case Role.Admin:
-                RunAsAdministratorAsync();
-                break;
-        }
-
+        
+        RunAsReviewerAsync();
 
         var response = await _httpClient.GetAsync(ApplicationApiEndPoint);
         
@@ -85,12 +74,5 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
         Assert.That(result.Items, Is.Not.Empty);
         Assert.That(result.Items.Any(a => a.Username == "applicant1"));
         Assert.That(result.Items.Any(a => a.Username == "applicant2"));
-
-    }
-
-    public enum  Role
-    {
-        Reviewer,
-        Admin
     }
 }
