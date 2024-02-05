@@ -25,7 +25,7 @@ public class
             .ThenInclude(vr => vr.VacancyQuestion);
 
         var roles = currentUser.GetRoles();
-        var applications = roles.Any()
+        var applications = roles.Any(r => r == "Reviewer")
             ? allApplications
             : allApplications.Where(a =>
                 a.ApplicantUsername == currentUser.GetUserName() && a.Vacancy.Discriminator != "NoVacancy");

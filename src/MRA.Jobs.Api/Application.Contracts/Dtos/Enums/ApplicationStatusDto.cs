@@ -10,7 +10,8 @@ public class ApplicationStatusDto
         Approved,
         Hired,
         Rejected,
-        Interviewed
+        Interviewed,
+        WishList
     }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
