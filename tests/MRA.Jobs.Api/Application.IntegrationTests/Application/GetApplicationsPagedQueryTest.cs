@@ -54,6 +54,7 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
     [Test]
     public async Task GetApplications_OnlyReviewerRole_ReturnsAllApplications()
     {
+        ResetState();
         await CreateApplications("JobVacancyTest1");
 
         RunAsReviewerAsync();
@@ -66,5 +67,6 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
         Assert.That(result.Items, Is.Not.Empty);
         Assert.That(result.Items.Any(a => a.Username == "applicant1"));
         Assert.That(result.Items.Any(a => a.Username == "applicant2"));
+        Assert.That((result.Items.Count==2));
     }
 }
