@@ -5,7 +5,6 @@
 @using Blazored.LocalStorage
 
 @inject IApplicationService ApplicationService
-@inject NavigationManager NavigationManager
 @inject IContentService ContentService
 @inject IUserProfileService UserProfileService
 @inject ILocalStorageService LocalStorageService
@@ -37,28 +36,39 @@
                                         <MudTextField T="string" Value="_searchUsername" ValueChanged="@(OnSearchUsername)"
                                                       Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
                                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
-                                                      Class="mt-0" Immediate="true"/>
+                                                      Class="mt-0" Immediate="true" Variant="Variant.Outlined"/>
                                     </MudItem>
                                     <MudItem xs="12" sm="6" md="4">
                                         <MudTextField T="string" Value="_searchVacancyTitle" ValueChanged="@(OnSearchVacancyTitle)"
                                                       Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
                                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
-                                                      Class="mt-0" Immediate="true"/>
+                                                      Class="mt-0" Immediate="true" Variant="Variant.Outlined"/>
                                     </MudItem>
                                     <MudItem xs="12" sm="6" md="4">
-                                        <MudSelect T="string" Value="_searchStatusName" Label=@ContentService["Dashboard:Appilcations:Status name"] AnchorOrigin="Origin.BottomCenter" ValueChanged="@(value => OnSearchStatusName(value))">
+                                        <MudSelect T="string" Value="_searchStatusName" Variant="Variant.Outlined"
+                                                   Label=@ContentService["Dashboard:Appilcations:Status name"]
+                                                   ValueChanged="@(value => OnSearchStatusName(value))"
+                                                   Style="margin-top:-1px;">
                                             @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
                                             {
                                                 <MudSelectItem Value="@status.ToString()"/>
                                             }
                                         </MudSelect>
                                     </MudItem>
-
+                                    <MudItem>
+                                        <MudTooltip Text="Load Data">
+                                            <ProgressTaskButton Color="Color.Primary" Function="ReloadAllData"
+                                                                Variant="Variant.Filled" Style="margin-top:15px;">
+                                                <MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>
+                                            </ProgressTaskButton>
+                                        </MudTooltip>
+                                    </MudItem>
                                 </MudGrid>
                             </MudCardContent>
                         </MudCard>
                         <br/>
                     </MudHidden>
+
 
                     <MudTable ServerData="@(new Func<TableState, Task<TableData<ApplicationListDto>>>(ServerReload))"
                               Hover="true" @ref="_table">
@@ -69,28 +79,39 @@
                             <MudHidden Breakpoint="Breakpoint.MdAndDown">
                                 <MudSpacer/>
                                 <MudItem>
-                                    <MudGrid>
+                                    <MudGrid Style="margin-top:5px;">
                                         <MudItem>
                                             <MudTextField T="string" Value="_searchUsername" ValueChanged="@(OnSearchUsername)"
-                                                          Placeholder=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
+                                                          Label=@ContentService["SignIn:UserName"] Adornment="Adornment.Start"
                                                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
-                                                          Class="mt-0" Immediate="true"/>
+                                                          Class="mt-0" Immediate="true" Variant="Variant.Outlined"/>
                                         </MudItem>
                                         <MudItem>
                                             <MudTextField T="string" Value="_searchVacancyTitle" ValueChanged="@(OnSearchVacancyTitle)"
-                                                          Placeholder=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
+                                                          Label=@ContentService["Dashboard:Appilcations:Vacancy title"] Adornment="Adornment.Start"
                                                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
-                                                          Class="mt-0" Immediate="true"/>
+                                                          Class="mt-0" Immediate="true" Variant="Variant.Outlined"/>
                                         </MudItem>
-
-                                        <MudSelect T="string" Value="_searchStatusName" Label=@ContentService["Dashboard:Appilcations:Status name"] AnchorOrigin="Origin.BottomCenter" ValueChanged="@(value => OnSearchStatusName(value))">
-                                            <MudSelectItem Value="string.Empty"/>
-                                            @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
-                                            {
-                                                <MudSelectItem Value="@status.ToString()"/>
-                                            }
-
-                                        </MudSelect>
+                                        <MudItem>
+                                            <MudSelect T="string" Value="_searchStatusName" Variant="Variant.Outlined"
+                                                       Label=@ContentService["Dashboard:Appilcations:Status name"]
+                                                       ValueChanged="@(value => OnSearchStatusName(value))"
+                                                       Style="margin-top:-1px;">
+                                                <MudSelectItem Value="string.Empty"/>
+                                                @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                                                {
+                                                    <MudSelectItem Value="@status.ToString()"/>
+                                                }
+                                            </MudSelect>
+                                        </MudItem>
+                                        <MudItem>
+                                            <MudTooltip Text="Load Data">
+                                                <ProgressTaskButton Color="Color.Primary" Function="ReloadAllData"
+                                                                    Variant="Variant.Filled" Style="margin-top:10px;">
+                                                    <MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>
+                                                </ProgressTaskButton>
+                                            </MudTooltip>
+                                        </MudItem>
                                     </MudGrid>
                                 </MudItem>
                             </MudHidden>
@@ -157,7 +178,8 @@
 </CascadingAuthenticationState>
 
 @code {
-
+    private bool _serverError;
+    private PagedList<ApplicationListDto> _applications;
     private IEnumerable<ApplicationListDto> _pagedData;
     private MudTable<ApplicationListDto> _table;
     private int _totalItems;
@@ -165,6 +187,23 @@
     private string _searchUsername;
     private string _searchVacancyTitle;
     private string _searchStatusName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _searchStatusName = await LocalStorageService.GetItemAsStringAsync("_searchStatusName").ConfigureAwait(false);
+        _searchVacancyTitle = await LocalStorageService.GetItemAsStringAsync("_searchVacancyTitle");
+        _searchUsername = await LocalStorageService.GetItemAsStringAsync("_searchUsername");
+        await LoadData();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await _table.ReloadServerData();
+            StateHasChanged();
+        }
+    }
 
     private async Task OnSearchUsername(string text)
     {
@@ -187,37 +226,36 @@
         await LocalStorageService.SetItemAsStringAsync("_searchStatusName", _searchStatusName);
     }
 
-    private async Task<TableData<ApplicationListDto>> ServerReload(TableState state)
-    {
-        IEnumerable<ApplicationListDto> data = _applications.Items;
-        await Task.Delay(300);
-        data = data.Where(element =>
-        {
-            if (!string.IsNullOrWhiteSpace(_searchUsername) && !element.Username.Contains(_searchUsername, StringComparison.OrdinalIgnoreCase))
-                return false;
-            if (!string.IsNullOrWhiteSpace(_searchVacancyTitle) && !element.VacancyTitle.Contains(_searchVacancyTitle, StringComparison.OrdinalIgnoreCase))
-                return false;
-            if (!string.IsNullOrWhiteSpace(_searchStatusName) && !element.StatusName.Contains(_searchStatusName, StringComparison.OrdinalIgnoreCase))
-                return false;
-            return true;
-        }).ToArray();
-        _totalItems = data.Count();
-
-        _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
-        return new TableData<ApplicationListDto>() { TotalItems = _totalItems, Items = _pagedData };
-    }
-
-    private bool _serverError;
-
-    private PagedList<ApplicationListDto> _applications;
-
-
-    protected override async Task OnInitializedAsync()
+    private async Task ReloadAllData()
     {
         await LoadData();
-        _searchStatusName = await LocalStorageService.GetItemAsStringAsync("_searchStatusName");
-        _searchVacancyTitle = await LocalStorageService.GetItemAsStringAsync("_searchVacancyTitle");
-        _searchUsername = await LocalStorageService.GetItemAsStringAsync("_searchUsername");
+        await _table.ReloadServerData();
+    }
+
+    private IEnumerable
+        <ApplicationListDto> FilteredData()
+    {
+        return _applications.Items.Where(a =>
+        {
+            if (!string.IsNullOrWhiteSpace(_searchUsername.Trim()) && !a.Username.Contains(_searchUsername.Trim(), StringComparison.OrdinalIgnoreCase))
+                return false;
+            if (!string.IsNullOrWhiteSpace(_searchVacancyTitle.Trim()) && !a.VacancyTitle.Contains(_searchVacancyTitle.Trim(), StringComparison.OrdinalIgnoreCase))
+                return false;
+            if (!string.IsNullOrWhiteSpace(_searchStatusName.Trim()) && !a.StatusName.Contains(_searchStatusName.Trim(), StringComparison.OrdinalIgnoreCase))
+                return false;
+            return true;
+        });
+    }
+
+    private async Task<TableData
+        <ApplicationListDto>> ServerReload(TableState state)
+    {
+        await Task.Delay(100);
+        var data = FilteredData();
+        _totalItems = data.Count();
+        _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+        return new TableData
+            <ApplicationListDto>() { TotalItems = _totalItems, Items = _pagedData };
     }
 
     private async Task LoadData()
@@ -230,33 +268,18 @@
                 _applications = response;
                 foreach (var application in _applications.Items)
                 {
-                    var userProfile = await UserProfileService.Get(application.Username);
-                    if (userProfile != null)
-                    {
-                        application.User = userProfile;
-                    }
-                    else
-                    {
-                        application.User = null;
-                    }
+                    application.User =await UserProfileService.Get(application.Username);
                 }
             }
         }
         catch (Exception)
         {
             _serverError = true;
+        }
+        finally
+        {
             StateHasChanged();
         }
-    }
-
-    public Applications()
-    {
-        _searchStatusName = null;
-    }
-
-    private void OnClick(string slug, string applicationUserName)
-    {
-        NavigationManager.NavigateTo($"/ApplicationDetail/{slug}/{applicationUserName}");
     }
 
 }

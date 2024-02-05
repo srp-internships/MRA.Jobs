@@ -20,4 +20,5 @@ public interface ITrainingService
     UpdateTrainingVacancyCommand UpdateCommand { get; set; }
     DeleteTrainingVacancyCommand DeleteCommand { get; set; }
 
+    Task ChangeNoteAsync(TrainingVacancyListDto vacancy);
 }

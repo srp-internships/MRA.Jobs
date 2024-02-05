@@ -17,4 +17,6 @@ public interface IInternshipService
     CreateInternshipVacancyCommand createCommand { get; set; }
     UpdateInternshipVacancyCommand UpdateCommand { get; set; }
     DeleteInternshipVacancyCommand DeleteCommand { get; set; }
+    Task ChangeNoteAsync(InternshipVacancyListResponse vacancy);
+    
 }

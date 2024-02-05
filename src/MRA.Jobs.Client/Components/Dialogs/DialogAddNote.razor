@@ -1,76 +1,115 @@
-﻿@using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote
 @using Microsoft.IdentityModel.Tokens
 <MudDialog>
     <DialogContent>
-        <BlazoredTextEditor @ref="@_quillHtml">
-            <ToolbarContent>
-                <span class="ql-formats">
-                    <select class="ql-font">
-                        <option selected=""></option>
-                        <option value="serif"></option>
-                        <option value="monospace"></option>
-                    </select>
-                    <select class="ql-size">
-                        <option value="small"></option>
-                        <option selected=""></option>
-                        <option value="large"></option>
-                        <option value="huge"></option>
-                    </select>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-bold"></button>
-                    <button class="ql-italic"></button>
-                    <button class="ql-underline"></button>
-                    <button class="ql-strike"></button>
-                </span>
-                <span class="ql-formats">
-                    <select class="ql-color"></select>
-                    <select class="ql-background"></select>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-list" value="ordered"></button>
-                    <button class="ql-list" value="bullet"></button>
-                    <button class="ql-indent" value="-1"></button>
-                    <button class="ql-indent" value="+1"></button>
-                    <select class="ql-align">
-                        <option selected=""></option>
-                        <option value="center"></option>
-                        <option value="right"></option>
-                        <option value="justify"></option>
-                    </select>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-link"></button>
-                </span>
-            </ToolbarContent>
-            <EditorContent>
+       <style>
+                .ql-editor {    
+                    height: 500px; 
+                    width: 100%;
+                }
+            </style>
+        @if (ShowNote)
+        {
+            <MudText>@((MarkupString)Note)</MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnEditClick">
+                <MudText>Edit</MudText>
+            </MudButton>
+        }
+        else
+        {
+            <BlazoredTextEditor @ref="@_quillHtml">
+                <ToolbarContent>
+                    <span class="ql-formats">
+                        <select class="ql-font">
+                            <option selected=""></option>
+                            <option value="serif"></option>
+                            <option value="monospace"></option>
+                        </select>
+                        <select class="ql-size">
+                            <option value="small"></option>
+                            <option selected=""></option>
+                            <option value="large"></option>
+                            <option value="huge"></option>
+                        </select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-color"></select>
+                        <select class="ql-background"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                        <button class="ql-indent" value="-1"></button>
+                        <button class="ql-indent" value="+1"></button>
+                        <select class="ql-align">
+                            <option selected=""></option>
+                            <option value="center"></option>
+                            <option value="right"></option>
+                            <option value="justify"></option>
+                        </select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-link"></button>
+                    </span>
+                </ToolbarContent>
+                <EditorContent>
 
-            </EditorContent>
-        </BlazoredTextEditor>
+                </EditorContent>
+            </BlazoredTextEditor>
+        }
+
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Add</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public AddNoteToApplicationCommand Note { get; set; }
+    [Parameter] public string Note { get; set; }
+    [Parameter] public bool ShowNote { get; set; }
 
     BlazoredTextEditor _quillHtml;
 
-    private async Task Submit()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Note.Note = (await _quillHtml.GetHTML()).Trim();
-        if (!Note.Note.IsNullOrEmpty())
+        if (firstRender)
         {
-            MudDialog.Close(DialogResult.Ok(true));
+            if (ShowNote && Note.Trim().IsNullOrEmpty())
+            {
+                ShowNote = false;
+                await Task.Delay(100);
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async void Submit()
+    {
+        Note = (await _quillHtml.GetHTML()).Trim();
+        if (!Note.IsNullOrEmpty())
+        {
+            MudDialog.Close(DialogResult.Ok(Note));
         }
         else
         {
             Snackbar.Add("The note must not be empty!", Severity.Error);
         }
+    }
+
+    private async Task OnEditClick()
+    {
+        ShowNote = false;
+        await Task.Delay(100);
+        await _quillHtml.LoadHTMLContent(Note);
+
+        StateHasChanged();
     }
 
     void Cancel() => MudDialog.Cancel();

@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <Folder Include="Applications\Queries\GetApplicationsByStatus\" />
+      <Folder Include="Vacancies\Tags\" />
     </ItemGroup>
 
 </Project>

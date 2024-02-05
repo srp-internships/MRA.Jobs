@@ -1,6 +1,7 @@
 ﻿@page "/dashboard/jobs"
 @layout Dashboard
 @using BlazorMonaco.Editor
+@using MRA.BlazorComponents.HttpClient.Services
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @inject IVacancyService VService
 @inject IJSRuntime JsRuntime
@@ -8,6 +9,8 @@
 @inject LayoutService LayoutService
 @inject ISnackbar Snackbar;
 @inject NavigationManager navigationManager
+@inject IHttpClientService HttpClient
+@inject IConfiguration Configuration
 @if (_serverError)
 {
     <ServerErrorComponent/>
@@ -120,7 +123,7 @@ else
                         <MudGrid>
                             <MudItem xs="12" lg="12">
                                 <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["Header:Category"]</MudText>
-                                <MudSelect T="string" Label=@ContentService["job:Selectcategory"]  @bind-Value="@_selectedCategory" Variant="Variant.Outlined">
+                                <MudSelect T="string" Label=@ContentService["job:Selectcategory"]      @bind-Value="@_selectedCategory" Variant="Variant.Outlined">
                                     @foreach (var cat in _category)
                                     {
                                         <MudSelectItem Value="@cat.Name"/>
@@ -312,6 +315,7 @@ else
                 <MudTh></MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
+                <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel=@ContentService["Internships:Title"]>@context.Title</MudTd>
@@ -330,6 +334,9 @@ else
                 </MudTd>
                 <MudTd>
                     <MudIconButton @onclick="() => OnDeleteClick(context.Slug)" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Medium"/>
+                </MudTd>
+                <MudTd>
+                    <MudIconButton @onclick="() => OnNoteChangeClick(context)" Icon="@Icons.Material.Filled.Note" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium"/>
                 </MudTd>
             </RowTemplate>
             <NoRecordsContent>
