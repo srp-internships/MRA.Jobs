@@ -1,6 +1,6 @@
 ﻿@using MRA.BlazorComponents.HttpClient.Services
 @using MRA.BlazorComponents.Configuration
-@using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Tags
+@using MRA.Jobs.Application.Contracts.Vacancies.Tags.Commands
 <MudDialog>
     <DialogContent>
         <MudGrid>
@@ -28,7 +28,7 @@
 @code {
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public string Slug { get; set; }
+    [Parameter] public Guid Id { get; set; }
     [Parameter] public List<string> Tags { get; set; } = new();
     [Inject] public HttpClientService HttpClient { get; set; }
     [Inject] public IConfiguration Configuration { get; set; }
@@ -49,10 +49,10 @@
 
         try
         {
-            var result = await HttpClient.PostAsJsonAsync<bool>(Configuration.GetJobsUrl($"jobs/{Slug}/tags"),
-                new AddTagsToJobVacancyCommand()
+            var result = await HttpClient.PostAsJsonAsync<bool>(Configuration.GetJobsUrl($"vacancy/{Id}/tags"),
+                new AddTagsToVacancyCommand()
                 {
-                    JobVacancySlug = Slug,
+                    VacancyId = Id,
                     Tags = newTags
                 });
             if (result.Success)

@@ -1,7 +1,7 @@
 ﻿namespace MRA.Jobs.Application.Contracts.Vacancies.Tags.Commands;
 
-public class CreateVacancyTagCommand : IRequest<Guid>
+public class AddTagsToVacancyCommand : IRequest<bool>
 {
     public Guid VacancyId { get; set; }
-    public Guid TagId { get; set; }
+    public string[] Tags { get; set; }
 }
