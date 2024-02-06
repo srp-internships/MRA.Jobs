@@ -1,13 +1,16 @@
 ﻿@page "/dashboard/applications"
 @using MRA.Jobs.Client.Identity;
 @using MRA.Jobs.Client.Components.Extra
-@using MRA.Jobs.Client.Services.Profile
 @using Blazored.LocalStorage
+@using MRA.BlazorComponents.Configuration
+@using MRA.BlazorComponents.HttpClient.Services
+@using MRA.Identity.Application.Contract.User.Responses
 
 @inject IApplicationService ApplicationService
 @inject IContentService ContentService
-@inject IUserProfileService UserProfileService
 @inject ILocalStorageService LocalStorageService
+@inject IHttpClientService HttpClientService
+@inject IConfiguration Configuration
 <CascadingAuthenticationState>
     <AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
         <Authorized>
@@ -146,7 +149,7 @@
                             }
                             else
                             {
-                                <MudTd DataLabel=@ContentService["UserManager:FullName"]>@context.User.FirstName @context.User.LastName</MudTd>
+                                <MudTd DataLabel=@ContentService["UserManager:FullName"]>@context.User.FullName</MudTd>
                                 <MudTd DataLabel=@ContentService["Profile:DateOfBirth"]>@context.User.DateOfBirth</MudTd>
                                 <MudTd DataLabel=@ContentService["SignUp:Phone"]>@context.User.PhoneNumber</MudTd>
                                 <MudTd DataLabel=@ContentService["SignUp:Email"]>@context.User.Email</MudTd>
@@ -260,16 +263,26 @@
 
     private async Task LoadData()
     {
+        var users = new List<UserResponse>();
+        try
+        {
+            var response = await HttpClientService.GetAsJsonAsync<List<UserResponse>>(Configuration.GetIdentityUrl("user"));
+            if (response.Success)
+                users = response.Result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
         try
         {
             var response = await ApplicationService.GetAllApplications();
             if (response is not null)
             {
                 _applications = response;
-                foreach (var application in _applications.Items)
-                {
-                    application.User =await UserProfileService.Get(application.Username);
-                }
+                _applications.Items.ForEach(application => application.User = users.FirstOrDefault(u => u.UserName == application.Username));
             }
         }
         catch (Exception)

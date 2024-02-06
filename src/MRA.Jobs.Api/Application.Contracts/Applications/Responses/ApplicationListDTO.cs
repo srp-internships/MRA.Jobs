@@ -1,4 +1,5 @@
 ﻿using MRA.Identity.Application.Contract.Profile.Responses;
+using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Application.Contracts.Converter.Converter;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
@@ -22,7 +23,7 @@ public class ApplicationListDto
     public IEnumerable<VacancyResponseDto> VacancyResponses { get; set; }
     public IEnumerable<TaskResponseDto> TaskResponses { get; set; }
     public string CV { get; set; }
-    public UserProfileResponse User { get; set; }
+    public UserResponse User { get; set; }
 }
 
 public class ApplicationDetailsDto
