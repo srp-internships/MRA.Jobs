@@ -102,7 +102,7 @@ else
                         </BlazoredTextEditor>
                         <MudInput @bind-Value="@_imageLinkToInsertToEditor"/>
                         <ProgressTaskButton Variant="Variant.Filled" Color="Color.Primary"
-                                   Function="InsertImage">
+                                            Function="InsertImage">
                             @ContentService["Internships:InsertImage"]
                         </ProgressTaskButton>
                     </MudCardContent>
@@ -121,7 +121,7 @@ else
                         <MudGrid>
                             <MudItem xs=12 lg="12">
                                 <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["Header:Category"]</MudText>
-                                <MudSelect T="string" Label=@ContentService["job:Selectcategory"]  @bind-Value="@_selectedCategory"
+                                <MudSelect T="string" Label=@ContentService["job:Selectcategory"]   @bind-Value="@_selectedCategory"
                                            Variant="Variant.Outlined">
                                     @foreach (var cat in _categories)
                                     {
@@ -327,6 +327,7 @@ else
                 <MudTh></MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
+                <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel=@ContentService["Internships:Title"]>@context.Title</MudTd>
@@ -348,7 +349,9 @@ else
                 <MudTd>
                     <MudIconButton @onclick="() => OnDeleteClick(context.Slug)" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Text" Color="Color.Error" Size="Size.Medium"/>
                 </MudTd>
-
+                <MudTd>
+                    <MudIconButton @onclick="() => OnNoteChangeClick(context)" Icon="@Icons.Material.Filled.Note" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium"/>
+                </MudTd>
             </RowTemplate>
             <NoRecordsContent>
                 <MudText>@ContentService["UserManager:Nomatchingrecords"]</MudText>
