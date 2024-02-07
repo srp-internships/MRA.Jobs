@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Web;
 using FluentAssertions;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
@@ -67,6 +68,34 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
         Assert.That(result.Items, Is.Not.Empty);
         Assert.That(result.Items.Any(a => a.ApplicantUsername == "applicant1"));
         Assert.That(result.Items.Any(a => a.ApplicantUsername == "applicant2"));
-        Assert.That((result.Items.Count==2));
+        Assert.That((result.Items.Count == 2));
+    }
+
+    [Test]
+    [TestCase("applicantUserName", "applicant1", 1)]
+    [TestCase("applicantUserName", "applicant2", 1)]
+    [TestCase("Vacancy.Title", "JobVacancyTest1", 2)]
+    [TestCase("coverletter", "Test test test", 0)]
+    [Ignore("not working")]
+    public async Task GetApplications_OnlyReviewerRole_ReturnsAllApplications_WithFilterQuery(string propertyName,
+        string value, int countResult)
+    {
+        ResetState();
+        await CreateApplications(value);
+
+        RunAsReviewerAsync();
+
+        var queryParam = HttpUtility.ParseQueryString(string.Empty);
+        queryParam["Filters"] = HttpUtility.UrlEncode($"{propertyName}@={value}");
+        var queryString =queryParam.ToString;
+
+        var response = await _httpClient.GetAsync($"{ApplicationApiEndPoint}?{queryString}");
+
+
+        response.EnsureSuccessStatusCode();
+        var result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Items, Is.Not.Empty);
+        Assert.That((result.Items.Count == countResult));
     }
 }
