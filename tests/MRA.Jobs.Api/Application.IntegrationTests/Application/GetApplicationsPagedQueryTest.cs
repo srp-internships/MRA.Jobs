@@ -47,7 +47,7 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
         var result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Items, Is.Not.Empty);
-        Assert.That(result.Items.All(a => a.Username == "applicant1"));
+        Assert.That(result.Items.All(a => a.ApplicantUsername == "applicant1"));
         Assert.That(result.Items.Count == 1);
     }
 
@@ -65,8 +65,8 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
         var result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Items, Is.Not.Empty);
-        Assert.That(result.Items.Any(a => a.Username == "applicant1"));
-        Assert.That(result.Items.Any(a => a.Username == "applicant2"));
+        Assert.That(result.Items.Any(a => a.ApplicantUsername == "applicant1"));
+        Assert.That(result.Items.Any(a => a.ApplicantUsername == "applicant2"));
         Assert.That((result.Items.Count==2));
     }
 }

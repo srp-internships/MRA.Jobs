@@ -19,6 +19,7 @@ public class
         CancellationToken cancellationToken)
     {
         var allApplications = dbContext.Applications
+
             .AsNoTracking()
             .Include(a => a.Vacancy)
             .Include(a => a.VacancyResponses)
