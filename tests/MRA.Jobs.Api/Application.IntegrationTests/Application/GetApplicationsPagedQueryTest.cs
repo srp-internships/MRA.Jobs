@@ -72,11 +72,10 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
     }
 
     [Test]
-    [TestCase("applicantUserName", "applicant1", 1)]
-    [TestCase("applicantUserName", "applicant2", 1)]
+    [TestCase("applicantUsername", "applicant1", 1)]
+    [TestCase("applicantUsername", "applicant2", 1)]
     [TestCase("Vacancy.Title", "JobVacancyTest1", 2)]
     [TestCase("coverletter", "Test test test", 0)]
-    [Ignore("not working")]
     public async Task GetApplications_OnlyReviewerRole_ReturnsAllApplications_WithFilterQuery(string propertyName,
         string value, int countResult)
     {
@@ -85,12 +84,9 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
 
         RunAsReviewerAsync();
 
-        var queryParam = HttpUtility.ParseQueryString(string.Empty);
-        queryParam["Filters"] = HttpUtility.UrlEncode($"{propertyName}@={value}");
-        var queryString =queryParam.ToString;
-
-        var response = await _httpClient.GetAsync($"{ApplicationApiEndPoint}?{queryString}");
-
+        var filter = $"{propertyName}@={value}";
+        var encodedFilter = HttpUtility.UrlEncode(filter);
+        var response = await _httpClient.GetAsync($"{ApplicationApiEndPoint}?Filters={encodedFilter}");
 
         response.EnsureSuccessStatusCode();
         var result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
