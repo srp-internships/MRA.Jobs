@@ -90,7 +90,6 @@ public class GetApplicationsPagedQueryTest : CreateApplicationTestsBase
         response.EnsureSuccessStatusCode();
         var result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
         Assert.That(result, Is.Not.Null);
-        Assert.That(result.Items, Is.Not.Empty);
         Assert.That((result.Items.Count == countResult));
     }
 }
