@@ -16,7 +16,7 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => src.Status))
             .ForMember(dest => dest.VacancyTitle, opt => opt.MapFrom(src => src.Vacancy.Title))
             .ForMember(dest => dest.StatusName, opt => opt.MapFrom(src => src.Status.ToString()))
-            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.ApplicantUsername));
+            .ForMember(dest => dest.ApplicantUsername, opt => opt.MapFrom(src => src.ApplicantUsername));
 
         CreateMap<Domain.Entities.Application, ApplicationDetailsDto>()
             .ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => (int)src.Status))

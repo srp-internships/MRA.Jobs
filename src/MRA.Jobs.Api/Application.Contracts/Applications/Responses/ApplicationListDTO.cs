@@ -12,7 +12,7 @@ public class ApplicationListDto
 {
     public Guid Id { get; set; }
     public Guid ApplicantId { get; set; }
-    public string Username { get; set; }
+    public string ApplicantUsername { get; set; }
     public string CoverLetter { get; set; }
     public Guid VacancyId { get; set; }
     public string VacancyTitle { get; set; }
