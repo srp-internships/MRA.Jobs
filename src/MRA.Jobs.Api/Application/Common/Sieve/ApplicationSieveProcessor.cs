@@ -8,8 +8,7 @@ namespace MRA.Jobs.Application.Common.Sieve;
 
 public class ApplicationSieveProcessor(
     IOptions<SieveOptions> options,
-    ISieveCustomFilterMethods sieveCustomFilter,
-    IServiceProvider services)
+    ISieveCustomFilterMethods sieveCustomFilter)
     : SieveProcessor(options, sieveCustomFilter), IApplicationSieveProcessor
 {
     public PagedList<TResult> ApplyAdnGetPagedList<TSource, TResult>(SieveModel model, IQueryable<TSource> source,
@@ -18,7 +17,7 @@ public class ApplicationSieveProcessor(
         source = Apply(model, source, applyPagination: false);
         int totalCount = source.Count();
         int pageSize = model.PageSize ?? Options.Value.DefaultPageSize;
-        pageSize = 10/*Math.Min(Options?.Value.MaxPageSize ?? int.MaxValue, pageSize)*/;
+        pageSize = Math.Min(Options?.Value.MaxPageSize ?? int.MaxValue, pageSize);
         int currentPage = model.Page ?? 1;
         int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
         List<TResult> result = ApplyPagination(model, source).ToArray().Select(converter).ToList();
