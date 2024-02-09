@@ -16,7 +16,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
         <PackageReference Include="Microsoft.FeatureManagement" Version="3.1.1" />
-        <PackageReference Include="MRA.BlazorComponents" Version="1.0.5" />
+        <PackageReference Include="MRA.BlazorComponents" Version="1.0.6" />
         <PackageReference Include="MRA.Identity.Application.Contract" Version="1.0.1" />
         <PackageReference Include="MudBlazor" Version="6.15.0" />
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.1" />
