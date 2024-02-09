@@ -218,7 +218,7 @@
         var users = new List<UserResponse>();
         try
         {
-            var response2 = await HttpClientService.GetAsJsonAsync<List<UserResponse>>(Configuration.GetIdentityUrl("user"));
+            var response2 = await HttpClientService.GetFromJsonAsync<List<UserResponse>>(Configuration.GetIdentityUrl("user"));
             if (response2.Success)
                 users = response2.Result;
         }
@@ -227,7 +227,7 @@
             // ignored
         }
 
-        var response = await HttpClientService.GetAsJsonAsync<PagedList<ApplicationListDto>>(Configuration.GetJobsUrl("applications"), query);
+        var response = await HttpClientService.GetFromJsonAsync<PagedList<ApplicationListDto>>(Configuration.GetJobsUrl("applications"), query);
         if (response.Success)
         {
             await LocalStorageService.SetItemAsync("applicationsFilterState", query);

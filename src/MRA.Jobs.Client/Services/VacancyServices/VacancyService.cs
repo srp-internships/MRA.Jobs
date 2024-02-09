@@ -2,6 +2,7 @@
 using MRA.BlazorComponents.Configuration;
 using MRA.BlazorComponents.HttpClient.Responses;
 using MRA.BlazorComponents.HttpClient.Services;
+using MRA.BlazorComponents.Snackbar.Extensions;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
@@ -11,6 +12,7 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Vacancies.Note.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
+using MRA.Jobs.Client.Services.ContentService;
 using MudBlazor;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
@@ -20,7 +22,8 @@ public class VacancyService(
     IHttpClientService httpClient,
     IConfiguration configuration,
     IDialogService dialogService,
-    ISnackbar snackbar)
+    ISnackbar snackbar,
+    IContentService contentService)
     : IVacancyService
 {
     private List<CategoryResponse> Categories { get; set; }
@@ -45,7 +48,7 @@ public class VacancyService(
     public async Task<List<CategoryResponse>> GetAllCategory()
     {
         var result =
-            await httpClient.GetAsJsonAsync<PagedList<CategoryResponse>>(configuration.GetJobsUrl("categories"));
+            await httpClient.GetFromJsonAsync<PagedList<CategoryResponse>>(configuration.GetJobsUrl("categories"));
         if (result.Success)
         {
             Categories = result.Result.Items;
@@ -60,7 +63,7 @@ public class VacancyService(
     public async Task<List<JobVacancyListDto>> GetVacancyByTitle(string title)
     {
         var result =
-            await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>(
+            await httpClient.GetFromJsonAsync<PagedList<JobVacancyListDto>>(
                 configuration.GetJobsUrl($"jobs?Filters=Title@={title}"));
         if (result.Success)
         {
@@ -82,7 +85,7 @@ public class VacancyService(
 
     public async Task<List<JobVacancyListDto>> GetJobs()
     {
-        var result = await httpClient.GetAsJsonAsync<PagedList<JobVacancyListDto>>(configuration.GetJobsUrl("jobs"));
+        var result = await httpClient.GetFromJsonAsync<PagedList<JobVacancyListDto>>(configuration.GetJobsUrl("jobs"));
         return result.Result.Items;
     }
 
@@ -93,7 +96,8 @@ public class VacancyService(
 
     public async Task<JobVacancyDetailsDto> GetBySlug(string slug)
     {
-        var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>(configuration.GetJobsUrl($"jobs/{slug}"));
+        var response =
+            await httpClient.GetFromJsonAsync<JobVacancyDetailsDto>(configuration.GetJobsUrl($"jobs/{slug}"));
         return response.Success ? response.Result : null;
     }
 
@@ -119,7 +123,7 @@ public class VacancyService(
     public async Task<List<InternshipVacancyListResponse>> GetInternship()
     {
         var result =
-            await httpClient.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>(
+            await httpClient.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>(
                 configuration.GetJobsUrl("internships"));
         return result.Result.Items;
     }
@@ -127,7 +131,7 @@ public class VacancyService(
     public async Task<List<TrainingVacancyListDto>> GetTrainings()
     {
         var result =
-            await httpClient.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>(configuration.GetJobsUrl("trainings"));
+            await httpClient.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>(configuration.GetJobsUrl("trainings"));
         return result.Result.Items;
     }
 
@@ -135,32 +139,24 @@ public class VacancyService(
     {
         var parameters = new DialogParameters<DialogAddNote>();
         parameters.Add(d => d.Note, vacancy.Note);
-         if (!vacancy.Note.IsNullOrEmpty())
+        if (!vacancy.Note.IsNullOrEmpty())
             parameters.Add(d => d.ShowNote, true);
 
         var dialog = await dialogService.ShowAsync<DialogAddNote>($"Note {vacancy.Title}", parameters,
-            new(){MaxWidth = MaxWidth.Large});
+            new() { MaxWidth = MaxWidth.Large });
         var result = await dialog.Result;
         if (result.Canceled) return;
         var note = result.Data.ToString();
         if (note.IsNullOrEmpty()) return;
 
-        try
+        ChangeVacancyNoteCommand command = new() { VacancyId = vacancy.Id, Note = note };
+        var response =
+            await httpClient.PutAsJsonAsync<bool>(configuration.GetJobsUrl("Vacancies/ChangeNote"), command);
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"], "Success");
+
+        if (response.Success)
         {
-            ChangeVacancyNoteCommand command = new() { VacancyId = vacancy.Id, Note = note };
-            var response =
-                await httpClient.PutAsJsonAsync<bool>(configuration.GetJobsUrl("Vacancies/ChangeNote"), command);
-            if (response.Success)
-            {
-                snackbar.Add("Success", Severity.Success);
-                vacancy.Note = note;
-            }
-            else
-                snackbar.Add(response.Error, Severity.Error);
-        }
-        catch (Exception)
-        {
-            // ignored
+            vacancy.Note = note;
         }
     }
 }
