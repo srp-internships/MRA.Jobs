@@ -4,6 +4,7 @@ using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.IdentityModel.Tokens;
 using MRA.BlazorComponents.Configuration;
+using MRA.BlazorComponents.Snackbar.Extensions;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
@@ -174,25 +175,15 @@ public partial class VacancyPage
 
         if (!result.Canceled)
         {
-            try
-            {
-                var response = await VService.OnDelete(slug);
-                if (response.Success)
-                {
-                    Snackbar.Add($"Deleted", Severity.Success);
-                    _vacancies.Remove(vacancy);
-                }
-                else
-                {
-                    Snackbar.Add(response.Error ?? "An error occurred while deleting the job", Severity.Error);
-                }
+            var response = await VService.OnDelete(slug);
+            Snackbar.ShowIfError(response, ContentService["ServerIsNotResponding"], "Deleted");
 
-                Clear();
-            }
-            catch (Exception)
+            if (response.Success)
             {
-                Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
+                _vacancies.Remove(vacancy);
             }
+
+            Clear();
 
             StateHasChanged();
         }
@@ -224,30 +215,18 @@ public partial class VacancyPage
             VService.creatingNewJob.PublishDate = newPublishDate;
         }
 
-        try
-        {
-            var catId = _category.First(c => c.Name == _selectedCategory).Id;
-            VService.creatingNewJob.CategoryId = catId;
-            VService.creatingNewJob.VacancyQuestions = _questions;
-            VService.creatingNewJob.VacancyTasks = _tasks;
-            var result = await VService.OnSaveCreateClick();
-            if (result.Success)
-            {
-                Snackbar.Add($"{VService.creatingNewJob.Title} created", Severity.Success);
-            }
-            else
-            {
-                Snackbar.Add(result.Error ?? "An error occurred while creating the job", Severity.Error);
-            }
+        var catId = _category.First(c => c.Name == _selectedCategory).Id;
+        VService.creatingNewJob.CategoryId = catId;
+        VService.creatingNewJob.VacancyQuestions = _questions;
+        VService.creatingNewJob.VacancyTasks = _tasks;
+        var result = await VService.OnSaveCreateClick();
+        Snackbar.ShowIfError(result, ContentService["ServerIsNotResponding"],
+            $"{VService.creatingNewJob.Title} created");
 
-            await LoadData();
-            await _table.ReloadServerData();
-            Clear();
-        }
-        catch (Exception)
-        {
-            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
-        }
+        await LoadData();
+        await _table.ReloadServerData();
+        Clear();
+        Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
     }
 
     private async Task LoadData()
@@ -385,6 +364,6 @@ public partial class VacancyPage
 
     private async Task OnNoteChangeClick(JobVacancyListDto vacancy)
     {
-       await VService.ChangeNoteAsync(vacancy);
+        await VService.ChangeNoteAsync(vacancy);
     }
 }
