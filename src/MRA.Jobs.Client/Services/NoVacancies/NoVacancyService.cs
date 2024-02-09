@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MRA.BlazorComponents.Configuration;
 using MRA.BlazorComponents.HttpClient.Services;
+using MRA.BlazorComponents.Snackbar.Extensions;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.JobVacancies;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
@@ -21,54 +22,34 @@ public class NoVacancyService(
     public async Task<JobVacancyDetailsDto> GetNoVacancyAsync()
     {
         var vacancy = new JobVacancyDetailsDto();
-        try
-        {
-            var response = await httpClient.GetAsJsonAsync<JobVacancyDetailsDto>(configuration.GetJobsUrl($"jobs/{CommonVacanciesSlugs.NoVacancySlug}"));
-            if (response.Success)
-                vacancy = response.Result;
-            else
-                snackbar.Add(response.Error, Severity.Error);
-        }
-        catch (Exception e)
-        {
-            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
-            Console.WriteLine(e);
-        }
+        var response =
+            await httpClient.GetFromJsonAsync<JobVacancyDetailsDto>(
+                configuration.GetJobsUrl($"jobs/{CommonVacanciesSlugs.NoVacancySlug}"));
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"]);
 
+        if (response.Success)
+            vacancy = response.Result;
         return vacancy;
     }
 
     public async Task CreateApplicationNoVacancyAsync(CreateApplicationCommand application, IBrowserFile file)
     {
-        try
-        {
-            //set cv
-            var fileBytes = await GetFileBytesAsync(file);
-            application.Cv.IsUploadCvMode = true;
-            application.VacancySlug = CommonVacanciesSlugs.NoVacancySlug;
-            application.Cv.CvBytes = fileBytes;
-            application.Cv.FileName = file.Name;
-            //set cv
+        //set cv
+        var fileBytes = await GetFileBytesAsync(file);
+        application.Cv.IsUploadCvMode = true;
+        application.VacancySlug = CommonVacanciesSlugs.NoVacancySlug;
+        application.Cv.CvBytes = fileBytes;
+        application.Cv.FileName = file.Name;
+        //set cv
 
-            var response = await httpClient.PostAsJsonAsync<Guid>(configuration.GetJobsUrl("Applications/CreateApplicationNoVacancy"), application);
-            switch (response.HttpStatusCode)
-            {
-                case HttpStatusCode.OK:
-                    snackbar.Add(contentService["Application:Success"], Severity.Success);
-                    navigationManager.NavigateTo(navigationManager.Uri.Replace("/apply/", "/"));
-                    break;
-                case HttpStatusCode.Conflict:
-                    snackbar.Add(response.Error, Severity.Error);
-                    break;
-                default:
-                    snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
-                    break;
-            }
-        }
-        catch (Exception e)
+        var response =
+            await httpClient.PostAsJsonAsync<Guid>(
+                configuration.GetJobsUrl("Applications/CreateApplicationNoVacancy"), application);
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"], contentService["Application:Success"]);
+
+        if (response.HttpStatusCode == HttpStatusCode.OK)
         {
-            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
-            Console.WriteLine(e.Message);
+            navigationManager.NavigateTo(navigationManager.Uri.Replace("/apply/", "/"));
         }
     }
 

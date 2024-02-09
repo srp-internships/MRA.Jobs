@@ -1,7 +1,9 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using System.Net;
+using Microsoft.IdentityModel.Tokens;
 using MRA.BlazorComponents.Configuration;
 using MRA.BlazorComponents.HttpClient.Responses;
 using MRA.BlazorComponents.HttpClient.Services;
+using MRA.BlazorComponents.Snackbar.Extensions;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Delete;
@@ -9,6 +11,7 @@ using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Vacancies.Note.Commands;
 using MRA.Jobs.Client.Components.Dialogs;
+using MRA.Jobs.Client.Services.ContentService;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Services.InternshipsServices;
@@ -17,7 +20,8 @@ public class InternshipService(
     IHttpClientService httpClientService,
     IConfiguration configuration,
     IDialogService dialogService,
-    ISnackbar snackbar)
+    ISnackbar snackbar,
+    IContentService contentService)
     : IInternshipService
 {
     public CreateInternshipVacancyCommand createCommand { get; set; } = new()
@@ -38,35 +42,25 @@ public class InternshipService(
 
     public async Task ChangeNoteAsync(InternshipVacancyListResponse vacancy)
     {
-        var parameters = new DialogParameters<DialogAddNote>();
-        parameters.Add(d => d.Note, vacancy.Note);
+        var parameters = new DialogParameters<DialogAddNote> { { d => d.Note, vacancy.Note } };
         if (!vacancy.Note.IsNullOrEmpty())
             parameters.Add(d => d.ShowNote, true);
 
         var dialog = await dialogService.ShowAsync<DialogAddNote>($"Note {vacancy.Title}", parameters,
-            new(){MaxWidth = MaxWidth.Large});
+            new() { MaxWidth = MaxWidth.Large });
 
         var result = await dialog.Result;
         if (result.Canceled) return;
         var note = result.Data.ToString();
         if (note.IsNullOrEmpty()) return;
 
-        try
+        ChangeVacancyNoteCommand command = new() { VacancyId = vacancy.Id, Note = note };
+        var response =
+            await httpClientService.PutAsJsonAsync<bool>(configuration.GetJobsUrl("Vacancies/ChangeNote"), command);
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"], "Success");
+        if (response.Success)
         {
-            ChangeVacancyNoteCommand command = new() { VacancyId = vacancy.Id, Note = note };
-            var response =
-                await httpClientService.PutAsJsonAsync<bool>(configuration.GetJobsUrl("Vacancies/ChangeNote"), command);
-            if (response.Success)
-            {
-                snackbar.Add("Success", Severity.Success);
-                vacancy.Note = note;
-            }
-            else
-                snackbar.Add(response.Error, Severity.Error);
-        }
-        catch (Exception)
-        {
-            // ignored
+            vacancy.Note = note;
         }
     }
 
@@ -75,15 +69,17 @@ public class InternshipService(
         return await httpClientService.PostAsJsonAsync<string>(configuration.GetJobsUrl("internships"), createCommand);
     }
 
-    public async Task<ApiResponse> Delete(string slug)
+    public async Task<bool> Delete(string slug)
     {
-        return await httpClientService.DeleteAsync(configuration.GetJobsUrl($"internships/{slug}"));
+        var response = await httpClientService.DeleteAsync(configuration.GetJobsUrl($"internships/{slug}"));
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"], "Deleted");
+        return response.HttpStatusCode == HttpStatusCode.OK;
     }
 
     public async Task<ApiResponse<PagedList<InternshipVacancyListResponse>>> GetAll()
     {
         var response =
-            await httpClientService.GetAsJsonAsync<PagedList<InternshipVacancyListResponse>>(
+            await httpClientService.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>(
                 configuration.GetJobsUrl("internships"));
         return response;
     }
@@ -91,7 +87,7 @@ public class InternshipService(
     public async Task<InternshipVacancyResponse> GetBySlug(string slug)
     {
         var response =
-            await httpClientService.GetAsJsonAsync<InternshipVacancyResponse>(
+            await httpClientService.GetFromJsonAsync<InternshipVacancyResponse>(
                 configuration.GetJobsUrl($"internships/{slug}"));
         return response.Success ? response.Result : null;
     }

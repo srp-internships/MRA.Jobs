@@ -22,7 +22,7 @@ public class UserProfileService(
     {
         await authenticationStateProvider.GetAuthenticationStateAsync();
         var result =
-            await identityHttpClient.GetAsJsonAsync<UserProfileResponse>(
+            await identityHttpClient.GetFromJsonAsync<UserProfileResponse>(
                 configuration.GetIdentityUrl($"Profile{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}"));
         if (result.Success)
         {
@@ -41,21 +41,21 @@ public class UserProfileService(
     public async Task<ApiResponse<List<UserEducationResponse>>> GetEducationsByUser(string userName)
     {
         var result =
-            await identityHttpClient.GetAsJsonAsync<List<UserEducationResponse>>(configuration.GetIdentityUrl("Profile/GetEducationsByUser"));
+            await identityHttpClient.GetFromJsonAsync<List<UserEducationResponse>>(configuration.GetIdentityUrl("Profile/GetEducationsByUser"));
         return result;
     }
 
     public async Task<ApiResponse<List<UserExperienceResponse>>> GetExperiencesByUser(string userName)
     {
         var result =
-            await identityHttpClient.GetAsJsonAsync<List<UserExperienceResponse>>(configuration.GetIdentityUrl("Profile/GetExperiencesByUser"));
+            await identityHttpClient.GetFromJsonAsync<List<UserExperienceResponse>>(configuration.GetIdentityUrl("Profile/GetExperiencesByUser"));
         return result;
     }
 
     public async Task<UserSkillsResponse> GetUserSkills(string userName)
     {
         var response = await identityHttpClient
-            .GetAsJsonAsync<UserSkillsResponse>(
+            .GetFromJsonAsync<UserSkillsResponse>(
                 configuration.GetIdentityUrl($"Profile/GetUserSkills{(userName != null ? "?userName=" + Uri.EscapeDataString(userName) : "")}"));
         return response.Result;
     }
