@@ -44,7 +44,7 @@ public partial class TrainingVacancyPage
         _table.ReloadServerData();
     }
 
-    private bool _serverError;
+    private bool _serverError = false;
     private bool _panelOpenState;
     private bool _isInserting;
     private bool _isUpdating = true;
@@ -192,18 +192,12 @@ public partial class TrainingVacancyPage
             _panelOpenState = true;
             _updateSlug = slug;
             _questions = vacancy.VacancyQuestions.Select(v =>
-                new VacancyQuestionDto
-                {
-                    Question = v.Question
-                }
+                new VacancyQuestionDto { Question = v.Question }
             ).ToList();
             _tasks = vacancy.VacancyTasks.Select(v =>
                 new VacancyTaskDto
                 {
-                    Title = v.Title,
-                    Description = v.Description,
-                    Template = v.Template,
-                    Test = v.Test
+                    Title = v.Title, Description = v.Description, Template = v.Template, Test = v.Test
                 }).ToList();
         }
     }

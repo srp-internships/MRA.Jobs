@@ -44,7 +44,7 @@ public partial class InternshipVacanciesPage
         _table.ReloadServerData();
     }
 
-    private bool _serverError;
+    private bool _serverError = false;
     private bool _panelOpenState;
     private bool _isInserting;
     private bool _isUpdating = true;
