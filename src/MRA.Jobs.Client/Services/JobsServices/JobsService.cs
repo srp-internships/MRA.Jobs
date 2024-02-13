@@ -16,7 +16,7 @@ using MRA.Jobs.Client.Services.ContentService;
 using MudBlazor;
 using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 
-namespace MRA.Jobs.Client.Services.VacancyServices;
+namespace MRA.Jobs.Client.Services.JobsServices;
 
 public class JobsService(
     IHttpClientService httpClient,

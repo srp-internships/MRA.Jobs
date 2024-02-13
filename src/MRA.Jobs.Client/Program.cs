@@ -1,6 +1,5 @@
 ﻿global using System.Net.Http.Json;
 global using MRA.Jobs.Client.Services.CategoryServices;
-global using MRA.Jobs.Client.Services.VacancyServices;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MRA.Jobs.Client;
@@ -23,6 +22,7 @@ using MRA.Jobs.Client.Services.ContentService;
 using MRA.Jobs.Client.Services.ConverterService;
 using MRA.Jobs.Client.Services;
 using MRA.Jobs.Client.Services.FileService;
+using MRA.Jobs.Client.Services.JobsServices;
 using MRA.Jobs.Client.Services.NoVacancies;
 using MRA.Jobs.Client.Services.UserPreferences;
 
