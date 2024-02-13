@@ -20,6 +20,8 @@ public class AddTagsToVacancyCommandHandler(IApplicationDbContext dbContext)
             vacancy.Tags.Add(new VacancyTag() { Tag = new Tag() { Name = tag } });
         }
 
+        await dbContext.SaveChangesAsync(cancellationToken);
+
         return vacancy.Tags.Select(t => t.Tag.Name).ToList();
     }
 }

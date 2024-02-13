@@ -25,9 +25,9 @@ namespace MRA.Jobs.Web.Controllers
             return Ok(await Mediator.Send(command));
         }
 
-        [HttpDelete("{id}/tags/{tag}")]
+        [HttpPut("{id}/tags/")]
         public async Task<ActionResult<List<string>>> DeleteTags([FromRoute] Guid id,
-            [FromBody] DeleteTagsFromVacancyCommand command)
+            [FromBody] RemoveTagsFromVacancyCommand command)
         {
             command.VacancyId = id;
             return Ok(await Mediator.Send(command));

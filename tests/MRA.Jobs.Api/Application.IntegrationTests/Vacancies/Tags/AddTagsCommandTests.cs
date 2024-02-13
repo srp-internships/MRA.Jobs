@@ -14,6 +14,7 @@ public class AddTagsCommandTests : JobsContext
     [SetUp]
     public async Task SetUp()
     {
+        ResetState();
         _vacancy = await GetJob("Vacancy with tags", DateTime.Today);
     }
 
@@ -52,5 +53,4 @@ public class AddTagsCommandTests : JobsContext
             new AddTagsToVacancyCommand() { VacancyId = _vacancy.Id, Tags = tags };
         return await _httpClient.PostAsJsonAsync($"api/Vacancies/{_vacancy.Id}/tags", command);
     }
-
 }
