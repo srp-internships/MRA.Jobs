@@ -1,6 +1,7 @@
 ﻿@using MRA.BlazorComponents.HttpClient.Services
 @using MRA.BlazorComponents.Configuration
 @using MRA.Jobs.Application.Contracts.Vacancies.Tags.Commands
+@using System.Net
 <MudDialog>
     <DialogContent>
         <MudGrid>
@@ -61,9 +62,9 @@
                 _newTags = "";
                 StateHasChanged();
             }
-            else
+            else if (result.HttpStatusCode == HttpStatusCode.BadRequest)
             {
-                Snackbar.Add(result.Error, Severity.Error);
+                Snackbar.Add("BadRequest", Severity.Error);
             }
         }
         catch (HttpRequestException e)
