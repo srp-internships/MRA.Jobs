@@ -18,7 +18,16 @@ namespace MRA.Jobs.Web.Controllers
         }
 
         [HttpPost("{id}/tags")]
-        public async Task<ActionResult<bool>> AddTags([FromRoute] Guid id, [FromBody] AddTagsToVacancyCommand command)
+        public async Task<ActionResult<List<string>>> AddTags([FromRoute] Guid id,
+            [FromBody] AddTagsToVacancyCommand command)
+        {
+            command.VacancyId = id;
+            return Ok(await Mediator.Send(command));
+        }
+
+        [HttpDelete("{id}/tags/{tag}")]
+        public async Task<ActionResult<List<string>>> DeleteTags([FromRoute] Guid id,
+            [FromBody] DeleteTagsFromVacancyCommand command)
         {
             command.VacancyId = id;
             return Ok(await Mediator.Send(command));
