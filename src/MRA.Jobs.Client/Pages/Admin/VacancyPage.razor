@@ -3,7 +3,7 @@
 @using BlazorMonaco.Editor
 @using MRA.BlazorComponents.HttpClient.Services
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
-@inject IVacancyService VService
+@inject IJobsService VService
 @inject IJSRuntime JsRuntime
 @inject IDialogService DialogService
 @inject LayoutService LayoutService
@@ -123,7 +123,7 @@ else
                         <MudGrid>
                             <MudItem xs="12" lg="12">
                                 <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["Header:Category"]</MudText>
-                                <MudSelect T="string" Label=@ContentService["job:Selectcategory"]      @bind-Value="@_selectedCategory" Variant="Variant.Outlined">
+                                <MudSelect T="string" Label=@ContentService["job:Selectcategory"]       @bind-Value="@_selectedCategory" Variant="Variant.Outlined">
                                     @foreach (var cat in _category)
                                     {
                                         <MudSelectItem Value="@cat.Name"/>
@@ -316,6 +316,7 @@ else
                 <MudTh></MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
+                <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel=@ContentService["Internships:Title"]>@context.Title</MudTd>
@@ -337,6 +338,9 @@ else
                 </MudTd>
                 <MudTd>
                     <MudIconButton @onclick="() => OnNoteChangeClick(context)" Icon="@Icons.Material.Filled.Note" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium"/>
+                </MudTd>
+                <MudTd>
+                    <MudIconButton @onclick="() => OnTagsClick(context)" Icon="@Icons.Material.Filled.Tag" Variant="Variant.Text" Size="Size.Medium"/>
                 </MudTd>
             </RowTemplate>
             <NoRecordsContent>

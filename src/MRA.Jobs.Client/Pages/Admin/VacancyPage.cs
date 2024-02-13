@@ -366,4 +366,9 @@ public partial class VacancyPage
     {
         await VService.ChangeNoteAsync(vacancy);
     }
+
+    private async Task OnTagsClick(JobVacancyListDto vacancyListDto)
+    {
+        
+    }
 }

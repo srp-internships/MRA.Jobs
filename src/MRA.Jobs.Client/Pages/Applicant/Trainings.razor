@@ -1,6 +1,6 @@
 ﻿@page "/trainings"
 @inject ICategoryService categoryService
-@inject IVacancyService vacancyService
+@inject IJobsService JobsService
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
 
@@ -24,7 +24,7 @@ else
 		try
 		{
 			var result = await categoryService.GetTrainingCategoriesSinceCheckDate();
-			var allTrainings = await vacancyService.GetTrainings();
+			var allTrainings = await JobsService.GetTrainings();
 			if (result is not null && allTrainings is not null)
 			{
 				TrainingCategories = result.Select(r => r.Category.Name).ToList();

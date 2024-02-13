@@ -4,7 +4,7 @@
 @using MRA.Jobs.Client.Components.Extra
 @using MRA.Jobs.Client.Components.Vacancies
 
-@inject IVacancyService VacancyService
+@inject IJobsService JobsService
 
 @if (_serverError)
 {
@@ -37,7 +37,7 @@ else
 		await base.OnInitializedAsync();
 		try
 		{
-			var response = await VacancyService.GetBySlug(Slug);
+			var response = await JobsService.GetBySlug(Slug);
 
 			if (response != null)
 			{

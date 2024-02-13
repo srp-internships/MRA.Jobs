@@ -37,7 +37,7 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddValidatorsFromAssembly(typeof(RemoveUserSkillCommand).Assembly);
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IVacancyService, VacancyService>();
+builder.Services.AddScoped<IJobsService, JobsService>();
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore(s =>
 {
