@@ -18,9 +18,12 @@ public static class DocPages
     public static string GetPageFromUrl(string url, bool setDefault = false)
     {
         var allPages = typeof(DocPages).GetFields().Select(s => s.GetValue(null) as string);
-        var result = allPages.FirstOrDefault(s => url.EndsWith(s, StringComparison.OrdinalIgnoreCase) || url.EndsWith($"dashboard/{s}", StringComparison.OrdinalIgnoreCase));
-        if (setDefault && result == null)
+        var result = allPages.FirstOrDefault(s =>
+            url.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+            url.Contains($"dashboard/{s}", StringComparison.OrdinalIgnoreCase));
+        if (setDefault || result == null)
             result = Home;
+        
         return result;
     }
 }
