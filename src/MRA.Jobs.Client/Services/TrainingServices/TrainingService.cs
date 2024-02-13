@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using MRA.BlazorComponents.Configuration;
 using MRA.BlazorComponents.HttpClient.Responses;
 using MRA.BlazorComponents.HttpClient.Services;
+using MRA.BlazorComponents.Snackbar.Extensions;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Delete;
@@ -10,6 +11,7 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Vacancies.Note.Commands;
 using MRA.Jobs.Client.Components.Dialogs;
+using MRA.Jobs.Client.Services.ContentService;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Services.TrainingServices;
@@ -19,7 +21,8 @@ public class TrainingService(
     AuthenticationStateProvider authenticationStateProvider,
     IConfiguration configuration,
     IDialogService dialogService,
-    ISnackbar snackbar)
+    ISnackbar snackbar,
+    IContentService contentService)
     : ITrainingService
 {
     public CreateTrainingVacancyCommand createCommand { get; set; } = new()
@@ -50,22 +53,14 @@ public class TrainingService(
         var note = result.Data.ToString();
         if (note.IsNullOrEmpty()) return;
 
-        try
+        ChangeVacancyNoteCommand command = new() { VacancyId = vacancy.Id, Note = note };
+        var response =
+            await httpClientService.PutAsJsonAsync<bool>(configuration.GetJobsUrl("Vacancies/ChangeNote"), command);
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"], "Success");
+
+        if (response.Success)
         {
-            ChangeVacancyNoteCommand command = new() { VacancyId = vacancy.Id, Note = note };
-            var response =
-                await httpClientService.PutAsJsonAsync<bool>(configuration.GetJobsUrl("Vacancies/ChangeNote"), command);
-            if (response.Success)
-            {
-                snackbar.Add("Success", Severity.Success);
-                vacancy.Note = note;
-            }
-            else
-                snackbar.Add(response.Error, Severity.Error);
-        }
-        catch (Exception)
-        {
-            // ignored
+            vacancy.Note = note;
         }
     }
 
@@ -105,7 +100,7 @@ public class TrainingService(
     {
         await authenticationStateProvider.GetAuthenticationStateAsync();
         var result =
-            await httpClientService.GetAsJsonAsync<PagedList<TrainingVacancyListDto>>(
+            await httpClientService.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>(
                 configuration.GetJobsUrl("trainings"));
         return result;
     }
@@ -114,7 +109,7 @@ public class TrainingService(
     {
         await authenticationStateProvider.GetAuthenticationStateAsync();
         var response =
-            await httpClientService.GetAsJsonAsync<TrainingVacancyDetailedResponse>(
+            await httpClientService.GetFromJsonAsync<TrainingVacancyDetailedResponse>(
                 configuration.GetJobsUrl($"trainings/{slug}"));
         return response.Success ? response.Result : null;
     }

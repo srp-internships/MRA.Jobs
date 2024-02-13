@@ -2,6 +2,7 @@ using Blazored.TextEditor;
 using BlazorMonaco;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
+using MRA.BlazorComponents.Snackbar.Extensions;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
@@ -13,7 +14,6 @@ namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class TrainingVacancyPage
 {
-      
     private IEnumerable<TrainingVacancyListDto> _pagedData;
     private MudTable<TrainingVacancyListDto> _table;
 
@@ -43,8 +43,8 @@ public partial class TrainingVacancyPage
         _searchString = text;
         _table.ReloadServerData();
     }
-    
-    private bool _serverError;
+
+    private bool _serverError = false;
     private bool _panelOpenState;
     private bool _isInserting;
     private bool _isUpdating = true;
@@ -107,8 +107,10 @@ public partial class TrainingVacancyPage
 
     private async Task EditorOnDidInit()
     {
-        await _editorTest.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
-        await _editorTemplate.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH, _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
+        await _editorTest.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH,
+            _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
+        await _editorTemplate.AddCommand((int)KeyMod.CtrlCmd | (int)KeyCode.KeyH,
+            _ => { Console.WriteLine(@"Ctrl+H : Initial editor command is triggered."); });
 
         var newDecorations = new[]
         {
@@ -157,25 +159,14 @@ public partial class TrainingVacancyPage
 
         if (!result.Canceled)
         {
-            try
+            var response = await TrainingService.Delete(slug);
+            Snackbar.ShowIfError(response, ContentService["ServerIsNotResponding"], "Deleted");
+            if (response.Success)
             {
-                var response = await TrainingService.Delete(slug);
-                if (response.Success)
-                {
-                    Snackbar.Add($"Deleted", Severity.Success);
-                    _trainings.Remove(vacancy);
-                }
-                else
-                {
-                    Snackbar.Add(response.Error ?? "An error occurred while deleting the training", Severity.Error);
-                }
+                _trainings.Remove(vacancy);
+            }
 
-                Clear();
-            }
-            catch (Exception)
-            {
-                Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
-            }
+            Clear();
 
             StateHasChanged();
         }
@@ -201,18 +192,12 @@ public partial class TrainingVacancyPage
             _panelOpenState = true;
             _updateSlug = slug;
             _questions = vacancy.VacancyQuestions.Select(v =>
-                new VacancyQuestionDto
-                {
-                    Question = v.Question
-                }
+                new VacancyQuestionDto { Question = v.Question }
             ).ToList();
             _tasks = vacancy.VacancyTasks.Select(v =>
                 new VacancyTaskDto
                 {
-                    Title = v.Title,
-                    Description = v.Description,
-                    Template = v.Template,
-                    Test = v.Test
+                    Title = v.Title, Description = v.Description, Template = v.Template, Test = v.Test
                 }).ToList();
         }
     }
@@ -231,32 +216,19 @@ public partial class TrainingVacancyPage
 
     private async Task LoadData()
     {
-        try
+        var trainingsResponse = await TrainingService.GetAll();
+        Snackbar.ShowIfError(trainingsResponse, ContentService["ServerIsNotResponding"]);
+        if (trainingsResponse.Success)
         {
-            var trainingsResponse = await TrainingService.GetAll();
-            if (trainingsResponse.Success)
-            {
-                _trainings = trainingsResponse.Result.Items;
-            }
-            else
-            {
-                Snackbar.Add($"Error loading trainings: {trainingsResponse.Error}", Severity.Error);
-            }
-
-            var categoriesResponse = await CategoryService.GetAllCategory();
-            if (categoriesResponse.Success)
-            {
-                _categories = categoriesResponse.Result.Items;
-            }
-            else
-            {
-                Snackbar.Add($"Error loading categories: {categoriesResponse.Error}", Severity.Error);
-            }
+            _trainings = trainingsResponse.Result.Items;
         }
-        catch (Exception)
+
+        var categoriesResponse = await CategoryService.GetAllCategory();
+        Snackbar.ShowIfError(categoriesResponse, ContentService["ServerIsNotResponding"]);
+
+        if (categoriesResponse.Success)
         {
-           Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
-            _serverError = true;
+            _categories = categoriesResponse.Result.Items;
             StateHasChanged();
         }
     }
@@ -265,6 +237,7 @@ public partial class TrainingVacancyPage
 
 
     private string _imageLinkToInsertToEditor;
+
     public async void InsertImage()
     {
         if (!string.IsNullOrEmpty(_imageLinkToInsertToEditor))
@@ -273,7 +246,7 @@ public partial class TrainingVacancyPage
             StateHasChanged();
         }
     }
-    
+
     private async Task HandleSubmit()
     {
         if (_endDateTime.HasValue)
@@ -289,31 +262,24 @@ public partial class TrainingVacancyPage
             DateTime newPublishDate = publishDate.Add(_publishDateTime.Value);
             TrainingService.createCommand.PublishDate = newPublishDate;
         }
-        try
-        {
-            var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
-            TrainingService.createCommand.CategoryId = catId;
-            TrainingService.createCommand.VacancyQuestions = _questions;
-            TrainingService.createCommand.VacancyTasks = _tasks;
-            TrainingService.createCommand.Description = await _quillHtml.GetHTML();
-            var result = await TrainingService.Create();
-            if (result.Success)
-            {
-                Snackbar.Add($"{TrainingService.createCommand.Title} created", Severity.Success);
-            }
-            else
-            {
-                Snackbar.Add(result.Error ?? "An error occurred while creating the training", Severity.Error);
-            }
 
-            await LoadData();
-            await   _table.ReloadServerData();
-            Clear();
-        }
-        catch (Exception)
+        var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
+        TrainingService.createCommand.CategoryId = catId;
+        TrainingService.createCommand.VacancyQuestions = _questions;
+        TrainingService.createCommand.VacancyTasks = _tasks;
+        TrainingService.createCommand.Description = await _quillHtml.GetHTML();
+        var result = await TrainingService.Create();
+        Snackbar.ShowIfError(result, ContentService["ServerIsNotResponding"],
+            $"{TrainingService.createCommand.Title} created");
+
+        if (result.Success)
         {
-            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
+            Snackbar.Add($"{TrainingService.createCommand.Title} created", Severity.Success);
         }
+
+        await LoadData();
+        await _table.ReloadServerData();
+        Clear();
     }
 
     private async Task HandleUpdate()
@@ -331,23 +297,21 @@ public partial class TrainingVacancyPage
         try
         {
             var result = await TrainingService.Update(_updateSlug);
+            Snackbar.ShowIfError(result, ContentService["ServerIsNotResponding"], "Updated");
+
             if (result.Success)
             {
                 Snackbar.Add("Updated", Severity.Success);
             }
-            else
-            {
-                Snackbar.Add(result.Error ?? "An error occurred while updating the training ", Severity.Error);
-            }
 
             await LoadData();
-            await   _table.ReloadServerData();
+            await _table.ReloadServerData();
             Clear();
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
-           Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
+            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
         }
     }
 
@@ -395,9 +359,12 @@ public partial class TrainingVacancyPage
         _questions.Clear();
         _tasks.Clear();
     }
+
     private async Task NewQuestionAsync()
     {
-        var res = (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>(@ContentService["Internships:AddQuestion"])).Result).Data as dynamic;
+        var res =
+            (await (await DialogService.ShowAsync<AddQuestionForVacancyDialog>(
+                @ContentService["Internships:AddQuestion"])).Result).Data as dynamic;
         Console.WriteLine(res.NewQuestion);
         _questions.Add(new VacancyQuestionDto { Question = res.NewQuestion, IsOptional = res.IsOptional });
     }
