@@ -22,7 +22,7 @@ public class AddTagsCommandTests : JobsContext
     public async Task AddTagsCommandTest_First()
     {
         RunAsRoleAsync(UserRoles.Reviewer);
-        var response = await AddTags("tag1", "tag2", "tag3");
+        var response = await AddTags("tag1", "tag2", "tag3", "tag3");
         response.EnsureSuccessStatusCode();
         Assert.That(response.StatusCode == HttpStatusCode.OK);
         Assert.That((await response.Content.ReadFromJsonAsync<List<string>>()).Count == 3);

@@ -13,6 +13,8 @@ public class AddTagsToVacancyCommandHandler(IApplicationDbContext dbContext)
             .FirstOrDefaultAsync(v => v.Id == request.VacancyId, cancellationToken);
         _ = vacancy ?? throw new NotFoundException(nameof(vacancy), request.VacancyId);
 
+        request.Tags = request.Tags.Distinct().ToArray();
+        
         var newTags = request.Tags.Except(vacancy.Tags.Select(t => t.Tag.Name));
 
         foreach (var tag in newTags)
