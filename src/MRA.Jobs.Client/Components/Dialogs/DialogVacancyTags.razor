@@ -1,6 +1,4 @@
 ﻿@using MRA.Jobs.Application.Contracts.Vacancies.Tags.Commands
-@using System.Net
-@using MRA.BlazorComponents.Configuration
 @using MRA.Jobs.Client.Services.VacanciesServices
 @inject IVacancyService VacancyService
 
@@ -9,22 +7,24 @@
         <MudGrid>
             <MudItem xs="12">
                 <MudStack Row="true">
-                    <MudTextField Variant="Variant.Filled" @bind-Value="_newTags" T="string"/>
-                    <ProgressTaskButton Function="@SaveChangesAsync" Variant="Variant.Filled" Color="Color.Primary">
-                        <MudText>Save Changes</MudText>
+                    <MudTextField Variant="Variant.Outlined" @bind-Value="_newTags" T="string" Margin="Margin.Dense"/>
+                    <ProgressTaskButton Function="@AddTagsAsync" Variant="Variant.Filled" Color="Color.Primary">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Medium"/>
                     </ProgressTaskButton>
                 </MudStack>
             </MudItem>
             <MudItem xs="12">
                 @foreach (var tag in Tags)
                 {
-                    <MudChip>@tag</MudChip>
+                    <MudChip CloseIcon="@Icons.Material.Filled.Close" OnClose="RemoveTag" Text="@tag"/>
                 }
             </MudItem>
         </MudGrid>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Primary" OnClick="Close">Ok</MudButton>
+        <MudButton Color="Color.Default" OnClick="Close">
+            <MudText>Close</MudText>
+        </MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -35,23 +35,14 @@
     [Parameter] public List<string> Tags { get; set; } = new();
 
     private string _newTags = "";
-    private List<string> _removedTags = new();
-    
-    void Close() => MudDialog.Close(DialogResult.Ok(true));
 
-    private async Task SaveChangesAsync()
-    {
-        if (_removedTags != null) await RemovedTagsAsync();
-        await AddTagsAsync();
-    }
+    void Close() => MudDialog.Close(DialogResult.Ok(Tags));
 
-    private async Task<bool> AddTagsAsync()
+    private async Task AddTagsAsync()
     {
-        Tags ??= new List<string>();
         var newTags = _newTags.Split(',')
             .Where(tagName => !string.IsNullOrWhiteSpace(tagName))
             .Select(tagName => tagName.Trim())
-            .Where(newTagName => Tags.All(tag => tag != newTagName))
             .ToArray();
 
         var command = new AddTagsToVacancyCommand()
@@ -66,22 +57,21 @@
             Tags.AddRange(newTags);
             _newTags = "";
         }
-        return result;
     }
 
-    private async Task<bool> RemovedTagsAsync()
+
+    private async Task RemoveTag(MudChip chip)
     {
         var command = new RemoveTagsFromVacancyCommand()
         {
             VacancyId = VacancyId,
-            Tags = _removedTags.ToArray()
+            Tags = [chip.Text]
         };
         var result = await VacancyService.RemoveTagsFromVacancyAsync(command);
-        if (result == null) return false;
-       
-        Tags = result;
-        return true;
+        if (result == null) return;
 
+        Tags.Remove(chip.Text);
+        StateHasChanged();
     }
 
 }
