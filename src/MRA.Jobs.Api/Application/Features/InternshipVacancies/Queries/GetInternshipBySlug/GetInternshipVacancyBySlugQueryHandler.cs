@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 
-namespace MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
+namespace MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipBySlug;
 
 public class GetInternshipVacancyBySlugQueryHandler(
     IApplicationDbContext context,

@@ -1,4 +1,4 @@
-﻿using MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
+﻿using MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipBySlug;
 
 namespace MRA.Jobs.Application.UnitTests.Internships;
 

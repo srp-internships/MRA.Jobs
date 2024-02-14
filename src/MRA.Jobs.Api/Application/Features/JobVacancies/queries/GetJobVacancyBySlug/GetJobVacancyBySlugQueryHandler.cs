@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 
-namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
+namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyBySlug;
 
 public class GetJobVacancyBySlugQueryHandler(
     IApplicationDbContext dbContext,
