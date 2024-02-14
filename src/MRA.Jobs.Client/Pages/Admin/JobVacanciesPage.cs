@@ -16,7 +16,7 @@ using MudBlazor;
 
 namespace MRA.Jobs.Client.Pages.Admin;
 
-public partial class VacancyPage
+public partial class JobVacanciesPage
 {
     private IEnumerable<JobVacancyListDto> _pagedData;
     private MudTable<JobVacancyListDto> _table;
