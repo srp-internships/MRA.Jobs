@@ -43,7 +43,7 @@
         var newTags = _newTags.Split(',')
             .Where(tagName => !string.IsNullOrWhiteSpace(tagName))
             .Select(tagName => tagName.Trim())
-            .ToArray();
+            .Distinct().ToArray();
 
         var command = new AddTagsToVacancyCommand()
         {

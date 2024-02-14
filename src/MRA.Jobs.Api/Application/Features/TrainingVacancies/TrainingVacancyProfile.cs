@@ -11,7 +11,8 @@ public class TrainingVacancyProfile : Profile
     public TrainingVacancyProfile()
     {
         CreateMap<TrainingVacancy, TrainingVacancyListDto>()
-            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name))
+            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag.Name)));
         CreateMap<TrainingVacancy, TrainingVacancyDetailedResponse>()
             .ForMember(dest => dest.History, opt => opt.MapFrom(src => src.History))
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(t => t.Tag.Name)));

@@ -25,5 +25,5 @@ public interface IJobsService
     Task<List<TrainingVacancyListDto>> GetTrainings();
 
     Task ChangeNoteAsync(JobVacancyListDto vacancy);
-
+   
 }

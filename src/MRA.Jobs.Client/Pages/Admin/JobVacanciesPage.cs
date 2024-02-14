@@ -1,14 +1,10 @@
 using Blazored.TextEditor;
 using BlazorMonaco;
 using BlazorMonaco.Editor;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.IdentityModel.Tokens;
-using MRA.BlazorComponents.Configuration;
 using MRA.BlazorComponents.Snackbar.Extensions;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
-using MRA.Jobs.Application.Contracts.Vacancies.Note.Commands;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
 using MRA.Jobs.Client.Pages.Admin.Dialogs;
@@ -321,15 +317,6 @@ public partial class JobVacanciesPage
         _newDescription = "";
     }
 
-    private async Task OnKeyDown(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter")
-        {
-            await Task.Delay(1);
-            AddTask();
-        }
-    }
-
     private void HandleCancel()
     {
         Clear();
@@ -369,6 +356,9 @@ public partial class JobVacanciesPage
 
     private async Task OnTagsClick(JobVacancyListDto vacancyListDto)
     {
-        
+        vacancyListDto.Tags =
+            await VacncyServise.DialogChangeTagsAsync(vacancyListDto.Id, vacancyListDto.Tags.ToList(),
+                vacancyListDto.Title);
+        StateHasChanged();
     }
 }

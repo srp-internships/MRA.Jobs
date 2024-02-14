@@ -6,4 +6,5 @@ public interface IVacancyService
 {
     Task<bool> AddTagsToVacancyAsync(AddTagsToVacancyCommand command);
     Task<List<string>> RemoveTagsFromVacancyAsync(RemoveTagsFromVacancyCommand command);
+    Task<List<string>> DialogChangeTagsAsync(Guid vacancyId, List<string> tags, string vacancyTitle);
 }

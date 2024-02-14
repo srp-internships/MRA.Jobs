@@ -373,4 +373,12 @@ public partial class TrainingVacanciesPage
     {
         await TrainingService.ChangeNoteAsync(context);
     }
+    
+    private async Task OnTagsClick(TrainingVacancyListDto vacancyListDto)
+    {
+        vacancyListDto.Tags =
+            await VacanciesService.DialogChangeTagsAsync(vacancyListDto.Id, vacancyListDto.Tags.ToList(),
+                vacancyListDto.Title);
+        StateHasChanged();
+    }
 }

@@ -2,6 +2,7 @@
 @layout Dashboard
 @using BlazorMonaco.Editor
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
+@using MRA.Jobs.Client.Services.VacanciesServices
 @using MRA.Jobs.Client.Services.VacanciesServices.Jobs
 @inject IJobsService JobsService
 @inject IJSRuntime JsRuntime
@@ -9,6 +10,8 @@
 @inject LayoutService LayoutService
 @inject ISnackbar Snackbar;
 @inject NavigationManager NavigationManager
+@inject IVacancyService VacncyServise
+
 @if (_serverError)
 {
     <ServerErrorComponent/>
