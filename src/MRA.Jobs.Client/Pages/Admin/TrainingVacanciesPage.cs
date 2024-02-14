@@ -12,7 +12,7 @@ using MudBlazor;
 
 namespace MRA.Jobs.Client.Pages.Admin;
 
-public partial class TrainingVacancyPage
+public partial class TrainingVacanciesPage
 {
     private IEnumerable<TrainingVacancyListDto> _pagedData;
     private MudTable<TrainingVacancyListDto> _table;
