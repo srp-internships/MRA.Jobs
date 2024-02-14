@@ -27,8 +27,12 @@
 @using MRA.Jobs.Client.Components;
 @using MRA.Jobs.Client.Services
 @using MRA.Jobs.Client.Services.ContentService;
+
+@using Blazored.TextEditor
+@using MRA.BlazorComponents
+@using MRA.BlazorComponents.HttpClient.Services
+@inject IHttpClientService HttpClient
+@inject IConfiguration Configuration
 @inject IContentService ContentService;
 @inject IDialogService Dialog
 @inject ISnackbar Snackbar
-@using Blazored.TextEditor
-@using MRA.BlazorComponents

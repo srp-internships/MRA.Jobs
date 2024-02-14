@@ -1,17 +1,14 @@
 ﻿@page "/dashboard/jobs"
 @layout Dashboard
 @using BlazorMonaco.Editor
-@using MRA.BlazorComponents.HttpClient.Services
 @using MRA.Jobs.Application.Contracts.JobVacancies.Responses
 @using MRA.Jobs.Client.Services.VacanciesServices.Jobs
-@inject IJobsService VService
+@inject IJobsService JobsService
 @inject IJSRuntime JsRuntime
 @inject IDialogService DialogService
 @inject LayoutService LayoutService
 @inject ISnackbar Snackbar;
-@inject NavigationManager navigationManager
-@inject IHttpClientService HttpClient
-@inject IConfiguration Configuration
+@inject NavigationManager NavigationManager
 @if (_serverError)
 {
     <ServerErrorComponent/>
@@ -39,7 +36,7 @@ else
             </MudCardActions>
         </MudItem>
         <MudItem lg="12" hidden="@(!_panelOpenState)">
-        <EditForm Model="@VService.creatingNewJob">
+        <EditForm Model="@JobsService.creatingNewJob">
         <FluentValidationValidator/>
         <MudGrid>
             <MudItem xs="12" lg="6">
@@ -52,10 +49,10 @@ else
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
-                        <MudTextField @bind-Value="@VService.creatingNewJob.Title" Label=@ContentService["Internships:Title"]
-                                      Variant="Variant.Outlined" For="@(() => VService.creatingNewJob.Title)"/>
-                        <MudTextField Lines="4" @bind-Value="@VService.creatingNewJob.ShortDescription" Label=@ContentService["Internships:ShortDescription"]
-                                      Variant="Variant.Outlined" For="@(() => VService.creatingNewJob.ShortDescription)"/>
+                        <MudTextField @bind-Value="@JobsService.creatingNewJob.Title" Label=@ContentService["Internships:Title"]
+                                      Variant="Variant.Outlined" For="@(() => JobsService.creatingNewJob.Title)"/>
+                        <MudTextField Lines="4" @bind-Value="@JobsService.creatingNewJob.ShortDescription" Label=@ContentService["Internships:ShortDescription"]
+                                      Variant="Variant.Outlined" For="@(() => JobsService.creatingNewJob.ShortDescription)"/>
 
                         <MudText>@ContentService["Profile:Description"]</MudText>
                         <BlazoredTextEditor @ref="@QuillHtml">
@@ -133,11 +130,11 @@ else
                             </MudItem>
                             <MudItem xs="12" lg="7">
                                 <MudText Style="color:rgb(128,128,128)">@ContentService["job:Requiredyear"]</MudText>
-                                <MudTextField @bind-Value="@VService.creatingNewJob.RequiredYearOfExperience" Label="" Variant="Variant.Outlined"></MudTextField>
+                                <MudTextField @bind-Value="@JobsService.creatingNewJob.RequiredYearOfExperience" Label="" Variant="Variant.Outlined"></MudTextField>
                             </MudItem>
                             <MudItem xs="12" lg="5">
                                 <MudText Style="color:rgb(128,128,128)">@ContentService["job:WorkSchedule"]</MudText>
-                                <MudSelect @bind-Value="VService.creatingNewJob.WorkSchedule" Variant="Variant.Outlined">
+                                <MudSelect @bind-Value="JobsService.creatingNewJob.WorkSchedule" Variant="Variant.Outlined">
                                     @foreach (var item in _value2Items)
                                     {
                                         <MudSelectItem Value="@item">@item.ToString()</MudSelectItem>
@@ -149,8 +146,8 @@ else
                                 <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["Internships:PublishDate"]</MudText>
                                 <MudGrid>
                                     <MudItem xs=12 lg="6">
-                                        <MudDatePicker @bind-Date="@VService.creatingNewJob.PublishDate" Variant="Variant.Outlined"
-                                                       Label=@ContentService["Internships:Date"] For="@(() => VService.creatingNewJob.PublishDate)"/>
+                                        <MudDatePicker @bind-Date="@JobsService.creatingNewJob.PublishDate" Variant="Variant.Outlined"
+                                                       Label=@ContentService["Internships:Date"] For="@(() => JobsService.creatingNewJob.PublishDate)"/>
                                     </MudItem>
                                     <MudItem xs=12 lg="6">
                                         <MudTimePicker AmPm="true" @bind-Time="_publishDateTime" Variant="Variant.Outlined" Label=@ContentService["Internships:Time"]/>
@@ -161,8 +158,8 @@ else
                                 <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["VacancyApplication:End Date"]</MudText>
                                 <MudGrid>
                                     <MudItem xs=12 lg="6">
-                                        <MudDatePicker @bind-Date="@VService.creatingNewJob.EndDate" Variant="Variant.Outlined"
-                                                       Label=@ContentService["Internships:Date"] For="@(() => VService.creatingNewJob.EndDate)"/>
+                                        <MudDatePicker @bind-Date="@JobsService.creatingNewJob.EndDate" Variant="Variant.Outlined"
+                                                       Label=@ContentService["Internships:Date"] For="@(() => JobsService.creatingNewJob.EndDate)"/>
                                     </MudItem>
                                     <MudItem xs=12 lg="6">
                                         <MudTimePicker AmPm="true" @bind-Time="_endDateTime" Variant="Variant.Outlined" Label=@ContentService["Internships:Time"]/>
@@ -329,7 +326,7 @@ else
                 <MudTd DataLabel=@ContentService["VacancyApplication:End Date"]>@context.EndDate.ToString("D")</MudTd>
                 <MudTd DataLabel=@ContentService["job:WorkSchedule"]>@context.WorkSchedule</MudTd>
                 <MudTd>
-                    <MudIconButton Href=@($"{navigationManager.BaseUri}jobs/apply/{context.Slug}") Target="_blank" Icon="@Icons.Material.Filled.OpenInNew" Variant="Variant.Text" Size="Size.Medium"/>
+                    <MudIconButton Href=@($"{NavigationManager.BaseUri}jobs/apply/{context.Slug}") Target="_blank" Icon="@Icons.Material.Filled.OpenInNew" Variant="Variant.Text" Size="Size.Medium"/>
                 </MudTd>
                 <MudTd>
                     <MudIconButton @onclick="() => OnEditClick(context.Slug)" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium"/>

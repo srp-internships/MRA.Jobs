@@ -1,15 +1,17 @@
-﻿@using MRA.BlazorComponents.HttpClient.Services
-@using MRA.BlazorComponents.Configuration
-@using MRA.Jobs.Application.Contracts.Vacancies.Tags.Commands
+﻿@using MRA.Jobs.Application.Contracts.Vacancies.Tags.Commands
 @using System.Net
+@using MRA.BlazorComponents.Configuration
+@using MRA.Jobs.Client.Services.VacanciesServices
+@inject IVacancyService VacancyService
+
 <MudDialog>
     <DialogContent>
         <MudGrid>
             <MudItem xs="12">
                 <MudStack Row="true">
                     <MudTextField Variant="Variant.Filled" @bind-Value="_newTags" T="string"/>
-                    <ProgressTaskButton Function="@AddTags" Variant="Variant.Filled" Color="Color.Primary">
-                        <MudText>Add</MudText>
+                    <ProgressTaskButton Function="@SaveChangesAsync" Variant="Variant.Filled" Color="Color.Primary">
+                        <MudText>Save Changes</MudText>
                     </ProgressTaskButton>
                 </MudStack>
             </MudItem>
@@ -29,48 +31,57 @@
 @code {
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public Guid Id { get; set; }
+    [Parameter] public Guid VacancyId { get; set; }
     [Parameter] public List<string> Tags { get; set; } = new();
-    [Inject] public HttpClientService HttpClient { get; set; }
-    [Inject] public IConfiguration Configuration { get; set; }
 
     private string _newTags = "";
-
+    private List<string> _removedTags = new();
+    
     void Close() => MudDialog.Close(DialogResult.Ok(true));
 
+    private async Task SaveChangesAsync()
+    {
+        if (_removedTags != null) await RemovedTagsAsync();
+        await AddTagsAsync();
+    }
 
-    private async Task AddTags()
+    private async Task<bool> AddTagsAsync()
     {
         Tags ??= new List<string>();
         var newTags = _newTags.Split(',')
             .Where(tagName => !string.IsNullOrWhiteSpace(tagName))
             .Select(tagName => tagName.Trim())
-            .Where(newTagName => !Tags.Any(tag => tag == newTagName))
+            .Where(newTagName => Tags.All(tag => tag != newTagName))
             .ToArray();
 
-        try
+        var command = new AddTagsToVacancyCommand()
         {
-            var result = await HttpClient.PostAsJsonAsync<bool>(Configuration.GetJobsUrl($"vacancy/{Id}/tags"),
-                new AddTagsToVacancyCommand()
-                {
-                    VacancyId = Id,
-                    Tags = newTags
-                });
-            if (result.Success)
-            {
-                Tags.AddRange(newTags);
-                _newTags = "";
-                StateHasChanged();
-            }
-            else if (result.HttpStatusCode == HttpStatusCode.BadRequest)
-            {
-                Snackbar.Add("BadRequest", Severity.Error);
-            }
-        }
-        catch (HttpRequestException e)
+            VacancyId = VacancyId,
+            Tags = newTags
+        };
+
+        var result = await VacancyService.AddTagsToVacancyAsync(command);
+        if (result)
         {
-            Snackbar.Add(e.Message, Severity.Error);
+            Tags.AddRange(newTags);
+            _newTags = "";
         }
+        return result;
+    }
+
+    private async Task<bool> RemovedTagsAsync()
+    {
+        var command = new RemoveTagsFromVacancyCommand()
+        {
+            VacancyId = VacancyId,
+            Tags = _removedTags.ToArray()
+        };
+        var result = await VacancyService.RemoveTagsFromVacancyAsync(command);
+        if (result == null) return false;
+       
+        Tags = result;
+        return true;
+
     }
 
 }

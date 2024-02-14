@@ -26,7 +26,7 @@ public partial class JobVacanciesPage
 
     private async Task<TableData<JobVacancyListDto>> ServerReload(TableState state)
     {
-        IEnumerable<JobVacancyListDto> data = await VService.GetJobs();
+        IEnumerable<JobVacancyListDto> data = await JobsService.GetJobs();
         await Task.Delay(100);
         data = data.Where(element =>
         {
@@ -175,7 +175,7 @@ public partial class JobVacanciesPage
 
         if (!result.Canceled)
         {
-            var response = await VService.OnDelete(slug);
+            var response = await JobsService.OnDelete(slug);
             Snackbar.ShowIfError(response, ContentService["ServerIsNotResponding"], "Deleted");
 
             if (response.Success)
@@ -199,29 +199,29 @@ public partial class JobVacanciesPage
 
     private async Task HandleSubmit()
     {
-        VService.creatingNewJob.Description = await this.QuillHtml.GetHTML();
+        JobsService.creatingNewJob.Description = await this.QuillHtml.GetHTML();
 
         if (_endDateTime.HasValue)
         {
-            DateTime endDate = VService.creatingNewJob.EndDate.Value.Date;
+            DateTime endDate = JobsService.creatingNewJob.EndDate.Value.Date;
             DateTime newEndDate = endDate.Add(_endDateTime.Value);
-            VService.creatingNewJob.EndDate = newEndDate;
+            JobsService.creatingNewJob.EndDate = newEndDate;
         }
 
         if (_publishDateTime.HasValue)
         {
-            DateTime publishDate = VService.creatingNewJob.PublishDate.Value.Date;
+            DateTime publishDate = JobsService.creatingNewJob.PublishDate.Value.Date;
             DateTime newPublishDate = publishDate.Add(_publishDateTime.Value);
-            VService.creatingNewJob.PublishDate = newPublishDate;
+            JobsService.creatingNewJob.PublishDate = newPublishDate;
         }
 
         var catId = _category.First(c => c.Name == _selectedCategory).Id;
-        VService.creatingNewJob.CategoryId = catId;
-        VService.creatingNewJob.VacancyQuestions = _questions;
-        VService.creatingNewJob.VacancyTasks = _tasks;
-        var result = await VService.OnSaveCreateClick();
+        JobsService.creatingNewJob.CategoryId = catId;
+        JobsService.creatingNewJob.VacancyQuestions = _questions;
+        JobsService.creatingNewJob.VacancyTasks = _tasks;
+        var result = await JobsService.OnSaveCreateClick();
         Snackbar.ShowIfError(result, ContentService["ServerIsNotResponding"],
-            $"{VService.creatingNewJob.Title} created");
+            $"{JobsService.creatingNewJob.Title} created");
 
         await LoadData();
         await _table.ReloadServerData();
@@ -233,8 +233,8 @@ public partial class JobVacanciesPage
     {
         try
         {
-            _category = await VService.GetAllCategory() ?? throw new Exception("Category fetch failed");
-            _vacancies = await VService.GetJobs() ?? throw new Exception("Job fetch failed");
+            _category = await JobsService.GetAllCategory() ?? throw new Exception("Category fetch failed");
+            _vacancies = await JobsService.GetJobs() ?? throw new Exception("Job fetch failed");
         }
         catch (Exception)
         {
@@ -247,20 +247,20 @@ public partial class JobVacanciesPage
 
     public async Task OnEditClick(string slug)
     {
-        var vacancy = await VService.GetBySlug(slug);
+        var vacancy = await JobsService.GetBySlug(slug);
         _createOrEditHeader = $"Edit {vacancy.Title}";
-        VService.creatingNewJob.Title = vacancy.Title;
-        VService.creatingNewJob.ShortDescription = vacancy.ShortDescription;
+        JobsService.creatingNewJob.Title = vacancy.Title;
+        JobsService.creatingNewJob.ShortDescription = vacancy.ShortDescription;
         await this.QuillHtml.LoadHTMLContent(vacancy.Description);
-        VService.creatingNewJob.RequiredYearOfExperience = vacancy.RequiredYearOfExperience;
-        VService.creatingNewJob.WorkSchedule = vacancy.WorkSchedule;
+        JobsService.creatingNewJob.RequiredYearOfExperience = vacancy.RequiredYearOfExperience;
+        JobsService.creatingNewJob.WorkSchedule = vacancy.WorkSchedule;
         if (vacancy.CategoryId.HasValue)
         {
-            VService.creatingNewJob.CategoryId = vacancy.CategoryId.Value;
+            JobsService.creatingNewJob.CategoryId = vacancy.CategoryId.Value;
         }
 
-        VService.creatingNewJob.EndDate = vacancy.EndDate;
-        VService.creatingNewJob.PublishDate = vacancy.PublishDate;
+        JobsService.creatingNewJob.EndDate = vacancy.EndDate;
+        JobsService.creatingNewJob.PublishDate = vacancy.PublishDate;
         _selectedCategory = _category.First(c => c.Id == vacancy.CategoryId).Name;
         _panelOpenState = true;
         _isInserting = true;
@@ -291,18 +291,18 @@ public partial class JobVacanciesPage
 
     private async Task HandleUpdate()
     {
-        VService.creatingNewJob.Description = await this.QuillHtml.GetHTML();
+        JobsService.creatingNewJob.Description = await this.QuillHtml.GetHTML();
 
         if (_endDateTime.HasValue)
-            VService.creatingNewJob.EndDate += _endDateTime.Value;
+            JobsService.creatingNewJob.EndDate += _endDateTime.Value;
 
         if (_publishDateTime.HasValue)
-            VService.creatingNewJob.PublishDate += _publishDateTime.Value;
-        VService.creatingNewJob.VacancyQuestions = _questions;
-        VService.creatingNewJob.VacancyTasks = _tasks;
+            JobsService.creatingNewJob.PublishDate += _publishDateTime.Value;
+        JobsService.creatingNewJob.VacancyQuestions = _questions;
+        JobsService.creatingNewJob.VacancyTasks = _tasks;
         var catId = _category.First(c => c.Name == _selectedCategory).Id;
-        VService.creatingNewJob.CategoryId = catId;
-        await VService.UpdateJobVacancy(_updateSlug);
+        JobsService.creatingNewJob.CategoryId = catId;
+        await JobsService.UpdateJobVacancy(_updateSlug);
         await LoadData();
         await _table.ReloadServerData();
         Clear();
@@ -338,13 +338,13 @@ public partial class JobVacanciesPage
     private void Clear()
     {
         _createOrEditHeader = @ContentService["job:NewVacancy"];
-        VService.creatingNewJob.Title = string.Empty;
-        VService.creatingNewJob.ShortDescription = string.Empty;
-        VService.creatingNewJob.Description = string.Empty;
-        VService.creatingNewJob.RequiredYearOfExperience = 0;
-        VService.creatingNewJob.WorkSchedule = 0;
-        VService.creatingNewJob.EndDate = DateTime.Now;
-        VService.creatingNewJob.PublishDate = DateTime.Now;
+        JobsService.creatingNewJob.Title = string.Empty;
+        JobsService.creatingNewJob.ShortDescription = string.Empty;
+        JobsService.creatingNewJob.Description = string.Empty;
+        JobsService.creatingNewJob.RequiredYearOfExperience = 0;
+        JobsService.creatingNewJob.WorkSchedule = 0;
+        JobsService.creatingNewJob.EndDate = DateTime.Now;
+        JobsService.creatingNewJob.PublishDate = DateTime.Now;
         _isInserting = false;
         _isUpdating = true;
         _updateSlug = string.Empty;
@@ -364,7 +364,7 @@ public partial class JobVacanciesPage
 
     private async Task OnNoteChangeClick(JobVacancyListDto vacancy)
     {
-        await VService.ChangeNoteAsync(vacancy);
+        await JobsService.ChangeNoteAsync(vacancy);
     }
 
     private async Task OnTagsClick(JobVacancyListDto vacancyListDto)
