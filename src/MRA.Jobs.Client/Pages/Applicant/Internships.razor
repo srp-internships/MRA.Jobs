@@ -6,59 +6,62 @@
 @inject IJobsService JobsService
 
 <MudText Typo="Typo.h4" Style="margin:50px; text-align: center; font-weight: 900">@ContentService["Internships:Internships"]</MudText>
-	@if (serverError)
+@if (serverError)
 {
-	<ServerErrorComponent />
+    <ServerErrorComponent/>
 }
 else
 {
-	<VacanciesList VacancyCategories="internshipCategories" Vacancies="internships" FilteredVacancies="@filteredInternships" Route="internships" />
+    <VacanciesList VacancyCategories="internshipCategories" Vacancies="internships" FilteredVacancies="@filteredInternships" Route="internships"/>
 }
+
 @code {
-	private bool serverError;
-	public List<string> internshipCategories { get; set; }
-	public List<VacancyClientResponse> internships { get; set; }
-	private List<VacancyClientResponse> filteredInternships;
-	protected override async Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-		try
-		{
+    private bool serverError;
+    public List<string> internshipCategories { get; set; }
+    public List<VacancyClientResponse> internships { get; set; }
+    private List<VacancyClientResponse> filteredInternships;
 
-			var result = await categoryService.GetInternshipCategoriesSinceCheckDate();
-			var allJobs = await JobsService.GetInternship();
-			if (result is not null && allJobs is not null)
-			{
-				internshipCategories = result.Select(r => r.Category.Name).ToList();
-				internships = allJobs.Select(r => new VacancyClientResponse
-					{
-						Category = r.Category,
-						Title = r.Title,
-						ShortDescription = r.ShortDescription,
-						Slug = r.Slug,
-						EndDate = r.EndDate,
-						PublishDate = r.PublishDate,
-						Duration = r.Duration,
-						Deadline = r.ApplicationDeadline
-					}).ToList();
-				filteredInternships = allJobs.Where(s => s.EndDate >= DateTime.Now && s.ApplicationDeadline >= DateTime.Now).Select(r => new VacancyClientResponse
-					{
-						Category = r.Category,
-						Title = r.Title,
-						ShortDescription = r.ShortDescription,
-						Slug = r.Slug,
-						EndDate = r.EndDate,
-						PublishDate = r.PublishDate,
-						Duration = r.Duration,
-						Deadline = r.ApplicationDeadline
-					}).ToList();
-			}
-		}
-		catch (Exception )
-		{
-			serverError = true;
-			StateHasChanged();
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        try
+        {
+            var result = await categoryService.GetInternshipCategoriesSinceCheckDate();
+            var allJobs = await JobsService.GetInternship();
+            if (result is not null && allJobs is not null)
+            {
+                internshipCategories = result.Select(r => r.Category.Name).ToList();
+                internships = allJobs.Select(r => new VacancyClientResponse
+                {
+                    Category = r.Category,
+                    Title = r.Title,
+                    ShortDescription = r.ShortDescription,
+                    Slug = r.Slug,
+                    EndDate = r.EndDate,
+                    PublishDate = r.PublishDate,
+                    Duration = r.Duration,
+                    Deadline = r.ApplicationDeadline,
+                    Tags = r.Tags.ToArray()
+                }).ToList();
+                filteredInternships = allJobs.Where(s => s.EndDate >= DateTime.Now && s.ApplicationDeadline >= DateTime.Now).Select(r => new VacancyClientResponse
+                {
+                    Category = r.Category,
+                    Title = r.Title,
+                    ShortDescription = r.ShortDescription,
+                    Slug = r.Slug,
+                    EndDate = r.EndDate,
+                    PublishDate = r.PublishDate,
+                    Duration = r.Duration,
+                    Deadline = r.ApplicationDeadline,
+                    Tags = r.Tags.ToArray()
+                }).ToList();
+            }
+        }
+        catch (Exception)
+        {
+            serverError = true;
+            StateHasChanged();
+        }
+    }
 
-		}
-	}
 }

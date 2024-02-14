@@ -39,7 +39,8 @@ else
                         EndDate = response.EndDate,
                         PublishDate = response.PublishDate,
                         RequiredYearOfExperience = response.RequiredYearOfExperience,
-                        IsApplied = response.IsApplied
+                        IsApplied = response.IsApplied, 
+                        Tags = response.Tags.ToArray()
                     };
             }
             else notFound = true;

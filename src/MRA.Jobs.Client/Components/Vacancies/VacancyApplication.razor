@@ -61,6 +61,13 @@ else
             <br/>
             <MudText>@((MarkupString)Vacancy.Description)</MudText>
             <br/>
+            @if (Vacancy.Tags != null)
+            {
+                @foreach (var tag in Vacancy.Tags)
+                {
+                    <MudChip Text="@tag" Size="Size.Small"/>
+                }
+            }
             <MudDivider/>
             <br/>
             <MudGrid Style="padding:10px 10px; color:rgb(128,128,128);">
@@ -350,7 +357,7 @@ else
     [Parameter] public Dictionary<Guid, string> TaskResponses { get; set; }
 
     [Parameter] public string VacancyType { get; set; }
-    
+
 
     private IBrowserFile _cv;
 

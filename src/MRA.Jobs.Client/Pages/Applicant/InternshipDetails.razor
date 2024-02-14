@@ -44,7 +44,8 @@ else
                         EndDate = response.EndDate,
                         Deadline = response.ApplicationDeadline,
                         PublishDate = response.PublishDate,
-                        IsApplied = response.IsApplied
+                        IsApplied = response.IsApplied,
+                        Tags = response.Tags.ToArray()
 
                     };
             }

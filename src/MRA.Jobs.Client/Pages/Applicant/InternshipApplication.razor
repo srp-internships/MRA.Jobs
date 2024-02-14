@@ -53,7 +53,8 @@ else
 						Duration = response.Duration,
 						Stipend = response.Stipend,
 						VacancyQuestions = response.VacancyQuestions,
-						VacancyTasks = response.VacancyTasks
+						VacancyTasks = response.VacancyTasks,
+                        Tags = response.Tags.ToArray()
 					};
 				_application = new CreateApplicationCommand
 					{

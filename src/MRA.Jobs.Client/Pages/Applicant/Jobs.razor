@@ -38,7 +38,8 @@ else
 						ShortDescription = r.ShortDescription,
 						Slug = r.Slug,
 						PublishDate = r.PublishDate,
-						EndDate = r.EndDate
+						EndDate = r.EndDate, 
+                        Tags = r.Tags.ToArray()
 					}).ToList(); ;
 				filteredJobs = allJobs.Where(s => s.EndDate >= DateTime.Now).Select(r => new VacancyClientResponse
 					{
@@ -47,7 +48,8 @@ else
 						ShortDescription = r.ShortDescription,
 						Slug = r.Slug,
 						PublishDate = r.PublishDate,
-						EndDate = r.EndDate
+						EndDate = r.EndDate,
+                        Tags = r.Tags.ToArray()
 					}).ToList(); ;
 			}
 		}
