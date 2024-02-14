@@ -22,6 +22,7 @@ using MRA.Jobs.Client.Services;
 using MRA.Jobs.Client.Services.FileService;
 using MRA.Jobs.Client.Services.NoVacancies;
 using MRA.Jobs.Client.Services.UserPreferences;
+using MRA.Jobs.Client.Services.VacanciesServices;
 using MRA.Jobs.Client.Services.VacanciesServices.Internships;
 using MRA.Jobs.Client.Services.VacanciesServices.Jobs;
 using MRA.Jobs.Client.Services.VacanciesServices.Training;
@@ -68,6 +69,8 @@ builder.Services.AddMraPages();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 //Mra.BlazorComponents
 
+
+builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
