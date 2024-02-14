@@ -5,7 +5,7 @@ using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 
-namespace MRA.Jobs.Client.Services.JobsServices;
+namespace MRA.Jobs.Client.Services.VacanciesServices.Jobs;
 
 public interface IJobsService
 {

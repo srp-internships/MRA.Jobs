@@ -14,7 +14,7 @@ using MRA.Jobs.Client.Components.Dialogs;
 using MRA.Jobs.Client.Services.ContentService;
 using MudBlazor;
 
-namespace MRA.Jobs.Client.Services.InternshipsServices;
+namespace MRA.Jobs.Client.Services.VacanciesServices.Internships;
 
 public class InternshipService(
     IHttpClientService httpClientService,
