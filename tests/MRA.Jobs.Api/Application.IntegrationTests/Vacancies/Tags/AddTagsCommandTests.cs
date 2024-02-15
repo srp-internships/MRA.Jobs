@@ -25,7 +25,9 @@ public class AddTagsCommandTests : JobsContext
         var response = await AddTags("tag1", "tag2", "tag3", "tag3");
         response.EnsureSuccessStatusCode();
         Assert.That(response.StatusCode == HttpStatusCode.OK);
-        Assert.That((await response.Content.ReadFromJsonAsync<List<string>>()).Count == 3);
+        Assert.That((await response.Content.ReadFromJsonAsync<List<string>>()).Count == 3); 
+        var allTags =await GetAllToListAsync<Tag>();
+        Assert.That(allTags.Count==3);
     }
 
   
@@ -35,17 +37,21 @@ public class AddTagsCommandTests : JobsContext
         RunAsRoleAsync(UserRoles.Admin);
         var vacancyTag = new VacancyTag()
         {
-            Tag = new Tag() { Name = "tag5" },
+            Tag = new Tag() { Name = "tag4" },
             VacancyId = _vacancy.Id
         };
 
         await AddAsync(vacancyTag);
         
-        var response = await AddTags("tag7", "tag8", "tag6");
+        var response = await AddTags("tag5", "tag6", "tag7");
         response.EnsureSuccessStatusCode();
         Assert.That(response.StatusCode == HttpStatusCode.OK);
         Assert.That((await response.Content.ReadFromJsonAsync<List<string>>()).Count == 4);
+        var allTags = await GetAllToListAsync<Tag>();
+        Assert.That(allTags.Count==4);
     }
+    
+    
     
     private async Task<HttpResponseMessage> AddTags(params string[] tags)
     {
