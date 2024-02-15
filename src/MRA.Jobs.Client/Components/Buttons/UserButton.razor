@@ -1,12 +1,12 @@
-﻿@using AltairCA.Blazor.WebAssembly.Cookie
+﻿@using Blazored.LocalStorage
 @using MRA.Jobs.Client.Identity
 @using MRA.Jobs.Client.Services.Profile
 @inject AuthenticationStateProvider AuthProvider
-@inject IAltairCABlazorCookieUtil CookieUtil
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
 @inject IUserProfileService UserProfileService
 @inject IConfiguration configuration
+@inject ILocalStorageService LocalStorageService
 
 <CascadingAuthenticationState>
     <AuthorizeView>
@@ -79,7 +79,7 @@
 
     private async Task Logout()
     {
-        await CookieUtil.RemoveAsync("authToken");
+        await LocalStorageService.RemoveItemAsync("authToken");
         await AuthProvider.GetAuthenticationStateAsync();
         NavigationManager.NavigateTo($"{configuration["IdentityCLient"]}/logout?callback={NavigationManager.BaseUri}");
     }

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
 using MRA.Jobs.Client.Services.Profile;
 using System.Reflection;
-using AltairCA.Blazor.WebAssembly.Cookie.Framework;
 using Blazored.LocalStorage;
 using Microsoft.FeatureManagement;
 using MRA.BlazorComponents;
@@ -30,7 +29,6 @@ using MRA.Jobs.Client.Services.VacanciesServices.Training;
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddMudServices();
 
-builder.Services.AddAltairCACookieService(options => { options.DefaultExpire = TimeSpan.Zero; });
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
