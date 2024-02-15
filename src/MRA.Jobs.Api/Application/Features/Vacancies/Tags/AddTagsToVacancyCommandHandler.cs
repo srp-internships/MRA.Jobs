@@ -13,13 +13,23 @@ public class AddTagsToVacancyCommandHandler(IApplicationDbContext dbContext)
             .FirstOrDefaultAsync(v => v.Id == request.VacancyId, cancellationToken);
         _ = vacancy ?? throw new NotFoundException(nameof(vacancy), request.VacancyId);
 
-        request.Tags = request.Tags.Distinct().ToArray();
-        
-        var newTags = request.Tags.Except(vacancy.Tags.Select(t => t.Tag.Name));
+        request.Tags = request.Tags.Select(tag => tag.Trim()).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+
+        var tags = await dbContext.Tags.ToListAsync(cancellationToken);
+
+        var newTags = request.Tags.Except(vacancy.Tags.Select(t => t.Tag.Name), StringComparer.OrdinalIgnoreCase);
 
         foreach (var tag in newTags)
         {
-            vacancy.Tags.Add(new VacancyTag() { Tag = new Tag() { Name = tag } });
+            var existingTag = tags.FirstOrDefault(t => t.Name.Equals(tag, StringComparison.OrdinalIgnoreCase));
+
+            if (existingTag == null)
+            {
+                existingTag = new Tag() { Name = tag };
+                dbContext.Tags.Add(existingTag);
+            }
+
+            vacancy.Tags.Add(new VacancyTag() { Tag = existingTag });
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
