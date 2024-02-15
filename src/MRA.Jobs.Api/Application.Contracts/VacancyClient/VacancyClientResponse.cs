@@ -15,4 +15,5 @@ public class VacancyClientResponse
     public DateTime Deadline { get; set; }
     public DateTime EndDate { get; set; }
     public string Slug { get; set; }
+    public string[] Tags { get; set; }
 }

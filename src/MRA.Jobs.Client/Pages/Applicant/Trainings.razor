@@ -1,62 +1,66 @@
 ﻿@page "/trainings"
 @inject ICategoryService categoryService
-@inject IVacancyService vacancyService
+@inject IJobsService JobsService
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Vacancies
+@using MRA.Jobs.Client.Services.VacanciesServices.Jobs
 
 <MudText Typo="Typo.h4" Style="margin:50px; text-align: center; font-weight: 900">@ContentService["Trainings:Trainings"]</MudText>
-	@if (serverError)
+@if (serverError)
 {
-	<ServerErrorComponent />
+    <ServerErrorComponent/>
 }
 else
 {
-	<VacanciesList VacancyCategories="TrainingCategories" FilteredVacancies="filteredtrainings" Route="trainings" Vacancies="trainings" />
+    <VacanciesList VacancyCategories="TrainingCategories" FilteredVacancies="filteredtrainings" Route="trainings" Vacancies="trainings"/>
 }
-@code {
-	private bool serverError;
-	private List<string> TrainingCategories { get; set; }
-	private List<VacancyClientResponse> trainings { get; set; }
-	private List<VacancyClientResponse> filteredtrainings;
-	protected override async Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-		try
-		{
-			var result = await categoryService.GetTrainingCategoriesSinceCheckDate();
-			var allTrainings = await vacancyService.GetTrainings();
-			if (result is not null && allTrainings is not null)
-			{
-				TrainingCategories = result.Select(r => r.Category.Name).ToList();
-				trainings = allTrainings.Select(r => new VacancyClientResponse
-					{
-						Category = r.Category,
-						Title = r.Title,
-						ShortDescription = r.ShortDescription,
-						Slug = r.Slug,
-						EndDate = r.EndDate,
-						PublishDate = r.PublishDate,
-						Duration = r.Duration
-					}).ToList();
-				filteredtrainings = allTrainings.Where(s => s.EndDate >= DateTime.Now).Select(r => new VacancyClientResponse
-					{
-						Category = r.Category,
-						Title = r.Title,
-						ShortDescription = r.ShortDescription,
-						Slug = r.Slug,
-						EndDate = r.EndDate,
-						PublishDate = r.PublishDate,
-						Duration = r.Duration
-					}).ToList();
 
-			}
-		}
-		catch (Exception)
-		{
-			serverError = true;
-			StateHasChanged();
-		}
-	}
+@code {
+    private bool serverError;
+    private List<string> TrainingCategories { get; set; }
+    private List<VacancyClientResponse> trainings { get; set; }
+    private List<VacancyClientResponse> filteredtrainings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        try
+        {
+            var result = await categoryService.GetTrainingCategoriesSinceCheckDate();
+            var allTrainings = await JobsService.GetTrainings();
+            if (result is not null && allTrainings is not null)
+            {
+                TrainingCategories = result.Select(r => r.Category.Name).ToList();
+                trainings = allTrainings.Select(r => new VacancyClientResponse
+                {
+                    Category = r.Category,
+                    Title = r.Title,
+                    ShortDescription = r.ShortDescription,
+                    Slug = r.Slug,
+                    EndDate = r.EndDate,
+                    PublishDate = r.PublishDate,
+                    Duration = r.Duration,
+                    Tags = r.Tags.ToArray()
+                }).ToList();
+                filteredtrainings = allTrainings.Where(s => s.EndDate >= DateTime.Now).Select(r => new VacancyClientResponse
+                {
+                    Category = r.Category,
+                    Title = r.Title,
+                    ShortDescription = r.ShortDescription,
+                    Slug = r.Slug,
+                    EndDate = r.EndDate,
+                    PublishDate = r.PublishDate,
+                    Duration = r.Duration,
+                    Tags = r.Tags.ToArray()
+                }).ToList();
+            }
+        }
+        catch (Exception)
+        {
+            serverError = true;
+            StateHasChanged();
+        }
+    }
 
 
 }

@@ -59,6 +59,13 @@ else
                         <br/>
                         <MudText>@((MarkupString)vacancyDetails.Description)</MudText>
                         <br/>
+                        @if (vacancyDetails.Tags != null)
+                        {
+                            @foreach (var tag in vacancyDetails.Tags)
+                            {
+                                <MudChip Text="@tag" Size="Size.Small"/>
+                            }
+                        }
                         <MudDivider Style="padding:10px;"/>
                         <MudGrid Style="padding:10px 10px;color:rgb(128,128,128);">
                             @if (vacancyDetails.Duration != 0)
@@ -279,3 +286,4 @@ else
     }
 
 }
+

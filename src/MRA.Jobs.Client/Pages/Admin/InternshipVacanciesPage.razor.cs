@@ -351,4 +351,12 @@ public partial class InternshipVacanciesPage
     {
         await InternshipService.ChangeNoteAsync(context);
     }
+    
+    private async Task OnTagsClick(InternshipVacancyListResponse vacancyListDto)
+    {
+        vacancyListDto.Tags =
+            await VacanciesService.DialogChangeTagsAsync(vacancyListDto.Id, vacancyListDto.Tags.ToList(),
+                vacancyListDto.Title);
+        StateHasChanged();
+    }
 }

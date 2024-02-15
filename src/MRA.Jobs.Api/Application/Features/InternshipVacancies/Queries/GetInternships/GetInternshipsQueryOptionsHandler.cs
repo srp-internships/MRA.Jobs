@@ -19,6 +19,7 @@ public class GetInternshipsQueryOptionsHandler(IApplicationDbContext context,
                 .Include(j => j.Category)
                 .Include(j => j.VacancyQuestions)
                 .Include(i => i.VacancyTasks)
+                .Include(i=>i.Tags).ThenInclude(t=>t.Tag)
                 .Where(j => j.Slug != CommonVacanciesSlugs.NoVacancySlug)
                 .ToListAsync(cancellationToken: cancellationToken))
             .AsEnumerable();

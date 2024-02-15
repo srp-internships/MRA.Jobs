@@ -1,12 +1,9 @@
 ﻿global using System.Net.Http.Json;
 global using MRA.Jobs.Client.Services.CategoryServices;
-global using MRA.Jobs.Client.Services.VacancyServices;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MRA.Jobs.Client;
 using MRA.Jobs.Client.Services.ApplicationService;
-using MRA.Jobs.Client.Services.InternshipsServices;
-using MRA.Jobs.Client.Services.TrainingServices;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
 using MRA.Jobs.Client.Services.Profile;
@@ -24,6 +21,10 @@ using MRA.Jobs.Client.Services;
 using MRA.Jobs.Client.Services.FileService;
 using MRA.Jobs.Client.Services.NoVacancies;
 using MRA.Jobs.Client.Services.UserPreferences;
+using MRA.Jobs.Client.Services.VacanciesServices;
+using MRA.Jobs.Client.Services.VacanciesServices.Internships;
+using MRA.Jobs.Client.Services.VacanciesServices.Jobs;
+using MRA.Jobs.Client.Services.VacanciesServices.Training;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddMudServices();
@@ -35,7 +36,7 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddValidatorsFromAssembly(typeof(RemoveUserSkillCommand).Assembly);
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IVacancyService, VacancyService>();
+builder.Services.AddScoped<IJobsService, JobsService>();
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore(s =>
 {
@@ -66,6 +67,8 @@ builder.Services.AddMraPages();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 //Mra.BlazorComponents
 
+
+builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();

@@ -1,8 +1,9 @@
 ﻿@page "/jobs/{Slug}"
 @using MRA.Jobs.Application.Contracts.VacancyClient;
-@inject IVacancyService VacancyService
+@inject IJobsService JobsService
 
 @using MRA.Jobs.Client.Components.Vacancies
+@using MRA.Jobs.Client.Services.VacanciesServices.Jobs
 @if (_serverError)
 {
     <ServerErrorComponent />
@@ -28,7 +29,7 @@ else
         await base.OnInitializedAsync();
         try
         {
-            var response = await VacancyService.GetBySlug(Slug);
+            var response = await JobsService.GetBySlug(Slug);
             if (response is not null)
             {
                 _details = new VacancyDetailsResponse
@@ -38,7 +39,8 @@ else
                         EndDate = response.EndDate,
                         PublishDate = response.PublishDate,
                         RequiredYearOfExperience = response.RequiredYearOfExperience,
-                        IsApplied = response.IsApplied
+                        IsApplied = response.IsApplied, 
+                        Tags = response.Tags.ToArray()
                     };
             }
             else notFound = true;

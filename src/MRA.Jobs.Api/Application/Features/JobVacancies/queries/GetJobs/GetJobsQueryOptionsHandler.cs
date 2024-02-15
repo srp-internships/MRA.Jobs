@@ -21,10 +21,12 @@ public class GetJobsQueryOptionsHandler(
                 .Include(j => j.Category)
                 .Include(j => j.VacancyQuestions)
                 .Include(i => i.VacancyTasks)
+                .Include(j=>j.Tags)
+                .ThenInclude(t=>t.Tag)
                 .Where(j => j.Slug != CommonVacanciesSlugs.NoVacancySlug)
                 .ToListAsync(cancellationToken: cancellationToken))
             .AsEnumerable();
-
+        
         if (request.CategorySlug is not null)
             jobs = jobs.Where(t => t.Category.Slug == request.CategorySlug);
 

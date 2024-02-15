@@ -1,0 +1,77 @@
+﻿@using MRA.Jobs.Application.Contracts.Vacancies.Tags.Commands
+@using MRA.Jobs.Client.Services.VacanciesServices
+@inject IVacancyService VacancyService
+
+<MudDialog>
+    <DialogContent>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudStack Row="true">
+                    <MudTextField Variant="Variant.Outlined" @bind-Value="_newTags" T="string" Margin="Margin.Dense"/>
+                    <ProgressTaskButton Function="@AddTagsAsync" Variant="Variant.Filled" Color="Color.Primary">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Medium"/>
+                    </ProgressTaskButton>
+                </MudStack>
+            </MudItem>
+            <MudItem xs="12">
+                @foreach (var tag in Tags)
+                {
+                    <MudChip CloseIcon="@Icons.Material.Filled.Close" OnClose="RemoveTag" Text="@tag"/>
+                }
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Default" OnClick="Close">
+            <MudText>Close</MudText>
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public Guid VacancyId { get; set; }
+    [Parameter] public List<string> Tags { get; set; } = new();
+
+    private string _newTags = "";
+
+    void Close() => MudDialog.Close(DialogResult.Ok(Tags));
+
+    private async Task AddTagsAsync()
+    {
+        var newTags = _newTags.Split(',')
+            .Where(tagName => !string.IsNullOrWhiteSpace(tagName))
+            .Select(tagName => tagName.Trim())
+            .Distinct().ToArray();
+
+        var command = new AddTagsToVacancyCommand()
+        {
+            VacancyId = VacancyId,
+            Tags = newTags
+        };
+
+        var result = await VacancyService.AddTagsToVacancyAsync(command);
+        if (result)
+        {
+            Tags.AddRange(newTags);
+            _newTags = "";
+        }
+    }
+
+
+    private async Task RemoveTag(MudChip chip)
+    {
+        var command = new RemoveTagsFromVacancyCommand()
+        {
+            VacancyId = VacancyId,
+            Tags = [chip.Text]
+        };
+        var result = await VacancyService.RemoveTagsFromVacancyAsync(command);
+        if (result == null) return;
+
+        Tags.Remove(chip.Text);
+        StateHasChanged();
+    }
+
+}
