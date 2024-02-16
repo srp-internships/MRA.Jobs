@@ -92,8 +92,8 @@ public class JobsService(
     public async Task<PagedList<JobVacancyListDto>> GetJobs(PagedListQuery<JobVacancyListDto> query)
     {
         var queryParam = System.Web.HttpUtility.ParseQueryString(string.Empty);
-        if (query.Filters.IsNullOrEmpty()) queryParam["Filters"] = query.Filters;
-        if (query.Sorts.IsNullOrEmpty()) queryParam["Sorts"] = query.Sorts;
+        if (!query.Filters.IsNullOrEmpty()) queryParam["Filters"] = query.Filters;
+        if (!query.Sorts.IsNullOrEmpty()) queryParam["Sorts"] = query.Sorts;
         if (query.Page != null) queryParam["Page"] = query.Page.ToString();
         if (query.PageSize != null) queryParam["PageSize"] = query.PageSize.ToString();
         string queryString = queryParam.ToString();
