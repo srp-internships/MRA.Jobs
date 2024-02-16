@@ -25,9 +25,7 @@ public class GetJobVacanciesPagedQueryHandler(
             .Where(j => j.Slug != CommonVacanciesSlugs.NoVacancySlug)
             .AsNoTracking(),
             mapper.Map<JobVacancyListDto>);
-        var user = await dbContext.Categories.ToListAsync(cancellationToken: cancellationToken);
-        
-        
+      
         return await Task.FromResult(result);
     }
 }

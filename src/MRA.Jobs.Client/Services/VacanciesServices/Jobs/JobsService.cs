@@ -89,6 +89,21 @@ public class JobsService(
         return result.Result.Items;
     }
 
+    public async Task<PagedList<JobVacancyListDto>> GetJobs(PagedListQuery<JobVacancyListDto> query)
+    {
+        var queryParam = System.Web.HttpUtility.ParseQueryString(string.Empty);
+        if (query.Filters.IsNullOrEmpty()) queryParam["Filters"] = query.Filters;
+        if (query.Sorts.IsNullOrEmpty()) queryParam["Sorts"] = query.Sorts;
+        if (query.Page != null) queryParam["Page"] = query.Page.ToString();
+        if (query.PageSize != null) queryParam["PageSize"] = query.PageSize.ToString();
+        string queryString = queryParam.ToString();
+
+        var result =
+            await httpClient.GetFromJsonAsync<PagedList<JobVacancyListDto>>(configuration.GetJobsUrl("jobs") + "?" +
+                                                                            queryString);
+        return result.Result;
+    }
+
     public async Task<ApiResponse> OnDelete(string slug)
     {
         return await httpClient.DeleteAsync(configuration.GetJobsUrl($"jobs/{slug}"));
@@ -159,6 +174,4 @@ public class JobsService(
             vacancy.Note = note;
         }
     }
-
-  
 }
