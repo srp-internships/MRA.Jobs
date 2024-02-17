@@ -17,9 +17,10 @@
             </MudText>
             <MudSpacer/>
             <MudItem lg="4">
-                <MudTextField T="string" Variant="Variant.Outlined" AdornmentIcon="@Icons.Material.Filled.Search"
+                <MudTextField T="string" Variant="Variant.Outlined" TextChanged="SearchVacancy" Immediate="true"
                               @bind-Value="@_search" Label=@ContentService["VacanciesList:Search"] Class="rounded-lg"
-                              Margin="Margin.Dense" Adornment="Adornment.End" OnAdornmentClick="SearchVacancy"/>
+                              Margin="Margin.Dense" OnAdornmentClick="@(() => _search = string.Empty)"
+                              AdornmentIcon="@_adornmentIcon" Adornment="Adornment.End"/>
             </MudItem>
         </MudStack>
     </MudItem>
@@ -89,28 +90,13 @@
                             <MudItem xs="12" md="12" lg="6">
                                 <a href="/jobs/@vacancy.Slug">
                                     <MudCard Class="rounded-lg">
-                                        <MudCardContent>
-                                            <MudText Style="color: #129fd7;" Typo="Typo.h5">
-                                                <b>@vacancy.Title</b>
+                                        <MudCardContent >
+                                            <MudText Typo="Typo.h5">
+                                                <b>
+                                                    <MudHighlighter Text="@vacancy.Title" HighlightedText="@_search" Markup="true"/>
+                                                </b>
                                             </MudText>
-                                            <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
-                                                <small>
-                                                    <b>@ContentService["VacancyDetails:Posted"] @DateTimeConvertToStringService.GetDisplayPostedDate(vacancy.PublishDate)</b>
-                                                </small>
-                                            </MudText>
-                                            <br/>
-                                            <MudText>@vacancy.ShortDescription</MudText>
-                                            <MudGrid>
-                                                <MudItem>
-                                                    @{
-                                                        var endDateResult = DateTimeConvertToStringService.GetDeadlineOrEndDateDisplayDate(vacancy.EndDate);
-                                                        var endDateStyle = $"color:{endDateResult.Color}";
-                                                        <MudText Typo="Typo.caption" Style="@endDateStyle">
-                                                            @ContentService["VacancyDetails:End Date"] <b>@endDateResult.DisplayDate</b>
-                                                        </MudText>
-                                                    }
-                                                </MudItem>
-                                            </MudGrid>
+                                            <MudText > @vacancy.ShortDescription </MudText >
                                             @if (vacancy.Tags != null)
                                             {
                                                 <br/>
@@ -121,21 +107,43 @@
                                                     }
                                                 </MudChipSet>
                                             }
-                                        </MudCardContent>
-                                    </MudCard>
-                                </a>
+                                        </MudCardContent >
+                                    </MudCard >
+                                </a >
                             </MudItem>
                         }
                     </MudGrid>
                     <br/>
-                    @if (_pagedList.TotalPages > 1)
-                    {
-                        <MudStack Row="true" Style="bottom: 0">
-                            <MudSpacer/>
-                             <MudPagination Color="Color.Info" Variant="Variant.Outlined" Selected="_selectedPage"
-                                               Count="@_pagedList.TotalPages" SelectedChanged="Callback"/>
-                        </MudStack>
-                    }
+                    <MudStack Row="true" Style="bottom: 0">
+                        <MudSpacer/>
+                        <MudItem>
+                            <div class="d-flex flex-grow-1">
+                                <div class="flex-none d-flex py-lg-3">
+                                    <MudText Typo="Typo.body2" Style="bottom: 0; top: auto">
+                                        @ContentService["Per Page"]
+                                    </MudText>
+                                </div>
+                                <div class=""></div>
+                                <div style="margin-left:5px; ">
+                                    <MudStack Row="true">
+                                        <MudSelect Dense="true" T="int" Value="@_perPage" ValueChanged="PageSizeChange"
+                                                   Variant="Variant.Outlined" Margin="Margin.Dense" Style="width: 75px; font-size: 10px;">
+                                            <MudSelectItem T="int" Value="10"/>
+                                            <MudSelectItem T="int" Value="20"/>
+                                            <MudSelectItem T="int" Value="30"/>
+                                            <MudSelectItem T="int" Value="50"/>
+                                        </MudSelect>
+                                        @if (_pagedList.TotalPages > 1)
+                                        {
+                                            <MudPagination Color="Color.Primary" Selected="_selectedPage" Size="Size.Small"
+                                                           ShowFirstButton="true" ShowLastButton="true" MiddleCount="3" BoundaryCount="1"
+                                                           Count="@_pagedList.TotalPages" SelectedChanged="Callback"/>
+                                        }
+                                    </MudStack>
+                                </div>
+                            </div>
+                        </MudItem>
+                    </MudStack>
                 }
             </MudItem>
         </MudGrid>
@@ -151,15 +159,19 @@
 
     private List<string> _tags;
     private string _selectedTagsValue = "";
-    private IEnumerable<string> _tagsOptions { get; set; } = new HashSet<string>();
     private string _search = "";
-    private int _selectedPage=1;
+
+    private int _selectedPage = 1;
+    private int _perPage = 10;
+    private string _adornmentIcon = Icons.Material.Filled.Search;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            _tags = (await HttpClient.GetFromJsonAsync<List<string>>(Configuration.GetJobsUrl("tags"))).Result;
             await SearchVacancy();
+            StateHasChanged();
         }
     }
 
@@ -184,8 +196,9 @@
             _query.PageSize = 10;
         }
 
-        if (_query != null) _selectedPage = (int)_query.Page;
-        _tags = (await HttpClient.GetFromJsonAsync<List<string>>(Configuration.GetJobsUrl("tags"))).Result;
+        if (_query.Page != null) _selectedPage = (int)_query.Page;
+        if (_query.PageSize != null) _perPage = (int)_query.PageSize;
+
         StateHasChanged();
     }
 
@@ -195,7 +208,7 @@
         _query.Page = page;
         _selectedPage = page;
 
-      await  SearchVacancy();
+        await SearchVacancy();
     }
 
     private void SelectCategory(string cats = null)
@@ -206,7 +219,9 @@
     private async Task SearchVacancy()
     {
         _query.Filters = GetFilters();
-     
+
+        _adornmentIcon = _search.IsNullOrEmpty() ? Icons.Material.Filled.Search : Icons.Material.Filled.Clear;
+
         var queryParameters = new Dictionary<string, string>
         {
             { "page", _query.Page.ToString() },
@@ -239,6 +254,13 @@
         }
 
         return "";
+    }
+
+    private async Task PageSizeChange(int size)
+    {
+        _query.PageSize = size;
+        _perPage = size;
+        await SearchVacancy();
     }
 
 }
