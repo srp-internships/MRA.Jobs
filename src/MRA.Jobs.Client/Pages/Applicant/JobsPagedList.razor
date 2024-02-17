@@ -66,9 +66,12 @@
                     </MudExpansionPanel>
                     <MudExpansionPanel Text="Tags" IsExpanded="true" Dense="true">
                         <MudChipSet MultiSelection="true" Filter="true">
-                            @foreach (var tag in _tags.Order())
+                            @if (_tags != null)
                             {
-                                <MudChip Text="@tag" Variant="Variant.Text" Color="Color.Default" SelectedColor="Color.Primary"/>
+                                @foreach (var tag in _tags.Order())
+                                {
+                                    <MudChip Text="@tag" Variant="Variant.Text" Color="Color.Default" SelectedColor="Color.Primary"/>
+                                }
                             }
                         </MudChipSet>
                     </MudExpansionPanel>
@@ -129,7 +132,8 @@
                     {
                         <MudStack Row="true" Style="bottom: 0">
                             <MudSpacer/>
-                            <MudPagination Color="Color.Info" Variant="Variant.Outlined" Count="@_pagedList.TotalPages" SelectedChanged="Callback"/>
+                            <MudPagination Color="Color.Info" Variant="Variant.Outlined" Selected="_pagedList.CurrentPageNumber" 
+                                           Count="@_pagedList.TotalPages" SelectedChanged="Callback"/>
                         </MudStack>
                     }
                 }
@@ -148,7 +152,6 @@
     private List<string> _tags;
     private string _selectedTagsValue = "";
     private IEnumerable<string> _tagsOptions { get; set; } = new HashSet<string>();
-
     private string _search = "";
 
 
@@ -166,15 +169,13 @@
             _query.Filters = filters;
             _search = ExtractSearch(filters);
         }
-            
-    
-        
+
         if (currentUri.Query.IsNullOrEmpty())
         {
             _query.Page = 1;
             _query.PageSize = 10;
         }
-
+        
         _pagedList = await JobsService.GetJobs(_query);
         _tags = (await HttpClient.GetFromJsonAsync<List<string>>(Configuration.GetJobsUrl("tags"))).Result;
         StateHasChanged();
@@ -190,7 +191,6 @@
     private void SelectCategory(string cats = null)
     {
         _selectedCategory = cats;
-        //FilteredVacancies = string.IsNullOrEmpty(cats) ? Vacancies : Vacancies.Where(j => j.Category == cats).ToList();
     }
 
     private async Task SearchVacancy()
@@ -215,7 +215,7 @@
 
         return filters.Any() ? string.Join(",", filters) : "";
     }
-    
+
     private string ExtractSearch(string filters)
     {
         var filterList = filters.Split(',');
