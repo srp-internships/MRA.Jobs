@@ -6,8 +6,5 @@ namespace MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
 
 public class GetJobsQueryOptions : PagedListQuery<JobVacancyListDto>
 {
-    public string SearchText { get; set; }
-    public string CategorySlug { get; set; }
-    public bool CheckDate { get; set; }
-    public List<string> Tags { get; set; }
+    public string Tags { get; set; }
 }

@@ -13,19 +13,21 @@ public class GetJobVacanciesPagedQueryHandler(
     IMapper mapper)
     : IRequestHandler<PagedListQuery<JobVacancyListDto>, PagedList<JobVacancyListDto>>
 {
-
     public async Task<PagedList<JobVacancyListDto>> Handle(PagedListQuery<JobVacancyListDto> request,
         CancellationToken cancellationToken)
     {
-        PagedList<JobVacancyListDto> result = sieveProcessor.ApplyAdnGetPagedList(request,
-            dbContext.JobVacancies
+        var vacancies = dbContext.JobVacancies
             .Include(j => j.Category)
             .Include(j => j.VacancyQuestions)
-            .Include(i => i.VacancyTasks)
+            .Include(j => j.VacancyTasks)
+            .Include(j => j.Tags)
+            .ThenInclude(t => t.Tag)
             .Where(j => j.Slug != CommonVacanciesSlugs.NoVacancySlug)
-            .AsNoTracking(),
-            mapper.Map<JobVacancyListDto>);
-      
+            .AsNoTracking();
+
+        PagedList<JobVacancyListDto> result = sieveProcessor.ApplyAdnGetPagedList(request,
+            vacancies, mapper.Map<JobVacancyListDto>);
+
         return await Task.FromResult(result);
     }
 }
