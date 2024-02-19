@@ -8,16 +8,19 @@ public class AddTagsToVacancyCommandHandler(IApplicationDbContext dbContext)
 {
     public async Task<List<string>> Handle(AddTagsToVacancyCommand request, CancellationToken cancellationToken)
     {
-        var vacancy = await dbContext.Vacancies.Include(v => v.Tags)
-            .ThenInclude(t => t.Tag)
-            .FirstOrDefaultAsync(v => v.Id == request.VacancyId, cancellationToken);
+        var vacancy = await dbContext.Vacancies.FirstOrDefaultAsync(v => v.Id == request.VacancyId, cancellationToken);
         _ = vacancy ?? throw new NotFoundException(nameof(vacancy), request.VacancyId);
-
+        
+        var vacancyTags = await dbContext.VacancyTags
+            .Include(t=>t.Tag)
+            .Where(t => t.VacancyId == request.VacancyId)
+            .ToListAsync(cancellationToken);
+        
         request.Tags = request.Tags.Select(tag => tag.Trim()).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
 
         var tags = await dbContext.Tags.ToListAsync(cancellationToken);
 
-        var newTags = request.Tags.Except(vacancy.Tags.Select(t => t.Tag.Name), StringComparer.OrdinalIgnoreCase);
+        var newTags = request.Tags.Except(vacancyTags.Select(t => t.Tag.Name), StringComparer.OrdinalIgnoreCase);
 
         foreach (var tag in newTags)
         {
@@ -29,11 +32,11 @@ public class AddTagsToVacancyCommandHandler(IApplicationDbContext dbContext)
                 dbContext.Tags.Add(existingTag);
             }
 
-            vacancy.Tags.Add(new VacancyTag() { Tag = existingTag });
+            vacancyTags.Add(new VacancyTag() { Tag = existingTag });
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return vacancy.Tags.Select(t => t.Tag.Name).ToList();
+        return vacancyTags.Select(t => t.Tag.Name).ToList();
     }
 }
