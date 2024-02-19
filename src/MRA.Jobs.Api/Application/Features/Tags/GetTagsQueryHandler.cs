@@ -7,6 +7,6 @@ public class GetTagsQueryHandler(IApplicationDbContext dbContext) : IRequestHand
 {
     public async Task<List<string>> Handle(GetTagsQuery request, CancellationToken cancellationToken)
     {
-        return (await dbContext.Tags.Select(t => t.Name).ToListAsync(cancellationToken));
+        return (await dbContext.Tags.Select(t => t.Name).Distinct().ToListAsync(cancellationToken));
     }
 }

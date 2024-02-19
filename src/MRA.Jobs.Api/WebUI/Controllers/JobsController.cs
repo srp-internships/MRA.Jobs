@@ -25,13 +25,6 @@ public class JobsController : ApiControllerBase
         return Ok(categories);
     }
     
-    [HttpGet("PagedList")]
-    [AllowAnonymous]
-    public async Task<IActionResult> GetPagedList([FromQuery] PagedListQuery<JobVacancyListDto> query)
-    {
-        var categories = await Mediator.Send(query);
-        return Ok(categories);
-    }
 
     [HttpGet("{slug}")]
     [AllowAnonymous]

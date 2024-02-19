@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.WebUtilities
 @using Microsoft.IdentityModel.Tokens
 @using MRA.BlazorComponents.Configuration
+@using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs
 @inject IJobsService JobsService
 @inject NavigationManager NavigationManager
 
@@ -14,13 +15,24 @@
                 <b>Jobs</b>
             </MudText>
             <MudSpacer/>
-            <MudItem lg="4">
+            <MudItem lg="6">
                 <MudTextField T="string" Variant="Variant.Outlined" TextChanged="SearchVacancy" Immediate="true"
                               @bind-Value="@_search" Label=@ContentService["VacanciesList:Search"] Class="rounded-lg"
                               Margin="Margin.Dense" OnAdornmentClick="@(() => _search = string.Empty)"
                               AdornmentIcon="@_adornmentIcon" Adornment="Adornment.End"/>
+                <div>
+                    @if (_selectedChipsTags != null)
+                    {
+                        @foreach (var selectedChipsTag in _selectedChipsTags)
+                        {
+                            <MudChip Text="@($"{ContentService["Tag"]}: {selectedChipsTag.Text}")" OnClose="Callback" CloseIcon="@Icons.Material.Filled.Close"/>
+                        }
+                    }
+                </div>
             </MudItem>
+
         </MudStack>
+
     </MudItem>
     <MudItem lg="12">
         <MudGrid>
@@ -64,7 +76,8 @@
                         </ChildContent>
                     </MudExpansionPanel>
                     <MudExpansionPanel Text="Tags" IsExpanded="true" Dense="true">
-                        <MudChipSet MultiSelection="true" Filter="true">
+                        <MudChipSet SelectedChipsChanged="SelectMudChip"
+                                    MultiSelection="true" Filter="true">
                             @if (_tags != null)
                             {
                                 @foreach (var tag in _tags.Order())
@@ -98,10 +111,10 @@
                                             @if (vacancy.Tags != null)
                                             {
                                                 <br/>
-                                                <MudChipSet @bind-SelectedChips="_selectedChip" MultiSelection="true" Filter="false">
+                                                <MudChipSet MultiSelection="true" Filter="false" Style="z-index: 9999">
                                                     @foreach (var tag in vacancy.Tags)
                                                     {
-                                                        <MudChip Text="@tag" Size="Size.Small"/>
+                                                        <MudChip Text="@tag" Size="Size.Small" Default="true"/>
                                                     }
                                                 </MudChipSet>
                                             }
@@ -135,7 +148,7 @@
                                         {
                                             <MudPagination Color="Color.Primary" Selected="_selectedPage" Size="Size.Small"
                                                            ShowFirstButton="true" ShowLastButton="true" MiddleCount="3" BoundaryCount="1"
-                                                           Count="@_pagedList.TotalPages" SelectedChanged="Callback"/>
+                                                           Count="@_pagedList.TotalPages" SelectedChanged="ChangePage"/>
                                         }
                                     </MudStack>
                                 </div>
@@ -150,13 +163,12 @@
 
 @code {
     private PagedList<JobVacancyListDto> _pagedList = new();
-    private PagedListQuery<JobVacancyListDto> _query = new();
-    private MudChip[] _selectedChip;
+    private GetJobsQueryOptions _query = new();
+    private List<MudChip> _selectedChipsTags;
     private string _selectedCategory = null;
     private List<string> _vacancyCategories;
 
     private List<string> _tags;
-    private string _selectedTagsValue = "";
     private string _search = "";
 
     private int _selectedPage = 1;
@@ -167,13 +179,20 @@
     {
         if (firstRender)
         {
-            _tags = (await HttpClient.GetFromJsonAsync<List<string>>(Configuration.GetJobsUrl("tags"))).Result;
-            await SearchVacancy();
+            _tags = (await HttpClient.GetFromJsonAsync<List<string>>(Configuration.GetJobsUrl("tags")))
+                .Result.Distinct().ToList();
+            await Initialize();
             StateHasChanged();
+            await SearchVacancy();
         }
     }
 
     protected override async Task OnInitializedAsync()
+    {
+        await Initialize();
+    }
+
+    private Task Initialize()
     {
         var currentUri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("page", out var page))
@@ -181,6 +200,13 @@
 
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("pageSize", out var pageSize))
             _query.PageSize = int.Parse(pageSize);
+
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("tags", out var tags))
+        {
+            _query.Tags = tags;
+            _selectedChipsTags = tags.ToString().Split(",")
+                .Select(tag => new MudChip { Text = tag }).ToList();
+        }
 
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("filters", out var filters))
         {
@@ -196,12 +222,11 @@
 
         if (_query.Page != null) _selectedPage = (int)_query.Page;
         if (_query.PageSize != null) _perPage = (int)_query.PageSize;
-
         StateHasChanged();
+        return Task.CompletedTask;
     }
 
-
-    private async Task Callback(int page)
+    private async Task ChangePage(int page)
     {
         _query.Page = page;
         _selectedPage = page;
@@ -223,9 +248,10 @@
         var queryParameters = new Dictionary<string, string>
         {
             { "page", _query.Page.ToString() },
-            { "pageSize", _query.PageSize.ToString() },
-            { "filters", _query.Filters }
+            { "pageSize", _query.PageSize.ToString() }
         };
+        if (!_query.Filters.IsNullOrEmpty()) queryParameters.Add("filters", _query.Filters);
+        if (!_query.Tags.IsNullOrEmpty()) queryParameters.Add("tags", _query.Tags);
         var queryString = QueryHelpers.AddQueryString("JobsPagedList", queryParameters);
         _pagedList = await JobsService.GetJobs(_query);
         StateHasChanged();
@@ -260,5 +286,35 @@
         _perPage = size;
         await SearchVacancy();
     }
+
+    private async Task SelectMudChip(MudChip[] chips)
+    {
+        _query.Tags = "";
+        foreach (var mudChip in chips)
+            _query.Tags += $"{mudChip.Text},";
+
+        _selectedChipsTags = chips.ToList();
+
+        _query.Tags = _query.Tags.TrimEnd(',');
+        await SearchVacancy();
+    }
+
+    private async Task Callback(MudChip chip)
+    {
+        List<string> tags = _query.Tags.Split(',')
+            .Where(tag => !string.IsNullOrWhiteSpace(tag))
+            .ToList();
+
+        tags.Remove(chip.Text.Replace($"{ContentService["Tag"]}: ", ""));
+
+        _query.Tags = string.Join(",", tags);
+
+        _selectedChipsTags = tags
+            .Select(tag => new MudChip { Text = tag })
+            .ToList();
+
+        await SearchVacancy();
+    }
+
 
 }

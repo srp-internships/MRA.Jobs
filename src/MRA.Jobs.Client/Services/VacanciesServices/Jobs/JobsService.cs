@@ -7,6 +7,7 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Vacancies.Note.Commands;
@@ -89,9 +90,10 @@ public class JobsService(
         return result.Result.Items;
     }
 
-    public async Task<PagedList<JobVacancyListDto>> GetJobs(PagedListQuery<JobVacancyListDto> query)
+    public async Task<PagedList<JobVacancyListDto>> GetJobs(GetJobsQueryOptions query)
     {
         var queryParam = System.Web.HttpUtility.ParseQueryString(string.Empty);
+        if (!query.Tags.IsNullOrEmpty()) queryParam["Tags"] = query.Tags;
         if (!query.Filters.IsNullOrEmpty()) queryParam["Filters"] = query.Filters;
         if (!query.Sorts.IsNullOrEmpty()) queryParam["Sorts"] = query.Sorts;
         if (query.Page != null) queryParam["Page"] = query.Page.ToString();
@@ -99,8 +101,8 @@ public class JobsService(
         string queryString = queryParam.ToString();
 
         var result =
-            await httpClient.GetFromJsonAsync<PagedList<JobVacancyListDto>>(configuration.GetJobsUrl("jobs") + "?" +
-                                                                            queryString);
+            await httpClient.GetFromJsonAsync<PagedList<JobVacancyListDto>>
+                ($"{configuration.GetJobsUrl("jobs")}?{queryString}");
         return result.Result;
     }
 
