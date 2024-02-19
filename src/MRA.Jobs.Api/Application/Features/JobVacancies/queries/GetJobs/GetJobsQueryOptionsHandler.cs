@@ -36,8 +36,8 @@ public class GetJobsQueryOptionsHandler(
 
         if (request.Tags is not null)
         {
-            var tags = request.Tags.Split(',');
-            jobs = jobs.Where(j => tags.Intersect(j.Tags.Select(t => t.Tag.Name)).Count() == tags.Length);
+            var tags = request.Tags.Split(',').Select(tag => tag.Trim());;
+            jobs = jobs.Where(j => tags.Intersect(j.Tags.Select(t => t.Tag.Name)).Count() == tags.Count());
         }
 
         PagedList<JobVacancyListDto> result = sieveProcessor.ApplyAdnGetPagedList(request,
