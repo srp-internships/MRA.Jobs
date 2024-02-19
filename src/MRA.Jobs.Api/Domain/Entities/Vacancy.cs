@@ -19,9 +19,9 @@ public abstract class Vacancy : BaseAuditableEntity
     public ICollection<Application> Applications { get; set; }
     public ICollection<VacancyTimelineEvent> History { get; set; }
     public ICollection<Test> Tests { get; set; }
-    public IEnumerable<VacancyQuestion> VacancyQuestions { get; set; }
-    public IEnumerable<VacancyTask> VacancyTasks { get; set; }
-    public ICollection<VacancyTag> Tags { get; set; }
+    public List<VacancyQuestion> VacancyQuestions { get; set; }
+    public List<VacancyTask> VacancyTasks { get; set; }
+    public List<VacancyTag> Tags { get; set; }
     public string Discriminator { get; set; }
     public string Note { get; set; }
 }

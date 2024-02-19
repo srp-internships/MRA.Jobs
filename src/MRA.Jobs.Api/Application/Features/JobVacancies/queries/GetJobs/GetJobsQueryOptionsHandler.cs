@@ -23,13 +23,13 @@ public class GetJobsQueryOptionsHandler(
                 .Include(i => i.VacancyTasks)
                 .Include(j=>j.Tags)
                 .ThenInclude(t=>t.Tag)
-                .Where(j => j.Slug != CommonVacanciesSlugs.NoVacancySlug)
+                .Where(j => j.Slug != CommonVacanciesSlugs.NoVacancySlug).AsNoTracking()
                 .ToListAsync(cancellationToken: cancellationToken))
             .AsEnumerable();
         
         if (request.CategorySlug is not null)
             jobs = jobs.Where(t => t.Category.Slug == request.CategorySlug);
-
+        
         if (request.SearchText is not null)
             jobs = jobs.Where(t => t.Title.ToLower().Trim().Contains(request.SearchText.ToLower().Trim()));
 
@@ -43,6 +43,31 @@ public class GetJobsQueryOptionsHandler(
         {
             DateTime now = DateTime.Now;
             jobs = jobs.Where(t => t.PublishDate <= now && t.EndDate >= now);
+        }
+
+        if (request.Tags is not null && request.Tags.Count > 0)
+        {
+            var newList = new List<JobVacancy>();
+            jobs = jobs.Where(j => j.Tags != null && j.Tags.Count != 0);
+            foreach (var jobVacancy in jobs)
+            {
+                var allRight = false;
+                foreach (var tag in jobVacancy.Tags)
+                {
+                    if (request.Tags.FirstOrDefault(s=>s==tag.Tag.Name) != null)
+                    {
+                        allRight = true;
+                    }
+                }
+                if (allRight)
+                {
+                    newList.Add(jobVacancy);
+                }
+
+               
+            }
+            jobs = newList;
+        // jobs = jobs.Where(j => j.Tags.Any(t => request.Tags.Contains(t.Tag.Name)));
         }
 
         PagedList<JobVacancyListDto> result = sieveProcessor.ApplyAdnGetPagedList(request,

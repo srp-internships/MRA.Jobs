@@ -14,6 +14,8 @@ public class ApplicationSieveProcessor(
     public PagedList<TResult> ApplyAdnGetPagedList<TSource, TResult>(SieveModel model, IQueryable<TSource> source,
         Func<TSource, TResult> converter)
     {
+        try
+        {
         source = Apply(model, source, applyPagination: false);
         int totalCount = source.Count();
         int pageSize = model.PageSize ?? Options.Value.DefaultPageSize;
@@ -31,12 +33,18 @@ public class ApplicationSieveProcessor(
             HasPreviousPage = currentPage > 1,
             HasNextPage = currentPage < totalPages
         };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     protected override SievePropertyMapper MapProperties(SievePropertyMapper mapper)
     {
         mapper.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
+        
         return mapper;
     }
 }
