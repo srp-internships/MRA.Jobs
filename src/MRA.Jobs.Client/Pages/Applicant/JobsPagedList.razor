@@ -25,7 +25,7 @@
                     {
                         @foreach (var selectedChipsTag in _selectedChipsTags)
                         {
-                            <MudChip Text="@($"{ContentService["Tag"]}: {selectedChipsTag.Text}")" OnClose="Callback" CloseIcon="@Icons.Material.Filled.Close"/>
+                            <MudChip Text="@($"{ContentService["Tag"]}: {selectedChipsTag}")" OnClose="OnCloseChip" CloseIcon="@Icons.Material.Filled.Close"/>
                         }
                     }
                 </div>
@@ -75,19 +75,6 @@
                             </MudNavMenu>
                         </ChildContent>
                     </MudExpansionPanel>
-                    <MudExpansionPanel Text="Tags" IsExpanded="true" Dense="true">
-                        <MudChipSet SelectedChipsChanged="SelectMudChip"
-                                    MultiSelection="true" Filter="true">
-                            @if (_tags != null)
-                            {
-                                @foreach (var tag in _tags.Order())
-                                {
-                                    <MudChip Text="@tag" Variant="Variant.Text" Color="Color.Default" SelectedColor="Color.Primary"/>
-                                }
-                            }
-                        </MudChipSet>
-                    </MudExpansionPanel>
-
                 </MudExpansionPanels>
 
 
@@ -99,28 +86,30 @@
                         @foreach (var vacancy in _pagedList.Items)
                         {
                             <MudItem xs="12" md="12" lg="6">
-                                <a href="/jobs/@vacancy.Slug">
-                                    <MudCard Class="rounded-lg">
-                                        <MudCardContent >
+
+                                <MudCard Class="rounded-lg">
+                                    <MudCardContent >
+                                        <a href="/jobs/@vacancy.Slug">
                                             <MudText Typo="Typo.h5">
                                                 <b>
                                                     <MudHighlighter Text="@vacancy.Title" HighlightedText="@_search" Markup="true"/>
                                                 </b>
                                             </MudText>
                                             <MudText > @vacancy.ShortDescription </MudText >
-                                            @if (vacancy.Tags != null)
-                                            {
-                                                <br/>
-                                                <MudChipSet MultiSelection="true" Filter="false" Style="z-index: 9999">
-                                                    @foreach (var tag in vacancy.Tags)
-                                                    {
-                                                        <MudChip Text="@tag" Size="Size.Small" Default="true"/>
-                                                    }
-                                                </MudChipSet>
-                                            }
-                                        </MudCardContent >
-                                    </MudCard >
-                                </a >
+                                        </a >
+                                        @if (vacancy.Tags != null)
+                                        {
+                                            <br/>
+                                            <MudChipSet MultiSelection="true" Filter="false" Style="z-index: 9999">
+                                                @foreach (var tag in vacancy.Tags)
+                                                {
+                                                    <MudChip Text="@tag" Size="Size.Small" Default="true" OnClick="@(() => OnSelectChip(tag))"/>
+                                                }
+                                            </MudChipSet>
+                                        }
+                                    </MudCardContent >
+                                </MudCard >
+
                             </MudItem>
                         }
                     </MudGrid>
@@ -164,7 +153,7 @@
 @code {
     private PagedList<JobVacancyListDto> _pagedList = new();
     private GetJobsQueryOptions _query = new();
-    private List<MudChip> _selectedChipsTags;
+    private List<string> _selectedChipsTags = new();
     private string _selectedCategory = null;
     private List<string> _vacancyCategories;
 
@@ -205,7 +194,7 @@
         {
             _query.Tags = tags;
             _selectedChipsTags = tags.ToString().Split(",")
-                .Select(tag => new MudChip { Text = tag }).ToList();
+                .ToList();
         }
 
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("filters", out var filters))
@@ -286,35 +275,23 @@
         _perPage = size;
         await SearchVacancy();
     }
-
-    private async Task SelectMudChip(MudChip[] chips)
+    
+    private async Task OnCloseChip(MudChip chip)
     {
         _query.Tags = "";
-        foreach (var mudChip in chips)
-            _query.Tags += $"{mudChip.Text},";
-
-        _selectedChipsTags = chips.ToList();
-
-        _query.Tags = _query.Tags.TrimEnd(',');
+        _selectedChipsTags.Remove(chip.Text.Replace($"{ContentService["Tag"]}: ", ""));
+        _query.Tags = string.Join(",", _selectedChipsTags);
         await SearchVacancy();
+        StateHasChanged();
     }
 
-    private async Task Callback(MudChip chip)
+    private async Task OnSelectChip(string tag)
     {
-        List<string> tags = _query.Tags.Split(',')
-            .Where(tag => !string.IsNullOrWhiteSpace(tag))
-            .ToList();
-
-        tags.Remove(chip.Text.Replace($"{ContentService["Tag"]}: ", ""));
-
-        _query.Tags = string.Join(",", tags);
-
-        _selectedChipsTags = tags
-            .Select(tag => new MudChip { Text = tag })
-            .ToList();
-
+        _selectedChipsTags.Add(tag);
+        _selectedChipsTags = _selectedChipsTags.Distinct().ToList();
+        _query.Tags = string.Join(",", _selectedChipsTags);
         await SearchVacancy();
+        StateHasChanged();
     }
-
 
 }
