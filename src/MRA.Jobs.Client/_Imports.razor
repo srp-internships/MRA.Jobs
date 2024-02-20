@@ -17,6 +17,7 @@
 @using MRA.Jobs.Client.Services.ApplicationService;
 @using MRA.Jobs.Application.Contracts.Dtos;
 @using Blazored.FluentValidation
+@using Blazored.LocalStorage
 @using MRA.Jobs.Application.Contracts.Applications.Responses
 @using MRA.Jobs.Application.Contracts.Common;
 @using Microsoft.AspNetCore.Authorization
@@ -36,3 +37,4 @@
 @inject IContentService ContentService;
 @inject IDialogService Dialog
 @inject ISnackbar Snackbar
+@inject ILocalStorageService LocalStorageService;

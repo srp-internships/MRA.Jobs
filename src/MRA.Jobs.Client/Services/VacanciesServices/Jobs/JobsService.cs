@@ -94,7 +94,7 @@ public class JobsService(
     {
         var queryParam = System.Web.HttpUtility.ParseQueryString(string.Empty);
         if (!query.Tags.IsNullOrEmpty()) queryParam["Tags"] = query.Tags;
-        if (!query.Filters.IsNullOrEmpty()) queryParam["Filters"] = query.Filters;
+        if (!query.Filters.IsNullOrEmpty()) queryParam["Filters"] = query.Filters.Replace("Category","Category.Name");
         if (!query.Sorts.IsNullOrEmpty()) queryParam["Sorts"] = query.Sorts;
         if (query.Page != null) queryParam["Page"] = query.Page.ToString();
         if (query.PageSize != null) queryParam["PageSize"] = query.PageSize.ToString();
@@ -103,7 +103,8 @@ public class JobsService(
         var result =
             await httpClient.GetFromJsonAsync<PagedList<JobVacancyListDto>>
                 ($"{configuration.GetJobsUrl("jobs")}?{queryString}");
-        return result.Result;
+        snackbar.ShowIfError(result, contentService["ServerIsNotResponding"]);
+        return result.Success? result.Result : null;
     }
 
     public async Task<ApiResponse> OnDelete(string slug)

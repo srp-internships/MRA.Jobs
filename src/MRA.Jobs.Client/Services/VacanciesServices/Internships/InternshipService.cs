@@ -8,6 +8,7 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Delete;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternships;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Vacancies.Note.Commands;
 using MRA.Jobs.Client.Components.Dialogs;
@@ -76,12 +77,21 @@ public class InternshipService(
         return response.HttpStatusCode == HttpStatusCode.OK;
     }
 
-    public async Task<ApiResponse<PagedList<InternshipVacancyListResponse>>> GetAll()
+    public async Task<PagedList<InternshipVacancyListResponse>> GetAll(GetInternshipsQueryOptions query)
     {
+        var queryParam = System.Web.HttpUtility.ParseQueryString(string.Empty);
+        if (!query.Tags.IsNullOrEmpty()) queryParam["Tags"] = query.Tags;
+        if (!query.Filters.IsNullOrEmpty()) queryParam["Filters"] = query.Filters.Replace("Category", "Category.Name");
+        if (!query.Sorts.IsNullOrEmpty()) queryParam["Sorts"] = query.Sorts;
+        if (query.Page != null) queryParam["Page"] = query.Page.ToString();
+        if (query.PageSize != null) queryParam["PageSize"] = query.PageSize.ToString();
+        string queryString = queryParam.ToString();
+
         var response =
-            await httpClientService.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>(
-                configuration.GetJobsUrl("internships"));
-        return response;
+            await httpClientService.GetFromJsonAsync<PagedList<InternshipVacancyListResponse>>
+                ($"{configuration.GetJobsUrl("internships")}?{queryString}");
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"]);
+        return response.Success ? response.Result : null;
     }
 
     public async Task<InternshipVacancyResponse> GetBySlug(string slug)

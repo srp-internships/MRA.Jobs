@@ -8,6 +8,7 @@ using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Delete;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Commands.Update;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.Vacancies.Note.Commands;
 using MRA.Jobs.Client.Components.Dialogs;
@@ -96,13 +97,24 @@ public class TrainingService(
             UpdateCommand);
     }
 
-    public async Task<ApiResponse<PagedList<TrainingVacancyListDto>>> GetAll()
+    public async Task<PagedList<TrainingVacancyListDto>> GetAll(GetTrainingsQueryOptions queryOptions)
     {
         await authenticationStateProvider.GetAuthenticationStateAsync();
+        
+        var queryParam = System.Web.HttpUtility.ParseQueryString(string.Empty);
+        if (!queryOptions.Tags.IsNullOrEmpty()) queryParam["Tags"] = queryOptions.Tags;
+        if (!queryOptions.Filters.IsNullOrEmpty()) queryParam["Filters"] = queryOptions.Filters.Replace("Category","Category.Name");
+        if (!queryOptions.Sorts.IsNullOrEmpty()) queryParam["Sorts"] = queryOptions.Sorts;
+        if (queryOptions.Page != null) queryParam["Page"] = queryOptions.Page.ToString();
+        if (queryOptions.PageSize != null) queryParam["PageSize"] = queryOptions.PageSize.ToString();
+        string queryString = queryParam.ToString();
+
         var result =
-            await httpClientService.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>(
-                configuration.GetJobsUrl("trainings"));
-        return result;
+            await httpClientService.GetFromJsonAsync<PagedList<TrainingVacancyListDto>>
+                ($"{configuration.GetJobsUrl("trainings")}?{queryString}");
+        
+        snackbar.ShowIfError(result, contentService["ServerIsNotResponding"]);
+        return result.Success ? result.Result : null;
     }
 
     public async Task<TrainingVacancyDetailedResponse> GetBySlug(string slug)
