@@ -1,4 +1,5 @@
 ﻿@page "/Dashboard/Applications"
+@using MRA.BlazorComponents.Dialogs
 @using MRA.BlazorComponents.HttpClient.Services
 @using MRA.BlazorComponents.Configuration
 @using System.Web
@@ -7,6 +8,7 @@
 @inject IHttpClientService HttpClientService
 @inject ILocalStorageService LocalStorageService
 @inject IConfiguration Configuration
+@inject IDialogService DialogService
 <MudHidden Breakpoint="Breakpoint.LgAndUp">
     <MudCard Class="rounded-lg mud-elevation-4">
         <MudCardContent>
@@ -106,6 +108,9 @@
         <MudTh>
             @ContentService["Dashboard:Appilcations:Status name"]
         </MudTh>
+		<MudTh>
+			@ContentService["Header:SendMessage"]
+		</MudTh>
         <MudTh>
             @ContentService["Dashboard:Appilcations:Action"]
         </MudTh>
@@ -137,6 +142,11 @@
         <MudTd DataLabel=@ContentService["Internships:Title"]>@context.VacancyTitle</MudTd>
         <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.CreatedAt.ToString("D")</MudTd>
         <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Status name"]>@context.StatusName</MudTd>
+		<MudTd>
+			<MudButton Variant="Variant.Filled" OnClick="@(() => OpenDialog(context.User.PhoneNumber))">
+				<MudIcon Icon="@Icons.Material.Filled.Message" />
+				</MudButton>
+		</MudTd>
         <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Name"]>
             <MudLink Color="Color.Primary" Href="@($"/ApplicationDetail/{context.Slug}/{context.ApplicantUsername}")">more</MudLink>
         </MudTd>
@@ -261,6 +271,12 @@
 
         return filters.Any() ? HttpUtility.UrlEncode(string.Join(",", filters)) : null;
     }
-
+	public void OpenDialog(string defaultPhoneNumber)
+	{
+		var parameters = new DialogParameters();
+		parameters.Add("DefaultPhoneNumber", defaultPhoneNumber);
+		var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true };
+		DialogService.Show<DialogMessageSender>("Send message", parameters, options);
+	}
 
 }

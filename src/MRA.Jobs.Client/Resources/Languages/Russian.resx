@@ -903,6 +903,9 @@
   <data name="Applicateons:Filters">
     <value>Фильтры</value>
   </data>
+  <data name="Header:SendMessage" xml:space="preserve">
+    <value>Отправить сообщение</value>
+  </data>
   <data name="Dashboard:Appilcations:Vacancy title" xml:space="preserve">
     <value>Заголовок вакансии</value>
 </data>

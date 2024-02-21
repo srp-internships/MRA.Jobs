@@ -408,6 +408,9 @@
     <data name="Profile:SelectLanguage" xml:space="preserve">
     <value>Select Language</value>
   </data>
+    <data name="Header:SendMessage" xml:space="preserve">
+    <value>Send message</value>
+  </data>
     <data name="Dashboard:Appilcations:Applications" xml:space="preserve">
     <value>Applications</value>
   </data>
