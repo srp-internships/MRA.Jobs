@@ -232,9 +232,9 @@
             if (response2.Success)
                 users = response2.Result.Items;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // ignored
+            Console.WriteLine($"ddd {ex}");
         }
 
         var response = await HttpClientService.GetFromJsonAsync<PagedList<ApplicationListDto>>(Configuration.GetJobsUrl("applications"), query);
