@@ -11,6 +11,7 @@ using System.Reflection;
 using Blazored.LocalStorage;
 using Microsoft.FeatureManagement;
 using MRA.BlazorComponents;
+using MRA.BlazorComponents.Dialogs;
 using MRA.BlazorComponents.DynamicPages;
 using MRA.BlazorComponents.HttpClient;
 using MRA.Identity.Application.Contract.Skills.Command;
@@ -85,6 +86,7 @@ builder.Services.AddLocalization();
 builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IDateTimeConvertToStringService, DateTimeConverterToStringService>();
 builder.Services.AddScoped<IUserPreferencesService, UserPreferencesService>();
+builder.Services.AddDialogs();
 builder.Services.AddBlazoredLocalStorage();
 
 

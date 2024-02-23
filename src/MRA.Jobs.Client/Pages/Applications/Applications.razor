@@ -228,9 +228,9 @@
         var users = new List<UserResponse>();
         try
         {
-            var response2 = await HttpClientService.GetFromJsonAsync<List<UserResponse>>(Configuration.GetIdentityUrl("user"));
+            var response2 = await HttpClientService.GetFromJsonAsync<PagedList<UserResponse>>(Configuration.GetIdentityUrl("user"));
             if (response2.Success)
-                users = response2.Result;
+                users = response2.Result.Items;
         }
         catch (Exception)
         {
