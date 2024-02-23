@@ -88,7 +88,6 @@ builder.Services.AddLocalization();
 builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IDateTimeConvertToStringService, DateTimeConverterToStringService>();
 builder.Services.AddScoped<IUserPreferencesService, UserPreferencesService>();
-builder.Services.AddDialogs();
 builder.Services.AddBlazoredLocalStorage();
 
 
