@@ -36,7 +36,7 @@ public class GetJobsQueryOptionsHandler(
 
         if (request.Tags is not null)
         {
-            var tags = request.Tags.Split(',').Select(tag => tag.Trim());;
+            var tags = request.Tags.Split(',').Select(tag => tag.Trim());
             jobs = jobs.Where(j => tags.Intersect(j.Tags.Select(t => t.Tag.Name)).Count() == tags.Count());
         }
 
