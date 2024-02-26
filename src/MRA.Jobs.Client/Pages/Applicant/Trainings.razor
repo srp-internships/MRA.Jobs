@@ -78,74 +78,107 @@
 
             </MudItem>
             <MudItem xl="10" lg="9" md="8" sm="12" Style="bottom: 0; height: 100%">
-                @if (_pagedList?.Items != null)
+                @if (_pagedList == null)
                 {
                     <MudGrid>
-                        @foreach (var vacancy in _pagedList.Items)
+                        @for (int i = 0; i < 10; i++)
                         {
                             <MudItem xs="12" md="12" lg="6">
-
                                 <MudCard Class="rounded-lg">
-                                    <a href="/trainings/@vacancy.Slug">
-                                        <MudCardContent >
-
-                                            <MudText Typo="Typo.h5">
-                                                <b>
-                                                    <MudHighlighter Text="@vacancy.Title" HighlightedText="@_search" Markup="true"/>
-                                                </b>
-                                            </MudText>
-                                            <MudText > @vacancy.ShortDescription </MudText >
-
-                                            @if (vacancy.Tags != null)
-                                            {
-                                                <br/>
-                                                <div @onclick:stopPropagation="true" @onclick:preventDefault="true">
-                                                    @foreach (var tag in vacancy.Tags)
-                                                    {
-                                                        <MudChip Text="@tag" Size="Size.Small" Default="true"
-                                                                 OnClick="@((MouseEventArgs e) => OnSelectChip(e, tag))"/>
-                                                    }
-                                                </div>
-                                            }
-
-                                        </MudCardContent >
-                                    </a >
-                                </MudCard >
-
+                                    <MudCardContent>
+                                        <MudSkeleton Animation="Animation.Wave" Width="60%" Height="40px"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="30%"/>
+                                        <br/>
+                                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="100px"/>
+                                        <br/>
+                                        <MudStack Row="true">
+                                            <MudSkeleton Animation="Animation.Wave" Width="20%"/>
+                                            <MudSkeleton Animation="Animation.Wave" Width="10%"/>
+                                            <MudSkeleton Animation="Animation.Wave" Width="15%"/>
+                                            <MudSkeleton Animation="Animation.Wave" Width="20%"/>
+                                        </MudStack>
+                                    </MudCardContent>
+                                </MudCard>
                             </MudItem>
                         }
+
                     </MudGrid>
-                    <br/>
-                    <MudStack Row="true" Style="bottom: 0">
-                        <MudSpacer/>
-                        <MudItem>
-                            <div class="d-flex flex-grow-1">
-                                <div class="flex-none d-flex py-lg-3">
-                                    <MudText Typo="Typo.body2" Style="bottom: 0; top: auto">
-                                        @ContentService["Per Page"]
-                                    </MudText>
+                }
+                else
+                {
+                    @if (_pagedList?.Items?.Count != 0)
+                    {
+                        <MudGrid>
+                            @foreach (var vacancy in _pagedList.Items)
+                            {
+                                <MudItem xs="12" md="12" lg="6">
+
+                                    <MudCard Class="rounded-lg">
+                                        <a href="/trainings/@vacancy.Slug">
+                                            <MudCardContent >
+
+                                                <MudText Typo="Typo.h5">
+                                                    <b>
+                                                        <MudHighlighter Text="@vacancy.Title" HighlightedText="@_search" Markup="true"/>
+                                                    </b>
+                                                </MudText>
+                                                <MudText > @vacancy.ShortDescription </MudText >
+
+                                                @if (vacancy.Tags != null)
+                                                {
+                                                    <br/>
+                                                    <div @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                                                        @foreach (var tag in vacancy.Tags)
+                                                        {
+                                                            <MudChip Text="@tag" Size="Size.Small" Default="true"
+                                                                     OnClick="@((MouseEventArgs e) => OnSelectChip(e, tag))"/>
+                                                        }
+                                                    </div>
+                                                }
+
+                                            </MudCardContent >
+                                        </a >
+                                    </MudCard >
+
+                                </MudItem>
+                            }
+                        </MudGrid>
+                        <br/>
+                        <MudStack Row="true" Style="bottom: 0">
+                            <MudSpacer/>
+                            <MudItem>
+                                <div class="d-flex flex-grow-1">
+                                    <div class="flex-none d-flex py-lg-3">
+                                        <MudText Typo="Typo.body2" Style="bottom: 0; top: auto">
+                                            @ContentService["Per Page"]
+                                        </MudText>
+                                    </div>
+                                    <div class=""></div>
+                                    <div style="margin-left:5px; ">
+                                        <MudStack Row="true">
+                                            <MudSelect Dense="true" T="int" Value="@_perPage" ValueChanged="PageSizeChange"
+                                                       Variant="Variant.Outlined" Margin="Margin.Dense" Style="width: 75px; font-size: 10px;">
+                                                <MudSelectItem T="int" Value="10"/>
+                                                <MudSelectItem T="int" Value="20"/>
+                                                <MudSelectItem T="int" Value="30"/>
+                                                <MudSelectItem T="int" Value="50"/>
+                                            </MudSelect>
+                                            @if (_pagedList.TotalPages > 1)
+                                            {
+                                                <MudPagination Color="Color.Primary" Selected="_selectedPage" Size="Size.Small"
+                                                               ShowFirstButton="true" ShowLastButton="true" MiddleCount="3" BoundaryCount="1"
+                                                               Count="@_pagedList.TotalPages" SelectedChanged="ChangePage"/>
+                                            }
+                                        </MudStack>
+                                    </div>
                                 </div>
-                                <div class=""></div>
-                                <div style="margin-left:5px; ">
-                                    <MudStack Row="true">
-                                        <MudSelect Dense="true" T="int" Value="@_perPage" ValueChanged="PageSizeChange"
-                                                   Variant="Variant.Outlined" Margin="Margin.Dense" Style="width: 75px; font-size: 10px;">
-                                            <MudSelectItem T="int" Value="10"/>
-                                            <MudSelectItem T="int" Value="20"/>
-                                            <MudSelectItem T="int" Value="30"/>
-                                            <MudSelectItem T="int" Value="50"/>
-                                        </MudSelect>
-                                        @if (_pagedList.TotalPages > 1)
-                                        {
-                                            <MudPagination Color="Color.Primary" Selected="_selectedPage" Size="Size.Small"
-                                                           ShowFirstButton="true" ShowLastButton="true" MiddleCount="3" BoundaryCount="1"
-                                                           Count="@_pagedList.TotalPages" SelectedChanged="ChangePage"/>
-                                        }
-                                    </MudStack>
-                                </div>
-                            </div>
-                        </MudItem>
-                    </MudStack>
+                            </MudItem>
+                        </MudStack>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.h5" Style="margin:50px;">@ContentService["VacanciesList:NoJobs"]</MudText>
+                    }
                 }
             </MudItem>
         </MudGrid>
