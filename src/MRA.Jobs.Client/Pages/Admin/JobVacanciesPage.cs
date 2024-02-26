@@ -4,6 +4,7 @@ using BlazorMonaco.Editor;
 using MRA.BlazorComponents.Snackbar.Extensions;
 using MRA.Jobs.Application.Contracts.Dtos;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
@@ -14,34 +15,38 @@ namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class JobVacanciesPage
 {
-    private IEnumerable<JobVacancyListDto> _pagedData;
+    private GetJobsQueryOptions _query = new();
     private MudTable<JobVacancyListDto> _table;
-
-    private int _totalItems;
+    
     private string _searchString;
 
     private async Task<TableData<JobVacancyListDto>> ServerReload(TableState state)
     {
-        IEnumerable<JobVacancyListDto> data = await JobsService.GetJobs();
-        await Task.Delay(100);
-        data = data.Where(element =>
+        _query = new()
         {
-            if (string.IsNullOrWhiteSpace(_searchString))
-                return true;
-            if (element.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-                return true;
-            return false;
-        }).ToArray();
-        _totalItems = data.Count();
-
-        _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
-        return new TableData<JobVacancyListDto>() { TotalItems = _totalItems, Items = _pagedData };
+            Page = state.Page+1,
+            PageSize = state.PageSize,
+            Filters = GetFilters()
+        };
+        var result = await JobsService.GetJobs(_query);
+        return new TableData<JobVacancyListDto>()
+        {
+            TotalItems = result.TotalCount,
+            Items = result.Items
+        };
     }
-
+    
     private void OnSearch(string text)
     {
         _searchString = text;
         _table.ReloadServerData();
+    }
+    
+    private string GetFilters()
+    {
+        var filters = new List<string>();
+        if (!string.IsNullOrEmpty(_searchString)) filters.Add($"Title@={_searchString}");
+        return filters.Any() ? string.Join(",", filters) : "";
     }
 
 
@@ -66,7 +71,6 @@ public partial class JobVacanciesPage
     }
 
     private List<CategoryResponse> _category;
-    private List<JobVacancyListDto> _vacancies;
     private bool _panelOpenState;
     private bool _isInserting;
     private bool _isUpdating = true;
@@ -156,7 +160,7 @@ public partial class JobVacanciesPage
 
     async Task OnDeleteClick(string slug)
     {
-        var vacancy = _vacancies.FirstOrDefault(c => c.Slug == slug);
+        var vacancy = _table.Items.FirstOrDefault(c => c.Slug == slug);
         var parameters = new DialogParameters<DialogMudBlazor>
         {
             { x => x.ContentText, "Do you really want to delete this vacancy?" },
@@ -176,7 +180,7 @@ public partial class JobVacanciesPage
 
             if (response.Success)
             {
-                _vacancies.Remove(vacancy);
+                await _table.ReloadServerData();
             }
 
             Clear();
@@ -230,7 +234,6 @@ public partial class JobVacanciesPage
         try
         {
             _category = await JobsService.GetAllCategory() ?? throw new Exception("Category fetch failed");
-            _vacancies = await JobsService.GetJobs() ?? throw new Exception("Job fetch failed");
         }
         catch (Exception)
         {

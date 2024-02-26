@@ -36,7 +36,7 @@ public class ApplicationSieveProcessor(
     protected override SievePropertyMapper MapProperties(SievePropertyMapper mapper)
     {
         mapper.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
+        
         return mapper;
     }
 }
