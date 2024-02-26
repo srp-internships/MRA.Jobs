@@ -6,7 +6,5 @@ namespace MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternsh
 
 public class GetInternshipsQueryOptions : PagedListQuery<InternshipVacancyListResponse>
 {
-    public string SearchText { get; set; }
-    public string CategorySlug { get; set; }
-    public bool CheckDate { get; set; }
+   public string Tags { get; set; }
 }

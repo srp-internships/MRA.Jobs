@@ -3,7 +3,9 @@ using BlazorMonaco;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components.Web;
 using MRA.BlazorComponents.Snackbar.Extensions;
+using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Dtos;
+using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
@@ -14,35 +16,40 @@ namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class TrainingVacanciesPage
 {
-    private IEnumerable<TrainingVacancyListDto> _pagedData;
+    private GetTrainingsQueryOptions _query = new();
     private MudTable<TrainingVacancyListDto> _table;
-
-    private int _totalItems;
+    
     private string _searchString;
 
     private async Task<TableData<TrainingVacancyListDto>> ServerReload(TableState state)
     {
-        IEnumerable<TrainingVacancyListDto> data = (await TrainingService.GetAll()).Result.Items;
-        await Task.Delay(100);
-        data = data.Where(element =>
+        _query = new()
         {
-            if (string.IsNullOrWhiteSpace(_searchString))
-                return true;
-            if (element.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-                return true;
-            return false;
-        }).ToArray();
-        _totalItems = data.Count();
-
-        _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
-        return new TableData<TrainingVacancyListDto>() { TotalItems = _totalItems, Items = _pagedData };
+            Page = state.Page+1,
+            PageSize = state.PageSize,
+            Filters = GetFilters()
+        };
+        var result = await TrainingService.GetAll(_query);
+        return new TableData<TrainingVacancyListDto>()
+        {
+            TotalItems = result.TotalCount,
+            Items = result.Items
+        };
     }
-
+    
     private void OnSearch(string text)
     {
         _searchString = text;
         _table.ReloadServerData();
     }
+    
+    private string GetFilters()
+    {
+        var filters = new List<string>();
+        if (!string.IsNullOrEmpty(_searchString)) filters.Add($"Title@={_searchString}");
+        return filters.Any() ? string.Join(",", filters) : "";
+    }
+
 
     private bool _serverError = false;
     private bool _panelOpenState;
@@ -55,7 +62,6 @@ public partial class TrainingVacanciesPage
     private string _createOrEditHeader = "New Training Vacancy";
     private List<VacancyQuestionDto> _questions = new();
     private List<CategoryResponse> _categories;
-    private List<TrainingVacancyListDto> _trainings;
     private List<VacancyTaskDto> _tasks = new();
     private TimeSpan? _publishDateTime;
     private TimeSpan? _endDateTime;
@@ -144,7 +150,7 @@ public partial class TrainingVacanciesPage
 
     async Task OnDeleteClick(string slug)
     {
-        var vacancy = _trainings.FirstOrDefault(c => c.Slug == slug);
+        var vacancy = _table.Items.FirstOrDefault(c => c.Slug == slug);
         var parameters = new DialogParameters<DialogMudBlazor>
         {
             { x => x.ContentText, "Do you really want to delete this vacancy?" },
@@ -163,7 +169,7 @@ public partial class TrainingVacanciesPage
             Snackbar.ShowIfError(response, ContentService["ServerIsNotResponding"], "Deleted");
             if (response.Success)
             {
-                _trainings.Remove(vacancy);
+                await _table.ReloadServerData();
             }
 
             Clear();
@@ -215,14 +221,7 @@ public partial class TrainingVacanciesPage
     }
 
     private async Task LoadData()
-    {
-        var trainingsResponse = await TrainingService.GetAll();
-        Snackbar.ShowIfError(trainingsResponse, ContentService["ServerIsNotResponding"]);
-        if (trainingsResponse.Success)
-        {
-            _trainings = trainingsResponse.Result.Items;
-        }
-
+    { 
         var categoriesResponse = await CategoryService.GetAllCategory();
         Snackbar.ShowIfError(categoriesResponse, ContentService["ServerIsNotResponding"]);
 

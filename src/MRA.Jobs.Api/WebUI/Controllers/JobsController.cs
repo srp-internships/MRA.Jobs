@@ -1,11 +1,13 @@
 ﻿using System.Runtime.InteropServices.JavaScript;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.CreateJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.DeleteJobVacancy;
 using MRA.Jobs.Application.Contracts.JobVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
+using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Infrastructure.Identity;
 
 namespace MRA.Jobs.Web.Controllers;
@@ -22,6 +24,7 @@ public class JobsController : ApiControllerBase
         var categories = await Mediator.Send(query);
         return Ok(categories);
     }
+    
 
     [HttpGet("{slug}")]
     [AllowAnonymous]

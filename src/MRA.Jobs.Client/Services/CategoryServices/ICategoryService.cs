@@ -21,11 +21,7 @@ public interface ICategoryService
     Task OnDeleteClick(string slug);
     Task OnSaveCreateClick();
     void OnUpdateClick(CategoryResponse updateEntity);
-    Task<ApiResponse<List<TrainingCategoriesResponce>>> GetTrainingCategories();
-    Task<List<TrainingCategoriesResponce>> GetTrainingCategoriesSinceCheckDate();
-    Task<ApiResponse<List<InternshipCategoriesResponce>>> GetInternshipCategories();
-    Task<List<InternshipCategoriesResponce>> GetInternshipCategoriesSinceCheckDate();
-
-    Task<ApiResponse<List<JobCategoriesResponse>>> GetJobCategories();
-    Task<List<JobCategoriesResponse>> GetJobCategoriesSinceCheckDate();
+    Task<List<TrainingCategoriesResponce>> GetTrainingCategories();
+    Task<List<InternshipCategoriesResponse>> GetInternshipCategories();
+    Task<List<JobCategoriesResponse>> GetJobCategories();
 }
