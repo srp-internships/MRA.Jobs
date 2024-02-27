@@ -255,8 +255,8 @@
 
     private async Task OnAddNoteAsync()
     {
-        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", new DialogParameters(), 
-            new(){MaxWidth = MaxWidth.Large});
+        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", new DialogParameters(),
+            new() { MaxWidth = MaxWidth.Large });
         var result = await dialog.Result;
         if (result.Canceled) return;
         var note = result.Data.ToString();
