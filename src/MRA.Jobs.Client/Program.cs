@@ -26,7 +26,6 @@ using MRA.Jobs.Client.Services.VacanciesServices;
 using MRA.Jobs.Client.Services.VacanciesServices.Internships;
 using MRA.Jobs.Client.Services.VacanciesServices.Jobs;
 using MRA.Jobs.Client.Services.VacanciesServices.Training;
-using MRA.BlazorComponents.Dialogs;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddMudServices();
