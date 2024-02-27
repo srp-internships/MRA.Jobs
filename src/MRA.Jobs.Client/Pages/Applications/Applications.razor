@@ -1,4 +1,5 @@
 ﻿@page "/Dashboard/Applications"
+@using MRA.BlazorComponents.Dialogs
 @using MRA.BlazorComponents.HttpClient.Services
 @using MRA.BlazorComponents.Configuration
 @using System.Web
@@ -106,6 +107,9 @@
         <MudTh>
             @ContentService["Dashboard:Appilcations:Status name"]
         </MudTh>
+		<MudTh>
+			@ContentService["Header:SendMessage"]
+		</MudTh>
         <MudTh>
             @ContentService["Dashboard:Appilcations:Action"]
         </MudTh>
@@ -137,6 +141,12 @@
         <MudTd DataLabel=@ContentService["Internships:Title"]>@context.VacancyTitle</MudTd>
         <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.CreatedAt.ToString("D")</MudTd>
         <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Status name"]>@context.StatusName</MudTd>
+		<MudTd>
+			@if (context.User.PhoneNumberConfirmed)
+			{ 
+				<ButtonMessageSender DefaultPhoneNumber=@context.User.PhoneNumber></ButtonMessageSender>
+			} 
+		</MudTd>
         <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Name"]>
             <MudLink Color="Color.Primary" Href="@($"/ApplicationDetail/{context.Slug}/{context.ApplicantUsername}")">more</MudLink>
         </MudTd>
@@ -261,6 +271,4 @@
 
         return filters.Any() ? HttpUtility.UrlEncode(string.Join(",", filters)) : null;
     }
-
-
 }

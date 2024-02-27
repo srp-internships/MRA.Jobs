@@ -11,6 +11,7 @@ using System.Reflection;
 using Blazored.LocalStorage;
 using Microsoft.FeatureManagement;
 using MRA.BlazorComponents;
+using MRA.BlazorComponents.Dialogs;
 using MRA.BlazorComponents.DynamicPages;
 using MRA.BlazorComponents.HttpClient;
 using MRA.Identity.Application.Contract.Skills.Command;
@@ -64,6 +65,7 @@ builder.Services.AddAuthorizationCore(s =>
 //Mra.BlazorComponents
 builder.Services.AddHttpClientService();
 builder.Services.AddMraPages();
+builder.Services.AddDialogs();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 //Mra.BlazorComponents
 
