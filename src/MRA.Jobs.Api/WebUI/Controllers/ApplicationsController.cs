@@ -7,6 +7,7 @@ using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationBySlug;
+using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
@@ -33,7 +34,7 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
 
     [HttpGet]
     public async Task<ActionResult<PagedList<ApplicationListDto>>> GetAll(
-        [FromQuery] PagedListQuery<ApplicationListDto> query)
+        [FromQuery] GetApplicationsByFiltersQuery query)
     {
         var applications = await Mediator.Send(query);
         return Ok(applications);
