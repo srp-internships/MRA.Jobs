@@ -1,5 +1,6 @@
 ﻿@page "/ApplicationDetail/{Slug}/{ApplicationUserName}"
 @page "/ApplicationDetail/{Slug}"
+@using MRA.BlazorComponents.Dialogs
 @using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote
 @using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Services.Profile
@@ -77,6 +78,12 @@
                                             <MudRadio Option="@SendEmailVariant.CustomEmail" Color="Color.Primary">@SendEmailVariant.CustomEmail</MudRadio>
                                             <MudRadio Option="@SendEmailVariant.AutoEmail" Color="Color.Primary">@SendEmailVariant.AutoEmail</MudRadio>
                                         </MudRadioGroup>
+										<MudTd>
+											@if (_applicant.PhoneNumberConfirmed)
+											{
+												<ButtonMessageSender DefaultPhoneNumber=@_applicant.PhoneNumber></ButtonMessageSender>	
+											} 
+										</MudTd>
                                         @if (_emailVariant == SendEmailVariant.CustomEmail)
                                         {
                                             <MudText Typo="Typo.body2">Subject:</MudText>
