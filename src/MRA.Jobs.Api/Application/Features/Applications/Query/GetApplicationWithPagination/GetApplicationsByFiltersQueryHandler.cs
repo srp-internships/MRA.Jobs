@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,7 +42,7 @@ public class GetApplicationsByFiltersQueryHandler(
             if (!request.PhoneNumber.IsNullOrEmpty()) queryParameters.Add("PhoneNumber", request.PhoneNumber.Trim());
             if (!request.Email.IsNullOrEmpty()) queryParameters.Add("Email", request.Email.Trim());
             if (!request.Skills.IsNullOrEmpty()) queryParameters.Add("Skills", request.Skills.Trim());
-            
+
             var queryString = QueryHelpers.AddQueryString(configuration["MraJobs-IdentityApi:Users"], queryParameters);
             try
             {
@@ -59,6 +58,12 @@ public class GetApplicationsByFiltersQueryHandler(
                 // ignored
             }
         }
+
+        var roles = currentUser.GetRoles();
+        if(roles.All(r => r != "Reviewer"))
+            applications= applications.Where(a =>
+                a.ApplicantUsername == currentUser.GetUserName() && a.Vacancy.Discriminator != "NoVacancy");
+       
 
         var result = sieveProcessor.ApplyAdnGetPagedList(request, applications, mapper.Map<ApplicationListDto>);
         result.Items.ForEach(application =>
