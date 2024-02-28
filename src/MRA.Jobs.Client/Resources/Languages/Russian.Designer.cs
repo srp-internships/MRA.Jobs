@@ -375,6 +375,15 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Отправить email.
+        /// </summary>
+        internal static string Header_SendEmail {
+            get {
+                return ResourceManager.GetString("Header:SendEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Команда.
         /// </summary>
         internal static string Header_Team {
