@@ -13,7 +13,6 @@ public class Application : BaseAuditableEntity
     [Sieve(CanFilter = true, CanSort = true)]
     public DateTime AppliedAt { get; set; } = DateTime.UtcNow;
     
-    [Sieve(CanFilter = true, CanSort = true)]
     public ApplicationStatus Status { get; set; }
     
     [Sieve(CanFilter = true, CanSort = true)]
