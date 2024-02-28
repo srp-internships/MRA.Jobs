@@ -1,8 +1,6 @@
 ﻿@page "/ApplicationDetail/{Slug}/{ApplicationUserName}"
 @page "/ApplicationDetail/{Slug}"
-@using MRA.BlazorComponents.Dialogs
 @using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote
-@using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using System.Net
 @using Microsoft.IdentityModel.Tokens
@@ -171,23 +169,18 @@
     private string _cvUrl;
 
     private UpdateApplicationStatusCommand _applicationStatusCommand;
-    private UserProfileResponse _applicant;
     private ApplicationDetailsDto _application;
-    BlazoredTextEditor _quillHtml;
-    private SendEmailVariant _emailVariant = SendEmailVariant.NotSend;
-    private string _emailSubject = "";
 
     private async Task LoadApplication()
     {
         _application = await ApplicationService.GetApplicationDetails(Slug);
-        StateHasChanged();
         if (_application.History.Any())
             _application.History = _application.History.OrderByDescending(h => h.Time).ToList();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        _applicant = await UserProfileService.Get(ApplicationUserName);
+        await UserProfileService.Get(ApplicationUserName);
         await LoadApplication();
         _cvUrl = $"{Configuration.GetJobsUrl()}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
         SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
@@ -196,8 +189,8 @@
 
     private async Task OnAddNoteAsync()
     {
-        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", new DialogParameters(), 
-            new(){MaxWidth = MaxWidth.Large});
+        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", new DialogParameters(),
+            new() { MaxWidth = MaxWidth.Large });
         var result = await dialog.Result;
         if (result.Canceled) return;
         var note = result.Data.ToString();
@@ -221,31 +214,17 @@
     {
         if (Enum.TryParse(SelectedStatus, out ApplicationStatusDto.ApplicationStatus selectedEnumStatus))
         {
-            if (_emailVariant == SendEmailVariant.CustomEmail && _emailSubject.IsNullOrEmpty())
-            {
-                Snackbar.Add("Email Subject must not be empty.", Severity.Error);
-                return;
-            }
-
             _applicationStatusCommand = new UpdateApplicationStatusCommand
             {
                 ApplicantUserName = ApplicationUserName,
                 Slug = Slug,
                 StatusId = (int)selectedEnumStatus,
-                EmailVariant = _emailVariant
             };
-
-            if (_emailVariant == SendEmailVariant.CustomEmail)
-            {
-                _applicationStatusCommand.EmailText = await _quillHtml.GetHTML();
-                _applicationStatusCommand.EmailSubject = _emailSubject;
-            }
 
             var response = await ApplicationService.UpdateStatus(_applicationStatusCommand);
             if (response)
             {
                 await LoadApplication();
-                _emailSubject = "";
                 StateHasChanged();
                 Snackbar.Add("Status updated successfully.", Severity.Success);
             }

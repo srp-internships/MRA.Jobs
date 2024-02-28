@@ -14,7 +14,7 @@ public class UpdateApplicationStatusCommandHandlerTests : BaseTestFixture
     {
        base.Setup();
         _handler = new UpdateApplicationStatusCommandHandler(
-            _dbContextMock.Object, _dateTimeMock.Object, _currentUserServiceMock.Object, _htmlServiceMock.Object,
+            _dbContextMock.Object, _dateTimeMock.Object, _currentUserServiceMock.Object,
             _identityService.Object, _smsServiceMock.Object, _loggerMock.Object, _configurationMock.Object);
     }
     
