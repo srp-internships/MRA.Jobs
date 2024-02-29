@@ -14,7 +14,7 @@ using MRA.Jobs.Client.Services.Profile;
 using MRA.Jobs.Client.Services.VacanciesServices;
 using MudBlazor;
 
-namespace MRA.Jobs.Client.Pages.Admin;
+namespace MRA.Jobs.Client.Pages.Applications;
 
 public partial class Applications
 {
@@ -131,7 +131,7 @@ public partial class Applications
         if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("PhoneNumber", query.PhoneNumber);
         if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("Email", query.Email);
 
-        var url = QueryHelpers.AddQueryString("Admin/Applications", queryParameters);
+        var url = QueryHelpers.AddQueryString("Dashboard/Applications", queryParameters);
         NavigationManager.NavigateTo(url);
 
         if (response.Success && response.Result != null)
