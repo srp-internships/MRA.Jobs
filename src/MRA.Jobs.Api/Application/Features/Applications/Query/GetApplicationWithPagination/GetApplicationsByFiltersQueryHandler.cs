@@ -26,6 +26,7 @@ public class GetApplicationsByFiltersQueryHandler(
     {
         var applications = dbContext.Applications
             .Include(a => a.Vacancy)
+            .Include(a => a.VacancyResponses)
             .AsNoTracking();
 
         List<UserResponse> users = new();
