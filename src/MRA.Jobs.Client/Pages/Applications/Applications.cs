@@ -127,9 +127,9 @@ public partial class Applications
         };
         if (!query.Filters.IsNullOrEmpty()) queryParameters.Add("Filters", query.Filters);
         if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("Skills", query.Skills);
-        if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("FullName", query.FullName);
-        if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("PhoneNumber", query.PhoneNumber);
-        if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("Email", query.Email);
+        if (!query.FullName.IsNullOrEmpty()) queryParameters.Add("FullName", query.FullName);
+        if (!query.PhoneNumber.IsNullOrEmpty()) queryParameters.Add("PhoneNumber", query.PhoneNumber);
+        if (!query.Email.IsNullOrEmpty()) queryParameters.Add("Email", query.Email);
 
         var url = QueryHelpers.AddQueryString("Dashboard/Applications", queryParameters);
         NavigationManager.NavigateTo(url);
