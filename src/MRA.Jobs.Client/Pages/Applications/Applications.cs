@@ -14,7 +14,7 @@ using MRA.Jobs.Client.Services.Profile;
 using MRA.Jobs.Client.Services.VacanciesServices;
 using MudBlazor;
 
-namespace MRA.Jobs.Client.Pages.Admin;
+namespace MRA.Jobs.Client.Pages.Applications;
 
 public partial class Applications
 {
@@ -23,6 +23,7 @@ public partial class Applications
     [Inject] private IUserProfileService UserProfileService { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
 
+    private bool _isLoad = false;
     private MudDateRangePicker _picker;
     private DateRange _dateRange;
     private MudTable<ApplicationListDto> _table;
@@ -35,7 +36,7 @@ public partial class Applications
     private string _searchStatusName = "";
     private IEnumerable<string> Options { get; set; } = new HashSet<string>();
     private string SelectedSkills { get; set; } = "";
-
+    
     protected override async Task OnInitializedAsync()
     {
         _vacancies = await VacancyService.GetAllVacancies();
@@ -47,18 +48,19 @@ public partial class Applications
 
         var currentUri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
 
-
-        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("page", out var page))
-            _table.CurrentPage = int.Parse(page) - 1;
-
-
-        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("pageSize", out var pageSize))
-            _table.TotalItems = int.Parse(pageSize);
-
-
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("Skills", out var skills))
+        {
             SelectedSkills = skills;
-
+            Options = skills.ToList();
+        }
+           
+        
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("FullName", out var fullName))
+            _selectedFullName = fullName;
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("PhoneNumber", out var phoneNumber))
+            _selectedPhoneNumber = phoneNumber;
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("Email", out var email))
+            _selectedEmail = email;
 
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("filters", out var filters))
         {
@@ -77,14 +79,18 @@ public partial class Applications
 
             if (filterDictionary.TryGetValue("AppliedAt>", out var startDate))
             {
+                if(_dateRange==null) _dateRange = new DateRange();
                 _dateRange.Start = DateTime.Parse(startDate);
             }
 
             if (filterDictionary.TryGetValue("AppliedAt<", out var endDate))
             {
+                if(_dateRange==null) _dateRange = new DateRange();
                 _dateRange.End = DateTime.Parse(endDate).AddDays(-1);
             }
         }
+        StateHasChanged();
+        _isLoad = true;
         StateHasChanged();
     }
 
@@ -121,11 +127,11 @@ public partial class Applications
         };
         if (!query.Filters.IsNullOrEmpty()) queryParameters.Add("Filters", query.Filters);
         if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("Skills", query.Skills);
-        if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("FullName", query.FullName);
-        if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("PhoneNumber", query.PhoneNumber);
-        if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("Email", query.Email);
+        if (!query.FullName.IsNullOrEmpty()) queryParameters.Add("FullName", query.FullName);
+        if (!query.PhoneNumber.IsNullOrEmpty()) queryParameters.Add("PhoneNumber", query.PhoneNumber);
+        if (!query.Email.IsNullOrEmpty()) queryParameters.Add("Email", query.Email);
 
-        var url = QueryHelpers.AddQueryString("Admin/Applications", queryParameters);
+        var url = QueryHelpers.AddQueryString("Dashboard/Applications", queryParameters);
         NavigationManager.NavigateTo(url);
 
         if (response.Success && response.Result != null)
