@@ -777,7 +777,7 @@ namespace MRA.Jobs.Infrastructure.Migrations
                     b.HasOne("MRA.Jobs.Domain.Entities.Vacancy", "Vacancy")
                         .WithMany("Tags")
                         .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Tag");

@@ -1,262 +1,305 @@
 ﻿@using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Services.ConverterService
+@using MRA.Jobs.Client.Services.VacanciesServices.Jobs
+@using MRA.BlazorComponents.Configuration
 @inject ICategoryService CategoryService
-@inject IVacancyService VacancyService
+@inject IJobsService JobsService
 @inject IDateTimeConvertToStringService DateTimeConvertToStringService
 @inject NavigationManager NavigationManager
 
-<NoVacancyUploadCV />
+<NoVacancyUploadCV/>
 
 @if (Vacancies is null)
 {
-	<div style="text-align: center;">
-		<MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
-	</div>
+    <div style="text-align: center;">
+        <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
+    </div>
 }
 else
 {
-	<MudGrid Spacing="4">
+    <MudGrid Spacing="4">
 
-		<MudItem xs="12" sm="12" md="3" lg="2">
-			<MudGrid>
-				<MudItem xs="12" sm="12" md="12" lg="12">
-					<MudCard Class="rounded-lg mud-elevation-4">
-						<MudCardContent>
-							<MudHidden Breakpoint="Breakpoint.SmAndDown">
-								<MudNavMenu Rounded="true" Color="Color.Primary" Class="pa-2">
-									<MudNavLink OnClick="@(() => SelectCategory())"
-												Class="@(_selectedCategory == null ? "mud-chip-text mud-chip-color-primary" : "")">
-										<div class="customTabContainer">
-											<div class="customTabContainerLeft">
-												<MudText>
-													<b>@ContentService["VacanciesList:All"]</b>
-												</MudText>
-											</div>
-											<div class="customTabContainerRight">
-											</div>
-										</div>
+        <MudItem xs="12" sm="12" md="3" lg="2">
+            @* <MudCard Class="rounded-lg mud-elevation-4"> *@
+            @*     <MudCardContent> *@
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <MudNavMenu Rounded="true" Color="Color.Primary" Class="pa-2">
+                    <MudNavLink OnClick="@(() => SelectCategory())"
+                                Class="@(_selectedCategory == null ? "mud-chip-text mud-chip-color-primary" : "")">
+                        <div class="customTabContainer">
+                            <div class="customTabContainerLeft">
+                                <MudText>
+                                    <b>@ContentService["VacanciesList:All"]</b>
+                                </MudText>
+                            </div>
+                            <div class="customTabContainerRight">
+                            </div>
+                        </div>
+                    </MudNavLink>
+                    @foreach (var cat in VacancyCategories)
+                    {
+                        <MudNavLink OnClick="@(() => SelectCategory(cat))" Class="@(_selectedCategory == cat ? "mud-chip-text mud-chip-color-primary" : "")">
+                            <div class="d-flex flex-grow-1">
+                                <MudText>
+                                    <b>@cat</b>
+                                </MudText>
+                                <MudSpacer/>
+                                <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
+                            </div>
+                        </MudNavLink>
+                    }
+                </MudNavMenu>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                <MudExpansionPanel Text=@ContentService["VacanciesList:Categories"]>
+                    <MudNavMenu Rounded="true" Color="Color.Primary" Class="pa-2">
+                        <MudNavLink OnClick="@(() => SelectCategory())"
+                                    Class="@(_selectedCategory == null ? "mud-chip-text mud-chip-color-primary" : "")">
+                            <div class="customTabContainer">
+                                <div class="customTabContainerLeft">
+                                    <MudText>
+                                        <b> @ContentService["VacanciesList:All"]</b>
+                                    </MudText>
+                                </div>
+                                <div class="customTabContainerRight">
+                                </div>
+                            </div>
+                        </MudNavLink>
+                        @foreach (var cat in VacancyCategories)
+                        {
+                            <MudNavLink OnClick="@(() => SelectCategory(cat))" Class="@(_selectedCategory == cat ? "mud-chip-text mud-chip-color-primary" : "")">
+                                <div class="d-flex flex-grow-1">
+                                    <MudText>
+                                        <b>@cat</b>
+                                    </MudText>
+                                    <MudSpacer/>
+                                    <MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
+                                </div>
+                            </MudNavLink>
+                        }
+                    </MudNavMenu>
+                </MudExpansionPanel>
+            </MudHidden>
+            @*     </MudCardContent> *@
+            @* </MudCard> *@
 
-									</MudNavLink>
-									@foreach (var cat in VacancyCategories)
-									{
-										<MudNavLink OnClick="@(() => SelectCategory(cat))" Class="@(_selectedCategory == cat ? "mud-chip-text mud-chip-color-primary" : "")">
-											<div class="d-flex flex-grow-1">
-												<MudText>
-													<b>@cat</b>
-												</MudText>
-												<MudSpacer />
-												<MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
-											</div>
-										</MudNavLink>
-									}
-								</MudNavMenu>
-							</MudHidden>
-							<MudHidden Breakpoint="Breakpoint.MdAndUp">
-								<MudExpansionPanel Text=@ContentService["VacanciesList:Categories"]>
-									<MudNavMenu Rounded="true" Color="Color.Primary" Class="pa-2">
-										<MudNavLink OnClick="@(() => SelectCategory())"
-													Class="@(_selectedCategory == null ? "mud-chip-text mud-chip-color-primary" : "")">
-											<div class="customTabContainer">
-												<div class="customTabContainerLeft">
-													<MudText>
-														<b> @ContentService["VacanciesList:All"]</b>
-													</MudText>
-												</div>
-												<div class="customTabContainerRight">
-												</div>
-											</div>
+        </MudItem>
+        @if (VacancyCategories.Count == 0)
+        {
+            <MudText Typo="Typo.h5" Style="margin:50px;">@ContentService["VacanciesList:NoJobs"]</MudText>
+        }
+        else
+        {
+            <MudItem sm="12" md="9" lg="10">
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudGrid>
+                            <MudItem xs="12" sm="6" lg="6">
+                                <MudCard Class="rounded-lg p-3 mud-elevation-4 p-5">
+                                    <MudTextField @bind-Value="Search" TextChanged="SearchVacancy" Label=@ContentService["VacanciesList:Search"] Class="rounded-lg"
+                                                  Variant="Variant.Outlined" OnAdornmentClick="SearchVacancy" Adornment="Adornment.End" Immediate="true"
+                                                  AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Info"/>
 
-										</MudNavLink>
-										@foreach (var cat in VacancyCategories)
-										{
-											<MudNavLink OnClick="@(() => SelectCategory(cat))" Class="@(_selectedCategory == cat ? "mud-chip-text mud-chip-color-primary" : "")">
-												<div class="d-flex flex-grow-1">
-													<MudText>
-														<b>@cat</b>
-													</MudText>
-													<MudSpacer />
-													<MudBadge Origin="Origin.CenterRight" Color="Color.Primary" Content="@GetVacancyCategoryCount(cat)"></MudBadge>
-												</div>
-											</MudNavLink>
-										}
-									</MudNavMenu>
-								</MudExpansionPanel>
-							</MudHidden>
-						</MudCardContent>
-					</MudCard>
-				</MudItem>
-			</MudGrid>
+                                </MudCard>
+                            </MudItem>
+                            @if (_tags != null)
+                            {
+                                <MudItem xs="12" sm="6" lg="6">
+                                    <MudCard Class="rounded-lg p-3 mud-elevation-4 p-5">
+                                        <MudSelect T="string" MultiSelection="true" SelectAll="true" Label="Tags"
+                                                   @bind-Value="_selectedTagsValue" @bind-SelectedValues="_tagsOptions"
+                                                   Variant="Variant.Outlined">
 
-		</MudItem>
-		@if (VacancyCategories.Count == 0)
-		{
-			<MudText Typo="Typo.h5" Style="margin:50px;">@ContentService["VacanciesList:NoJobs"]</MudText>
-		}
-		else
-		{
-			<MudItem sm="12" md="9" lg="10">
-				<MudGrid>
-					<MudItem xs="12">
-						<MudCard Class="rounded-lg p-3 mud-elevation-4 p-5">
+                                            @foreach (var tag in _tags)
+                                            {
+                                                <MudSelectItem T="string" Value="@tag">@tag</MudSelectItem>
+                                            }
+                                        </MudSelect>
+                                    </MudCard>
+                                </MudItem>
+                            }
+                        </MudGrid>
 
-							<MudTextField @bind-Value="Search" TextChanged="SearchVacancy" Label=@ContentService["VacanciesList:Search"] Class="rounded-lg"
-										  Variant="Variant.Outlined" OnAdornmentClick="SearchVacancy" Adornment="Adornment.End"
-										  AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Info" />
+                    </MudItem>
+                    @foreach (var vacancy in GetVisibleVacancies())
+                    {
+                        <MudItem xs="12" md="12" lg="6">
+                            <a href="/@Route/@vacancy.Slug">
+                                <MudCard Class="rounded-lg">
+                                    <MudCardContent>
+                                        <MudText Style="color: #129fd7;" Typo="Typo.h5">
+                                            <b>@vacancy.Title</b>
+                                        </MudText>
+                                        <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
+                                            <small>
+                                                <b>@ContentService["VacancyDetails:Posted"] @DateTimeConvertToStringService.GetDisplayPostedDate(vacancy.PublishDate)</b>
+                                            </small>
+                                        </MudText>
+                                        <br/>
+                                        <MudText>@vacancy.ShortDescription</MudText>
+                                        <MudGrid>
+                                            @if (vacancy.Duration != 0)
+                                            {
+                                                <MudItem Style="color:rgb(128,128,128)">
+                                                    <MudText Typo="Typo.caption">
+                                                        @ContentService["VacancyDetails:Duration"] <b>@vacancy.Duration @ContentService["VacancyDetails:month(s)"]</b>
+                                                    </MudText>
+                                                </MudItem>
+                                            }
+                                            @if (vacancy.Deadline != default(DateTime))
+                                            {
+                                                <MudItem>
+                                                    @{
+                                                        var deadlineResult = DateTimeConvertToStringService.GetDeadlineOrEndDateDisplayDate(vacancy.Deadline);
+                                                        var deadlineStyle = $"color:{deadlineResult.Color}";
+                                                        <MudText Typo="Typo.caption" Style="@deadlineStyle">
+                                                            @ContentService["VacancyDetails:Deadline"] <b>@deadlineResult.DisplayDate</b>
+                                                        </MudText>
+                                                    }
+                                                </MudItem>
+                                            }
+                                            <MudItem>
+                                                @{
+                                                    var endDateResult = DateTimeConvertToStringService.GetDeadlineOrEndDateDisplayDate(vacancy.EndDate);
+                                                    var endDateStyle = $"color:{endDateResult.Color}";
+                                                    <MudText Typo="Typo.caption" Style="@endDateStyle">
+                                                        @ContentService["VacancyDetails:End Date"] <b>@endDateResult.DisplayDate</b>
+                                                    </MudText>
+                                                }
+                                            </MudItem>
+                                        </MudGrid>
+                                        @if (vacancy.Tags != null)
+                                        {
+                                            <br/>
+                                            <MudChipSet @bind-SelectedChips="_selectedChip" MultiSelection="true" Filter="false">
+                                                @foreach (var tag in vacancy.Tags)
+                                                {
+                                                    <MudChip Text="@tag" Size="Size.Small"/>
+                                                }
+                                            </MudChipSet>
+                                        }
 
-						</MudCard>
-					</MudItem>
-					@foreach (var vacancy in GetVisibleVacancies())
-					{
-						<MudItem xs="12" md="12" lg="6">
-							<a href="/@Route/@vacancy.Slug">
-								<MudCard Class="rounded-lg mud-elevation-4">
-									<MudCardContent>
-										<MudText Style="color: #129fd7;" Typo="Typo.h5">
-											<b>@vacancy.Title</b>
-										</MudText>
-										<MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
-											<small>
-												<b>@ContentService["VacancyDetails:Posted"] @DateTimeConvertToStringService.GetDisplayPostedDate(vacancy.PublishDate)</b>
-											</small>
-										</MudText>
-										<br />
-										<MudText>@vacancy.ShortDescription</MudText>
-											<MudGrid>
-												@if (vacancy.Duration != 0)
-											{
-												<MudItem Style="color:rgb(128,128,128)">
-													<MudText Typo="Typo.caption">@ContentService["VacancyDetails:Duration"] <b>@vacancy.Duration @ContentService["VacancyDetails:month(s)"]</b></MudText>
-												</MudItem>
-											}
-											@if (vacancy.Deadline != default(DateTime))
-											{
-												<MudItem>
-													@{
-														var deadlineResult = DateTimeConvertToStringService.GetDeadlineOrEndDateDisplayDate(vacancy.Deadline);
-														var deadlineStyle = $"color:{deadlineResult.Color}";
-														<MudText Typo="Typo.caption" Style="@deadlineStyle">@ContentService["VacancyDetails:Deadline"] <b>@deadlineResult.DisplayDate</b></MudText>
-													}
-												</MudItem>
-											}
-											<MudItem>
-												@{
-													var endDateResult = DateTimeConvertToStringService.GetDeadlineOrEndDateDisplayDate(vacancy.EndDate);
-													var endDateStyle = $"color:{endDateResult.Color}";
-													<MudText Typo="Typo.caption" Style="@endDateStyle">@ContentService["VacancyDetails:End Date"] <b>@endDateResult.DisplayDate</b></MudText>
-												}
-											</MudItem>
-										</MudGrid>
-									</MudCardContent>
-								</MudCard>
-							</a>
-						</MudItem>
-					}
-					@if (GetTotalPages() > 1)
-					{
-						<MudItem xs="12" Class="d-flex justify-content-center">
-							<MudPagination Color="Color.Info" Variant="Variant.Outlined" Count="@GetTotalPages()" @bind-Selected="@_selected" />
-						</MudItem>
-					}
-				</MudGrid>
-			</MudItem>
-		}
-	</MudGrid>
+                                    </MudCardContent>
+                                </MudCard>
+                            </a>
+
+                        </MudItem>
+                    }
+                    @if (GetTotalPages() > 1)
+                    {
+                        <MudItem xs="12" Class="d-flex justify-content-center">
+                            <MudPagination Color="Color.Info" Variant="Variant.Outlined" Count="@GetTotalPages()" @bind-Selected="@_selected"/>
+                        </MudItem>
+                    }
+                </MudGrid>
+            </MudItem>
+        }
+    </MudGrid>
 }
 
 @code {
-	private int _selected = 1;
-	public string Search { get; set; }
+    private int _selected = 1;
+    public string Search { get; set; }
 
-	[Parameter]
-	public List<string> VacancyCategories { get; set; }
+    [Parameter] public List<string> VacancyCategories { get; set; }
 
-	[Parameter]
-	public List<VacancyClientResponse> Vacancies { get; set; }
+    [Parameter] public List<VacancyClientResponse> Vacancies { get; set; }
 
-	[Parameter]
-	public string Route { get; set; }
+    [Parameter] public string Route { get; set; }
 
-	[Parameter]
-	public List<VacancyClientResponse> FilteredVacancies { get; set; }
+    [Parameter] public List<VacancyClientResponse> FilteredVacancies { get; set; }
 
-	private int _activeIndex = 0;
-	private string _selectedCategoryText = "All Internships";
-	private int _itemsPerPage = 6;
+    private int _activeIndex = 0;
+    private string _selectedCategoryText = "All Internships";
+    private int _itemsPerPage = 6;
+    private MudChip[] _selectedChip;
+    private List<string> _tags;
+    private string _selectedTagsValue = "";
+    private IEnumerable<string> _tagsOptions { get; set; } = new HashSet<string>();
 
-	protected override async void OnAfterRender(bool firstRender)
-	{
-		if (firstRender)
-		{
-			await Task.Delay(1000);
-			StateHasChanged();
-		}
-	}
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                _tags = (await HttpClient.GetFromJsonAsync<List<string>>(Configuration.GetJobsUrl("tags"))).Result;
+            }
+            catch
+            {
+                //
+            }
 
-	private string _selectedCategory = null;
+            await Task.Delay(1000);
+            StateHasChanged();
+        }
+    }
 
-	private void SelectCategory(string cats = null)
-	{
-		_selectedCategory = cats;
-		FilteredVacancies = string.IsNullOrEmpty(cats) ? Vacancies : Vacancies.Where(j => j.Category == cats).ToList();
-	}
+    private string _selectedCategory = null;
 
-	private void HandleTabSelection(int index)
-	{
-		_activeIndex = index;
+    private void SelectCategory(string cats = null)
+    {
+        _selectedCategory = cats;
+        FilteredVacancies = string.IsNullOrEmpty(cats) ? Vacancies : Vacancies.Where(j => j.Category == cats).ToList();
+    }
+  
+    private void HandleTabSelection(int index)
+    {
+        _activeIndex = index;
 
-		if (index == 0)
-		{
-			FilteredVacancies = Vacancies;
-		}
-		else if (index > 0 && index <= VacancyCategories.Count)
-		{
-			_selectedCategoryText = VacancyCategories[index - 1];
-			FilteredVacancies = Vacancies.Where(j => j.Category == _selectedCategoryText).ToList();
-		}
+        if (index == 0)
+        {
+            FilteredVacancies = Vacancies;
+        }
+        else if (index > 0 && index <= VacancyCategories.Count)
+        {
+            _selectedCategoryText = VacancyCategories[index - 1];
+            FilteredVacancies = Vacancies.Where(j => j.Category == _selectedCategoryText).ToList();
+        }
 
-		// Reset pagination on tab change
-		_selected = 1;
-	}
+        // Reset pagination on tab change
+        _selected = 1;
+    }
 
-	private int GetVacancyCategoryCount(string category)
-	{
-		return Vacancies.Count(j => j.Category == category);
-	}
+    private int GetVacancyCategoryCount(string category)
+    {
+        return Vacancies.Count(j => j.Category == category);
+    }
 
-	private void ApplySearchFilter(string query)
-	{
-		if (!string.IsNullOrEmpty(query))
-		{
-			Console.WriteLine(query);
-			FilteredVacancies = Vacancies
-				.Where(j => j.Title.Contains(Search, StringComparison.OrdinalIgnoreCase)
-							|| j.ShortDescription.Contains(query, StringComparison.OrdinalIgnoreCase))
-				.ToList();
-		}
-		else
-		{
-			FilteredVacancies = Vacancies;
-		}
+    private void ApplySearchFilter(string query)
+    {
+        if (!string.IsNullOrEmpty(query))
+        {
+            Console.WriteLine(query);
+            FilteredVacancies = Vacancies
+                .Where(j => j.Title.Contains(Search, StringComparison.OrdinalIgnoreCase)
+                            || j.ShortDescription.Contains(query, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+        else
+        {
+            FilteredVacancies = Vacancies;
+        }
 
-		// Reset pagination on search
-		_selected = 1;
-	}
+        // Reset pagination on search
+        _selected = 1;
+    }
 
-	private void SearchVacancy()
-	{
-		ApplySearchFilter(Search);
-	}
+    private void SearchVacancy()
+    {
+        ApplySearchFilter(Search);
+    }
 
-	private List<VacancyClientResponse> GetVisibleVacancies()
-	{
-		int startIndex = (_selected - 1) * _itemsPerPage;
-		return FilteredVacancies.Skip(startIndex).Take(_itemsPerPage).ToList();
-	}
+    private List<VacancyClientResponse> GetVisibleVacancies()
+    {
+        int startIndex = (_selected - 1) * _itemsPerPage;
+        return FilteredVacancies.Skip(startIndex).Take(_itemsPerPage).ToList();
+    }
 
-	private int GetTotalPages()
-	{
-		return (int)Math.Ceiling((double)FilteredVacancies.Count / _itemsPerPage);
-	}
+    private int GetTotalPages()
+    {
+        return (int)Math.Ceiling((double)FilteredVacancies.Count / _itemsPerPage);
+    }
 
 }

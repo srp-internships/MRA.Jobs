@@ -1,7 +1,6 @@
 ﻿@page "/ApplicationDetail/{Slug}/{ApplicationUserName}"
 @page "/ApplicationDetail/{Slug}"
 @using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote
-@using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using System.Net
 @using Microsoft.IdentityModel.Tokens
@@ -70,66 +69,6 @@
                                                 <MudSelectItem Value="@status.ToString()"/>
                                             }
                                         </MudSelect>
-                                    </MudItem>
-                                    <MudItem lg="6" xs="12">
-                                        <MudRadioGroup T="SendEmailVariant" @bind-SelectedOption="@_emailVariant" @onselectionchange="@(() => StateHasChanged())">
-                                            <MudRadio Option="@SendEmailVariant.NotSend" Color="Color.Primary">@SendEmailVariant.NotSend</MudRadio>
-                                            <MudRadio Option="@SendEmailVariant.CustomEmail" Color="Color.Primary">@SendEmailVariant.CustomEmail</MudRadio>
-                                            <MudRadio Option="@SendEmailVariant.AutoEmail" Color="Color.Primary">@SendEmailVariant.AutoEmail</MudRadio>
-                                        </MudRadioGroup>
-                                        @if (_emailVariant == SendEmailVariant.CustomEmail)
-                                        {
-                                            <MudText Typo="Typo.body2">Subject:</MudText>
-                                            <MudTextField T="string" @bind-Value="_emailSubject" Variant="Variant.Outlined"/>
-                                            <MudText Typo="Typo.body2">Text:</MudText>
-                                            <div>
-                                                <BlazoredTextEditor @ref="@_quillHtml">
-                                                    <ToolbarContent>
-                                                        <span class="ql-formats">
-                                                            <select class="ql-font">
-                                                                <option selected=""></option>
-                                                                <option value="serif"></option>
-                                                                <option value="monospace"></option>
-                                                            </select>
-                                                            <select class="ql-size">
-                                                                <option value="small"></option>
-                                                                <option selected=""></option>
-                                                                <option value="large"></option>
-                                                                <option value="huge"></option>
-                                                            </select>
-                                                        </span>
-                                                        <span class="ql-formats">
-                                                            <button class="ql-bold"></button>
-                                                            <button class="ql-italic"></button>
-                                                            <button class="ql-underline"></button>
-                                                            <button class="ql-strike"></button>
-                                                        </span>
-                                                        <span class="ql-formats">
-                                                            <select class="ql-color"></select>
-                                                            <select class="ql-background"></select>
-                                                        </span>
-                                                        <span class="ql-formats">
-                                                            <button class="ql-list" value="ordered"></button>
-                                                            <button class="ql-list" value="bullet"></button>
-                                                            <button class="ql-indent" value="-1"></button>
-                                                            <button class="ql-indent" value="+1"></button>
-                                                            <select class="ql-align">
-                                                                <option selected=""></option>
-                                                                <option value="center"></option>
-                                                                <option value="right"></option>
-                                                                <option value="justify"></option>
-                                                            </select>
-                                                        </span>
-                                                        <span class="ql-formats">
-                                                            <button class="ql-link"></button>
-                                                        </span>
-                                                    </ToolbarContent>
-                                                    <EditorContent>
-
-                                                    </EditorContent>
-                                                </BlazoredTextEditor>
-                                            </div>
-                                        }
                                     </MudItem>
                                 </MudGrid>
 
@@ -230,23 +169,18 @@
     private string _cvUrl;
 
     private UpdateApplicationStatusCommand _applicationStatusCommand;
-    private UserProfileResponse _applicant;
     private ApplicationDetailsDto _application;
-    BlazoredTextEditor _quillHtml;
-    private SendEmailVariant _emailVariant = SendEmailVariant.NotSend;
-    private string _emailSubject = "";
 
     private async Task LoadApplication()
     {
         _application = await ApplicationService.GetApplicationDetails(Slug);
-        StateHasChanged();
         if (_application.History.Any())
             _application.History = _application.History.OrderByDescending(h => h.Time).ToList();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        _applicant = await UserProfileService.Get(ApplicationUserName);
+        await UserProfileService.Get(ApplicationUserName);
         await LoadApplication();
         _cvUrl = $"{Configuration.GetJobsUrl()}applications/downloadCv/{WebUtility.UrlEncode(_application.CV)}";
         SelectedStatus = ((ApplicationStatusDto.ApplicationStatus)_application.StatusId).ToString();
@@ -255,8 +189,8 @@
 
     private async Task OnAddNoteAsync()
     {
-        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", new DialogParameters(), 
-            new(){MaxWidth = MaxWidth.Large});
+        var dialog = await DialogService.ShowAsync<DialogAddNote>("Add Note", new DialogParameters(),
+            new() { MaxWidth = MaxWidth.Large });
         var result = await dialog.Result;
         if (result.Canceled) return;
         var note = result.Data.ToString();
@@ -280,31 +214,17 @@
     {
         if (Enum.TryParse(SelectedStatus, out ApplicationStatusDto.ApplicationStatus selectedEnumStatus))
         {
-            if (_emailVariant == SendEmailVariant.CustomEmail && _emailSubject.IsNullOrEmpty())
-            {
-                Snackbar.Add("Email Subject must not be empty.", Severity.Error);
-                return;
-            }
-
             _applicationStatusCommand = new UpdateApplicationStatusCommand
             {
                 ApplicantUserName = ApplicationUserName,
                 Slug = Slug,
                 StatusId = (int)selectedEnumStatus,
-                EmailVariant = _emailVariant
             };
-
-            if (_emailVariant == SendEmailVariant.CustomEmail)
-            {
-                _applicationStatusCommand.EmailText = await _quillHtml.GetHTML();
-                _applicationStatusCommand.EmailSubject = _emailSubject;
-            }
 
             var response = await ApplicationService.UpdateStatus(_applicationStatusCommand);
             if (response)
             {
                 await LoadApplication();
-                _emailSubject = "";
                 StateHasChanged();
                 Snackbar.Add("Status updated successfully.", Severity.Success);
             }

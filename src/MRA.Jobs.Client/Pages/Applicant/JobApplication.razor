@@ -3,8 +3,9 @@
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Extra
 @using MRA.Jobs.Client.Components.Vacancies
+@using MRA.Jobs.Client.Services.VacanciesServices.Jobs
 
-@inject IVacancyService VacancyService
+@inject IJobsService JobsService
 
 @if (_serverError)
 {
@@ -37,7 +38,7 @@ else
 		await base.OnInitializedAsync();
 		try
 		{
-			var response = await VacancyService.GetBySlug(Slug);
+			var response = await JobsService.GetBySlug(Slug);
 
 			if (response != null)
 			{
@@ -50,7 +51,8 @@ else
 						RequiredYearOfExperience = response.RequiredYearOfExperience,
 						Description = response.Description,
 						VacancyQuestions = response.VacancyQuestions,
-						VacancyTasks = response.VacancyTasks
+						VacancyTasks = response.VacancyTasks,
+                        Tags = response.Tags.ToArray()
 					};
 				_application = new CreateApplicationCommand
 					{

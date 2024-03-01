@@ -4,6 +4,7 @@ namespace MRA.Jobs.Application.Contracts.Common;
 
 public class PagedListQuery<T> : SieveModel, IRequest<PagedList<T>>
 {
+  
 }
 
 public class PagedList<T>

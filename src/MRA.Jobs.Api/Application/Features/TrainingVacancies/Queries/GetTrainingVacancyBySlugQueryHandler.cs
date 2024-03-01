@@ -16,8 +16,7 @@ public class GetTrainingVacancyBySlugQueryHandler(
         var trainingVacancy = await context.TrainingVacancies
             .Include(i => i.VacancyTasks)
             .Include(i => i.VacancyQuestions)
-            .Include(i => i.Tags)
-            .ThenInclude(t => t.Tag)
+            .Include(i => i.Tags).ThenInclude(t => t.Tag)
             .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken: cancellationToken);
         _ = trainingVacancy ?? throw new NotFoundException(nameof(TrainingVacancy), request.Slug);
 
@@ -27,7 +26,7 @@ public class GetTrainingVacancyBySlugQueryHandler(
         
         var mapped = mapper.Map<TrainingVacancyDetailedResponse>(trainingVacancy);
         mapped.IsApplied = await context.Applications.AnyAsync(s =>
-            s.ApplicantId == currentUser.GetUserId() && s.VacancyId == trainingVacancy.Id);
+            s.ApplicantId == currentUser.GetUserId() && s.VacancyId == trainingVacancy.Id, cancellationToken: cancellationToken);
 
         return mapped;
     }

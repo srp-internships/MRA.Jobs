@@ -60,11 +60,83 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить.
+        /// </summary>
+        internal static string Applicateons_Add {
+            get {
+                return ResourceManager.GetString("Applicateons:Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добавить заметку.
+        /// </summary>
+        internal static string Applicateons_AddNote {
+            get {
+                return ResourceManager.GetString("Applicateons:AddNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Изменить статус.
+        /// </summary>
+        internal static string Applicateons_Changestatus {
+            get {
+                return ResourceManager.GetString("Applicateons:Changestatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Фильтры.
+        /// </summary>
+        internal static string Applicateons_Filters {
+            get {
+                return ResourceManager.GetString("Applicateons:Filters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заметки.
+        /// </summary>
+        internal static string Applicateons_Notes {
+            get {
+                return ResourceManager.GetString("Applicateons:Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выбрать статус.
+        /// </summary>
+        internal static string Applicateons_Selectstatus {
+            get {
+                return ResourceManager.GetString("Applicateons:Selectstatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Статус.
+        /// </summary>
+        internal static string Applicateons_Status {
+            get {
+                return ResourceManager.GetString("Applicateons:Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Заявка успешно отправлена!.
         /// </summary>
         internal static string Application_Success {
             get {
                 return ResourceManager.GetString("Application:Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Новая категория.
+        /// </summary>
+        internal static string Category_NewCategory {
+            get {
+                return ResourceManager.GetString("Category:NewCategory", resourceCulture);
             }
         }
         
@@ -177,11 +249,56 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Действие.
+        /// </summary>
+        internal static string Dashboard_Appilcations_Action {
+            get {
+                return ResourceManager.GetString("Dashboard:Appilcations:Action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя заявителя.
+        /// </summary>
+        internal static string Dashboard_Appilcations_Applicant_username {
+            get {
+                return ResourceManager.GetString("Dashboard:Appilcations:Applicant username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Подано в.
+        /// </summary>
+        internal static string Dashboard_Appilcations_Applied_at {
+            get {
+                return ResourceManager.GetString("Dashboard:Appilcations:Applied at", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Скачать резюме кандидата.
         /// </summary>
         internal static string Dashboard_Appilcations_More_CVButton {
             get {
                 return ResourceManager.GetString("Dashboard:Appilcations:More:CVButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Наименование статуса.
+        /// </summary>
+        internal static string Dashboard_Appilcations_Status_name {
+            get {
+                return ResourceManager.GetString("Dashboard:Appilcations:Status name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заголовок вакансии.
+        /// </summary>
+        internal static string Dashboard_Appilcations_Vacancy_title {
+            get {
+                return ResourceManager.GetString("Dashboard:Appilcations:Vacancy title", resourceCulture);
             }
         }
         
@@ -222,6 +339,15 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Категория.
+        /// </summary>
+        internal static string Header_Category {
+            get {
+                return ResourceManager.GetString("Header:Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Главная.
         /// </summary>
         internal static string Header_Home {
@@ -249,6 +375,15 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Отправить email.
+        /// </summary>
+        internal static string Header_SendEmail {
+            get {
+                return ResourceManager.GetString("Header:SendEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Команда.
         /// </summary>
         internal static string Header_Team {
@@ -267,6 +402,15 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Менеджер пользователей.
+        /// </summary>
+        internal static string Header_Usersmanager {
+            get {
+                return ResourceManager.GetString("Header:Usersmanager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to О.
         /// </summary>
         internal static string Home_About {
@@ -276,7 +420,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  Профессионалы Шелкового пути (SRP) - это компания, занимающаяся разработкой программного обеспечения полного цикла, основанная в 2014 году. Мы юридически зарегистрированы в штате Вирджиния, США и в Дехмое, Таджикистан..
+        ///   Looks up a localized string similar to  Профессионалы Шелкового пути (SRP) - это компания, занимающаяся разработкой программного обеспечения полного цикла, основанная в 2014 году..
         /// </summary>
         internal static string Home_AboutContent {
             get {
@@ -488,24 +632,6 @@ namespace MRA.Jobs.Client.Resources.Languages {
         internal static string Home_EmailLink {
             get {
                 return ResourceManager.GetString("Home:EmailLink", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Прославять Бога.
-        /// </summary>
-        internal static string Home_GlorifyGod {
-            get {
-                return ResourceManager.GetString("Home:GlorifyGod", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Мы хотим, чтобы все наши дела приносили славу Богу..
-        /// </summary>
-        internal static string Home_GlorifyGodDetails {
-            get {
-                return ResourceManager.GetString("Home:GlorifyGodDetails", resourceCulture);
             }
         }
         
@@ -780,6 +906,69 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить вопрос.
+        /// </summary>
+        internal static string Internships_AddQuestion {
+            get {
+                return ResourceManager.GetString("Internships:AddQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добавить задачу.
+        /// </summary>
+        internal static string Internships_AddTask {
+            get {
+                return ResourceManager.GetString("Internships:AddTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Крайний срок подачи заявок.
+        /// </summary>
+        internal static string Internships_ApplicationDeadline {
+            get {
+                return ResourceManager.GetString("Internships:ApplicationDeadline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Создать.
+        /// </summary>
+        internal static string Internships_Create {
+            get {
+                return ResourceManager.GetString("Internships:Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Создать новую вакансию для стажировки.
+        /// </summary>
+        internal static string Internships_CreateInternship {
+            get {
+                return ResourceManager.GetString("Internships:CreateInternship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дата.
+        /// </summary>
+        internal static string Internships_Date {
+            get {
+                return ResourceManager.GetString("Internships:Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вставить изображение.
+        /// </summary>
+        internal static string Internships_InsertImage {
+            get {
+                return ResourceManager.GetString("Internships:InsertImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Стажировки.
         /// </summary>
         internal static string Internships_Internships {
@@ -789,11 +978,182 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Вакансии стажировок.
+        /// </summary>
+        internal static string Internships_InternshipsVacancy {
+            get {
+                return ResourceManager.GetString("Internships:InternshipsVacancy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Новая вакансия для стажировки.
+        /// </summary>
+        internal static string Internships_NewInternship {
+            get {
+                return ResourceManager.GetString("Internships:NewInternship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дата публикации.
+        /// </summary>
+        internal static string Internships_PublishDate {
+            get {
+                return ResourceManager.GetString("Internships:PublishDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Удалить.
+        /// </summary>
+        internal static string Internships_Remove {
+            get {
+                return ResourceManager.GetString("Internships:Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поиск вакансий.
+        /// </summary>
+        internal static string Internships_Searchjobs {
+            get {
+                return ResourceManager.GetString("Internships:Searchjobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Краткое описание.
+        /// </summary>
+        internal static string Internships_ShortDescription {
+            get {
+                return ResourceManager.GetString("Internships:ShortDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Стипендия.
+        /// </summary>
+        internal static string Internships_Stipend {
+            get {
+                return ResourceManager.GetString("Internships:Stipend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Задачи.
+        /// </summary>
+        internal static string Internships_Tasks {
+            get {
+                return ResourceManager.GetString("Internships:Tasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Шаблон.
+        /// </summary>
+        internal static string Internships_Template {
+            get {
+                return ResourceManager.GetString("Internships:Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Тест.
+        /// </summary>
+        internal static string Internships_Test {
+            get {
+                return ResourceManager.GetString("Internships:Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Время.
+        /// </summary>
+        internal static string Internships_Time {
+            get {
+                return ResourceManager.GetString("Internships:Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заголовок.
+        /// </summary>
+        internal static string Internships_Title {
+            get {
+                return ResourceManager.GetString("Internships:Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вопросы к вакансии.
+        /// </summary>
+        internal static string Internships_Vacancyquestions {
+            get {
+                return ResourceManager.GetString("Internships:Vacancyquestions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Создать новую вакансию для работы.
+        /// </summary>
+        internal static string job_CreateNewJob {
+            get {
+                return ResourceManager.GetString("job:CreateNewJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Новая вакансия для работы.
+        /// </summary>
+        internal static string job_NewVacancy {
+            get {
+                return ResourceManager.GetString("job:NewVacancy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Необходимый опыт работы (в годах).
+        /// </summary>
+        internal static string job_Requiredyear {
+            get {
+                return ResourceManager.GetString("job:Requiredyear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выбрать категорию.
+        /// </summary>
+        internal static string job_Selectcategory {
+            get {
+                return ResourceManager.GetString("job:Selectcategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to График работы.
+        /// </summary>
+        internal static string job_WorkSchedule {
+            get {
+                return ResourceManager.GetString("job:WorkSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Вакансии.
         /// </summary>
         internal static string Jobs_Jobs {
             get {
                 return ResourceManager.GetString("Jobs:Jobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Количество.
+        /// </summary>
+        internal static string Per_Page {
+            get {
+                return ResourceManager.GetString("Per Page", resourceCulture);
             }
         }
         
@@ -1609,6 +1969,24 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Создать новую вакансию для Тренинг.
+        /// </summary>
+        internal static string Training_NewTraining {
+            get {
+                return ResourceManager.GetString("Training:NewTraining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Новая вакансия для Тренинг.
+        /// </summary>
+        internal static string Training_NewTrainingV {
+            get {
+                return ResourceManager.GetString("Training:NewTrainingV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Тренинги.
         /// </summary>
         internal static string Trainings_Trainings {
@@ -1663,11 +2041,110 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Полное имя.
+        /// </summary>
+        internal static string UserManager_FullName {
+            get {
+                return ResourceManager.GetString("UserManager:FullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Загрузка....
+        /// </summary>
+        internal static string UserManager_Loading {
+            get {
+                return ResourceManager.GetString("UserManager:Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Совпадающих записей не найдено.
+        /// </summary>
+        internal static string UserManager_Nomatchingrecords {
+            get {
+                return ResourceManager.GetString("UserManager:Nomatchingrecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Роли.
+        /// </summary>
+        internal static string UserManager_Roles {
+            get {
+                return ResourceManager.GetString("UserManager:Roles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поиск по имени пользователя или полному имени.
+        /// </summary>
+        internal static string UserManager_Searchname {
+            get {
+                return ResourceManager.GetString("UserManager:Searchname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователи.
+        /// </summary>
+        internal static string UserManager_Users {
+            get {
+                return ResourceManager.GetString("UserManager:Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пол.
+        /// </summary>
+        internal static string UserRoles_Gender {
+            get {
+                return ResourceManager.GetString("UserRoles:Gender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to История.
+        /// </summary>
+        internal static string UserRoles_History {
+            get {
+                return ResourceManager.GetString("UserRoles:History", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Личные данные.
+        /// </summary>
+        internal static string UserRoles_PersonalData {
+            get {
+                return ResourceManager.GetString("UserRoles:PersonalData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Не подтверждено.
+        /// </summary>
+        internal static string UserRoles_UnConfirmed {
+            get {
+                return ResourceManager.GetString("UserRoles:UnConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Все.
         /// </summary>
         internal static string VacanciesList_All {
             get {
                 return ResourceManager.GetString("VacanciesList:All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Категории.
+        /// </summary>
+        internal static string VacanciesList_Categories {
+            get {
+                return ResourceManager.GetString("VacanciesList:Categories", resourceCulture);
             }
         }
         

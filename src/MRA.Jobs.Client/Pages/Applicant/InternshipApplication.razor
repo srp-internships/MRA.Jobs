@@ -5,6 +5,7 @@
 @using MRA.Jobs.Application.Contracts.VacancyClient;
 @using MRA.Jobs.Client.Components.Extra
 @using MRA.Jobs.Client.Components.Vacancies
+@using MRA.Jobs.Client.Services.VacanciesServices.Internships
 
 @if (_serverError)
 {
@@ -52,7 +53,8 @@ else
 						Duration = response.Duration,
 						Stipend = response.Stipend,
 						VacancyQuestions = response.VacancyQuestions,
-						VacancyTasks = response.VacancyTasks
+						VacancyTasks = response.VacancyTasks,
+                        Tags = response.Tags.ToArray()
 					};
 				_application = new CreateApplicationCommand
 					{

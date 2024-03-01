@@ -21,26 +21,23 @@ public class GetTrainingVacanciesQueryHandler(
             .Include(t => t.Category)
             .Include(t => t.VacancyQuestions)
             .Include(i => i.VacancyTasks)
+            .Include(i=>i.Tags).ThenInclude(t=>t.Tag)
             .ToListAsync(cancellationToken: cancellationToken))
             .AsEnumerable();
 
-        if (request.CategorySlug is not null)
-            trainings = trainings.Where(t => t.Category.Slug == request.CategorySlug);
-        
-        if (request.SearchText is not null)
-            trainings = trainings.Where(t => t.Title.ToLower().Trim().Contains(request.SearchText.ToLower().Trim()));
-        
-
         var userRoles = userHttpContextAccessor.GetUserRoles();
         if (!userRoles.Any()|| !userHttpContextAccessor.IsAuthenticated())
-            request.CheckDate = true;
-
-        if (request.CheckDate)
         {
             DateTime now = DateTime.Now;
             trainings = trainings.Where(t => t.PublishDate <= now && t.EndDate >= now);
         }
 
+        if (request.Tags is not null)
+        {
+            var tags = request.Tags.Split(',').Select(tag => tag.Trim());;
+            trainings = trainings.Where(j => tags.Intersect(j.Tags.Select(t => t.Tag.Name)).Count() == tags.Count());
+        }
+        
         PagedList<TrainingVacancyListDto> result = sieveProcessor.ApplyAdnGetPagedList(request,
             trainings.AsQueryable(), mapper.Map<TrainingVacancyListDto>);
         return await Task.FromResult(result);

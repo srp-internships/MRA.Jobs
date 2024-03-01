@@ -2,6 +2,7 @@
 using MRA.Jobs.Application.Contracts.Dtos.Responses;
 
 namespace MRA.Jobs.Application.Contracts.VacancyClient;
+
 public class VacancyApplicationResponse
 {
     public Guid Id { get; set; }
@@ -16,4 +17,5 @@ public class VacancyApplicationResponse
     public int RequiredYearOfExperience { get; set; }
     public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
     public IEnumerable<VacancyTaskResponseDto> VacancyTasks { get; set; }
+    public string[] Tags { get; set; }
 }

@@ -1,63 +1,347 @@
-﻿@page "/internships"
-@using MRA.Jobs.Application.Contracts.VacancyClient;
-@using MRA.Jobs.Client.Components.Vacancies
-@inject ICategoryService categoryService
-@inject IVacancyService vacancyService
+﻿@page "/Internships"
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.IdentityModel.Tokens
+@using MRA.BlazorComponents.Configuration
+@using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternships
+@using MRA.Jobs.Client.Services.VacanciesServices.Internships
+@inject IInternshipService InternshipService
+@inject NavigationManager NavigationManager
+@inject ICategoryService CategoryService
 
-<MudText Typo="Typo.h4" Style="margin:50px; text-align: center; font-weight: 900">@ContentService["Internships:Internships"]</MudText>
-	@if (serverError)
-{
-	<ServerErrorComponent />
-}
-else
-{
-	<VacanciesList VacancyCategories="internshipCategories" Vacancies="internships" FilteredVacancies="@filteredInternships" Route="internships" />
-}
+<MudGrid Style="margin-top: 15px;">
+    <MudItem lg="12">
+        <MudStack Row="true">
+            <MudText Typo="Typo.h4">
+              <b>@ContentService["Header:Internships"]</b>
+            </MudText>
+            <MudSpacer/>
+            <MudItem lg="6">
+                <MudTextField T="string" Variant="Variant.Outlined" TextChanged="SearchVacancy" Immediate="true"
+                              @bind-Value="@_search" Label=@ContentService["VacanciesList:Search"] Class="rounded-lg"
+                              Margin="Margin.Dense" OnAdornmentClick="@(() => _search = string.Empty)"
+                              AdornmentIcon="@_adornmentIcon" Adornment="Adornment.End"/>
+                <div>
+                    @if (_selectedChipsTags != null)
+                    {
+                        @foreach (var selectedChipsTag in _selectedChipsTags)
+                        {
+                            <MudChip Text="@($"{ContentService["Tag"]}: {selectedChipsTag}")" OnClose="OnCloseChip" CloseIcon="@Icons.Material.Filled.Close"/>
+                        }
+                    }
+                </div>
+            </MudItem>
+
+        </MudStack>
+
+    </MudItem>
+    <MudItem lg="12">
+        <MudGrid>
+            <MudItem xl="2" lg="3" md="4" sm="12">
+                <MudExpansionPanels MultiExpansion="true">
+                    <MudExpansionPanel IsExpanded="@_isExpanded" Dense="true">
+                        <TitleContent>
+                            <MudText>@ContentService["VacanciesList:Categories"]</MudText>
+                        </TitleContent>
+                        <ChildContent>
+                            <MudNavMenu Rounded="true" Color="Color.Primary" Class="pa-2">
+                                <MudNavLink OnClick="@(() => SelectCategory())"
+                                            Class="@(_selectedCategory == null ? "mud-chip-text mud-chip-color-primary" : "")">
+                                    <div class="customTabContainer">
+                                        <div class="customTabContainerLeft">
+                                            <MudText>
+                                                <b>@ContentService["VacanciesList:All"]</b>
+                                            </MudText>
+                                        </div>
+                                        <div class="customTabContainerRight">
+                                        </div>
+                                    </div>
+                                </MudNavLink>
+                                @if (_categories != null)
+                                {
+                                    @foreach (var cat in _categories)
+                                    {
+                                        <MudNavLink OnClick="@(() => SelectCategory(cat.Category.Name))" Class="@(_selectedCategory == cat.Category.Name ? "mud-chip-text mud-chip-color-primary" : "")">
+                                            <MudText>
+                                                <b>@cat.Category.Name</b>
+                                            </MudText>
+                                            <MudSpacer/>
+                                        </MudNavLink>
+                                    }
+                                }
+
+                            </MudNavMenu>
+                        </ChildContent>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+
+
+            </MudItem>
+            <MudItem xl="10" lg="9" md="8" sm="12" Style="bottom: 0; height: 100%">
+                @if (_pagedList == null)
+                {
+                    <MudGrid>
+                        @for (int i = 0; i < 10; i++)
+                        {
+                            <MudItem xs="12" md="12" lg="6">
+                                <MudCard Class="rounded-lg">
+                                    <MudCardContent>
+                                        <MudSkeleton Animation="Animation.Wave" Width="60%" Height="40px"/>
+                                        <MudSkeleton Animation="Animation.Wave" Width="30%"/>
+                                        <br/>
+                                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="100px"/>
+                                        <br/>
+                                        <MudStack Row="true">
+                                            <MudSkeleton Animation="Animation.Wave" Width="20%"/>
+                                            <MudSkeleton Animation="Animation.Wave" Width="10%"/>
+                                            <MudSkeleton Animation="Animation.Wave" Width="15%"/>
+                                            <MudSkeleton Animation="Animation.Wave" Width="20%"/>
+                                        </MudStack>
+                                    </MudCardContent>
+                                </MudCard>
+                            </MudItem>
+                        }
+
+                    </MudGrid>
+                }
+                else
+                {
+                    @if (_pagedList?.Items?.Count != 0)
+                    {
+                        <MudGrid>
+                            @foreach (var vacancy in _pagedList.Items)
+                            {
+                                <MudItem xs="12" md="12" lg="6">
+
+                                    <MudCard Class="rounded-lg">
+                                        <a href="/internships/@vacancy.Slug">
+                                            <MudCardContent >
+
+                                                <MudText Typo="Typo.h5">
+                                                    <b>
+                                                        <MudHighlighter Text="@vacancy.Title" HighlightedText="@_search" Markup="true"/>
+                                                    </b>
+                                                </MudText>
+                                                <MudText > @vacancy.ShortDescription </MudText >
+
+                                                @if (vacancy.Tags != null)
+                                                {
+                                                    <br/>
+                                                    <div @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                                                        @foreach (var tag in vacancy.Tags)
+                                                        {
+                                                            <MudChip Text="@tag" Size="Size.Small" Default="true"
+                                                                     OnClick="@((MouseEventArgs e) => OnSelectChip(e, tag))"/>
+                                                        }
+                                                    </div>
+                                                }
+
+                                            </MudCardContent >
+                                        </a >
+                                    </MudCard >
+
+                                </MudItem>
+                            }
+                        </MudGrid>
+                        <br/>
+                        <MudStack Row="true" Style="bottom: 0">
+                            <MudSpacer/>
+                            <MudItem>
+                                <div class="d-flex flex-grow-1">
+                                    <div class="flex-none d-flex py-lg-3">
+                                        <MudText Typo="Typo.body2" Style="bottom: 0; top: auto">
+                                            @ContentService["Per Page"]
+                                        </MudText>
+                                    </div>
+                                    <div class=""></div>
+                                    <div style="margin-left:5px; ">
+                                        <MudStack Row="true">
+                                            <MudSelect Dense="true" T="int" Value="@_perPage" ValueChanged="PageSizeChange"
+                                                       Variant="Variant.Outlined" Margin="Margin.Dense" Style="width: 75px; font-size: 10px;">
+                                                <MudSelectItem T="int" Value="10"/>
+                                                <MudSelectItem T="int" Value="20"/>
+                                                <MudSelectItem T="int" Value="30"/>
+                                                <MudSelectItem T="int" Value="50"/>
+                                            </MudSelect>
+                                            @if (_pagedList.TotalPages > 1)
+                                            {
+                                                <MudPagination Color="Color.Primary" Selected="_selectedPage" Size="Size.Small"
+                                                               ShowFirstButton="true" ShowLastButton="true" MiddleCount="3" BoundaryCount="1"
+                                                               Count="@_pagedList.TotalPages" SelectedChanged="ChangePage"/>
+                                            }
+                                        </MudStack>
+                                    </div>
+                                </div>
+                            </MudItem>
+                        </MudStack>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.h5" Style="margin:50px;">@ContentService["VacanciesList:NoJobs"]</MudText>
+                    }
+                }
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+</MudGrid>
+
 @code {
-	private bool serverError;
-	public List<string> internshipCategories { get; set; }
-	public List<VacancyClientResponse> internships { get; set; }
-	private List<VacancyClientResponse> filteredInternships;
-	protected override async Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-		try
-		{
+    private PagedList<InternshipVacancyListResponse> _pagedList = new();
+    private GetInternshipsQueryOptions _query = new();
+    private List<string> _selectedChipsTags = new();
+    private string _selectedCategory = "";
+    private List<InternshipCategoriesResponse> _categories;
+    private List<string> _tags;
+    private string _search = "";
 
-			var result = await categoryService.GetInternshipCategoriesSinceCheckDate();
-			var allJobs = await vacancyService.GetInternship();
-			if (result is not null && allJobs is not null)
-			{
-				internshipCategories = result.Select(r => r.Category.Name).ToList();
-				internships = allJobs.Select(r => new VacancyClientResponse
-					{
-						Category = r.Category,
-						Title = r.Title,
-						ShortDescription = r.ShortDescription,
-						Slug = r.Slug,
-						EndDate = r.EndDate,
-						PublishDate = r.PublishDate,
-						Duration = r.Duration,
-						Deadline = r.ApplicationDeadline
-					}).ToList();
-				filteredInternships = allJobs.Where(s => s.EndDate >= DateTime.Now && s.ApplicationDeadline >= DateTime.Now).Select(r => new VacancyClientResponse
-					{
-						Category = r.Category,
-						Title = r.Title,
-						ShortDescription = r.ShortDescription,
-						Slug = r.Slug,
-						EndDate = r.EndDate,
-						PublishDate = r.PublishDate,
-						Duration = r.Duration,
-						Deadline = r.ApplicationDeadline
-					}).ToList();
-			}
-		}
-		catch (Exception )
-		{
-			serverError = true;
-			StateHasChanged();
+    private int _selectedPage = 1;
+    private int _perPage = 10;
+    private string _adornmentIcon = Icons.Material.Filled.Search;
+    private bool _isExpanded = true;
 
-		}
-	}
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _tags = (await HttpClient.GetFromJsonAsync<List<string>>(Configuration.GetJobsUrl("tags")))
+                .Result.Distinct().ToList();
+            _categories = await CategoryService.GetInternshipCategories();
+            await Initialize();
+            StateHasChanged();
+            await SearchVacancy();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Initialize();
+    }
+
+    private Task Initialize()
+    {
+        var currentUri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("page", out var page))
+            _query.Page = int.Parse(page);
+
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("pageSize", out var pageSize))
+            _query.PageSize = int.Parse(pageSize);
+
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("tags", out var tags))
+        {
+            _query.Tags = tags;
+            _selectedChipsTags = tags.ToString().Split(",")
+                .ToList();
+        }
+
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("filters", out var filters))
+        {
+            _query.Filters = filters;
+            _search = ExtractSearch(filters);
+            _selectedCategory = ExtractCategory(filters);
+            if (_selectedCategory.IsNullOrEmpty()) _selectedCategory = ContentService["VacanciesList:All"];
+        }
+
+        if (currentUri.Query.IsNullOrEmpty())
+        {
+            _query.Page = 1;
+            _query.PageSize = 10;
+        }
+
+        if (_query.Page != null) _selectedPage = (int)_query.Page;
+        if (_query.PageSize != null) _perPage = (int)_query.PageSize;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private async Task ChangePage(int page)
+    {
+        _query.Page = page;
+        _selectedPage = page;
+
+        await SearchVacancy();
+    }
+
+    private async Task SelectCategory(string cats = null)
+    {
+        _selectedCategory = cats;
+        await SearchVacancy();
+    }
+
+    private async Task SearchVacancy()
+    {
+        _query.Filters = GetFilters();
+
+        _adornmentIcon = _search.IsNullOrEmpty() ? Icons.Material.Filled.Search : Icons.Material.Filled.Clear;
+
+        var queryParameters = new Dictionary<string, string>
+        {
+            { "page", _query.Page.ToString() },
+            { "pageSize", _query.PageSize.ToString() }
+        };
+        if (!_query.Filters.IsNullOrEmpty()) queryParameters.Add("filters", _query.Filters);
+        if (!_query.Tags.IsNullOrEmpty()) queryParameters.Add("tags", _query.Tags);
+        var queryString = QueryHelpers.AddQueryString("Internships", queryParameters);
+        _pagedList = await InternshipService.GetAll(_query);
+        StateHasChanged();
+        NavigationManager.NavigateTo(queryString);
+    }
+
+    private string GetFilters()
+    {
+        var filters = new List<string>();
+        if (!string.IsNullOrEmpty(_search)) filters.Add($"Title@={_search}");
+        if (!string.IsNullOrEmpty(_selectedCategory) && _selectedCategory != ContentService["VacanciesList:All"])
+            filters.Add($"Category@={_selectedCategory}");
+        return filters.Any() ? string.Join(",", filters) : "";
+    }
+
+    private static string ExtractSearch(string filters)
+    {
+        var filterList = filters.Split(',');
+        foreach (var filter in filterList)
+        {
+            if (filter.StartsWith("Title@="))
+                return filter.Substring("Title@=".Length);
+        }
+
+        return "";
+    }
+
+    private static string ExtractCategory(string filters)
+    {
+        var filterList = filters.Split(',');
+        foreach (var filter in filterList)
+        {
+            if (filter.StartsWith("Category@="))
+                return filter.Substring("Category@=".Length);
+        }
+
+        return "";
+    }
+
+
+    private async Task PageSizeChange(int size)
+    {
+        _query.PageSize = size;
+        _perPage = size;
+        await SearchVacancy();
+    }
+
+    private async Task OnCloseChip(MudChip chip)
+    {
+        _query.Tags = "";
+        _selectedChipsTags.Remove(chip.Text.Replace($"{ContentService["Tag"]}: ", ""));
+        _query.Tags = string.Join(",", _selectedChipsTags);
+        await SearchVacancy();
+        StateHasChanged();
+    }
+
+    private async Task OnSelectChip(MouseEventArgs e, string tag)
+    {
+        _selectedChipsTags.Add(tag);
+        _selectedChipsTags = _selectedChipsTags.Distinct().ToList();
+        _query.Tags = string.Join(",", _selectedChipsTags);
+        await SearchVacancy();
+        StateHasChanged();
+    }
+
 }

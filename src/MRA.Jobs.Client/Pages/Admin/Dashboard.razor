@@ -1,5 +1,4 @@
 ﻿@using MRA.Jobs.Client.Identity
-@using AltairCA.Blazor.WebAssembly.Cookie
 @using Microsoft.FeatureManagement
 @using MRA.Jobs.Client.Components.Admin
 @using MRA.Jobs.Client.Components.Extra
@@ -34,9 +33,7 @@
 
     [Inject]
     private NavigationManager _navigationManager { get; set; }
-
-    [Inject]
-    private IAltairCABlazorCookieUtil CookieUtil { get; set; }
+    
 
     [Inject]
     private AuthenticationStateProvider _authStateProvider { get; set; }

@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 
-namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyById;
+namespace MRA.Jobs.Application.Features.JobVacancies.queries.GetJobVacancyBySlug;
 
 public class GetJobVacancyBySlugQueryHandler(
     IApplicationDbContext dbContext,
@@ -13,13 +13,11 @@ public class GetJobVacancyBySlugQueryHandler(
     public async Task<JobVacancyDetailsDto> Handle(GetJobVacancyBySlugQuery request,
         CancellationToken cancellationToken)
     {
-        //var jobVacancy = await _dbContext.JobVacancies.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
         JobVacancy jobVacancy = await dbContext.JobVacancies
             .Include(i => i.VacancyQuestions)
             .Include(i => i.VacancyTasks)
             .Include(i => i.History)
-            .Include(i => i.Tags)
-            .ThenInclude(t => t.Tag)
+            .Include(i => i.Tags).ThenInclude(t => t.Tag)
             .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken: cancellationToken);
         _ = jobVacancy ?? throw new NotFoundException(nameof(JobVacancy), request.Slug);
 

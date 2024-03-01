@@ -17,34 +17,31 @@ public class GetJobsQueryOptionsHandler(
     public async Task<PagedList<JobVacancyListDto>> Handle(GetJobsQueryOptions request,
         CancellationToken cancellationToken)
     {
-        var jobs = (await applicationDbContext.JobVacancies
-                .Include(j => j.Category)
-                .Include(j => j.VacancyQuestions)
-                .Include(i => i.VacancyTasks)
-                .Where(j => j.Slug != CommonVacanciesSlugs.NoVacancySlug)
-                .ToListAsync(cancellationToken: cancellationToken))
-            .AsEnumerable();
-
-        if (request.CategorySlug is not null)
-            jobs = jobs.Where(t => t.Category.Slug == request.CategorySlug);
-
-        if (request.SearchText is not null)
-            jobs = jobs.Where(t => t.Title.ToLower().Trim().Contains(request.SearchText.ToLower().Trim()));
+        var jobs = applicationDbContext.JobVacancies
+            .Include(j => j.Category)
+            .Include(j => j.VacancyQuestions)
+            .Include(i => i.VacancyTasks)
+            .Include(j => j.Tags)
+            .ThenInclude(t => t.Tag)
+            .Where(j => j.Slug != CommonVacanciesSlugs.NoVacancySlug)
+            .AsNoTracking();
 
 
         var userRoles = userHttpContextAccessor.GetUserRoles();
         if (!userRoles.Any() || !userHttpContextAccessor.IsAuthenticated())
-            request.CheckDate = true;
-
-
-        if (request.CheckDate)
         {
             DateTime now = DateTime.Now;
             jobs = jobs.Where(t => t.PublishDate <= now && t.EndDate >= now);
         }
 
+        if (request.Tags is not null)
+        {
+            var tags = request.Tags.Split(',').Select(tag => tag.Trim());
+            jobs = jobs.Where(j => tags.Intersect(j.Tags.Select(t => t.Tag.Name)).Count() == tags.Count());
+        }
+
         PagedList<JobVacancyListDto> result = sieveProcessor.ApplyAdnGetPagedList(request,
-            jobs.AsQueryable(), mapper.Map<JobVacancyListDto>);
+            jobs, mapper.Map<JobVacancyListDto>);
         return await Task.FromResult(result);
     }
 }

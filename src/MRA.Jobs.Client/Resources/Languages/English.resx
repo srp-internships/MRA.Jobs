@@ -125,6 +125,9 @@
     <data name="Header:Home" xml:space="preserve">
     <value>Home</value>
   </data>
+    <data name="Header:SendEmail" xml:space="preserve">
+    <value>Send email</value>
+  </data>
     <data name="Header:Internships" xml:space="preserve">
     <value>Internships</value>
   </data>
@@ -139,11 +142,11 @@
   </data>
     <data name="Header:Academy" xml:space="preserve">
     <value>Academy</value>
-  </data> 
-  <data name="Header:Usersmanager" xml:space="preserve">
+  </data>
+    <data name="Header:Usersmanager" xml:space="preserve">
     <value>Users manager</value>
   </data>
-  <data name="Header:Category" xml:space="preserve">
+    <data name="Header:Category" xml:space="preserve">
     <value>Category</value>
   </data>
     <data name="UserButton:Profile" xml:space="preserve">
@@ -408,6 +411,9 @@
     <data name="Profile:SelectLanguage" xml:space="preserve">
     <value>Select Language</value>
   </data>
+    <data name="Header:SendMessage" xml:space="preserve">
+    <value>Send message</value>
+  </data>
     <data name="Dashboard:Appilcations:Applications" xml:space="preserve">
     <value>Applications</value>
   </data>
@@ -450,7 +456,7 @@
     <data name="VacanciesList:All" xml:space="preserve">
     <value>All</value>
   </data>
-  <data name="VacanciesList:Categories" xml:space="preserve">
+    <data name="VacanciesList:Categories" xml:space="preserve">
     <value>Categories</value>
   </data>
     <data name="VacanciesList:NoJobs" xml:space="preserve">
@@ -468,7 +474,7 @@
     <data name="Trainings:Trainings" xml:space="preserve">
     <value>Trainings</value>
   </data>
-   <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
+    <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
     <value>Vacancy Details</value>
   </data>
     <data name="VacancyApplication:year(s)" xml:space="preserve">
@@ -751,60 +757,60 @@
     <data name="SendCV:IfFileNull">
         <value>Please upload your CV</value>
     </data>
-     <data name="Application:Success">
+    <data name="Application:Success">
         <value>Application sent successfully!</value>
     </data>
-     <data name="SomethingWentWrong">
+    <data name="SomethingWentWrong">
         <value>Something went wrong!</value>
     </data>
-     <data name="ServerIsNotResponding">
+    <data name="ServerIsNotResponding">
         <value>Server is not responding, please try later</value>
     </data>
-     <data name="ErrorDelete">
+    <data name="ErrorDelete">
         <value>Deleting error</value>
     </data>
-     <data name="DuplicateRole">
+    <data name="DuplicateRole">
         <value>Add error may be you entered duplicate role</value>
     </data>
-     <data name="GoogleAuthFailed">
+    <data name="GoogleAuthFailed">
         <value>Google authorization failed. Please try again later.</value>
     </data>
 
-     <data name="ConverterService:SecondsAgo">
+    <data name="ConverterService:SecondsAgo">
         <value>seconds ago</value>
     </data>
-      <data name="ConverterService:MinAgo">
+    <data name="ConverterService:MinAgo">
         <value>min ago</value>
     </data>
- <data name="ConverterService:HourAgo">
+    <data name="ConverterService:HourAgo">
         <value>hour ago</value>
     </data>
-     <data name="ConverterService:HoursAgo">
+    <data name="ConverterService:HoursAgo">
         <value>hours ago</value>
     </data>
     <data name="ConverterService:TodayAt">
         <value>Today at</value>
     </data>
-     <data name="ConverterService:Yesterday">
+    <data name="ConverterService:Yesterday">
         <value>Yesterday</value>
     </data>
 
     <data name="ConverterService:SecondsLeft">
         <value>seconds left</value>
     </data>
-      <data name="ConverterService:MinLeft">
+    <data name="ConverterService:MinLeft">
         <value>min left</value>
     </data>
- <data name="ConverterService:HourLeft">
+    <data name="ConverterService:HourLeft">
         <value>hour left</value>
     </data>
-     <data name="ConverterService:HoursLeft">
+    <data name="ConverterService:HoursLeft">
         <value>hours left</value>
     </data>
-     <data name="ConverterService:Tomorrow">
+    <data name="ConverterService:Tomorrow">
         <value>Tomorrow</value>
     </data>
-     <data name="ConverterService:On">
+    <data name="ConverterService:On">
         <value>on</value>
     </data>
     <data name="UserManager:Users">
@@ -812,139 +818,143 @@
     </data>
     <data name="UserManager:Searchname">
         <value>Search by username or full name</value>
-    </data> 
-   <data name="UserManager:FullName">
+    </data>
+    <data name="UserManager:FullName">
         <value>Full Name</value>
     </data>
-  <data name="UserManager:Roles">
+    <data name="UserManager:Roles">
         <value>Roles</value>
     </data>
-  <data name="UserManager:Nomatchingrecords">
+    <data name="UserManager:Nomatchingrecords">
         <value>No matching records found</value>
-    </data> 
-  <data name="UserManager:Loading">
+    </data>
+    <data name="UserManager:Loading">
         <value>Loading...</value>
-    </data>  
-  <data name="Category:NewCategory">
+    </data>
+    <data name="Category:NewCategory">
         <value>New Category</value>
     </data>
-  <data name="Internships:InternshipsVacancy">
+    <data name="Internships:InternshipsVacancy">
         <value>Internships Vacancy</value>
     </data>
-  <data name="Internships:CreateInternship">
-    <value>Create New Internship Vacancy</value>
-  </data>
-  <data name="Internships:Title">
-    <value>Title</value>
-  </data> 
-  <data name="Internships:ShortDescription">
-    <value>Short Description</value>
-  </data>
-  <data name="Internships:InsertImage">
-    <value>Insert Image</value>
-  </data>
-  <data name="Internships:Stipend">
-    <value>Stipend</value>
-  </data> 
-  <data name="">
-    <value>Publish Date</value>
-  </data>
-  <data name="Internships:Date">
-    <value>Date</value>
-  </data>
-  <data name="Internships:Time">
-    <value>Time</value>
-  </data>
-  <data name="Internships:ApplicationDeadline">
-    <value>Application Deadline</value>
-  </data>
-  <data name="Internships:Tasks">
-    <value>Tasks</value>
-  </data> 
-  <data name="Internships:Template">
-    <value>Template</value>
-  </data>
-  <data name="Internships:Test">
-    <value>Test</value>
-  </data>
-  <data name="Internships:Remove">
-    <value>Remove</value>
-  </data> 
-  <data name="Internships:AddTask">
-    <value>Add Task</value>
-  </data>
-  <data name="Internships:Vacancyquestions">
-    <value>Vacancy questions</value>
-  </data>
-  <data name="Internships:AddQuestion">
-    <value>Add Question</value>
-  </data>
-  <data name="Internships:Create">
-    <value>Create</value>
-  </data> 
-  <data name="Internships:Searchjobs">
-    <value>Search jobs</value>
-  </data>
-  <data name="Internships:NewInternship">
-    <value>New Internship Vacancy</value>
-  </data>
-  <data name="Training:NewTraining">
-    <value>Create New Training Vacancy</value>
-  </data> 
-  <data name="Training:NewTrainingV">
-    <value>New Training Vacancy</value>
-  </data>
-  <data name="job:CreateNewJob">
-    <value>Create New Job Vacancy</value>
-  </data>
+    <data name="Internships:CreateInternship">
+        <value>Create New Internship Vacancy</value>
+    </data>
+    <data name="Internships:Title">
+        <value>Title</value>
+    </data>
+    <data name="Internships:ShortDescription">
+        <value>Short Description</value>
+    </data>
+    <data name="Internships:InsertImage">
+        <value>Insert Image</value>
+    </data>
+    <data name="Internships:Stipend">
+        <value>Stipend</value>
+    </data>
+    <data name="">
+        <value>Publish Date</value>
+    </data>
+    <data name="Internships:Date">
+        <value>Date</value>
+    </data>
+    <data name="Internships:Time">
+        <value>Time</value>
+    </data>
+    <data name="Internships:ApplicationDeadline">
+        <value>Application Deadline</value>
+    </data>
+    <data name="Internships:Tasks">
+        <value>Tasks</value>
+    </data>
+    <data name="Internships:Template">
+        <value>Template</value>
+    </data>
+    <data name="Internships:Test">
+        <value>Test</value>
+    </data>
+    <data name="Internships:Remove">
+        <value>Remove</value>
+    </data>
+    <data name="Internships:AddTask">
+        <value>Add Task</value>
+    </data>
+    <data name="Internships:Vacancyquestions">
+        <value>Vacancy questions</value>
+    </data>
+    <data name="Internships:AddQuestion">
+        <value>Add Question</value>
+    </data>
+    <data name="Internships:Create">
+        <value>Create</value>
+    </data>
+    <data name="Internships:Searchjobs">
+        <value>Search jobs</value>
+    </data>
+    <data name="Internships:NewInternship">
+        <value>New Internship Vacancy</value>
+    </data>
+    <data name="Training:NewTraining">
+        <value>Create New Training Vacancy</value>
+    </data>
+    <data name="Training:NewTrainingV">
+        <value>New Training Vacancy</value>
+    </data>
+    <data name="job:CreateNewJob">
+        <value>Create New Job Vacancy</value>
+    </data>
     <data name="job:NewVacancy">
-    <value>New job Vacancy</value>
-  </data>
-   <data name="job:Selectcategory">
-    <value>Select category</value>
-  </data> 
-  <data name="job:Requiredyear">
-    <value>Required year(s) of experience</value>
-  </data>
-  <data name="job:WorkSchedule">
-    <value>Work Schedule</value>
-  </data> 
-  
-  
-  <data name="UserRoles:PersonalData">
-    <value>Personal Data</value>
-  </data>
-  <data name="UserRoles:UnConfirmed">
-    <value>UnConfirmed</value>
-  </data>  
-  <data name="UserRoles:Gender">
-    <value>Gender</value>
-  </data> 
-   <data name="UserRoles:History">
-    <value>History</value>
-  </data> 
- 
-  <data name="Applicateons:Filters">
-    <value>Filters</value>
-  </data>
-  
-  <data name="Applicateons:Status">
-    <value>Status</value>
-  </data> 
-  <data name="Applicateons:Selectstatus">
-    <value>Select status</value>
-  </data> 
-  <data name="Applicateons:Changestatus">
-    <value>Change status</value>
-  </data> 
-  <data name="Applicateons:Notes">
-    <value>Notes</value>
-  </data> 
-  <data name="Applicateons:AddNote">
-    <value>Add Note</value>
-  </data>
-  <data name="Applicateons:Add">
-    <value>Add</value>
-  </data>
-  
+        <value>New job Vacancy</value>
+    </data>
+    <data name="job:Selectcategory">
+        <value>Select category</value>
+    </data>
+    <data name="job:Requiredyear">
+        <value>Required year(s) of experience</value>
+    </data>
+    <data name="job:WorkSchedule">
+        <value>Work Schedule</value>
+    </data>
+
+
+    <data name="UserRoles:PersonalData">
+        <value>Personal Data</value>
+    </data>
+    <data name="UserRoles:UnConfirmed">
+        <value>UnConfirmed</value>
+    </data>
+    <data name="UserRoles:Gender">
+        <value>Gender</value>
+    </data>
+    <data name="UserRoles:History">
+        <value>History</value>
+    </data>
+
+    <data name="Applicateons:Filters">
+        <value>Filters</value>
+    </data>
+
+    <data name="Applicateons:Status">
+        <value>Status</value>
+    </data>
+    <data name="Applicateons:Selectstatus">
+        <value>Select status</value>
+    </data>
+    <data name="Applicateons:Changestatus">
+        <value>Change status</value>
+    </data>
+    <data name="Applicateons:Notes">
+        <value>Notes</value>
+    </data>
+    <data name="Applicateons:AddNote">
+        <value>Add Note</value>
+    </data>
+    <data name="Applicateons:Add">
+        <value>Add</value>
+    </data>
+
+    <data name="Per Page">
+        <value>Per Page</value>
+    </data>
+
 </root>

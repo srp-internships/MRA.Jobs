@@ -1,5 +1,4 @@
-﻿using MRA.Jobs.Application.Contracts.TagDTO;
-using MRA.Jobs.Application.Contracts.TimeLineDTO;
+﻿using MRA.Jobs.Application.Contracts.TimeLineDTO;
 using MRA.Jobs.Application.Contracts.Converter.Converter;
 using MRA.Jobs.Application.Contracts.Dtos;
 using Newtonsoft.Json;
@@ -42,7 +41,7 @@ public class InternshipVacancyResponse
     public Guid LastModifiedBy { get; set; }
 
     public ICollection<TimeLineDetailsDto> History { get; set; }
-    public ICollection<TagDto> Tags { get; set; }
+    public ICollection<string> Tags { get; set; }
 
     public IEnumerable<VacancyQuestionDto> VacancyQuestions { get; set; }
     public IEnumerable<VacancyTaskResponseDto> VacancyTasks { get; set; }
