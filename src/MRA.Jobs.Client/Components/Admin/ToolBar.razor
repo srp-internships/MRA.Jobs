@@ -17,13 +17,13 @@
         <Authorized>
             <MudToolBar Class="toolbar-fixed-blur">
                 <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                    <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
                 </MudHidden>
                 <a href="">
                     <MudHidden Breakpoint="Breakpoint.MdAndDown">
                         <MudStack Row="true">
                             <MudItem Style="padding-right:5px;">
-                                <MudImage src="/images/srp/srp_icon.png" Style="width: 50px" />
+                                <MudImage src="/images/srp/srp_icon.png" Style="width: 50px"/>
                             </MudItem>
                             <MudItem Style="padding-left:0; margin-right: 40px;">
                                 <MudText Style="font-size: 21.5px;">
@@ -40,7 +40,7 @@
                     <MudHidden Breakpoint="Breakpoint.LgAndUp">
                         <MudStack Row="true">
                             <MudItem Style="padding-right:5px;">
-                                <MudImage src="/images/srp/srp_icon.png" Style="width: 30px" />
+                                <MudImage src="/images/srp/srp_icon.png" Style="width: 30px"/>
                             </MudItem>
                             <MudItem Style="padding-left:0; margin-right: 40px;">
                                 <MudText Style="font-size: 21.5px;">
@@ -85,8 +85,14 @@
                         </MudButton>
                     </AuthorizeView>
 
+                    <MudButton Color="Color.Inherit" Variant="Variant.Text" Href=@($"{Configuration["IdentityClient"]}/Candidates")>
+                        <MudText>
+                            <b>Candidates</b>
+                        </MudText>
+                    </MudButton>
+
                 </MudHidden>
-                <MudSpacer />
+                <MudSpacer/>
                 <MudHidden Breakpoint="Breakpoint.Xs">
                     @if (_betaVersion)
                     {
@@ -95,32 +101,32 @@
                         </a>
                     }
 
-                    <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4" />
-                    <ToolBarSettingsButtons />
+                    <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
+                    <ToolBarSettingsButtons/>
 
                 </MudHidden>
-                <UserButton />
+                <UserButton/>
             </MudToolBar>
 
             <MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="2" Style="position:fixed;height: 100%">
                 <MudToolBar Dense="true" Class="docs-gray-bg">
-                    <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
-                    <MudSpacer />
-                    <ToolBarSettingsButtons />
+                    <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+                    <MudSpacer/>
+                    <ToolBarSettingsButtons/>
                 </MudToolBar>
 
                 <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
                     <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">@ContentService["Header:Category"]</MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">@ContentService["UserButton:Applications"]</MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">@ContentService["Header:Jobs"]</MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">@ContentService["Header:Internships"]</MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">@ContentService["Header:Trainings"]</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">@ContentService["UserButton:Applications"]</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">@ContentService["Header:Jobs"]</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">@ContentService["Header:Internships"]</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">@ContentService["Header:Trainings"]</MudNavLink>
 
-                        <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-                            <MudNavLink Match="NavLinkMatch.All" Href=@linkToUserManager>@ContentService["Header:Usersmanager"]</MudNavLink>
-                        </AuthorizeView>
-                    </MudNavMenu>
-                    @if (_betaVersion)
+                    <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
+                        <MudNavLink Match="NavLinkMatch.All" Href=@linkToUserManager>@ContentService["Header:Usersmanager"]</MudNavLink>
+                    </AuthorizeView>
+                </MudNavMenu>
+                @if (_betaVersion)
                 {
                     <a href="@Configuration["Beta:Address"]" target="_blank">
                         <MudChip Color="Color.Primary">Beta</MudChip>
