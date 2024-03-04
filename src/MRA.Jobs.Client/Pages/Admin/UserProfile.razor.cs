@@ -30,6 +30,5 @@ public partial class UserProfile
         {
             Snackbar.Add(e.Message, Severity.Error);
         }
-      
     }
 }

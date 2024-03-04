@@ -60,6 +60,9 @@
       <Compile Update="Pages\Applications\Applications.cs">
         <DependentUpon>Applications.razor</DependentUpon>
       </Compile>
+      <Compile Update="Pages\Admin\Candidates.cs">
+        <DependentUpon>Candidates.razor</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

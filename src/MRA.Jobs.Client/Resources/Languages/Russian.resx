@@ -949,4 +949,10 @@
     <data name="Per Page">
         <value>Количество</value>
     </data>
+    <data name="Candidates" xml:space="preserve">
+        <value>Кандидаты</value>
+    </data>
+    <data name="Header:SendMessage" xml:space="preserve">
+        <value>Отправить sms</value>
+    </data>
 </root>

@@ -84,13 +84,11 @@
                             </MudText>
                         </MudButton>
                     </AuthorizeView>
-
-                    <MudButton Color="Color.Inherit" Variant="Variant.Text" Href=@($"{Configuration["IdentityClient"]}/Candidates")>
+                    <MudButton Color="Color.Inherit" Variant="Variant.Text" Href="/Candidates">
                         <MudText>
-                            <b>Candidates</b>
+                            <b>@ContentService["Candidates"]</b>
                         </MudText>
                     </MudButton>
-
                 </MudHidden>
                 <MudSpacer/>
                 <MudHidden Breakpoint="Breakpoint.Xs">
@@ -100,10 +98,8 @@
                             <MudChip Color="Color.Primary">Beta</MudChip>
                         </a>
                     }
-
                     <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
                     <ToolBarSettingsButtons/>
-
                 </MudHidden>
                 <UserButton/>
             </MudToolBar>
