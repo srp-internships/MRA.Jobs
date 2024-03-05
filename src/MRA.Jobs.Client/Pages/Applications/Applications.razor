@@ -9,79 +9,92 @@
 {
     <MudGrid>
         <MudItem xs="12" lg="12">
-            <MudText Typo="Typo.caption" Style="color: grey">Filter</MudText>
-            <MudGrid Style="margin-top: 3px; margin-bottom: 5px">
-                <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
-                    <MudTextField T="string" Variant="Variant.Outlined" Label="Full Name" Margin="Margin.Dense"
-                                  FullWidth="true" Clearable="true" @bind-Value="_selectedFullName"/>
-                </MudItem>
-                <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
-                    <MudTextField T="string" Variant="Variant.Outlined" Label="Email" Margin="Margin.Dense"
-                                  FullWidth="true" Clearable="true" @bind-Value="_selectedEmail"/>
-                </MudItem>
-                <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
-                    <MudTextField T="string" Variant="Variant.Outlined" Label="Phone Number" Margin="Margin.Dense"
-                                  FullWidth="true" Clearable="true" @bind-Value="_selectedPhoneNumber"/>
-                </MudItem>
-                <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
-                    <MudSelect MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))"
-                               MultiSelection="true" @bind-Value="SelectedSkills" SelectAll="true"
-                               Variant="Variant.Outlined" Margin="Margin.Dense"
-                               @bind-SelectedValues="Options" T="string" Label="Filter by skills"
-                               AnchorOrigin="Origin.BottomCenter" Clearable="true">
-                        @if (_allSkills != null)
-                        {
-                            @foreach (var skill in _allSkills.Skills)
-                            {
-                                <MudSelectItem T="string" Value="@skill">@skill</MudSelectItem>
-                            }
-                        }
-                    </MudSelect>
-                </MudItem>
-                <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
-                    <MudAutocomplete T="VacancyDto" Label="Vacancy" Variant="Variant.Outlined" Margin="Margin.Dense"
-                                     @bind-Value="_selectedVacancy" SearchFunc="@SearchVacancies" CoerceValue="true"
-                                     Clearable="true" OnClearButtonClick="@(() => _selectedVacancy = new())"
-                                     ToStringFunc="@(e => e == null ? null : $"{e.Title}")">
-                        <ItemTemplate Context="e">
-                            <MudText>@e.Title</MudText>
-                            <MudText Typo="Typo.caption">@e.ShortDescription</MudText>
-                        </ItemTemplate>
-                        <NoItemsTemplate>
-                            <MudText Align="Align.Center" Class="px-4 py-1">
-                                No items found
-                            </MudText>
-                        </NoItemsTemplate>
-                    </MudAutocomplete>
-                </MudItem>
-                <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
-                    <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="_searchStatusName"
-                               Margin="Margin.Dense" Label="Application Status" Clearable="true">
-                        @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
-                        {
-                            <MudSelectItem Value="@status.ToString()"/>
-                        }
-                    </MudSelect>
-                </MudItem>
-                <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
-                    <MudDateRangePicker @ref="_picker" Label="Applied At" @bind-DateRange="_dateRange"
-                                        Variant="Variant.Outlined" Margin="Margin.Dense">
-                        <PickerActions>
-                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
-                            <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
-                            <MudButton Color="Color.Primary" OnClick="@(() => _picker.Close())">Ok</MudButton>
-                        </PickerActions>
-                    </MudDateRangePicker>
-                </MudItem>
-                <MudItem Style="padding: 5px">
-                    <ProgressTaskButton Variant="Variant.Filled" Color="Color.Primary" Style="margin-top: 4px;"
-                                        Function="@(async () => await _table.ReloadServerData())">
-                        <MudIcon Icon="@Icons.Material.Filled.Search"/>
-                        <MudText>Search</MudText>
-                    </ProgressTaskButton>
-                </MudItem>
-            </MudGrid>
-            <MudDivider/>
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="Filter" IsExpanded="_isExpanded" IsExpandedChanged="ExpandChanged">
+                    <MudGrid Style="margin-top: 3px; margin-bottom: 5px">
+                        <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
+                            <MudTextField T="string" Variant="Variant.Outlined" Label="Full Name" Margin="Margin.Dense"
+                                          FullWidth="true" Clearable="true" @bind-Value="_selectedFullName"/>
+                        </MudItem>
+                        <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
+                            <MudTextField T="string" Variant="Variant.Outlined" Label="Email" Margin="Margin.Dense"
+                                          FullWidth="true" Clearable="true" @bind-Value="_selectedEmail"/>
+                        </MudItem>
+                        <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
+                            <MudTextField T="string" Variant="Variant.Outlined" Label="Phone Number" Margin="Margin.Dense"
+                                          FullWidth="true" Clearable="true" @bind-Value="_selectedPhoneNumber"/>
+                        </MudItem>
+                        <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
+                            <MudSelect MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))"
+                                       MultiSelection="true" @bind-Value="SelectedSkills" SelectAll="true"
+                                       Variant="Variant.Outlined" Margin="Margin.Dense"
+                                       @bind-SelectedValues="Options" T="string" Label="Filter by skills"
+                                       AnchorOrigin="Origin.BottomCenter" Clearable="true">
+                                @if (_allSkills != null)
+                                {
+                                    @foreach (var skill in _allSkills.Skills)
+                                    {
+                                        <MudSelectItem T="string" Value="@skill">@skill</MudSelectItem>
+                                    }
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
+                            <MudAutocomplete T="VacancyDto" Label="Vacancy" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                             @bind-Value="_selectedVacancy" SearchFunc="@SearchVacancies" CoerceValue="true"
+                                             Clearable="true" OnClearButtonClick="@(() => _selectedVacancy = new())"
+                                             ToStringFunc="@(e => e == null ? null : $"{e.Title}")">
+                                <ItemTemplate Context="e">
+                                    <MudText>@e.Title</MudText>
+                                    <MudText Typo="Typo.caption">@e.ShortDescription</MudText>
+                                </ItemTemplate>
+                                <NoItemsTemplate>
+                                    <MudText Align="Align.Center" Class="px-4 py-1">
+                                        No items found
+                                    </MudText>
+                                </NoItemsTemplate>
+                            </MudAutocomplete>
+                        </MudItem>
+                        <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
+                            <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="_searchStatusName"
+                                       Margin="Margin.Dense" Label="Application Status" Clearable="true">
+                                @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                                {
+                                    <MudSelectItem Value="@status.ToString()"/>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
+                            <MudDateRangePicker @ref="_picker" Label="Applied At" @bind-DateRange="_dateRange"
+                                                Variant="Variant.Outlined" Margin="Margin.Dense">
+                                <PickerActions>
+                                    <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
+                                    <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
+                                    <MudButton Color="Color.Primary" OnClick="@(() => _picker.Close())">Ok</MudButton>
+                                </PickerActions>
+                            </MudDateRangePicker>
+                        </MudItem>
+                        <MudItem Style="padding: 5px">
+                            <MudStack Row="true">
+                                <ProgressTaskButton Variant="Variant.Filled" Color="Color.Primary" Style="margin-top: 4px;"
+                                                    Function="@(async () => await _table.ReloadServerData())">
+                                    <MudIcon Icon="@Icons.Material.Filled.Search"/>
+                                    <MudText>Search</MudText>
+                                </ProgressTaskButton>
+                                @if (_clearButton)
+                                {
+                                    <ProgressTaskButton Variant="Variant.Filled" Style="margin-top: 4px;"
+                                                        Function="Clear">
+                                        <MudIcon Icon="@Icons.Material.Filled.Clear"/>
+                                        <MudText>Clear</MudText>
+                                    </ProgressTaskButton>
+                                }
+
+                            </MudStack>
+                        </MudItem>
+                    </MudGrid>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
         </MudItem>
         <MudItem xs="12" lg="12">
 
