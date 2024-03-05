@@ -1,6 +1,7 @@
 ﻿using MRA.BlazorComponents.Configuration;
 using MRA.BlazorComponents.HttpClient.Services;
 using MRA.BlazorComponents.Snackbar.Extensions;
+using MRA.Jobs.Application.Contracts.Vacancies.Responses;
 using MRA.Jobs.Application.Contracts.Vacancies.Tags.Commands;
 using MRA.Jobs.Client.Components.Dialogs;
 using MRA.Jobs.Client.Services.ContentService;
@@ -57,5 +58,13 @@ public class VacancyService(
             new() { MaxWidth = MaxWidth.Large });
 
         return (List<string>)(await dialog.Result).Data;
+    }
+
+    public async Task<List<VacancyDto>> GetAllVacancies()
+    {
+        var response =
+            await httpClientService.GetFromJsonAsync<List<VacancyDto>>(configuration.GetJobsUrl("vacancies"));
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"]);
+        return response.Success ? response.Result : null;
     }
 }

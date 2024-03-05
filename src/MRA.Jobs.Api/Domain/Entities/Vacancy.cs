@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sieve.Attributes;
 
 namespace MRA.Jobs.Domain.Entities;
 
@@ -11,6 +12,8 @@ public abstract class Vacancy : BaseAuditableEntity
     public string Description { get; set; }
     public DateTime PublishDate { get; set; }
     public DateTime EndDate { get; set; }
+    
+    [Sieve(CanFilter = true, CanSort = true)]
     public string Slug { get; set; }
 
     public Guid CategoryId { get; set; }

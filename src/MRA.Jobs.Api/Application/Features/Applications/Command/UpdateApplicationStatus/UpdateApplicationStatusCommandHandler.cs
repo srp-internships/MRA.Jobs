@@ -4,18 +4,15 @@ using MRA.Configurations.Common.Interfaces.Services;
 using MRA.Configurations.OsonSms.SmsService;
 using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Jobs.Application.Contracts.JobVacancies;
-
-namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplicationStatus;
-
 using Microsoft.EntityFrameworkCore;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
-using MRA.Jobs.Domain.Enums;
+
+namespace MRA.Jobs.Application.Features.Applications.Command.UpdateApplicationStatus;
 
 public class UpdateApplicationStatusCommandHandler(
     IApplicationDbContext dbContext,
     IDateTime dateTime,
     ICurrentUserService currentUserService,
-    IHtmlService htmlService,
     IidentityService identityService,
     ISmsService smsService,
     ILogger<SmsService> logger,
@@ -45,7 +42,7 @@ public class UpdateApplicationStatusCommandHandler(
         };
         await dbContext.ApplicationTimelineEvents.AddAsync(timelineEvent, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
-        
+
         var applicant = await identityService.ApplicantDetailsInfo(application.ApplicantUsername);
 
         if (application.Slug.Contains(CommonVacanciesSlugs.NoVacancySlug))
@@ -53,22 +50,15 @@ public class UpdateApplicationStatusCommandHandler(
 
         string smsTemplate = "";
 
-        if (request.EmailVariant == SendEmailVariant.CustomEmail)
-            await htmlService.EmailCustom(request.EmailSubject, request.EmailText, applicant.Email);
 
-        if (request.EmailVariant == SendEmailVariant.AutoEmail)
+        switch (application.Status)
         {
-            switch (application.Status)
-            {
-                case ApplicationStatus.Approved:
-                    smsTemplate = configuration["SmsTemplates:Approved"];
-                    await htmlService.EmailApproved(applicant, application.Slug);
-                    break;
-                case ApplicationStatus.Rejected:
-                    smsTemplate = configuration["SmsTemplates:Rejected"];
-                    await htmlService.EmailRejected(applicant, application.Slug, application.Vacancy.Title);
-                    break;
-            }
+            case ApplicationStatus.Approved:
+                smsTemplate = configuration["SmsTemplates:Approved"];
+                break;
+            case ApplicationStatus.Rejected:
+                smsTemplate = configuration["SmsTemplates:Rejected"];
+                break;
         }
 
         await SendSms(smsTemplate, applicant);

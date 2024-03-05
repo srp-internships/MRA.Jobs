@@ -6,4 +6,6 @@ public interface ICurrentUserService
     string GetEmail();
     string GetUserName();
     List<string> GetRoles();
+
+    string GetAuthToken();
 }

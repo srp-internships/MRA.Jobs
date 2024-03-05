@@ -125,6 +125,9 @@
     <data name="Header:Home" xml:space="preserve">
     <value>Home</value>
   </data>
+    <data name="Header:SendEmail" xml:space="preserve">
+    <value>Send email</value>
+  </data>
     <data name="Header:Internships" xml:space="preserve">
     <value>Internships</value>
   </data>

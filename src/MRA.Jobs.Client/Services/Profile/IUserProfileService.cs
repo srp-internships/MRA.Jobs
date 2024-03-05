@@ -15,4 +15,5 @@ public interface IUserProfileService
     Task<ApiResponse<List<UserExperienceResponse>>> GetExperiencesByUser(string userName);
     
     Task<UserSkillsResponse> GetUserSkills(string userName = null);
+    Task<UserSkillsResponse> GetAllSkills();
 }
