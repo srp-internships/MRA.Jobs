@@ -39,7 +39,7 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
         var applications = await Mediator.Send(query);
         return Ok(applications);
     }
-
+    
     [HttpGet("{slug}")]
     public async Task<ActionResult<ApplicationDetailsDto>> Get(string slug, CancellationToken cancellationToken)
     {

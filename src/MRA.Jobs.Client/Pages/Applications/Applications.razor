@@ -97,7 +97,6 @@
             </MudExpansionPanels>
         </MudItem>
         <MudItem xs="12" lg="12">
-
             <MudTable ServerData="@(new Func<TableState, Task<TableData<ApplicationListDto>>>(GetApplications))"
                       @ref="_table" Hover="true">
                 <HeaderContent>

@@ -24,7 +24,7 @@ public partial class Applications
     [Inject] private NavigationManager NavigationManager { get; set; }
 
     private GetApplicationsByFiltersQuery _query = new();
-    private bool _isLoad = false;
+    private bool _isLoad;
     private MudDateRangePicker _picker;
     private DateRange _dateRange;
     private MudTable<ApplicationListDto> _table;
