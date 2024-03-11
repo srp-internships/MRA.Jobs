@@ -4,20 +4,11 @@ using System.Net.Http.Json;
 using System.Net;
 using MRA.Jobs.Application.IntegrationTests.Jobs;
 using NUnit.Framework;
-using MRA.Jobs.Application.Contracts.Vacancies.Tags.Commands;
 using MRA.Jobs.Domain.Entities;
 
 namespace MRA.Jobs.Application.IntegrationTests.PagedList;
 public class PagedListQuery_Vacancy_Tests : JobsContext
 {
-    private JobVacancy _vacancy;
-
-    [SetUp]
-    public async Task SetUp()
-    {
-        ResetState();
-        _vacancy = await GetJob("Vacancy tags", DateTime.Today);
-    }
     [Test]
     public async Task GetAllJobVacancyQuery_WithFilters_ReturnsFilteredJobVacancies()
     {
@@ -112,8 +103,14 @@ public class PagedListQuery_Vacancy_Tests : JobsContext
     {
 
         await GetJob("newjob3", DateTime.Now.AddDays(2));
-        await GetJob("newjob4", DateTime.Now.AddDays(3));
-
+        var _vacancy = await GetJob("newjob4", DateTime.Now.AddDays(3));
+        RunAsRoleAsync(UserRoles.Admin);
+        var vacancyTag = new VacancyTag()
+        {
+            Tag = new Tag() { Name = "newjob" },
+            VacancyId = _vacancy.Id
+        };
+        await AddAsync(vacancyTag);
         var parameters = new Dictionary<string, string>
             {
                 { "Filters", "title@=newjob3" },
@@ -133,27 +130,35 @@ public class PagedListQuery_Vacancy_Tests : JobsContext
     [Test]
     public async Task GetJobVacancyWithTagsFilter_ReturnsFilteredJobVacancies()
     {
+        var _vacancy= await GetJob("newjob_AddTeg", DateTime.Now.AddDays(2));
         RunAsRoleAsync(UserRoles.Admin);
-        var expectedTitle = "Vacancy tags";
-        var expectedTag = "newjob";
-        var tagsResponse = await AddTags("newjob", "new44", "new2");
-        Assert.That(tagsResponse.StatusCode == HttpStatusCode.OK);
-        var response = await _httpClient.GetAsync("/api/jobs?Tags=newjob");
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-        var jobVacancies = await response.Content.ReadFromJsonAsync<PagedList<JobVacancyListDto>>();
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        var vacancyTag = new VacancyTag()
+        {
+            Tag = new Tag() { Name = "new" },
+            VacancyId = _vacancy.Id
+        };
+
+        await AddAsync(vacancyTag);
+        //var filters = new Dictionary<string, string>
+        //    {
+        //        { "Filters", "title@=newjob_AddTeg" }
+        //    };
+        //var url = "/api/jobs?" + string.Join("&", filters.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
+        //var respons = await _httpClient.GetAsync(url);
+        var parameters = new Dictionary<string, string>
+        {
+            { "Tags", "new" },
+        };
+        var url = "/api/jobs?" + string.Join("&", parameters.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
+        var response = await _httpClient.GetAsync(url);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
+         var jobVacancies = await response.Content.ReadFromJsonAsync<PagedList<JobVacancyListDto>>();
         Assert.That(jobVacancies, Is.Not.Null);
         Assert.That(jobVacancies.Items, Is.Not.Empty);
-        Assert.That(jobVacancies.Items.Any(j => j.Tags.Contains(expectedTag)));
-        Assert.That(jobVacancies.Items.Any(j => j.Title == expectedTitle));
+        Assert.That(jobVacancies.Items.Any(j => j.Tags.Contains("newjob_AddTeg")));
+   
     }
- 
-    private async Task<HttpResponseMessage> AddTags(params string[] tags)
-    {
-        var command =
-            new AddTagsToVacancyCommand() { VacancyId = _vacancy.Id, Tags = tags };
-        return await _httpClient.PostAsJsonAsync($"api/Vacancies/{_vacancy.Id}/tags", command);
-    }
+
 }
 
 
