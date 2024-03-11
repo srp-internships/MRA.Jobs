@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MRA.Identity.Application.Contract.User.Responses;
+using MRA.Jobs.Application.Contracts.Applications.Candidates;
 
 namespace MRA.Jobs.Infrastructure.Services;
 
@@ -13,8 +14,7 @@ public class UsersService(
     IHttpClientFactory clientFactory,
     IConfiguration configuration) : IUsersService
 {
-    public async Task<List<UserResponse>> GetUsersAsync(string fullName = null, string email = null,
-        string phoneNumber = null, string skills = null)
+    public async Task<List<UserResponse>> GetUsersAsync(GetCandidatesQuery query)
     {
         List<UserResponse> users = new();
         var token = currentUserService.GetAuthToken();
@@ -28,10 +28,10 @@ public class UsersService(
             new AuthenticationHeaderValue("Bearer", token.Replace("Bearer ", ""));
 
         var queryParameters = new Dictionary<string, string>();
-        if (!fullName.IsNullOrEmpty()) queryParameters.Add("FullName", fullName.Trim());
-        if (!phoneNumber.IsNullOrEmpty()) queryParameters.Add("PhoneNumber", phoneNumber.Trim());
-        if (!email.IsNullOrEmpty()) queryParameters.Add("Email", email.Trim());
-        if (!skills.IsNullOrEmpty()) queryParameters.Add("Skills", skills.Trim());
+        if (!query.FullName.IsNullOrEmpty()) queryParameters.Add("FullName", query.FullName.Trim());
+        if (!query.PhoneNumber.IsNullOrEmpty()) queryParameters.Add("PhoneNumber", query.PhoneNumber.Trim());
+        if (!query.Email.IsNullOrEmpty()) queryParameters.Add("Email", query.Email.Trim());
+        if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("Skills", query.Skills.Trim());
 
         var queryString = QueryHelpers.AddQueryString(configuration["MraJobs-IdentityApi:Users"], queryParameters);
 

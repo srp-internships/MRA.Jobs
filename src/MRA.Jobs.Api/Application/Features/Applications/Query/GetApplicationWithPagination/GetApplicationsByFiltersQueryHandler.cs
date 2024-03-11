@@ -1,11 +1,7 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Application.Common.Sieve;
+using MRA.Jobs.Application.Contracts.Applications.Candidates;
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
@@ -14,9 +10,7 @@ namespace MRA.Jobs.Application.Features.Applications.Query.GetApplicationWithPag
 
 public class GetApplicationsByFiltersQueryHandler(
     IApplicationDbContext dbContext,
-    IHttpClientFactory clientFactory,
     ICurrentUserService currentUser,
-    IConfiguration configuration,
     IApplicationSieveProcessor sieveProcessor,
     IMapper mapper,
     IUsersService usersService)
@@ -30,19 +24,35 @@ public class GetApplicationsByFiltersQueryHandler(
             .Include(a => a.VacancyResponses)
             .AsNoTracking();
 
+        var roles = currentUser.GetRoles();
+        if (roles.Any(r => r == "Reviewer"))
+        {
+            return await ReturnPagedListWithUsers(applications, request);
+        }
+
+        applications = applications.Where(a =>
+            a.ApplicantUsername == currentUser.GetUserName() && a.Vacancy.Discriminator != "NoVacancy");
+
+        return sieveProcessor.ApplyAdnGetPagedList(request, applications, mapper.Map<ApplicationListDto>);
+    }
+
+    private async Task<PagedList<ApplicationListDto>> ReturnPagedListWithUsers(
+        IQueryable<Domain.Entities.Application> applications, GetApplicationsByFiltersQuery request)
+    {
         var users =
-            await usersService.GetUsersAsync(request.Filters, request.Email, request.PhoneNumber, request.Skills);
+            await usersService.GetUsersAsync(new GetCandidatesQuery()
+            {
+                FullName = request.FullName,
+                PhoneNumber = request.PhoneNumber,
+                Email = request.Email,
+                Skills = request.Skills
+            });
 
         if (!request.FullName.IsNullOrEmpty() || !request.Skills.IsNullOrEmpty() ||
             !request.PhoneNumber.IsNullOrEmpty() || !request.Email.IsNullOrEmpty())
         {
             applications = applications.Where(a => users.Select(u => u.UserName).Contains(a.ApplicantUsername));
         }
-
-        var roles = currentUser.GetRoles();
-        if (roles.All(r => r != "Reviewer"))
-            applications = applications.Where(a =>
-                a.ApplicantUsername == currentUser.GetUserName() && a.Vacancy.Discriminator != "NoVacancy");
 
         var result = sieveProcessor.ApplyAdnGetPagedList(request, applications, mapper.Map<ApplicationListDto>);
         result.Items.ForEach(application =>

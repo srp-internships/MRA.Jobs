@@ -11,12 +11,18 @@ public class GetCandidatesQueryHandler(
 {
     public async Task<List<UserResponse>> Handle(GetCandidatesQuery request, CancellationToken cancellationToken)
     {
-        var users = await usersService.GetUsersAsync(request.FullName, request.Email, request.PhoneNumber,
-            request.Skills);
+        var users = await usersService.GetUsersAsync(new GetCandidatesQuery()
+        {
+            FullName = request.FullName,
+            PhoneNumber = request.PhoneNumber,
+            Email = request.Email,
+            Skills = request.Skills
+        });
 
         var applicantUserNames = await dbContext.Applications.Select(a => a.ApplicantUsername).Distinct()
             .ToListAsync(cancellationToken);
 
-        return users.Where(user => applicantUserNames.Contains(user.UserName, StringComparer.OrdinalIgnoreCase)).ToList();
+        return users.Where(user => applicantUserNames.Contains(user.UserName, StringComparer.OrdinalIgnoreCase))
+            .ToList();
     }
 }
