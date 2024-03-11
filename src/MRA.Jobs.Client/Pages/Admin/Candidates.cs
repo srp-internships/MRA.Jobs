@@ -1,29 +1,31 @@
-﻿using System.Web;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
-using MRA.BlazorComponents.HttpClient.Services;
 using MRA.Identity.Application.Contract.Skills.Responses;
-using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Application.Contract.User.Responses;
+using MRA.Jobs.Application.Contracts.Applications.Candidates;
+using MRA.Jobs.Client.Services.ApplicationService;
 using MRA.Jobs.Client.Services.Profile;
-using MudBlazor;
 
 namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class Candidates
 {
-    [Inject] private IHttpClientService Client { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private IUserProfileService UserService { get; set; }
+    [Inject] private IApplicationService ApplicationService { get; set; }
 
-    private bool _isLoaded = false;
-    private GetAllUsersByFilters _query = new();
-    private MudTable<UserResponse> _table;
+    private List<UserResponse> _candidates = new();
     private UserSkillsResponse _allSkills;
+
+    private GetCandidatesQuery _query = new();
+
     private string SelectedSkills { get; set; } = "";
     private IEnumerable<string> Options { get; set; } = new HashSet<string>();
-    private string _searchString = "";
+    private string _searchFullName = "";
+    private string _searchPhoneNumber = "";
+    private string _searchEmail = "";
+    private bool _clearButton;
 
     protected override async Task OnInitializedAsync()
     {
@@ -35,65 +37,20 @@ public partial class Candidates
 
         var currentUri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
 
-        if (currentUri.Query.IsNullOrEmpty())
-        {
-            _query.Page = 1;
-            _query.PageSize = 10;
-        }
-
-        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("page", out var page))
-            _query.Page = int.Parse(page);
-
-        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("pageSize", out var pageSize))
-            _query.PageSize = int.Parse(pageSize);
-
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("Skills", out var skills))
         {
+            SelectedSkills = skills;
             Options = skills.ToList();
         }
 
-        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("filters", out var filters))
-        {
-            var filterParts = filters.ToString().Split("@=");
-            if (filterParts.Length > 1)
-            {
-                _searchString = filterParts[1].Replace("|", " ");
-            }
-        }
-
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("FullName", out var fullName))
+            _searchFullName = fullName;
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("PhoneNumber", out var phoneNumber))
+            _searchPhoneNumber = phoneNumber;
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("Email", out var email))
+            _searchEmail = email;
         StateHasChanged();
-        _isLoaded = true;
-        StateHasChanged();
-    }
-    
-    // private string GetMultiSelectionText(List<string> selectedValues)
-    // {
-    //     return string.Join(", ", selectedValues).Trim();
-    // }
-    
-    private async Task<TableData<UserResponse>> ServerReload(TableState state)
-    {
-        _query.Page = state.Page + 1;
-        _query.PageSize = state.PageSize;
-        if (!_searchString.IsNullOrEmpty())
-        {
-            var searchTerms = _searchString.Replace(",", "|").Split(" ").Select(s => s.Trim());
-            _query.Filters = $"(UserName|FirstName|LastName)@={string.Join("|", searchTerms)}";
-        }
-        else
-        {
-            _query.Filters = "";
-        }
-
-        if (Options != null)
-        {
-            _query.Skills = string.Join(",", Options.Select(x => x.Trim())).ToString();
-        }
-
-        UpdateUri();
-
-        var result = await UserService.GetCandidatesAsync(_query);
-        return new TableData<UserResponse>() { TotalItems = result.TotalCount, Items = result.Items };
+        await Search();
     }
 
     private string GetMultiSelectionText(List<string> selectedValues)
@@ -101,15 +58,46 @@ public partial class Candidates
         return string.Join(", ", selectedValues).Trim();
     }
 
-    private void UpdateUri()
+    private async Task Search()
     {
-        var queryParam = HttpUtility.ParseQueryString(string.Empty);
-        if (!_query.Skills.IsNullOrEmpty()) queryParam["Skills"] = _query.Skills;
-        queryParam["Page"] = _query.Page.ToString();
-        queryParam["PageSize"] = _query.PageSize.ToString();
-        if (!_query.Filters.IsNullOrEmpty()) queryParam["Filters"] = _query.Filters;
+        _query.PhoneNumber = _searchPhoneNumber;
+        _query.Skills = SelectedSkills;
+        _query.FullName = _searchFullName;
+        _query.Email = _searchEmail;
+        _candidates = await ApplicationService.GetCandidates(_query);
+        StateHasChanged();
+        UpdateUrl();
+    }
 
-        var newUri = $"{NavigationManager.BaseUri}Candidates?{queryParam}";
-        NavigationManager.NavigateTo(newUri, forceLoad: false);
+    private void UpdateUrl()
+    {
+        var properties = new Dictionary<string, string>
+        {
+            { "Skills", _query.Skills },
+            { "FullName", _query.FullName },
+            { "PhoneNumber", _query.PhoneNumber },
+            { "Email", _query.Email }
+        };
+
+        var queryParameters = properties.Where(property => !property.Value.IsNullOrEmpty())
+            .ToDictionary(property => property.Key, property => property.Value);
+
+        if (!queryParameters.IsNullOrEmpty())
+        {
+            _clearButton = true;
+            StateHasChanged();
+        }
+
+        var url = QueryHelpers.AddQueryString("Candidates", queryParameters);
+        NavigationManager.NavigateTo(url);
+    }
+
+    private async Task Clear()
+    {
+        _searchFullName = "";
+        _searchEmail = "";
+        _searchPhoneNumber = "";
+        SelectedSkills = String.Empty;
+        await Search();
     }
 }

@@ -1,18 +1,29 @@
 ﻿@page "/Candidates"
-@using MRA.Identity.Application.Contract.User.Responses
 @using MRA.BlazorComponents.Dialogs;
 @using MRA.BlazorComponents.SendEmail.Components;
 <MudGrid>
     <MudItem xs="12">
-        <MudStack Row="true" Style="margin-top:15px; ">
+        <MudStack Style="margin-top:15px; ">
             <MudText Typo="Typo.h5">
                 <b>@ContentService["Candidates"]</b>
             </MudText>
-            <MudSpacer/>
-            <MudItem lg="8">
+
+            <MudItem lg="12">
                 <MudGrid>
                     <MudItem lg="4">
-                        <MudTextField T="string" Label="Search" @bind-Value="@_searchString"
+                        <MudTextField T="string" Label="FullName" @bind-Value="@_searchFullName"
+                                      IconSize="Size.Medium" Margin="Margin.Dense" Clearable="true"
+                                      Class="mt-0" Immediate="true" Variant="Variant.Outlined">
+                        </MudTextField>
+                    </MudItem>
+                    <MudItem lg="4">
+                        <MudTextField T="string" Label="PhoneNumber" @bind-Value="@_searchPhoneNumber"
+                                      IconSize="Size.Medium" Margin="Margin.Dense" Clearable="true"
+                                      Class="mt-0" Immediate="true" Variant="Variant.Outlined">
+                        </MudTextField>
+                    </MudItem>
+                    <MudItem lg="4">
+                        <MudTextField T="string" Label="Email" @bind-Value="@_searchEmail"
                                       IconSize="Size.Medium" Margin="Margin.Dense" Clearable="true"
                                       Class="mt-0" Immediate="true" Variant="Variant.Outlined">
                         </MudTextField>
@@ -33,22 +44,31 @@
                         </MudSelect>
                     </MudItem>
                     <MudItem>
-                        <ProgressTaskButton Variant="Variant.Filled" Color="Color.Primary"
-                                            Function="@(async () => await _table.ReloadServerData())"
-                                            Style="margin-top: 1px;">
-                            <MudIcon Icon="@Icons.Material.Filled.Search"/>
-                            <MudText>Search</MudText>
-                        </ProgressTaskButton>
+                        <MudStack Row="true">
+                            <ProgressTaskButton Variant="Variant.Filled" Color="Color.Primary"
+                                                Style="margin-top: 1px;" Function="Search">
+                                <MudIcon Icon="@Icons.Material.Filled.Search"/>
+                                <MudText>Search</MudText>
+                            </ProgressTaskButton>
+                            @if (_clearButton)
+                            {
+                                <ProgressTaskButton Variant="Variant.Filled" Style="margin-top: 4px;"
+                                                    Function="Clear">
+                                    <MudIcon Icon="@Icons.Material.Filled.Clear"/>
+                                    <MudText>Clear</MudText>
+                                </ProgressTaskButton>
+                            }
+                        </MudStack>
+
                     </MudItem>
                 </MudGrid>
             </MudItem>
         </MudStack>
     </MudItem>
     <MudItem xs="12">
-        @if (_isLoaded)
+        @if (_candidates.Any())
         {
-            <MudTable ServerData="@(new Func<TableState, Task<TableData<UserResponse>>>(ServerReload))" Hover="true"
-                      @ref="_table" Breakpoint="Breakpoint.Xs">
+            <MudTable Items="_candidates" Hover="true" Breakpoint="Breakpoint.Xs">
                 <HeaderContent>
                     <MudTh>
                         @ContentService["SignUp:UserName"]
@@ -114,7 +134,7 @@
                     </MudTd>
                     <MudTd>
                         @{
-                            var userRolesLink = $"/User/{context.UserName}";
+                            var userRolesLink = $"/User/{@context.UserName}";
                         }
                         <MudStack Row="true">
                             <MudButton Variant="Variant.Filled" href="@userRolesLink">
@@ -134,6 +154,10 @@
                     <MudTablePager/>
                 </PagerContent>
             </MudTable>
+        }
+        else
+        {
+            @ContentService["UserManager:Nomatchingrecords"]
         }
     </MudItem>
 </MudGrid>

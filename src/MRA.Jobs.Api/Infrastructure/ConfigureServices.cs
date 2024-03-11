@@ -22,7 +22,6 @@ public static class ConfigureServices
         IConfiguration configuration)
     {
         services.AddAppIdentity(configuration);
-
         if (configuration["UseFileEmailService"] == "true")
         {
             services.AddFileEmailService();
@@ -48,6 +47,7 @@ public static class ConfigureServices
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddScoped<IHtmlService, HtmlService>();
         services.AddScoped<IUserHttpContextAccessor, UserHttpContextAccessor>();
+        services.AddScoped<IUsersService, UsersService>();
         services.AddHttpClient();
 
         if (configuration["UseAzureBlobStorage"] == "true")
@@ -58,13 +58,13 @@ public static class ConfigureServices
         {
             services.AddScoped<IFileService, FileService>();
         }
-        
+
         if (configuration["UseFileSmsService"] == "true")
         {
             services.AddFileSmsService();
         }
         else
-        {   
+        {
             services.AddOsonSmsService();
         }
 

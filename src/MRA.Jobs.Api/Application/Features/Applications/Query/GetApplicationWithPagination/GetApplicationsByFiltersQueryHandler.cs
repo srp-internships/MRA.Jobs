@@ -18,7 +18,8 @@ public class GetApplicationsByFiltersQueryHandler(
     ICurrentUserService currentUser,
     IConfiguration configuration,
     IApplicationSieveProcessor sieveProcessor,
-    IMapper mapper)
+    IMapper mapper,
+    IUsersService usersService)
     : IRequestHandler<GetApplicationsByFiltersQuery, PagedList<ApplicationListDto>>
 {
     public async Task<PagedList<ApplicationListDto>> Handle(GetApplicationsByFiltersQuery request,
@@ -29,42 +30,19 @@ public class GetApplicationsByFiltersQueryHandler(
             .Include(a => a.VacancyResponses)
             .AsNoTracking();
 
-        List<UserResponse> users = new();
+        var users =
+            await usersService.GetUsersAsync(request.Filters, request.Email, request.PhoneNumber, request.Skills);
 
-        var token = currentUser.GetAuthToken();
-        if (!token.IsNullOrEmpty())
+        if (!request.FullName.IsNullOrEmpty() || !request.Skills.IsNullOrEmpty() ||
+            !request.PhoneNumber.IsNullOrEmpty() || !request.Email.IsNullOrEmpty())
         {
-            var httpClient = clientFactory.CreateClient("Mra.Identity");
-            httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token.Replace("Bearer ", ""));
-
-            var queryParameters = new Dictionary<string, string>();
-            if (!request.FullName.IsNullOrEmpty()) queryParameters.Add("FullName", request.FullName.Trim());
-            if (!request.PhoneNumber.IsNullOrEmpty()) queryParameters.Add("PhoneNumber", request.PhoneNumber.Trim());
-            if (!request.Email.IsNullOrEmpty()) queryParameters.Add("Email", request.Email.Trim());
-            if (!request.Skills.IsNullOrEmpty()) queryParameters.Add("Skills", request.Skills.Trim());
-
-            var queryString = QueryHelpers.AddQueryString(configuration["MraJobs-IdentityApi:Users"], queryParameters);
-            try
-            {
-                users = await httpClient.GetFromJsonAsync<List<UserResponse>>(queryString, cancellationToken);
-
-                if (queryParameters.Any())
-                {
-                    applications = applications.Where(a => users.Select(u => u.UserName).Contains(a.ApplicantUsername));
-                }
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
+            applications = applications.Where(a => users.Select(u => u.UserName).Contains(a.ApplicantUsername));
         }
 
         var roles = currentUser.GetRoles();
-        if(roles.All(r => r != "Reviewer"))
-            applications= applications.Where(a =>
+        if (roles.All(r => r != "Reviewer"))
+            applications = applications.Where(a =>
                 a.ApplicantUsername == currentUser.GetUserName() && a.Vacancy.Discriminator != "NoVacancy");
-       
 
         var result = sieveProcessor.ApplyAdnGetPagedList(request, applications, mapper.Map<ApplicationListDto>);
         result.Items.ForEach(application =>
