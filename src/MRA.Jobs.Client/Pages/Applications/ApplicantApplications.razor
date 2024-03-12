@@ -33,7 +33,7 @@
                     <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
                     <MudTd DataLabel="Status">@context.StatusName</MudTd>
                     <MudTd DataLabel="Action">
-                        <ProgressTaskButton Variant="Variant.Filled" Function="@((e) => OnClick(context.Slug))">More</ProgressTaskButton>
+                        <ProgressTaskButton Variant="Variant.Filled" OnClick="@((e) => OnClick(context.Slug))">More</ProgressTaskButton>
                     </MudTd>
                 </RowTemplate>
                 <PagerContent>

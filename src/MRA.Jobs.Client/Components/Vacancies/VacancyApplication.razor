@@ -328,7 +328,7 @@ else
             </MudCardContent>
             <MudCardActions>
                 <ProgressTaskButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
-                                    Function="CreateApplication" Class="ml-auto">
+                                    OnClick="@CreateApplication" Class="ml-auto">
                     <MudText>@ContentService["VacancyApplication:Apply"]</MudText>
                 </ProgressTaskButton>
 
