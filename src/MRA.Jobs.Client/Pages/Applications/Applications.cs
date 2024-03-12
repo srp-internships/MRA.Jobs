@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Runtime.InteropServices;
+using System.Web;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +11,7 @@ using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
 using MRA.Jobs.Application.Contracts.Vacancies.Responses;
+using MRA.Jobs.Client.Services.ApplicationService;
 using MRA.Jobs.Client.Services.Profile;
 using MRA.Jobs.Client.Services.VacanciesServices;
 using MudBlazor;
@@ -22,6 +24,7 @@ public partial class Applications
     [Inject] private IVacancyService VacancyService { get; set; }
     [Inject] private IUserProfileService UserProfileService { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
+    [Inject] private IApplicationService ApplicationService { get; set; }
 
     private GetApplicationsByFiltersQuery _query = new();
     private bool _isLoad;
@@ -132,20 +135,11 @@ public partial class Applications
             Filters = GetFilters(),
         };
 
-        var response =
-            await HttpClientService.GetFromJsonAsync<PagedList<ApplicationListDto>>(
-                Configuration.GetJobsUrl("applications"), _query);
+        var response = await ApplicationService.GetAllApplications(_query);
+      
         UpdateUrl();
 
-        if (response.Success && response.Result != null)
-        {
-            return new TableData<ApplicationListDto>()
-            {
-                TotalItems = response.Result.TotalCount, Items = response.Result.Items
-            };
-        }
-
-        return new TableData<ApplicationListDto>() { TotalItems = _table.TotalItems, Items = _table.Items };
+        return new TableData<ApplicationListDto>() { TotalItems = response.TotalCount, Items = response.Items };
     }
 
     private void UpdateUrl()
@@ -201,8 +195,10 @@ public partial class Applications
         _selectedFullName = string.Empty;
         _selectedPhoneNumber = string.Empty;
         SelectedSkills = String.Empty;
+        _dateRange = null;
         UpdateUrl();
         _clearButton = false;
         await _table.ReloadServerData();
+        
     }
 }

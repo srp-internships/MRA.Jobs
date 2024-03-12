@@ -10,6 +10,7 @@ using MRA.Jobs.Application.Contracts.Applications.Candidates;
 using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
+using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
@@ -75,10 +76,10 @@ public class ApplicationService(
         return null;
     }
 
-    public async Task<PagedList<ApplicationListDto>> GetAllApplications()
+    public async Task<PagedList<ApplicationListDto>> GetAllApplications(GetApplicationsByFiltersQuery query)
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.GetFromJsonAsync<PagedList<ApplicationListDto>>(_applicationsEndPoint);
+        var response = await httpClient.GetFromJsonAsync<PagedList<ApplicationListDto>>(_applicationsEndPoint, query);
         return response.Success ? response.Result : null;
     }
 

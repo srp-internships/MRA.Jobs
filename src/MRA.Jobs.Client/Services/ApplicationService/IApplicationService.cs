@@ -4,6 +4,7 @@ using MRA.Jobs.Application.Contracts.Applications.Candidates;
 using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
+using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
@@ -15,7 +16,7 @@ public interface IApplicationService
 {
     Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status);
     Task CreateApplication(CreateApplicationCommand application, IBrowserFile cv);
-    Task<PagedList<ApplicationListDto>> GetAllApplications();
+    Task<PagedList<ApplicationListDto>> GetAllApplications(GetApplicationsByFiltersQuery query);
     Task<bool> UpdateStatus(UpdateApplicationStatusCommand updateApplicationStatusCommand);
     Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug);
     Task<string> GetCvLinkAsync(string slug);

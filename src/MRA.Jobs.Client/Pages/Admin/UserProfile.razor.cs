@@ -105,20 +105,11 @@ public partial class UserProfile
         _query.Filters = GetFilters();
 
         var response =
-            await HttpClientService.GetFromJsonAsync<PagedList<ApplicationListDto>>(
-                Configuration.GetJobsUrl("applications"), _query);
+            await ApplicationService.GetAllApplications(_query);
 
         UpdateUrl();
 
-        if (response.Success && response.Result != null)
-        {
-            return new TableData<ApplicationListDto>()
-            {
-                TotalItems = response.Result.TotalCount, Items = response.Result.Items
-            };
-        }
-
-        return new TableData<ApplicationListDto>() { TotalItems = _table.TotalItems, Items = _table.Items };
+        return new TableData<ApplicationListDto>() { TotalItems = response.TotalCount, Items = response.Items };
     }
 
     private string GetFilters()

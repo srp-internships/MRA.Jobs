@@ -1,5 +1,6 @@
 ﻿@page "/applications"
-@inject IApplicationService applicationService
+@using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination
+@inject IApplicationService ApplicationService
 @inject NavigationManager NavigationManager
 
 <MudContainer>
@@ -7,60 +8,51 @@
         <b>Applications</b>
     </MudText>
     <br/>
-    @if (applications is null)
-    {
-        <div style="text-align: center;">
-            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
-        </div>
-    }
-    else
-    {
-        @if (applications.Items.Count == 0)
-        {
-            <MudText Typo="Typo.h5" Style="text-align: center">You do not have any active applications</MudText>
-        }
-        else
-        {
-            <MudTable Items="@applications.Items" Breakpoint="Breakpoint.Md">
-                <HeaderContent>
-                    <MudTh>Vacancy title</MudTh>
-                    <MudTh>Applied at</MudTh>
-                    <MudTh>Status name</MudTh>
-                    <MudTh>Action</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Vacancy title">@context.VacancyTitle</MudTd>
-                    <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
-                    <MudTd DataLabel="Status">@context.StatusName</MudTd>
-                    <MudTd DataLabel="Action">
-                        <ProgressTaskButton Variant="Variant.Filled" Function="@((e) => OnClick(context.Slug))">More</ProgressTaskButton>
-                    </MudTd>
-                </RowTemplate>
-                <PagerContent>
-                    <MudTablePager/>
-                </PagerContent>
-            </MudTable>
-        }
-    }
+
+    <MudTable ServerData="@(new Func<TableState, Task<TableData<ApplicationListDto>>>(ServerReload))" Breakpoint="Breakpoint.Md"
+              @ref="_table" Hover="true">
+        <HeaderContent>
+            <MudTh>Vacancy title</MudTh>
+            <MudTh>Applied at</MudTh>
+            <MudTh>Status name</MudTh>
+            <MudTh>Action</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Vacancy title">@context.VacancyTitle</MudTd>
+            <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
+            <MudTd DataLabel="Status">@context.StatusName</MudTd>
+            <MudTd DataLabel="Action">
+                <ProgressTaskButton Variant="Variant.Filled" Function="@((e) => OnClick(context.Slug))">More</ProgressTaskButton>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager/>
+        </PagerContent>
+    </MudTable>
 
 </MudContainer>
 
 @code {
-
-    private PagedList<ApplicationListDto> applications;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var response = await applicationService.GetAllApplications();
-        if (response is not null)
-        {
-            applications = response;
-        }
-    }
+    private MudTable<ApplicationListDto> _table;
 
     private void OnClick(string slug)
     {
         NavigationManager.NavigateTo($"/ApplicationDetail/{slug}");
+    }
+
+    private async Task<TableData<ApplicationListDto>> ServerReload(TableState state)
+    {
+        var response = await ApplicationService.GetAllApplications(new GetApplicationsByFiltersQuery()
+        {
+            Page = state.Page+1,
+            PageSize = state.PageSize
+        });
+
+        return new TableData<ApplicationListDto>()
+        {
+            Items = response.Items,
+            TotalItems = response.TotalCount
+        };
     }
 
 }
