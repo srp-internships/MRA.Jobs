@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Infrastructure.Identity;
@@ -49,7 +50,7 @@ public static class ConfigureServices
         services.AddScoped<IUserHttpContextAccessor, UserHttpContextAccessor>();
         services.AddScoped<IUsersService, UsersService>();
         services.AddHttpClient();
-
+        services.AddLogging();
         if (configuration["UseAzureBlobStorage"] == "true")
         {
             services.AddScoped<IFileService, AzureFileService>();

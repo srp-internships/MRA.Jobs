@@ -12,7 +12,8 @@ namespace MRA.Jobs.Infrastructure.Services;
 public class UsersService(
     ICurrentUserService currentUserService,
     IHttpClientFactory clientFactory,
-    IConfiguration configuration) : IUsersService
+    IConfiguration configuration,
+    ILogger<UsersService> logger) : IUsersService
 {
     public async Task<List<UserResponse>> GetUsersAsync(GetCandidatesQuery query)
     {
@@ -34,9 +35,14 @@ public class UsersService(
         if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("Skills", query.Skills.Trim());
 
         var queryString = QueryHelpers.AddQueryString(configuration["MraJobs-IdentityApi:Users"], queryParameters);
-
-        users = await httpClient.GetFromJsonAsync<List<UserResponse>>(queryString);
-
+        try
+        {
+            users = await httpClient.GetFromJsonAsync<List<UserResponse>>(queryString);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e,e.Message);
+        }
 
         return users;
     }
