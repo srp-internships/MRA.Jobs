@@ -379,10 +379,10 @@
   </data>
     <data name="Profile:Tochangeyourpassword,enteryouroldpassword,andthencreateanew,strongpassword."
           xml:space="preserve">
-    <value>To change your password, enter your old password, and then create a new, strong password.</value>
+    <value>To change your password, enter your current password, and then create a new, strong password.</value>
   </data>
     <data name="Profile:OldPassword" xml:space="preserve">
-    <value>Old Password</value>
+    <value>Current Password</value>
   </data>
     <data name="Profile:Ifyouwouldliketonominateyourself,sendusyourСV." xml:space="preserve">
     <value>If you would like to nominate yourself, send us your СV.</value>

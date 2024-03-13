@@ -366,26 +366,26 @@
     <value>Текущая работа</value>
   </data>
     <data name="Profile:AddNewExperience" xml:space="preserve">
-    <value>Добавить новый опыт</value>
+    <value>Добавить новый опыт работы</value>
   </data>
     <data name="Profile:NewExperience" xml:space="preserve">
-    <value>Новый опыт</value>
+    <value>Новый опыт работы</value>
   </data>
     <data name="Profile:IsCurrentJob" xml:space="preserve">
-    <value>Это текущая работа</value>
+    <value>Tекущая работа</value>
   </data>
     <data name="Profile:AddSkill" xml:space="preserve">
     <value>Добавить навык</value>
   </data>
     <data name="Profile:Tochangeyourpassword,enteryouroldpassword,andthencreateanew,strongpassword."
           xml:space="preserve">
-    <value>Чтобы изменить пароль, введите старый пароль, а затем создайте новый, надежный пароль.</value>
+    <value>Для изменения пароля, пожалуйста, введите текущий пароль, а затем создайте новый надежный пароль.</value>
   </data>
     <data name="Profile:OldPassword" xml:space="preserve">
-    <value>Старый пароль</value>
+    <value>Текущий пароль</value>
   </data>
     <data name="Profile:Ifyouwouldliketonominateyourself,sendusyourСV." xml:space="preserve">
-    <value>Если вы хотите выдвинуть себя, отправьте нам свое резюме.</value>
+    <value>Если вы хотите подать заявку на рассмотрение своей кандидатуры, пожалуйста, отправьте нам свое резюме.</value>
   </data>
     <data name="Profile:UploadCV" xml:space="preserve">
     <value>Загрузить резюме</value>
@@ -397,19 +397,19 @@
     <value>Загрузить новое резюме</value>
   </data>
     <data name="Profile:Ifyouwouldliketonominateyourself,signinandsendusyourСV." xml:space="preserve">
-    <value>Если вы хотите выдвинуть себя, войдите в систему и отправьте нам свое резюме.</value>
+    <value>Если вы хотите подать заявку на рассмотрение своей кандидатуры, пожалуйста, войдите в систему и отправьте нам свое резюме.</value>
   </data>
     <data name="Profile:SwitchtoLightTheme" xml:space="preserve">
     <value>Переключиться на светлую тему</value>
   </data>
     <data name="Profile:Switchtosystem" xml:space="preserve">
-    <value>Переключиться на систему</value>
+    <value>Переключиться на системную тему</value>
   </data>
     <data name="Profile:SwitchtoDarkTheme" xml:space="preserve">
     <value>Переключиться на темную тему</value>
   </data>
     <data name="Profile:SelectLanguage" xml:space="preserve">
-    <value>Выберите язык</value>
+    <value>Выбрать язык</value>
   </data>
     <data name="VacanciesList:All" xml:space="preserve">
     <value>Все</value>
@@ -451,7 +451,7 @@
     <value>Опубликовано</value>
   </data>
     <data name="VacancyApplication:RequiredQuestionHaventAnswer" xml:space="preserve">
-    <value>Вы должны дать ответы на необходимые вопросы</value>
+    <value>Необходимо ответить на ключевые вопросы</value>
   </data>
     <data name="VacancyApplication:Vacancy Details" xml:space="preserve">
     <value>Детали вакансии</value>
@@ -472,7 +472,7 @@
     <value>Требуемый опыт работы в годах</value>
   </data>
     <data name="VacancyApplication:Fees" xml:space="preserve">
-    <value>Сборы</value>
+    <value>Тарифы</value>
   </data>
     <data name="VacancyApplication:End Date" xml:space="preserve">
     <value>Дата завершения</value>
@@ -544,7 +544,7 @@
     <value>Мы создаем нативные и кросс-платформенные мобильные приложения.</value>
   </data>
     <data name="Home:DesktopServiceTitle" xml:space="preserve">
-    <value>Настольные приложения</value>
+    <value>Десктопные приложения</value>
   </data>
     <data name="Home:DesktopServiceDescription" xml:space="preserve">
     <value> Мы создаем приложения для ОС по вашему выбору.</value>
@@ -562,10 +562,10 @@
     <value> Нас</value>
   </data>
     <data name="Home:AboutTitle" xml:space="preserve">
-    <value>Профессионалы Шелкового пути</value>
+    <value>Silk Road Professionals</value>
   </data>
     <data name="Home:AboutContent" xml:space="preserve">
-    <value> Профессионалы Шелкового пути (SRP) - это компания, занимающаяся разработкой программного обеспечения полного цикла, основанная в 2014 году.</value>
+    <value> Silk Road Professionals (SRP) - это компания, занимающаяся разработкой программного обеспечения полного цикла, основанная в 2014 году.</value>
   </data>
     <data name="Home:MissionTitle" xml:space="preserve">
     <value>НАША МИССИЯ</value>
@@ -577,7 +577,7 @@
     <value>НАШЕ ВИДЕНИЕ</value>
   </data>
     <data name="Home:VisionContent" xml:space="preserve">
-    <value>Поднять наших бизнес-партнеров на новый уровень успеха, предоставляя замечательные услуги по аутсорсингу и аутстаффингу в области IT</value>
+    <value>Поднять наших бизнес-партнеров на новый уровень успеха, предоставляя высококачественные услуги по аутсорсингу и аутстаффингу в области IT</value>
   </data>
     <data name="Home:Principles" xml:space="preserve">
     <value>Основные принципы</value>
@@ -701,7 +701,7 @@
   </data>
     <data name="VacancyDetails:Write a cover letter, answer few questions and send your application!"
           xml:space="preserve">
-    <value>Напишите сопроводительное письмо, ответьте на несколько вопросов и отправьте свою заявку!</value>
+    <value>Пожалуйста, заполните анкету и прикрепите сопроводительное письмо с ответами на следующие вопросы, после чего отправьте вашу заявку.</value>
   </data>
     <data name="VacancyDetails:Download CV" xml:space="preserve">
     <value>Скачать резюме</value>
@@ -800,7 +800,7 @@
         <value>Пользователи</value>
     </data>
     <data name="UserManager:Searchname">
-        <value>Поиск по имени пользователя или полному имени</value>
+        <value>Поиск пользователей</value>
     </data>
     <data name="UserManager:FullName">
         <value>Полное имя</value>
@@ -818,7 +818,7 @@
         <value>Новая категория</value>
     </data>
     <data name="Internships:InternshipsVacancy">
-        <value>Вакансии стажировок</value>
+        <value>Стажировоки</value>
     </data>
     <data name="Internships:CreateInternship">
         <value>Создать новую вакансию для стажировки</value>
