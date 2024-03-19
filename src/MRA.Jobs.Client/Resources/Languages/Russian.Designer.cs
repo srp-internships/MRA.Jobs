@@ -132,6 +132,15 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Кандидаты.
+        /// </summary>
+        internal static string Candidates {
+            get {
+                return ResourceManager.GetString("Candidates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Новая категория.
         /// </summary>
         internal static string Category_NewCategory {
@@ -380,6 +389,15 @@ namespace MRA.Jobs.Client.Resources.Languages {
         internal static string Header_SendEmail {
             get {
                 return ResourceManager.GetString("Header:SendEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Отправить sms.
+        /// </summary>
+        internal static string Header_SendMessage {
+            get {
+                return ResourceManager.GetString("Header:SendMessage", resourceCulture);
             }
         }
         
