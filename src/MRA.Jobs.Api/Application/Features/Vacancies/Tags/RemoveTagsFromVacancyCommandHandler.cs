@@ -8,22 +8,19 @@ public class RemoveTagsFromVacancyCommandHandler(IApplicationDbContext dbContext
 {
     public async Task<List<string>> Handle(RemoveTagsFromVacancyCommand request, CancellationToken cancellationToken)
     {
-        var vacancy = await dbContext.Vacancies
-            .Include(v => v.Tags)
-            .ThenInclude(t => t.Tag)
-            .FirstOrDefaultAsync(v => v.Id == request.VacancyId, cancellationToken);
 
         request.Tags = request.Tags.Distinct().ToArray();
-        
-        var tagsToRemove = vacancy.Tags.Where(t => request.Tags.Contains(t.Tag.Name)).ToList();
+
+        var tags = await dbContext.VacancyTags.Include(t => t.Tag).Where(t => t.VacancyId == request.VacancyId).ToListAsync();
+        var tagsToRemove = tags.Where(t => request.Tags.Contains(t.Tag.Name)).ToList();
 
         foreach (var tag in tagsToRemove)
         {
-            vacancy.Tags.Remove(tag);
+            tags.Remove(tag);
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return vacancy.Tags.Select(t => t.Tag.Name).ToList();
+        return tags.Select(t => t.Tag.Name).ToList();
     }
 }

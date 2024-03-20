@@ -16,7 +16,7 @@ public class AddTagsToVacancyCommandHandler(IApplicationDbContext dbContext)
         request.Tags = request.Tags.Select(tag => tag.Trim()).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
 
         var tags = await dbContext.Tags.ToListAsync(cancellationToken);
-
+        var vacancyTags= await dbContext.VacancyTags.Where(t=>t.VacancyId==vacancy.Id).ToListAsync(cancellationToken);
         var newTags = request.Tags.Except(vacancy.Tags.Select(t => t.Tag.Name), StringComparer.OrdinalIgnoreCase);
 
         foreach (var tag in newTags)
@@ -29,11 +29,11 @@ public class AddTagsToVacancyCommandHandler(IApplicationDbContext dbContext)
                 dbContext.Tags.Add(existingTag);
             }
 
-            vacancy.Tags.Add(new VacancyTag() { Tag = existingTag });
+            vacancyTags.Add(new VacancyTag() { Tag = existingTag });
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return vacancy.Tags.Select(t => t.Tag.Name).ToList();
+        return vacancyTags.Select(t => t.Tag.Name).ToList();
     }
 }

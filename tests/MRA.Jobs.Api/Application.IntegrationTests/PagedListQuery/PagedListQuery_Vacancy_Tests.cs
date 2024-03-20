@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobs;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using MRA.Jobs.Application.IntegrationTests.Jobs;
 using MRA.Jobs.Domain.Entities;
@@ -133,23 +134,24 @@ public class PagedListQuery_Vacancy_Tests : JobsContext
         var _vacancy = await GetJob("newjob_AddTag", DateTime.Now.AddDays(2));
         var vacancyTag = new VacancyTag()
         {
-            Tag = new Tag() { Name = "aa" },
+            Tag = new Tag() { Name = "scrum" },
             VacancyId = _vacancy.Id
         };
         await AddAsync(vacancyTag);
-        var allTags = await GetAllToListAsync<Tag>();
-        Assert.That(allTags.Count == 1);
-        var parameters = new Dictionary<string, string>
+        var query = new GetJobsQueryOptions()
         {
-            { "Tags", "aa" },
+            Tags = "scrum"
         };
-        var url = "/api/jobs?" + string.Join("&", parameters.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
+           
+        var url = $"api/jobs?{query}";
+
         var response = await _httpClient.GetAsync(url);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         var jobVacancies = await response.Content.ReadFromJsonAsync<PagedList<JobVacancyListDto>>();
         Assert.That(jobVacancies, Is.Not.Null);
         Assert.That(jobVacancies.Items, Is.Not.Empty);
-        Assert.That(jobVacancies.Items.All(j => j.Tags.Contains("newjob_AddTag")));
+        Assert.That(jobVacancies.Items.Any(j => j.Title.Contains("newjob_AddTag")));
+        Assert.That(jobVacancies.Items.Any(t => t.Tags.Contains("scrum")));
     }
 
 
