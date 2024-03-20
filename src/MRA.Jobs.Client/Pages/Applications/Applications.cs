@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Runtime.InteropServices;
+using System.Web;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +11,7 @@ using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
 using MRA.Jobs.Application.Contracts.Vacancies.Responses;
+using MRA.Jobs.Client.Services.ApplicationService;
 using MRA.Jobs.Client.Services.Profile;
 using MRA.Jobs.Client.Services.VacanciesServices;
 using MudBlazor;
@@ -22,8 +24,10 @@ public partial class Applications
     [Inject] private IVacancyService VacancyService { get; set; }
     [Inject] private IUserProfileService UserProfileService { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
+    [Inject] private IApplicationService ApplicationService { get; set; }
 
-    private bool _isLoad = false;
+    private GetApplicationsByFiltersQuery _query = new();
+    private bool _isLoad;
     private MudDateRangePicker _picker;
     private DateRange _dateRange;
     private MudTable<ApplicationListDto> _table;
@@ -34,9 +38,11 @@ public partial class Applications
     private string _selectedEmail = "";
     private string _selectedPhoneNumber = "";
     private string _searchStatusName = "";
+    private bool _isExpanded;
+    private bool _clearButton;
     private IEnumerable<string> Options { get; set; } = new HashSet<string>();
     private string SelectedSkills { get; set; } = "";
-    
+
     protected override async Task OnInitializedAsync()
     {
         _vacancies = await VacancyService.GetAllVacancies();
@@ -53,14 +59,18 @@ public partial class Applications
             SelectedSkills = skills;
             Options = skills.ToList();
         }
-           
-        
+
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("FullName", out var fullName))
             _selectedFullName = fullName;
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("PhoneNumber", out var phoneNumber))
             _selectedPhoneNumber = phoneNumber;
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("Email", out var email))
             _selectedEmail = email;
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("IsExpanded", out var isExpanded))
+            _isExpanded = bool.Parse(isExpanded);
+
+        if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("ClearButton", out var clearButton))
+            _clearButton = bool.Parse(clearButton);
 
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("filters", out var filters))
         {
@@ -74,21 +84,23 @@ public partial class Applications
             _selectedVacancy.Title = filterDictionary.GetValueOrDefault("Vacancy.Title");
             if (filterDictionary.TryGetValue("Status", out var status))
             {
-                _searchStatusName = ((ApplicationStatusDto.ApplicationStatus)int.Parse(status.Replace("=",""))).ToString();
+                _searchStatusName =
+                    ((ApplicationStatusDto.ApplicationStatus)int.Parse(status.Replace("=", ""))).ToString();
             }
 
             if (filterDictionary.TryGetValue("AppliedAt>", out var startDate))
             {
-                if(_dateRange==null) _dateRange = new DateRange();
+                if (_dateRange == null) _dateRange = new DateRange();
                 _dateRange.Start = DateTime.Parse(startDate);
             }
 
             if (filterDictionary.TryGetValue("AppliedAt<", out var endDate))
             {
-                if(_dateRange==null) _dateRange = new DateRange();
+                if (_dateRange == null) _dateRange = new DateRange();
                 _dateRange.End = DateTime.Parse(endDate).AddDays(-1);
             }
         }
+
         StateHasChanged();
         _isLoad = true;
         StateHasChanged();
@@ -104,9 +116,15 @@ public partial class Applications
         return Task.FromResult<IEnumerable<VacancyDto>>(_vacancies.Where(v => v.Title.Contains(value)).ToList());
     }
 
+    private void ExpandChanged()
+    {
+        _isExpanded = !_isExpanded;
+        UpdateUrl();
+    }
+
     private async Task<TableData<ApplicationListDto>> GetApplications(TableState state)
     {
-        var query = new GetApplicationsByFiltersQuery()
+        _query = new GetApplicationsByFiltersQuery()
         {
             Page = state.Page + 1,
             PageSize = state.PageSize,
@@ -117,33 +135,43 @@ public partial class Applications
             Filters = GetFilters(),
         };
 
-        var response =
-            await HttpClientService.GetFromJsonAsync<PagedList<ApplicationListDto>>(
-                Configuration.GetJobsUrl("applications"), query);
+        var response = await ApplicationService.GetAllApplications(_query);
+      
+        UpdateUrl();
 
-        var queryParameters = new Dictionary<string, string>
+        return new TableData<ApplicationListDto>() { TotalItems = response.TotalCount, Items = response.Items };
+    }
+
+    private void UpdateUrl()
+    {
+        var properties = new Dictionary<string, string>
         {
-            { "page", query.Page.ToString() }, { "pageSize", query.PageSize.ToString() }
+            { "Filters", _query.Filters },
+            { "Skills", _query.Skills },
+            { "FullName", _query.FullName },
+            { "PhoneNumber", _query.PhoneNumber },
+            { "Email", _query.Email }
         };
-        if (!query.Filters.IsNullOrEmpty()) queryParameters.Add("Filters", query.Filters);
-        if (!query.Skills.IsNullOrEmpty()) queryParameters.Add("Skills", query.Skills);
-        if (!query.FullName.IsNullOrEmpty()) queryParameters.Add("FullName", query.FullName);
-        if (!query.PhoneNumber.IsNullOrEmpty()) queryParameters.Add("PhoneNumber", query.PhoneNumber);
-        if (!query.Email.IsNullOrEmpty()) queryParameters.Add("Email", query.Email);
+
+        var queryParameters = properties.Where(property => !property.Value.IsNullOrEmpty())
+            .ToDictionary(property => property.Key, property => property.Value);
+
+        if (!queryParameters.IsNullOrEmpty())
+        {
+            _clearButton = true;
+            StateHasChanged();
+        }
+
+        queryParameters.Add("page", _query.Page.ToString());
+        queryParameters.Add("pageSize", _query.PageSize.ToString());
+
+        if (_isExpanded) queryParameters.Add("IsExpanded", _isExpanded.ToString());
+        if (_clearButton) queryParameters.Add("ClearButton", _clearButton.ToString());
 
         var url = QueryHelpers.AddQueryString("Dashboard/Applications", queryParameters);
         NavigationManager.NavigateTo(url);
-
-        if (response.Success && response.Result != null)
-        {
-            return new TableData<ApplicationListDto>()
-            {
-                TotalItems = response.Result.TotalCount, Items = response.Result.Items
-            };
-        }
-
-        return new TableData<ApplicationListDto>() { TotalItems = _table.TotalItems, Items = _table.Items };
     }
+
 
     private string GetFilters()
     {
@@ -155,5 +183,22 @@ public partial class Applications
             filters.Add($"AppliedAt>={_dateRange.Start},AppliedAt<={_dateRange.End.Value.AddDays(1)}");
 
         return filters.Any() ? HttpUtility.UrlEncode(string.Join(",", filters)) : null;
+    }
+
+    private async Task Clear()
+    {
+        Options = new HashSet<string>();
+        _selectedEmail = string.Empty;
+        _selectedVacancy = new VacancyDto();
+        _selectedEmail = string.Empty;
+        _searchStatusName = string.Empty;
+        _selectedFullName = string.Empty;
+        _selectedPhoneNumber = string.Empty;
+        SelectedSkills = String.Empty;
+        _dateRange = null;
+        UpdateUrl();
+        _clearButton = false;
+        await _table.ReloadServerData();
+        
     }
 }

@@ -8,7 +8,7 @@
             <MudItem xs="12">
                 <MudStack Row="true">
                     <MudTextField Variant="Variant.Outlined" @bind-Value="_newTags" T="string" Margin="Margin.Dense"/>
-                    <ProgressTaskButton Function="@AddTagsAsync" Variant="Variant.Filled" Color="Color.Primary">
+                    <ProgressTaskButton OnClick="@AddTagsAsync" Variant="Variant.Filled" Color="Color.Primary">
                         <MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Medium"/>
                     </ProgressTaskButton>
                 </MudStack>

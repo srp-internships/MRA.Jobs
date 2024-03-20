@@ -14,6 +14,7 @@ public static class DocPages
     public const string NoVacancyUploadCv = "upload-cv";
     public const string Categories = "categories";
     public const string UserManager = "userManager";
+    public const string Candidates = "candidates";
 
     public static string GetPageFromUrl(string url, bool setDefault = false)
     {
