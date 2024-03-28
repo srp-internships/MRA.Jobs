@@ -3,16 +3,18 @@
 @using Microsoft.IdentityModel.Tokens
 @using MRA.BlazorComponents.Configuration
 @using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternships
+@using MRA.Jobs.Client.Services.ConverterService
 @using MRA.Jobs.Client.Services.VacanciesServices.Internships
 @inject IInternshipService InternshipService
 @inject NavigationManager NavigationManager
 @inject ICategoryService CategoryService
+@inject IDateTimeConvertToStringService DateTimeConvert
 
 <MudGrid Style="margin-top: 15px;">
     <MudItem lg="12">
         <MudStack Row="true">
             <MudText Typo="Typo.h4">
-              <b>@ContentService["Header:Internships"]</b>
+                <b>@ContentService["Header:Internships"]</b>
             </MudText>
             <MudSpacer/>
             <MudItem lg="6">
@@ -121,6 +123,17 @@
                                                         <MudHighlighter Text="@vacancy.Title" HighlightedText="@_search" Markup="true"/>
                                                     </b>
                                                 </MudText>
+                                                <MudStack Row="true">
+                                                    <MudText Typo="Typo.caption" Style="color: grey">@ContentService["VacancyDetails:Posted"]: @vacancy.PublishDate.ToShortDateString()</MudText>
+                                                    <MudSpacer/>
+                                                    @{
+                                                        var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancy.ApplicationDeadline);
+                                                        var deadlineStyle = $"color:{deadlineResult.Color}";
+                                                        <MudText Typo="Typo.caption" Style="@deadlineStyle">@ContentService["VacancyDetails:Deadline"]: @vacancy.ApplicationDeadline.ToShortDateString() </MudText>
+                                                        <MudSpacer/>
+                                                    }
+                                                    <MudText Typo="Typo.caption" Style="color: grey">@ContentService["VacancyDetails:End Date"]: @vacancy.EndDate.ToShortDateString() </MudText>
+                                                </MudStack>
                                                 <MudText > @vacancy.ShortDescription </MudText >
 
                                                 @if (vacancy.Tags != null)
