@@ -318,34 +318,73 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext, ICo
             .Include(x => x.VacancyTasks)
             .FirstOrDefaultAsync(x => x.Slug == "backend-developer");
 
-        if (vacancy == null) return;
-
-        if (await dbContext.Applications
-                .FirstOrDefaultAsync(x => x.Slug == "applicant1-backend-developer") != null) return;
-
-        var application = new Domain.Entities.Application()
+        if (vacancy != null)
         {
-            VacancyId = vacancy.Id,
-            CoverLetter = "test test test",
-            AppliedAt = DateTime.Now,
-            VacancyResponses = vacancy.VacancyQuestions.Select(vacancyQuestion =>
-                new VacancyResponse { VacancyQuestion = vacancyQuestion, Response = "test test test" }).ToList(),
-            ApplicantUsername = "applicant1",
-            TaskResponses = vacancy.VacancyTasks.Select(vacancyTask =>
-                new TaskResponse { TaksId = vacancyTask.Id, Code = "Console.WriteLine('Hello World!')" }).ToList(),
-            Slug = "applicant1-backend-developer",
-            CV = "cv.pdf"
-        };
-        await dbContext.Applications.AddAsync(application);
-        await dbContext.ApplicationTimelineEvents.AddAsync(new ApplicationTimelineEvent
+            if (await dbContext.Applications
+                    .FirstOrDefaultAsync(x => x.Slug == "applicant1-backend-developer") == null)
+            {
+                var application = new Domain.Entities.Application()
+                {
+                    VacancyId = vacancy.Id,
+                    CoverLetter = "test test test",
+                    AppliedAt = DateTime.Now,
+                    VacancyResponses = vacancy.VacancyQuestions?.Select(vacancyQuestion =>
+                            new VacancyResponse { VacancyQuestion = vacancyQuestion, Response = "test test test" })
+                        .ToList(),
+                    ApplicantUsername = "applicant1",
+                    TaskResponses = vacancy.VacancyTasks?.Select(vacancyTask =>
+                            new TaskResponse { TaksId = vacancyTask.Id, Code = "Console.WriteLine('Hello World!')" })
+                        .ToList(),
+                    Slug = "applicant1-backend-developer",
+                    CV = "cv.pdf"
+                };
+                await dbContext.Applications.AddAsync(application);
+                await dbContext.ApplicationTimelineEvents.AddAsync(new ApplicationTimelineEvent
+                {
+                    ApplicationId = application.Id,
+                    Note = "Applied",
+                    CreateBy = "applicant1",
+                    EventType = TimelineEventType.Created,
+                    Time = DateTime.Now,
+                });
+            }
+        }
+
+        var internship = await dbContext.Internships
+            .Include(x => x.VacancyQuestions)
+            .Include(x => x.VacancyTasks)
+            .FirstOrDefaultAsync(x => x.Slug == "data-scientist-intern");
+        if (internship != null)
         {
-            ApplicationId = application.Id,
-            Note = "Applied",
-            CreateBy = "applicant1",
-            EventType = TimelineEventType.Created,
-            Time = DateTime.Now,
-            
-        });
+            if (await dbContext.Internships.FirstOrDefaultAsync(x => x.Slug == "applicant1-data-scientist-intern") ==
+                null)
+            {
+                var application2 = new Domain.Entities.Application()
+                {
+                    VacancyId = internship.Id,
+                    CoverLetter = "test test test",
+                    AppliedAt = DateTime.Now,
+                    VacancyResponses = internship.VacancyQuestions?.Select(vacancyQuestion =>
+                            new VacancyResponse { VacancyQuestion = vacancyQuestion, Response = "test test test" })
+                        .ToList(),
+                    ApplicantUsername = "applicant1",
+                    TaskResponses = internship.VacancyTasks?.Select(vacancyTask =>
+                            new TaskResponse { TaksId = vacancyTask.Id, Code = "Console.WriteLine('Hello World!')" })
+                        .ToList(),
+                    Slug = "applicant1-data-scientist-intern",
+                    CV = "cv.pdf"
+                };
+                await dbContext.Applications.AddAsync(application2);
+                await dbContext.ApplicationTimelineEvents.AddAsync(new ApplicationTimelineEvent
+                {
+                    ApplicationId = application2.Id,
+                    Note = "Applied",
+                    CreateBy = "applicant1",
+                    EventType = TimelineEventType.Created,
+                    Time = DateTime.Now,
+                });
+            }
+        }
 
         await dbContext.SaveChangesAsync();
     }
