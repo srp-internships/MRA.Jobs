@@ -122,6 +122,12 @@
                                                         <MudHighlighter Text="@vacancy.Title" HighlightedText="@_search" Markup="true"/>
                                                     </b>
                                                 </MudText>
+                                                <MudStack Row="true">
+                                                    <MudText Typo="Typo.caption" Style="color: grey">@ContentService["VacancyDetails:Posted"]: @vacancy.PublishDate.ToShortDateString()</MudText>
+                                                    <MudSpacer/>
+                                                    <MudText Typo="Typo.caption" Style="color: grey">@ContentService["VacancyDetails:End Date"]: @vacancy.EndDate.ToShortDateString() </MudText>
+                                                </MudStack>
+
                                                 <MudText > @vacancy.ShortDescription </MudText >
 
                                                 @if (vacancy.Tags != null)
