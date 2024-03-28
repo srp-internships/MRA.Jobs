@@ -24,7 +24,7 @@ public abstract class Vacancy : BaseAuditableEntity
     public ICollection<Test> Tests { get; set; }
     public List<VacancyQuestion> VacancyQuestions { get; set; }
     public List<VacancyTask> VacancyTasks { get; set; }
-    public List<VacancyTag> Tags { get; set; }
+    public IEnumerable<VacancyTag> Tags { get; set; }
     public string Discriminator { get; set; }
     public string Note { get; set; }
 }
