@@ -6,6 +6,11 @@ using NUnit.Framework;
 using MRA.Identity.Application.Contract.Common;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 using System.Net;
+using Moq;
+using Newtonsoft.Json;
+using System.Text;
+using MRA.Identity.Application.Contract.User.Responses;
+using Moq.Protected;
 
 namespace MRA.Jobs.Application.IntegrationTests.PagedList;
 public class Filters_Application_Tests  : CreateApplicationTestsBase
@@ -78,7 +83,7 @@ public class Filters_Application_Tests  : CreateApplicationTestsBase
         Assert.That(result.Items.All(a => a.ApplicantUsername == "applicant1"));
     }
     [Test]
-    public async Task GetApplications_WithFilters_ReturnsFilteredEmail()
+    public async Task GetApplications_WithFilters_ReturnsFilteredVacancyTitle()
     {
         ResetState();
         await CreateApplications("JobVacancyTestA2");
@@ -87,7 +92,7 @@ public class Filters_Application_Tests  : CreateApplicationTestsBase
 
         var filters = new Dictionary<string, string>
             {
-                { "Email", "fakeEmail@asd.com" }
+                { "Filters", "Vacancy.Title@=JobVacancyTestA2" }
             };
 
         var url = "/api/applications?" + string.Join("&", filters.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
@@ -96,9 +101,57 @@ public class Filters_Application_Tests  : CreateApplicationTestsBase
 
         var result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
         Assert.That(result, Is.Not.Null);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Items.All(a => a.ApplicantUsername == "applicant1"));
+        Assert.That(result.Items.All(a => a.VacancyTitle == "JobVacancyTestA2"));
     }
+    private HttpClient CreateMockHttpClient(PagedList<ApplicationListDto> mockPagedList)
+    {
+        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+        mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonConvert.SerializeObject(mockPagedList), Encoding.UTF8, "application/json")
+            });
+
+        var httpClient = new HttpClient(mockHttpMessageHandler.Object);
+        httpClient.BaseAddress = new Uri("http://localhost7071");
+        return httpClient;
+    }
+
+    [Test]
+    public async Task GetApplications_WithFilters_ReturnsFilteredUser()
+    {
+        var mockUser = new UserResponse
+        {
+            UserName = "Bob",
+            Email = "email@gmail.com",
+            PhoneNumber = "+9999999999",
+            FullName = "Ali Aliev Alivich"
+        };
+        var mockApplicationListDto = new ApplicationListDto
+        {
+            User = mockUser
+        };
+
+        var mockPagedList = new PagedList<ApplicationListDto>
+        {
+            Items = new List<ApplicationListDto> { mockApplicationListDto }
+        };
+
+        _httpClient = CreateMockHttpClient(mockPagedList);
+
+        var url = "/api/applications?PhoneNumber=+9999999999";
+        var response = await _httpClient.GetAsync(url);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
+        var result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Items.All(a => a.User.PhoneNumber == "+9999999999"));
+    }
+
 }
 
 
