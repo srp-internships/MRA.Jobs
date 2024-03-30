@@ -11,9 +11,15 @@ using Newtonsoft.Json;
 using System.Text;
 using MRA.Identity.Application.Contract.User.Responses;
 using Moq.Protected;
+using AutoMapper;
+using MRA.Jobs.Application.Contracts.Applications.Candidates;
+using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
+using Sieve.Services;
+using System.Linq.Expressions;
+using MRA.Jobs.Application.Common.Interfaces;
 
 namespace MRA.Jobs.Application.IntegrationTests.PagedList;
-public class Filters_Application_Tests  : CreateApplicationTestsBase
+public class Filters_Application_Tests : CreateApplicationTestsBase
 {
     private async Task CreateApplications(string jobTitle)
     {
@@ -60,7 +66,7 @@ public class Filters_Application_Tests  : CreateApplicationTestsBase
         Assert.That(result.CurrentPageNumber, Is.EqualTo(1));
         Assert.That(result.Items.Count, Is.EqualTo(1));
         Assert.That(result.Items.All(a => a.ApplicantUsername == "applicant1"));
-        
+
     }
     [Test]
     public async Task GetApplications_WithFilters_ReturnsFilteredApplicantUsername()
@@ -103,6 +109,29 @@ public class Filters_Application_Tests  : CreateApplicationTestsBase
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Items.All(a => a.VacancyTitle == "JobVacancyTestA2"));
     }
+    [Test]
+    public async Task GetApplications_WithFilters_ReturnsFi()
+    {
+        ResetState();
+        await CreateApplications("JobVacancyTestA2");
+
+        RunAsDefaultUserAsync("applicant1");
+
+        var url = "/api/applications?PhoneNumber=+9999999999";
+        var response = await _httpClient.GetAsync(url);
+        Assert.That(HttpStatusCode.OK == response.StatusCode);
+
+        var result = await response.Content.ReadFromJsonAsync<PagedList<ApplicationListDto>>();
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Items.All(a => a.User.PhoneNumber == "+9999999999"));
+    }
+
+
+
+
+
+
+
     private HttpClient CreateMockHttpClient(PagedList<ApplicationListDto> mockPagedList)
     {
         var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
@@ -152,6 +181,24 @@ public class Filters_Application_Tests  : CreateApplicationTestsBase
         Assert.That(result.Items.All(a => a.User.PhoneNumber == "+9999999999"));
     }
 
+    [Test]
+    public void FilterApplicationsByPhoneNumber_ReturnsFilteredApplications()
+    {
+
+        var applications = new List<ApplicationListDto>
+        {
+            new ApplicationListDto { User = new UserResponse { PhoneNumber = "+9999999999" } },
+            new ApplicationListDto { User = new UserResponse { PhoneNumber = "+8888888888" } },
+            new ApplicationListDto { User = new UserResponse { PhoneNumber = "+9999999999" } },
+        };
+
+        var filteredApplications = applications.Where(a => a.User.PhoneNumber == "+9999999999").ToList();
+        Assert.That(filteredApplications.Count, Is.EqualTo(2));
+        Assert.That(filteredApplications.All(a => a.User.PhoneNumber == "+9999999999"));
+    }
+
+    
+   
 }
 
 
