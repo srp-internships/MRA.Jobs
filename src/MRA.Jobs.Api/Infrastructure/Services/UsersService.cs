@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Application.Contracts.Applications.Candidates;
+using MRA.Jobs.Application.Contracts.Common;
 
 namespace MRA.Jobs.Infrastructure.Services;
 
@@ -45,5 +47,10 @@ public class UsersService(
         }
 
         return users;
+    }
+
+    public Task<PagedList<UserResponse>> GetPagedListUsers(GetAllUsersByFilters query)
+    {
+        throw new NotImplementedException();
     }
 }
