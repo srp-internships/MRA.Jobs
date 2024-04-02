@@ -15,6 +15,8 @@ public static class DocPages
     public const string Categories = "categories";
     public const string UserManager = "userManager";
     public const string Candidates = "candidates";
+    public const string Users = "Users";
+    public const string EmailTemplates = "EmailTemplates";
 
     public static string GetPageFromUrl(string url, bool setDefault = false)
     {
@@ -24,7 +26,7 @@ public static class DocPages
             url.Contains($"dashboard/{s}", StringComparison.OrdinalIgnoreCase));
         if (setDefault || result == null)
             result = Home;
-        
+
         return result;
     }
 }
