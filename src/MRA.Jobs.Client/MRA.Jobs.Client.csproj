@@ -101,9 +101,4 @@
       </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Pages\Admin\EmailTemplates\" />
-      <Folder Include="Pages\Admin\Users\" />
-    </ItemGroup>
-
 </Project>

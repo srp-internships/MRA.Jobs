@@ -97,7 +97,7 @@
                         </MudMenu>
                     </AuthorizeView>
                     <AuthorizeView Roles="@ApplicationClaimValues.Reviewer" Context="reviewer">
-                        <MudButton Color="Color.Inherit" Variant="Variant.Text" Href="/Candidates" Class="@GetActiveClass(DocPages.Candidates)">
+                        <MudButton Color="Color.Inherit" Variant="Variant.Text" Href="/Administration/Candidates" Class="@GetActiveClass(DocPages.Candidates)">
                             <MudText>
                                 <b>@ContentService["Candidates"]</b>
                             </MudText>
@@ -140,7 +140,7 @@
                     </AuthorizeView>
 
                     <AuthorizeView Roles="@ApplicationClaimValues.Reviewer" Context="reviewer">
-                        <MudNavLink Match="NavLinkMatch.All" Href=@linkToUserManager>@ContentService["Header:Usersmanager"]</MudNavLink>
+                        <MudNavLink Match="NavLinkMatch.All" Href="/Administration/Candidates">@ContentService["Candidates"]</MudNavLink>
                     </AuthorizeView>
                 </MudNavMenu>
                 @if (_betaVersion)
@@ -158,20 +158,14 @@
 </CascadingAuthenticationState>
 
 @code {
-
-    private string linkToUserManager => $"{Configuration["IdentityClient"]}/userManager";
-
     bool _open = false;
-
     private bool _betaVersion;
-
     void ToggleDrawer()
     {
         _open = !_open;
     }
 
     private string _currentPage;
-
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
