@@ -15,6 +15,7 @@ using MRA.BlazorComponents.Dialogs;
 using MRA.BlazorComponents.DynamicPages;
 using MRA.BlazorComponents.HttpClient;
 using MRA.Identity.Application.Contract.Skills.Command;
+using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Application.Contracts;
 using MRA.Jobs.Client.Identity;
 using MRA.Jobs.Client.Services.ContentService;
@@ -23,6 +24,7 @@ using MRA.Jobs.Client.Services;
 using MRA.Jobs.Client.Services.FileService;
 using MRA.Jobs.Client.Services.NoVacancies;
 using MRA.Jobs.Client.Services.UserPreferences;
+using MRA.Jobs.Client.Services.Users;
 using MRA.Jobs.Client.Services.VacanciesServices;
 using MRA.Jobs.Client.Services.VacanciesServices.Internships;
 using MRA.Jobs.Client.Services.VacanciesServices.Jobs;
@@ -90,5 +92,6 @@ builder.Services.AddScoped<IDateTimeConvertToStringService, DateTimeConverterToS
 builder.Services.AddScoped<IUserPreferencesService, UserPreferencesService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddMraFluentValidatorCustomMessages();
+builder.Services.AddScoped<IUsersService, UsersService>();
 
 await builder.Build().RunAsync();
