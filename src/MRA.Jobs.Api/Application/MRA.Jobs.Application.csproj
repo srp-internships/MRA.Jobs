@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Features\Applications\Candidates\" />
       <Folder Include="Features\Me\Commands\" />
       <Folder Include="Features\Me\Queries\" />
       <Folder Include="Features\Vacancies\Note\Queries\" />

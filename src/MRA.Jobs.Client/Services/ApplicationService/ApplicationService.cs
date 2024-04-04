@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Components.Forms;
 using MRA.BlazorComponents.Configuration;
 using MRA.BlazorComponents.HttpClient.Services;
 using MRA.BlazorComponents.Snackbar.Extensions;
-using MRA.Identity.Application.Contract.User.Responses;
-using MRA.Jobs.Application.Contracts.Applications.Candidates;
 using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
@@ -124,16 +122,7 @@ public class ApplicationService(
 
         return null;
     }
-
-    public async Task<List<UserResponse>> GetCandidates(GetCandidatesQuery query)
-    {
-        var response =
-            await httpClient.GetFromJsonAsync<List<UserResponse>>(configuration.GetJobsUrl("applications/candidates"),
-                query);
-        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"]);
-        return response.Result;
-    }
-
+    
     private async Task<string> GetCurrentUserName()
     {
         var authState = await authenticationState.GetAuthenticationStateAsync();

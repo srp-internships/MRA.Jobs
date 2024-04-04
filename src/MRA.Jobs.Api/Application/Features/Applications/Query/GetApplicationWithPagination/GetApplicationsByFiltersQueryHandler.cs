@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MRA.Jobs.Application.Common.Sieve;
-using MRA.Jobs.Application.Contracts.Applications.Candidates;
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
