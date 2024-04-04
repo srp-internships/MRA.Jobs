@@ -2,7 +2,6 @@ using System.Web;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
-using MRA.BlazorComponents.Configuration;
 using MRA.BlazorComponents.HttpClient.Services;
 using MRA.Identity.Application.Contract.Educations.Responses;
 using MRA.Identity.Application.Contract.Experiences.Responses;
@@ -10,7 +9,6 @@ using MRA.Identity.Application.Contract.Profile.Responses;
 using MRA.Identity.Application.Contract.Skills.Responses;
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
-using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Dtos.Enums;
 using MRA.Jobs.Application.Contracts.Vacancies.Responses;
 using MRA.Jobs.Client.Services.ApplicationService;
@@ -18,7 +16,7 @@ using MRA.Jobs.Client.Services.Profile;
 using MRA.Jobs.Client.Services.VacanciesServices;
 using MudBlazor;
 
-namespace MRA.Jobs.Client.Pages.Admin;
+namespace MRA.Jobs.Client.Pages.Admin.Users;
 
 public partial class UserProfile
 {

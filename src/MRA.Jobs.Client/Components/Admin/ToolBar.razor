@@ -78,17 +78,31 @@
                         </MudText>
                     </MudButton>
                     <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-                        <MudButton Href=@linkToUserManager Color="Color.Inherit" Target="_blank" Variant="Variant.Text" Class="@GetActiveClass(DocPages.UserManager)">
+                        <MudMenu AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft" ActivationEvent="@MouseEvent.MouseOver">
+                            <ActivatorContent>
+                                <MudButton Variant="Variant.Text" EndIcon="@Icons.Material.Filled.ExpandMore">
+                                    <MudText>
+                                        <b>Administration</b>
+                                    </MudText>
+                                </MudButton>
+                            </ActivatorContent>
+                            <ChildContent>
+                                <MudMenuItem Class="@GetActiveClass(DocPages.Users)" Href="Administration/Users">
+                                    <b>Users</b>
+                                </MudMenuItem>
+                                <MudMenuItem Class="@GetActiveClass(DocPages.EmailTemplates)" Href="Administration/EmailTemplates">
+                                    <b>Email Templates</b>
+                                </MudMenuItem>
+                            </ChildContent>
+                        </MudMenu>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="@ApplicationClaimValues.Reviewer" Context="reviewer">
+                        <MudButton Color="Color.Inherit" Variant="Variant.Text" Href="/Administration/Candidates" Class="@GetActiveClass(DocPages.Candidates)">
                             <MudText>
-                                <b>@ContentService["Header:Usersmanager"]</b>
+                                <b>@ContentService["Candidates"]</b>
                             </MudText>
                         </MudButton>
                     </AuthorizeView>
-                    <MudButton Color="Color.Inherit" Variant="Variant.Text" Href="/Candidates"  Class="@GetActiveClass(DocPages.Candidates)">
-                        <MudText>
-                            <b>@ContentService["Candidates"]</b>
-                        </MudText>
-                    </MudButton>
                 </MudHidden>
                 <MudSpacer/>
                 <MudHidden Breakpoint="Breakpoint.Xs">
@@ -119,7 +133,14 @@
                     <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">@ContentService["Header:Trainings"]</MudNavLink>
 
                     <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-                        <MudNavLink Match="NavLinkMatch.All" Href=@linkToUserManager>@ContentService["Header:Usersmanager"]</MudNavLink>
+                        <MudNavGroup Title="Administration">
+                            <MudNavLink Href="Administration/Users">Users</MudNavLink>
+                            <MudNavLink Href="Administration/EmailTemplates">Email Templates</MudNavLink>
+                        </MudNavGroup>
+                    </AuthorizeView>
+
+                    <AuthorizeView Roles="@ApplicationClaimValues.Reviewer" Context="reviewer">
+                        <MudNavLink Match="NavLinkMatch.All" Href="/Administration/Candidates">@ContentService["Candidates"]</MudNavLink>
                     </AuthorizeView>
                 </MudNavMenu>
                 @if (_betaVersion)
@@ -137,20 +158,14 @@
 </CascadingAuthenticationState>
 
 @code {
-
-    private string linkToUserManager => $"{Configuration["IdentityClient"]}/userManager";
-
     bool _open = false;
-
     private bool _betaVersion;
-
     void ToggleDrawer()
     {
         _open = !_open;
     }
 
     private string _currentPage;
-
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
