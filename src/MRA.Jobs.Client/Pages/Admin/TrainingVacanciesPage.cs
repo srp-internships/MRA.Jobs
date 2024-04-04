@@ -9,7 +9,6 @@ using MRA.Jobs.Application.Contracts.TrainingVacancies.Queries;
 using MRA.Jobs.Application.Contracts.TrainingVacancies.Responses;
 using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
-using MRA.Jobs.Client.Pages.Admin.Dialogs;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Pages.Admin;
