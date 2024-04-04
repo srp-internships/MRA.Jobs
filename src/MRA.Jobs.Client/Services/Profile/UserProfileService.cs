@@ -81,7 +81,7 @@ public class UserProfileService(
         return response.Result!;
     }
 
-    public async Task<PagedList<UserResponse>> GetCandidatesAsync(GetAllUsersByFilters query)
+    public async Task<PagedList<UserResponse>> GetCandidatesAsync(GetPagedListUsersQuery query)
     {
         var queryParam = HttpUtility.ParseQueryString(string.Empty);
         if (!query.Skills.IsNullOrEmpty()) queryParam["Skills"] = query.Skills;
