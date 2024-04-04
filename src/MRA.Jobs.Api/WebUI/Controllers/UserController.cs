@@ -18,4 +18,11 @@ public class UserController : ApiControllerBase
         var result = await Mediator.Send(query);
         return Ok(result);
     }
+
+    [HttpGet("List")]
+    public async Task<IActionResult> Get([FromQuery] GetListUsersQuery query)
+    {
+        var result = await Mediator.Send(query);
+        return Ok(result);
+    }
 }
