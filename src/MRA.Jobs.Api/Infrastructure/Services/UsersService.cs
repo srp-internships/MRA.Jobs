@@ -48,9 +48,4 @@ public class UsersService(
 
         return users;
     }
-
-    public Task<PagedList<UserResponse>> GetPagedListUsers(GetAllUsersByFilters query)
-    {
-        throw new NotImplementedException();
-    }
 }

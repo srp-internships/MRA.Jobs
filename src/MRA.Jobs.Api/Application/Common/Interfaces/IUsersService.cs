@@ -8,6 +8,5 @@ namespace MRA.Jobs.Application.Common.Interfaces;
 public interface IUsersService
 {
     Task<List<UserResponse>> GetUsersAsync(GetCandidatesQuery query);
-
-    Task<PagedList<UserResponse>> GetPagedListUsers(GetAllUsersByFilters query);
+    
 }
