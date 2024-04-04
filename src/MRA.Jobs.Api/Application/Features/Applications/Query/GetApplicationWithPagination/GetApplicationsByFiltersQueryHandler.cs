@@ -14,8 +14,7 @@ public class GetApplicationsByFiltersQueryHandler(
     ICurrentUserService currentUser,
     IApplicationSieveProcessor sieveProcessor,
     IMapper mapper,
-    IMediator mediator,
-    IUsersService usersService)
+    IMediator mediator)
     : IRequestHandler<GetApplicationsByFiltersQuery, PagedList<ApplicationListDto>>
 {
     public async Task<PagedList<ApplicationListDto>> Handle(GetApplicationsByFiltersQuery request,
