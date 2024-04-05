@@ -1,0 +1,14 @@
+﻿@page "/Administration/EmailTemplates"
+@using MRA.Jobs.Client.Identity
+<AuthorizeView Policy="@ApplicationPolicies.Administrator">
+    <Authorized>
+        <MudText Typo="Typo.h5">
+            <b>Email Templates</b>
+        </MudText>
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+
+}

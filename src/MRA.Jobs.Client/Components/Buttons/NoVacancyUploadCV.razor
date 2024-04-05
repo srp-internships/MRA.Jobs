@@ -68,7 +68,7 @@
 	<DialogActions>
 		@if (_questionsResponses.Any())
 		{
-			<ProgressTaskButton Color="Color.Primary" Class="ml-auto" Function="CreateApplication">
+			<ProgressTaskButton Color="Color.Primary" Class="ml-auto" OnClick="@CreateApplication">
 					<MudText>@ContentService["VacancyApplication:Apply"]</MudText>
 			</ProgressTaskButton>
 			<MudButton OnClick="@CloseDialog">

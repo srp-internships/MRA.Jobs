@@ -1,24 +1,19 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.Users;
 
 namespace MRA.Jobs.Application.Features.Applications.Query.GetApplicationWithPagination;
 
 public class GetApplicationsByFiltersQueryHandler(
     IApplicationDbContext dbContext,
-    IHttpClientFactory clientFactory,
     ICurrentUserService currentUser,
-    IConfiguration configuration,
     IApplicationSieveProcessor sieveProcessor,
-    IMapper mapper)
+    IMapper mapper,
+    IMediator mediator)
     : IRequestHandler<GetApplicationsByFiltersQuery, PagedList<ApplicationListDto>>
 {
     public async Task<PagedList<ApplicationListDto>> Handle(GetApplicationsByFiltersQuery request,
@@ -29,42 +24,35 @@ public class GetApplicationsByFiltersQueryHandler(
             .Include(a => a.VacancyResponses)
             .AsNoTracking();
 
-        List<UserResponse> users = new();
-
-        var token = currentUser.GetAuthToken();
-        if (!token.IsNullOrEmpty())
+        var roles = currentUser.GetRoles();
+        if (roles.Any(r => r == "Reviewer"))
         {
-            var httpClient = clientFactory.CreateClient("Mra.Identity");
-            httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token.Replace("Bearer ", ""));
-
-            var queryParameters = new Dictionary<string, string>();
-            if (!request.FullName.IsNullOrEmpty()) queryParameters.Add("FullName", request.FullName.Trim());
-            if (!request.PhoneNumber.IsNullOrEmpty()) queryParameters.Add("PhoneNumber", request.PhoneNumber.Trim());
-            if (!request.Email.IsNullOrEmpty()) queryParameters.Add("Email", request.Email.Trim());
-            if (!request.Skills.IsNullOrEmpty()) queryParameters.Add("Skills", request.Skills.Trim());
-
-            var queryString = QueryHelpers.AddQueryString(configuration["MraJobs-IdentityApi:Users"], queryParameters);
-            try
-            {
-                users = await httpClient.GetFromJsonAsync<List<UserResponse>>(queryString, cancellationToken);
-
-                if (queryParameters.Any())
-                {
-                    applications = applications.Where(a => users.Select(u => u.UserName).Contains(a.ApplicantUsername));
-                }
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
+            return await ReturnPagedListWithUsers(applications, request);
         }
 
-        var roles = currentUser.GetRoles();
-        if(roles.All(r => r != "Reviewer"))
-            applications= applications.Where(a =>
-                a.ApplicantUsername == currentUser.GetUserName() && a.Vacancy.Discriminator != "NoVacancy");
-       
+        applications = applications.Where(a =>
+            a.ApplicantUsername == currentUser.GetUserName() && a.Vacancy.Discriminator != "NoVacancy");
+
+        return sieveProcessor.ApplyAdnGetPagedList(request, applications, mapper.Map<ApplicationListDto>);
+    }
+
+    private async Task<PagedList<ApplicationListDto>> ReturnPagedListWithUsers(
+        IQueryable<Domain.Entities.Application> applications, GetApplicationsByFiltersQuery request)
+    {
+        var query = new GetListUsersQuery()
+        {
+            FullName = request.FullName,
+            PhoneNumber = request.PhoneNumber,
+            Email = request.Email,
+            Skills = request.Skills
+        };
+        var users = await mediator.Send(query);
+
+        if (!request.FullName.IsNullOrEmpty() || !request.Skills.IsNullOrEmpty() ||
+            !request.PhoneNumber.IsNullOrEmpty() || !request.Email.IsNullOrEmpty())
+        {
+            applications = applications.Where(a => users.Select(u => u.UserName).Contains(a.ApplicantUsername));
+        }
 
         var result = sieveProcessor.ApplyAdnGetPagedList(request, applications, mapper.Map<ApplicationListDto>);
         result.Items.ForEach(application =>

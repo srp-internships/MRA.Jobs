@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.OpenApi.Models;
 using MRA.Jobs.Application;
 using MRA.Jobs.Infrastructure;
 using MRA.Jobs.Infrastructure.Identity;
@@ -27,8 +28,6 @@ builder.Services.AddWebUiServices(builder.Configuration);
 
 builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("MraJobs-Sieve"));
 
-
-
 WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -53,7 +52,7 @@ using (var scope = app.Services.CreateScope())
 {
     var initializer = scope.ServiceProvider.GetRequiredService<DbMigration>();
     await initializer.InitialiseAsync();
-    
+
     var dbInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
     await dbInitializer.SeedAsync();
 }
@@ -67,9 +66,7 @@ app.UseHealthChecks("/status", new HealthCheckOptions
             Status = report.Status.ToString(),
             Checks = report.Entries.Select(entry => new
             {
-                Name = entry.Key,
-                Status = entry.Value.Status.ToString(),
-                entry.Value.Description
+                Name = entry.Key, Status = entry.Value.Status.ToString(), entry.Value.Description
             })
         };
 

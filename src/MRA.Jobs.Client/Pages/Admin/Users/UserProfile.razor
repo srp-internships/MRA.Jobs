@@ -1,0 +1,334 @@
+@page "/User/{Username}"
+@page "/User/{Username}/Applications"
+@using MRA.Jobs.Client.Identity
+@using MRA.Jobs.Client.Components.Extra
+@using MRA.Jobs.Application.Contracts.Vacancies.Responses
+
+<CascadingAuthenticationState>
+<AuthorizeView Policy="@ApplicationPolicies.Reviewer" Context="_">
+<Authorized>
+<MudText Typo="Typo.h6">
+    <b>@Username</b>
+</MudText>
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6"
+         @bind-ActivePanelIndex="_activeIndex">
+<MudTabPanel Text="Personal Data" ID='"PersonalData"' OnClick="PersonalDataTab">
+    <MudGrid>
+        <MudItem xs="12" sm="12" md="6" lg="4">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudCard>
+                        <MudCardContent>
+                            @if (_profile == null)
+                            {
+                                <MudSkeleton Animation="Animation.Wave" Width="40%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="30%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="50%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="80%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body2" Style="color: grey">Full Name</MudText>
+                                <MudText>@_profile.FirstName @_profile.LastName</MudText>
+
+                                <br/>
+                                <MudText Typo="Typo.body2" Style="color: grey">
+                                    Email
+                                </MudText>
+                                <MudText>
+                                    @_profile.Email
+                                    @if (_profile.EmailConfirmed)
+                                    {
+                                        <MudChip Icon="@Icons.Material.Filled.Check" Color="Color.Success" Size="Size.Small">
+                                            Is Confirmed
+                                        </MudChip>
+                                    }
+                                    else
+                                    {
+                                        <MudChip Icon="@Icons.Material.Filled.Warning" Color="Color.Warning" Size="Size.Small">
+                                            Is not Confirmed
+                                        </MudChip>
+                                    }
+                                </MudText>
+                                <br/>
+                                <MudText Typo="Typo.body2" Style="color: grey">
+                                    Phone number
+                                </MudText>
+                                <MudText>
+                                    @_profile.PhoneNumber
+                                    @if (_profile.PhoneNumberConfirmed)
+                                    {
+                                        <MudChip Icon="@Icons.Material.Filled.Check" Color="Color.Success" Size="Size.Small">
+                                            Is Confirmed
+                                        </MudChip>
+                                    }
+                                    else
+                                    {
+                                        <MudChip Icon="@Icons.Material.Filled.Warning" Color="Color.Warning">
+                                            Is not Confirmed
+                                        </MudChip>
+                                    }
+                                </MudText>
+                                <br/>
+                                <MudGrid>
+                                    <MudItem sm="6">
+                                        <MudText Typo="Typo.body2" Style="color: grey">Birthday</MudText>
+                                        <MudText>@_profile.DateOfBirth.ToShortDateString()</MudText>
+                                    </MudItem>
+                                    <MudItem sm="6">
+                                        <MudText Typo="Typo.body2" Style="color: grey">Gender</MudText>
+                                        <MudText>@_profile.Gender</MudText>
+                                    </MudItem>
+                                </MudGrid>
+                                <br/>
+                                <MudText Typo="Typo.body2" Style="color: grey">About</MudText>
+                                <MudText>@_profile.AboutMyself</MudText>
+                            }
+
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">Skills</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            @if (_skills == null)
+                            {
+                                <MudSkeleton Animation="Animation.Wave" Width="40%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="30%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="50%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="80%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                            }
+                            else
+                            {
+                                @if (_skills.Skills != null)
+                                {
+                                    @foreach (var skill in _skills.Skills)
+                                    {
+                                        <MudChip>@skill</MudChip>
+                                    }
+                                }
+                            }
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+        <MudItem xs="12" sm="12" md="6" lg="8">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">
+                                    Experiences
+                                </MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            @if (_experiences == null)
+                            {
+                                <MudSkeleton Animation="Animation.Wave" Width="40%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="30%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="50%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="80%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                            }
+                            else
+                            {
+                                <MudGrid>
+                                    @foreach (var experience in _experiences)
+                                    {
+                                        <MudItem xs="12" sm="12" md="6" lg="4">
+                                            <MudText>
+                                                <b>@experience.JobTitle</b>
+                                            </MudText>
+                                            <MudText>@experience.CompanyName</MudText>
+                                            <MudText>
+                                                @if (experience.IsCurrentJob)
+                                                {
+                                                    @: @experience.StartDate?.ToString("MM/dd/yyyy") - Is Current Job;
+                                                }
+                                                else
+                                                {
+                                                    @: @experience.StartDate?.ToString("MM/dd/yyyy") - @experience.EndDate?.ToString("MM/dd/yyyy");
+                                                }
+                                            </MudText>
+                                            <MudText Typo="Typo.body2">
+                                                @experience.Address
+                                            </MudText>
+                                            <MudText Typo="Typo.body2">
+                                                @experience.Description
+                                            </MudText>
+                                        </MudItem>
+                                    }
+                                </MudGrid>
+                            }
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">
+                                    Educations
+                                </MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            @if (_educations == null)
+                            {
+                                <MudSkeleton Animation="Animation.Wave" Width="40%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="30%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="50%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="80%"/>
+                                <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                            }
+                            else
+                            {
+                                <MudGrid>
+                                    @foreach (var education in _educations)
+                                    {
+                                        <MudItem xs="12" sm="12" md="6" lg="4">
+                                            <MudText>
+                                                <b>@education.Speciality</b>
+                                            </MudText>
+                                            <MudText>@education.University</MudText>
+                                            <MudText>
+                                                @if (education.UntilNow)
+                                                {
+                                                    @:@education.StartDate?.ToString("MM/dd/yyyy") - Until Now
+                                                }
+                                                else
+                                                {
+                                                    @:@education.StartDate?.ToString("MM/dd/yyyy") - @education.EndDate?.ToString("MM/dd/yyyy")
+                                                }
+                                            </MudText>
+                                        </MudItem>
+                                    }
+                                </MudGrid>
+                            }
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+    </MudGrid>
+</MudTabPanel>
+<MudTabPanel Text="Applications" ID='"Applications"' OnClick="ApplicationsTab">
+    <MudGrid>
+        <MudItem xs="12">
+            <MudGrid>
+                <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
+                    <MudAutocomplete T="VacancyDto" Label="Vacancy" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                     @bind-Value="_selectedVacancy" SearchFunc="@SearchVacancies" CoerceValue="true"
+                                     Clearable="true" OnClearButtonClick="@(() => _selectedVacancy = new())"
+                                     ToStringFunc="@(e => e == null ? null : $"{e.Title}")">
+                        <ItemTemplate Context="e">
+                            <MudText>@e.Title</MudText>
+                            <MudText Typo="Typo.caption">@e.ShortDescription</MudText>
+                        </ItemTemplate>
+                        <NoItemsTemplate>
+                            <MudText Align="Align.Center" Class="px-4 py-1">
+                                No items found
+                            </MudText>
+                        </NoItemsTemplate>
+                    </MudAutocomplete>
+                </MudItem>
+                <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
+                    <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="_searchStatusName"
+                               Margin="Margin.Dense" Label="Application Status" Clearable="true">
+                        @foreach (var status in Enum.GetValues(typeof(ApplicationStatusDto.ApplicationStatus)))
+                        {
+                            <MudSelectItem Value="@status.ToString()"/>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" lg="3" md="3" sm="6" Style="padding: 5px">
+                    <MudDateRangePicker @ref="_picker" Label="Applied At" @bind-DateRange="_dateRange"
+                                        Variant="Variant.Outlined" Margin="Margin.Dense">
+                        <PickerActions>
+                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
+                            <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
+                            <MudButton Color="Color.Primary" OnClick="@(() => _picker.Close())">Ok</MudButton>
+                        </PickerActions>
+                    </MudDateRangePicker>
+                </MudItem>
+                <MudItem Style="padding: 5px">
+                    <MudStack Row="true">
+                        <ProgressTaskButton Variant="Variant.Filled" Color="Color.Primary" Style="margin-top: 4px;"
+                                            Function="@(async () => await _table.ReloadServerData())">
+                            <MudIcon Icon="@Icons.Material.Filled.Search"/>
+                            <MudText>Search</MudText>
+                        </ProgressTaskButton>
+                    </MudStack>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+        <MudItem xs="12">
+            @if (_isLoaded)
+            {
+                <MudTable ServerData="@(new Func<TableState, Task<TableData<ApplicationListDto>>>(GetApplications))"
+                          @ref="_table" Hover="true">
+                    <HeaderContent>
+                        <MudTh>
+                            @ContentService["Dashboard:Appilcations:Vacancy title"]
+                        </MudTh>
+                        <MudTh>
+                            @ContentService["Dashboard:Appilcations:Applied at"]
+                        </MudTh>
+                        <MudTh>
+                            @ContentService["Dashboard:Appilcations:Status name"]
+                        </MudTh>
+                        <MudTh>
+                            @ContentService["Dashboard:Appilcations:Action"]
+                        </MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel=@ContentService["Internships:Title"]>@context.VacancyTitle</MudTd>
+                        <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.CreatedAt.ToString("D")</MudTd>
+                        <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Status name"]>@context.StatusName</MudTd>
+                        <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Name"]>
+                            <MudLink Color="Color.Primary" Href="@($"/ApplicationDetail/{context.Slug}/{context.ApplicantUsername}")">more</MudLink>
+                        </MudTd>
+                    </RowTemplate>
+                    <NoRecordsContent>
+                        <MudText>@ContentService["UserManager:Nomatchingrecords"]</MudText>
+                    </NoRecordsContent>
+                    <LoadingContent>
+                        <MudText>@ContentService["UserManager:Loading"]</MudText>
+                    </LoadingContent>
+                    <PagerContent>
+                        <MudTablePager/>
+                    </PagerContent>
+                </MudTable>
+            }
+            else
+            {
+                <div style="text-align: center">
+                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large"/>
+                </div>
+            }
+
+        </MudItem>
+    </MudGrid>
+
+</MudTabPanel>
+</MudTabs>
+</Authorized>
+<NotAuthorized>
+    <NotFound/>
+</NotAuthorized>
+</AuthorizeView>
+</CascadingAuthenticationState>

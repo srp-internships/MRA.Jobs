@@ -72,9 +72,9 @@
                                     </MudItem>
                                 </MudGrid>
 
-                                <ProgressTaskButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" Function="ChangeStatus">
+                                <ProgressTaskButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ChangeStatus">
                                     <MudText>
-                                        @ContentService["Applicateons:Changestatus"]
+                                        @ContentService["Applicateons:Changestatus"]            
                                     </MudText>
                                 </ProgressTaskButton>
                             </Authorized>
@@ -147,7 +147,7 @@
                     </MudCard>
                 </MudItem>
                 <MudItem xs="12" lg="6">
-                    <ProgressTaskButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Function="OnAddNoteAsync">
+                    <ProgressTaskButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" OnClick="@OnAddNoteAsync">
                         <MudText>
                             <MudText>@ContentService["Applicateons:AddNote"]</MudText>
                         </MudText>

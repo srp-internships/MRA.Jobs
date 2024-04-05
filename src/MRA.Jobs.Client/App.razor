@@ -1,6 +1,9 @@
 ﻿@page "/{page}"
 @using MRA.Jobs.Client.Identity
 @using MRA.Jobs.Client.Components.Extra
+@using System.Globalization
+@using FluentValidation
+@using Microsoft.IdentityModel.Tokens
 @inject NavigationManager NavManager
 
 <Router AppAssembly="typeof(Program).Assembly" Context="routeData">
@@ -45,9 +48,44 @@
 
 @code
 {
+
+    [Inject] MRA.Jobs.Application.Contracts.ContentService.IContentService ContentServiceMraApplication { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await ContentService.InitializeCultureAsync();
+        var lang = await GetLanguageFromLocalStorageOrDefault();
+        SetValidatorOptionsCulture(lang);
+    }
+
+    private async Task<string> GetLanguageFromLocalStorageOrDefault()
+    {
+        var lang = await LocalStorageService.GetItemAsStringAsync("ApplicationCulturesNames");
+        return lang.IsNullOrEmpty() ? Configuration["FeatureManagement:DefaultLanguage"] : lang;
+    }
+
+    private void SetValidatorOptionsCulture(string lang)
+    {
+        ValidatorOptions.Global.LanguageManager.Culture = GetCultureInfo(lang);
+        ValidatorOptions.Global.DisplayNameResolver = (type, member, expression) =>
+            member is not null ? ContentServiceMraApplication[member.Name] : null;
+    }
+
+    private CultureInfo GetCultureInfo(string lang)
+    {
+        switch (lang)
+        {
+            case "Ru":
+            case "ru-RU":
+                return new CultureInfo(ApplicationCulturesNames.Ru);
+            case "En":
+            case "en-US":
+                return new CultureInfo(ApplicationCulturesNames.En);
+            case "Tj":
+                return new CultureInfo(ApplicationCulturesNames.Tj);
+            default:
+                return ValidatorOptions.Global.LanguageManager.Culture;
+        }
     }
 
     private bool NonLayout()

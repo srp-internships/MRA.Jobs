@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Infrastructure.Identity;
@@ -22,7 +23,6 @@ public static class ConfigureServices
         IConfiguration configuration)
     {
         services.AddAppIdentity(configuration);
-
         if (configuration["UseFileEmailService"] == "true")
         {
             services.AddFileEmailService();
@@ -49,7 +49,7 @@ public static class ConfigureServices
         services.AddScoped<IHtmlService, HtmlService>();
         services.AddScoped<IUserHttpContextAccessor, UserHttpContextAccessor>();
         services.AddHttpClient();
-
+        services.AddLogging();
         if (configuration["UseAzureBlobStorage"] == "true")
         {
             services.AddScoped<IFileService, AzureFileService>();
@@ -58,13 +58,13 @@ public static class ConfigureServices
         {
             services.AddScoped<IFileService, FileService>();
         }
-        
+
         if (configuration["UseFileSmsService"] == "true")
         {
             services.AddFileSmsService();
         }
         else
-        {   
+        {
             services.AddOsonSmsService();
         }
 

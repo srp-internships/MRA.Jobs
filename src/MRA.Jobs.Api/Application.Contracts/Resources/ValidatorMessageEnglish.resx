@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="Slug" xml:space="preserve">
+        <value>Slug</value>
+    </data>
+    <data name="Note" xml:space="preserve">
+        <value>Note</value>
+    </data>
+    <data name="CoverLetter" xml:space="preserve">
+        <value>CoverLetter</value>
+    </data>
+    <data name="VacancySlug" xml:space="preserve">
+        <value>VacancySlug</value>
+    </data>
+    <data name="ApplicantUserName" xml:space="preserve">
+        <value>ApplicantUserName</value>
+    </data>
+    <data name="StatusId" xml:space="preserve">
+        <value>StatusId</value>
+    </data>
+    <data name="Title" xml:space="preserve">
+        <value>Title</value>
+    </data>
+    <data name="ShortDescription" xml:space="preserve">
+        <value>ShortDescription</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Description</value>
+    </data>
+    <data name="PublishDate" xml:space="preserve">
+        <value>PublishDate</value>
+    </data>
+    <data name="EndDate" xml:space="preserve">
+        <value>EndDate</value>
+    </data>
+    <data name="CategoryId" xml:space="preserve">
+        <value>CategoryId</value>
+    </data>
+    <data name="ApplicationDeadline" xml:space="preserve">
+        <value>ApplicationDeadline</value>
+    </data>
+    <data name="Duration" xml:space="preserve">
+        <value>Duration</value>
+    </data>
+    <data name="Stipend" xml:space="preserve">
+        <value>Stipend</value>
+    </data>
+    <data name="WorkSchedule" xml:space="preserve">
+        <value>WorkSchedule</value>
+    </data>
+    <data name="Fees" xml:space="preserve">
+        <value>Fees</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+</root>

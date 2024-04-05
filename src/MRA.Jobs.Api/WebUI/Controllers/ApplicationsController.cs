@@ -31,7 +31,6 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
         return File(fileBytes, "application/octet-stream", key);
     }
 
-
     [HttpGet]
     public async Task<ActionResult<PagedList<ApplicationListDto>>> GetAll(
         [FromQuery] GetApplicationsByFiltersQuery query)
@@ -39,6 +38,7 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
         var applications = await Mediator.Send(query);
         return Ok(applications);
     }
+
 
     [HttpGet("{slug}")]
     public async Task<ActionResult<ApplicationDetailsDto>> Get(string slug, CancellationToken cancellationToken)

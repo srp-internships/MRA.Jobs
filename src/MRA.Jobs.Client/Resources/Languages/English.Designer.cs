@@ -141,6 +141,15 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Candidates.
+        /// </summary>
+        internal static string Candidates {
+            get {
+                return ResourceManager.GetString("Candidates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Category.
         /// </summary>
         internal static string Category_NewCategory {
