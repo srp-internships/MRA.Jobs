@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
-using MRA.Identity.Application.Contract.User.Responses;
-using MRA.Jobs.Application.Contracts.Applications.Candidates;
 using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
@@ -22,5 +20,4 @@ public interface IApplicationService
     Task<string> GetCvLinkAsync(string slug);
 
     Task<TimeLineDetailsDto> AddNote(AddNoteToApplicationCommand note);
-    Task<List<UserResponse>> GetCandidates(GetCandidatesQuery query);
 }

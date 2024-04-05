@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Application.Common.Interfaces;
-using MRA.Jobs.Application.Contracts.Applications.Candidates;
 using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.Delete;
@@ -41,12 +39,6 @@ public class ApplicationsController(IFileService fileService) : ApiControllerBas
         return Ok(applications);
     }
 
-    [HttpGet("Candidates")]
-    [Authorize(policy: ApplicationPolicies.Reviewer)]
-    public async Task<ActionResult<List<UserResponse>>> GetCandidates([FromQuery] GetCandidatesQuery query)
-    {
-        return Ok(await Mediator.Send(query));
-    }
 
     [HttpGet("{slug}")]
     public async Task<ActionResult<ApplicationDetailsDto>> Get(string slug, CancellationToken cancellationToken)

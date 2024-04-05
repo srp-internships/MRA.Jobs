@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MRA.Jobs.Application.Common.Sieve;
-using MRA.Jobs.Application.Contracts.Applications.Candidates;
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
+using MRA.Jobs.Application.Contracts.Users;
 
 namespace MRA.Jobs.Application.Features.Applications.Query.GetApplicationWithPagination;
 
@@ -13,7 +13,7 @@ public class GetApplicationsByFiltersQueryHandler(
     ICurrentUserService currentUser,
     IApplicationSieveProcessor sieveProcessor,
     IMapper mapper,
-    IUsersService usersService)
+    IMediator mediator)
     : IRequestHandler<GetApplicationsByFiltersQuery, PagedList<ApplicationListDto>>
 {
     public async Task<PagedList<ApplicationListDto>> Handle(GetApplicationsByFiltersQuery request,
@@ -39,14 +39,14 @@ public class GetApplicationsByFiltersQueryHandler(
     private async Task<PagedList<ApplicationListDto>> ReturnPagedListWithUsers(
         IQueryable<Domain.Entities.Application> applications, GetApplicationsByFiltersQuery request)
     {
-        var users =
-            await usersService.GetUsersAsync(new GetCandidatesQuery()
-            {
-                FullName = request.FullName,
-                PhoneNumber = request.PhoneNumber,
-                Email = request.Email,
-                Skills = request.Skills
-            });
+        var query = new GetListUsersQuery()
+        {
+            FullName = request.FullName,
+            PhoneNumber = request.PhoneNumber,
+            Email = request.Email,
+            Skills = request.Skills
+        };
+        var users = await mediator.Send(query);
 
         if (!request.FullName.IsNullOrEmpty() || !request.Skills.IsNullOrEmpty() ||
             !request.PhoneNumber.IsNullOrEmpty() || !request.Email.IsNullOrEmpty())

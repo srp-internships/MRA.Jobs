@@ -1,15 +1,13 @@
-﻿using System.Web;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
-using MRA.BlazorComponents.Configuration;
 using MRA.BlazorComponents.HttpClient.Services;
-using MRA.Identity.Application.Contract.Common;
 using MRA.Identity.Application.Contract.Skills.Responses;
-using MRA.Identity.Application.Contract.User.Queries;
 using MRA.Identity.Application.Contract.User.Responses;
+using MRA.Jobs.Application.Contracts.Users;
 using MRA.Jobs.Client.Services.Profile;
+using MRA.Jobs.Client.Services.Users;
 using MudBlazor;
 
 namespace MRA.Jobs.Client.Pages.Admin.Users;
@@ -19,13 +17,13 @@ public partial class UsersPage
     [Inject] private IHttpClientService Client { get; set; }
     [Inject] private IUserProfileService UserProfileService { get; set; }
     [Inject] private IDialogService DialogService { get; set; }
-
+    [Inject] private IUsersService UsersService { get; set; }
 
     private string _title = "";
     private string _url = "Administration/Users";
     private bool _isLoaded;
     private string _searchString = "";
-    private GetAllUsersByFilters _query = new();
+    private GetPagedListUsersQuery _query = new();
     private MudTable<UserResponse> _table;
     private UserSkillsResponse _allSkills;
     private string SelectedSkills { get; set; } = "";
@@ -117,21 +115,8 @@ public partial class UsersPage
         {
             _query.Skills = string.Join(",", Options.Select(x => x.Trim())).ToString();
         }
-
-        var queryParam = HttpUtility.ParseQueryString(string.Empty);
-        if (!_query.Skills.IsNullOrEmpty()) queryParam["Skills"] = _query.Skills;
-        queryParam["Page"] = _query.Page.ToString();
-        queryParam["PageSize"] = _query.PageSize.ToString();
-        if (!_query.Filters.IsNullOrEmpty()) queryParam["Filters"] = _query.Filters;
-
-        var newUri = $"{NavigationManager.BaseUri}{_url}?{queryParam}";
-        NavigationManager.NavigateTo(newUri, forceLoad: false);
-
-        var response =
-            await Client.GetFromJsonAsync<PagedList<UserResponse>>(Configuration.GetIdentityUrl($"user?{queryParam}"));
-        if (!response.Success) return new TableData<UserResponse>();
-
-        var result = response.Result;
+     
+        var result = await UsersService.GetPagedListUsers(_query, _url) ;
         return new TableData<UserResponse>() { TotalItems = result.TotalCount, Items = result.Items };
     }
 
