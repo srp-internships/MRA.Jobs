@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
@@ -46,7 +47,16 @@ public class GetApplicationsByFiltersQueryHandler(
             Email = request.Email,
             Skills = request.Skills
         };
-        var users = await mediator.Send(query);
+        var users = new List<UserResponse>();
+        try
+        {
+            users = await mediator.Send(query);
+        }
+        catch (Exception e)
+        {
+            //
+        }
+
 
         if (!request.FullName.IsNullOrEmpty() || !request.Skills.IsNullOrEmpty() ||
             !request.PhoneNumber.IsNullOrEmpty() || !request.Email.IsNullOrEmpty())
