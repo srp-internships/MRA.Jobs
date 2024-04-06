@@ -52,7 +52,7 @@ public class GetApplicationsByFiltersQueryHandler(
         {
             users = await mediator.Send(query);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             //
         }
