@@ -10,13 +10,13 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext, ICo
     {
         await CreateNoVacancy("NoVacancy");
 
-        if (configuration["Environment"] == "Production")
-            return;
-
-        await CreateJobsVacancyAsync();
-        await CreateInternshipsVacancyAsync();
-        await CreateTrainingsVacancyAsync();
-        await CreateApplicationsAsync();
+        if (configuration["Environment"] != "Production")
+        {
+            await CreateJobsVacancyAsync();
+            await CreateInternshipsVacancyAsync();
+            await CreateTrainingsVacancyAsync();
+            await CreateApplicationsForAllOpenVacanciesAsync();
+        }
     }
 
     private async Task CreateNoVacancy(string vacancyTitle)
@@ -378,6 +378,134 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext, ICo
                 await dbContext.ApplicationTimelineEvents.AddAsync(new ApplicationTimelineEvent
                 {
                     ApplicationId = application2.Id,
+                    Note = "Applied",
+                    CreateBy = "applicant1",
+                    EventType = TimelineEventType.Created,
+                    Time = DateTime.Now,
+                });
+            }
+        }
+
+        await dbContext.SaveChangesAsync();
+    }
+
+    private async Task CreateApplicationsForAllOpenVacanciesAsync()
+    {
+        // List of users who will apply for all open vacancies
+        var users = new List<string> { "applicant1", "Jerry" };
+
+        // Get all open job vacancies
+        var jobVacancies = await dbContext.JobVacancies
+            .Include(x => x.VacancyQuestions)
+            .Include(x => x.VacancyTasks)
+            .Where(x => x.EndDate > DateTime.Now)
+            .ToListAsync();
+
+        // Get all open internships
+        var internships = await dbContext.Internships
+            .Include(x => x.VacancyQuestions)
+            .Include(x => x.VacancyTasks)
+            .Where(x => x.EndDate > DateTime.Now && x.ApplicationDeadline > DateTime.Now)
+            .ToListAsync();
+
+        // Get all open training vacancies
+        var trainingVacancies = await dbContext.TrainingVacancies
+            .Include(x => x.VacancyQuestions)
+            .Include(x => x.VacancyTasks)
+            .Where(x => x.EndDate > DateTime.Now)
+            .ToListAsync();
+
+        // Loop through each user
+        foreach (var user in users)
+        {
+            // Apply for all open job vacancies
+            foreach (var vacancy in jobVacancies)
+            {
+                if (await dbContext.Applications.FirstOrDefaultAsync(x => x.Slug == $"{user}-{vacancy.Slug}") != null)
+                    continue;
+
+                var application = new Domain.Entities.Application()
+                {
+                    VacancyId = vacancy.Id,
+                    CoverLetter = "I am very interested in this position.",
+                    AppliedAt = DateTime.Now,
+                    VacancyResponses = vacancy.VacancyQuestions?.Select(vacancyQuestion =>
+                            new VacancyResponse { VacancyQuestion = vacancyQuestion, Response = "My response" })
+                        .ToList(),
+                    ApplicantUsername = user,
+                    TaskResponses = vacancy.VacancyTasks?.Select(vacancyTask =>
+                            new TaskResponse { TaksId = vacancyTask.Id, Code = "Console.WriteLine('Hello World!')" })
+                        .ToList(),
+                    Slug = $"{user}-{vacancy.Slug}",
+                    CV = "cv.pdf"
+                };
+                await dbContext.Applications.AddAsync(application);
+                await dbContext.ApplicationTimelineEvents.AddAsync(new ApplicationTimelineEvent
+                {
+                    ApplicationId = application.Id,
+                    Note = "Applied",
+                    CreateBy = "applicant1",
+                    EventType = TimelineEventType.Created,
+                    Time = DateTime.Now,
+                });
+            }
+
+            // Apply for all open internships
+            foreach (var internship in internships)
+            {
+                if (await dbContext.Applications.FirstOrDefaultAsync(x => x.Slug == $"{user}-{internship.Slug}") != null)
+                    continue;
+                var application = new Domain.Entities.Application()
+                {
+                    VacancyId = internship.Id,
+                    CoverLetter = "I am very interested in this internship.",
+                    AppliedAt = DateTime.Now,
+                    VacancyResponses = internship.VacancyQuestions?.Select(vacancyQuestion =>
+                            new VacancyResponse { VacancyQuestion = vacancyQuestion, Response = "My response" })
+                        .ToList(),
+                    ApplicantUsername = user,
+                    TaskResponses = internship.VacancyTasks?.Select(vacancyTask =>
+                            new TaskResponse { TaksId = vacancyTask.Id, Code = "Console.WriteLine('Hello World!')" })
+                        .ToList(),
+                    Slug = $"{user}-{internship.Slug}",
+                    CV = "cv.pdf"
+                };
+                await dbContext.Applications.AddAsync(application);
+                await dbContext.ApplicationTimelineEvents.AddAsync(new ApplicationTimelineEvent
+                {
+                    ApplicationId = application.Id,
+                    Note = "Applied",
+                    CreateBy = "applicant1",
+                    EventType = TimelineEventType.Created,
+                    Time = DateTime.Now,
+                });
+            }
+
+            // Apply for all open training vacancies
+            foreach (var trainingVacancy in trainingVacancies)
+            {
+                if (await dbContext.Applications.FirstOrDefaultAsync(x => x.Slug == $"{user}-{trainingVacancy.Slug}") != null)
+                    continue;
+                
+                var application = new Domain.Entities.Application()
+                {
+                    VacancyId = trainingVacancy.Id,
+                    CoverLetter = "I am very interested in this training.",
+                    AppliedAt = DateTime.Now,
+                    VacancyResponses = trainingVacancy.VacancyQuestions?.Select(vacancyQuestion =>
+                            new VacancyResponse { VacancyQuestion = vacancyQuestion, Response = "My response" })
+                        .ToList(),
+                    ApplicantUsername = user,
+                    TaskResponses = trainingVacancy.VacancyTasks?.Select(vacancyTask =>
+                            new TaskResponse { TaksId = vacancyTask.Id, Code = "Console.WriteLine('Hello World!')" })
+                        .ToList(),
+                    Slug = $"{user}-{trainingVacancy.Slug}",
+                    CV = "cv.pdf"
+                };
+                await dbContext.Applications.AddAsync(application);
+                await dbContext.ApplicationTimelineEvents.AddAsync(new ApplicationTimelineEvent
+                {
+                    ApplicationId = application.Id,
                     Note = "Applied",
                     CreateBy = "applicant1",
                     EventType = TimelineEventType.Created,
