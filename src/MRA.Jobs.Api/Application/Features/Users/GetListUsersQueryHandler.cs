@@ -16,7 +16,7 @@ public class GetListUsersQueryHandler(
 {
     public async Task<List<UserResponse>> Handle(GetListUsersQuery request, CancellationToken cancellationToken)
     {
-        var httpClient = clientFactory.CreateClient("mra-jobs");
+        var httpClient = clientFactory.CreateClient("IdentityHttpClientUsersList");
         var command = new GetListUsersCommand()
         {
             ApplicationId = Guid.Parse(configuration["Application:Id"]),
