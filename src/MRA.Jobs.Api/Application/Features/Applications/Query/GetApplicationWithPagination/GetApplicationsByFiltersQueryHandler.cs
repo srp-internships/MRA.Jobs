@@ -26,7 +26,7 @@ public class GetApplicationsByFiltersQueryHandler(
             .AsNoTracking();
 
         var roles = currentUser.GetRoles();
-        if (roles.Any())
+        if (roles.Any(r => r is "Reviewer" or "ApplicationAdmin"))
         {
             return await ReturnPagedListWithUsers(applications, request);
         }
