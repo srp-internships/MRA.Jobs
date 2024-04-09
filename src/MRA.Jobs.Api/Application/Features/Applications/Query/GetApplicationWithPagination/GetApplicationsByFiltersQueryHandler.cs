@@ -26,7 +26,7 @@ public class GetApplicationsByFiltersQueryHandler(
             .AsNoTracking();
 
         var roles = currentUser.GetRoles();
-        if (roles.Any(r => r == "Reviewer"))
+        if (roles.Any())
         {
             return await ReturnPagedListWithUsers(applications, request);
         }
@@ -47,16 +47,7 @@ public class GetApplicationsByFiltersQueryHandler(
             Email = request.Email,
             Skills = request.Skills
         };
-        var users = new List<UserResponse>();
-        try
-        {
-            users = await mediator.Send(query);
-        }
-        catch (Exception)
-        {
-            //
-        }
-
+        var users = await mediator.Send(query);
 
         if (!request.FullName.IsNullOrEmpty() || !request.Skills.IsNullOrEmpty() ||
             !request.PhoneNumber.IsNullOrEmpty() || !request.Email.IsNullOrEmpty())
