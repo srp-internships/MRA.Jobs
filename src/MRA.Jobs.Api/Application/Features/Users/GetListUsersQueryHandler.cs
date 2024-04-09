@@ -16,36 +16,33 @@ public class GetListUsersQueryHandler(
 {
     public async Task<List<UserResponse>> Handle(GetListUsersQuery request, CancellationToken cancellationToken)
     {
-        try
+        var httpClient = clientFactory.CreateClient("mra-jobs");
+        var command = new GetListUsersCommand()
         {
-            var httpClient = clientFactory.CreateClient("mra-jobs");
-            var command = new GetListUsersCommand()
+            ApplicationId = Guid.Parse(configuration["Application:Id"]),
+            ApplicationClientSecret = configuration["Application:ClientSecret"],
+            FullName = request.FullName,
+            Skills = request.Skills,
+            PhoneNumber = request.PhoneNumber,
+            Email = request.Email,
+        };
+        var response = await httpClient.PostAsJsonAsync(
+            configuration["MraJobs-IdentityApi:Users"] + "GetListUsersCommand/ByFilter",
+            command, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                ApplicationId = Guid.Parse(configuration["Application:Id"]),
-                ApplicationClientSecret = configuration["Application:ClientSecret"],
-                FullName = request.FullName,
-                Skills = request.Skills,
-                PhoneNumber = request.PhoneNumber,
-                Email = request.Email,
-            };
-            var response = await httpClient.PostAsJsonAsync(
-                configuration["MraJobs-IdentityApi:Users"] + "GetListUsersCommand/ByFilter",
-                command, cancellationToken);
-            if (!response.IsSuccessStatusCode)
-            {
-                if (response.StatusCode == HttpStatusCode.NotFound)
-                    throw new NotFoundException("Application is not found");
-                else
-                    throw new HttpRequestException($"Request failed with status code {response.StatusCode}");
+                logger.Log(LogLevel.Error, "Application is not found");
+                throw new NotFoundException("Application is not found");
             }
-
-            return await response.Content.ReadFromJsonAsync<List<UserResponse>>(cancellationToken);
+            else
+            {
+                logger.Log(LogLevel.Error, $"Request failed with status code {response.StatusCode}");
+                throw new HttpRequestException($"Request failed with status code {response.StatusCode}");
+            }
         }
-        catch (Exception e)
-        {
-            logger.Log(LogLevel.Error, e.Message);
-        }
 
-        throw new Exception("server is not responding");
+        return await response.Content.ReadFromJsonAsync<List<UserResponse>>(cancellationToken);
     }
 }
