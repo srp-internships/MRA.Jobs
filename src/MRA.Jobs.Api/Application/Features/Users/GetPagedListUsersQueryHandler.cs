@@ -19,7 +19,7 @@ public class GetPagedListUsersQueryHandler(
     public async Task<PagedList<UserResponse>> Handle(GetPagedListUsersQuery request,
         CancellationToken cancellationToken)
     {
-        var httpClient = clientFactory.CreateClient("mra-jobs");
+        var httpClient = clientFactory.CreateClient("IdentityHttpClientUsers");
         var command = new GetPagedListUsersCommand()
         {
             ApplicationId = Guid.Parse(configuration["Application:Id"]),
