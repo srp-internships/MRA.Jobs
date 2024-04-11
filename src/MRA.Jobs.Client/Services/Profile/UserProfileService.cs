@@ -77,7 +77,7 @@ public class UserProfileService(
         var response =
             await identityHttpClient.GetFromJsonAsync<UserSkillsResponse>(
                 configuration.GetIdentityUrl("Profile/GetAllSkills"));
-        snackbar.ShowIfError(response, contentService["Profile:Servernotrespondingtry"]);
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"]);
         return response.Result!;
     }
 
@@ -91,7 +91,7 @@ public class UserProfileService(
         var response =
             await identityHttpClient.GetFromJsonAsync<PagedList<UserResponse>>(
                 configuration.GetIdentityUrl($"user?{queryParam}"));
-        snackbar.ShowIfError(response, contentService["Profile:Servernotrespondingtry"]);
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"]);
         return response.Result;
     }
 }
