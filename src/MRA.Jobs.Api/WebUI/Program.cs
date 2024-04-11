@@ -30,7 +30,7 @@ builder.Services.Configure<SieveOptions>(builder.Configuration.GetSection("MraJo
 
 WebApplication app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwaggerUI(options =>
