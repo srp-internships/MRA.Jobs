@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MRA.Identity.Application.Contract.User.Responses;
-using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.Users;
 using MRA.Jobs.Infrastructure.Identity;
 
