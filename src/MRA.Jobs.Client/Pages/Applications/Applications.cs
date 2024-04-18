@@ -43,9 +43,10 @@ public partial class Applications
     private IEnumerable<string> Options { get; set; } = new HashSet<string>();
     private string SelectedSkills { get; set; } = "";
 
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnParametersSetAsync()
     {
-        _vacancies = await VacancyService.GetAllVacancies();
+          _vacancies = await VacancyService.GetAllVacancies();
         _allSkills = await UserProfileService.GetAllSkills();
         if (_allSkills != null)
         {
@@ -81,7 +82,7 @@ public partial class Applications
                 return new { Key = parts[0], Value = parts[1] };
             }).ToDictionary(x => x.Key, x => x.Value);
 
-            _selectedVacancy.Title = filterDictionary.GetValueOrDefault("Vacancy.Title");
+            _selectedVacancy.Title = filterDictionary.GetValueOrDefault("Vacancy.Title").Replace("=", "");
             if (filterDictionary.TryGetValue("Status", out var status))
             {
                 _searchStatusName =
@@ -104,6 +105,11 @@ public partial class Applications
         StateHasChanged();
         _isLoad = true;
         StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+    
     }
 
     private string GetMultiSelectionText(List<string> selectedValues)
@@ -136,7 +142,7 @@ public partial class Applications
         };
 
         var response = await ApplicationService.GetAllApplications(_query);
-      
+
         UpdateUrl();
 
         return new TableData<ApplicationListDto>() { TotalItems = response.TotalCount, Items = response.Items };
@@ -199,6 +205,5 @@ public partial class Applications
         UpdateUrl();
         _clearButton = false;
         await _table.ReloadServerData();
-        
     }
 }
