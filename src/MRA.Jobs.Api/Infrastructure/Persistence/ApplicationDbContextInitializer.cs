@@ -519,11 +519,13 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext, ICo
         await dbContext.SaveChangesAsync();
     }
 
-    readonly Random _randNum = new();
-
+    readonly Random _rnd = new(); 
     DateTime RandomDayFunc(DateTime start, DateTime end)
     {
-        int range = (end - start).Days;
-        return start.AddDays(_randNum.Next(range));
+        int range = (end - start).Days; 
+        var randomDate = start.AddDays(_rnd.Next(range));
+        var randomTime = new TimeSpan(_rnd.Next(0, 24), _rnd.Next(0, 60), _rnd.Next(0, 60));
+        return randomDate + randomTime;
     }
+
 }
