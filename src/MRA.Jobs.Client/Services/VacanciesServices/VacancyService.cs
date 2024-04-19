@@ -67,4 +67,11 @@ public class VacancyService(
         snackbar.ShowIfError(response, contentService["ServerIsNotResponding"]);
         return response.Success ? response.Result : null;
     }
+
+    public async Task<List<string>> GetAllTagsAsync()
+    {
+        var response = await httpClientService.GetFromJsonAsync<List<string>>(configuration.GetJobsUrl("tags"));
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"]);
+        return response.Success ? response.Result : null;
+    }
 }

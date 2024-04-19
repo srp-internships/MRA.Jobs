@@ -7,7 +7,11 @@
         <MudGrid>
             <MudItem xs="12">
                 <div class="d-flex flex-grow-1 gap-2">
-                    <MudTextField Variant="Variant.Outlined" @bind-Value="_newTags" T="string" Margin="Margin.Dense"/>
+                    <MudAutocomplete T="string" @bind-Value="_newTags" Immediate="true"
+                                     CoerceValue="true" Adornment="Adornment.None"
+                                     Variant="Variant.Outlined" Label="" Clearable="true"
+                                     SearchFunc="@SearchTags" Margin="Margin.Dense">
+                    </MudAutocomplete>
                     <div style="padding-top: 4px; margin-left: 10px;">
                         <ProgressTaskButton OnClick="@AddTagsAsync" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Medium">
                             <MudText>Add</MudText>
@@ -37,8 +41,14 @@
     [Parameter] public List<string> Tags { get; set; } = new();
 
     private string _newTags = "";
+    private List<string> _allTags;
 
     void Close() => MudDialog.Close(DialogResult.Ok(Tags));
+
+    protected override async Task OnInitializedAsync()
+    {
+        _allTags = await VacancyService.GetAllTagsAsync();
+    }
 
     private async Task AddTagsAsync()
     {
@@ -79,6 +89,14 @@
 
         Tags.Remove(chip.Text);
         StateHasChanged();
+    }
+
+    private async Task<IEnumerable<string>> SearchTags(string value)
+    {
+        await Task.Delay(5);
+        return _allTags
+            .Where(s => s.Contains(value, StringComparison.InvariantCultureIgnoreCase) && !Tags.Contains(s))
+            .ToList();
     }
 
 }
