@@ -6,20 +6,22 @@
     <DialogContent>
         <MudGrid>
             <MudItem xs="12">
-                <MudStack Row="true">
+                <div class="d-flex flex-grow-1 gap-2">
                     <MudTextField Variant="Variant.Outlined" @bind-Value="_newTags" T="string" Margin="Margin.Dense"/>
-                    <ProgressTaskButton OnClick="@AddTagsAsync" Variant="Variant.Filled" Color="Color.Primary">
-                        <MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Medium"/>
-                    </ProgressTaskButton>
-                </MudStack>
-            </MudItem>
-            <MudItem xs="12">
-                @foreach (var tag in Tags)
-                {
-                    <MudChip CloseIcon="@Icons.Material.Filled.Close" OnClose="RemoveTag" Text="@tag"/>
-                }
+                    <div style="padding-top: 4px; margin-left: 10px;">
+                        <ProgressTaskButton OnClick="@AddTagsAsync" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Medium">
+                            <MudText>Add</MudText>
+                        </ProgressTaskButton>
+                    </div>
+                </div>
             </MudItem>
         </MudGrid>
+        <div>
+            @foreach (var tag in Tags)
+            {
+                <MudChip CloseIcon="@Icons.Material.Filled.Close" OnClose="RemoveTag" Text="@tag"/>
+            }
+        </div>
     </DialogContent>
     <DialogActions>
         <MudButton Color="Color.Default" OnClick="Close">

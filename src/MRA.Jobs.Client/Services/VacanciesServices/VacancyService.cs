@@ -55,7 +55,7 @@ public class VacancyService(
         parameters.Add(d => d.VacancyId, vacancyId);
 
         var dialog = await dialogService.ShowAsync<DialogVacancyTags>($"Tags {vacancyTitle}", parameters,
-            new() { MaxWidth = MaxWidth.Large });
+            new() { MaxWidth = MaxWidth.Small });
 
         return (List<string>)(await dialog.Result).Data;
     }
