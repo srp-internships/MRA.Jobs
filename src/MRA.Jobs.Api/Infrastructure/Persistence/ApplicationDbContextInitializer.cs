@@ -428,7 +428,7 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext, ICo
                 {
                     VacancyId = vacancy.Id,
                     CoverLetter = "I am very interested in this position.",
-                    AppliedAt = DateTime.Now,
+                    AppliedAt = RandomDayFunc(vacancy.PublishDate, vacancy.EndDate),
                     VacancyResponses = vacancy.VacancyQuestions?.Select(vacancyQuestion =>
                             new VacancyResponse { VacancyQuestion = vacancyQuestion, Response = "My response" })
                         .ToList(),
@@ -453,13 +453,14 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext, ICo
             // Apply for all open internships
             foreach (var internship in internships)
             {
-                if (await dbContext.Applications.FirstOrDefaultAsync(x => x.Slug == $"{user}-{internship.Slug}") != null)
+                if (await dbContext.Applications.FirstOrDefaultAsync(x => x.Slug == $"{user}-{internship.Slug}") !=
+                    null)
                     continue;
                 var application = new Domain.Entities.Application()
                 {
                     VacancyId = internship.Id,
                     CoverLetter = "I am very interested in this internship.",
-                    AppliedAt = DateTime.Now,
+                    AppliedAt = RandomDayFunc(internship.PublishDate, internship.ApplicationDeadline),
                     VacancyResponses = internship.VacancyQuestions?.Select(vacancyQuestion =>
                             new VacancyResponse { VacancyQuestion = vacancyQuestion, Response = "My response" })
                         .ToList(),
@@ -484,14 +485,15 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext, ICo
             // Apply for all open training vacancies
             foreach (var trainingVacancy in trainingVacancies)
             {
-                if (await dbContext.Applications.FirstOrDefaultAsync(x => x.Slug == $"{user}-{trainingVacancy.Slug}") != null)
+                if (await dbContext.Applications.FirstOrDefaultAsync(x => x.Slug == $"{user}-{trainingVacancy.Slug}") !=
+                    null)
                     continue;
-                
+
                 var application = new Domain.Entities.Application()
                 {
                     VacancyId = trainingVacancy.Id,
                     CoverLetter = "I am very interested in this training.",
-                    AppliedAt = DateTime.Now,
+                    AppliedAt = RandomDayFunc(trainingVacancy.PublishDate, trainingVacancy.EndDate),
                     VacancyResponses = trainingVacancy.VacancyQuestions?.Select(vacancyQuestion =>
                             new VacancyResponse { VacancyQuestion = vacancyQuestion, Response = "My response" })
                         .ToList(),
@@ -516,4 +518,14 @@ public class ApplicationDbContextInitializer(ApplicationDbContext dbContext, ICo
 
         await dbContext.SaveChangesAsync();
     }
+
+    readonly Random _rnd = new(); 
+    DateTime RandomDayFunc(DateTime start, DateTime end)
+    {
+        int range = (end - start).Days; 
+        var randomDate = start.AddDays(_rnd.Next(range));
+        var randomTime = new TimeSpan(_rnd.Next(0, 24), _rnd.Next(0, 60), _rnd.Next(0, 60));
+        return randomDate + randomTime;
+    }
+
 }

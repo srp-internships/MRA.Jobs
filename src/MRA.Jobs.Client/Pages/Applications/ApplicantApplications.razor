@@ -19,7 +19,7 @@
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Vacancy title">@context.VacancyTitle</MudTd>
-            <MudTd DataLabel="Applied at">@context.CreatedAt.ToString("D")</MudTd>
+            <MudTd DataLabel="Applied at">@context.AppliedAt.ToString("D")</MudTd>
             <MudTd DataLabel="Status">@context.StatusName</MudTd>
             <MudTd DataLabel="Action">
                 <ProgressTaskButton Variant="Variant.Filled" OnClick="@(e => OnClick(context.Slug))">More</ProgressTaskButton>
