@@ -107,11 +107,6 @@ public partial class Applications
         StateHasChanged();
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-    
-    }
-
     private string GetMultiSelectionText(List<string> selectedValues)
     {
         return string.Join(", ", selectedValues).Trim();
