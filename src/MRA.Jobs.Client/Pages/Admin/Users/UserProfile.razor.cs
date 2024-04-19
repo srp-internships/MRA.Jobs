@@ -59,7 +59,7 @@ public partial class UserProfile
                     return new { Key = parts[0], Value = parts[1] };
                 }).ToDictionary(x => x.Key, x => x.Value.Replace("=", ""));
 
-                _selectedVacancy.Title = filterDictionary.GetValueOrDefault("Vacancy.Title");
+                _selectedVacancy.Title = filterDictionary.GetValueOrDefault("Vacancy.Title").Replace("=", "");
                 if (filterDictionary.TryGetValue("Status", out var status))
                 {
                     _searchStatusName =
