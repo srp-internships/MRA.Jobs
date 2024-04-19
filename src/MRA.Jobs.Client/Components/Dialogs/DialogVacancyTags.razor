@@ -45,19 +45,24 @@
         var newTags = _newTags.Split(',')
             .Where(tagName => !string.IsNullOrWhiteSpace(tagName))
             .Select(tagName => tagName.Trim())
-            .Distinct().ToArray();
+            .Distinct()
+            .Where(tag => !Tags.Any(existingTag => string.Equals(existingTag, tag, StringComparison.OrdinalIgnoreCase)))
+            .ToArray();
 
-        var command = new AddTagsToVacancyCommand()
+        if (newTags.Any())
         {
-            VacancyId = VacancyId,
-            Tags = newTags
-        };
+            var command = new AddTagsToVacancyCommand()
+            {
+                VacancyId = VacancyId,
+                Tags = newTags
+            };
 
-        var result = await VacancyService.AddTagsToVacancyAsync(command);
-        if (result)
-        {
-            Tags.AddRange(newTags);
-            _newTags = "";
+            var result = await VacancyService.AddTagsToVacancyAsync(command);
+            if (result)
+            {
+                Tags.AddRange(newTags);
+                _newTags = "";
+            }
         }
     }
 
