@@ -55,7 +55,7 @@ public class VacancyService(
         parameters.Add(d => d.VacancyId, vacancyId);
 
         var dialog = await dialogService.ShowAsync<DialogVacancyTags>($"Tags {vacancyTitle}", parameters,
-            new() { MaxWidth = MaxWidth.Large });
+            new() { MaxWidth = MaxWidth.Small });
 
         return (List<string>)(await dialog.Result).Data;
     }
@@ -64,6 +64,13 @@ public class VacancyService(
     {
         var response =
             await httpClientService.GetFromJsonAsync<List<VacancyDto>>(configuration.GetJobsUrl("vacancies"));
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"]);
+        return response.Success ? response.Result : null;
+    }
+
+    public async Task<List<string>> GetAllTagsAsync()
+    {
+        var response = await httpClientService.GetFromJsonAsync<List<string>>(configuration.GetJobsUrl("tags"));
         snackbar.ShowIfError(response, contentService["ServerIsNotResponding"]);
         return response.Success ? response.Result : null;
     }
