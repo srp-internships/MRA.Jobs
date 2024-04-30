@@ -6,20 +6,26 @@
     <DialogContent>
         <MudGrid>
             <MudItem xs="12">
-                <MudStack Row="true">
-                    <MudTextField Variant="Variant.Outlined" @bind-Value="_newTags" T="string" Margin="Margin.Dense"/>
-                    <ProgressTaskButton OnClick="@AddTagsAsync" Variant="Variant.Filled" Color="Color.Primary">
-                        <MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Medium"/>
-                    </ProgressTaskButton>
-                </MudStack>
-            </MudItem>
-            <MudItem xs="12">
-                @foreach (var tag in Tags)
-                {
-                    <MudChip CloseIcon="@Icons.Material.Filled.Close" OnClose="RemoveTag" Text="@tag"/>
-                }
+                <div class="d-flex flex-grow-1 gap-2">
+                    <MudAutocomplete T="string" @bind-Value="_newTags" Immediate="true"
+                                     CoerceValue="true" Adornment="Adornment.None"
+                                     Variant="Variant.Outlined" Label="" Clearable="true"
+                                     SearchFunc="@SearchTags" Margin="Margin.Dense">
+                    </MudAutocomplete>
+                    <div style="padding-top: 4px; margin-left: 10px;">
+                        <ProgressTaskButton OnClick="@AddTagsAsync" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Medium">
+                            <MudText>Add</MudText>
+                        </ProgressTaskButton>
+                    </div>
+                </div>
             </MudItem>
         </MudGrid>
+        <div>
+            @foreach (var tag in Tags)
+            {
+                <MudChip CloseIcon="@Icons.Material.Filled.Close" OnClose="RemoveTag" Text="@tag"/>
+            }
+        </div>
     </DialogContent>
     <DialogActions>
         <MudButton Color="Color.Default" OnClick="Close">
@@ -35,27 +41,38 @@
     [Parameter] public List<string> Tags { get; set; } = new();
 
     private string _newTags = "";
+    private List<string> _allTags;
 
     void Close() => MudDialog.Close(DialogResult.Ok(Tags));
+
+    protected override async Task OnInitializedAsync()
+    {
+        _allTags = await VacancyService.GetAllTagsAsync();
+    }
 
     private async Task AddTagsAsync()
     {
         var newTags = _newTags.Split(',')
             .Where(tagName => !string.IsNullOrWhiteSpace(tagName))
             .Select(tagName => tagName.Trim())
-            .Distinct().ToArray();
+            .Distinct()
+            .Where(tag => !Tags.Any(existingTag => string.Equals(existingTag, tag, StringComparison.OrdinalIgnoreCase)))
+            .ToArray();
 
-        var command = new AddTagsToVacancyCommand()
+        if (newTags.Any())
         {
-            VacancyId = VacancyId,
-            Tags = newTags
-        };
+            var command = new AddTagsToVacancyCommand()
+            {
+                VacancyId = VacancyId,
+                Tags = newTags
+            };
 
-        var result = await VacancyService.AddTagsToVacancyAsync(command);
-        if (result)
-        {
-            Tags.AddRange(newTags);
-            _newTags = "";
+            var result = await VacancyService.AddTagsToVacancyAsync(command);
+            if (result)
+            {
+                Tags.AddRange(newTags);
+                _newTags = "";
+            }
         }
     }
 
@@ -72,6 +89,14 @@
 
         Tags.Remove(chip.Text);
         StateHasChanged();
+    }
+
+    private async Task<IEnumerable<string>> SearchTags(string value)
+    {
+        await Task.Delay(5);
+        return _allTags
+            .Where(s => s.Contains(value, StringComparison.InvariantCultureIgnoreCase) && !Tags.Contains(s))
+            .ToList();
     }
 
 }

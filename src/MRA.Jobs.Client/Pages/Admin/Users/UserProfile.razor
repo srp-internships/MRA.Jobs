@@ -268,7 +268,7 @@
                 <MudItem Style="padding: 5px">
                     <MudStack Row="true">
                         <ProgressTaskButton Variant="Variant.Filled" Color="Color.Primary" Style="margin-top: 4px;"
-                                            Function="@(async () => await _table.ReloadServerData())">
+                                            OnClick="@(async () => await _table.ReloadServerData())">
                             <MudIcon Icon="@Icons.Material.Filled.Search"/>
                             <MudText>Search</MudText>
                         </ProgressTaskButton>
@@ -297,7 +297,7 @@
                     </HeaderContent>
                     <RowTemplate>
                         <MudTd DataLabel=@ContentService["Internships:Title"]>@context.VacancyTitle</MudTd>
-                        <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.CreatedAt.ToString("D")</MudTd>
+                        <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Applied at"]>@context.AppliedAt.ToString("D")</MudTd>
                         <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Status name"]>@context.StatusName</MudTd>
                         <MudTd DataLabel=@ContentService["Dashboard:Appilcations:Name"]>
                             <MudLink Color="Color.Primary" Href="@($"/ApplicationDetail/{context.Slug}/{context.ApplicantUsername}")">more</MudLink>
