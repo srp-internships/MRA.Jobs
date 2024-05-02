@@ -955,4 +955,7 @@
     <data name="Header:SendMessage" xml:space="preserve">
         <value>Отправить sms</value>
     </data>
+    <data name="VacancyDetails:ViewApplication" xml:space="preserve">
+        <value>Посмотреть заявку</value>
+    </data>
 </root>

@@ -1482,7 +1482,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Old Password.
+        ///   Looks up a localized string similar to Current Password.
         /// </summary>
         internal static string Profile_OldPassword {
             get {
@@ -1617,7 +1617,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To change your password, enter your old password, and then create a new, strong password..
+        ///   Looks up a localized string similar to To change your password, enter your current password, and then create a new, strong password..
         /// </summary>
         internal static string Profile_Tochangeyourpassword_enteryouroldpassword_andthencreateanew_strongpassword_ {
             get {
@@ -2523,6 +2523,15 @@ namespace MRA.Jobs.Client.Resources.Languages {
         internal static string VacancyDetails_Unfortunately__the_deadline_has_already_expired {
             get {
                 return ResourceManager.GetString("VacancyDetails:Unfortunately, the deadline has already expired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Application.
+        /// </summary>
+        internal static string VacancyDetails_ViewApplication {
+            get {
+                return ResourceManager.GetString("VacancyDetails:ViewApplication", resourceCulture);
             }
         }
         

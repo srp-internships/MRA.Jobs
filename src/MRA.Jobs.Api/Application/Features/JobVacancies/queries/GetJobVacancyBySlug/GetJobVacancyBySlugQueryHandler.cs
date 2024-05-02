@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MRA.Jobs.Application.Contracts.JobVacancies.Queries.GetJobVacancyBySlug;
 using MRA.Jobs.Application.Contracts.JobVacancies.Responses;
 
@@ -24,10 +25,10 @@ public class GetJobVacancyBySlugQueryHandler(
         jobVacancy.History =
             await dbContext.VacancyTimelineEvents.Where(t => t.VacancyId == jobVacancy.Id)
                 .ToListAsync(cancellationToken: cancellationToken);
-
+        
         var mapped = mapper.Map<JobVacancyDetailsDto>(jobVacancy);
         mapped.IsApplied = await dbContext.Applications.AnyAsync(
-            s => s.ApplicantId == currentUser.GetUserId() && s.VacancyId == jobVacancy.Id,
+            s => s.ApplicantUsername == currentUser.GetUserName() && s.VacancyId == jobVacancy.Id,
             cancellationToken: cancellationToken);
         return mapped;
     }
