@@ -438,7 +438,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  Профессионалы Шелкового пути (SRP) - это компания, занимающаяся разработкой программного обеспечения полного цикла, основанная в 2014 году..
+        ///   Looks up a localized string similar to  Silk Road Professionals (SRP) - это компания, занимающаяся разработкой программного обеспечения полного цикла, основанная в 2014 году..
         /// </summary>
         internal static string Home_AboutContent {
             get {
@@ -447,7 +447,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Профессионалы Шелкового пути.
+        ///   Looks up a localized string similar to Silk Road Professionals.
         /// </summary>
         internal static string Home_AboutTitle {
             get {
@@ -618,7 +618,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Настольные приложения.
+        ///   Looks up a localized string similar to Десктопные приложения.
         /// </summary>
         internal static string Home_DesktopServiceTitle {
             get {
@@ -825,7 +825,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Поднять наших бизнес-партнеров на новый уровень успеха, предоставляя замечательные услуги по аутсорсингу и аутстаффингу в области IT.
+        ///   Looks up a localized string similar to Поднять наших бизнес-партнеров на новый уровень успеха, предоставляя высококачественные услуги по аутсорсингу и аутстаффингу в области IT.
         /// </summary>
         internal static string Home_VisionContent {
             get {
@@ -996,7 +996,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вакансии стажировок.
+        ///   Looks up a localized string similar to Стажировоки.
         /// </summary>
         internal static string Internships_InternshipsVacancy {
             get {
@@ -1194,7 +1194,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить новый опыт.
+        ///   Looks up a localized string similar to Добавить новый опыт работы.
         /// </summary>
         internal static string Profile_AddNewExperience {
             get {
@@ -1338,7 +1338,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Если вы хотите выдвинуть себя, отправьте нам свое резюме..
+        ///   Looks up a localized string similar to Если вы хотите подать заявку на рассмотрение своей кандидатуры, пожалуйста, отправьте нам свое резюме..
         /// </summary>
         internal static string Profile_Ifyouwouldliketonominateyourself_sendusyourСV_ {
             get {
@@ -1347,7 +1347,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Если вы хотите выдвинуть себя, войдите в систему и отправьте нам свое резюме..
+        ///   Looks up a localized string similar to Если вы хотите подать заявку на рассмотрение своей кандидатуры, пожалуйста, войдите в систему и отправьте нам свое резюме..
         /// </summary>
         internal static string Profile_Ifyouwouldliketonominateyourself_signinandsendusyourСV_ {
             get {
@@ -1356,7 +1356,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Это текущая работа.
+        ///   Looks up a localized string similar to Tекущая работа.
         /// </summary>
         internal static string Profile_IsCurrentJob {
             get {
@@ -1401,7 +1401,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Новый опыт.
+        ///   Looks up a localized string similar to Новый опыт работы.
         /// </summary>
         internal static string Profile_NewExperience {
             get {
@@ -1410,7 +1410,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Старый пароль.
+        ///   Looks up a localized string similar to Текущий пароль.
         /// </summary>
         internal static string Profile_OldPassword {
             get {
@@ -1464,7 +1464,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Выберите язык.
+        ///   Looks up a localized string similar to Выбрать язык.
         /// </summary>
         internal static string Profile_SelectLanguage {
             get {
@@ -1527,7 +1527,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Переключиться на систему.
+        ///   Looks up a localized string similar to Переключиться на системную тему.
         /// </summary>
         internal static string Profile_Switchtosystem {
             get {
@@ -1545,7 +1545,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Чтобы изменить пароль, введите старый пароль, а затем создайте новый, надежный пароль..
+        ///   Looks up a localized string similar to Для изменения пароля, пожалуйста, введите текущий пароль, а затем создайте новый надежный пароль..
         /// </summary>
         internal static string Profile_Tochangeyourpassword_enteryouroldpassword_andthencreateanew_strongpassword_ {
             get {
@@ -2095,7 +2095,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Поиск по имени пользователя или полному имени.
+        ///   Looks up a localized string similar to Поиск пользователей.
         /// </summary>
         internal static string UserManager_Searchname {
             get {
@@ -2302,7 +2302,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Сборы.
+        ///   Looks up a localized string similar to Тарифы.
         /// </summary>
         internal static string VacancyApplication_Fees {
             get {
@@ -2356,7 +2356,7 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вы должны дать ответы на необходимые вопросы.
+        ///   Looks up a localized string similar to Необходимо ответить на ключевые вопросы.
         /// </summary>
         internal static string VacancyApplication_RequiredQuestionHaventAnswer {
             get {
@@ -2536,7 +2536,16 @@ namespace MRA.Jobs.Client.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Напишите сопроводительное письмо, ответьте на несколько вопросов и отправьте свою заявку!.
+        ///   Looks up a localized string similar to Посмотреть заявку.
+        /// </summary>
+        internal static string VacancyDetails_ViewApplication {
+            get {
+                return ResourceManager.GetString("VacancyDetails:ViewApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пожалуйста, заполните анкету и прикрепите сопроводительное письмо с ответами на следующие вопросы, после чего отправьте вашу заявку..
         /// </summary>
         internal static string VacancyDetails_Write_a_cover_letter__answer_few_questions_and_send_your_application_ {
             get {

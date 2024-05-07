@@ -26,7 +26,7 @@ public class GetTrainingVacancyBySlugQueryHandler(
         
         var mapped = mapper.Map<TrainingVacancyDetailedResponse>(trainingVacancy);
         mapped.IsApplied = await context.Applications.AnyAsync(s =>
-            s.ApplicantId == currentUser.GetUserId() && s.VacancyId == trainingVacancy.Id, cancellationToken: cancellationToken);
+            s.ApplicantUsername == currentUser.GetUserName() && s.VacancyId == trainingVacancy.Id, cancellationToken: cancellationToken);
 
         return mapped;
     }
