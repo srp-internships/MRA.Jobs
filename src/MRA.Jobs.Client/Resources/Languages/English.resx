@@ -959,4 +959,7 @@
     <data name="Candidates" xml:space="preserve">
         <value>Candidates</value>
     </data>
+    <data name="VacancyDetails:ViewApplication" xml:space="preserve">
+        <value>View Application</value>
+    </data>
 </root>
