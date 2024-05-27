@@ -60,4 +60,17 @@ public class CurrentUserService : ICurrentUserService
 
         return roleClaims?.Select(rc => rc.Value).ToList() ?? new List<string>();
     }
+
+    public string GetAuthToken()
+    {
+        if (_httpContextAccessor.HttpContext != null)
+        {
+            var token = _httpContextAccessor.HttpContext.Request.Headers.Authorization;
+            if (!string.IsNullOrEmpty(token))
+            {
+                return token;
+            }
+        }
+        return null;
+    }
 }

@@ -3,9 +3,10 @@ using MRA.Jobs.Application.Contracts.VacancyCategories.Responses;
 using MRA.Jobs.Client.Components.Dialogs;
 using BlazorMonaco;
 using BlazorMonaco.Editor;
+using MRA.BlazorComponents.Snackbar.Extensions;
 using MRA.Jobs.Application.Contracts.Dtos;
+using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternships;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
-using MRA.Jobs.Client.Pages.Admin.Dialogs;
 using MudBlazor;
 
 
@@ -13,37 +14,40 @@ namespace MRA.Jobs.Client.Pages.Admin;
 
 public partial class InternshipVacanciesPage
 {
-    private IEnumerable<InternshipVacancyListResponse> _pagedData;
     private MudTable<InternshipVacancyListResponse> _table;
-
-    private int _totalItems;
+    private GetInternshipsQueryOptions _query = new();
+    
     private string _searchString;
 
     private async Task<TableData<InternshipVacancyListResponse>> ServerReload(TableState state)
     {
-        IEnumerable<InternshipVacancyListResponse> data = (await InternshipService.GetAll()).Result.Items;
-        await Task.Delay(100);
-        data = data.Where(element =>
+        _query = new()
         {
-            if (string.IsNullOrWhiteSpace(_searchString))
-                return true;
-            if (element.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-                return true;
-            return false;
-        }).ToArray();
-        _totalItems = data.Count();
-
-        _pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
-        return new TableData<InternshipVacancyListResponse>() { TotalItems = _totalItems, Items = _pagedData };
+            Page = state.Page+1,
+            PageSize = state.PageSize,
+            Filters = GetFilters()
+        };
+        var result = await InternshipService.GetAll(_query);
+        return new TableData<InternshipVacancyListResponse>()
+        {
+            TotalItems = result.TotalCount,
+            Items = result.Items
+        };
     }
-
     private void OnSearch(string text)
     {
         _searchString = text;
         _table.ReloadServerData();
     }
+    
+    private string GetFilters()
+    {
+        var filters = new List<string>();
+        if (!string.IsNullOrEmpty(_searchString)) filters.Add($"Title@={_searchString}");
+        return filters.Any() ? string.Join(",", filters) : "";
+    }
 
-    private bool _serverError;
+    private bool _serverError = false;
     private bool _panelOpenState;
     private bool _isInserting;
     private bool _isUpdating = true;
@@ -53,7 +57,6 @@ public partial class InternshipVacanciesPage
     private string _newTitle = string.Empty;
     private List<VacancyQuestionDto> _questions = new();
     private List<CategoryResponse> _categories;
-    private List<InternshipVacancyListResponse> _internships;
     private List<VacancyTaskDto> _tasks = new();
     private TimeSpan? _applicationDeadlineTime;
     private TimeSpan? _publishDateTime;
@@ -144,7 +147,7 @@ public partial class InternshipVacanciesPage
 
     async Task OnDeleteClick(string slug)
     {
-        var vacancy = _internships.FirstOrDefault(c => c.Slug == slug);
+        var vacancy = _table.Items.FirstOrDefault(c => c.Slug == slug);
         var parameters = new DialogParameters<DialogMudBlazor>
         {
             { x => x.ContentText, "Do you really want to delete this vacancy?" },
@@ -159,25 +162,13 @@ public partial class InternshipVacanciesPage
 
         if (!result.Canceled)
         {
-            try
+            var response = await InternshipService.Delete(slug);
+            if (response)
             {
-                var response = await InternshipService.Delete(slug);
-                if (response.Success)
-                {
-                    Snackbar.Add($"Deleted", Severity.Success);
-                    _internships.Remove(vacancy);
-                }
-                else
-                {
-                    Snackbar.Add(response.Error ?? "An error occurred while deleting the internship", Severity.Error);
-                }
+                await _table.ReloadServerData();
+            }
 
-                Clear();
-            }
-            catch (Exception)
-            {
-                Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
-            }
+            Clear();
 
             StateHasChanged();
         }
@@ -223,33 +214,11 @@ public partial class InternshipVacanciesPage
 
     private async Task LoadData()
     {
-        try
+        var categoriesResponse = await CategoryService.GetAllCategory();
+        Snackbar.ShowIfError(categoriesResponse, ContentService["ServerIsNotResponding"]);
+        if (categoriesResponse.Success)
         {
-            var internshipsResponse = await InternshipService.GetAll();
-            if (internshipsResponse.Success)
-            {
-                _internships = internshipsResponse.Result.Items;
-            }
-            else
-            {
-                Snackbar.Add($"Error loading internships: {internshipsResponse.Error}", Severity.Error);
-            }
-
-            var categoriesResponse = await CategoryService.GetAllCategory();
-            if (categoriesResponse.Success)
-            {
-                _categories = categoriesResponse.Result.Items;
-            }
-            else
-            {
-                Snackbar.Add($"Error loading categories: {categoriesResponse.Error}", Severity.Error);
-            }
-        }
-        catch (Exception)
-        {
-            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
-            _serverError = true;
-            StateHasChanged();
+            _categories = categoriesResponse.Result.Items;
         }
     }
 
@@ -295,27 +264,14 @@ public partial class InternshipVacanciesPage
             InternshipService.createCommand.PublishDate = newPublishDate;
         }
 
-        try
-        {
-            InternshipService.createCommand.VacancyTasks = _tasks;
-            var result = await InternshipService.Create();
-            if (result.Success)
-            {
-                Snackbar.Add($"{InternshipService.createCommand.Title} created", Severity.Success);
-            }
-            else
-            {
-                Snackbar.Add(result.Error ?? "An error occurred while creating the internship", Severity.Error);
-            }
+        InternshipService.createCommand.VacancyTasks = _tasks;
+        var result = await InternshipService.Create();
+        Snackbar.ShowIfError(result, ContentService["ServerIsNotResponding"],
+            $"{InternshipService.createCommand.Title} created");
 
-            await LoadData();
-            await _table.ReloadServerData();
-            Clear();
-        }
-        catch (Exception)
-        {
-            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
-        }
+        await LoadData();
+        await _table.ReloadServerData();
+        Clear();
     }
 
 
@@ -329,27 +285,12 @@ public partial class InternshipVacanciesPage
         var catId = _categories.FirstOrDefault(c => c.Name == _selectedCategory)!.Id;
         InternshipService.createCommand.CategoryId = catId;
 
-        try
-        {
-            var result = await InternshipService.Update(_updateSlug);
-            if (result.Success)
-            {
-                Snackbar.Add("Updated", Severity.Success);
-            }
-            else
-            {
-                Snackbar.Add(result.Error ?? "An error occurred while updating the internship", Severity.Error);
-            }
+        var result = await InternshipService.Update(_updateSlug);
+        Snackbar.ShowIfError(result, ContentService["ServerIsNotResponding"], "Updated");
 
-            await LoadData();
-            await _table.ReloadServerData();
-            Clear();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-            Snackbar.Add(ContentService["ServerIsNotResponding"], Severity.Error);
-        }
+        await LoadData();
+        await _table.ReloadServerData();
+        Clear();
     }
 
 
@@ -405,5 +346,13 @@ public partial class InternshipVacanciesPage
     private async Task OnNoteChangeClick(InternshipVacancyListResponse context)
     {
         await InternshipService.ChangeNoteAsync(context);
+    }
+    
+    private async Task OnTagsClick(InternshipVacancyListResponse vacancyListDto)
+    {
+        vacancyListDto.Tags =
+            await VacanciesService.DialogChangeTagsAsync(vacancyListDto.Id, vacancyListDto.Tags.ToList(),
+                vacancyListDto.Title);
+        StateHasChanged();
     }
 }

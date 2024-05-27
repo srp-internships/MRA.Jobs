@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using MRA.BlazorComponents.Configuration;
 using MRA.BlazorComponents.HttpClient.Services;
+using MRA.BlazorComponents.Snackbar.Extensions;
 using MRA.Jobs.Application.Contracts.Applications.Commands.AddNote;
 using MRA.Jobs.Application.Contracts.Applications.Commands.CreateApplication;
 using MRA.Jobs.Application.Contracts.Applications.Commands.UpdateApplicationStatus;
+using MRA.Jobs.Application.Contracts.Applications.Queries.GetApplicationWithPagination;
 using MRA.Jobs.Application.Contracts.Applications.Responses;
 using MRA.Jobs.Application.Contracts.Common;
 using MRA.Jobs.Application.Contracts.TimeLineDTO;
@@ -19,55 +21,42 @@ using static MRA.Jobs.Application.Contracts.Dtos.Enums.ApplicationStatusDto;
 namespace MRA.Jobs.Client.Services.ApplicationService;
 
 public class ApplicationService(
-        IHttpClientService httpClient,
-        AuthenticationStateProvider authenticationState,
-        ISnackbar snackbar,
-        NavigationManager navigationManager,
-        IConfiguration configuration,
-        IContentService contentService)
+    IHttpClientService httpClient,
+    AuthenticationStateProvider authenticationState,
+    ISnackbar snackbar,
+    NavigationManager navigationManager,
+    IConfiguration configuration,
+    IContentService contentService)
     : IApplicationService
 {
     private readonly string _applicationsEndPoint = configuration.GetJobsUrl("applications");
 
     public async Task<List<ApplicationListStatus>> GetApplicationsByStatus(ApplicationStatus status)
     {
-        var response = await httpClient.GetAsJsonAsync<List<ApplicationListStatus>>($"{_applicationsEndPoint}/{status}");
+        var response =
+            await httpClient.GetFromJsonAsync<List<ApplicationListStatus>>($"{_applicationsEndPoint}/{status}");
         return response.Success ? response.Result : null;
     }
 
 
     public async Task CreateApplication(CreateApplicationCommand application, IBrowserFile file)
     {
-        try
+        //set cv
+        if (application.Cv.IsUploadCvMode)
         {
-            //set cv
-            if (application.Cv.IsUploadCvMode)
-            {
-                var fileBytes = await GetFileBytesAsync(file);
-                application.Cv.CvBytes = fileBytes;
-                application.Cv.FileName = file.Name;
-            }
-            //set cv
-
-            var response = await httpClient.PostAsJsonAsync<Guid>(_applicationsEndPoint, application);
-            switch (response.HttpStatusCode)
-            {
-                case HttpStatusCode.OK:
-                    snackbar.Add(contentService["Application:Success"], Severity.Success);
-                    navigationManager.NavigateTo(navigationManager.Uri.Replace("/apply/", "/"));
-                    break;
-                case HttpStatusCode.Conflict:
-                    snackbar.Add(response.Error, Severity.Error);
-                    break;
-                default:
-                    snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
-                    break;
-            }
+            var fileBytes = await GetFileBytesAsync(file);
+            application.Cv.CvBytes = fileBytes;
+            application.Cv.FileName = file.Name;
         }
-        catch (Exception e)
+        //set cv
+
+        var response = await httpClient.PostAsJsonAsync<Guid>(_applicationsEndPoint, application);
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"],
+            contentService["Application:Success"]);
+
+        if (response.HttpStatusCode == HttpStatusCode.OK)
         {
-            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
-            Console.WriteLine(e.Message);
+            navigationManager.NavigateTo(navigationManager.Uri.Replace("/apply/", "/"));
         }
     }
 
@@ -85,17 +74,19 @@ public class ApplicationService(
         return null;
     }
 
-    public async Task<PagedList<ApplicationListDto>> GetAllApplications()
+    public async Task<PagedList<ApplicationListDto>> GetAllApplications(GetApplicationsByFiltersQuery query)
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.GetAsJsonAsync<PagedList<ApplicationListDto>>(_applicationsEndPoint);
+        var response = await httpClient.GetFromJsonAsync<PagedList<ApplicationListDto>>(_applicationsEndPoint, query);
         return response.Success ? response.Result : null;
     }
 
     public async Task<bool> UpdateStatus(UpdateApplicationStatusCommand updateApplicationStatusCommand)
     {
         await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.PutAsync($"{_applicationsEndPoint}/{updateApplicationStatusCommand.Slug}/update-status", updateApplicationStatusCommand);
+        var response = await httpClient.PutAsJsonAsync(
+            $"{_applicationsEndPoint}/{updateApplicationStatusCommand.Slug}/update-status",
+            updateApplicationStatusCommand);
 
         if (response.HttpStatusCode != null)
             return (int)response.HttpStatusCode > 199 && (int)response.HttpStatusCode < 300;
@@ -104,8 +95,9 @@ public class ApplicationService(
 
     public async Task<ApplicationDetailsDto> GetApplicationDetails(string applicationSlug)
     {
-        var r=await authenticationState.GetAuthenticationStateAsync();
-        var response = await httpClient.GetAsJsonAsync<ApplicationDetailsDto>($"{_applicationsEndPoint}/{applicationSlug}");
+        var r = await authenticationState.GetAuthenticationStateAsync();
+        var response =
+            await httpClient.GetFromJsonAsync<ApplicationDetailsDto>($"{_applicationsEndPoint}/{applicationSlug}");
         return response.Result;
     }
 
@@ -119,26 +111,13 @@ public class ApplicationService(
 
     public async Task<TimeLineDetailsDto> AddNote(AddNoteToApplicationCommand note)
     {
-        try
+        var response =
+            await httpClient.PostAsJsonAsync<TimeLineDetailsDto>($"{_applicationsEndPoint}/add-note", note);
+        snackbar.ShowIfError(response, contentService["ServerIsNotResponding"], "Successfully");
+
+        if (response.HttpStatusCode == HttpStatusCode.OK)
         {
-            var response = await httpClient.PostAsJsonAsync<TimeLineDetailsDto>($"{_applicationsEndPoint}/add-note", note);
-            switch (response.HttpStatusCode)
-            {
-                case HttpStatusCode.OK:
-                    snackbar.Add("Successfully", Severity.Success);
-                    return  response.Result;
-                case HttpStatusCode.Conflict:
-                    snackbar.Add( response.Error, Severity.Error);
-                    break;
-                default:
-                    snackbar.Add(contentService["SomethingWentWrong"], Severity.Error);
-                    break;
-            }
-        }
-        catch (Exception e)
-        {
-            snackbar.Add(contentService["ServerIsNotResponding"], Severity.Error);
-            Console.WriteLine(e);
+            return response.Result;
         }
 
         return null;

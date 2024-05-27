@@ -188,6 +188,14 @@ public class Testing
         ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         return await context.Set<TEntity>().FirstOrDefaultAsync(criteria);
     }
+    
+    public static async Task<List<TEntity>> GetAllToListAsync<TEntity>()
+        where TEntity : class
+    {
+        using IServiceScope scope = _scopeFactory.CreateScope();
+        ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        return await context.Set<TEntity>().ToListAsync();
+    }
 
     [OneTimeTearDown]
     public void RunAfterAnyTests()

@@ -2,6 +2,8 @@
 @layout Dashboard
 
 @using BlazorMonaco.Editor
+@using MRA.Jobs.Client.Services.VacanciesServices
+@using MRA.Jobs.Client.Services.VacanciesServices.Internships
 @inject ISnackbar Snackbar;
 @inject IInternshipService InternshipService
 @inject ICategoryService CategoryService
@@ -9,6 +11,7 @@
 @inject LayoutService LayoutService
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
+@inject IVacancyService VacanciesService
 
 @if (_serverError)
 {
@@ -102,7 +105,7 @@ else
                         </BlazoredTextEditor>
                         <MudInput @bind-Value="@_imageLinkToInsertToEditor"/>
                         <ProgressTaskButton Variant="Variant.Filled" Color="Color.Primary"
-                                            Function="InsertImage">
+                                            OnClick="@InsertImage">
                             @ContentService["Internships:InsertImage"]
                         </ProgressTaskButton>
                     </MudCardContent>
@@ -121,7 +124,7 @@ else
                         <MudGrid>
                             <MudItem xs=12 lg="12">
                                 <MudText Style="color:rgb(128,128,128)" Typo="Typo.body2">@ContentService["Header:Category"]</MudText>
-                                <MudSelect T="string" Label=@ContentService["job:Selectcategory"]   @bind-Value="@_selectedCategory"
+                                <MudSelect T="string" Label=@ContentService["job:Selectcategory"]      @bind-Value="@_selectedCategory"
                                            Variant="Variant.Outlined">
                                     @foreach (var cat in _categories)
                                     {
@@ -266,14 +269,14 @@ else
             <MudItem xs="12" lg="12">
                 <MudCardActions>
                     <div hidden="@_isInserting">
-                        <ProgressTaskButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Function="HandleSubmit">
+                        <ProgressTaskButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" OnClick="@HandleSubmit">
                             <MudText>
                                 @ContentService["Internships:Create"]
                             </MudText>
                         </ProgressTaskButton>
                     </div>
                     <div hidden="@_isUpdating">
-                        <ProgressTaskButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" Function="HandleUpdate">
+                        <ProgressTaskButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Warning" OnClick="@HandleUpdate">
                             <MudText>
                                 @ContentService["Profile:Savechanges"]
                             </MudText>
@@ -328,6 +331,7 @@ else
                 <MudTh></MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
+                <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel=@ContentService["Internships:Title"]>@context.Title</MudTd>
@@ -351,6 +355,9 @@ else
                 </MudTd>
                 <MudTd>
                     <MudIconButton @onclick="() => OnNoteChangeClick(context)" Icon="@Icons.Material.Filled.Note" Variant="Variant.Text" Color="Color.Primary" Size="Size.Medium"/>
+                </MudTd>
+                <MudTd>
+                    <MudIconButton @onclick="() => OnTagsClick(context)" Icon="@Icons.Material.Filled.Tag" Variant="Variant.Text" Size="Size.Medium"/>
                 </MudTd>
             </RowTemplate>
             <NoRecordsContent>

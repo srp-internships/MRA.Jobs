@@ -10,7 +10,7 @@
 @inject IDateTimeConvertToStringService DateTimeConvert
 @inject IConfiguration Configuration
 @inject NavigationManager NavigationManager
-
+@inject AuthenticationStateProvider AuthenticationStateProvider
 <style>
     p.mud-typography.mud-typography-body1 p img {
         width: 100%;
@@ -18,7 +18,7 @@
     }
 </style>
 
-@if (vacancyDetails is null || Vacancy == null)
+@if (_vacancyDetails is null || Vacancy == null)
 {
     if (_showLoader)
     {
@@ -44,10 +44,10 @@ else
                                 </div>
                                 <div class="">
                                     <MudText Typo="Typo.h5" Style="padding-top: 3px;">
-                                        <b>@vacancyDetails.Title</b>
+                                        <b>@_vacancyDetails.Title</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2" Style="color:rgb(128,128,128)">
-                                        <b> @ContentService["VacancyDetails:Posted"] @DateTimeConvert.GetDisplayPostedDate(vacancyDetails.PublishDate)</b>
+                                        <b> @ContentService["VacancyDetails:Posted"] @DateTimeConvert.GetDisplayPostedDate(_vacancyDetails.PublishDate)</b>
                                     </MudText>
                                 </div>
                             </div>
@@ -57,11 +57,18 @@ else
                     <MudCardContent>
                         <MudDivider/>
                         <br/>
-                        <MudText>@((MarkupString)vacancyDetails.Description)</MudText>
+                        <MudText>@((MarkupString)_vacancyDetails.Description)</MudText>
                         <br/>
+                        @if (_vacancyDetails.Tags != null)
+                        {
+                            @foreach (var tag in _vacancyDetails.Tags)
+                            {
+                                <MudChip Text="@tag" Size="Size.Small"/>
+                            }
+                        }
                         <MudDivider Style="padding:10px;"/>
                         <MudGrid Style="padding:10px 10px;color:rgb(128,128,128);">
-                            @if (vacancyDetails.Duration != 0)
+                            @if (_vacancyDetails.Duration != 0)
                             {
                                 <MudItem lg="4" md="6" xs="6">
                                     <MudGrid>
@@ -70,7 +77,7 @@ else
                                         </MudItem>
                                         <MudItem Style="padding:0;">
                                             <MudText>
-                                                <b>@vacancyDetails.Duration @ContentService["VacancyDetails:month(s)"]</b>
+                                                <b>@_vacancyDetails.Duration @ContentService["VacancyDetails:month(s)"]</b>
                                             </MudText>
                                             <MudText Typo="Typo.body2">
                                                 <small>@ContentService["VacancyDetails:Duration"]</small>
@@ -79,11 +86,11 @@ else
                                     </MudGrid>
                                 </MudItem>
                             }
-                            @if (vacancyDetails.Deadline != default)
+                            @if (_vacancyDetails.Deadline != default)
                             {
                                 <MudItem lg="4" md="6" xs="6">
                                     @{
-                                        var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline);
+                                        var deadlineResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(_vacancyDetails.Deadline);
                                         var deadlineStyle = $"color:{deadlineResult.Color}";
 
                                         <MudGrid Style="@deadlineStyle">
@@ -103,7 +110,7 @@ else
                                 </MudItem>
                             }
 
-                            @if (vacancyDetails.RequiredYearOfExperience != 0)
+                            @if (_vacancyDetails.RequiredYearOfExperience != 0)
                             {
                                 <MudItem lg="4" md="6" xs="6">
                                     <MudGrid>
@@ -112,7 +119,7 @@ else
                                         </MudItem>
                                         <MudItem Style="padding:0;">
                                             <MudText>
-                                                <b>@vacancyDetails.RequiredYearOfExperience @ContentService["VacancyDetails:year(s)"]</b>
+                                                <b>@_vacancyDetails.RequiredYearOfExperience @ContentService["VacancyDetails:year(s)"]</b>
                                             </MudText>
                                             <MudText Typo="Typo.body2">
                                                 <small>@ContentService["VacancyDetails:Required year of experience"]</small>
@@ -121,7 +128,7 @@ else
                                     </MudGrid>
                                 </MudItem>
                             }
-                            @if (vacancyDetails.Fees != 0)
+                            @if (_vacancyDetails.Fees != 0)
                             {
                                 <MudItem lg="4" md="6" xs="6">
                                     <MudGrid>
@@ -130,7 +137,7 @@ else
                                         </MudItem>
                                         <MudItem Style="padding:0;">
                                             <MudText>
-                                                <b>@vacancyDetails.Fees</b>
+                                                <b>@_vacancyDetails.Fees</b>
                                             </MudText>
                                             <MudText Typo="Typo.body2">
                                                 <small>@ContentService["VacancyDetails:Fees"]</small>
@@ -142,7 +149,7 @@ else
 
                             <MudItem lg="4" md="6" xs="6">
                                 @{
-                                    var endDateResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate);
+                                    var endDateResult = DateTimeConvert.GetDeadlineOrEndDateDisplayDate(_vacancyDetails.EndDate);
                                     var endDatelineStyle = $"color:{endDateResult.Color}";
 
                                     <MudGrid Style="@endDatelineStyle">
@@ -166,15 +173,12 @@ else
 
                     </MudCardContent>
                 </MudCard>
-
-
             </MudItem>
 
-
             <MudItem xs="12" lg="3" sm="12" md="4">
-                @if (vacancyDetails.Deadline != default && (
-                         DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.EndDate).Color == "red"
-                         || DateTimeConvert.GetDeadlineOrEndDateDisplayDate(vacancyDetails.Deadline).Color == "red"
+                @if (_vacancyDetails.Deadline != default && (
+                         DateTimeConvert.GetDeadlineOrEndDateDisplayDate(_vacancyDetails.EndDate).Color == "red"
+                         || DateTimeConvert.GetDeadlineOrEndDateDisplayDate(_vacancyDetails.Deadline).Color == "red"
                      ))
                 {
                     <MudCard Class="rounded-lg mud-elevation-4">
@@ -202,12 +206,10 @@ else
                                     </MudCardContent>
                                     <MudCardActions Style="flex-direction: column">
 
-                                        @if (vacancyDetails.IsApplied)
+                                        @if (_vacancyDetails.IsApplied)
                                         {
-                                            <MudButton Variant="Variant.Filled" Color="Color.Surface" style="margin-bottom: 10px" href="@_cvUrl">
-                                                <MudIcon Icon="@Icons.Material.Filled.Download"></MudIcon>@ContentService["VacancyDetails:Download CV"]
-                                            </MudButton>
                                             <MudChip Icon="@Icons.Material.Filled.Check" Color="Color.Success">Applied</MudChip>
+                                            <MudLink Href=@_url>@ContentService["VacancyDetails:ViewApplication"]</MudLink>
                                         }
                                         else
                                         {
@@ -217,7 +219,6 @@ else
                                                 </MudText>
                                             </MudButton>
                                         }
-
                                     </MudCardActions>
                                 </MudCard>
                             </Authorized>
@@ -256,11 +257,10 @@ else
 
     [Parameter] public string Slug { get; set; } = string.Empty;
 
-    private string _cvUrl = "";
-
-    [Parameter] public VacancyDetailsResponse vacancyDetails { get; set; }
+    [Parameter] public VacancyDetailsResponse _vacancyDetails { get; set; }
 
     [Parameter] public string Vacancy { get; set; }
+    private string _url = "";
 
     protected override async void OnAfterRender(bool firstRender)
     {
@@ -269,12 +269,18 @@ else
             if (firstRender)
             {
                 await Task.Delay(1000);
+                var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                var usernameClaim = authState.User.Claims.FirstOrDefault(x => x.Type.Contains("username"));
+                var username = usernameClaim?.Value;
+                _url = $"ApplicationDetail/{username}-{Slug}";
                 _showLoader = true;
+
                 StateHasChanged();
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine($"eroor: {ex.ToString()}");
         }
     }
 

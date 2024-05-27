@@ -17,13 +17,13 @@
         <Authorized>
             <MudToolBar Class="toolbar-fixed-blur">
                 <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                    <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Notes" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
                 </MudHidden>
                 <a href="">
                     <MudHidden Breakpoint="Breakpoint.MdAndDown">
                         <MudStack Row="true">
                             <MudItem Style="padding-right:5px;">
-                                <MudImage src="/images/srp/srp_icon.png" Style="width: 50px" />
+                                <MudImage src="/images/srp/srp_icon.png" Style="width: 50px"/>
                             </MudItem>
                             <MudItem Style="padding-left:0; margin-right: 40px;">
                                 <MudText Style="font-size: 21.5px;">
@@ -40,7 +40,7 @@
                     <MudHidden Breakpoint="Breakpoint.LgAndUp">
                         <MudStack Row="true">
                             <MudItem Style="padding-right:5px;">
-                                <MudImage src="/images/srp/srp_icon.png" Style="width: 30px" />
+                                <MudImage src="/images/srp/srp_icon.png" Style="width: 30px"/>
                             </MudItem>
                             <MudItem Style="padding-left:0; margin-right: 40px;">
                                 <MudText Style="font-size: 21.5px;">
@@ -78,15 +78,33 @@
                         </MudText>
                     </MudButton>
                     <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-                        <MudButton Href=@linkToUserManager Color="Color.Inherit" Target="_blank" Variant="Variant.Text" Class="@GetActiveClass(DocPages.UserManager)">
+                        <MudMenu AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft" ActivationEvent="@MouseEvent.MouseOver">
+                            <ActivatorContent>
+                                <MudButton Variant="Variant.Text" EndIcon="@Icons.Material.Filled.ExpandMore">
+                                    <MudText>
+                                        <b>Administration</b>
+                                    </MudText>
+                                </MudButton>
+                            </ActivatorContent>
+                            <ChildContent>
+                                <MudMenuItem Class="@GetActiveClass(DocPages.Users)" Href="Administration/Users">
+                                    <b>Users</b>
+                                </MudMenuItem>
+                                <MudMenuItem Class="@GetActiveClass(DocPages.EmailTemplates)" Href="Administration/EmailTemplates">
+                                    <b>Email Templates</b>
+                                </MudMenuItem>
+                            </ChildContent>
+                        </MudMenu>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="@ApplicationClaimValues.Reviewer" Context="reviewer">
+                        <MudButton Color="Color.Inherit" Variant="Variant.Text" Href="/Administration/Candidates" Class="@GetActiveClass(DocPages.Candidates)">
                             <MudText>
-                                <b>@ContentService["Header:Usersmanager"]</b>
+                                <b>@ContentService["Candidates"]</b>
                             </MudText>
                         </MudButton>
                     </AuthorizeView>
-
                 </MudHidden>
-                <MudSpacer />
+                <MudSpacer/>
                 <MudHidden Breakpoint="Breakpoint.Xs">
                     @if (_betaVersion)
                     {
@@ -94,33 +112,38 @@
                             <MudChip Color="Color.Primary">Beta</MudChip>
                         </a>
                     }
-
-                    <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4" />
-                    <ToolBarSettingsButtons />
-
+                    <MudDivider Vertical="true" DividerType="DividerType.Middle" FlexItem="true" Class="mx-4 my-4"/>
+                    <ToolBarSettingsButtons/>
                 </MudHidden>
-                <UserButton />
+                <UserButton/>
             </MudToolBar>
 
             <MudDrawer @bind-Open="@_open" Anchor="Anchor.Start" Elevation="2" Style="position:fixed;height: 100%">
                 <MudToolBar Dense="true" Class="docs-gray-bg">
-                    <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
-                    <MudSpacer />
-                    <ToolBarSettingsButtons />
+                    <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
+                    <MudSpacer/>
+                    <ToolBarSettingsButtons/>
                 </MudToolBar>
 
                 <MudNavMenu Rounded="true" Dense="true" Color="Color.Primary" Class="pa-2">
                     <MudNavLink Match="NavLinkMatch.All" Href="dashboard/categories">@ContentService["Header:Category"]</MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">@ContentService["UserButton:Applications"]</MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">@ContentService["Header:Jobs"]</MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">@ContentService["Header:Internships"]</MudNavLink>
-                        <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">@ContentService["Header:Trainings"]</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/applications">@ContentService["UserButton:Applications"]</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/jobs">@ContentService["Header:Jobs"]</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/internship">@ContentService["Header:Internships"]</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/dashboard/trainings">@ContentService["Header:Trainings"]</MudNavLink>
 
-                        <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
-                            <MudNavLink Match="NavLinkMatch.All" Href=@linkToUserManager>@ContentService["Header:Usersmanager"]</MudNavLink>
-                        </AuthorizeView>
-                    </MudNavMenu>
-                    @if (_betaVersion)
+                    <AuthorizeView Roles="@ApplicationClaimValues.Administrator" Context="admin">
+                        <MudNavGroup Title="Administration">
+                            <MudNavLink Href="Administration/Users">Users</MudNavLink>
+                            <MudNavLink Href="Administration/EmailTemplates">Email Templates</MudNavLink>
+                        </MudNavGroup>
+                    </AuthorizeView>
+
+                    <AuthorizeView Roles="@ApplicationClaimValues.Reviewer" Context="reviewer">
+                        <MudNavLink Match="NavLinkMatch.All" Href="/Administration/Candidates">@ContentService["Candidates"]</MudNavLink>
+                    </AuthorizeView>
+                </MudNavMenu>
+                @if (_betaVersion)
                 {
                     <a href="@Configuration["Beta:Address"]" target="_blank">
                         <MudChip Color="Color.Primary">Beta</MudChip>
@@ -135,20 +158,14 @@
 </CascadingAuthenticationState>
 
 @code {
-
-    private string linkToUserManager => $"{Configuration["IdentityClient"]}/userManager";
-
     bool _open = false;
-
     private bool _betaVersion;
-
     void ToggleDrawer()
     {
         _open = !_open;
     }
 
     private string _currentPage;
-
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

@@ -1,12 +1,9 @@
-﻿@using AltairCA.Blazor.WebAssembly.Cookie
-@using MRA.Jobs.Client.Identity
-@using MRA.Jobs.Client.Services.Profile
+﻿@using MRA.Jobs.Client.Services.Profile
 @inject AuthenticationStateProvider AuthProvider
-@inject IAltairCABlazorCookieUtil CookieUtil
 @inject NavigationManager NavigationManager
 @inject LayoutService LayoutService
 @inject IUserProfileService UserProfileService
-@inject IConfiguration configuration
+@inject ILocalStorageService LocalStorageService
 
 <CascadingAuthenticationState>
     <AuthorizeView>
@@ -44,7 +41,7 @@
                     }
                 </ActivatorContent>
                 <ChildContent>
-                    <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.AccountCircle" Href=@($"{configuration["IdentityClient"]}")>@ContentService["UserButton:Profile"]</MudMenuItem>
+                    <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.AccountCircle" Href=@($"{Configuration["IdentityClient"]}")>@ContentService["UserButton:Profile"]</MudMenuItem>
                         <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Checklist" Href="/applications">@ContentService["UserButton:Applications"]</MudMenuItem>
                         <MudMenuItem IconSize="Size.Small" Icon="@Icons.Material.Rounded.Logout" OnClick="@Logout" OnTouch="@Logout">@ContentService["UserButton:Logout"]</MudMenuItem>
                     </ChildContent>
@@ -56,8 +53,8 @@
                         <MudChip Icon="@Icons.Material.Filled.Person">@ContentService["UserButton:Sign In"]</MudChip>
                     </ActivatorContent>
                     <ChildContent>
-                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/login?callback={NavigationManager.BaseUri}")">@ContentService["UserButton:Sign In"]</MudMenuItem>
-                        <MudMenuItem Href="@($"{configuration["IdentityClient"]}/registration?callback={NavigationManager.BaseUri}")">@ContentService["UserButton:Sign Up"]</MudMenuItem>
+                        <MudMenuItem Href="@($"{Configuration["IdentityClient"]}/login?applicationId={Configuration["SSOApplication:Id"]}&callback={Configuration["SSOApplication:Callback"]}")">@ContentService["UserButton:Sign In"]</MudMenuItem>
+                        <MudMenuItem Href="@($"{Configuration["IdentityClient"]}/registration?applicationId={Configuration["SSOApplication:Id"]}&callback={Configuration["SSOApplication:Callback"]}")">@ContentService["UserButton:Sign Up"]</MudMenuItem>
                     </ChildContent>
                 </MudMenu>
             </NotAuthorized>
@@ -79,9 +76,9 @@
 
     private async Task Logout()
     {
-        await CookieUtil.RemoveAsync("authToken");
+        await LocalStorageService.RemoveItemAsync("authToken");
         await AuthProvider.GetAuthenticationStateAsync();
-        NavigationManager.NavigateTo($"{configuration["IdentityCLient"]}/logout?callback={NavigationManager.BaseUri}");
+        NavigationManager.NavigateTo($"{Configuration["IdentityClient"]}/logout?callback={NavigationManager.BaseUri}");
     }
 
 }

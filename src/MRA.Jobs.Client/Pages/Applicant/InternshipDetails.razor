@@ -5,6 +5,7 @@
 @inject IInternshipService InternshipService
 @inject IApplicationService ApplicationService
 @using MRA.Jobs.Client.Components.Vacancies
+@using MRA.Jobs.Client.Services.VacanciesServices.Internships
 
 @if (serverError)
 {
@@ -16,7 +17,7 @@ else if (notFound)
 }
 else
 {
-	<VacancyDetails Slug="@Slug" vacancyDetails="@details" Vacancy="internships" />
+	<VacancyDetails Slug="@Slug" _vacancyDetails="@details" Vacancy="internships" />
 }
 
 @code {
@@ -43,7 +44,8 @@ else
                         EndDate = response.EndDate,
                         Deadline = response.ApplicationDeadline,
                         PublishDate = response.PublishDate,
-                        IsApplied = response.IsApplied
+                        IsApplied = response.IsApplied,
+                        Tags = response.Tags.ToArray()
 
                     };
             }

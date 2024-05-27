@@ -1,11 +1,11 @@
 ﻿@page "/"
-@using AltairCA.Blazor.WebAssembly.Cookie
+@using Blazored.LocalStorage
 @using MRA.Identity.Application.Contract.User.Responses
 @using MRA.Jobs.Client.Identity
 @using MRA.Jobs.Client.Components.Home
 @using Microsoft.AspNetCore.WebUtilities
-@inject IAltairCABlazorCookieUtil cookieUtil
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ILocalStorageService LocalStorageService
 
 <MudGrid Style="margin-top: 5%; margin-bottom: 10%">
     <MudItem xs="12" md="6" Style="padding: 10% 10% 0% 10%;">
@@ -25,14 +25,14 @@
     </MudItem>
     <MudItem xs="12" md="6" Style="padding: 2%">
         <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="/images/team/team1.jpeg" Alt="" Elevation="25"
-                  Class="rounded-tr-md rounded-tl-xl rounded-br-xl rounded-bl-md mud-elevation-4" />
+                  Class="rounded-tr-md rounded-tl-xl rounded-br-xl rounded-bl-md mud-elevation-4"/>
     </MudItem>
 </MudGrid>
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudGrid>
         <MudItem xs="12" md="6" Style="padding: 2%">
-            <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="//www.silkroadprofessionals.com/wp-content/uploads/2022/03/slider2-min.jpeg"
-                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4" />
+            <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="https://silkroadprofessionals.com/wp-content/uploads/2024/04/team.jpg"
+                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4"/>
         </MudItem>
         <MudItem xs="12" md="6" Style="padding:10%">
             <MudText Typo="Typo.h2">
@@ -60,27 +60,25 @@
         </MudItem>
         <MudItem xs="12" md="6" Style="padding: 2%">
             <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%" Src="//www.silkroadprofessionals.com/wp-content/uploads/2022/03/slider2-min.jpeg"
-                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4" />
+                      Alt="" Elevation="25" Class="rounded-tl-md rounded-tr-xl  rounded-bl-xl rounded-br-md mud-elevation-4"/>
         </MudItem>
     </MudGrid>
 </MudHidden>
 
-<HowWeWork />
-<WhatWeDo />
-<About />
-<Principles />
-<MeetTeam />
-<Clients />
-<Contact />
-<NoVacancyUploadCV />
+<HowWeWork/>
+<WhatWeDo/>
+<About/>
+<Principles/>
+<MeetTeam/>
+<Clients/>
+<Contact/>
+<NoVacancyUploadCV/>
 
 @code {
 
-    [Inject]
-    private AuthenticationStateProvider authStateProvider { get; set; }
+    [Inject] private AuthenticationStateProvider authStateProvider { get; set; }
 
-    [Inject]
-    private NavigationManager navigationManager { get; set; }
+    [Inject] private NavigationManager navigationManager { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -90,15 +88,17 @@
         {
             token.AccessToken = atoken;
         }
+
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("rtoken", out var rtoken))
         {
             token.RefreshToken = rtoken;
         }
+
         if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("vdate", out var vdate))
         {
             DateTime oDate = Convert.ToDateTime(vdate);
             token.AccessTokenValidateTo = oDate;
-            await cookieUtil.SetValueAsync("authToken", token, secure: true);
+            await LocalStorageService.SetItemAsync("authToken", token);
             await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
             if (QueryHelpers.ParseQuery(currentUri.Query).TryGetValue("page", out var page))
@@ -107,4 +107,5 @@
                 navigationManager.NavigateTo("/");
         }
     }
+
 }

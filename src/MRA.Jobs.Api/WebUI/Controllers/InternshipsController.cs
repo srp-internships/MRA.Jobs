@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Create;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Delete;
-using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Tags;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Commands.Update;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternships;
@@ -52,21 +51,5 @@ public class InternshipsController : ApiControllerBase
     {
         var internship = await Mediator.Send(new GetInternshipVacancyBySlugQuery { Slug = slug });
         return Ok(internship);
-    }
-
-    [HttpPost("{slug}/tags")]
-    public async Task<IActionResult> AddTag([FromRoute] string slug, [FromBody] AddTagToInternshipVacancyCommand request, CancellationToken cancellationToken)
-    {
-        request.InternshipSlug = slug;
-        await Mediator.Send(request, cancellationToken);
-        return Ok();
-    }
-
-    [HttpDelete("{slug}/tags")]
-    public async Task<IActionResult> RemoveTags([FromRoute] string slug, [FromBody] RemoveTagFromInternshipVacancyCommand request, CancellationToken cancellationToken)
-    {
-        request.InernshipSlug = slug;
-        await Mediator.Send(request, cancellationToken);
-        return Ok();
     }
 }

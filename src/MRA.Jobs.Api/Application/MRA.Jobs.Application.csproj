@@ -12,8 +12,9 @@
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
         <PackageReference Include="MRA.Configurations" Version="2.0.5" />
-        <PackageReference Include="MRA.Identity.Application.Contract" Version="1.0.1" />
+        <PackageReference Include="MRA.Identity.Application.Contract" Version="1.6.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="NickBuhro.Translit" Version="1.4.5" />
         <PackageReference Include="Slugify.Core" Version="4.0.1" />
@@ -28,9 +29,6 @@
       <Folder Include="Features\Me\Commands\" />
       <Folder Include="Features\Me\Queries\" />
       <Folder Include="Features\Vacancies\Note\Queries\" />
-      <Folder Include="Features\VacancyQuestions\" />
-      <Folder Include="Features\VacancyResponses\" />
-      <Folder Include="Features\VacancyTasks\" />
     </ItemGroup>
 
 

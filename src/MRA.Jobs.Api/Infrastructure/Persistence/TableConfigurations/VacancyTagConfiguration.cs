@@ -15,6 +15,6 @@ public class VacancyTagConfiguration : IEntityTypeConfiguration<VacancyTag>
         builder.HasOne(vt => vt.Vacancy)
             .WithMany(v => v.Tags)
             .HasForeignKey(vt => vt.VacancyId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

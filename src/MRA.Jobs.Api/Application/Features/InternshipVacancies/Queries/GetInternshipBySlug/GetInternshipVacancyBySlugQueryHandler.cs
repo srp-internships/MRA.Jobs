@@ -2,7 +2,7 @@
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Queries.GetInternshipBySlug;
 using MRA.Jobs.Application.Contracts.InternshipVacancies.Responses;
 
-namespace MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipById;
+namespace MRA.Jobs.Application.Features.InternshipVacancies.Queries.GetInternshipBySlug;
 
 public class GetInternshipVacancyBySlugQueryHandler(
     IApplicationDbContext context,
@@ -13,12 +13,10 @@ public class GetInternshipVacancyBySlugQueryHandler(
     public async Task<InternshipVacancyResponse> Handle(GetInternshipVacancyBySlugQuery request,
         CancellationToken cancellationToken)
     {
-        // var internship = await _context.Internships.FindAsync(new object[] { request.Id }, cancellationToken);
         var internship = await context.Internships
             .Include(i => i.VacancyQuestions)
             .Include(i => i.VacancyTasks)
-            .Include(i => i.Tags)
-            .ThenInclude(t => t.Tag)
+            .Include(i => i.Tags).ThenInclude(t => t.Tag)
             .FirstOrDefaultAsync(i => i.Slug == request.Slug, cancellationToken: cancellationToken);
         _ = internship ?? throw new NotFoundException(nameof(InternshipVacancy), request.Slug);
 
@@ -27,7 +25,8 @@ public class GetInternshipVacancyBySlugQueryHandler(
 
         var mapped = mapper.Map<InternshipVacancyResponse>(internship);
         mapped.IsApplied = await context.Applications.AnyAsync(s =>
-            s.ApplicantId == currentUser.GetUserId() && s.VacancyId == internship.Id);
+                s.ApplicantUsername == currentUser.GetUserName() && s.VacancyId == internship.Id,
+            cancellationToken: cancellationToken);
 
         return mapped;
     }

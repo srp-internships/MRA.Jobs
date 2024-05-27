@@ -1,6 +1,5 @@
 ﻿@using MRA.Jobs.Client.Services
 @using MRA.Jobs.Client.Enums
-@using AltairCA.Blazor.WebAssembly.Cookie
 @using MRA.Identity.Application.Contract.Profile.Responses
 @using MRA.Jobs.Client.Services.Profile
 @using MRA.Jobs.Client.Components.Buttons
@@ -84,7 +83,7 @@
                 <b>@ContentService["Header:Academy"] </b>
             </MudText>
         </MudButton>
-        <DynamicHeaderButtons/>
+        <DynamicHeaderButtons Application="Jobs"/>
         @if (_betaVersion)
         {
             <MudHidden Breakpoint="Breakpoint.MdAndDown">
@@ -133,7 +132,7 @@
         <MudNavLink Match="NavLinkMatch.All" Href="https://www.silkroadprofessionals.com/team/team/" Target="_blank">@ContentService["Header:Team"]</MudNavLink>
         <MudNavLink Match="NavLinkMatch.All" Href="@Configuration["Academy:Address"]" Target="_blank">@ContentService["Header:Academy"]</MudNavLink>
         <MudNavLink Match="NavLinkMatch.All" Href="/contact">@ContentService["Home:Contact"]</MudNavLink>
-        <DynamicHeaderNavLinks/>
+        <DynamicHeaderNavLinks Application="Jobs"/>
     </MudNavMenu>
     @if (_betaVersion)
     {
