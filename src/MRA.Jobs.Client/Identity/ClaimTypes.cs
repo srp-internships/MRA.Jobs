@@ -4,6 +4,7 @@ public static class ClaimTypes
 {
     private const string ClaimTypeNamespace = "http://schemas.microsoft.com/ws/2008/06/identity/claims";
 
+    public const string ApplicationId = ClaimTypeNamespace + "/applicationId";
     public const string Application = ClaimTypeNamespace + "/application";
     public const string Role = ClaimTypeNamespace + "/role";
     public const string Id = ClaimTypeNamespace + "/id";
