@@ -48,21 +48,15 @@ builder.Services.AddAuthorizationCore(s =>
     s.AddPolicy(ApplicationPolicies.Applicant, ac => ac
         .RequireRole(ApplicationClaimValues.Applicant, ApplicationClaimValues.Reviewer,
             ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin)
-        .RequireClaim(ClaimTypes.ApplicationId, applicationId!,
-            ApplicationClaimValues.AllApplications)
         .RequireClaim(ClaimTypes.Id).RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Username));
 
     s.AddPolicy(ApplicationPolicies.Reviewer, ac => ac
         .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator,
             ApplicationClaimValues.SuperAdmin)
-        .RequireClaim(ClaimTypes.ApplicationId, applicationId!,
-            ApplicationClaimValues.AllApplications)
         .RequireClaim(ClaimTypes.Id).RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Username));
 
     s.AddPolicy(ApplicationPolicies.Administrator, ac => ac
         .RequireRole(ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin)
-        .RequireClaim(ClaimTypes.ApplicationId, applicationId!,
-            ApplicationClaimValues.AllApplications)
         .RequireClaim(ClaimTypes.Id).RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Username));
 });
 
