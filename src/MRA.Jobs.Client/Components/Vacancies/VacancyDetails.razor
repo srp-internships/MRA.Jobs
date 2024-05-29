@@ -230,7 +230,7 @@ else
                                         </MudText>
                                     </MudCardHeader>
                                     <MudCardActions>
-                                        <MudButton Variant="Variant.Filled" Href=@($"{Configuration["IdentityClient"]}/registration?callback={NavigationManager.BaseUri}&page={Vacancy}/apply/{Slug}") Color="Color.Primary" FullWidth="true">
+                                        <MudButton Variant="Variant.Filled" Href=@($"{Configuration["IdentityClient"]}/registration?callback={Configuration["SSOApplication:Callback"]}&ApplicationId={Configuration["SSOApplication:Id"]}&page={Vacancy}/apply/{Slug}") Color="Color.Primary" FullWidth="true">
                                             <MudText>
                                                 <b>@ContentService["VacancyDetails:Sign Up"]</b>
                                             </MudText>
@@ -238,7 +238,7 @@ else
                                     </MudCardActions>
                                     <MudText Typo="Typo.body2" Style="padding:0 10px 10px 10px">
                                         @ContentService["VacancyDetails:Already have an account?"]
-                                        <MudLink Typo="Typo.body2" Href=@($"{Configuration["IdentityClient"]}/login?callback={NavigationManager.BaseUri}&page={Vacancy}/apply/{Slug}") Color="Color.Primary">
+                                        <MudLink Typo="Typo.body2" Href=@($"{Configuration["IdentityClient"]}/login?callback={Configuration["SSOApplication:Callback"]}&ApplicationId={Configuration["SSOApplication:Id"]}&page={Vacancy}/apply/{Slug}") Color="Color.Primary">
                                             <b>@ContentService["VacancyDetails:Sign In"]</b>
                                         </MudLink>
                                     </MudText>

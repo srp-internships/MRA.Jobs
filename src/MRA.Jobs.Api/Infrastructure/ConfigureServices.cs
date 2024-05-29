@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using MRA.Jobs.Application.Common.Sieve;
 using MRA.Jobs.Infrastructure.Identity;
 using MRA.Jobs.Infrastructure.Persistence;
 using MRA.Jobs.Infrastructure.Persistence.Interceptors;
@@ -95,7 +93,9 @@ public static class ConfigureServices
                 ValidateAudience = false
             };
         });
-
+        const string appIdType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/applicationId";
+        var appId = configuration["Application:Id"] ??
+                    throw new NullReferenceException("ApplicationId should not be null");
         services.AddAuthorizationBuilder()
             .SetDefaultPolicy(new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
@@ -103,13 +103,12 @@ public static class ConfigureServices
                 .Build())
             .AddPolicy(ApplicationPolicies.Administrator, op => op
                 .RequireRole(ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin)
-                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
-                    ApplicationClaimValues.AllApplications))
+                .RequireClaim(appIdType, appId))
             .AddPolicy(ApplicationPolicies.Reviewer, op => op
                 .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator,
                     ApplicationClaimValues.SuperAdmin)
-                .RequireClaim(ClaimTypes.Application, ApplicationClaimValues.ApplicationName,
-                    ApplicationClaimValues.AllApplications));
+                .RequireClaim(appIdType, appId));
+
         return services;
     }
 }
