@@ -16,10 +16,11 @@ namespace MRA.Jobs.Application.IntegrationTests;
 
 public enum UserRoles
 {
-    DefaultUser, 
+    DefaultUser,
     Reviewer,
     Admin,
 }
+
 public class Testing
 {
     private static WebApplicationFactory<Program> _factory = null!;
@@ -76,7 +77,7 @@ public class Testing
                 break;
         }
     }
-    
+
     public void RunAsDefaultUserAsync(string username)
     {
         Guid userId = Guid.NewGuid();
@@ -85,7 +86,9 @@ public class Testing
         {
             new(ClaimTypes.Email, "fakeEmail@asd.com"),
             new(ClaimTypes.Id, userId.ToString()),
-            new(ClaimTypes.Username, username)
+            new(ClaimTypes.Username, username),
+            new("http://schemas.microsoft.com/ws/2008/06/identity/claims/applicationId",
+                _configuration["Application:Id"]!)
         };
         jwtToken = _tokenService.CreateTokenByClaims(claims);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
@@ -101,7 +104,9 @@ public class Testing
             new(ClaimTypes.Role, ApplicationClaimValues.Reviewer),
             new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
             new(ClaimTypes.Id, userId.ToString()),
-            new(ClaimTypes.Username, "username")
+            new(ClaimTypes.Username, "username"),
+            new("http://schemas.microsoft.com/ws/2008/06/identity/claims/applicationId",
+                _configuration["Application:Id"]!)
         };
         jwtToken = _tokenService.CreateTokenByClaims(claims);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
@@ -117,7 +122,8 @@ public class Testing
             new(ClaimTypes.Role, ApplicationClaimValues.Administrator),
             new(ClaimTypes.Application, ApplicationClaimValues.ApplicationName),
             new(ClaimTypes.Id, userId.ToString()),
-            new(ClaimTypes.Username, "username")
+            new(ClaimTypes.Username, "username"),
+            new("http://schemas.microsoft.com/ws/2008/06/identity/claims/applicationId",_configuration["Application:Id"]!)
         };
         jwtToken = _tokenService.CreateTokenByClaims(claims);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
@@ -133,7 +139,9 @@ public class Testing
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
         }
-        catch (Exception) { }
+        catch (Exception)
+        {
+        }
 
         _currentUserId = Guid.Empty;
     }
@@ -188,7 +196,7 @@ public class Testing
         ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         return await context.Set<TEntity>().FirstOrDefaultAsync(criteria);
     }
-    
+
     public static async Task<List<TEntity>> GetAllToListAsync<TEntity>()
         where TEntity : class
     {
@@ -209,5 +217,3 @@ public class Testing
             .Select(s => s[Random.Next(s.Length)]).ToArray());
     }
 }
-
-
