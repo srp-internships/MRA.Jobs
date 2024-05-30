@@ -102,12 +102,12 @@ public static class ConfigureServices
                 .RequireClaim(ClaimTypes.Id)
                 .Build())
             .AddPolicy(ApplicationPolicies.Administrator, op => op
-                .RequireRole(ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin)
-                .RequireClaim(appIdType, appId))
+                .RequireRole(ApplicationClaimValues.Administrator, ApplicationClaimValues.SuperAdmin))
+            // .RequireClaim(appIdType, appId))
             .AddPolicy(ApplicationPolicies.Reviewer, op => op
                 .RequireRole(ApplicationClaimValues.Reviewer, ApplicationClaimValues.Administrator,
-                    ApplicationClaimValues.SuperAdmin)
-                .RequireClaim(appIdType, appId));
+                    ApplicationClaimValues.SuperAdmin));
+                // .RequireClaim(appIdType, appId));
 
         return services;
     }
