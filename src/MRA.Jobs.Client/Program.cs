@@ -14,6 +14,7 @@ using MRA.BlazorComponents;
 using MRA.BlazorComponents.Dialogs;
 using MRA.BlazorComponents.DynamicPages;
 using MRA.BlazorComponents.HttpClient;
+using MRA.Identity.Application.Contract;
 using MRA.Identity.Application.Contract.Skills.Command;
 using MRA.Identity.Application.Contract.User.Responses;
 using MRA.Jobs.Application.Contracts;
@@ -87,6 +88,7 @@ builder.Services.AddScoped<IDateTimeConvertToStringService, DateTimeConverterToS
 builder.Services.AddScoped<IUserPreferencesService, UserPreferencesService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddMraFluentValidatorCustomMessages();
+builder.Services.AddFluentValidatorCustomMessages();
 builder.Services.AddScoped<IUsersService, UsersService>();
 
 await builder.Build().RunAsync();
