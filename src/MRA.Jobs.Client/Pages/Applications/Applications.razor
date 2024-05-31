@@ -154,10 +154,7 @@
                         <MudTd DataLabel=@ContentService["Profile:DateOfBirth"]>@context.User.DateOfBirth</MudTd>
                         <MudTd DataLabel=@ContentService["SignUp:Phone"]>@context.User.PhoneNumber</MudTd>
                         <MudTd>
-                            @if (context.User.PhoneNumberConfirmed)
-                            {
-                                <ButtonMessageSender DefaultPhoneNumber=@context.User.PhoneNumber></ButtonMessageSender>
-                            }
+                            <ButtonMessageSender DefaultPhoneNumber=@context.User.PhoneNumber></ButtonMessageSender>
                         </MudTd>
                         <MudTd DataLabel=@ContentService["SignUp:Email"]>@context.User.Email</MudTd>
                     }
