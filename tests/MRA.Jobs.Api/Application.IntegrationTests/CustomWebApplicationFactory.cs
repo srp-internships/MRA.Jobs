@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MRA.Jobs.Application.Common.Interfaces;
 using MRA.Jobs.Application.IntegrationTests.FakeClasses;
 
 namespace MRA.Jobs.Application.IntegrationTests;
@@ -26,6 +27,7 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
             services.Remove(httpClientFactoryDescriptor);
 
             services.AddScoped<IHttpClientFactory, FakeHttpClientFactory>();
+            services.AddScoped<IUsersService, TestUsersService>();
         });
     }
 
